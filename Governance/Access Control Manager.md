@@ -1,23 +1,26 @@
 # Access Control
 
-Access control play a crucial role in our Governance model. We use it to restrict certain functions to be called only from one account or list of accounts (EOA or Contract Accounts).
-
-
-
+Access control plays a crucial role in the Venus governance model. It is used to restrict functions so tha they can only be called from one account or list of accounts (EOA or Contract Accounts).
 
 # Access Control Manager
-The implementation of our AC Management we implemented [**AccessControlManager.sol**](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/Governance/AccessControlManager.sol)  which is a contract that inherits  [**@openzeppelin/contracts/access/AccessControl.sol**](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/AccessControl.sol) as a base of our role management logic.
-Roles are built by hashing the contract address and its function signature.
-E.g We have a Contract A with function A.try() which is guarded by ACM.
-Calling giveRolePermission for account B will basically do:
-1. compute keccak256({addrress-of-a},{function-sig-of-try()})
-2. add the computed role to the roles of account B
-3. Account B now can call try() of Contract A
+The implementation of [AccessControlManagemer](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/Governance/AccessControlManager.sol) inherits the [Open Zeppelin AccessControl](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/AccessControl.sol) contract as a base for role management logic. There are two role types admin and granular permissions.
 
-**NOTE:** because of the existence of factory contracts, in some cases we don't need that granular permissions (e.g in PoolRegistry). So we introduced **DEFAULT_ADMIN_FUNCTION_ROLE**.
-This role is computed the same way, but instead of computing `keccak256({addrress-of-a},{function-sig-of-try()})`, we do `keccak256({zero-address},{function-sig-of-try()})`. 
-If we consider the same case above and give account B the **DEFAULT_ADMIN_FUNCTION_ROLE** , account B will have permissions to call try() function on any contract that is guarded by ACM, not only contract A.
-Lets' take a look at each interface function of the contract:
+### Granular Roles
+
+Granular roles are built by hashing the contract address and its function signature.
+For example, Given Contract Foo with function Foo.bar() which is guarded by ACM,
+calling `giveRolePermission` for account B do the following:
+1. Compute `keccak256(contractFooAddress,functionSignatureBar)`
+2. Add the computed role to the roles of account B
+3. Account B now can call `ContractFoo.bar()`
+
+### Admin Roles
+
+Admin roles allow for an address to call a function signature on any contract guarded by the AccessControlManager. This is particularly useful for contracts created by factories.
+
+For Admin roles a null address is hashed in place of the contract address (`keccak256(0x0000000000000000000000000000000000000000,functionSignatureBar)`. 
+
+In the previous example, giving account B the admin role, account B will have permissions to call the bar() function on any contract that is guarded by ACM, not only contract A.
 
 # Solidity API
 
@@ -72,11 +75,8 @@ _Since the contract is calling itself this function, we can get contracts addres
   
 
 | Name | Type | Description |
-
 | ---- | ---- | ----------- |
-
 | caller | address | contract for which call permissions will be checked |
-
 | functionSig | string | signature e.g. "functionName(uint,bool)" |
 
   
@@ -86,9 +86,7 @@ _Since the contract is calling itself this function, we can get contracts addres
   
 
 | Name | Type | Description |
-
 | ---- | ---- | ----------- |
-
 | [0] | bool | false if the user account cannot call the particular contract function |
 
   
@@ -120,13 +118,9 @@ May emit a {RoleGranted} event._
   
 
 | Name | Type | Description |
-
 | ---- | ---- | ----------- |
-
 | contractAddress | address | address of contract for which call permissions will be granted NOTE: if contractAddress is zero address, we give the account DEFAULT_ADMIN_ROLE, meaning that this account can access the certain function on ANY contract managed by this ACL |
-
 | functionSig | string | signature e.g. "functionName(uint,bool)" |
-
 | accountToPermit | address | account that will be given access to the contract function |
 
   
@@ -158,11 +152,7 @@ May emit a {RoleRevoked} event._
   
 
 | Name | Type | Description |
-
 | ---- | ---- | ----------- |
-
 | contractAddress | address | address of contract for which call permissions will be revoked |
-
 | functionSig | string | signature e.g. "functionName(uint,bool)" |
-
 | accountToRevoke | address | |
