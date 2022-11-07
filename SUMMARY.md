@@ -9,10 +9,10 @@
 
 ## What's New?
 
-* [Isolated Lending](whats-new/portal.md)
-* [Stable Rate Borrowing](whats-new/efficiency-mode-emode.md)
-* [VAI Stability Fee](whats-new/isolation-mode.md)
-* [Governance Routes](whats-new/siloed-borrowing.md)
+* [Isolated Lending](whats-new/isolated-lending.md)
+* [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
+* [VAI Sustainability](whats-new/vai-sustainability.md)
+* [Governance](whats-new/governance.md)
 * [Supply Borrow Caps](whats-new/supply-borrow-caps.md)
 * [Integrated Swap](whats-new/integrated-swap.md)
 
@@ -20,9 +20,8 @@
 
 * [Supplying](guides/supplying.md)
 * [Borrowing](guides/borrowing.md)
-* [Governance Guide](guides/governance-guide/README.md)
+* [Governance](guides/governance-guide/README.md)
   * [Venus Improvement Proposal](guides/governance-guide/vip.md)
-  * [Routes](guides/governance-guide/routes.md)
   * [Voting](guides/governance-guide/voting.md)
   * [Delegating](guides/governance-guide/delegating.md)
 * [Contributing](guides/contributing/README.md)
@@ -46,24 +45,26 @@
 * [Pool Registry](isolated-lending/pool-registry.md)
 * [Pool](isolated-lending/pool.md)
 * [Rewards Distributor](isolated-lending/rewards-distributor.md)
+* [Liquidations](isolated-lending/liquidations.md)
 * [Lens](isolated-lending/lens.md)
 * [Risk Fund](isolated-lending/risk-fund/README.md)
   * [Protocol Share Reserve](isolated-lending/risk-fund/protocol-share-reserve.md)
   * [Shortfall](isolated-lending/risk-fund/shortfall.md)
 * [Factories](isolated-lending/factories/README.md)
-  * [Jump Rate Model](isolated-lending/factories/jump-rate-model.md)
   * [VBep20 Immutable Proxy Factory](isolated-lending/factories/VBep20-mmutable-proxy-factory)
+  * [Jump Rate Model](isolated-lending/factories/jump-rate-model.md)
   * [White Paper Interest Rate Model Factory](isolated-lending/factories/white-paper-interest-rate-model-factory.md)
 
 ## Oracles
 
-* [Resiliant Oracle](isolated-lending/resiliant-oracle.md)
+* [Resilient Oracle](isolated-lending/resilient-oracle.md)
 * [Chainlink](isolated-lending/chainlink.md)
 * [Pyth](isolated-lending/pyth.md)
 * [Binance](isolated-lending/binance.md)
 * [TWAP](isolated-lending/twap.md)
 
 ## Governance
+
 * [Bravo](governance/bravo.md)
   * [Proposals](governance/proposals.md)
   * [Voting](governance/voting.md)
@@ -86,7 +87,7 @@
 
 ## Deployed Contracts
 
-* [V4 Testnet Addresses](deployed-coxntracts/v4-testnet.md)
+* [V4 Testnet](deployed-coxntracts/v4-testnet.md)
 * [V4 Mainnet](deployed-contracts/v4-mainnet/README.md)
 * [Deployed Contracts](deployed-contracts/deployed-contracts.md)
 
