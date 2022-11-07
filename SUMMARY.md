@@ -44,8 +44,8 @@
 
 * [Pool Registry](isolated-lending/pool-registry.md)
 * [Pool](isolated-lending/pool.md)
+  * [Liquidations](isolated-lending/liquidations.md)
 * [Rewards Distributor](isolated-lending/rewards-distributor.md)
-* [Liquidations](isolated-lending/liquidations.md)
 * [Lens](isolated-lending/lens.md)
 * [Risk Fund](isolated-lending/risk-fund/README.md)
   * [Protocol Share Reserve](isolated-lending/risk-fund/protocol-share-reserve.md)
