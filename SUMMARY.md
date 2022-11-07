@@ -57,11 +57,12 @@
 
 ## Oracles
 
-* [Resilient Oracle](isolated-lending/resilient-oracle.md)
-* [Chainlink](isolated-lending/chainlink.md)
-* [Pyth](isolated-lending/pyth.md)
-* [Binance](isolated-lending/binance.md)
-* [TWAP](isolated-lending/twap.md)
+* [Resilient Oracle](oracles/resilient-oracle.md)
+* [Bound Validator](oracles/bound-validator.md)
+* [Chainlink](oracles/chainlink.md)
+* [Pyth](oracles/pyth.md)
+* [Binance](oracles/binance.md)
+* [TWAP](oracles/twap.md)
 
 ## Governance
 
