@@ -1,6 +1,6 @@
 # Access Control
 
-Access control plays a crucial role in the Venus governance model. It is used to restrict functions so tha they can only be called from one account or list of accounts (EOA or Contract Accounts).
+Access control plays a crucial role in the Venus governance model. It is used to restrict functions so that they can only be called from one account or list of accounts (EOA or Contract Accounts).
 
 # Access Control Manager
 The implementation of [AccessControlManagemer](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/Governance/AccessControlManager.sol) inherits the [Open Zeppelin AccessControl](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/AccessControl.sol) contract as a base for role management logic. There are two role types admin and granular permissions.
