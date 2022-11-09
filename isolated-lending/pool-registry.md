@@ -190,107 +190,6 @@ To get the details of all the registered pools in the directory.
 | [0] | array of VenusPool | Arrays of all Venus pools' data. |
 
 
-### getPoolByID
-
-
-```solidity
-function getPoolByID(uint256 poolId)
-        external
-        view
-        returns (VenusPool memory)
-```
-
-
-
-Get the registered pool details by pool id.
-
-
-#### Parameters
-
-
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| poolId | uint256 | Pool id of the pool. |
-
-
-#### Return Values
-
-
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | VenusPool | Venus pool data  |
-
-
-
-### getPoolByComptroller
-
-
-```solidity
-function getPoolByComptroller(address comptroller)
-        external
-        view
-        returns (VenusPool memory)
-```
-
-
-
-Get the registered pool details by comptroller address.
-
-
-#### Parameters
-
-
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| comptroller | address | comptroller address of the pool. |
-
-
-#### Return Values
-
-
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | VenusPool | Venus pool data  |
-
-
-### getPoolIDByComptroller
-
-
-
-```solidity
-function getPoolIDByComptroller(address comptroller)
-        external
-        view
-        returns (uint256)
-```
-
-
-
-Get the registered pool ID by comptroller address.
-
-
-#### Parameters
-
-
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| poolId | uint256 | Pool id of the pool. |
-
-
-#### Return Values
-
-
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | pool ID  |
-
-
 
 ### getVenusPoolMetadata
 
@@ -327,8 +226,43 @@ Get the registered pool Meta data by pool ID.
 | [0] | VenusPoolMetaData | Meta data of the Venus pool  |
 
 
-### addMarket
 
+### getBookmarks
+
+
+```solidity
+function getBookmarks(address account)
+        external
+        view
+        returns (address[] memory)
+```
+
+
+
+Get the book marked pools by the account.
+
+
+#### Parameters
+
+
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| account | address | Account address. |
+
+
+#### Return Values
+
+
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | array | Array of the pools' addresses.  |
+
+
+
+
+### addMarket
 
 
 
