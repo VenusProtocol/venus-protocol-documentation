@@ -30,11 +30,7 @@ In the previous example, giving account B the admin role, account B will have pe
 
   
 
-This contract is a wrapper of OpenZeppelin AccessControl
-
-extending it in a way to standardise access control
-
-within Venus Smart Contract Ecosystem_
+This contract is a wrapper of OpenZeppelin AccessControl extending it in a way to standardise access control within Venus Smart Contract Ecosystem.
 
   
 
