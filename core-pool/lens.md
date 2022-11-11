@@ -114,3 +114,21 @@ computes the number of VAI tokens to be seized up on liquidation
 | [0] | uint | error code |
 | [1] | uint | liquidity |
 | [2] | uint | shortfall |
+
+## Venus-Lens
+
+- VenusLens contract has functions to get view in to:
+    - metadata of vToken
+    - dailyXVS of a userAccount
+    - tokenBalances of a specific vToken for a userAccount
+    - tokenBalances of all vTokens for a userAccount
+    - underlyingPrice of a vToken
+    - underlyingPriceInfo for a set of vTokens
+    - getAccountLimits (liquidity and shortfall) of a userAccount
+    - get Governance receipts of a user with votingBalance
+    - get Governance Proposal details of a list of proposalIds
+    - get XVSBalance details of a user Account
+    - get VotingBalance of a User Account
+    - get Pending XVS Rewards of a user Account
+
+    
