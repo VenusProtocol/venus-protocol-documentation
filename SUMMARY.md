@@ -5,7 +5,6 @@
 * [V4 Overview](README.md)
 * [Contracts Overview](getting-started/contracts-overview.md)
 * [V4 Whitepaper]()
-* [Protocol Features Summary](getting-started/protocol-feature-summary.md)
 
 ## What's New?
 
