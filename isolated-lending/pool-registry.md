@@ -1,28 +1,30 @@
 # Pool Registry
 
 ## Introduction
-The pool registry maintains the isolated lending pools in the directory and can perform actions like creating and registering new isolated lending pools to the directory, adding new markets to existing pools, setting and updating the pool’s required metadata, and providing the getters methods to get an inside view of the pools.
+The pool registry maintains the isolated lending pools directory and performs actions like creating and registering new lending pools, adding new markets to existing pools, setting and updating the pool metadata, and providing getter methods to retrieve pool information.
 
 ![Isolated Pools Diagram](../.gitbook/assets/isolated-pools.png)
 
 ## Details
 
-Isolated lending has three main components: PoolRegistry, Pools, and Markets. The PoolRegistry is responsible for managing pools. It can create new pools, update pool metadata and manage markets within pools. PoolRegistry has some getter methods to get the details of any existing pool like `getVTokenForAsset`, `getPoolsSupportedByAsset`, `updatePoolMetadata` etc.
+Isolated lending has three main components: PoolRegistry, pools, and markets. The PoolRegistry is responsible for managing pools. It can create new pools, update pool metadata and manage markets within pools. PoolRegistry contains getter methods to get the details of any existing pool like `getVTokenForAsset` and `getPoolsSupportedByAsset`. It also contains methods for updating pool metadata (`updatePoolMetadata`) and setting pool name (`setPoolName`). Users can bookmark pools using the `bookmarkPool` method and get a list of the all bookmarked pools through the `getBookmarks` method.
 
-Pool Registry provides a pool id to each pool mapped with the pool's comptroller address. There is a mapping where the metadata is mapped to the comptroller address so it can be retrieved easily. PoolRegistry also supports additional functionality like, users can bookmark  pools using the `bookmarkPool` method and get a list of the all bookmarked pools through the `getBookmarks` method. PoolRegistry also maps assets to the supported list so it will be easier to get all the pools which have the same asset listed in their markets, through `getPoolsSupportedByAsset` method.
+Pool metadata includes risk rating, category, logo url, and description. It is set by calling `updatePoolMetadata` and retrieved through `getVenusPoolMetadata`. Risk rating is determined off chain through risk analysis by Venus with the intention of helping users navigate pools based on their risk tolerance.
 
+The directory of pools is managed through two mappings: `_poolByComptroller` which is a hashmap with the comptroller address as the key and `VenusPool` as the value and `_poolsByID` which is an array of comptroller addresses. Individual pools can be accessed by calling `getPoolByComptroller` with the pool's comptroller address. `_poolsByID` is used to iterate through all of the pools. 
 
-Venus provides the risk rating for each isolated pool. Through this rating users can select the appropriate pool to allocate their assets. Risk rating is decided off-chain and set on-chain for each pool which is saved as the metadata detail of the pool.
+PoolRegistry also contains a map of asset addresses called `_supportedPools` that maps to an array of assets suppored by each pool. This array of pools by asset is retrieved by calling `getPoolsSupportedByAsset`.
 
 ### Pools
 
-Isolated pools gives the ability to create an independent market with specific assets and custom risk management configurations. Pool Registry helps to create a new Isolated pool in the directory through createRegistryPool method. It will take the required fields as parameters like deployed comptroller address, price oracle address, and etc, then create a proxy for the comptroller and set the msg.sender as the admin of the comptroller, provide an ID to the pool and update all the other states of the Pool Registry to add the pool to the directory.
- 
+PoolRegistry registers new isolated pools in the directory with the `createRegistryPool` method. It creates a proxy for the comptroller, sets the `msg.sender` as the `admin` of the comptroller and configuration values for the `closeFactor`, `liquidationIncentive`, `minLiquidatableCollateral`, and `priceOracle`, before adding the pool to the directory. More details on Pools can be found under the [Pool](../isolated-lending/pool.md) page.
 
 ### Markets
+Isolated pools are composed of independent markets with specific assets and custom risk management configurations according to their markets.
 
-To add a new market to a lending pool, the PoolRegistry first deploys the JumpRate or WhitePaperInterestRate factory as an interest rate model to calculate the interest for the borrowers and lenders according to the available liquidity of the protocol. The upgradable vToken is then deployed to handle all the transactions within the market, finally comptroller(pool) accept the market as listed in the pool through `_supportMarket` method, and all the internal states of the Pool Registry get updated.
-You can read more about interest rate models under [Protocol Math](../guides/protocol-math.md)
+To add a new market to a lending pool, the PoolRegistry first deploys the JumpRate or WhitePaperInterestRate factory as an interest rate model to calculate the interest for the borrowers and lenders according to the available liquidity of the protocol. You can read more about interest rate models under [Protocol Math](../guides/protocol-math.md). The upgradable vToken is then deployed to handle all the transactions within the market and finally the market is listed in the pool through `_supportMarket` method.
+
+Markets are covered in more detail under [VTokens](core-pool/vtokens.md)
 
 
 # Solidity API
@@ -90,6 +92,9 @@ function createRegistryPool(
 
 Deploys a new venus pool and adds to the directory, by taking all the required inputs
 
+{% hint style="info" %}
+Can only be called by the _owner_.
+{% endhint %}
 
 
 #### Parameters
@@ -127,7 +132,9 @@ function setPoolName(uint256 poolId, string calldata name)
 
 Modify existing Venus pool name.
 
-
+{% hint style="info" %}
+Can be called by the _owner_ or _comptroller admin_.
+{% endhint %}
 
 #### Parameters
 
@@ -270,6 +277,10 @@ function addMarket(
 
  Add a market to an existing venus pool.
 
+{% hint style="info" %}
+Can only be called by the _owner_.
+{% endhint %}
+
 
 #### Parameters
 
@@ -371,6 +382,10 @@ function updatePoolMetadata(uint256 poolId, VenusPoolMetaData memory _metadata)
 
 
 Update metadata of an existing pool
+
+{% hint style="info" %}
+Can only be called by the _owner_.
+{% endhint %}
 
 
 #### Parameters
