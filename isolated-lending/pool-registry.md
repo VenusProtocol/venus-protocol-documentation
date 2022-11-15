@@ -7,22 +7,22 @@ The pool registry maintains the isolated lending pools in the directory and can 
 
 ## Details
 
-Isolated lending has three main components: PoolRegistry, Pools, and Markets. The PoolRegistry is responsible for managing pools. It can create new pools, update pool metadata and manage markets within pools. Pool Registry has some getter methods to get the details of any existing pool like getVTokenForAsset, getPoolsSupportedByAsset, updatePoolMetadata etc.
+Isolated lending has three main components: PoolRegistry, Pools, and Markets. The PoolRegistry is responsible for managing pools. It can create new pools, update pool metadata and manage markets within pools. PoolRegistry has some getter methods to get the details of any existing pool like `getVTokenForAsset`, `getPoolsSupportedByAsset`, `updatePoolMetadata` etc.
 
-Pool Registry provides a pool Id to each pool mapped with the pool's comptroller address. Each comptroller mapped with the pool's metadata details which contain the additional information of that pool. Pool Registry also supports some other functionality like, users can bookmark the selected pools through the bookmarkPool method and can get the list of the all bookmarked pools through the getBookmarks method, Pool Registry also maps the asset to the supported list so it will be easier to get all the pools which support the similar asset through getPoolsSupportedByAsset method.
+Pool Registry provides a pool id to each pool mapped with the pool's comptroller address. There is a mapping where the metadata is mapped to the comptroller address so it can be retrieved easily. PoolRegistry also supports additional functionality like, users can bookmark  pools using the `bookmarkPool` method and get a list of the all bookmarked pools through the `getBookmarks` method. PoolRegistry also maps assets to the supported list so it will be easier to get all the pools which have the same asset listed in their markets, through `getPoolsSupportedByAsset` method.
 
 
-Venus provides the risk rating for each isolated pool. Through this rating users can select the appropriate pool to allocate their assets.
+Venus provides the risk rating for each isolated pool. Through this rating users can select the appropriate pool to allocate their assets. Risk rating is decided off-chain and set on-chain for each pool which is saved as the metadata detail of the pool.
 
 ### Pools
 
-Venus introduces Isolated pools. It gives the ability to create an independent market with specific assets and custom risk management configurations. Pool Registry helps to create a new Isolated pool in the directory through createRegistryPool method. It will take the required fields as parameters like deployed comptroller address, price oracle address, and etc, then create a proxy for the comptroller and set the msg.sender as the admin of the comptroller, provide an ID to the pool and update all the other states of the Pool Registry to add the pool to the directory.
+Isolated pools gives the ability to create an independent market with specific assets and custom risk management configurations. Pool Registry helps to create a new Isolated pool in the directory through createRegistryPool method. It will take the required fields as parameters like deployed comptroller address, price oracle address, and etc, then create a proxy for the comptroller and set the msg.sender as the admin of the comptroller, provide an ID to the pool and update all the other states of the Pool Registry to add the pool to the directory.
  
 
 ### Markets
 
-To add a new market to a lending pool, the PoolRegistry deploys the JumpRate or WhitePaperInterestRate factory as an interest rate model to calculate the interest for the borrowers and lenders according to the available liquidity of the protocol. Then deploys the upgradable vToken for the market to handle all the transactions within the market, in the last comptroller(pool) supports the market, and all the internal states of the Pool Registry get updated.
-You can read more about interest rate models under [Protocol Math](/)
+To add a new market to a lending pool, the PoolRegistry first deploys the JumpRate or WhitePaperInterestRate factory as an interest rate model to calculate the interest for the borrowers and lenders according to the available liquidity of the protocol. The upgradable vToken is then deployed to handle all the transactions within the market, finally comptroller(pool) accept the market as listed in the pool through `_supportMarket` method, and all the internal states of the Pool Registry get updated.
+You can read more about interest rate models under [Protocol Math](../guides/protocol-math.md)
 
 
 # Solidity API
