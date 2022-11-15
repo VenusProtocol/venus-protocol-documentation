@@ -3,7 +3,7 @@
 ## Introduction
 The pool registry maintains the isolated lending pools in the directory and can perform actions like creating and registering new isolated lending pools to the directory, adding new markets to existing pools, setting and updating the pool’s required metadata, and providing the getters methods to get an inside view of the pools.
 
-![Isolated Pools Diagram](<../.gitbook/assets/isolated-pools.png>)
+![Isolated Pools Diagram](../.gitbook/assets/isolated-pools.png)
 
 ## Details
 
