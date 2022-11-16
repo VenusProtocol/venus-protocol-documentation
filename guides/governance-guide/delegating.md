@@ -1,3 +1,0 @@
- # Delegating
-  A users voting power is not measured only by the amount of staked XVS he has, but also delegated voting power is taken into account. Delegating is the process of 1 user delegating his voting power to other, so that the latter has the combined voting power of both users. This is quite a crucial feature, because of the fact that a voter can submit a proposal if he has **passed** a certain **voting power threshold** which in our code is called `proposalThreshold`. 
-  The delegation of votes should happen through the XVSVault contract by calling `delegate` or `delegateBySig` functions. In order to revert delegation of votes to a user, one should call the same functions with a value of `0`.
