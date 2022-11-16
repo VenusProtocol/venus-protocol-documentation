@@ -22,6 +22,22 @@ For Admin roles a null address is hashed in place of the contract address (`kecc
 
 In the previous example, giving account B the admin role, account B will have permissions to call the bar() function on any contract that is guarded by ACM, not only contract A.
 
+### Protocol Integration
+ All restricted functions in Venus Protocol use a hook to ACM in order to check if the caller has the right permission to call the guarded function. They call ACM's external method `isAllowedToCall(address caller, string functionSig)`.
+ Here is an example of how `_setCollateralFactor` function in `Comptroller` is integrated with ACM:
+ ```
+	bool isAllowedToCall = AccessControlManager(accessControl)
+	.isAllowedToCall(
+		msg.sender,
+		"_setCollateralFactor(VToken,uint256,uint256)"
+	);
+
+	if (!isAllowedToCall) {
+		revert Unauthorized();
+	}
+ ```
+
+
 # Solidity API
 
   
