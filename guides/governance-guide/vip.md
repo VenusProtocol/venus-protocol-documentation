@@ -1,6 +1,6 @@
 # Venus Improvement Proposal
-Venus v4 Governance brings up categorisation for VIPs in order to optimise some actions such as the fast expedition of interest rate, risk parameters and other crucial protocol variables.
-In order to implement different VIP roles, we came up with the solution of having 3 different types of VIPs:
+Venus V4 Governance brings up categorisation for VIPs in order to optimise some actions such as the fast expedition of interest rate, risk parameters and other crucial protocol variables.
+In order to implement different VIP roles, a solution of having 3 different types of VIPs has been implemented:
 
  - NORMAL
  - FASTTRACK
