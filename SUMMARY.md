@@ -33,7 +33,8 @@
 
 * [Unitroller](core-pool/unitroller.md)
 * [VTokens](core-pool/vtokens.md)
-* [Lens](core-pool/lens.md)
+* [ComptrollerLens](core-pool/comptroller-lens.md)
+* [VenusLens](core-pool/venus-lens.md)
 * [Oracle](core-pool/oracle.md)
 * [Liquidator](core-pool/liquidator.md)
 * [Interest Rate Model](core-pool/interest-rate-model.md)
