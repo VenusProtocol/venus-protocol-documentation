@@ -1,21 +1,20 @@
-# Core Pool lens
+# VenusLens
 
 ## Introduction
 
-The Readonly functions in the venus-lens contracts provide view in to:
+The read only functions on the VenusLens contract provide a view into:
     - metadata of vToken
-    - dailyXVS of a userAccount
-    - tokenBalances of a specific vToken for a userAccount
-    - tokenBalances of all vTokens for a userAccount
-    - underlyingPrice of a vToken
-    - underlyingPriceInfo for a set of vTokens
-    - getAccountLimits (liquidity and shortfall) of a userAccount
-    - get Governance receipts of a user with votingBalance
-    - get Governance Proposal details of a list of proposalIds
-    - get XVSBalance details of a user Account
-    - get VotingBalance of a User Account
-    - get Pending XVS Rewards of a user Account
-
+    -  daily XVS rewards for an account
+    - account balance for a single vToken
+    - account balances for all vTokens in an account
+    - underlying price of a vToken
+    - underlying prices for a set of vTokens
+    - get liquidity and shortfall of an account
+    - get user's vote history
+    - get proposal details for a set of proposals
+    - get account XVS balance, total votes, and delegated votes
+    - get historical voting balance for a user
+    - get pending XVS Rewards for an account
 
 ### vTokenMetadata
 

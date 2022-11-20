@@ -1,6 +1,6 @@
-# Core Pool lens
+# ComptrollerLens
 
-- ComptrollerLens contract has functions to get view in to the number of tokens can be seized on liquidation and hypothetical liquidity and shortfall of a user-account.
+- The ComptrollerLens contract has functions to get the number of tokens that can be seized through liquidation, hypothetical account liquidity and shortfall of an account.
 
 # Solidity API
 
