@@ -1,0 +1,15 @@
+{
+  "name": "docs-v4",
+  "version": "0.0.0",
+  "description": "Venus V4 documentation",
+  "repository": "git@github.com:VenusProtocol/docs-v4.git",
+  "author": "Venus",
+  "license": "ISC",
+  "scripts": {
+    "prettier": "prettier --write \"**/*.{md,yaml}\"",
+    "prettier:check": "prettier --check \"**/*.{md,yaml}\""
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  }
+}
