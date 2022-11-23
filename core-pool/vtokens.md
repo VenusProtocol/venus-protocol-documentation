@@ -1,23 +1,18 @@
-# vtoken
+# vToken
 
 ## Introduction
 
-vTokens are the primary means of interacting with the Venus Protocol; when a user mints, redeems, borrows, repays a borrow, liquidates a borrow, or transfers vTokens, she will do so using the vToken contract.
+vTokens are the primary means of interacting with the Venus Protocol. When a user mints, redeems, borrows, repays a borrow, liquidates a borrow, or transfers vTokens, they will do so using the vToken contract.
 
 There are currently two types of vTokens: 
-1. VBep20
-2. VBnb
+1. vBep20
+2. vBnb
 
 - Both types expose the EIP-20 interface
 - VBep20 wraps an underlying BEP-20 asset
 - VBnb simply wraps BNB itself
 
-The implementation of [VBep20](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBep20.sol) inherits the [VToken](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VToken.sol) contract as a base. 
-
-The implementation of [VBnb](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBNB.sol) inherits the [VToken](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VToken.sol) contract as a base. 
-
-
-Core functions which involve transferring an asset into the protocol have slightly different interfaces depending on the type which are listed below.
+Both [VBep20](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBep20.sol) and [VBnb](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBNB.sol) inherit the [VToken](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VToken.sol) contract. 
 
 
 ## Details
