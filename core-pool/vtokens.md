@@ -14,6 +14,22 @@ There are currently two types of vTokens:
 
 Both [VBep20](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBep20.sol) and [VBnb](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBNB.sol) inherit the [VToken](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VToken.sol) contract. 
 
+## Initialisation
+
+1. deployment of VBep20Delegate will precede the deployment of all vTokens
+2. VBep20Delegate contract address will be same in constructor arguments of all vTokens (excluding vBNB)
+3. Use VTokenDelegator to deploy vTokens
+
+common constructor argument for all vTokens as : 
+
+4. vToken is initialized using following values:
+   - underlying  (The address of the underlying asset)
+   - comptroller (The address of the Comptroller - Unitroller)
+   - interestRateModel (The address of the interest rate model)
+   - initialExchangeRateMantissa (The initial exchange rate, scaled by 1e18)
+   - name (BEP-20 name of this token)
+   - symbol (BEP-20 symbol of this token)
+   - decimals (BEP-20 decimal precision of this token)
 
 ## Details
 
