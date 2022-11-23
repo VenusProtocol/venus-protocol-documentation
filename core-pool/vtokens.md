@@ -204,6 +204,8 @@ function redeem(uint redeemTokens) returns (uint)
 
 The redeem underlying function converts vTokens into a specified quantity of the underlying asset, and returns them to the user. The amount of vTokens redeemed is equal to the quantity of underlying tokens received, divided by the current Exchange Rate. The amount redeemed must be less than the user's Account Liquidity and the market's available liquidity.
 
+- Sender redeems vTokens in exchange for a specified amount of underlying asset
+
 - Accrues interest, calculates interest accrued from the last checkpointed block
 
 ```solidity
@@ -214,7 +216,7 @@ function redeemUnderlying(uint redeemAmount) returns (uint)
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| redeemAmount | uint | The number of vTokens to redeem into underlying |
+| redeemAmount | uint | The amount of underlying to receive from redeeming vTokens |
 
 #### Return Values
 
@@ -222,6 +224,28 @@ function redeemUnderlying(uint redeemAmount) returns (uint)
 | ---- | ---- | ----------- |
 | [0] | uint | success indicator - 0 on Success otherwise a failure (see ErrorReporter.sol for details) |
 
+
+1. Redeem
+
+- Event Name: Redeem
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| redeemer     | address   | address of minter | No |
+| remainedAmount | uint256   | The amount of underlying amount received after redeem | No |
+| redeemTokens | uint256   | number of vTokens redeemed | No |
+
+2. Transfer
+
+- Event Name: Transfer
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----     | ----      | -----------       | ----------- |
+| from     | address   | address of redeemer | Yes |
+| to | address   | address of VToken | Yes |
+| amount | uint256   | number of vTokens redeemed | No |
 
 ### Borrow
 
@@ -416,6 +440,42 @@ This function is called when sender want to add underlying or collateral tokens 
 | benefactor | address   | the addrress adding the reserves | yes |
 | addAmount     | uint   | amount being added to reserves | yes |
 | newTotalReserves | uint  | new reserve amount after adding reserves | No |
+
+
+### Reduce Reserves
+
+Reduces collateral from the reserves.
+This function is called when admin want to reduce the underlying or collateral tokens from the reserve of vToken.
+Reserves reduced will be transferred to the admin.
+
+- Accrues interest, calculates interest accrued from the last checkpointed block
+
+
+```solidity
+    function _reduceReserves(uint addAmount) external nonReentrant returns (uint)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| reduceAmount | address | The amount fo underlying token to be reduced from the reserves |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint | success indicator - 0 on Success otherwise a failure (see ErrorReporter.sol for details) |
+
+
+- Event Name: ReservesReduced
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| admin | address   | the addrress adding the reserves | yes |
+| reduceAmount     | uint   | amount being reduced from the reserves | yes |
+| newTotalReserves | uint  | new reserve amount after reducing reserves | No |
 
 
 ### total borrows
