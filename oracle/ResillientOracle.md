@@ -152,7 +152,7 @@ Enable/disable oracle for the input vToken, input vToken MUST exist
 function updatePrice(address vToken) external
 ```
 
-Currently it calls the updateTwap
+Currently it calls the updateTwap. This function should be called everytime before calling getUnderlyingPrice
 
 #### Parameters
 
