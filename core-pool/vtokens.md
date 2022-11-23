@@ -40,6 +40,22 @@ Both [VBep20](https://github.com/VenusProtocol/venus-protocol/blob/master/contra
 9. Total Reserves
 10. Reserve Factor
 
+Interest Accrual:
+
+Inrterest gets accrued up to current block during the User's action as listed below:
+
+1.  Mint
+2.  Redeem
+3.  Redeem Underlying
+4.  Borrow
+5.  Repay Borrow
+6.  Repay Borrow Behalf
+7.  Liquidate Borrow
+8.  Set Reserve Factor
+9.  Add reserves
+10. Reduce reserves
+11. Set interest rate model
+
 # Solidity API
 
 ### Mint VToken
@@ -61,6 +77,29 @@ function mint(uint mintAmount) returns (uint)
 | ---- | ---- | ----------- |
 | [0] | uint | success indicator - 0 on Success |
 
+#### events emitted
+
+1. Mint
+
+- Event Name: Mint
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| minter     | address   | address of minter | No |
+| mintAmount | uint256   | The amount of the underlying asset to supply | No |
+| mintTokens | uint256   | number of vTokens minted | No |
+
+1. Transfer
+
+- Event Name: Mint
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| from     | address   | address of vToken | Yes |
+| to | address   | address of minter | Yes |
+| amount | uint256   | number of vTokens minted | No |
 
 ### Mint VToken on-behalf
 
@@ -83,6 +122,32 @@ function mintBehalf(address receiver, uint mintAmount) external returns (uint)
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | [0] | uint | success indicator - 0 on Success otherwise a failure (see ErrorReporter.sol for details) |
+
+
+#### events emitted
+
+1. MintBehalf
+
+- Event Name: MintBehalf
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| payer     | address   | address who acted as on-behalf address for minter | No |
+| minter     | address   | address of minter | No |
+| mintAmount | uint256   | The amount of the underlying asset to supply | No |
+| mintTokens | uint256   | number of vTokens minted | No |
+
+1. Transfer
+
+- Event Name: Mint
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| from     | address   | address of vToken | Yes |
+| to | address   | address of minter | Yes |
+| amount | uint256   | number of vTokens minted | No |
 
 
 ### Redeem
