@@ -360,6 +360,28 @@ function repayBorrowBehalf(address borrower, uint repayAmount) external returns 
 | ---- | ---- | ----------- |
 | [0] | uint | success indicator - 0 on Success otherwise a failure (see ErrorReporter.sol for details) |
 
+#### events emitted
+
+- Event Name: LiquidateBorrow
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| liquidator     | address   | the account liquidating the position | No |
+| borrower | address   | the account which is being liquidated | No |
+| repayAmount | uint   |total borrow amount of borrower | No |
+| vTokenCollateral | address   |  The amount of the underlying borrowed asset to repay | No |
+| seizeTokens | uint  | Total amount of undelrying tokens being seized by liquidator | No |
+
+
+- Event Name: Transfer
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| from | address   | the account which is being liquidated | yes |
+| to     | address   | the account liquidating the position | yes |
+| amount | uint  | Total amount of undelrying tokens being seized by liquidator | No |
 
 ### Add Reserves
 
@@ -384,6 +406,17 @@ This function is called when sender want to add underlying or collateral tokens 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | [0] | uint | success indicator - 0 on Success otherwise a failure (see ErrorReporter.sol for details) |
+
+
+- Event Name: ReservesAdded
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| benefactor | address   | the addrress adding the reserves | yes |
+| addAmount     | uint   | amount being added to reserves | yes |
+| newTotalReserves | uint  | new reserve amount after adding reserves | No |
+
 
 ### total borrows
 
