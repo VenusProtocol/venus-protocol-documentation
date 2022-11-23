@@ -62,6 +62,8 @@ Inrterest gets accrued up to current block during the User's action as listed be
 
 The mint function transfers an asset into the protocol, which begins accumulating interest based on the current Supply Rate for The user receives a quantity of vTokens equal to the underlying tokens tokens supplied, divided by the current Exchange Rate.
 
+- Accrues interest, calculates interest accrued from the last checkpointed block
+
 ```solidity
 function mint(uint mintAmount) returns (uint)
 ```
@@ -90,7 +92,7 @@ function mint(uint mintAmount) returns (uint)
 | mintAmount | uint256   | The amount of the underlying asset to supply | No |
 | mintTokens | uint256   | number of vTokens minted | No |
 
-1. Transfer
+2. Transfer
 
 - Event Name: Mint
 - Event Source: VToken
@@ -105,6 +107,7 @@ function mint(uint mintAmount) returns (uint)
 
 - The mint-Behalf function is same as mint function but this requires the recipient of the minted vTokens
 - Sender supplies assets into the market and receiver receives vTokens in exchange
+- Accrues interest, calculates interest accrued from the last checkpointed block
 
 ```solidity
 function mintBehalf(address receiver, uint mintAmount) external returns (uint)
@@ -138,13 +141,13 @@ function mintBehalf(address receiver, uint mintAmount) external returns (uint)
 | mintAmount | uint256   | The amount of the underlying asset to supply | No |
 | mintTokens | uint256   | number of vTokens minted | No |
 
-1. Transfer
+2. Transfer
 
 - Event Name: Mint
 - Event Source: VToken
 
 | Name       | arguments | Description       |   is Indexed |
-| ----       | ----      | -----------       | ----------- |
+| ----     | ----      | -----------       | ----------- |
 | from     | address   | address of vToken | Yes |
 | to | address   | address of minter | Yes |
 | amount | uint256   | number of vTokens minted | No |
@@ -153,6 +156,8 @@ function mintBehalf(address receiver, uint mintAmount) external returns (uint)
 ### Redeem
 
 The redeem function converts a specified quantity of vTokens into the underlying asset, and returns them to the user. The amount of underlying tokens received is equal to the quantity of vTokens redeemed, multiplied by the current Exchange Rate. The amount redeemed must be less than the user's Account Liquidity and the market's available liquidity.
+
+- Accrues interest, calculates interest accrued from the last checkpointed block
 
 ```solidity
 function redeem(uint redeemTokens) returns (uint)
@@ -170,11 +175,36 @@ function redeem(uint redeemTokens) returns (uint)
 | ---- | ---- | ----------- |
 | [0] | uint | success indicator - 0 on Success otherwise a failure (see ErrorReporter.sol for details) |
 
+#### events emitted
+
+1. Redeem
+
+- Event Name: Redeem
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| redeemer     | address   | address of minter | No |
+| redeemAmount | uint256   | The remaining amount | No |
+| redeemTokens | uint256   | number of vTokens redeemed | No |
+
+2. Transfer
+
+- Event Name: Transfer
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----     | ----      | -----------       | ----------- |
+| from     | address   | address of redeemer | Yes |
+| to | address   | address of VToken | Yes |
+| amount | uint256   | number of redeemed minted | No |
+
 
 ### Redeem Underlying
 
 The redeem underlying function converts vTokens into a specified quantity of the underlying asset, and returns them to the user. The amount of vTokens redeemed is equal to the quantity of underlying tokens received, divided by the current Exchange Rate. The amount redeemed must be less than the user's Account Liquidity and the market's available liquidity.
 
+- Accrues interest, calculates interest accrued from the last checkpointed block
 
 ```solidity
 function redeemUnderlying(uint redeemAmount) returns (uint)
@@ -198,6 +228,8 @@ function redeemUnderlying(uint redeemAmount) returns (uint)
 Sender borrows assets from the protocol to their own address
 The borrow function transfers an asset from the protocol to the user, and creates a borrow balance which begins accumulating interest based on the Borrow Rate for the asset. The amount borrowed must be less than the user's Account Liquidity and the market's available liquidity.
 
+- Accrues interest, calculates interest accrued from the last checkpointed block
+
 ```solidity
 function borrow(uint borrowAmount) external returns (uint)
 ```
@@ -214,12 +246,24 @@ function borrow(uint borrowAmount) external returns (uint)
 | ---- | ---- | ----------- |
 | [0] | uint | success indicator - 0 on Success otherwise a failure (see ErrorReporter.sol for details) |
 
+#### events emitted
 
+- Event Name: Borrow
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| borrower     | address   | address of borrower | No |
+| borrowAmount | uint256   | amount being borrowed | No |
+| accountBorrows | uint256   |total borrow amount of borrower | No |
+| totalBorrows | uint256   | Total amount of outstanding borrows of the underlying in this market | No |
 
 ### Repay Borrow
 
 The repay function transfers an asset into the protocol, reducing the user's borrow balance.
 Sender repays a borrow belonging to borrower
+
+- Accrues interest, calculates interest accrued from the last checkpointed block
 
 ```solidity
 function repayBorrow(uint repayAmount) external returns (uint)
@@ -237,6 +281,18 @@ function repayBorrow(uint repayAmount) external returns (uint)
 | ---- | ---- | ----------- |
 | [0] | uint | success indicator - 0 on Success otherwise a failure (see ErrorReporter.sol for details) |
 
+#### events emitted
+
+- Event Name: RepayBorrow
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| payer     | address   | the account paying off the borrow | No |
+| borrower | address   | the account with the debt being payed off | No |
+| repayAmount | uint256   |total borrow amount of borrower | No |
+| accountBorrows | uint256   |  the amount of undelrying tokens being returned | No |
+| totalBorrows | uint256   | Total amount of outstanding borrows of the underlying in this market | No |
 
 ### Repay Borrow Behalf
 
@@ -244,6 +300,7 @@ The repay function transfers an asset into the protocol, reducing the user's bor
 
 - The repay-Behalf function is same as repay function but this requires the borrower address who has borrowed underlying.
 - Sender repays a borrow belonging to borrower
+- Accrues interest, calculates interest accrued from the last checkpointed block
 
 
 ```solidity
@@ -263,12 +320,27 @@ function repayBorrowBehalf(address borrower, uint repayAmount) external returns 
 | ---- | ---- | ----------- |
 | [0] | uint | success indicator - 0 on Success otherwise a failure (see ErrorReporter.sol for details) |
 
+#### events emitted
+
+- Event Name: RepayBorrow
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| payer     | address   | the account paying off the borrow | No |
+| borrower | address   | the account with the debt being payed off | No |
+| repayAmount | uint256   |total borrow amount of borrower | No |
+| accountBorrows | uint256   |  the amount of undelrying tokens being returned | No |
+| totalBorrows | uint256   | Total amount of outstanding borrows of the underlying in this market | No |
+
 
 ### Liquidate Borrow
 
 - A user who has negative account liquidity is subject to liquidation by other users of the protocol to return his/her account liquidity back to positive (i.e. above the collateral requirement). When a liquidation occurs, a liquidator may repay some or all of an outstanding borrow on behalf of a borrower and in return receive a discounted amount of collateral held by the borrower; this discount is defined as the liquidation incentive.
 
 - A liquidator may close up to a certain fixed percentage (i.e. close factor) of any individual outstanding borrow of the underwater account. Unlike in v1, liquidators must interact with each vToken contract in which they wish to repay a borrow and seize another asset as collateral. When collateral is seized, the liquidator is transferred vTokens, which they may redeem the same as if they had supplied the asset themselves. Users must approve each vToken contract before calling liquidate (i.e. on the borrowed asset which they are repaying), as they are transferring funds into the contract.
+
+- Accrues interest, calculates interest accrued from the last checkpointed block
 
 ```solidity
     function liquidateBorrow(address borrower, uint repayAmount, address vTokenCollateral) external returns (uint)
@@ -293,6 +365,8 @@ function repayBorrowBehalf(address borrower, uint repayAmount) external returns 
 
 Adds collateral to the reserves.
 This function is called when sender want to add underlying or collateral tokens to the reserve of vToken.
+
+- Accrues interest, calculates interest accrued from the last checkpointed block
 
 
 ```solidity
