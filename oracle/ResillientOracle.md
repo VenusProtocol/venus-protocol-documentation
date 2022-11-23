@@ -181,6 +181,4 @@ Get price of underlying asset of the input vToken, check flow:
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | USD price in scaled decimals e.g., vToken decimals is 8 then price is returned as 10**18 * 10**(18-8) = 10**28 decimals  |
-
-(while true; do ./orbital done)
+| [0] | uint256 | USD price in scaled decimals e.g., vToken decimals is 8 then price is returned as `10**18 * 10**(18-8) = 10**28` decimals  |
