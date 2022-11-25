@@ -2,50 +2,55 @@
 
 ## Introduction
 
-Venus Governance V4 is updated version of on-chain governance, allowing unique features such as delegated voting, rapid protocol upgrades, governance upgrades. On top of that Governance V4 brings a granularity in our pause mechanism, allowing governance to pause any actions on any markets, especially in the context of isolated markets.  **The above changes are meant to increase Governance efficiency, while reducing opportunities for malicious or erroneous proposals to slip through.**
+Venus Governance V4 updates on-chain governance with several new features including variable proposal routes and fine grained pause control. Variable routes for proposals allows for governance paramaters such as voting threshold and timelocks to be customized based on the risk level and impact of the proposal. Added granularity to the pause control mechanism allows governance to pause individual actions on specific markets, which reduces impact on the protocol as a whole. This is particularly useful when applied to isolated lending.
+
+
+{% hint style="info" %}
+The goal of **Governance V4** is to increase governance efficiency, while mitigating and eliminating malicious or erroneous proposals.
+{% endhint %}
 
 ## Details
 
 Governance has **3 main contracts**: **GovernanceBravoDelegate, XVSVault, XVS** token.
-XVS token is the protocol token used for protocol users to cast their vote on proposals submitted from other users.
-XVSVault is the main stacking contract for XVS. Users should stake their XVS in order to be able to cast their votes. Users can also delegate their voting power to other users via the XVSVault. This contract is also responsible for staking rewards for each pool.
+XVS token is the protocol token used for protocol users to cast their vote on submitted proposals.
+XVSVault is the main staking contract for XVS. Users first stake their XVS in the vault and receive voting power proportional to their staked tokens that they can use to vote on proposals. Users also can choose to delegate their voting power to other users. You can read more on the [XVSVault](../vaults/xvs-vault.md) page.
 
 # Governor Bravo
-GovernanceBravoDelegate is Venus main Governance contract. Users interact with it to:
+GovernanceBravoDelegate is main Venus Governance contract. Users interact with it to:
 - Submit new proposal
 - Vote on a proposal
-- Cancel proposal
-- Queue proposal for execution to a timelock executor contract
-GovernanceBravoDelegate is using XVSVault to get information about voting power of users to enforce some of important governance rules:
-- Users with voting power below proposalThreshold cannot submit a proposal
-- If a user's voring power drops below certain amount, anyone can cancel the the proposal. On the other hand governance guardian and proposal creator can cancel a proposal at anytime, but before it is queued for execution.
+- Cancel a proposal
+- Queue a proposal for execution with a timelock executor contract
+GovernanceBravoDelegate uses the XVSVault to get restrict certain actions based on a user's voting power. The governance rules it inforces are:
+- A user's voting power must be greater than the `proposalThreshold` to submit a proposal
+- If a user's voting power drops below certain amount, anyone can cancel the the proposal. The governance guardian and proposal creator can also cancel a proposal at anytime before it is queued for execution.
 
 ## Venus Improvement Proposal
-Venus V4 Governance brings up categorisation for VIPs in order to optimise some actions such as the fast expedition of interest rate, risk parameters and other crucial protocol variables.
-In order to implement different VIP roles, a solution of having 3 different types of VIPs has been implemented:
+Venus V4 Governance allows for Venus Improvement Proposals (VIPs) to be categorized based on their impact and risk levels. This allows for optimizing proposals execution to allow for things such as expediting interest rate changes and quickly updating risk parameters, while moving slower on other types of proposals that can prevent a larger risk to the protocol and are not urgent.
+There are three different types of VIPs with different proposal paramters:
 
-- NORMAL
-- FASTTRACK
-- CRITICAL
+- `NORMAL`
+- `FASTTRACK`
+- `CRITICAL`
 
-Each type has the following parameters, based on which the governance flow might change:
+When initializing the GovernorBravo contract, the parameters for the three routes are set. The parameeters are:
+ 
+- `votingDelay` - The delay in blocks between submitting a proposal and when voting begins
+- `votingPeriod` - The number of blocks where voting will be open
+- `proposalThreshold` - The number of votes required in order submit a proposal
 
-- `votingDelay` - **The delay before voting on a proposal may take place, once proposed, in blocks**
-- `votingPeriod` - **The duration of voting on a proposal, in blocks**
-- `proposalThreshold` - **The number of votes required in order for a voter to become a proposer**
 
-The configurations for the three types is done upon initialisation of the **GovernorBravo** contract.
-For each type of VIP there is also separate timelock executor contract, which will be used to dispatch the VIP to be executed, giving even more control over the flow of each type of VIP.
+There is also a separate timelock executor contract for each route, which is used to dispatch the VIP for execution, giving even more control over the flow of each type of VIP.
 
 ![chart](../.gitbook/assets/vip-lifecycle.png)
 
 ## Voting
-After a VIP is proposed, one could vote on it only after the `votingDelay` has been passed. If `votingDelay = 0` the voting will begin in the next block after the proposal has been submitted. After the delay, the proposal state is `ACTIVE` and users can cast their vote `for` or `against`  the proposal, weighted by the users total voting power (tokens + delegated voting power). The total voting power for the user is obtained by calling XVSVault's `getPriorVotes`.
-GovernorBravoDelegate also  accepts EIP-712 signatures for voting on proposals via the external function `castVoteBySig`
+After a VIP is proposed, voting is opened after the `votingDelay` has passed. For example, if `votingDelay = 0`, then voting will begin in the next block after the proposal has been submitted. After the delay, the proposal state is `ACTIVE` and users can cast their vote `for`, `against`, or `abstain`, weighted by their total voting power (tokens + delegated voting power). Abstaining from a voting allows for a vote to be cast and optionally include a comment, without the incrementing for or against vote count. The total voting power for the user is obtained by calling XVSVault's `getPriorVotes`.
+GovernorBravoDelegate also accepts EIP-712 signatures for voting on proposals via the external function `castVoteBySig`
 
 ## Delegating
-A users voting power is not measured only by the amount of staked XVS he has, but also delegated voting power is taken into account. Delegating is the process of 1 user delegating his voting power to other, so that the latter has the combined voting power of both users. This is quite a crucial feature, because of the fact that a voter can submit a proposal if he has **passed** a certain **voting power threshold** which in our code is called `proposalThreshold`. 
-The delegation of votes should happen through the XVSVault contract by calling `delegate` or `delegateBySig` functions. In order to revert delegation of votes to a user, one should call the same functions with a value of `0`.
+A users voting power includes the amount of staked XVS the have staked as well as the votes delegate to them. Delegating is the process of a user loaning their voting power to another, so that the latter has the combined voting power of both users. This is an important feature because it allows for a user to let another user who they trust propose or vote in their place.
+The delegation of votes happens through the XVSVault contract by calling the `delegate` or `delegateBySig` functions. These same functions can revert vote delegation by calling the same function with a value of `0`.
 
 # Solidity API
 
