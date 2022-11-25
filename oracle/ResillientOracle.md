@@ -14,7 +14,7 @@ The way the Resilient Oracle works is for every market (vToken) we configure the
 
 ![Resillient Oracle](../.gitbook/assets/oracles.png)
 
-To validate the price between two oracles we set an upper and lower bound ratio for every market. The upper bound ratio represents the deviation between reported prices (price from oracle that’s being validated) and anchor price (price from oracle we are validating against) beyond which the reported price will be invalidated. And the lower bound ratio presents the deviation between reported price and anchor price below which the reported price will be invalidated. So for oracle price to be considered valid the below statement should be true:
+To validate the price between two oracles we set an **upper** and **lower** bound ratio for every market. The **upper bound ratio** represents the **deviation** between **reported prices** (price from oracle that’s being validated) and anchor price (price from oracle we are validating against) beyond which the reported price will be invalidated. And the **lower bound ratio** presents the **deviation** between **reported price and anchor price** below which the reported price will be invalidated. So for oracle price to be considered valid the below statement should be true:
 
 ```
 anchorRatio = anchorPrice/reporterPrice
