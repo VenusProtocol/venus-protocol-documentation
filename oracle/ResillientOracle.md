@@ -10,7 +10,7 @@ DeFi Protocols are usually vulnerable to price oracles reporting incorrect price
 
 Keeping this in mind, we have designed a resilient oracle which uses multiple oracle sources to validate prices and fallback mechanisms to provide accurate prices and protect from oracle attacks. Currently it includes integrations with Chainlink, Pyth, Binance Oracle and TWAP (Time-Weighted Average Price) oracles. TWAP uses PancakeSwap as the on-chain price source.
 
-The way the resilient oracle works is for every market (vToken) we configure the main, pivot and fallback oracles. The main oracle oracle is the most trustworthy price source, the pivot oracle is is used as a loose sanity checker and the fallback oracle is used as a backup price source.
+The way the Resilient Oracle works is for every market (vToken) we configure the main, pivot and fallback oracles. The main oracle oracle is the most trustworthy price source, the pivot oracle is is used as a loose sanity checker and the fallback oracle is used as a backup price source.
 
 ![Resillient Oracle](../.gitbook/assets/oracles.png)
 
