@@ -92,7 +92,7 @@ function createRegistryPool(
 
 Deploys a new venus pool and adds to the directory, by taking all the required inputs
 
-{% hint style="info" %}
+{% hint style="warning" %}
 Can only be called by the _owner_.
 {% endhint %}
 
@@ -132,7 +132,7 @@ function setPoolName(uint256 poolId, string calldata name)
 
 Modify existing Venus pool name.
 
-{% hint style="info" %}
+{% hint style="warning" %}
 Can be called by the _owner_ or _comptroller admin_.
 {% endhint %}
 
@@ -277,7 +277,7 @@ function addMarket(
 
  Add a market to an existing venus pool.
 
-{% hint style="info" %}
+{% hint style="warning" %}
 Can only be called by the _owner_.
 {% endhint %}
 
@@ -383,7 +383,7 @@ function updatePoolMetadata(uint256 poolId, VenusPoolMetaData memory _metadata)
 
 Update metadata of an existing pool
 
-{% hint style="info" %}
+{% hint style="warning" %}
 Can only be called by the _owner_.
 {% endhint %}
 
