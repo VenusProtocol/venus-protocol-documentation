@@ -42,13 +42,27 @@ common constructor argument for all vTokens as :
 5. Repay Borrow
 6. Repay Borrow Behalf
 7. Liquidate Borrow
+8. Add Reserves
+9. Seize
+10. accrueInterest
+
+- Admin Functions:
+
+1. Reduce Reserves
+2. set Interest Rate Model
+3. set Reserve Factor
+4. set Comptroller
+5. set Pending Admin
+6. accept Admin
 
 - View functions and storage values:
 
-1. ExchangeRate
+1. ExchangeRate Stored
+2. ExchangeRate Current
 2. Cash
 3. Total Borrows
-4. Borrow Balance
+4. Borrow Balance Stored *
+5. Borrow Balance Current *
 5. Borrow Rate
 6. Total Supply
 7. UnderlyingBalance
@@ -56,7 +70,7 @@ common constructor argument for all vTokens as :
 9. Total Reserves
 10. Reserve Factor
 
-Interest Accrual:
+## Interest Accrual:
 
 Inrterest gets accrued up to current block during the User's action as listed below:
 
@@ -70,7 +84,8 @@ Inrterest gets accrued up to current block during the User's action as listed be
 8.  Set Reserve Factor
 9.  Add reserves
 10. Reduce reserves
-11. Set interest rate model
+11. Set interest rate model  *
+12. set Reserve Factor
 
 # Solidity API
 
@@ -458,6 +473,64 @@ This function is called when sender want to add underlying or collateral tokens 
 | newTotalReserves | uint  | new reserve amount after adding reserves | No |
 
 
+### Seize Collateral
+
+Transfers collateral tokens (this market) to the liquidator.
+Will fail unless called by another vToken during the process of liquidation.
+Its absolutely critical to use msg.sender as the borrowed vToken and not a parameter.
+
+
+```solidity
+    function seize(address liquidator, address borrower, uint seizeTokens) external nonReentrant returns (uint)    
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| liquidator | address | The account receiving seized collateral |
+| borrower | address | The account having collateral seized |
+| seizeTokens | uint | The number of vTokens to seize |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint | uint 0=success, otherwise a failure (see ErrorReporter.sol for details) |
+
+
+### Accrue Interest
+
+- Applies accrued interest to total borrows and reserves
+- This calculates interest accrued from the last checkpointed block up to the current block and writes new checkpoint to storage.
+- First checkpoint is recorded when the vToken was deployed and from that instance,
+interest get accrued for various actions that user perform like
+Mint/Redeem/Borrow/Repay Borrow/Liquidate
+
+```
+Calculate the interest accumulated into borrows and reserves and the new index:
+Step-1: simpleInterestFactor = borrowRate * blockDelta
+Step-2: InterestAccumulated = simpleInterestFactor * totalBorrows
+Step-3: totalBorrowsNew = interestAccumulated + totalBorrows
+Step-4: totalReservesNew = interestAccumulated * reserveFactor + totalReserves
+Step-5: borrowIndexNew = simpleInterestFactor * borrowIndex + borrowIndex
+```
+
+- borrowRate: borrowRate from interestRateModel using cash, borrows and reserves prior
+- blockDelta: Number of blocks mined since the last checkpointed block
+- totalBorrows: total amount of collateral borrowed
+- reserveFactor:  Fraction of interest currently set aside for reserves
+
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint | uint 0=success, otherwise a failure (see ErrorReporter.sol for details) |
+
+
+## Admin Restricted Functions
+
 ### Reduce Reserves
 
 Reduces collateral from the reserves.
@@ -494,41 +567,195 @@ Reserves reduced will be transferred to the admin.
 | newTotalReserves | uint  | new reserve amount after reducing reserves | No |
 
 
-### total borrows
 
-Total Borrows is the amount of underlying currently loaned out by the market, and the amount upon which interest is accumulated to suppliers of the market.
+### set Interest Rate Model
 
-```solidity
-function totalBorrowsCurrent() external nonReentrant returns (uint)
-```
+- Interest rate model is the algorithmic model to determine a money market's borrow and supply rates
+- Different algorithmic models are:
+   1. Jump Rate Model
+   2. WhitePaperInterestRateModel
 
-#### Return Values
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint |  The total borrows with interest |
-
-### borrow Balance Current
-
-A user who borrows assets from the protocol is subject to accumulated interest based on the current borrow rate. Interest is accumulated every block and integrations may use this function to obtain the current value of a user's borrow balance with interest.
-
+- Interest rate model is set during initialisation of the vToken contract
+- Only vToken admin can update the interestRateModel after initialization. 
+- On update of interestRateModel, a fresh interest accrual happens via accrueInterest()
 
 ```solidity
-function borrowBalanceCurrent(address account) external nonReentrant returns (uint)
+function _setInterestRateModel(InterestRateModel newInterestRateModel) public returns (uint)
 ```
 
 #### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| account | address | The address whose balance should be calculated after updating borrowIndex |
+| interestRateModel | InterestRateModel | InterestRate Model address |
 
 #### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint |  The user's current borrow balance (with interest) in units of the underlying asset. |
+| [0] | uint | success indicator - 0 on Success otherwise a failure (see ErrorReporter.sol for details) |
 
+- Functions in the interest rate model contract:
+
+#### BorrowRate
+
+- Calculates the current borrow interest rate per block
+
+```solidity
+ function getBorrowRate(uint cash, uint borrows, uint reserves) external view returns (uint)
+```
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| cash | uint | The total amount of cash the in the market |
+| borrows | uint | The total amount or outstanding borrows in the market  |
+| reserves | uint | The total amnount of reserves in the market |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint | The borrow rate per block (as a percentage, and scaled by 1e18) |
+
+
+#### SupplyRate
+
+- Calculates the current supply interest rate per block
+
+```solidity
+ function getSupplyRate(uint cash, uint borrows, uint reserves, uint reserveFactorMantissa) external view returns (uint)
+```
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| cash | uint | The total amount of cash the in the market |
+| borrows | uint | The total amount or outstanding borrows in the market  |
+| reserves | uint | The total amount of reserves in the market |
+| reserveFactorMantissa  | uint | current reserve factor set for the market |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint | The supply rate per block (as a percentage, and scaled by 1e18) |
+
+
+### set Reserve Factor
+
+- Sets a new reserve factor for the protocol
+- Setting a new reserve factor will trigger interest accrual via accrueInterest()
+- This is admin restricted function
+
+```solidity
+ function _setReserveFactor(uint newReserveFactorMantissa) external nonReentrant returns (uint)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| newReserveFactorMantissa | uint | reserveFactor for the market |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint | uint 0=success, otherwise a failure (see ErrorReporter.sol for details) |
+
+
+### set Comptroller
+
+```solidity
+function _setComptroller(ComptrollerInterface newComptroller) public returns (uint)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| newComptroller | address | address of new comptroller for the market |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint | uint 0=success, otherwise a failure (see ErrorReporter.sol for details) |
+
+
+### set PendingAdmin
+
+- function to set a new admin for the vToken/market.
+- function begins transfer of admin rights. 
+- The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
+- Only current admin can set the pendingAdmin
+- admin can update the pendingAdmin any number of times till the pendingAdmin accepts the admin rights
+
+```solidity
+ function _setPendingAdmin(address payable newPendingAdmin) external returns (uint) {
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| newPendingAdmin | address | address of new admin for the market |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint | uint 0=success, otherwise a failure: SET_PENDING_ADMIN_OWNER_CHECK |
+
+#### Event emission
+
+- Event Name: NewPendingAdmin
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| oldPendingAdmin | address   | the addrress old pending admin | yes |
+| newPendingAdmin     | address   | the addrress new pending admin | yes |
+
+### Accept Admin
+
+- function to Accepts transfer of admin rights
+- Only PendingAdmin must call `_acceptAdmin` to finalize the transfer.
+- transfers the admin rights from current admin to the pending-admin
+- pendingAdmin address is set to ZERO address after the transfer is finalized.
+
+```solidity
+function _acceptAdmin() external returns (uint)
+```
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint | uint 0=success, otherwise a failure: SET_PENDING_ADMIN_OWNER_CHECK |
+
+#### Event emission
+
+- Event Name: NewPendingAdmin
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| oldPendingAdmin | address   | the address old pending admin | yes |
+| newPendingAdmin     | address   | ZERO address | yes |
+
+
+- Event Name: NewAdmin
+- Event Source: VToken
+
+| Name       | arguments | Description       |   is Indexed |
+| ----       | ----      | -----------       | ----------- |
+| oldAdmin | address   | the address old admin | yes |
+| newAdmin     | address   | address of new admin | yes |
+
+
+## View Functions
 
 ### Exchange Rate
 
@@ -564,30 +791,40 @@ function getCash() external view returns (uint)
 | [0] | uint |  The quantity of underlying asset owned by this contract |
 
 
-### Seize Collateral
+### total borrows
 
-Transfers collateral tokens (this market) to the liquidator.
-Will fail unless called by another vToken during the process of liquidation.
-Its absolutely critical to use msg.sender as the borrowed vToken and not a parameter.
+Total Borrows is the amount of underlying currently loaned out by the market, and the amount upon which interest is accumulated to suppliers of the market.
+
+```solidity
+function totalBorrowsCurrent() external nonReentrant returns (uint)
+```
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint |  The total borrows with interest |
+
+### borrow Balance Current
+
+A user who borrows assets from the protocol is subject to accumulated interest based on the current borrow rate. Interest is accumulated every block and integrations may use this function to obtain the current value of a user's borrow balance with interest.
 
 
 ```solidity
-    function seize(address liquidator, address borrower, uint seizeTokens) external nonReentrant returns (uint)    
+function borrowBalanceCurrent(address account) external nonReentrant returns (uint)
 ```
 
 #### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| liquidator | address | The account receiving seized collateral |
-| borrower | address | The account having collateral seized |
-| seizeTokens | uint | The number of vTokens to seize |
+| account | address | The address whose balance should be calculated after updating borrowIndex |
 
 #### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint | uint 0=success, otherwise a failure (see ErrorReporter.sol for details) |
+| [0] | uint |  The user's current borrow balance (with interest) in units of the underlying asset. |
 
 
 ### Borrow Rate
@@ -634,7 +871,6 @@ function totalReserves() returns (uint)
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | [0] | uint | The total amount of reserves held in the market. |
-
 
 ### Reserve Factor
 
