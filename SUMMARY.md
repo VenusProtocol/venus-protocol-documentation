@@ -31,7 +31,7 @@
 
 ## Core Pool
 
-* [Unitroller](core-pool/unitroller.md)
+* [Comptroller](core-pool/comptroller.md)
 * [VTokens](core-pool/vtokens.md)
 * [ComptrollerLens](core-pool/comptroller-lens.md)
 * [VenusLens](core-pool/venus-lens.md)
@@ -39,6 +39,9 @@
 * [Liquidator](core-pool/liquidator.md)
 * [Interest Rate Model](core-pool/interest-rate-model.md)
 * [Jump Model](core-pool/jump-model.md)
+* [Maximillion](core-pool/maximillion.md)
+* [Reservoir](core-pool/reservoir.md)
+* [VTreasury](core-pool/vtreasury.md)
 
 ## Isolated Lending
 
@@ -51,7 +54,7 @@
   * [Protocol Share Reserve](isolated-lending/risk-fund/protocol-share-reserve.md)
   * [Shortfall](isolated-lending/risk-fund/shortfall.md)
 * [Factories](isolated-lending/factories/README.md)
-  * [VBep20 Immutable Proxy Factory](isolated-lending/factories/VBep20-mmutable-proxy-factory)
+  * [VBep20 Immutable Proxy Factory](isolated-lending/factories/VBep20-mmutable-proxy-factory.md)
   * [Jump Rate Model](isolated-lending/factories/jump-rate-model.md)
   * [White Paper Interest Rate Model Factory](isolated-lending/factories/white-paper-interest-rate-model-factory.md)
 
@@ -71,7 +74,7 @@
   * [Voting](governance/voting.md)
   * [Delegating](governance/delegating.md)
   * [Routes](governance/routes.md)
-* [Access Control Manager](isolated-lending/access-control-manager.md)
+* [Access Control Manager](governance/access-control-manager.md)
 
 ## Vaults
 
