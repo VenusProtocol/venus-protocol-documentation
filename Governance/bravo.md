@@ -141,6 +141,30 @@ function propose(address[] targets, uint256[] values, string[] signatures, bytes
 
 Function used to propose a new proposal. Sender must have delegates above the proposal threshold
 
+{% hint style="warning" %}
+**Call restrictions:**
+* Proposer must meet the proposal threshold
+* Proposal action data must pass arity check
+* Proposal action count cannot exceed `proposalMaxOperations`
+* Each account can have one proposal in the funnel at a time
+{% endhint %}
+
+#### Events
+`ProposalCreated`
+##### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| id | uint| The id of the proposal | 
+| proposer |address | Address of the proposer| 
+| targets| address[]| Addresses for the contracts with the function signatures |
+|values | uint[]| Values to use send with the action calls|
+|signatures |string[] | Function signatures of the actions |
+|calldatas | bytes[]| Function arguments for the action signatures| 
+| startBlock| uint| Block where the voting period begins|
+| endBlock| uint| Block where the voting period ends| 
+| description| string| Proposal description | 
+| proposalType| uint8| Route of the proposal |
+
 #### Parameters
 
 | Name | Type | Description |
@@ -164,7 +188,20 @@ Function used to propose a new proposal. Sender must have delegates above the pr
 function queue(uint256 proposalId) external
 ```
 
-Queues a proposal of state succeeded
+Queues a proposal for execution
+
+{% hint style="warning" %}
+**Proposal must succeed** in order to be queued.
+{% endhint %}
+
+
+#### Events
+`ProposalQueued`
+##### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|proposalId | uint| Id of the queued proposal|
+|eta | uint| Time when proposal leaves queued timelock|
 
 #### Parameters
 
@@ -186,6 +223,17 @@ function execute(uint256 proposalId) external
 
 Executes a queued proposal if eta has passed
 
+{% hint style="warning" %}
+**Proposal must be queued** in order to be executed.
+{% endhint %}
+
+#### Events
+`ProposalExecuted`
+##### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|proposalId | uint| Id of the queued proposal|
+
 #### Parameters
 
 | Name | Type | Description |
@@ -199,6 +247,13 @@ function cancel(uint256 proposalId) external
 ```
 
 Cancels a proposal only if sender is the proposer, or proposer delegates dropped below proposal threshold
+
+#### Events
+`ProposalCancelled`
+##### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|proposalId | uint| Id of the queued proposal|
 
 #### Parameters
 
@@ -276,7 +331,18 @@ Gets the state of a proposal
 function castVote(uint256 proposalId, uint8 support) external
 ```
 
-Cast a vote for a proposal
+Cast a vote for a proposal. Vote values are 0 for against, 1 for in favor and 2 for abstain.
+
+#### Events
+`VoteCast`
+##### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|voter|address indexed| Account that cast the vote |
+|proposalId| uint| Proposal being voted on|
+|support|uint8| The value for the vote. 0=against, 1=for, 2=abstain |
+|votes|uint| Voting power of the account|
+|reason|string| Optional reason provided with vote |
 
 #### Parameters
 
@@ -291,7 +357,18 @@ Cast a vote for a proposal
 function castVoteWithReason(uint256 proposalId, uint8 support, string reason) external
 ```
 
-Cast a vote for a proposal with a reason
+Cast a vote for a proposal with a reason. Vote values are 0 for against, 1 for in favor and 2 for abstain.
+
+#### Events
+`VoteCast`
+##### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|voter|address indexed| Account that cast the vote |
+|proposalId| uint| Proposal being voted on|
+|support|uint8| The value for the vote. 0=against, 1=for, 2=abstain |
+|votes|uint| Voting power of the account|
+|reason|string| Optional reason provided with vote |
 
 #### Parameters
 
@@ -307,9 +384,20 @@ Cast a vote for a proposal with a reason
 function castVoteBySig(uint256 proposalId, uint8 support, uint8 v, bytes32 r, bytes32 s) external
 ```
 
-Cast a vote for a proposal by signature
+Cast a vote for a proposal by signature. Vote values are 0 for against, 1 for in favor and 2 for abstain.
 
 _External function that accepts EIP-712 signatures for voting on proposals._
+
+#### Events
+`VoteCast`
+##### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|voter|address indexed| Account that cast the vote |
+|proposalId| uint| Proposal being voted on|
+|support|uint8| The value for the vote. 0=against, 1=for, 2=abstain |
+|votes|uint| Voting power of the account|
+|reason|string| Optional reason provided with vote |
 
 ### castVoteInternal
 
@@ -317,7 +405,11 @@ _External function that accepts EIP-712 signatures for voting on proposals._
 function castVoteInternal(address voter, uint256 proposalId, uint8 support) internal returns (uint96)
 ```
 
-Internal function that caries out voting logic
+Internal function that caries out voting logic. Enforces that requirments to cast vote are met:
+
+* Proposal must be active
+* Support must be 0, 1, or 2
+* User cannot vote more than once
 
 #### Parameters
 
@@ -340,6 +432,18 @@ function _setGuardian(address newGuardian) external
 ```
 
 Sets the new governance guardian
+
+{% hint style="warning" %}
+**Only admin and current guardian** can set a new guardian. The address must also not be null.
+{% endhint %}
+
+#### Events
+`NewGuardian`
+##### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|oldGuardian|address| Previous guardian |
+|newGuardian| address| New guardian that was set|
 
 #### Parameters
 
@@ -369,9 +473,19 @@ _Admin only. Sets initial proposal id which initiates the contract, ensuring a c
 function _setProposalMaxOperations(uint256 proposalMaxOperations_) external
 ```
 
-Set max proposal operations
+Set max proposal operations allowed on a propossal
 
-_Admin only._
+{% hint style="warning" %}
+**Only admin** can set the max number of operations on a proposal.
+{% endhint %}
+
+#### Events
+`ProposalMaxOperationsUpdated`
+##### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|oldProposalMaxOperations|address| Previous max number of operations |
+|proposalMaxOperations_| address| New max number of operations|
 
 #### Parameters
 
@@ -389,6 +503,14 @@ Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to
 
 _Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer._
 
+#### Events
+`NewPendingAdmin`
+##### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|oldPendingAdmin|address| Previous pending admin |
+|newPendingAdmin| address| New pending admin|
+
 #### Parameters
 
 | Name | Type | Description |
@@ -404,6 +526,21 @@ function _acceptAdmin() external
 Accepts transfer of admin rights. msg.sender must be pendingAdmin
 
 _Admin function for pending admin to accept role and update admin_
+
+{% hint style="warning" %}
+**Only pending admin** can accept the admin.
+{% endhint %}
+
+#### Events
+`NewAdmin`
+##### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+|oldAdmin|address| Previous admin |
+|newAdmin| address| New admin|
+
+Also emits the Pending Admin event setting the pending admin to 0
+
 
 ### add256
 
