@@ -1,6 +1,6 @@
-# Jump Rate Model Factory
+# JumpRateModelFactory
 
-A factory for Jump Rate Model, an interest rate model with a steep increase after a certain utilization threshold called `kink` is reached. This rate model uses the following formula for the borrow rate:
+A factory for Jump Rate Model, an interest rate model with a steep increase after a certain utilization threshold called __kink__ is reached. This rate model uses the following formula for the borrow rate:
 
 * $borrow\_rate(u)=a_1 \cdot u + b$, when $u<kink$
 * $borrow\_rate(u)=a_1 \cdot kink + a_2  \cdot (u-kink) + b$, otherwise
