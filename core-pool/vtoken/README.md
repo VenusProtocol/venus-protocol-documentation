@@ -1,39 +1,26 @@
-# vToken
+# VToken
 
 ## Introduction
 
-vTokens are the primary means of interacting with the Venus Protocol. When a user mints, redeems, borrows, repays a borrow, liquidates a borrow, or transfers vTokens, they will do so using the vToken contract.
+vTokens are the primary medium for interacting with the Venus Protocol. When a user mints, redeems, borrows, repays a borrow, liquidates a borrow, or transfers vTokens, they will do so using the vToken contract.
 
 There are currently two types of vTokens: 
-1. vBep20
-2. vBnb
+1. vBEP20
+2. vBNB
 
-- Both types expose the EIP-20 interface
-- VBep20 wraps an underlying BEP-20 asset
-- VBnb simply wraps BNB itself
+Both types expose the EIP-20 interface, while the VBEP20 wraps an underlying BEP-20 asset and VBNB wraps BNB.
 
-Both [VBep20](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBep20.sol) and [VBnb](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBNB.sol) inherit the [VToken](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VToken.sol) contract. 
+Both [VBEP20](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBep20.sol) and [VBNB](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBNB.sol) inherit the [VToken](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VToken.sol) contract. 
 
 ## Initialisation
 
-1. deployment of VBep20Delegate will precede the deployment of all vTokens
-2. VBep20Delegate contract address will be same in constructor arguments of all vTokens (excluding vBNB)
-3. Use VTokenDelegator to deploy vTokens
+Deployment of [VBep20Delegate](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBep20Delegate.sol) and [VBEPDelegator](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBepDelegator.sol) must be deployed first as they will be used to deploy vTokens. VBep20Delegate contract address will be same in constructor arguments of all vTokens (excluding vBNB). You can read more about the VBEP Proxy [here](./vbep20-delegator.md)
 
-common constructor argument for all vTokens as : 
-
-4. vToken is initialized using following values:
-   - underlying  (The address of the underlying asset)
-   - comptroller (The address of the Comptroller - Unitroller)
-   - interestRateModel (The address of the interest rate model)
-   - initialExchangeRateMantissa (The initial exchange rate, scaled by 1e18)
-   - name (BEP-20 name of this token)
-   - symbol (BEP-20 symbol of this token)
-   - decimals (BEP-20 decimal precision of this token)
+The constructor argument for all vTokensare
 
 ## Details
 
-- VToken actions:
+VToken actions:
 
 1. Mint
 2. Redeem
@@ -44,7 +31,7 @@ common constructor argument for all vTokens as :
 7. Liquidate Borrow
 8. Add Reserves
 9. Seize
-10. accrueInterest
+10. AccrueInterest
 
 - Admin Functions:
 

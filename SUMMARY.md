@@ -31,7 +31,8 @@
 ## Core Pool
 
 - [Comptroller](core-pool/comptroller.md)
-- [VTokens](core-pool/vtokens.md)
+- [VToken](core-pool/vtoken/README.md)
+  - [VBEP20Delegator](core-pool/vtoken/vbep20-delegator.md)
 - [ComptrollerLens](core-pool/comptroller-lens.md)
 - [VenusLens](core-pool/venus-lens.md)
 - [Oracle](core-pool/oracle.md)
