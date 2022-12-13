@@ -53,8 +53,8 @@
   - [Protocol Share Reserve](isolated-lending/risk-fund/protocol-share-reserve.md)
   - [Shortfall](isolated-lending/risk-fund/shortfall.md)
 - [Factories](isolated-lending/factories/README.md)
-  - [VBep20 Immutable Proxy Factory](isolated-lending/factories/VBep20-mmutable-proxy-factory.md)
-  - [Jump Rate Model](isolated-lending/factories/jump-rate-model.md)
+  - [VBep20 Immutable Proxy Factory](isolated-lending/factories/vtoken-proxy-factory.md)
+  - [Jump Rate Model](isolated-lending/factories/jump-rate-model-factory.md)
   - [White Paper Interest Rate Model Factory](isolated-lending/factories/white-paper-interest-rate-model-factory.md)
 
 ## Oracles
