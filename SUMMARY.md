@@ -45,7 +45,7 @@
 ## Isolated Lending
 
 - [Pool Registry](isolated-lending/pool-registry.md)
-- [Pool](isolated-lending/pool.md)
+- [Comptroller](isolated-lending/comptroller.md)
   - [Liquidations](isolated-lending/liquidations.md)
 - [Rewards Distributor](isolated-lending/rewards-distributor.md)
 - [Lens](isolated-lending/lens.md)

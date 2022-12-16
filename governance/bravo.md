@@ -42,7 +42,7 @@ When initializing the GovernorBravo contract, the parameters for the three route
 
 There is also a separate timelock executor contract for each route, which is used to dispatch the VIP for execution, giving even more control over the flow of each type of VIP.
 
-![chart](../.gitbook/assets/vip-lifecycle.png)
+![chart](../.gitbook/assets/governance.png)
 
 ## Voting
 After a VIP is proposed, voting is opened after the `votingDelay` has passed. For example, if `votingDelay = 0`, then voting will begin in the next block after the proposal has been submitted. After the delay, the proposal state is `ACTIVE` and users can cast their vote `for`, `against`, or `abstain`, weighted by their total voting power (tokens + delegated voting power). Abstaining from a voting allows for a vote to be cast and optionally include a comment, without the incrementing for or against vote count. The total voting power for the user is obtained by calling XVSVault's `getPriorVotes`.
