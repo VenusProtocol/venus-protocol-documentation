@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This oracle fetchs prices of assets from Binance oracle.
+This oracle fetchs prices of assets from the Binance oracle.
 
 ## Solidity APIs
 

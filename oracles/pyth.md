@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This oracle fetches price of assets from Pyth oracle
+This oracle fetches price of assets from the Pyth oracle
 
 ## Solidity API
 

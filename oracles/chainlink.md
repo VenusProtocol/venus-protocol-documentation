@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This oracle fetchs prices of assets from Chainlink oracle.
+This oracle fetchs prices of assets from the Chainlink oracle.
 
 ## Solidity API
 
