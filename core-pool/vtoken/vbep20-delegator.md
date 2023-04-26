@@ -1,3 +1,1 @@
-# VBEP20 Proxy
 
-There are two main contracts involved in interacting with VBEP20 contracts. The [VBEPDelegator](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBepDelegator.sol) is a proxy contract that shares the [VBEPInterface](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBepInterface.sol) with VToken. The [VBep20Delegate](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBep20Delegate.sol) is the implementation contract. In inherits [VBEP20](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBep20.sol) and adds methods for accepting and resigning as the implemetation.

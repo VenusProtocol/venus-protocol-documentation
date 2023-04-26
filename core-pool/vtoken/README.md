@@ -1,4 +1,4 @@
-# VToken
+# vToken
 
 ## Introduction
 
@@ -8,71 +8,15 @@ There are currently two types of vTokens:
 1. vBEP20
 2. vBNB
 
-Both types expose the EIP-20 interface, while the VBEP20 wraps an underlying BEP-20 asset and VBNB wraps BNB.
+Both types expose the EIP-20 interface, while the vBEP20 wraps an underlying BEP-20 asset and vBNB wraps BNB.
 
-Both [VBEP20](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBep20.sol) and [VBNB](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBNB.sol) inherit the [VToken](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VToken.sol) contract. 
+Both [vBEP20](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBep20.sol) and [VBNB](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBNB.sol) inherit the [vToken](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VToken.sol) contract. 
 
-## Initialisation
+## Initialization
 
-Deployment of [VBep20Delegate](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBep20Delegate.sol) and [VBEPDelegator](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBepDelegator.sol) must be deployed first as they will be used to deploy vTokens. VBep20Delegate contract address will be same in constructor arguments of all vTokens (excluding vBNB). You can read more about the VBEP Proxy [here](./vbep20-delegator.md)
+Deployment of [VBep20Delegate](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBep20Delegate.sol) and [VBEPDelegator](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBepDelegator.sol) must be deployed first as they will be used to deploy vTokens. VBep20Delegate contract address will be same in constructor arguments of all vTokens (excluding vBNB).
 
-The constructor argument for all vTokensare
-
-## Details
-
-VToken actions:
-
-1. Mint
-2. Redeem
-3. Redeem Underlying
-4. Borrow
-5. Repay Borrow
-6. Repay Borrow Behalf
-7. Liquidate Borrow
-8. Add Reserves
-9. Seize
-10. AccrueInterest
-
-- Admin Functions:
-
-1. Reduce Reserves
-2. set Interest Rate Model
-3. set Reserve Factor
-4. set Comptroller
-5. set Pending Admin
-6. accept Admin
-
-- View functions and storage values:
-
-1. ExchangeRate Stored
-2. ExchangeRate Current
-2. Cash
-3. Total Borrows
-4. Borrow Balance Stored *
-5. Borrow Balance Current *
-5. Borrow Rate
-6. Total Supply
-7. UnderlyingBalance
-8. Supply Rate
-9. Total Reserves
-10. Reserve Factor
-
-## Interest Accrual:
-
-Inrterest gets accrued up to current block during the User's action as listed below:
-
-1.  Mint
-2.  Redeem
-3.  Redeem Underlying
-4.  Borrow
-5.  Repay Borrow
-6.  Repay Borrow Behalf
-7.  Liquidate Borrow
-8.  Set Reserve Factor
-9.  Add reserves
-10. Reduce reserves
-11. Set interest rate model  *
-12. set Reserve Factor
+The VBEPDelegator is a proxy contract that shares the [VBEPInterface](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBepInterface.sol) with VToken. The VBep20Delegate is the implementation contract. In inherits [VBEP20](https://github.com/VenusProtocol/venus-protocol/blob/master/contracts/VBep20.sol) and adds methods for accepting and resigning as the implemetation.
 
 # Solidity API
 
