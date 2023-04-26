@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-- [V4 Overview](README.md)
+- [Overview](README.md)
 - [Contracts Overview](getting-started/contracts-overview.md)
 - [V4 Whitepaper]()
 
@@ -89,8 +89,8 @@
 
 ## Deployed Contracts
 
-- [V4 Testnet](deployed-coxntracts/v4-testnet.md)
-- [V4 Mainnet](deployed-contracts/v4-mainnet/README.md)
+- [Testnet](deployed-coxntracts/testnet.md)
+- [Mainnet](deployed-contracts/mainnet/README.md)
 - [Deployed Contracts](deployed-contracts/deployed-contracts.md)
 
 ## Links

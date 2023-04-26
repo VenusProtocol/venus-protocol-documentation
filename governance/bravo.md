@@ -2,11 +2,11 @@
 
 ## Introduction
 
-Venus Governance V4 updates on-chain governance with several new features including variable proposal routes and fine grained pause control. Variable routes for proposals allows for governance paramaters such as voting threshold and timelocks to be customized based on the risk level and impact of the proposal. Added granularity to the pause control mechanism allows governance to pause individual actions on specific markets, which reduces impact on the protocol as a whole. This is particularly useful when applied to isolated lending.
+Venus Governance latest on-chain governance includes several new features including variable proposal routes and fine grained pause control. Variable routes for proposals allows for governance paramaters such as voting threshold and timelocks to be customized based on the risk level and impact of the proposal. Added granularity to the pause control mechanism allows governance to pause individual actions on specific markets, which reduces impact on the protocol as a whole. This is particularly useful when applied to isolated lending.
 
 
 {% hint style="info" %}
-The goal of **Governance V4** is to increase governance efficiency, while mitigating and eliminating malicious or erroneous proposals.
+The goal of **Governance** is to increase governance efficiency, while mitigating and eliminating malicious or erroneous proposals.
 {% endhint %}
 
 ## Details
@@ -26,7 +26,7 @@ GovernanceBravoDelegate uses the XVSVault to get restrict certain actions based 
 - If a user's voting power drops below certain amount, anyone can cancel the the proposal. The governance guardian and proposal creator can also cancel a proposal at anytime before it is queued for execution.
 
 ## Venus Improvement Proposal
-Venus V4 Governance allows for Venus Improvement Proposals (VIPs) to be categorized based on their impact and risk levels. This allows for optimizing proposals execution to allow for things such as expediting interest rate changes and quickly updating risk parameters, while moving slower on other types of proposals that can prevent a larger risk to the protocol and are not urgent.
+Venus Governance allows for Venus Improvement Proposals (VIPs) to be categorized based on their impact and risk levels. This allows for optimizing proposals execution to allow for things such as expediting interest rate changes and quickly updating risk parameters, while moving slower on other types of proposals that can prevent a larger risk to the protocol and are not urgent.
 There are three different types of VIPs with different proposal paramters:
 
 - `NORMAL`

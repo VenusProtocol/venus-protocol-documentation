@@ -1,8 +1,8 @@
 {
-  "name": "docs-v4",
+  "name": "venus-protocol-documentation",
   "version": "0.0.0",
-  "description": "Venus V4 documentation",
-  "repository": "git@github.com:VenusProtocol/docs-v4.git",
+  "description": "Venus Protocol Documentation",
+  "repository": "git@github.com:VenusProtocol/venus-protocol-documentation.git",
   "author": "Venus",
   "license": "ISC",
   "scripts": {
