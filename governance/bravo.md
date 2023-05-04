@@ -4,7 +4,6 @@
 
 Venus Governance latest on-chain governance includes several new features including variable proposal routes and fine grained pause control. Variable routes for proposals allows for governance paramaters such as voting threshold and timelocks to be customized based on the risk level and impact of the proposal. Added granularity to the pause control mechanism allows governance to pause individual actions on specific markets, which reduces impact on the protocol as a whole. This is particularly useful when applied to isolated lending.
 
-
 {% hint style="info" %}
 The goal of **Governance** is to increase governance efficiency, while mitigating and eliminating malicious or erroneous proposals.
 {% endhint %}
@@ -16,16 +15,19 @@ XVS token is the protocol token used for protocol users to cast their vote on su
 XVSVault is the main staking contract for XVS. Users first stake their XVS in the vault and receive voting power proportional to their staked tokens that they can use to vote on proposals. Users also can choose to delegate their voting power to other users. You can read more on the [XVSVault](../vaults/xvs-vault.md) page.
 
 # Governor Bravo
+
 GovernanceBravoDelegate is main Venus Governance contract. Users interact with it to:
+
 - Submit new proposal
 - Vote on a proposal
 - Cancel a proposal
 - Queue a proposal for execution with a timelock executor contract
-GovernanceBravoDelegate uses the XVSVault to get restrict certain actions based on a user's voting power. The governance rules it inforces are:
+  GovernanceBravoDelegate uses the XVSVault to get restrict certain actions based on a user's voting power. The governance rules it inforces are:
 - A user's voting power must be greater than the `proposalThreshold` to submit a proposal
 - If a user's voting power drops below certain amount, anyone can cancel the the proposal. The governance guardian and proposal creator can also cancel a proposal at anytime before it is queued for execution.
 
 ## Venus Improvement Proposal
+
 Venus Governance allows for Venus Improvement Proposals (VIPs) to be categorized based on their impact and risk levels. This allows for optimizing proposals execution to allow for things such as expediting interest rate changes and quickly updating risk parameters, while moving slower on other types of proposals that can prevent a larger risk to the protocol and are not urgent.
 There are three different types of VIPs with different proposal paramters:
 
@@ -34,21 +36,22 @@ There are three different types of VIPs with different proposal paramters:
 - `CRITICAL`
 
 When initializing the GovernorBravo contract, the parameters for the three routes are set. The parameeters are:
- 
+
 - `votingDelay` - The delay in blocks between submitting a proposal and when voting begins
 - `votingPeriod` - The number of blocks where voting will be open
 - `proposalThreshold` - The number of votes required in order submit a proposal
-
 
 There is also a separate timelock executor contract for each route, which is used to dispatch the VIP for execution, giving even more control over the flow of each type of VIP.
 
 ![chart](../.gitbook/assets/governance.png)
 
 ## Voting
+
 After a VIP is proposed, voting is opened after the `votingDelay` has passed. For example, if `votingDelay = 0`, then voting will begin in the next block after the proposal has been submitted. After the delay, the proposal state is `ACTIVE` and users can cast their vote `for`, `against`, or `abstain`, weighted by their total voting power (tokens + delegated voting power). Abstaining from a voting allows for a vote to be cast and optionally include a comment, without the incrementing for or against vote count. The total voting power for the user is obtained by calling XVSVault's `getPriorVotes`.
 GovernorBravoDelegate also accepts EIP-712 signatures for voting on proposals via the external function `castVoteBySig`
 
 ## Delegating
+
 A users voting power includes the amount of staked XVS the have staked as well as the votes delegate to them. Delegating is the process of a user loaning their voting power to another, so that the latter has the combined voting power of both users. This is an important feature because it allows for a user to let another user who they trust propose or vote in their place.
 The delegation of votes happens through the XVSVault contract by calling the `delegate` or `delegateBySig` functions. These same functions can revert vote delegation by calling the same function with a value of `0`.
 
@@ -126,12 +129,12 @@ Used to initialize the contract during delegator contructor
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| xvsVault_ | address | The address of the XvsVault |
-| proposalConfigs_ | struct GovernorBravoDelegateStorageV2.ProposalConfig[] | Governance confifgs for each GovernanceType |
-| timelocks | contract TimelockInterface[] | Timelock addresses for each GovernanceType |
-| guardian_ | address |  |
+| Name              | Type                                                   | Description                                 |
+| ----------------- | ------------------------------------------------------ | ------------------------------------------- |
+| xvsVault\_        | address                                                | The address of the XvsVault                 |
+| proposalConfigs\_ | struct GovernorBravoDelegateStorageV2.ProposalConfig[] | Governance confifgs for each GovernanceType |
+| timelocks         | contract TimelockInterface[]                           | Timelock addresses for each GovernanceType  |
+| guardian\_        | address                                                |                                             |
 
 ### propose
 
@@ -143,44 +146,48 @@ Function used to propose a new proposal. Sender must have delegates above the pr
 
 {% hint style="warning" %}
 **Call restrictions:**
-* Proposer must meet the proposal threshold
-* Proposal action data must pass arity check
-* Proposal action count cannot exceed `proposalMaxOperations`
-* Each account can have one proposal in the funnel at a time
-{% endhint %}
+
+- Proposer must meet the proposal threshold
+- Proposal action data must pass arity check
+- Proposal action count cannot exceed `proposalMaxOperations`
+- Each account can have one proposal in the funnel at a time
+  {% endhint %}
 
 #### Events
+
 `ProposalCreated`
+
 ##### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| id | uint| The id of the proposal | 
-| proposer |address | Address of the proposer| 
-| targets| address[]| Addresses for the contracts with the function signatures |
-|values | uint[]| Values to use send with the action calls|
-|signatures |string[] | Function signatures of the actions |
-|calldatas | bytes[]| Function arguments for the action signatures| 
-| startBlock| uint| Block where the voting period begins|
-| endBlock| uint| Block where the voting period ends| 
-| description| string| Proposal description | 
-| proposalType| uint8| Route of the proposal |
+
+| Name         | Type      | Description                                              |
+| ------------ | --------- | -------------------------------------------------------- |
+| id           | uint      | The id of the proposal                                   |
+| proposer     | address   | Address of the proposer                                  |
+| targets      | address[] | Addresses for the contracts with the function signatures |
+| values       | uint[]    | Values to use send with the action calls                 |
+| signatures   | string[]  | Function signatures of the actions                       |
+| calldatas    | bytes[]   | Function arguments for the action signatures             |
+| startBlock   | uint      | Block where the voting period begins                     |
+| endBlock     | uint      | Block where the voting period ends                       |
+| description  | string    | Proposal description                                     |
+| proposalType | uint8     | Route of the proposal                                    |
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| targets | address[] | Target addresses for proposal calls |
-| values | uint256[] | Eth values for proposal calls |
-| signatures | string[] | Function signatures for proposal calls |
-| calldatas | bytes[] | Calldatas for proposal calls |
-| description | string | String description of the proposal |
-| proposalType | enum GovernorBravoDelegateStorageV2.ProposalType |  |
+| Name         | Type                                             | Description                            |
+| ------------ | ------------------------------------------------ | -------------------------------------- |
+| targets      | address[]                                        | Target addresses for proposal calls    |
+| values       | uint256[]                                        | Eth values for proposal calls          |
+| signatures   | string[]                                         | Function signatures for proposal calls |
+| calldatas    | bytes[]                                          | Calldatas for proposal calls           |
+| description  | string                                           | String description of the proposal     |
+| proposalType | enum GovernorBravoDelegateStorageV2.ProposalType |                                        |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | Proposal id of new proposal |
+| Name | Type    | Description                 |
+| ---- | ------- | --------------------------- |
+| [0]  | uint256 | Proposal id of new proposal |
 
 ### queue
 
@@ -194,19 +201,21 @@ Queues a proposal for execution
 **Proposal must succeed** in order to be queued.
 {% endhint %}
 
-
 #### Events
+
 `ProposalQueued`
+
 ##### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-|proposalId | uint| Id of the queued proposal|
-|eta | uint| Time when proposal leaves queued timelock|
+
+| Name       | Type | Description                               |
+| ---------- | ---- | ----------------------------------------- |
+| proposalId | uint | Id of the queued proposal                 |
+| eta        | uint | Time when proposal leaves queued timelock |
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name       | Type    | Description                     |
+| ---------- | ------- | ------------------------------- |
 | proposalId | uint256 | The id of the proposal to queue |
 
 ### queueOrRevertInternal
@@ -228,16 +237,19 @@ Executes a queued proposal if eta has passed
 {% endhint %}
 
 #### Events
+
 `ProposalExecuted`
+
 ##### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-|proposalId | uint| Id of the queued proposal|
+
+| Name       | Type | Description               |
+| ---------- | ---- | ------------------------- |
+| proposalId | uint | Id of the queued proposal |
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name       | Type    | Description                       |
+| ---------- | ------- | --------------------------------- |
 | proposalId | uint256 | The id of the proposal to execute |
 
 ### cancel
@@ -249,16 +261,19 @@ function cancel(uint256 proposalId) external
 Cancels a proposal only if sender is the proposer, or proposer delegates dropped below proposal threshold
 
 #### Events
+
 `ProposalCancelled`
+
 ##### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-|proposalId | uint| Id of the queued proposal|
+
+| Name       | Type | Description               |
+| ---------- | ---- | ------------------------- |
+| proposalId | uint | Id of the queued proposal |
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name       | Type    | Description                      |
+| ---------- | ------- | -------------------------------- |
 | proposalId | uint256 | The id of the proposal to cancel |
 
 ### getActions
@@ -271,18 +286,18 @@ Gets actions of a proposal
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name       | Type    | Description            |
+| ---------- | ------- | ---------------------- |
 | proposalId | uint256 | the id of the proposal |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| targets | address[] |  |
-| values | uint256[] |  |
-| signatures | string[] |  |
-| calldatas | bytes[] |  |
+| Name       | Type      | Description |
+| ---------- | --------- | ----------- |
+| targets    | address[] |             |
+| values     | uint256[] |             |
+| signatures | string[]  |             |
+| calldatas  | bytes[]   |             |
 
 ### getReceipt
 
@@ -294,16 +309,16 @@ Gets the receipt for a voter on a given proposal
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| proposalId | uint256 | the id of proposal |
-| voter | address | The address of the voter |
+| Name       | Type    | Description              |
+| ---------- | ------- | ------------------------ |
+| proposalId | uint256 | the id of proposal       |
+| voter      | address | The address of the voter |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct GovernorBravoDelegateStorageV1.Receipt | The voting receipt |
+| Name | Type                                          | Description        |
+| ---- | --------------------------------------------- | ------------------ |
+| [0]  | struct GovernorBravoDelegateStorageV1.Receipt | The voting receipt |
 
 ### state
 
@@ -315,15 +330,15 @@ Gets the state of a proposal
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name       | Type    | Description            |
+| ---------- | ------- | ---------------------- |
 | proposalId | uint256 | The id of the proposal |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | enum GovernorBravoDelegateStorageV1.ProposalState | Proposal state |
+| Name | Type                                              | Description    |
+| ---- | ------------------------------------------------- | -------------- |
+| [0]  | enum GovernorBravoDelegateStorageV1.ProposalState | Proposal state |
 
 ### castVote
 
@@ -334,22 +349,25 @@ function castVote(uint256 proposalId, uint8 support) external
 Cast a vote for a proposal. Vote values are 0 for against, 1 for in favor and 2 for abstain.
 
 #### Events
+
 `VoteCast`
+
 ##### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-|voter|address indexed| Account that cast the vote |
-|proposalId| uint| Proposal being voted on|
-|support|uint8| The value for the vote. 0=against, 1=for, 2=abstain |
-|votes|uint| Voting power of the account|
-|reason|string| Optional reason provided with vote |
+
+| Name       | Type            | Description                                         |
+| ---------- | --------------- | --------------------------------------------------- |
+| voter      | address indexed | Account that cast the vote                          |
+| proposalId | uint            | Proposal being voted on                             |
+| support    | uint8           | The value for the vote. 0=against, 1=for, 2=abstain |
+| votes      | uint            | Voting power of the account                         |
+| reason     | string          | Optional reason provided with vote                  |
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| proposalId | uint256 | The id of the proposal to vote on |
-| support | uint8 | The support value for the vote. 0=against, 1=for, 2=abstain |
+| Name       | Type    | Description                                                 |
+| ---------- | ------- | ----------------------------------------------------------- |
+| proposalId | uint256 | The id of the proposal to vote on                           |
+| support    | uint8   | The support value for the vote. 0=against, 1=for, 2=abstain |
 
 ### castVoteWithReason
 
@@ -360,23 +378,26 @@ function castVoteWithReason(uint256 proposalId, uint8 support, string reason) ex
 Cast a vote for a proposal with a reason. Vote values are 0 for against, 1 for in favor and 2 for abstain.
 
 #### Events
+
 `VoteCast`
+
 ##### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-|voter|address indexed| Account that cast the vote |
-|proposalId| uint| Proposal being voted on|
-|support|uint8| The value for the vote. 0=against, 1=for, 2=abstain |
-|votes|uint| Voting power of the account|
-|reason|string| Optional reason provided with vote |
+
+| Name       | Type            | Description                                         |
+| ---------- | --------------- | --------------------------------------------------- |
+| voter      | address indexed | Account that cast the vote                          |
+| proposalId | uint            | Proposal being voted on                             |
+| support    | uint8           | The value for the vote. 0=against, 1=for, 2=abstain |
+| votes      | uint            | Voting power of the account                         |
+| reason     | string          | Optional reason provided with vote                  |
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| proposalId | uint256 | The id of the proposal to vote on |
-| support | uint8 | The support value for the vote. 0=against, 1=for, 2=abstain |
-| reason | string | The reason given for the vote by the voter |
+| Name       | Type    | Description                                                 |
+| ---------- | ------- | ----------------------------------------------------------- |
+| proposalId | uint256 | The id of the proposal to vote on                           |
+| support    | uint8   | The support value for the vote. 0=against, 1=for, 2=abstain |
+| reason     | string  | The reason given for the vote by the voter                  |
 
 ### castVoteBySig
 
@@ -389,15 +410,18 @@ Cast a vote for a proposal by signature. Vote values are 0 for against, 1 for in
 _External function that accepts EIP-712 signatures for voting on proposals._
 
 #### Events
+
 `VoteCast`
+
 ##### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-|voter|address indexed| Account that cast the vote |
-|proposalId| uint| Proposal being voted on|
-|support|uint8| The value for the vote. 0=against, 1=for, 2=abstain |
-|votes|uint| Voting power of the account|
-|reason|string| Optional reason provided with vote |
+
+| Name       | Type            | Description                                         |
+| ---------- | --------------- | --------------------------------------------------- |
+| voter      | address indexed | Account that cast the vote                          |
+| proposalId | uint            | Proposal being voted on                             |
+| support    | uint8           | The value for the vote. 0=against, 1=for, 2=abstain |
+| votes      | uint            | Voting power of the account                         |
+| reason     | string          | Optional reason provided with vote                  |
 
 ### castVoteInternal
 
@@ -407,25 +431,25 @@ function castVoteInternal(address voter, uint256 proposalId, uint8 support) inte
 
 Internal function that caries out voting logic. Enforces that requirments to cast vote are met:
 
-* Proposal must be active
-* Support must be 0, 1, or 2
-* User cannot vote more than once
+- Proposal must be active
+- Support must be 0, 1, or 2
+- User cannot vote more than once
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| voter | address | The voter that is casting their vote |
-| proposalId | uint256 | The id of the proposal to vote on |
-| support | uint8 | The support value for the vote. 0=against, 1=for, 2=abstain |
+| Name       | Type    | Description                                                 |
+| ---------- | ------- | ----------------------------------------------------------- |
+| voter      | address | The voter that is casting their vote                        |
+| proposalId | uint256 | The id of the proposal to vote on                           |
+| support    | uint8   | The support value for the vote. 0=against, 1=for, 2=abstain |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint96 | The number of votes cast |
+| Name | Type   | Description              |
+| ---- | ------ | ------------------------ |
+| [0]  | uint96 | The number of votes cast |
 
-### _setGuardian
+### \_setGuardian
 
 ```solidity
 function _setGuardian(address newGuardian) external
@@ -438,20 +462,23 @@ Sets the new governance guardian
 {% endhint %}
 
 #### Events
+
 `NewGuardian`
+
 ##### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-|oldGuardian|address| Previous guardian |
-|newGuardian| address| New guardian that was set|
+
+| Name        | Type    | Description               |
+| ----------- | ------- | ------------------------- |
+| oldGuardian | address | Previous guardian         |
+| newGuardian | address | New guardian that was set |
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name        | Type    | Description                     |
+| ----------- | ------- | ------------------------------- |
 | newGuardian | address | the address of the new guardian |
 
-### _initiate
+### \_initiate
 
 ```solidity
 function _initiate(address governorAlpha) external
@@ -463,11 +490,11 @@ _Admin only. Sets initial proposal id which initiates the contract, ensuring a c
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name          | Type    | Description                                                         |
+| ------------- | ------- | ------------------------------------------------------------------- |
 | governorAlpha | address | The address for the Governor to continue the proposal id count from |
 
-### _setProposalMaxOperations
+### \_setProposalMaxOperations
 
 ```solidity
 function _setProposalMaxOperations(uint256 proposalMaxOperations_) external
@@ -480,20 +507,23 @@ Set max proposal operations allowed on a propossal
 {% endhint %}
 
 #### Events
+
 `ProposalMaxOperationsUpdated`
+
 ##### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-|oldProposalMaxOperations|address| Previous max number of operations |
-|proposalMaxOperations_| address| New max number of operations|
+
+| Name                     | Type    | Description                       |
+| ------------------------ | ------- | --------------------------------- |
+| oldProposalMaxOperations | address | Previous max number of operations |
+| proposalMaxOperations\_  | address | New max number of operations      |
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| proposalMaxOperations_ | uint256 | Max proposal operations |
+| Name                    | Type    | Description             |
+| ----------------------- | ------- | ----------------------- |
+| proposalMaxOperations\_ | uint256 | Max proposal operations |
 
-### _setPendingAdmin
+### \_setPendingAdmin
 
 ```solidity
 function _setPendingAdmin(address newPendingAdmin) external
@@ -504,20 +534,23 @@ Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to
 _Admin function to begin change of admin. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer._
 
 #### Events
+
 `NewPendingAdmin`
+
 ##### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-|oldPendingAdmin|address| Previous pending admin |
-|newPendingAdmin| address| New pending admin|
+
+| Name            | Type    | Description            |
+| --------------- | ------- | ---------------------- |
+| oldPendingAdmin | address | Previous pending admin |
+| newPendingAdmin | address | New pending admin      |
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name            | Type    | Description        |
+| --------------- | ------- | ------------------ |
 | newPendingAdmin | address | New pending admin. |
 
-### _acceptAdmin
+### \_acceptAdmin
 
 ```solidity
 function _acceptAdmin() external
@@ -532,15 +565,17 @@ _Admin function for pending admin to accept role and update admin_
 {% endhint %}
 
 #### Events
+
 `NewAdmin`
+
 ##### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-|oldAdmin|address| Previous admin |
-|newAdmin| address| New admin|
+
+| Name     | Type    | Description    |
+| -------- | ------- | -------------- |
+| oldAdmin | address | Previous admin |
+| newAdmin | address | New admin      |
 
 Also emits the Pending Admin event setting the pending admin to 0
-
 
 ### add256
 
@@ -559,4 +594,3 @@ function sub256(uint256 a, uint256 b) internal pure returns (uint256)
 ```solidity
 function getChainIdInternal() internal pure returns (uint256)
 ```
-

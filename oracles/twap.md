@@ -16,9 +16,9 @@ Initializes the owner of the contract and sets the contracts required
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| WBNB_ | address | Address of the WBNB token contract |
+| Name   | Type    | Description                        |
+| ------ | ------- | ---------------------------------- |
+| WBNB\_ | address | Address of the WBNB token contract |
 
 ### setTokenConfigs
 
@@ -30,8 +30,8 @@ Add multiple token configs at the same time
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name    | Type                 | Description  |
+| ------- | -------------------- | ------------ |
 | configs | struct TokenConfig[] | config array |
 
 ### setTokenConfig
@@ -44,8 +44,8 @@ Add single token configs
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name   | Type               | Description         |
+| ------ | ------------------ | ------------------- |
 | config | struct TokenConfig | token config struct |
 
 ### getUnderlyingPrice
@@ -58,15 +58,15 @@ Get the underlying TWAP price of input vToken
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name   | Type    | Description    |
+| ------ | ------- | -------------- |
 | vToken | address | vToken address |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | price in USD |
+| Name | Type    | Description  |
+| ---- | ------- | ------------ |
+| [0]  | uint256 | price in USD |
 
 ### currentCumulativePrice
 
@@ -78,9 +78,9 @@ Fetches the current token/WBNB and token/BUSD price accumulator from pancakeswap
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | cumulative price of target token regardless of pair order |
+| Name | Type    | Description                                               |
+| ---- | ------- | --------------------------------------------------------- |
+| [0]  | uint256 | cumulative price of target token regardless of pair order |
 
 ### updateTwap
 
@@ -92,6 +92,6 @@ Updates the current token/BUSD price from PancakeSwap, with 18 decimals of preci
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | vToken Address of vToken |
+| Name | Type    | Description              |
+| ---- | ------- | ------------------------ |
+| [0]  | uint256 | vToken Address of vToken |

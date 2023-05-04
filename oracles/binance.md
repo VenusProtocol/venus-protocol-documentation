@@ -16,8 +16,8 @@ Sets the contracts required to fetch price
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name | Type                           | Description                              |
+| ---- | ------------------------------ | ---------------------------------------- |
 | feed | contract FeedRegistryInterface | Address of binance oracle feed registry. |
 
 ### getUnderlyingPrice
@@ -30,12 +30,12 @@ Gets the price of vToken from binance oracle
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name   | Type                     | Description           |
+| ------ | ------------------------ | --------------------- |
 | vToken | contract VBep20Interface | Address of the vToken |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | price in USD |
+| Name | Type    | Description  |
+| ---- | ------- | ------------ |
+| [0]  | uint256 | price in USD |

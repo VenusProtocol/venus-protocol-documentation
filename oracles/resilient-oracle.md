@@ -2,14 +2,13 @@
 
 ## Introduction
 
-Resillient oracle is the price oracle that the protocol interacts with for fetching price of assets. 
+Resillient oracle is the price oracle that the protocol interacts with for fetching price of assets.
 
 DeFi Protocols are usually vulnerable to price oracles reporting incorrect prices. There are various ways in which oracle prices can be manipulated depending on the type of price oracle used which can create a single point of failure and opens several ways for attacking the protocol.
 
 Keeping this in mind, we have designed a resilient oracle which uses multiple oracle sources to validate prices and fallback mechanisms to provide accurate prices and protect from oracle attacks. Currently it includes integrations with Chainlink, Pyth, Binance Oracle and TWAP (Time-Weighted Average Price) oracles. TWAP uses PancakeSwap as the on-chain price source.
 
 ## Details
-
 
 The way the Resilient Oracle works is for every market (vToken) we configure the main, pivot and fallback oracles. The main oracle oracle is the most trustworthy price source, the pivot oracle is is used as a loose sanity checker and the fallback oracle is used as a backup price source.
 
@@ -22,7 +21,7 @@ anchorRatio = anchorPrice/reporterPrice
 isValid = anchorRatio <= upperBoundAnchorRatio && anchorRatio >= lowerBoundAnchorRatio
 ```
 
-We usually use Chainlink as the main oracle, TWAP or Pyth oracle as pivot oracle depending on which supports the given market and binance oracle is used as the fallback oracle. For some markets we may use Pyth or TWAP as the main oracle if the token price is not supported by Chainlink or Binance oracles. 
+We usually use Chainlink as the main oracle, TWAP or Pyth oracle as pivot oracle depending on which supports the given market and binance oracle is used as the fallback oracle. For some markets we may use Pyth or TWAP as the main oracle if the token price is not supported by Chainlink or Binance oracles.
 
 When fetching an oracle price, for the price to be valid it must be positive and not stagnant. If the price is invalid then we consider the oracle to be stagnant and treat it like it's disabled.
 
@@ -38,9 +37,9 @@ Initializes the contract admin and sets the required contracts
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _boundValidator | contract BoundValidatorInterface | Address of the bound validator contract |
+| Name             | Type                             | Description                             |
+| ---------------- | -------------------------------- | --------------------------------------- |
+| \_boundValidator | contract BoundValidatorInterface | Address of the bound validator contract |
 
 ### pause
 
@@ -68,8 +67,8 @@ _Get token config by vToken address_
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name   | Type    | Description    |
+| ------ | ------- | -------------- |
 | vToken | address | vtoken address |
 
 ### getOracle
@@ -82,10 +81,10 @@ Get oracle & enabling status by vToken address
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| vToken | address | vtoken address |
-| role | enum ResilientOracle.OracleRole | oracle role |
+| Name   | Type                            | Description    |
+| ------ | ------------------------------- | -------------- |
+| vToken | address                         | vtoken address |
+| role   | enum ResilientOracle.OracleRole | oracle role    |
 
 ### setTokenConfigs
 
@@ -97,9 +96,9 @@ Batch set token configs
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| tokenConfigs_ | struct ResilientOracle.TokenConfig[] | token config array |
+| Name           | Type                                 | Description        |
+| -------------- | ------------------------------------ | ------------------ |
+| tokenConfigs\_ | struct ResilientOracle.TokenConfig[] | token config array |
 
 ### setTokenConfig
 
@@ -111,8 +110,8 @@ Set single token configs, vToken MUST HAVE NOT be added before, and main oracle 
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name        | Type                               | Description         |
+| ----------- | ---------------------------------- | ------------------- |
 | tokenConfig | struct ResilientOracle.TokenConfig | token config struct |
 
 ### setOracle
@@ -125,11 +124,11 @@ Set oracle of any type for the input vToken, input vToken MUST exist
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| vToken | address | vToken address |
-| oracle | address | oracle address |
-| role | enum ResilientOracle.OracleRole | oracle role |
+| Name   | Type                            | Description    |
+| ------ | ------------------------------- | -------------- |
+| vToken | address                         | vToken address |
+| oracle | address                         | oracle address |
+| role   | enum ResilientOracle.OracleRole | oracle role    |
 
 ### enableOracle
 
@@ -141,11 +140,11 @@ Enable/disable oracle for the input vToken, input vToken MUST exist
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| vToken | address | vToken address |
-| role | enum ResilientOracle.OracleRole | oracle role |
-| enable | bool | expected status |
+| Name   | Type                            | Description     |
+| ------ | ------------------------------- | --------------- |
+| vToken | address                         | vToken address  |
+| role   | enum ResilientOracle.OracleRole | oracle role     |
+| enable | bool                            | expected status |
 
 ### updatePrice
 
@@ -157,8 +156,8 @@ Currently it calls the updateTwap. This function should be called everytime befo
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name   | Type    | Description    |
+| ------ | ------- | -------------- |
 | vToken | address | vToken address |
 
 ### getUnderlyingPrice
@@ -168,18 +167,19 @@ function getUnderlyingPrice(address vToken) external view returns (uint256)
 ```
 
 Get price of underlying asset of the input vToken, check flow:
+
 - check the global pausing status
 - check price from main oracle against pivot oracle
 - check price from fallback oracle against pivot oracle or main oracle if fails
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name   | Type    | Description    |
+| ------ | ------- | -------------- |
 | vToken | address | vToken address |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | USD price in scaled decimals e.g., vToken decimals is 8 then price is returned as `10**18 * 10**(18-8) = 10**28` decimals  |
+| Name | Type    | Description                                                                                                               |
+| ---- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
+| [0]  | uint256 | USD price in scaled decimals e.g., vToken decimals is 8 then price is returned as `10**18 * 10**(18-8) = 10**28` decimals |

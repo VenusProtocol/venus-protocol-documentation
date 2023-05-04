@@ -15,11 +15,9 @@ function deploy(
 ) external returns (WhitePaperInterestRateModel)
 ```
 
-
-
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| `baseRatePerYear` | uint256 | $b$, the base interest rate which is the y-intercept when utilization rate is 0 |
+| Name                | Type    | Description                                                                         |
+| ------------------- | ------- | ----------------------------------------------------------------------------------- |
+| `baseRatePerYear`   | uint256 | $b$, the base interest rate which is the y-intercept when utilization rate is 0     |
 | `multiplierPerYear` | uint256 | $a_1$, the multiplier of utilization rate that gives the slope of the interest rate |
