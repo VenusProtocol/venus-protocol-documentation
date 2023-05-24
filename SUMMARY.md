@@ -89,7 +89,7 @@
 
 ## Deployed Contracts
 
-- [Testnet](deployed-coxntracts/testnet.md)
+- [Testnet](deployed-contracts/testnet.md)
 - [Mainnet](deployed-contracts/mainnet/README.md)
 - [Deployed Contracts](deployed-contracts/deployed-contracts.md)
 
