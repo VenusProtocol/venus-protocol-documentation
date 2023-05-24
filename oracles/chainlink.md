@@ -24,16 +24,15 @@ Get the Chainlink price of underlying asset of input vToken, revert when vToken 
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name   | Type    | Description    |
+| ------ | ------- | -------------- |
 | vToken | address | vToken address |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | price in USD |
-
+| Name | Type    | Description  |
+| ---- | ------- | ------------ |
+| [0]  | uint256 | price in USD |
 
 ### setUnderlyingPrice
 
@@ -45,10 +44,10 @@ Set the forced prices of the underlying token of input vToken
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| vToken | contract VBep20Interface | vToken address |
-| underlyingPriceMantissa | uint256 | price in 18 decimals |
+| Name                    | Type                     | Description          |
+| ----------------------- | ------------------------ | -------------------- |
+| vToken                  | contract VBep20Interface | vToken address       |
+| underlyingPriceMantissa | uint256                  | price in 18 decimals |
 
 ### setDirectPrice
 
@@ -60,9 +59,9 @@ Set the forced prices of the input token
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| asset | address | asset address |
+| Name  | Type    | Description          |
+| ----- | ------- | -------------------- |
+| asset | address | asset address        |
 | price | uint256 | price in 18 decimals |
 
 ### setTokenConfigs
@@ -75,9 +74,9 @@ Add multiple token configs at the same time
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| tokenConfigs_ | struct TokenConfig[] | config array |
+| Name           | Type                 | Description  |
+| -------------- | -------------------- | ------------ |
+| tokenConfigs\_ | struct TokenConfig[] | config array |
 
 ### setTokenConfig
 
@@ -89,6 +88,6 @@ Add single token config, vToken & feed cannot be zero address, and maxStalePerio
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name        | Type               | Description         |
+| ----------- | ------------------ | ------------------- |
 | tokenConfig | struct TokenConfig | token config struct |

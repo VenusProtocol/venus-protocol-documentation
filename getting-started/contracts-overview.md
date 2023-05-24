@@ -2,9 +2,9 @@
 
 ## Contracts Overview
 
-Venus Protocol V4 contracts are divided in three repositories:
+Venus Protocol contracts are divided in three repositories:
 
-- [isolated-pools](https://github.com/VenusProtocol/isolated-pools): Contains core contracts for isolated lending V4, including logic for suppling, borrowing, liquidations, pool and market deployments, and interest rate models.
+- [isolated-pools](https://github.com/VenusProtocol/isolated-pools): Contains core contracts for isolated lending, including logic for suppling, borrowing, liquidations, pool and market deployments, and interest rate models.
 - [oracle](https://github.com/VenusProtocol/oracle): This repo has contracts for oracles that we support as well as logic for validating prices returned from those oracles.
 - [venus-protocol](https://github.com/VenusProtocol/venus-protocol): The core protocol is located in this repo. It contains logic central to lending and borrowing of the core pool as well as governance
 
@@ -20,7 +20,7 @@ There are 3 categories of isolated pools contracts:
 
 #### [AccessControlManager](../governance/access-control-manager.md)
 
-To enhance security of the protocol, V4 introduces the [AccessControlManager](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/Governance/AccessControlManager.sol) which grants accounts access to call specific functions on contracts. This contract is responsible for granting and revoking those permissions. It also provides a getter to check if an address is allowed to call a specific function.
+To enhance security of the protocol, Venus Protocol uses the [AccessControlManager](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/Governance/AccessControlManager.sol) which grants accounts access to call specific functions on contracts. This contract is responsible for granting and revoking those permissions. It also provides a getter to check if an address is allowed to call a specific function.
 
 ### Pool
 
@@ -72,7 +72,7 @@ To make querying pool data easier, Isolated Pools contains a [lens](https://gith
 
 #### [RiskFund](../isolated-lending/risk-fund/README.md)
 
-Lending comes with the inherint risk that borrows will not be able to repay their loan, which is a threat to the protocol's insolvency. Venus V4 looks to mitigate this risk with a [RiskFund](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/RiskFund/RiskFund.sol). A percentage of protocol revenus is transfered to the RiskFund. When bad debt is detected, this fund can be auctioned off and used to cover the bad debt.
+Lending comes with the inherint risk that borrows will not be able to repay their loan, which is a threat to the protocol's insolvency. Venus looks to mitigate this risk with a [RiskFund](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/RiskFund/RiskFund.sol). A percentage of protocol revenus is transfered to the RiskFund. When bad debt is detected, this fund can be auctioned off and used to cover the bad debt.
 
 #### [Shortfall](../isolated-lending/risk-fund/shortfall.md)
 
@@ -86,7 +86,7 @@ The [ProtocolShareReserve](https://github.com/VenusProtocol/isolated-pools/blob/
 
 #### [ResilientOracle](../oracles/resilient-oracle.md)
 
-Venus Protocol V4 implements secondary, primary and pivot oracles to create a strategy that avoid creating a single point of a failure by relying on a single source for prices. The [ReslientOracle contract](https://github.com/VenusProtocol/oracle/blob/main/contracts/ResilientOracle.sol) is responsible for managing which the oracles that support a given token and fetching and validating prices for that token using its active oracles.
+Venus Protocol implements secondary, primary and pivot oracles to create a strategy that avoid creating a single point of a failure by relying on a single source for prices. The [ReslientOracle contract](https://github.com/VenusProtocol/oracle/blob/main/contracts/ResilientOracle.sol) is responsible for managing which the oracles that support a given token and fetching and validating prices for that token using its active oracles.
 
 ### Oracles
 

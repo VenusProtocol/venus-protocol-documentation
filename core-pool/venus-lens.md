@@ -2,19 +2,7 @@
 
 ## Introduction
 
-The read only functions on the VenusLens contract provide a view into:
-    - metadata of vToken
-    - daily XVS rewards for an account
-    - account balance for a single vToken
-    - account balances for all vTokens in an account
-    - underlying price of a vToken
-    - underlying prices for a set of vTokens
-    - get liquidity and shortfall of an account
-    - get user's vote history
-    - get proposal details for a set of proposals
-    - get account XVS balance, total votes, and delegated votes
-    - get historical voting balance for a user
-    - get pending XVS Rewards for an account
+The read only functions on the VenusLens contract provide a view into: - metadata of vToken - daily XVS rewards for an account - account balance for a single vToken - account balances for all vTokens in an account - underlying price of a vToken - underlying prices for a set of vTokens - get liquidity and shortfall of an account - get user's vote history - get proposal details for a set of proposals - get account XVS balance, total votes, and delegated votes - get historical voting balance for a user - get pending XVS Rewards for an account
 
 # Solidity API
 
@@ -28,15 +16,15 @@ Query the metadata of a vToken by its address
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name   | Type            | Description                                       |
+| ------ | --------------- | ------------------------------------------------- |
 | vToken | contract VToken | The address of the vToken to fetch VTokenMetadata |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct VenusLens.VTokenMetadata | VTokenMetadata struct with vToken supply and borrow information. |
+| Name | Type                            | Description                                                      |
+| ---- | ------------------------------- | ---------------------------------------------------------------- |
+| [0]  | struct VenusLens.VTokenMetadata | VTokenMetadata struct with vToken supply and borrow information. |
 
 ```solidity
     struct VTokenMetadata {
@@ -71,15 +59,15 @@ Get VTokenMetadata for an array of vToken addresses
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name    | Type              | Description                                       |
+| ------- | ----------------- | ------------------------------------------------- |
 | vTokens | contract VToken[] | Array of vToken addresses to fetch VTokenMetadata |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct VenusLens.VTokenMetadata[] | Array of structs with vToken supply and borrow information. |
+| Name | Type                              | Description                                                 |
+| ---- | --------------------------------- | ----------------------------------------------------------- |
+| [0]  | struct VenusLens.VTokenMetadata[] | Array of structs with vToken supply and borrow information. |
 
 ### getDailyXVS
 
@@ -91,16 +79,16 @@ Get amount of XVS distributed daily to an account
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| account | address payable | Address of account to fetch the daily XVS distribution |
-| comptrollerAddress | address | Address of the comptroller proxy |
+| Name               | Type            | Description                                            |
+| ------------------ | --------------- | ------------------------------------------------------ |
+| account            | address payable | Address of account to fetch the daily XVS distribution |
+| comptrollerAddress | address         | Address of the comptroller proxy                       |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | Amount of XVS distributed daily to an account |
+| Name | Type    | Description                                   |
+| ---- | ------- | --------------------------------------------- |
+| [0]  | uint256 | Amount of XVS distributed daily to an account |
 
 ### vTokenBalances
 
@@ -112,16 +100,16 @@ Get the current vToken balance (outstanding borrows) for an account
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| vToken | contract VToken | Address of the token to check the balance of |
-| account | address payable | Account address to fetch the balance of |
+| Name    | Type            | Description                                  |
+| ------- | --------------- | -------------------------------------------- |
+| vToken  | contract VToken | Address of the token to check the balance of |
+| account | address payable | Account address to fetch the balance of      |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct VenusLens.VTokenBalances | VTokenBalances with token balance information |
+| Name | Type                            | Description                                   |
+| ---- | ------------------------------- | --------------------------------------------- |
+| [0]  | struct VenusLens.VTokenBalances | VTokenBalances with token balance information |
 
 ```solidity
 struct VTokenBalances {
@@ -144,16 +132,16 @@ Get the current vToken balances (outstanding borrows) for all vTokens on an acco
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name    | Type              | Description                                     |
+| ------- | ----------------- | ----------------------------------------------- |
 | vTokens | contract VToken[] | Addresses of the tokens to check the balance of |
-| account | address payable | Account address to fetch the balance of |
+| account | address payable   | Account address to fetch the balance of         |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct VenusLens.VTokenBalances[] | VTokenBalances Array with token balance information |
+| Name | Type                              | Description                                         |
+| ---- | --------------------------------- | --------------------------------------------------- |
+| [0]  | struct VenusLens.VTokenBalances[] | VTokenBalances Array with token balance information |
 
 ### vTokenUnderlyingPrice
 
@@ -165,16 +153,15 @@ Get the price for the underlying asset of a vToken
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name   | Type            | Description           |
+| ------ | --------------- | --------------------- |
 | vToken | contract VToken | address of the vToken |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct VenusLens.VTokenUnderlyingPrice | response struct with underlyingPrice info of vToken |
-
+| Name | Type                                   | Description                                         |
+| ---- | -------------------------------------- | --------------------------------------------------- |
+| [0]  | struct VenusLens.VTokenUnderlyingPrice | response struct with underlyingPrice info of vToken |
 
 ```solidity
 struct VTokenUnderlyingPrice {
@@ -193,15 +180,15 @@ Query the underlyingPrice of an array of vTokens
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name    | Type              | Description               |
+| ------- | ----------------- | ------------------------- |
 | vTokens | contract VToken[] | Array of vToken addresses |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct VenusLens.VTokenUnderlyingPrice[] | array of response structs with underlying price information of vTokens |
+| Name | Type                                     | Description                                                            |
+| ---- | ---------------------------------------- | ---------------------------------------------------------------------- |
+| [0]  | struct VenusLens.VTokenUnderlyingPrice[] | array of response structs with underlying price information of vTokens |
 
 ### getAccountLimits
 
@@ -213,16 +200,16 @@ Query the account liquidity and shortfall of an account
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| comptroller | contract ComptrollerInterface | Address of comptroller proxy |
-| account | address | Address of the account to query |
+| Name        | Type                          | Description                     |
+| ----------- | ----------------------------- | ------------------------------- |
+| comptroller | contract ComptrollerInterface | Address of comptroller proxy    |
+| account     | address                       | Address of the account to query |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct VenusLens.AccountLimits | Struct with markets user has entered, liquidity, and shortfall of the account |
+| Name | Type                           | Description                                                                   |
+| ---- | ------------------------------ | ----------------------------------------------------------------------------- |
+| [0]  | struct VenusLens.AccountLimits | Struct with markets user has entered, liquidity, and shortfall of the account |
 
 ```solidity
 struct AccountLimits {
@@ -242,17 +229,17 @@ Query the voting information of an account for a list of governance proposals
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| governor | contract GovernorAlpha | Governor address |
-| voter | address | Voter address |
-| proposalIds | uint256[] | Array of proposal ids |
+| Name        | Type                   | Description           |
+| ----------- | ---------------------- | --------------------- |
+| governor    | contract GovernorAlpha | Governor address      |
+| voter       | address                | Voter address         |
+| proposalIds | uint256[]              | Array of proposal ids |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct VenusLens.GovReceipt[] | Array of governor receipts |
+| Name | Type                          | Description                |
+| ---- | ----------------------------- | -------------------------- |
+| [0]  | struct VenusLens.GovReceipt[] | Array of governor receipts |
 
 ```solidity
 struct GovReceipt {
@@ -273,16 +260,16 @@ Query the details of a list of governance proposals
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| governor | contract GovernorAlpha | Address of governor contract |
-| proposalIds | uint256[] | Array of proposal Ids |
+| Name        | Type                   | Description                  |
+| ----------- | ---------------------- | ---------------------------- |
+| governor    | contract GovernorAlpha | Address of governor contract |
+| proposalIds | uint256[]              | Array of proposal Ids        |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct VenusLens.GovProposal[] | GovProposal structs for provided proposal Ids |
+| Name | Type                           | Description                                   |
+| ---- | ------------------------------ | --------------------------------------------- |
+| [0]  | struct VenusLens.GovProposal[] | GovProposal structs for provided proposal Ids |
 
 ```solidity
 struct GovProposal {
@@ -312,16 +299,16 @@ Query the XVSBalance info of an account
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| xvs | contract XVS | XVS contract address |
-| account | address | Account address |
+| Name    | Type         | Description          |
+| ------- | ------------ | -------------------- |
+| xvs     | contract XVS | XVS contract address |
+| account | address      | Account address      |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct VenusLens.XVSBalanceMetadata | Struct with XVS balance and voter details |
+| Name | Type                                | Description                               |
+| ---- | ----------------------------------- | ----------------------------------------- |
+| [0]  | struct VenusLens.XVSBalanceMetadata | Struct with XVS balance and voter details |
 
 ```solidity
 struct XVSBalanceMetadata {
@@ -341,17 +328,17 @@ Query the XVSBalance extended info of an account
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| xvs | contract XVS | XVS contract address |
+| Name        | Type                          | Description                        |
+| ----------- | ----------------------------- | ---------------------------------- |
+| xvs         | contract XVS                  | XVS contract address               |
 | comptroller | contract ComptrollerInterface | Comptroller proxy contract address |
-| account | address | Account address |
+| account     | address                       | Account address                    |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct VenusLens.XVSBalanceMetadataExt | Struct with XVS balance and voter details and XVS allocation |
+| Name | Type                                   | Description                                                  |
+| ---- | -------------------------------------- | ------------------------------------------------------------ |
+| [0]  | struct VenusLens.XVSBalanceMetadataExt | Struct with XVS balance and voter details and XVS allocation |
 
 ```solidity
 struct XVSBalanceMetadataExt {
@@ -372,17 +359,17 @@ Query the voting power for an account at a specific list of block numbers
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| xvs | contract XVS | XVS contract address |
-| account | address | Address of the account |
-| blockNumbers | uint32[] | Array of blocks to query |
+| Name         | Type         | Description              |
+| ------------ | ------------ | ------------------------ |
+| xvs          | contract XVS | XVS contract address     |
+| account      | address      | Address of the account   |
+| blockNumbers | uint32[]     | Array of blocks to query |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct VenusLens.VenusVotes[] | Array of VenusVotes structs with block number and vote count |
+| Name | Type                          | Description                                                  |
+| ---- | ----------------------------- | ------------------------------------------------------------ |
+| [0]  | struct VenusLens.VenusVotes[] | Array of VenusVotes structs with block number and vote count |
 
 ```solidity
 struct VenusVotes {
@@ -401,13 +388,13 @@ Calculate the total XVS tokens pending or accrued by a user account
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| holder | address | Account to query pending XVS |
-| comptroller | contract ComptrollerInterface | Address of the comptroller |
+| Name        | Type                          | Description                  |
+| ----------- | ----------------------------- | ---------------------------- |
+| holder      | address                       | Account to query pending XVS |
+| comptroller | contract ComptrollerInterface | Address of the comptroller   |
 
 #### Return Values
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | Total number of accrued XVS that can be claimed |
+| Name | Type    | Description                                     |
+| ---- | ------- | ----------------------------------------------- |
+| [0]  | uint256 | Total number of accrued XVS that can be claimed |
