@@ -43,9 +43,3 @@ Let's assume the vTRX/TRX rate is 0.0204. If you supply 1000 TRX to Venus, you w
 Now, suppose that after one year, the vTRX/TRX rate has increased to 0.0215. This means your 49019 vTRX would now be worth 1021.5 TRX (49019 * 0.0215) — an increase of 21.5 TRX.
 
 Please note that the specific rates used in the example are for illustration purposes only and may not reflect the actual rates on Venus Protocol.
-
-
-
-
-
-
