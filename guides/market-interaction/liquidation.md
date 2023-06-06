@@ -56,7 +56,7 @@ Once an under-collateralized account has been identified, the liquidation proces
 
 2. Calculate the liquidation amount: Determine the amount of debt to be repaid and the collateral to be seized. This is typically calculated by examining the borrower's debt balance, the market's collateral factor, and any discounts or liquidation incentives offered.
 
-3. Invoke the `liquidateBorrow` function: Call the `liquidateBorrow` function on the relevant vToken contract. This function requires several parameters, including the borrower's address, the liquidator's address, the amount of debt to be repaid, and the collateral to be seized. Refer to the vToken contract documentation for specific details on the function's required parameters.
+3. Invoke the `liquidateBorrow` function: Call the `liquidateBorrow` function on the relevant vToken contract. This function requires several parameters, including the borrower's address, the amount of debt to be repaid, and the address of the collateral market whose tokens will be seized. Refer to the vToken contract documentation for specific details on the function's required parameters.
 
 4. Handle liquidation results: After invoking `liquidateBorrow`, monitor the transaction's success and handle any resulting events or errors. Successful liquidations will transfer the seized collateral to the liquidator's address and repay the debt from the borrower's account.
 
