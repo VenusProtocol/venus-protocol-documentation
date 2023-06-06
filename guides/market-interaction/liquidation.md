@@ -52,12 +52,10 @@ Please note that the functions mentioned above are provided by PoolLens and may 
 
 Once an under-collateralized account has been identified, the liquidation process can be initiated using the `liquidateBorrow` function provided by the relevant vToken contract. Here's an overview of the steps involved:
 
-1. Obtain the necessary permissions: To perform a liquidation, the liquidator's address must be granted `liquidateBorrow` access for the specific market. Ensure that the liquidator's address is approved for liquidations on the corresponding vToken contract.
+1. Calculate the liquidation amount: Determine the amount of debt to be repaid and the collateral to be seized. This is typically calculated by examining the borrower's debt balance, the market's collateral factor, and any discounts or liquidation incentives offered.
 
-2. Calculate the liquidation amount: Determine the amount of debt to be repaid and the collateral to be seized. This is typically calculated by examining the borrower's debt balance, the market's collateral factor, and any discounts or liquidation incentives offered.
+2. Invoke the `liquidateBorrow` function: Call the `liquidateBorrow` function on the relevant vToken contract. This function requires several parameters, including the borrower's address, the liquidator's address, the amount of debt to be repaid, and the collateral to be seized. Refer to the vToken contract documentation for specific details on the function's required parameters.
 
-3. Invoke the `liquidateBorrow` function: Call the `liquidateBorrow` function on the relevant vToken contract. This function requires several parameters, including the borrower's address, the amount of debt to be repaid, and the address of the collateral market whose tokens will be seized. Refer to the vToken contract documentation for specific details on the function's required parameters.
-
-4. Handle liquidation results: After invoking `liquidateBorrow`, monitor the transaction's success and handle any resulting events or errors. Successful liquidations will transfer the seized collateral (in vTokens) to the liquidator's address and repay the debt from the borrower's account.
+3. Handle liquidation results: After invoking `liquidateBorrow`, monitor the transaction's success and handle any resulting events or errors. Successful liquidations will transfer the seized collateral to the liquidator's address and repay the debt from the borrower's account.
 
 Please note that the liquidation process involves complex calculations and requires a deep understanding of Venus protocol. It's essential to thoroughly test and validate your liquidation bot before deploying it in a production environment. Additionally, keep track of any changes or updates to the Venus protocol that may impact the liquidation process.

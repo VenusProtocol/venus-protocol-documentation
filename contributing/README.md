@@ -24,11 +24,35 @@ By default, git merges the upstream changes into your local branch on pull. This
 
 ## Make commmits
 
-1. The commits should be self-contained and solve one specific problem. Avoid commits incorporating several completely unrelated changes. You can use `git add -p <file>` to stage just a part of the file.
-1. The commit messages should have a header and a body. Forget about commit -m.
-1. The commit header should describe the change in no longer than 60 characters.
-1. The commit body should describe the reason for the change (ideally, describe the problem you're solving, and then the solution you're proposing).
-1. Avoid messages that look like "Update file.js" — these do not contain any additional information, the reviewers can easily look up the list of the updated files in the diff. Rather, focus on why you're making the change.
+Commit messages will need to follow a standard format in order to be able to correctly bumpt the next version and format the release. [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) is a nice standard to use for formatting the commit messages. There are different tools available to enforce these messages
+
+### Structure
+
+```bash
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Breaking changes
+
+Breaking changes will result in a major version bump. These can be triggered by placing BREAKING CHANGE or BREAKING CHANGES in the footer of the commit message or by placing an exclamation point after the type. See next section on commit format
+
+### Enforcing commits
+
+[commitlint](https://github.com/conventional-changelog/commitlint) - Precommit hook with husky ( currently implement in the api repo)
+
+| Type | Release | Included in Changelog |
+| --- | --- | --- |
+| breaking change | major | true |
+| feat | minor | true |
+| build | false | false |
+| ci | false | false |
+| fix | patch | true |
+| refactor | patch | false |
+| test | false | false |
 
 ## Prettify your history
 
