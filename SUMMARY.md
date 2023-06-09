@@ -96,5 +96,6 @@
 ## Links
 
 - [Security & Audits](security-and-audits.md)
-- [FAQ]()
+- [FAQ](frequently-asked-questions.md)
 - [Bug Bounty]()
+- [Contribution](contributing/README.md)
