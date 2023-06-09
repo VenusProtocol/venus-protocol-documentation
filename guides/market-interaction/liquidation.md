@@ -8,7 +8,7 @@ Venus protocol differentiates between two types of account liquidity calculation
 
 ### Collateral Factor (CF)
 
-Collateral Factor represents the immediate liquidity available to an account. The `Comptroller.getBorrowingPower` function provides this information. However, it's important to note that this function utilizes the CF calculation, which might not accurately reflect an account's true level of under-collateralization. Therefore, relying solely on `getBorrowingPower` may not be sufficient for identifying accounts in need of liquidation.
+Collateral Factor is the percentage of the supplied funds that can be used to cover the loan. The `Comptroller.getBorrowingPower` function provides this information. Relying on `getBorrowingPower` is not sufficient for identifying accounts in need of liquidation.
 
 ### Liquidation Threshold (LT)
 
