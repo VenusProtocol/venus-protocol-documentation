@@ -14,18 +14,13 @@ Collateral Factor is the percentage of the supplied funds that can be used to co
 
 The Liquidation Threshold represents the point at which an account becomes under-collateralized, triggering the possibility of liquidation. The `Comptroller.getAccountLiquidity` function provides this information. Liquidators often need to use external monitoring systems or explore other strategies to identify under-collateralized accounts accurately.
 
-To find under-collateralized accounts, you can use the following functions:
 
-- `Comptroller.getAccountLiquidity`: This function provides the account liquidity information based on the Collateral Factor (CF) calculation. While it may not capture the true level of under-collateralization, it can still be used as a starting point for identifying potential accounts.
-
-- `Comptroller.getBorrowingPower`: This function can be used to determine the account liquidity based on the borrowing power calculation. It provides additional insights into the account's borrowing capacity and can be used in combination with other data sources to identify under-collateralized accounts.
-
-It's worth to say that that iterating over all accounts and calling these functions for every account is inefficient. Instead, liquidators should rely on off-chain computations and maintains an off-chain mapping for accounts and balances. Using functions like `vTokenBalancesAll` and `vTokenUnderlyingPriceAll` from PoolLens can help retrieve balances and prices efficiently for multiple vTokens associated with an account.
+It's worth to say that iterating over all accounts and calling these functions for every account is inefficient. Instead, liquidators should rely on off-chain computations and maintain an off-chain mapping for accounts and balances. Using functions like `vTokenBalancesAll` and `vTokenUnderlyingPriceAll` from PoolLens can help retrieve balances and prices efficiently for multiple vTokens associated with an account.
 
 By combining the information obtained from these functions, one can accurately identify under-collateralized accounts that are suitable for liquidation.
 
 ### Minimum Liquidatable Collateral
-The `Comptroller.minLiquidatableCollateral` variable represents the minimal collateral required for regular (non-batch) liquidations. It defines the minimum collateral value an account must have to be eligible for liquidation. Accounts with collateral below this threshold may not be eligible for liquidation. 
+The `Comptroller.minLiquidatableCollateral` variable represents the minimal collateral in USD required for regular (non-batch) liquidations. Accounts with collateral below this threshold may not be eligible for liquidation. It's defined in atoms of USD (18 decimals).
 
 ## Finding Under-Collateralized Accounts
 
