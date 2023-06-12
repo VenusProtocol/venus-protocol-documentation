@@ -26,7 +26,7 @@ Auctions aim to cover as much bad debt as possible. There are two types:
 
 <figure><img src="../.gitbook/assets/image (5).png" alt="" width="563"><figcaption><p><em>Auction Scenarios</em></p></figcaption></figure>
 
-* **Scenario 1 (X% Auction):** Bidders specify the percentage (`X%`) of the bad debt they'll cover.
-* **Scenario 2 (Y% Auction):** Bidders specify the percentage (`Y%`) of the risk fund they want.
+- **Scenario 1 (X% Auction):** Bidders specify the percentage (`X%`) of the bad debt they'll cover.
+- **Scenario 2 (Y% Auction):** Bidders specify the percentage (`Y%`) of the risk fund they want.
 
 Bids are only accepted if the bidder has sufficient funds and offers the best deal. Subsequent bids must be placed within 10 blocks of the previous one. If no bids are placed for 100 blocks, the auction restarts with the updated bad debt and risk fund balances.

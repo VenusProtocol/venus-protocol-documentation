@@ -1,2 +1,0 @@
-# Interest Rate Model
-

@@ -1,6 +1,7 @@
-# Governance -  Deployed Contracts
+# Governance - Deployed Contracts
 
 ## BSC Mainnet
+
 - Governor Alpha:
 - Governor Alpha 2:
 - Governor Bravo Delegate:
@@ -11,6 +12,7 @@
 - Critical Timelock:
 
 ## BSC Testnet
+
 - Governor Alpha:
 - Governor Alpha 2:
 - Governor Bravo Delegate:
