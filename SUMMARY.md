@@ -29,16 +29,15 @@
 
 ## Guides
 
-* [Supplying](guides/supplying.md)
-* [Borrowing](guides/borrowing.md)
+- [Venus overview](guides/market-interaction/venus-overview.md)
+- [Venus interface](guides/market-interaction/interface.md)
+- [Supplying and borrowing](guides/market-interaction/supply-borrow.md)
+- [Liquidations](guides/market-interaction/liquidation.md)
 * [Governance](guides/governance/README.md)
   * [Venus Improvement Proposal](guides/governance-guide/vip.md)
   * [Voting](guides/governance-guide/voting.md)
   * [Delegating](guides/governance-guide/delegating.md)
-* [Contributing](guides/contributing/README.md)
-  * [Setting up a development environment](guides/contributing/setting-up-a-development-environment.md)
-  * [Testing Guide](guides/contributing/testing-guide.md)
-* [Protocol Math](guides/protocol-math.md)
+- [Contributing](guides/contributing.md)
 
 ## Reference
 
@@ -61,9 +60,11 @@
 
 ## Deployed Contracts
 
-* [Mainnet](deployed-contracts/mainnet.md)
-* [Deployed Contracts](deployed-contracts/deployed-contracts.md)
-* [Main net - Core pool](deployed-contracts/core-pool.md.md)
+- [Isolated pool](deployed-contracts/isolated-pools.md)
+- [Oracles](deployed-contracts/oracles.md)
+- [Core pool](deployed-contracts/core-pool.md)
+- [Governance](deployed-contracts/governance.md)
+- [Peripherial](deployed-contracts/peripherial.md)
 
 ## Links
 
