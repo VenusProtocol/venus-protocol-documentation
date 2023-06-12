@@ -2,31 +2,43 @@
 
 ## Getting Started
 
-- [Overview](README.md)
-- [Contracts Overview](getting-started/contracts-overview.md)
-- [V4 Whitepaper]()
+* [Overview](README.md)
+* [Contracts Overview](getting-started/contracts-overview.md)
+* [V4 Whitepaper](<README (1).md>)
+* [FAQ](getting-started/faq.md)
 
 ## What's New?
 
-- [Isolated Lending](whats-new/isolated-lending.md)
-- [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
-- [VAI Sustainability](whats-new/vai-sustainability.md)
-- [Governance](whats-new/governance.md)
-- [Supply Borrow Caps](whats-new/supply-borrow-caps.md)
-- [Integrated Swap](whats-new/integrated-swap.md)
+* [Isolated Pools](whats-new/isolated-pools.md)
+* [Integrated Swap](whats-new/integrated-swap.md)
+* [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
+* [Venus Prime](whats-new/venus-prime.md)
+
+## Governance
+
+* [Decentralization](governance/decentralization.md)
+* [Tokenomics](governance/tokenomics.md)
+* [Governance Community Forum](https://community.venus.io/top?period=quarterly)
+
+## Risk
+
+* [Resilient Price Oracle](risk/resilient-price-oracle.md)
+* [VAI Sustainability](risk/vai-sustainability.md)
+* [Interest Rate Model](risk/interest-rate-model.md)
+* [Risk Fund and Shortfall Handling](risk/risk-fund-and-shortfall-handling.md)
 
 ## Guides
 
-- [Supplying](guides/supplying.md)
-- [Borrowing](guides/borrowing.md)
-- [Governance](guides/governance-guide/README.md)
-  - [Venus Improvement Proposal](guides/governance-guide/vip.md)
-  - [Voting](guides/governance-guide/voting.md)
-  - [Delegating](guides/governance-guide/delegating.md)
-- [Contributing](guides/contributing/README.md)
-  - [Setting up a development environment](guides/contributing/development-environment.md)
-  - [Testing Guide](guides/contributing/testing-guide.md)
-- [Protocol Math](guides/protocol-math.md)
+* [Supplying](guides/supplying.md)
+* [Borrowing](guides/borrowing.md)
+* [Governance](guides/governance/README.md)
+  * [Venus Improvement Proposal](guides/governance-guide/vip.md)
+  * [Voting](guides/governance-guide/voting.md)
+  * [Delegating](guides/governance-guide/delegating.md)
+* [Contributing](guides/contributing/README.md)
+  * [Setting up a development environment](guides/contributing/setting-up-a-development-environment.md)
+  * [Testing Guide](guides/contributing/testing-guide.md)
+* [Protocol Math](guides/protocol-math.md)
 
 ## Reference
 
@@ -37,25 +49,25 @@
 
 ## Vaults
 
-- [XVS Vault](vaults/xvs-vault.md)
-- [VAI Vault](vaults/vai-vault.md)
-- [VRT Vault](vaults/vrt-vault.md)
+* [XVS Vault](vaults/xvs-vault.md)
+* [VAI Vault](vaults/vai-vault.md)
+* [VRT Vault](vaults/vrt-vault.md)
 
 ## Tokens
 
-- [VAI](tokens/vai.md)
-- [XVS](tokens/xvs.md)
-- [VRT](tokens/vrt.md)
+* [VAI](tokens/vai.md)
+* [XVS](tokens/xvs.md)
+* [VRT](tokens/vrt.md)
 
 ## Deployed Contracts
 
-- [Testnet](deployed-contracts/testnet.md)
-- [Mainnet](deployed-contracts/mainnet/README.md)
-- [Deployed Contracts](deployed-contracts/deployed-contracts.md)
+* [Mainnet](deployed-contracts/mainnet.md)
+* [Deployed Contracts](deployed-contracts/deployed-contracts.md)
+* [Main net - Core pool](deployed-contracts/core-pool.md.md)
 
 ## Links
 
-- [Security & Audits](security-and-audits.md)
-- [FAQ](frequently-asked-questions.md)
-- [Bug Bounty]()
-- [Contribution](contributing/README.md)
+* [Security & Audits](security-and-audits.md)
+* [FAQ](frequently-asked-questions.md)
+*
+* [Contribution](contributing/README.md)

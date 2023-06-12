@@ -4,21 +4,21 @@
 
 Venus Protocol contracts are divided in three repositories:
 
-- [isolated-pools](https://github.com/VenusProtocol/isolated-pools): Contains core contracts for isolated lending, including logic for suppling, borrowing, liquidations, pool and market deployments, and interest rate models.
-- [oracle](https://github.com/VenusProtocol/oracle): This repo has contracts for oracles that we support as well as logic for validating prices returned from those oracles.
-- [venus-protocol](https://github.com/VenusProtocol/venus-protocol): The core protocol is located in this repo. It contains logic central to lending and borrowing of the core pool as well as governance
+* [isolated-pools](https://github.com/VenusProtocol/isolated-pools): Contains core contracts for isolated lending, including logic for suppling, borrowing, liquidations, pool and market deployments, and interest rate models.
+* [oracle](https://github.com/VenusProtocol/oracle): This repo has contracts for oracles that we support as well as logic for validating prices returned from those oracles.
+* [venus-protocol](https://github.com/VenusProtocol/venus-protocol): The core protocol is located in this repo. It contains logic central to lending and borrowing of the core pool as well as governance.
 
 ## Isolated Pools Contracts
 
 There are 3 categories of isolated pools contracts:
 
-- Governance
-- Pool
-- Risk Management
+* Governance
+* Pool
+* Risk Management
 
 ### Governance
 
-#### [AccessControlManager](../governance/access-control-manager.md)
+#### [AccessControlManager](../governance-1/access-control-manager.md)
 
 To enhance security of the protocol, Venus Protocol uses the [AccessControlManager](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/Governance/AccessControlManager.sol) which grants accounts access to call specific functions on contracts. This contract is responsible for granting and revoking those permissions. It also provides a getter to check if an address is allowed to call a specific function.
 
@@ -26,9 +26,9 @@ To enhance security of the protocol, Venus Protocol uses the [AccessControlManag
 
 Pool contracts can be divided into 4 categories:
 
-- Configuration
-- Logic
-- Misc
+* Configuration
+* Logic
+* Misc
 
 Configuration contracts are used to deploy, configure, and manage pools.
 
@@ -70,7 +70,7 @@ To make querying pool data easier, Isolated Pools contains a [lens](https://gith
 
 ### Risk Mangement
 
-#### [RiskFund](../isolated-lending/risk-fund/README.md)
+#### [RiskFund](../isolated-lending/risk-fund/)
 
 Lending comes with the inherint risk that borrows will not be able to repay their loan, which is a threat to the protocol's insolvency. Venus looks to mitigate this risk with a [RiskFund](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/RiskFund/RiskFund.sol). A percentage of protocol revenus is transfered to the RiskFund. When bad debt is detected, this fund can be auctioned off and used to cover the bad debt.
 
@@ -110,15 +110,15 @@ The [TWAP (Time Weighted Average Price) Oracle](https://github.com/VenusProtocol
 
 Venus Protocol contracts can be grouped as follows:
 
-- Governance
-- Lending
-- Tokens
-- Vault
-- Lens
+* Governance
+* Lending
+* Tokens
+* Vault
+* Lens
 
 **Governance Contracts**
 
-#### [GovernorBravoDelegate](../governance/bravo.md)
+#### [GovernorBravoDelegate](../governance-1/bravo/)
 
 The core logic for governance proposals is in the [GovernorBraveDelegate](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Governance/GovernorBravoDelegate.sol) contract. It enables submitting proposals, moving proposals through time-gated stages, canceling and executing proposals as well as voting logic. The voting threshold as well as timelocks are set on this contract.
 
