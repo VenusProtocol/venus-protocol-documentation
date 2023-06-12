@@ -1,4 +1,5 @@
 # PythOracle
+
 PythOracle contract reads prices from actual Pyth oracle contract which accepts, verifies and stores the updated prices from external sources
 
 # Solidity API
@@ -19,7 +20,7 @@ Exponent scale (decimal precision) of prices
 uint256 EXP_SCALE
 ```
 
-- - -
+---
 
 ### vBnb
 
@@ -29,7 +30,7 @@ vBNB address
 address vBnb
 ```
 
-- - -
+---
 
 ### vai
 
@@ -39,7 +40,7 @@ VAI address
 address vai
 ```
 
-- - -
+---
 
 ### BNB_ADDR
 
@@ -49,7 +50,7 @@ Set this as asset address for BNB. This is the underlying for vBNB
 address BNB_ADDR
 ```
 
-- - -
+---
 
 ### underlyingPythOracle
 
@@ -59,7 +60,7 @@ The actual pyth oracle address fetch & store the prices
 contract IPyth underlyingPythOracle
 ```
 
-- - -
+---
 
 ### tokenConfigs
 
@@ -69,7 +70,7 @@ Token configs by asset address
 mapping(address => struct PythOracle.TokenConfig) tokenConfigs
 ```
 
-- - -
+---
 
 ### constructor
 
@@ -80,12 +81,13 @@ constructor(address vBnbAddress, address vaiAddress) public
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| vBnbAddress | address | The address of the vBNB |
-| vaiAddress | address | The address of the VAI |
 
-- - -
+| Name        | Type    | Description             |
+| ----------- | ------- | ----------------------- |
+| vBnbAddress | address | The address of the vBNB |
+| vaiAddress  | address | The address of the VAI  |
+
+---
 
 ### setTokenConfigs
 
@@ -96,17 +98,20 @@ function setTokenConfigs(struct PythOracle.TokenConfig[] tokenConfigs_) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| tokenConfigs_ | struct PythOracle.TokenConfig[] | Token config array |
+
+| Name           | Type                            | Description        |
+| -------------- | ------------------------------- | ------------------ |
+| tokenConfigs\_ | struct PythOracle.TokenConfig[] | Token config array |
 
 #### ⛔️ Access Requirements
-* Only Governance
+
+- Only Governance
 
 #### ❌ Errors
-* Zero length error is thrown if length of the array in parameter is 0
 
-- - -
+- Zero length error is thrown if length of the array in parameter is 0
+
+---
 
 ### setUnderlyingPythOracle
 
@@ -117,20 +122,24 @@ function setUnderlyingPythOracle(contract IPyth underlyingPythOracle_) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| underlyingPythOracle_ | contract IPyth | Pyth oracle contract address |
+
+| Name                   | Type           | Description                  |
+| ---------------------- | -------------- | ---------------------------- |
+| underlyingPythOracle\_ | contract IPyth | Pyth oracle contract address |
 
 #### 📅 Events
-* Emits PythOracleSet event with address of Pyth oracle.
+
+- Emits PythOracleSet event with address of Pyth oracle.
 
 #### ⛔️ Access Requirements
-* Only Governance
+
+- Only Governance
 
 #### ❌ Errors
-* NotNullAddress error thrown if underlyingPythOracle_ address is zero
 
-- - -
+- NotNullAddress error thrown if underlyingPythOracle\_ address is zero
+
+---
 
 ### initialize
 
@@ -141,12 +150,13 @@ function initialize(address underlyingPythOracle_, address accessControlManager_
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| underlyingPythOracle_ | address | Address of the Pyth oracle |
-| accessControlManager_ | address | Address of the access control manager contract |
 
-- - -
+| Name                   | Type    | Description                                    |
+| ---------------------- | ------- | ---------------------------------------------- |
+| underlyingPythOracle\_ | address | Address of the Pyth oracle                     |
+| accessControlManager\_ | address | Address of the access control manager contract |
+
+---
 
 ### getUnderlyingPrice
 
@@ -158,21 +168,24 @@ function getUnderlyingPrice(address vToken) external view returns (uint256)
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name   | Type    | Description    |
+| ------ | ------- | -------------- |
 | vToken | address | vToken address |
 
 #### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | price Underlying price with a precision of 18 decimals |
+
+| Name | Type    | Description                                            |
+| ---- | ------- | ------------------------------------------------------ |
+| [0]  | uint256 | price Underlying price with a precision of 18 decimals |
 
 #### ❌ Errors
-* Zero address error thrown if underlyingPythOracle address is null
-* Zero address error thrown if asset address is null
-* Range error thrown if price of Pyth oracle is not greater than zero
 
-- - -
+- Zero address error thrown if underlyingPythOracle address is null
+- Zero address error thrown if asset address is null
+- Range error thrown if price of Pyth oracle is not greater than zero
+
+---
 
 ### setTokenConfig
 
@@ -183,16 +196,18 @@ function setTokenConfig(struct PythOracle.TokenConfig tokenConfig) public
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name        | Type                          | Description         |
+| ----------- | ----------------------------- | ------------------- |
 | tokenConfig | struct PythOracle.TokenConfig | Token config struct |
 
 #### ⛔️ Access Requirements
-* Only Governance
+
+- Only Governance
 
 #### ❌ Errors
-* Range error is thrown if max stale period is zero
-* NotNullAddress error is thrown if asset address is null
 
-- - -
+- Range error is thrown if max stale period is zero
+- NotNullAddress error is thrown if asset address is null
 
+---

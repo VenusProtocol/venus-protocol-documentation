@@ -14,22 +14,23 @@ Collateral Factor is the percentage of the supplied funds that can be used to co
 
 The Liquidation Threshold represents the point at which an account becomes under-collateralized, triggering the possibility of liquidation. The `Comptroller.getAccountLiquidity` function provides this information. Liquidators often need to use external monitoring systems or explore other strategies to identify under-collateralized accounts accurately.
 
-
 It's worth to say that iterating over all accounts and calling these functions for every account is inefficient. Instead, liquidators should rely on off-chain computations and maintain an off-chain mapping for accounts and balances. Using functions like `vTokenBalancesAll` and `vTokenUnderlyingPriceAll` from PoolLens can help retrieve balances and prices efficiently for multiple vTokens associated with an account.
 
 By combining the information obtained from these functions, one can accurately identify under-collateralized accounts that are suitable for liquidation.
 
 ### Minimum Liquidatable Collateral
+
 The `Comptroller.minLiquidatableCollateral` variable represents the minimal collateral in USD required for regular (non-batch) liquidations. Accounts with collateral below this threshold may not be eligible for liquidation. It's defined in atoms of USD (18 decimals).
 
 ## Finding Under-Collateralized Accounts
 
 Before performing a liquidation, it is crucial to identify under-collateralized accounts.
 Here's a suggested approach to finding under-collateralized accounts:
+
 1. To identify under-collateralized accounts efficiently, liquidators must maintains an off-chain mapping for accounts and balances by indexing market events to detect new positions or update existing ones:
 
    - `Mint`: Event emitted when tokens are minted.
-	Redeem: Event emitted when tokens are redeemed.
+     Redeem: Event emitted when tokens are redeemed.
    - `Borrow`: Event emitted when underlying is borrowed.
    - `RepayBorrow`: Event emitted when a borrow is repaid.By listening to these events, liquidators can track changes in positions and update the balances of users accordingly.
 

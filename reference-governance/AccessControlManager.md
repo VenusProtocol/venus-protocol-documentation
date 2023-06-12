@@ -1,4 +1,5 @@
 # AccessControlManager
+
 Access control plays a crucial role in the Venus governance model. It is used to restrict functions so that they can only be called from one
 account or list of accounts (EOA or Contract Accounts).
 
@@ -52,16 +53,18 @@ function giveCallPermission(address contractAddress, string functionSig, address
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name            | Type    | Description                                                    |
+| --------------- | ------- | -------------------------------------------------------------- |
 | contractAddress | address | address of contract for which call permissions will be granted |
-| functionSig | string | signature e.g. "functionName(uint256,bool)" |
-| accountToPermit | address | account that will be given access to the contract function |
+| functionSig     | string  | signature e.g. "functionName(uint256,bool)"                    |
+| accountToPermit | address | account that will be given access to the contract function     |
 
 #### 📅 Events
-* Emits a {RoleGranted} and {PermissionGranted} events.
 
-- - -
+- Emits a {RoleGranted} and {PermissionGranted} events.
+
+---
 
 ### revokeCallPermission
 
@@ -72,16 +75,18 @@ function revokeCallPermission(address contractAddress, string functionSig, addre
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name            | Type    | Description                                                    |
+| --------------- | ------- | -------------------------------------------------------------- |
 | contractAddress | address | address of contract for which call permissions will be revoked |
-| functionSig | string | signature e.g. "functionName(uint256,bool)" |
-| accountToRevoke | address |  |
+| functionSig     | string  | signature e.g. "functionName(uint256,bool)"                    |
+| accountToRevoke | address |                                                                |
 
 #### 📅 Events
-* Emits {RoleRevoked} and {PermissionRevoked} events.
 
-- - -
+- Emits {RoleRevoked} and {PermissionRevoked} events.
+
+---
 
 ### isAllowedToCall
 
@@ -92,17 +97,19 @@ function isAllowedToCall(address account, string functionSig) public view return
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| account | address | for which call permissions will be checked |
-| functionSig | string | restricted function signature e.g. "functionName(uint256,bool)" |
+
+| Name        | Type    | Description                                                     |
+| ----------- | ------- | --------------------------------------------------------------- |
+| account     | address | for which call permissions will be checked                      |
+| functionSig | string  | restricted function signature e.g. "functionName(uint256,bool)" |
 
 #### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | bool | false if the user account cannot call the particular contract function |
 
-- - -
+| Name | Type | Description                                                            |
+| ---- | ---- | ---------------------------------------------------------------------- |
+| [0]  | bool | false if the user account cannot call the particular contract function |
+
+---
 
 ### hasPermission
 
@@ -113,16 +120,17 @@ function hasPermission(address account, address contractAddress, string function
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| account | address | for which call permissions will be checked against |
-| contractAddress | address | address of the restricted contract |
-| functionSig | string | signature of the restricted function e.g. "functionName(uint256,bool)" |
+
+| Name            | Type    | Description                                                            |
+| --------------- | ------- | ---------------------------------------------------------------------- |
+| account         | address | for which call permissions will be checked against                     |
+| contractAddress | address | address of the restricted contract                                     |
+| functionSig     | string  | signature of the restricted function e.g. "functionName(uint256,bool)" |
 
 #### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | bool | false if the user account cannot call the particular contract function |
 
-- - -
+| Name | Type | Description                                                            |
+| ---- | ---- | ---------------------------------------------------------------------- |
+| [0]  | bool | false if the user account cannot call the particular contract function |
 
+---

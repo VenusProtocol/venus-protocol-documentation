@@ -1,4 +1,5 @@
 # GovernorBravoDelegate
+
 Venus Governance latest on chain governance includes several new features including variable proposal routes and fine grained pause control.
 Variable routes for proposals allows for governance paramaters such as voting threshold and timelocks to be customized based on the risk level and
 impact of the proposal. Added granularity to the pause control mechanism allows governance to pause individual actions on specific markets,
@@ -12,20 +13,22 @@ Governance has **3 main contracts**: **GovernanceBravoDelegate, XVSVault, XVS** 
 
 - XVS token is the protocol token used for protocol users to cast their vote on submitted proposals.
 - XVSVault is the main staking contract for XVS. Users first stake their XVS in the vault and receive voting power proportional to their staked
-tokens that they can use to vote on proposals. Users also can choose to delegate their voting power to other users.
+  tokens that they can use to vote on proposals. Users also can choose to delegate their voting power to other users.
 
 # Governor Bravo
 
 `GovernanceBravoDelegate` is main Venus Governance contract. Users interact with it to:
+
 - Submit new proposal
 - Vote on a proposal
 - Cancel a proposal
 - Queue a proposal for execution with a timelock executor contract.
 
 `GovernanceBravoDelegate` uses the XVSVault to get restrict certain actions based on a user's voting power. The governance rules it inforces are:
+
 - A user's voting power must be greater than the `proposalThreshold` to submit a proposal
 - If a user's voting power drops below certain amount, anyone can cancel the the proposal. The governance guardian and proposal creator can also
-cancel a proposal at anytime before it is queued for execution.
+  cancel a proposal at anytime before it is queued for execution.
 
 ## Venus Improvement Proposal
 
@@ -76,14 +79,15 @@ function initialize(address xvsVault_, struct GovernorBravoDelegateStorageV2.Pro
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| xvsVault_ | address | The address of the XvsVault |
-| proposalConfigs_ | struct GovernorBravoDelegateStorageV2.ProposalConfig[] | Governance configs for each governance route |
-| timelocks | contract TimelockInterface[] | Timelock addresses for each governance route |
-| guardian_ | address |  |
 
-- - -
+| Name              | Type                                                   | Description                                  |
+| ----------------- | ------------------------------------------------------ | -------------------------------------------- |
+| xvsVault\_        | address                                                | The address of the XvsVault                  |
+| proposalConfigs\_ | struct GovernorBravoDelegateStorageV2.ProposalConfig[] | Governance configs for each governance route |
+| timelocks         | contract TimelockInterface[]                           | Timelock addresses for each governance route |
+| guardian\_        | address                                                |                                              |
+
+---
 
 ### propose
 
@@ -95,21 +99,23 @@ function propose(address[] targets, uint256[] values, string[] signatures, bytes
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| targets | address[] | Target addresses for proposal calls |
-| values | uint256[] | BNB values for proposal calls |
-| signatures | string[] | Function signatures for proposal calls |
-| calldatas | bytes[] | Calldatas for proposal calls |
-| description | string | String description of the proposal |
+
+| Name         | Type                                             | Description                                                |
+| ------------ | ------------------------------------------------ | ---------------------------------------------------------- |
+| targets      | address[]                                        | Target addresses for proposal calls                        |
+| values       | uint256[]                                        | BNB values for proposal calls                              |
+| signatures   | string[]                                         | Function signatures for proposal calls                     |
+| calldatas    | bytes[]                                          | Calldatas for proposal calls                               |
+| description  | string                                           | String description of the proposal                         |
 | proposalType | enum GovernorBravoDelegateStorageV2.ProposalType | the type of the proposal (e.g NORMAL, FASTTRACK, CRITICAL) |
 
 #### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | Proposal id of new proposal |
 
-- - -
+| Name | Type    | Description                 |
+| ---- | ------- | --------------------------- |
+| [0]  | uint256 | Proposal id of new proposal |
+
+---
 
 ### queue
 
@@ -120,11 +126,12 @@ function queue(uint256 proposalId) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name       | Type    | Description                     |
+| ---------- | ------- | ------------------------------- |
 | proposalId | uint256 | The id of the proposal to queue |
 
-- - -
+---
 
 ### execute
 
@@ -135,11 +142,12 @@ function execute(uint256 proposalId) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name       | Type    | Description                       |
+| ---------- | ------- | --------------------------------- |
 | proposalId | uint256 | The id of the proposal to execute |
 
-- - -
+---
 
 ### cancel
 
@@ -150,11 +158,12 @@ function cancel(uint256 proposalId) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name       | Type    | Description                      |
+| ---------- | ------- | -------------------------------- |
 | proposalId | uint256 | The id of the proposal to cancel |
 
-- - -
+---
 
 ### getActions
 
@@ -165,19 +174,21 @@ function getActions(uint256 proposalId) external view returns (address[] targets
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name       | Type    | Description            |
+| ---------- | ------- | ---------------------- |
 | proposalId | uint256 | the id of the proposal |
 
 #### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| targets | address[] |  |
-| values | uint256[] |  |
-| signatures | string[] |  |
-| calldatas | bytes[] |  |
 
-- - -
+| Name       | Type      | Description |
+| ---------- | --------- | ----------- |
+| targets    | address[] |             |
+| values     | uint256[] |             |
+| signatures | string[]  |             |
+| calldatas  | bytes[]   |             |
+
+---
 
 ### getReceipt
 
@@ -188,17 +199,19 @@ function getReceipt(uint256 proposalId, address voter) external view returns (st
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| proposalId | uint256 | the id of proposal |
-| voter | address | The address of the voter |
+
+| Name       | Type    | Description              |
+| ---------- | ------- | ------------------------ |
+| proposalId | uint256 | the id of proposal       |
+| voter      | address | The address of the voter |
 
 #### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | struct GovernorBravoDelegateStorageV1.Receipt | The voting receipt |
 
-- - -
+| Name | Type                                          | Description        |
+| ---- | --------------------------------------------- | ------------------ |
+| [0]  | struct GovernorBravoDelegateStorageV1.Receipt | The voting receipt |
+
+---
 
 ### state
 
@@ -209,16 +222,18 @@ function state(uint256 proposalId) public view returns (enum GovernorBravoDelega
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name       | Type    | Description            |
+| ---------- | ------- | ---------------------- |
 | proposalId | uint256 | The id of the proposal |
 
 #### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | enum GovernorBravoDelegateStorageV1.ProposalState | Proposal state |
 
-- - -
+| Name | Type                                              | Description    |
+| ---- | ------------------------------------------------- | -------------- |
+| [0]  | enum GovernorBravoDelegateStorageV1.ProposalState | Proposal state |
+
+---
 
 ### castVote
 
@@ -229,12 +244,13 @@ function castVote(uint256 proposalId, uint8 support) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| proposalId | uint256 | The id of the proposal to vote on |
-| support | uint8 | The support value for the vote. 0=against, 1=for, 2=abstain |
 
-- - -
+| Name       | Type    | Description                                                 |
+| ---------- | ------- | ----------------------------------------------------------- |
+| proposalId | uint256 | The id of the proposal to vote on                           |
+| support    | uint8   | The support value for the vote. 0=against, 1=for, 2=abstain |
+
+---
 
 ### castVoteWithReason
 
@@ -245,13 +261,14 @@ function castVoteWithReason(uint256 proposalId, uint8 support, string reason) ex
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| proposalId | uint256 | The id of the proposal to vote on |
-| support | uint8 | The support value for the vote. 0=against, 1=for, 2=abstain |
-| reason | string | The reason given for the vote by the voter |
 
-- - -
+| Name       | Type    | Description                                                 |
+| ---------- | ------- | ----------------------------------------------------------- |
+| proposalId | uint256 | The id of the proposal to vote on                           |
+| support    | uint8   | The support value for the vote. 0=against, 1=for, 2=abstain |
+| reason     | string  | The reason given for the vote by the voter                  |
+
+---
 
 ### castVoteBySig
 
@@ -262,17 +279,18 @@ function castVoteBySig(uint256 proposalId, uint8 support, uint8 v, bytes32 r, by
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| proposalId | uint256 | The id of the proposal to vote on |
-| support | uint8 | The support value for the vote. 0=against, 1=for, 2=abstain |
-| v | uint8 | recovery id of ECDSA signature |
-| r | bytes32 | part of the ECDSA sig output |
-| s | bytes32 | part of the ECDSA sig output |
 
-- - -
+| Name       | Type    | Description                                                 |
+| ---------- | ------- | ----------------------------------------------------------- |
+| proposalId | uint256 | The id of the proposal to vote on                           |
+| support    | uint8   | The support value for the vote. 0=against, 1=for, 2=abstain |
+| v          | uint8   | recovery id of ECDSA signature                              |
+| r          | bytes32 | part of the ECDSA sig output                                |
+| s          | bytes32 | part of the ECDSA sig output                                |
 
-### _setGuardian
+---
+
+### \_setGuardian
 
 Sets the new governance guardian
 
@@ -281,13 +299,14 @@ function _setGuardian(address newGuardian) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name        | Type    | Description                     |
+| ----------- | ------- | ------------------------------- |
 | newGuardian | address | the address of the new guardian |
 
-- - -
+---
 
-### _initiate
+### \_initiate
 
 Initiate the GovernorBravo contract
 
@@ -296,13 +315,14 @@ function _initiate(address governorAlpha) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name          | Type    | Description                                                         |
+| ------------- | ------- | ------------------------------------------------------------------- |
 | governorAlpha | address | The address for the Governor to continue the proposal id count from |
 
-- - -
+---
 
-### _setProposalMaxOperations
+### \_setProposalMaxOperations
 
 Set max proposal operations
 
@@ -311,13 +331,14 @@ function _setProposalMaxOperations(uint256 proposalMaxOperations_) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| proposalMaxOperations_ | uint256 | Max proposal operations |
 
-- - -
+| Name                    | Type    | Description             |
+| ----------------------- | ------- | ----------------------- |
+| proposalMaxOperations\_ | uint256 | Max proposal operations |
 
-### _setPendingAdmin
+---
+
+### \_setPendingAdmin
 
 Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
 
@@ -326,13 +347,14 @@ function _setPendingAdmin(address newPendingAdmin) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name            | Type    | Description        |
+| --------------- | ------- | ------------------ |
 | newPendingAdmin | address | New pending admin. |
 
-- - -
+---
 
-### _acceptAdmin
+### \_acceptAdmin
 
 Accepts transfer of admin rights. msg.sender must be pendingAdmin
 
@@ -340,5 +362,4 @@ Accepts transfer of admin rights. msg.sender must be pendingAdmin
 function _acceptAdmin() external
 ```
 
-- - -
-
+---

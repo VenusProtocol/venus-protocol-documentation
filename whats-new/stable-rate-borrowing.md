@@ -8,7 +8,7 @@ Stable rate borrowing, in contrast to variable rate borrowing, offers more consi
 
 ### Stable Rate Calculation
 
-The calculations for stable rate borrowing rely on two primary metrics: the **utilization rate (u)** and the **stable loan adoption rate (stable\_loan\_wt).** These rates consider several variables, such as total borrow and total supply.
+The calculations for stable rate borrowing rely on two primary metrics: the **utilization rate (u)** and the **stable loan adoption rate (stable_loan_wt).** These rates consider several variables, such as total borrow and total supply.
 
 At any given point in time (t), these rates are calculated as follows:
 
@@ -26,7 +26,7 @@ The stable borrowing rate remains fixed until certain rebalancing conditions are
 
 For instance, if we set a rebalance threshold of 90% for the utilization rate and a rate fraction threshold of 0.5 for rebalancing, the conditions for rebalancing would be as follows:
 
-* When the utilization rate exceeds 90%, and
-* The average market borrow rate drops below half the variable borrow rate at 90% utilization.
+- When the utilization rate exceeds 90%, and
+- The average market borrow rate drops below half the variable borrow rate at 90% utilization.
 
 It's worth noting that while the stable rate offers predictability, it often comes at a slightly higher interest rate compared to the variable rate. Nevertheless, it provides users with the ability to predict their expenses and hedge their investments with a higher degree of certainty.

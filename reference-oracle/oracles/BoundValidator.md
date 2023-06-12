@@ -1,4 +1,5 @@
 # BoundValidator
+
 This contracts is used to validate prices from two different sources. We need to set upper and lower bound ratios config for each vToken in this contract.
 
 # Solidity API
@@ -19,7 +20,7 @@ validation configs by asset
 mapping(address => struct BoundValidator.ValidateConfig) validateConfigs
 ```
 
-- - -
+---
 
 ### vBnb
 
@@ -29,7 +30,7 @@ vBNB address
 address vBnb
 ```
 
-- - -
+---
 
 ### vai
 
@@ -39,7 +40,7 @@ VAI address
 address vai
 ```
 
-- - -
+---
 
 ### BNB_ADDR
 
@@ -49,7 +50,7 @@ Set this as asset address for BNB. This is the underlying for vBNB
 address BNB_ADDR
 ```
 
-- - -
+---
 
 ### constructor
 
@@ -60,12 +61,13 @@ constructor(address vBnbAddress, address vaiAddress) public
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| vBnbAddress | address | The address of the vBNB |
-| vaiAddress | address | The address of the VAI |
 
-- - -
+| Name        | Type    | Description             |
+| ----------- | ------- | ----------------------- |
+| vBnbAddress | address | The address of the vBNB |
+| vaiAddress  | address | The address of the VAI  |
+
+---
 
 ### setValidateConfigs
 
@@ -76,20 +78,24 @@ function setValidateConfigs(struct BoundValidator.ValidateConfig[] configs) exte
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name    | Type                                   | Description                 |
+| ------- | -------------------------------------- | --------------------------- |
 | configs | struct BoundValidator.ValidateConfig[] | Array of validation configs |
 
 #### 📅 Events
-* Emits ValidateConfigAdded for each validation config that is successfully set
+
+- Emits ValidateConfigAdded for each validation config that is successfully set
 
 #### ⛔️ Access Requirements
-* Only Governance
+
+- Only Governance
 
 #### ❌ Errors
-* Zero length error is thrown if length of the config array is 0
 
-- - -
+- Zero length error is thrown if length of the config array is 0
+
+---
 
 ### initialize
 
@@ -100,11 +106,12 @@ function initialize(address accessControlManager_) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| accessControlManager_ | address | Address of the access control manager contract |
 
-- - -
+| Name                   | Type    | Description                                    |
+| ---------------------- | ------- | ---------------------------------------------- |
+| accessControlManager\_ | address | Address of the access control manager contract |
+
+---
 
 ### validatePriceWithAnchorPrice
 
@@ -115,17 +122,19 @@ function validatePriceWithAnchorPrice(address vToken, uint256 reportedPrice, uin
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| vToken | address | vToken address |
+
+| Name          | Type    | Description            |
+| ------------- | ------- | ---------------------- |
+| vToken        | address | vToken address         |
 | reportedPrice | uint256 | The price to be tested |
-| anchorPrice | uint256 |  |
+| anchorPrice   | uint256 |                        |
 
 #### ❌ Errors
-* Missing error thrown if asset config is not set
-* Price error thrown if anchor price is not valid
 
-- - -
+- Missing error thrown if asset config is not set
+- Price error thrown if anchor price is not valid
+
+---
 
 ### setValidateConfig
 
@@ -136,20 +145,23 @@ function setValidateConfig(struct BoundValidator.ValidateConfig config) public
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name   | Type                                 | Description              |
+| ------ | ------------------------------------ | ------------------------ |
 | config | struct BoundValidator.ValidateConfig | Validation config struct |
 
 #### 📅 Events
-* Emits ValidateConfigAdded when a validation config is successfully set
+
+- Emits ValidateConfigAdded when a validation config is successfully set
 
 #### ⛔️ Access Requirements
-* Only Governance
+
+- Only Governance
 
 #### ❌ Errors
-* Null address error is thrown if asset address is null
-* Range error thrown if bound ratio is not positive
-* Range error thrown if lower bound is greater than or equal to upper bound
 
-- - -
+- Null address error is thrown if asset address is null
+- Range error thrown if bound ratio is not positive
+- Range error thrown if lower bound is greater than or equal to upper bound
 
+---

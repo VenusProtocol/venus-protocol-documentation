@@ -1,4 +1,5 @@
 # BinanceOracle
+
 This oracle fetches price of assets from Binance.
 
 # Solidity API
@@ -11,7 +12,7 @@ vBNB address
 address vBnb
 ```
 
-- - -
+---
 
 ### vai
 
@@ -21,7 +22,7 @@ VAI address
 address vai
 ```
 
-- - -
+---
 
 ### maxStalePeriod
 
@@ -31,7 +32,7 @@ Max stale period configuration for assets
 mapping(string => uint256) maxStalePeriod
 ```
 
-- - -
+---
 
 ### constructor
 
@@ -42,12 +43,13 @@ constructor(address vBnbAddress, address vaiAddress) public
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| vBnbAddress | address | The address of the vBNB |
-| vaiAddress | address | The address of the VAI |
 
-- - -
+| Name        | Type    | Description             |
+| ----------- | ------- | ----------------------- |
+| vBnbAddress | address | The address of the vBNB |
+| vaiAddress  | address | The address of the VAI  |
+
+---
 
 ### setMaxStalePeriod
 
@@ -58,12 +60,13 @@ function setMaxStalePeriod(string symbol, uint256 _maxStalePeriod) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| symbol | string | The symbol of the asset |
-| _maxStalePeriod | uint256 | The max stake period |
 
-- - -
+| Name             | Type    | Description             |
+| ---------------- | ------- | ----------------------- |
+| symbol           | string  | The symbol of the asset |
+| \_maxStalePeriod | uint256 | The max stake period    |
+
+---
 
 ### initialize
 
@@ -74,12 +77,13 @@ function initialize(address _sidRegistryAddress, address _accessControlManager) 
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _sidRegistryAddress | address | Address of SID registry |
-| _accessControlManager | address | Address of the access control manager contract |
 
-- - -
+| Name                   | Type    | Description                                    |
+| ---------------------- | ------- | ---------------------------------------------- |
+| \_sidRegistryAddress   | address | Address of SID registry                        |
+| \_accessControlManager | address | Address of the access control manager contract |
+
+---
 
 ### getUnderlyingPrice
 
@@ -90,16 +94,18 @@ function getUnderlyingPrice(address vToken) external view returns (uint256)
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name   | Type    | Description           |
+| ------ | ------- | --------------------- |
 | vToken | address | Address of the vToken |
 
 #### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | Price in USD |
 
-- - -
+| Name | Type    | Description  |
+| ---- | ------- | ------------ |
+| [0]  | uint256 | Price in USD |
+
+---
 
 ### getFeedRegistryAddress
 
@@ -110,9 +116,9 @@ function getFeedRegistryAddress() public view returns (address)
 ```
 
 #### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | address | feedRegistryAddress Address of binance oracle feed registry. |
 
-- - -
+| Name | Type    | Description                                                  |
+| ---- | ------- | ------------------------------------------------------------ |
+| [0]  | address | feedRegistryAddress Address of binance oracle feed registry. |
 
+---

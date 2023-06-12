@@ -1,4 +1,5 @@
 # GovernorBravoEvents
+
 Set of events emitted by the GovernorBravo contracts.
 
 # Solidity API
@@ -69,5 +70,4 @@ The total number of proposals
 function proposalCount() external returns (uint256)
 ```
 
-- - -
-
+---

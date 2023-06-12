@@ -44,15 +44,15 @@ Breaking changes will result in a major version bump. These can be triggered by 
 
 [commitlint](https://github.com/conventional-changelog/commitlint) - Precommit hook with husky ( currently implement in the api repo)
 
-| Type | Release | Included in Changelog |
-| --- | --- | --- |
-| breaking change | major | true |
-| feat | minor | true |
-| build | false | false |
-| ci | false | false |
-| fix | patch | true |
-| refactor | patch | false |
-| test | false | false |
+| Type            | Release | Included in Changelog |
+| --------------- | ------- | --------------------- |
+| breaking change | major   | true                  |
+| feat            | minor   | true                  |
+| build           | false   | false                 |
+| ci              | false   | false                 |
+| fix             | patch   | true                  |
+| refactor        | patch   | false                 |
+| test            | false   | false                 |
 
 ## Prettify your history
 

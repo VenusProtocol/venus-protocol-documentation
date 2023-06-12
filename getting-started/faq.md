@@ -24,9 +24,9 @@ No platform can be considered entirely risk-free. Risks associated with Venus V4
 
 Venus Protocol focuses on improving three main areas:
 
-* **Risk Management:** Prioritizing the management of risk, Venus introduces new features like Isolated Pools and more sophisticated risk parameters.
-* **Decentralization:** Enhancements have been made to the governance model, introducing fast-track VIPs, role-based access control, and a fine-grained pause mechanism.
-* **User Experience:** The new iteration offers an improved user interface, a better reward system, isolated lending, stable rate borrowing, and the Venus Prime Soulbound Token for a seamless user experience.
+- **Risk Management:** Prioritizing the management of risk, Venus introduces new features like Isolated Pools and more sophisticated risk parameters.
+- **Decentralization:** Enhancements have been made to the governance model, introducing fast-track VIPs, role-based access control, and a fine-grained pause mechanism.
+- **User Experience:** The new iteration offers an improved user interface, a better reward system, isolated lending, stable rate borrowing, and the Venus Prime Soulbound Token for a seamless user experience.
 
 ### **What is the Resilient Price Oracle?**
 

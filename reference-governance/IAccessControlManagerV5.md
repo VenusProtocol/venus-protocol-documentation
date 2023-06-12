@@ -1,4 +1,5 @@
 # IAccessControlManagerV5
+
 Interface implemented by the `AccessControlManagerV5` contract.
 
 # Solidity API
@@ -12,13 +13,14 @@ function giveCallPermission(address contractAddress, string functionSig, address
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| contractAddress | address | address of contract for which call permissions will be granted |
-| functionSig | string | signature e.g. "functionName(uint,bool)" |
-| accountToPermit | address |  |
 
-- - -
+| Name            | Type    | Description                                                    |
+| --------------- | ------- | -------------------------------------------------------------- |
+| contractAddress | address | address of contract for which call permissions will be granted |
+| functionSig     | string  | signature e.g. "functionName(uint,bool)"                       |
+| accountToPermit | address |                                                                |
+
+---
 
 ### revokeCallPermission
 
@@ -29,13 +31,14 @@ function revokeCallPermission(address contractAddress, string functionSig, addre
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| contractAddress | address | address of contract for which call permissions will be revoked |
-| functionSig | string | signature e.g. "functionName(uint,bool)" |
-| accountToRevoke | address |  |
 
-- - -
+| Name            | Type    | Description                                                    |
+| --------------- | ------- | -------------------------------------------------------------- |
+| contractAddress | address | address of contract for which call permissions will be revoked |
+| functionSig     | string  | signature e.g. "functionName(uint,bool)"                       |
+| accountToRevoke | address |                                                                |
+
+---
 
 ### isAllowedToCall
 
@@ -46,15 +49,16 @@ function isAllowedToCall(address account, string functionSig) external view retu
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| account | address | address (eoa or contract) for which call permissions will be checked |
-| functionSig | string | signature e.g. "functionName(uint,bool)" |
+
+| Name        | Type    | Description                                                          |
+| ----------- | ------- | -------------------------------------------------------------------- |
+| account     | address | address (eoa or contract) for which call permissions will be checked |
+| functionSig | string  | signature e.g. "functionName(uint,bool)"                             |
 
 #### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | bool | false if the user account cannot call the particular contract function |
 
-- - -
+| Name | Type | Description                                                            |
+| ---- | ---- | ---------------------------------------------------------------------- |
+| [0]  | bool | false if the user account cannot call the particular contract function |
 
+---
