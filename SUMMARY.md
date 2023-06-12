@@ -28,52 +28,12 @@
   - [Testing Guide](guides/contributing/testing-guide.md)
 - [Protocol Math](guides/protocol-math.md)
 
-## Core Pool
+## Reference
 
-- [Comptroller](core-pool/comptroller.md)
-- [VTokens](core-pool/vtokens.md)
-- [ComptrollerLens](core-pool/comptroller-lens.md)
-- [VenusLens](core-pool/venus-lens.md)
-- [Oracle](core-pool/oracle.md)
-- [Liquidator](core-pool/liquidator.md)
-- [Interest Rate Model](core-pool/interest-rate-model.md)
-- [Jump Model](core-pool/jump-model.md)
-- [Maximillion](core-pool/maximillion.md)
-- [Reservoir](core-pool/reservoir.md)
-- [VTreasury](core-pool/vtreasury.md)
-
-## Isolated Lending
-
-- [Pool Registry](isolated-lending/pool-registry.md)
-- [Comptroller](isolated-lending/comptroller.md)
-  - [Liquidations](isolated-lending/liquidations.md)
-- [Rewards Distributor](isolated-lending/rewards-distributor.md)
-- [Lens](isolated-lending/lens.md)
-- [Risk Fund](isolated-lending/risk-fund/README.md)
-  - [Protocol Share Reserve](isolated-lending/risk-fund/protocol-share-reserve.md)
-  - [Shortfall](isolated-lending/risk-fund/shortfall.md)
-- [Factories](isolated-lending/factories/README.md)
-  - [VBep20 Immutable Proxy Factory](isolated-lending/factories/vtoken-proxy-factory.md)
-  - [Jump Rate Model](isolated-lending/factories/jump-rate-model-factory.md)
-  - [White Paper Interest Rate Model Factory](isolated-lending/factories/white-paper-interest-rate-model-factory.md)
-
-## Oracles
-
-- [Resilient Oracle](oracles/resilient-oracle.md)
-- [Bound Validator](oracles/bound-validator.md)
-- [Chainlink](oracles/chainlink.md)
-- [Pyth](oracles/pyth.md)
-- [Binance](oracles/binance.md)
-- [TWAP](oracles/twap.md)
-
-## Governance
-
-- [Bravo](governance/bravo.md)
-  - [Proposals](governance/proposals.md)
-  - [Voting](governance/voting.md)
-  - [Delegating](governance/delegating.md)
-  - [Routes](governance/routes.md)
-- [Access Control Manager](governance/access-control-manager.md)
+- [Isolated pools](reference-isolated-pools/readme.md)
+- [Oracle](reference-oracle/readme.md)
+- [Core pool](reference-core-pool/readme.md)
+- [Governance](reference-governance/readme.md)
 
 ## Vaults
 
