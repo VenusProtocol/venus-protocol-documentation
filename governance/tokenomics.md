@@ -1,5 +1,7 @@
 # Tokenomics
 
+### Overview
+
 Venus Protocol's revenue distribution model addresses different revenue streams, applying distinct allocation schemes to protocol reserves and other sources of income such as liquidation penalties and new product revenues.
 
 ### Revenue Distribution from Protocol Reserves
