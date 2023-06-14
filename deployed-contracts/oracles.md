@@ -1,6 +1,6 @@
 # Oracles - Deployed Contracts
 
-## BSC Mainnet
+## BNB Chain Mainnet
 
 - Binance Oracle: [`0x594810b741d136f1960141C0d8Fb4a91bE78A820`](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820)
 - Bound Validator:[`0x6E332fF0bB52475304494E4AE5063c1051c7d735`](https://bscscan.com/address/0x6E332fF0bB52475304494E4AE5063c1051c7d735)
@@ -9,7 +9,7 @@
 - Resilient Oracle:[`0x6592b5DE802159F3E74B2486b091D11a8256ab8A`](https://bscscan.com/address/0x6592b5DE802159F3E74B2486b091D11a8256ab8A)
 - TWAP Oracle:[`0xea2f042e1A4f057EF8A5220e57733AD747ea8867`](https://bscscan.com/address/0xea2f042e1A4f057EF8A5220e57733AD747ea8867)
 
-## BSC Testnet
+## BNB Chain Testnet
 
 - Binance Oracle:[`0xB58BFDCE610042311Dc0e034a80Cc7776c1D68f5`](https://bscscan.com/address/0xB58BFDCE610042311Dc0e034a80Cc7776c1D68f5)
 - Bound Validator:[`0x2842140e4Ad3a92e9af30e27e290300dd785076d`](https://bscscan.com/address/0x2842140e4Ad3a92e9af30e27e290300dd785076d)

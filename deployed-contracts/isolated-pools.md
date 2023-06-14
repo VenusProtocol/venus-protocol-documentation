@@ -1,6 +1,6 @@
 # Isolated Pools - Deployed Contracts
 
-## BSC Mainnet
+## BNB Chain Mainnet
 
 - VToken Proxy Factory:
 - Jump Rate Model Factory:
@@ -23,7 +23,7 @@
 - Pool Name
   - Example Rewards Distributor
 
-## BSC Testnet
+## BNB Chain Testnet
 
 - VToken Proxy Factory:
 - Jump Rate Model Factory:

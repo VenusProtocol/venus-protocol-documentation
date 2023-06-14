@@ -1,6 +1,8 @@
 # BoundValidator
 
-This contracts is used to validate prices from two different sources. We need to set upper and lower bound ratios config for each vToken in this contract.
+The BoundValidator contract is used to validate prices fetched from two different sources.
+Each asset has an upper and lower bound ratio set in the config. In order for a price to be valid
+it must fall within this range of the validator price.
 
 # Solidity API
 

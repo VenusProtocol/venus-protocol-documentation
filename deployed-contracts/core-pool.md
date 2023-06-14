@@ -1,6 +1,6 @@
 # Core Pool - Deployed Contracts
 
-## BSC Mainnet
+## BNB Chain Mainnet
 
 - Unitroller: [`0xfD36E2c2a6789Db23113685031d7F16329158384`](https://bscscan.com/address/0xfD36E2c2a6789Db23113685031d7F16329158384)
 - Comptroller: [`0xf6C14D4DFE45C132822Ce28c646753C54994E59C`](https://bscscan.com/address/0xf6C14D4DFE45C132822Ce28c646753C54994E59C)
@@ -72,7 +72,7 @@
   - vUST: [`0x78366446547D062f45b4C0f320cDaa6d710D87bb`](https://bscscan.com/address/0x78366446547D062f45b4C0f320cDaa6d710D87bb)
   - vLUNA: [`0xb91A659E88B51474767CD97EF3196A3e7cEDD2c8`](https://bscscan.com/address/0xb91A659E88B51474767CD97EF3196A3e7cEDD2c8)
 
-## BSC Testnet
+## BNB Chain Testnet
 
 - Unitroller: [`0x94d1820b2D1c7c7452A163983Dc888CEC546b77D`](https://bscscan.com/address/0x94d1820b2D1c7c7452A163983Dc888CEC546b77D)
 - Comptroller: [`0xfd301ad2503b25a7670a45b11a043c20b04ee896`](https://bscscan.com/address/0xfd301ad2503b25a7670a45b11a043c20b04ee896)

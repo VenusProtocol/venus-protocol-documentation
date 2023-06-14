@@ -2,7 +2,7 @@
 
 ### **What is Venus Protocol?**
 
-Venus Protocol is a trusted decentralized finance lending and borrowing protocol that's deployed on the Binance Smart Chain (BSC). Initially launched in 2020, it combines the stablecoin minting facility of Maker and the algorithmic money markets developed by Compound, providing a simplified user experience and core capabilities in a single application.
+Venus Protocol is a trusted decentralized finance lending and borrowing protocol that's deployed on the BNB Chain. Initially launched in 2020, it combines the stablecoin minting facility of Maker and the algorithmic money markets developed by Compound, providing a simplified user experience and core capabilities in a single application.
 
 ### How do I interact with Venus protocol?
 
@@ -10,11 +10,11 @@ Interacting with Venus V4 is straightforward. Supply your chosen asset and the a
 
 ### Where are my supplied funds stored?
 
-Your supplied funds are stored in a smart contract on the Binance Smart Chain. The contract's code is public, open-source, and has been formally verified and audited by external auditors. You can withdraw your funds on demand or receive Venus Tokens (vTokens) representing your stake. vTokens are as freely tradable as any other cryptographic asset on Binance Smart Chain.
+Your supplied funds are stored in a smart contract on the BNB Chain. The contract's code is public, open-source, and has been formally verified and audited by external auditors. You can withdraw your funds on demand or receive Venus Tokens (vTokens) representing your stake. vTokens are as freely tradable as any other cryptographic asset on BNB Chain.
 
 ### **What is the cost of interacting with Venus Protocol?**
 
-Transactions on the Venus V4 protocol require Binance Smart Chain fees, which depend on network congestion and the complexity of the transaction.
+Transactions on the Venus V4 protocol require BNB Chain fees, which depend on network congestion and the complexity of the transaction.
 
 ### **Is there any risk?**
 

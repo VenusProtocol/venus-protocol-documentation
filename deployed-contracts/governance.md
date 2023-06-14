@@ -1,6 +1,6 @@
 # Governance - Deployed Contracts
 
-## BSC Mainnet
+## BNB Chain Mainnet
 
 - Governor Alpha:
 - Governor Alpha 2:
@@ -11,7 +11,7 @@
 - FastTrack Timelock:
 - Critical Timelock:
 
-## BSC Testnet
+## BNB Chain Testnet
 
 - Governor Alpha:
 - Governor Alpha 2:
