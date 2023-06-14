@@ -1,11 +1,11 @@
 # Peripherial Contracts Contracts
 
-## BSC Mainnet
+## BNB Chain Mainnet
 
 - Swap Router:
 - Peg Stability Module:
 
-## BSC Testnet
+## BNB Chain Testnet
 
 - Swap Router:
 - Peg Stability Module:
