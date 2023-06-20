@@ -4,17 +4,17 @@
 
 Venus Protocol contracts are divided in three repositories:
 
-- [isolated-pools](https://github.com/VenusProtocol/isolated-pools): Contains core contracts for isolated lending, including logic for suppling, borrowing, liquidations, pool and market deployments, and interest rate models.
-- [oracle](https://github.com/VenusProtocol/oracle): This repo has contracts for oracles that we support as well as logic for validating prices returned from those oracles.
-- [venus-protocol](https://github.com/VenusProtocol/venus-protocol): The core protocol is located in this repo. It contains logic central to lending and borrowing of the core pool as well as governance.
+* [isolated-pools](https://github.com/VenusProtocol/isolated-pools): Contains core contracts for isolated lending, including logic for suppling, borrowing, liquidations, pool and market deployments, and interest rate models.
+* [oracle](https://github.com/VenusProtocol/oracle): This repo has contracts for oracles that we support as well as logic for validating prices returned from those oracles.
+* [venus-protocol](https://github.com/VenusProtocol/venus-protocol): The core protocol is located in this repo. It contains logic central to lending and borrowing of the core pool as well as governance.
 
 ## Isolated Pools Contracts
 
 There are 3 categories of isolated pools contracts:
 
-- Governance
-- Pool
-- Risk Management
+* Governance
+* Pool
+* Risk Management
 
 ### Governance
 
@@ -26,9 +26,9 @@ To enhance security of the protocol, Venus Protocol uses the [AccessControlManag
 
 Pool contracts can be divided into 4 categories:
 
-- Configuration
-- Logic
-- Misc
+* Configuration
+* Logic
+* Misc
 
 Configuration contracts are used to deploy, configure, and manage pools.
 
@@ -110,11 +110,11 @@ The [TWAP (Time Weighted Average Price) Oracle](https://github.com/VenusProtocol
 
 Venus Protocol contracts can be grouped as follows:
 
-- Governance
-- Lending
-- Tokens
-- Vault
-- Lens
+* Governance
+* Lending
+* Tokens
+* Vault
+* Lens
 
 **Governance Contracts**
 
@@ -158,7 +158,7 @@ XVS is an important token in the Venus ecosystem because it powers Venus governa
 
 [VAI](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/VAI/VAI.sol) is the Venus stable coin that can be minted against collateral. Users who mint VAI are charged a fee based on the outstanding supply and price of VAI to keep its value pegged at $1. The [VAIController](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/VAI/VAIController.sol) controls the amount of VAI a user is allowed to mint which is determined by the collateral a user has provided and their liquidity.
 
-#### [VRT](../tokens/vrt.md)
+#### [VRT](broken-reference)
 
 The Venus Rewareds Token (VRT) is composed two contracts - the token contract and the converter contract. The [VRT](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/VRT/VRT.sol) token contract defines a lockable BEP20 token, which allows the token to be staked in order to earn additional VRT tokens. The [VRTConverter](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/VRT/VRTConverter.sol) allows VRT to be converted to XVS
 

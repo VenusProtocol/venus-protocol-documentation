@@ -1,11 +1,5 @@
 # Isolated Pools
 
-### Isolated Pools
-
-Decentralized lending pools function similarly to traditional lending services offered by banks, but with peer-to-peer decentralization. Users can borrow and lend assets listed in a pool, providing them with opportunities to earn substantial income through the interest paid on their supplied assets and access assets they don't currently own without having to sell any of their portfolio.
-
-Venus Protocol V4 introduces a feature known as _Isolated Pools_. These pools address some of the risks and limitations associated with earlier, single-core pool protocols.
-
 ### Overview
 
 Isolated Pools are made up of separate collections of assets with tailored risk management configurations. This design offers users broader opportunities to manage risk and allocate assets to earn yield. Moreover, it prevents hypothetical failures from affecting the liquidity of the entire protocol as they are confined to isolated markets.
