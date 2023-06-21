@@ -35,8 +35,8 @@
 - [Liquidations](guides/market-interaction/liquidation.md)
 - [Governance](guides/governance/README.md)
   - [Venus Improvement Proposal](guides/governance-guide/vip.md)
-  - [Voting](guides/governance-guide/voting.md)
   - [Delegating](guides/governance-guide/delegating.md)
+  - [Voting](guides/governance-guide/voting.md)
 - [Contributing](guides/contributing.md)
 - [Vaults](guides/vaults.md)
 
