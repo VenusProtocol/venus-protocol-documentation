@@ -1,4 +1,4 @@
-TODO - REVIEW! (links and content)
+TODO: REVIEW! (links and content)
 
 # Contracts Overview
 
