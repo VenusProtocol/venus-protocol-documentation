@@ -2,7 +2,7 @@
 
 ### Overview
 
-In its previous version, Venus was fully reliant on the Chainlink price oracle for fetching prices. This dependence, while generally reliable, created a potential single point of failure. An erroneous or stagnant price could, without a secondary mechanism for validation, pose threats such as unwarranted liquidations or inflated borrowing.
+In its previous version, Venus was fully reliant on the Chainlink price oracle for fetching prices. This dependence, while generally reliable, created a single point of failure. An erroneous or stale price could, without a secondary mechanism for validation, pose threats such as unwarranted liquidations or inflated borrowing.
 
 In light of these risks, Venus V4 introduces the Resilient Price Oracle, a more robust system capable of pulling data from multiple sources for cross-validation. The Resilient Oracle is equipped with an algorithm to verify prices between two or more sources, providing a safeguard in cases where the primary source proves unreliable or fails.
 
@@ -22,9 +22,9 @@ The Resilient Price Feeds system can be configured by the Venus governance via V
 
 In implementing the Resilient Price Oracle, several safety measures have been adopted to ensure the security and continuity of the Venus Protocol:
 
-- **Price Continuity:** Asset prices pre and post upgrade were validated in a simulated environment to ensure consistency.
-- **Testnet Deployment:** The oracles have been deployed and tested in the Venus Protocol testnet environment.
-- **Auditing:** The code has been audited by OpenZeppelin, Peckshield, Certik, and Hacken.
+* **Price Continuity:** Asset prices pre and post upgrade were validated in a simulated environment to ensure consistency.
+* **Testnet Deployment:** The oracles have been deployed and tested in the Venus Protocol testnet environment.
+* **Auditing:** The code has been audited by OpenZeppelin, Peckshield, Certik, and Hacken.
 
 ### Further Reading
 
@@ -32,13 +32,13 @@ For more detailed information, refer to the following resources:
 
 TODO: Update the links using the links included here: https://app.venus.io/governance/proposal/123
 
-- [Peckshield Audit Report](https://chat.openai.com/?model=gpt-4)
-- [Certik Audit Report](https://chat.openai.com/?model=gpt-4)
-- [Hacken Audit Report](https://chat.openai.com/?model=gpt-4)
-- [Deployed Contracts on Main Net](https://chat.openai.com/?model=gpt-4)
-- [Repository](https://chat.openai.com/?model=gpt-4)
-- [Simulation Pre/Post Upgrade](https://chat.openai.com/?model=gpt-4)
-- [Deployment on Testnet](https://chat.openai.com/?model=gpt-4)
-- [Community Post about Venus V4, introducing Resilient Price Feeds](https://chat.openai.com/?model=gpt-4)
-- [Venus Stars Blog Post about Binance Oracle](https://chat.openai.com/?model=gpt-4)
-- [Community Discussion about Pyth Oracle](https://chat.openai.com/?model=gpt-4)
+* [Peckshield Audit Report](https://chat.openai.com/?model=gpt-4)
+* [Certik Audit Report](https://chat.openai.com/?model=gpt-4)
+* [Hacken Audit Report](https://chat.openai.com/?model=gpt-4)
+* [Deployed Contracts on Main Net](https://chat.openai.com/?model=gpt-4)
+* [Repository](https://chat.openai.com/?model=gpt-4)
+* [Simulation Pre/Post Upgrade](https://chat.openai.com/?model=gpt-4)
+* [Deployment on Testnet](https://chat.openai.com/?model=gpt-4)
+* [Community Post about Venus V4, introducing Resilient Price Feeds](https://chat.openai.com/?model=gpt-4)
+* [Venus Stars Blog Post about Binance Oracle](https://chat.openai.com/?model=gpt-4)
+* [Community Discussion about Pyth Oracle](https://chat.openai.com/?model=gpt-4)
