@@ -11,9 +11,9 @@
 
 ## BNB Chain Testnet
 
-- Binance Oracle:[`0xB58BFDCE610042311Dc0e034a80Cc7776c1D68f5`](https://bscscan.com/address/0xB58BFDCE610042311Dc0e034a80Cc7776c1D68f5)
-- Bound Validator:[`0x2842140e4Ad3a92e9af30e27e290300dd785076d`](https://bscscan.com/address/0x2842140e4Ad3a92e9af30e27e290300dd785076d)
-- Chainlink Oracle:[`0xCeA29f1266e880A1482c06eD656cD08C148BaA32`](https://bscscan.com/address/0xCeA29f1266e880A1482c06eD656cD08C148BaA32)
-- Pyth Oracle:[`0x94E1534c14e0736BB24decA625f2F5364B198E0C`](https://bscscan.com/address/0x94E1534c14e0736BB24decA625f2F5364B198E0C)
-- Resilient Oracle:[`0x3cD69251D04A28d887Ac14cbe2E14c52F3D57823`](https://bscscan.com/address/0x3cD69251D04A28d887Ac14cbe2E14c52F3D57823)
-- TWAP Oracle:[`0x3eeE05d929D1E9816185B1b6d8c470eC192b4432`](https://bscscan.com/address/0x3eeE05d929D1E9816185B1b6d8c470eC192b4432)
+- Binance Oracle:[`0xB58BFDCE610042311Dc0e034a80Cc7776c1D68f5`](https://testnet.bscscan.com/address/0xB58BFDCE610042311Dc0e034a80Cc7776c1D68f5)
+- Bound Validator:[`0x2842140e4Ad3a92e9af30e27e290300dd785076d`](https://testnet.bscscan.com/address/0x2842140e4Ad3a92e9af30e27e290300dd785076d)
+- Chainlink Oracle:[`0xCeA29f1266e880A1482c06eD656cD08C148BaA32`](https://testnet.bscscan.com/address/0xCeA29f1266e880A1482c06eD656cD08C148BaA32)
+- Pyth Oracle:[`0x94E1534c14e0736BB24decA625f2F5364B198E0C`](https://testnet.bscscan.com/address/0x94E1534c14e0736BB24decA625f2F5364B198E0C)
+- Resilient Oracle:[`0x3cD69251D04A28d887Ac14cbe2E14c52F3D57823`](https://testnet.bscscan.com/address/0x3cD69251D04A28d887Ac14cbe2E14c52F3D57823)
+- TWAP Oracle:[`0x3eeE05d929D1E9816185B1b6d8c470eC192b4432`](https://testnet.bscscan.com/address/0x3eeE05d929D1E9816185B1b6d8c470eC192b4432)

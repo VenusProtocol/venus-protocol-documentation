@@ -1,20 +1,22 @@
+TODO - REVIEW! (links and content)
+
 # Contracts Overview
 
 ## Contracts Overview
 
 Venus Protocol contracts are divided in three repositories:
 
-* [isolated-pools](https://github.com/VenusProtocol/isolated-pools): Contains core contracts for isolated lending, including logic for suppling, borrowing, liquidations, pool and market deployments, and interest rate models.
-* [oracle](https://github.com/VenusProtocol/oracle): This repo has contracts for oracles that we support as well as logic for validating prices returned from those oracles.
-* [venus-protocol](https://github.com/VenusProtocol/venus-protocol): The core protocol is located in this repo. It contains logic central to lending and borrowing of the core pool as well as governance.
+- [isolated-pools](https://github.com/VenusProtocol/isolated-pools): Contains core contracts for isolated lending, including logic for suppling, borrowing, liquidations, pool and market deployments, and interest rate models.
+- [oracle](https://github.com/VenusProtocol/oracle): This repo has contracts for oracles that we support as well as logic for validating prices returned from those oracles.
+- [venus-protocol](https://github.com/VenusProtocol/venus-protocol): The core protocol is located in this repo. It contains logic central to lending and borrowing of the core pool as well as governance.
 
 ## Isolated Pools Contracts
 
 There are 3 categories of isolated pools contracts:
 
-* Governance
-* Pool
-* Risk Management
+- Governance
+- Pool
+- Risk Management
 
 ### Governance
 
@@ -26,9 +28,9 @@ To enhance security of the protocol, Venus Protocol uses the [AccessControlManag
 
 Pool contracts can be divided into 4 categories:
 
-* Configuration
-* Logic
-* Misc
+- Configuration
+- Logic
+- Misc
 
 Configuration contracts are used to deploy, configure, and manage pools.
 
@@ -110,11 +112,11 @@ The [TWAP (Time Weighted Average Price) Oracle](https://github.com/VenusProtocol
 
 Venus Protocol contracts can be grouped as follows:
 
-* Governance
-* Lending
-* Tokens
-* Vault
-* Lens
+- Governance
+- Lending
+- Tokens
+- Vault
+- Lens
 
 **Governance Contracts**
 
