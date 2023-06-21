@@ -4,23 +4,23 @@ In this guide, we will focus on using Venus Protocol to earn interest and borrow
 
 Once you’ve created your BNB Chain Wallet on MetaMask or any other supported wallet App, open the Venus app ([app.venus.io](https://app.venus.io/)). The interface will ask you to connect your Web3 wallet. Connecting your wallet to Venus Protocol enables you to authorize transactions, view balances, and perform other essential actions on the BNB Chain.
 
-<!-- INSERT SCREENSHOT SHOWING THE CONNECT WITH WALLET PAGE -->
+<!-- TODO: INSERT SCREENSHOT SHOWING THE CONNECT WITH WALLET PAGE -->
 
 After successfully connecting your wallet, you will gain access to all the features of the Venus Protocol interface. In the Dashboard menu you will find all the markets. Clicking one of the markets a new modal will pop out, enabling you to interact with the selected market. Just make sure you are under the "Supply" or "Borrow" tab, depending on the desired action.
 
-<!-- INSERT SCREENSHOT SHOWING THE DASHBOARD VIEW -->
+<!-- TODO: INSERT SCREENSHOT SHOWING THE DASHBOARD VIEW -->
 
 ## Supply Assets to Earn Interest on Venus
 
 Lets say you want to supply some TRX. You are already in the "Dashboard" menu, under the "Supply" tab and you click TRX market. First, you will need to enable the asset you wish to supply. This will ask you to confirm a transaction with your wallet, there will be a small gas fee, so you will need some BNB in your wallet to cover it.
 
-<!-- INSERT SCREENSHOT SHOWING THE MARKET MODAL -->
+<!-- TODO: INSERT SCREENSHOT SHOWING THE MARKET MODAL -->
 
 Once your transaction is confirmed, you can proceed to specify the amount you want to supply. The assets you choose to supply will be transferred directly from your DeFi wallet to Venus Protocol, and they will immediately start earning interest. It's important to note that you won't see any incoming transactions for the interest earned because it will be automatically added to your Supply Balance. Over time, you will notice your balance gradually increasing.
 
 It's worth emphasizing that you have complete control over your assets. At any point, you can withdraw any portion of your balance from Venus Protocol and transfer it back to your BNB Chain wallet. This ensures that you always have access to your funds and can manage them according to your needs and preferences.
 
-<!-- INSERT SCREENSHOT SHOWING THE SUPPLY MODAL -->
+<!-- TODO: INSERT SCREENSHOT SHOWING THE SUPPLY MODAL -->
 
 Once you enter the amount you want to deposit, click Supply, and sign the transaction, you’ll begin earning interest on your crypto.
 

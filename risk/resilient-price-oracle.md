@@ -30,6 +30,8 @@ In implementing the Resilient Price Oracle, several safety measures have been ad
 
 For more detailed information, refer to the following resources:
 
+TODO: Update the links using the links included here: https://app.venus.io/governance/proposal/123
+
 - [Peckshield Audit Report](https://chat.openai.com/?model=gpt-4)
 - [Certik Audit Report](https://chat.openai.com/?model=gpt-4)
 - [Hacken Audit Report](https://chat.openai.com/?model=gpt-4)

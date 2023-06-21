@@ -1,1 +1,0 @@
-# Main net - Core pool
