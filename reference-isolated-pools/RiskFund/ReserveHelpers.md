@@ -31,7 +31,7 @@ function getPoolAssetReserve(address comptroller, address asset) external view r
 
 * ZeroAddressNotAllowed is thrown when asset address is zero
 
-***
+---
 
 #### updateAssetsState
 
@@ -52,4 +52,4 @@ function updateAssetsState(address comptroller, address asset) public virtual
 
 * ZeroAddressNotAllowed is thrown when asset address is zero
 
-***
+---

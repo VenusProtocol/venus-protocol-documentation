@@ -4,12 +4,12 @@ The `PoolLens` contract is designed to retrieve important information for each r
 for all pools within the lending protocol can be acquired through the function `getAllPools()`. Additionally, the following records can be
 looked up for specific pools and markets:
 
-- the vToken balance of a given user;
-- the pool data (oracle address, associated vToken, liquidation incentive, etc) of a pool via its associated comptroller address;
-- the vToken address in a pool for a given asset;
-- a list of all pools that support an asset;
-- the underlying asset price of a vToken;
-- the metadata (exchange/borrow/supply rate, total supply, collateral factor, etc) of any vToken.
+* the vToken balance of a given user;
+* the pool data (oracle address, associated vToken, liquidation incentive, etc) of a pool via its associated comptroller address;
+* the vToken address in a pool for a given asset;
+* a list of all pools that support an asset;
+* the underlying asset price of a vToken;
+* the metadata (exchange/borrow/supply rate, total supply, collateral factor, etc) of any vToken.
 
 # Solidity API
 
@@ -126,14 +126,14 @@ function vTokenBalancesAll(contract VToken[] vTokens, address account) external 
 
 | Name    | Type              | Description                  |
 | ------- | ----------------- | ---------------------------- |
-| vTokens | contract VToken[] | The list of vToken addresses |
+| vTokens | contract VToken\[] | The list of vToken addresses |
 | account | address           | The user Account             |
 
 #### Return Values
 
 | Name | Type                             | Description                                |
 | ---- | -------------------------------- | ------------------------------------------ |
-| [0]  | struct PoolLens.VTokenBalances[] | A list of structs containing balances data |
+| \[0]  | struct PoolLens.VTokenBalances\[] | A list of structs containing balances data |
 
 ---
 
@@ -155,7 +155,7 @@ function getAllPools(address poolRegistryAddress) external view returns (struct 
 
 | Name | Type                       | Description                     |
 | ---- | -------------------------- | ------------------------------- |
-| [0]  | struct PoolLens.PoolData[] | Arrays of all Venus pools' data |
+| \[0]  | struct PoolLens.PoolData\[] | Arrays of all Venus pools' data |
 
 ---
 
@@ -178,7 +178,7 @@ function getPoolByComptroller(address poolRegistryAddress, address comptroller) 
 
 | Name | Type                     | Description                                           |
 | ---- | ------------------------ | ----------------------------------------------------- |
-| [0]  | struct PoolLens.PoolData | PoolData structure containing the details of the pool |
+| \[0]  | struct PoolLens.PoolData | PoolData structure containing the details of the pool |
 
 ---
 
@@ -202,7 +202,7 @@ function getVTokenForAsset(address poolRegistryAddress, address comptroller, add
 
 | Name | Type    | Description           |
 | ---- | ------- | --------------------- |
-| [0]  | address | Address of the vToken |
+| \[0]  | address | Address of the vToken |
 
 ---
 
@@ -225,7 +225,7 @@ function getPoolsSupportedByAsset(address poolRegistryAddress, address asset) ex
 
 | Name | Type      | Description                     |
 | ---- | --------- | ------------------------------- |
-| [0]  | address[] | A list of Comptroller contracts |
+| \[0]  | address\[] | A list of Comptroller contracts |
 
 ---
 
@@ -241,13 +241,13 @@ function vTokenUnderlyingPriceAll(contract VToken[] vTokens) external view retur
 
 | Name    | Type              | Description                  |
 | ------- | ----------------- | ---------------------------- |
-| vTokens | contract VToken[] | The list of vToken addresses |
+| vTokens | contract VToken\[] | The list of vToken addresses |
 
 #### Return Values
 
 | Name | Type                                    | Description                                       |
 | ---- | --------------------------------------- | ------------------------------------------------- |
-| [0]  | struct PoolLens.VTokenUnderlyingPrice[] | An array containing the price data for each asset |
+| \[0]  | struct PoolLens.VTokenUnderlyingPrice\[] | An array containing the price data for each asset |
 
 ---
 
@@ -270,7 +270,7 @@ function getPendingRewards(address account, address comptrollerAddress) external
 
 | Name | Type                            | Description           |
 | ---- | ------------------------------- | --------------------- |
-| [0]  | struct PoolLens.RewardSummary[] | Pending rewards array |
+| \[0]  | struct PoolLens.RewardSummary\[] | Pending rewards array |
 
 ---
 
@@ -292,7 +292,7 @@ function getPoolBadDebt(address comptrollerAddress) external view returns (struc
 
 | Name | Type                           | Description                                                                                                                  |
 | ---- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
-| [0]  | struct PoolLens.BadDebtSummary | badDebtSummary A struct with comptroller address, total bad debut denominated in usd, and a break down of bad debt by market |
+| \[0]  | struct PoolLens.BadDebtSummary | badDebtSummary A struct with comptroller address, total bad debut denominated in usd, and a break down of bad debt by market |
 
 ---
 
@@ -315,7 +315,7 @@ function vTokenBalances(contract VToken vToken, address account) public returns 
 
 | Name | Type                           | Description                           |
 | ---- | ------------------------------ | ------------------------------------- |
-| [0]  | struct PoolLens.VTokenBalances | A struct containing the balances data |
+| \[0]  | struct PoolLens.VTokenBalances | A struct containing the balances data |
 
 ---
 
@@ -338,7 +338,7 @@ function getPoolDataFromVenusPool(address poolRegistryAddress, struct PoolRegist
 
 | Name | Type                     | Description       |
 | ---- | ------------------------ | ----------------- |
-| [0]  | struct PoolLens.PoolData | Enriched PoolData |
+| \[0]  | struct PoolLens.PoolData | Enriched PoolData |
 
 ---
 
@@ -360,7 +360,7 @@ function vTokenMetadata(contract VToken vToken) public view returns (struct Pool
 
 | Name | Type                           | Description           |
 | ---- | ------------------------------ | --------------------- |
-| [0]  | struct PoolLens.VTokenMetadata | VTokenMetadata struct |
+| \[0]  | struct PoolLens.VTokenMetadata | VTokenMetadata struct |
 
 ---
 
@@ -376,13 +376,13 @@ function vTokenMetadataAll(contract VToken[] vTokens) public view returns (struc
 
 | Name    | Type              | Description                  |
 | ------- | ----------------- | ---------------------------- |
-| vTokens | contract VToken[] | The list of vToken addresses |
+| vTokens | contract VToken\[] | The list of vToken addresses |
 
 #### Return Values
 
 | Name | Type                             | Description                        |
 | ---- | -------------------------------- | ---------------------------------- |
-| [0]  | struct PoolLens.VTokenMetadata[] | An array of VTokenMetadata structs |
+| \[0]  | struct PoolLens.VTokenMetadata\[] | An array of VTokenMetadata structs |
 
 ---
 
@@ -404,6 +404,6 @@ function vTokenUnderlyingPrice(contract VToken vToken) public view returns (stru
 
 | Name | Type                                  | Description                   |
 | ---- | ------------------------------------- | ----------------------------- |
-| [0]  | struct PoolLens.VTokenUnderlyingPrice | The price data for each asset |
+| \[0]  | struct PoolLens.VTokenUnderlyingPrice | The price data for each asset |
 
 ---

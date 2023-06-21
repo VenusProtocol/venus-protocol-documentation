@@ -26,7 +26,7 @@ function initialize(address protocolIncome_, address riskFund_) external
 * ZeroAddressNotAllowed is thrown when protocol income address is zero
 * ZeroAddressNotAllowed is thrown when risk fund address is zero
 
-***
+---
 
 #### setPoolRegistry
 
@@ -46,7 +46,7 @@ function setPoolRegistry(address poolRegistry_) external
 
 * ZeroAddressNotAllowed is thrown when pool registry address is zero
 
-***
+---
 
 #### releaseFunds
 
@@ -74,7 +74,7 @@ function releaseFunds(address comptroller, address asset, uint256 amount) extern
 
 * ZeroAddressNotAllowed is thrown when asset address is zero
 
-***
+---
 
 #### updateAssetsState
 
@@ -91,4 +91,4 @@ function updateAssetsState(address comptroller, address asset) public
 | comptroller | address | Comptroller address(pool) |
 | asset       | address | Asset address.            |
 
-***
+---

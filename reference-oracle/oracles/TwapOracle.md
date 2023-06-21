@@ -52,7 +52,7 @@ address vai
 
 ---
 
-### BNB_BASE_UNIT
+### BNB\_BASE\_UNIT
 
 the base unit of WBNB and BUSD, which are the paired tokens for all assets
 
@@ -132,11 +132,11 @@ function setTokenConfigs(struct TwapOracle.TokenConfig[] configs) external
 
 | Name    | Type                            | Description  |
 | ------- | ------------------------------- | ------------ |
-| configs | struct TwapOracle.TokenConfig[] | Config array |
+| configs | struct TwapOracle.TokenConfig\[] | Config array |
 
 #### ❌ Errors
 
-- Zero length error thrown, if length of the config array is 0
+* Zero length error thrown, if length of the config array is 0
 
 ---
 
@@ -168,11 +168,11 @@ function updateTwap(address vToken) external returns (uint256)
 
 | Name | Type    | Description                                                    |
 | ---- | ------- | -------------------------------------------------------------- |
-| [0]  | uint256 | anchorPrice anchor price of the underlying asset of the vToken |
+| \[0]  | uint256 | anchorPrice anchor price of the underlying asset of the vToken |
 
 #### ❌ Errors
 
-- Missing error is thrown if token config does not exist
+* Missing error is thrown if token config does not exist
 
 ---
 
@@ -194,12 +194,12 @@ function getUnderlyingPrice(address vToken) external view returns (uint256)
 
 | Name | Type    | Description                   |
 | ---- | ------- | ----------------------------- |
-| [0]  | uint256 | price Underlying price in USD |
+| \[0]  | uint256 | price Underlying price in USD |
 
 #### ❌ Errors
 
-- Missing error is thrown if the token config does not exist
-- Range error is thrown if TWAP price is not greater than zero
+* Missing error is thrown if the token config does not exist
+* Range error is thrown if TWAP price is not greater than zero
 
 ---
 
@@ -219,20 +219,20 @@ function setTokenConfig(struct TwapOracle.TokenConfig config) public
 
 #### 📅 Events
 
-- Emits TokenConfigAdded event if new token config are added with
-- asset address, PancakePool address, anchor period address
+* Emits TokenConfigAdded event if new token config are added with
+* asset address, PancakePool address, anchor period address
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- Range error is thrown if anchor period is not greater than zero
-- Range error is thrown if base unit is not greater than zero
-- Value error is thrown if base unit decimals is not the same as asset decimals
-- NotNullAddress error is thrown if address of asset is null
-- NotNullAddress error is thrown if PancakeSwap pool address is null
+* Range error is thrown if anchor period is not greater than zero
+* Range error is thrown if base unit is not greater than zero
+* Value error is thrown if base unit decimals is not the same as asset decimals
+* NotNullAddress error is thrown if address of asset is null
+* NotNullAddress error is thrown if PancakeSwap pool address is null
 
 ---
 
@@ -248,6 +248,6 @@ function currentCumulativePrice(struct TwapOracle.TokenConfig config) public vie
 
 | Name | Type    | Description                                               |
 | ---- | ------- | --------------------------------------------------------- |
-| [0]  | uint256 | cumulative price of target token regardless of pair order |
+| \[0]  | uint256 | cumulative price of target token regardless of pair order |
 
 ---

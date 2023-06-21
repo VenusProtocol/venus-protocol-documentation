@@ -192,6 +192,6 @@ function isVToken() external pure virtual returns (bool)
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0]  | bool | Always true |
+| \[0]  | bool | Always true |
 
 ---

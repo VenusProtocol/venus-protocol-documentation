@@ -10,9 +10,9 @@ Although the policy may seem too restrictive, it is usually quite easy to follow
 
 ## Configure your git
 
-By default, git merges the upstream changes into your local branch on pull. This **silently** [spoils your history](1) and may introduce unnecessary merge conflicts that are hard to solve and reason about. We encourage you to turn off this feature by running `git config --global pull.ff only`.
+By default, git merges the upstream changes into your local branch on pull. This **silently** [spoils your history][] and may introduce unnecessary merge conflicts that are hard to solve and reason about. We encourage you to turn off this feature by running `git config --global pull.ff only`.
 
-[1]: https://blog.sffc.xyz/post/185195398930/why-you-should-use-git-pull-ff-only-git-is-a
+[spoils your history]: https://blog.sffc.xyz/post/185195398930/why-you-should-use-git-pull-ff-only-git-is-a
 
 ## Create a feature branch
 
@@ -58,7 +58,7 @@ Breaking changes will result in a major version bump. These can be triggered by 
 
 Once you have made your changes, it's time to present them to the reviewers. It is quite important that the reviewers only see the relevant up-to-date changes structured by commits.
 
-1. While you've been working on your feature branch, the master branch has most likely evolved. Rebase your changes on top of master by running `git rebase --onto master <parent>`, where `<parent>` is the hash of the commit _immediately preceding_ your first commit. You can find `<parent>` by looking at the history: `git log --oneline`.
+1. While you've been working on your feature branch, the master branch has most likely evolved. Rebase your changes on top of master by running `git rebase --onto master <parent>`, where `<parent>` is the hash of the commit *immediately preceding* your first commit. You can find `<parent>` by looking at the history: `git log --oneline`.
 2. Your feature branch should have linear history. No merge commits are allowed.
 3. The commits in your PR should not solve the problems introduced in your previous commits. The reviewers often look at the code commit by commit, and they may comment on the problems you later solve. By making sure your commits are self-contained, you free the reviewers of unnecessary work. Use the interactive rebase feature (`git rebase -i <parent>`) to squash, reorder or drop your commits.
 
@@ -89,6 +89,6 @@ This policy may require some time and effort: writing lenghty commit messages an
 
 If we were to summarize everything written above into just three bullet points, we'd go with:
 
-- **Always** describe the reason for your changes in commit messages like you're talking with the 5-year-old.
-- Leave only meaningful changes in your PR history. Git history can't and shouldn't encompass everything, just like your school history textbook.
-- Choose **only one** person responsible for a feature. Avoid unnecessary interference.
+* **Always** describe the reason for your changes in commit messages like you're talking with the 5-year-old.
+* Leave only meaningful changes in your PR history. Git history can't and shouldn't encompass everything, just like your school history textbook.
+* Choose **only one** person responsible for a feature. Avoid unnecessary interference.

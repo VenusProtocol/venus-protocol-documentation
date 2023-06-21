@@ -17,9 +17,9 @@ function liquidateCalculateSeizeTokens(
 
 computes the number of collateral tokens to be seized up on liquidation using:
 
-- address of vToken Borrowed
-- address of collateral
-- actual repayment amount.
+* address of vToken Borrowed
+* address of collateral
+* actual repayment amount.
 
 #### Parameters
 
@@ -34,8 +34,8 @@ computes the number of collateral tokens to be seized up on liquidation using:
 
 | Name | Type | Description                          |
 | ---- | ---- | ------------------------------------ |
-| [0]  | uint | success indicator                    |
-| [1]  | uint | number of collateral tokens to seize |
+| \[0]  | uint | success indicator                    |
+| \[1]  | uint | number of collateral tokens to seize |
 
 ### liquidateCalculateSeizeTokens
 
@@ -58,8 +58,8 @@ Computes the number of collateral tokens to be seized in a liquidation event
 
 | Name | Type    | Description                                |
 | ---- | ------- | ------------------------------------------ |
-| [0]  | uint256 | A tuple of error code, and tokens to seize |
-| [1]  | uint256 |                                            |
+| \[0]  | uint256 | A tuple of error code, and tokens to seize |
+| \[1]  | uint256 |                                            |
 
 ### liquidateVAICalculateSeizeTokens
 
@@ -81,8 +81,8 @@ Computes the number of VAI tokens to be seized in a liquidation event
 
 | Name | Type    | Description                                |
 | ---- | ------- | ------------------------------------------ |
-| [0]  | uint256 | A tuple of error code, and tokens to seize |
-| [1]  | uint256 |                                            |
+| \[0]  | uint256 | A tuple of error code, and tokens to seize |
+| \[1]  | uint256 |                                            |
 
 ### getHypotheticalAccountLiquidity
 
@@ -107,6 +107,6 @@ A snapshot of the account is taken and the total borrow amount of the account is
 
 | Name | Type    | Description                                             |
 | ---- | ------- | ------------------------------------------------------- |
-| [0]  | uint256 | Returns a tuple of error code, liquidity, and shortfall |
-| [1]  | uint256 |                                                         |
-| [2]  | uint256 |                                                         |
+| \[0]  | uint256 | Returns a tuple of error code, liquidity, and shortfall |
+| \[1]  | uint256 |                                                         |
+| \[2]  | uint256 |                                                         |

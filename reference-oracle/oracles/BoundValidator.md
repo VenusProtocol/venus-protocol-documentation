@@ -44,7 +44,7 @@ address vai
 
 ---
 
-### BNB_ADDR
+### BNB\_ADDR
 
 Set this as asset address for BNB. This is the underlying for vBNB
 
@@ -83,19 +83,19 @@ function setValidateConfigs(struct BoundValidator.ValidateConfig[] configs) exte
 
 | Name    | Type                                   | Description                 |
 | ------- | -------------------------------------- | --------------------------- |
-| configs | struct BoundValidator.ValidateConfig[] | Array of validation configs |
+| configs | struct BoundValidator.ValidateConfig\[] | Array of validation configs |
 
 #### 📅 Events
 
-- Emits ValidateConfigAdded for each validation config that is successfully set
+* Emits ValidateConfigAdded for each validation config that is successfully set
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- Zero length error is thrown if length of the config array is 0
+* Zero length error is thrown if length of the config array is 0
 
 ---
 
@@ -133,8 +133,8 @@ function validatePriceWithAnchorPrice(address vToken, uint256 reportedPrice, uin
 
 #### ❌ Errors
 
-- Missing error thrown if asset config is not set
-- Price error thrown if anchor price is not valid
+* Missing error thrown if asset config is not set
+* Price error thrown if anchor price is not valid
 
 ---
 
@@ -154,16 +154,16 @@ function setValidateConfig(struct BoundValidator.ValidateConfig config) public
 
 #### 📅 Events
 
-- Emits ValidateConfigAdded when a validation config is successfully set
+* Emits ValidateConfigAdded when a validation config is successfully set
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- Null address error is thrown if asset address is null
-- Range error thrown if bound ratio is not positive
-- Range error thrown if lower bound is greater than or equal to upper bound
+* Null address error is thrown if asset address is null
+* Range error thrown if bound ratio is not positive
+* Range error thrown if lower bound is greater than or equal to upper bound
 
 ---

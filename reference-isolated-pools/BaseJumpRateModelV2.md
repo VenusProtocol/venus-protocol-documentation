@@ -1,10 +1,10 @@
-# Logic for Compound&#x27;s JumpRateModel Contract V2.
+# Logic for Compound's JumpRateModel Contract V2.
 
 An interest rate model with a steep increase after a certain utilization threshold called **kink** is reached.
 This rate model uses the following formula for the borrow rate:
 
-- $borrow\\_rate(u)=a_1 \cdot u + b$, when $u < kink$
-- $borrow\\_rate(u)=a_1 \cdot kink + a_2  \cdot (u-kink) + b$, otherwise
+* $borrow\\\_rate(u)=a\_1 \cdot u + b$, when $u < kink$
+* $borrow\\\_rate(u)=a\_1 \cdot kink + a\_2  \cdot (u-kink) + b$, otherwise
 
 The parameters of this interest rate model can be adjusted by the owner.
 Version 2 modifies Version 1 by enabling updateable parameters.
@@ -73,18 +73,18 @@ function updateJumpRateModel(uint256 baseRatePerYear, uint256 multiplierPerYear,
 
 | Name                  | Type    | Description                                                                 |
 | --------------------- | ------- | --------------------------------------------------------------------------- |
-| baseRatePerYear       | uint256 | The approximate target base APR, as a mantissa (scaled by EXP_SCALE)        |
-| multiplierPerYear     | uint256 | The rate of increase in interest rate wrt utilization (scaled by EXP_SCALE) |
+| baseRatePerYear       | uint256 | The approximate target base APR, as a mantissa (scaled by EXP\_SCALE)        |
+| multiplierPerYear     | uint256 | The rate of increase in interest rate wrt utilization (scaled by EXP\_SCALE) |
 | jumpMultiplierPerYear | uint256 | The multiplierPerBlock after hitting a specified utilization point          |
 | kink\_                | uint256 | The utilization point at which the jump multiplier is applied               |
 
 #### ⛔️ Access Requirements
 
-- Controlled by AccessControlManager
+* Controlled by AccessControlManager
 
 #### ❌ Errors
 
-- Unauthorized if the sender is not allowed to call this function
+* Unauthorized if the sender is not allowed to call this function
 
 ---
 
@@ -110,7 +110,7 @@ function getSupplyRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 
 
 | Name | Type    | Description                                                              |
 | ---- | ------- | ------------------------------------------------------------------------ |
-| [0]  | uint256 | The supply rate percentage per block as a mantissa (scaled by EXP_SCALE) |
+| \[0]  | uint256 | The supply rate percentage per block as a mantissa (scaled by EXP\_SCALE) |
 
 ---
 
@@ -135,6 +135,6 @@ function utilizationRate(uint256 cash, uint256 borrows, uint256 reserves, uint25
 
 | Name | Type    | Description                                                  |
 | ---- | ------- | ------------------------------------------------------------ |
-| [0]  | uint256 | The utilization rate as a mantissa between [0, MANTISSA_ONE] |
+| \[0]  | uint256 | The utilization rate as a mantissa between \[0, MANTISSA\_ONE] |
 
 ---

@@ -8,6 +8,6 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
-- [Certik](https://docs.venus.io/docs/security#introduction)
-- [PeckShield](https://github.com/peckshield/publications/blob/master/audit_reports/PeckShield-Audit-Report-VenusGrant-v1.0.pdf)
-- [Code4rena](https://github.com/code-423n4/2023-05-venus)
+* [Certik](https://docs.venus.io/docs/security#introduction)
+* [PeckShield](https://github.com/peckshield/publications/blob/master/audit_reports/PeckShield-Audit-Report-VenusGrant-v1.0.pdf)
+* [Code4rena](https://github.com/code-423n4/2023-05-venus)

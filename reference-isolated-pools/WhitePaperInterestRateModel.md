@@ -1,4 +1,4 @@
-# Compound&#x27;s WhitePaperInterestRateModel Contract
+# Compound's WhitePaperInterestRateModel Contract
 
 The parameterized model described in section 2.4 of the original Compound Protocol whitepaper
 
@@ -36,8 +36,8 @@ constructor(uint256 baseRatePerYear, uint256 multiplierPerYear) public
 
 | Name              | Type    | Description                                                                 |
 | ----------------- | ------- | --------------------------------------------------------------------------- |
-| baseRatePerYear   | uint256 | The approximate target base APR, as a mantissa (scaled by EXP_SCALE)        |
-| multiplierPerYear | uint256 | The rate of increase in interest rate wrt utilization (scaled by EXP_SCALE) |
+| baseRatePerYear   | uint256 | The approximate target base APR, as a mantissa (scaled by EXP\_SCALE)        |
+| multiplierPerYear | uint256 | The rate of increase in interest rate wrt utilization (scaled by EXP\_SCALE) |
 
 ---
 
@@ -62,7 +62,7 @@ function getBorrowRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 
 
 | Name | Type    | Description                                                              |
 | ---- | ------- | ------------------------------------------------------------------------ |
-| [0]  | uint256 | The borrow rate percentage per block as a mantissa (scaled by EXP_SCALE) |
+| \[0]  | uint256 | The borrow rate percentage per block as a mantissa (scaled by EXP\_SCALE) |
 
 ---
 
@@ -88,7 +88,7 @@ function getSupplyRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 
 
 | Name | Type    | Description                                                              |
 | ---- | ------- | ------------------------------------------------------------------------ |
-| [0]  | uint256 | The supply rate percentage per block as a mantissa (scaled by EXP_SCALE) |
+| \[0]  | uint256 | The supply rate percentage per block as a mantissa (scaled by EXP\_SCALE) |
 
 ---
 
@@ -113,6 +113,6 @@ function utilizationRate(uint256 cash, uint256 borrows, uint256 reserves, uint25
 
 | Name | Type    | Description                                                  |
 | ---- | ------- | ------------------------------------------------------------ |
-| [0]  | uint256 | The utilization rate as a mantissa between [0, MANTISSA_ONE] |
+| \[0]  | uint256 | The utilization rate as a mantissa between \[0, MANTISSA\_ONE] |
 
 ---

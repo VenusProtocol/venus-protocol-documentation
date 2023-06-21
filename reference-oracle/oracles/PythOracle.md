@@ -12,7 +12,7 @@ struct TokenConfig {
 }
 ```
 
-### EXP_SCALE
+### EXP\_SCALE
 
 Exponent scale (decimal precision) of prices
 
@@ -42,7 +42,7 @@ address vai
 
 ---
 
-### BNB_ADDR
+### BNB\_ADDR
 
 Set this as asset address for BNB. This is the underlying for vBNB
 
@@ -101,15 +101,15 @@ function setTokenConfigs(struct PythOracle.TokenConfig[] tokenConfigs_) external
 
 | Name           | Type                            | Description        |
 | -------------- | ------------------------------- | ------------------ |
-| tokenConfigs\_ | struct PythOracle.TokenConfig[] | Token config array |
+| tokenConfigs\_ | struct PythOracle.TokenConfig\[] | Token config array |
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- Zero length error is thrown if length of the array in parameter is 0
+* Zero length error is thrown if length of the array in parameter is 0
 
 ---
 
@@ -129,15 +129,15 @@ function setUnderlyingPythOracle(contract IPyth underlyingPythOracle_) external
 
 #### 📅 Events
 
-- Emits PythOracleSet event with address of Pyth oracle.
+* Emits PythOracleSet event with address of Pyth oracle.
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- NotNullAddress error thrown if underlyingPythOracle\_ address is zero
+* NotNullAddress error thrown if underlyingPythOracle\_ address is zero
 
 ---
 
@@ -177,13 +177,13 @@ function getUnderlyingPrice(address vToken) external view returns (uint256)
 
 | Name | Type    | Description                                            |
 | ---- | ------- | ------------------------------------------------------ |
-| [0]  | uint256 | price Underlying price with a precision of 18 decimals |
+| \[0]  | uint256 | price Underlying price with a precision of 18 decimals |
 
 #### ❌ Errors
 
-- Zero address error thrown if underlyingPythOracle address is null
-- Zero address error thrown if asset address is null
-- Range error thrown if price of Pyth oracle is not greater than zero
+* Zero address error thrown if underlyingPythOracle address is null
+* Zero address error thrown if asset address is null
+* Range error thrown if price of Pyth oracle is not greater than zero
 
 ---
 
@@ -203,11 +203,11 @@ function setTokenConfig(struct PythOracle.TokenConfig tokenConfig) public
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- Range error is thrown if max stale period is zero
-- NotNullAddress error is thrown if asset address is null
+* Range error is thrown if max stale period is zero
+* NotNullAddress error is thrown if asset address is null
 
 ---

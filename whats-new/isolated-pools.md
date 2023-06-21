@@ -8,7 +8,7 @@ Isolated Pools also offer custom rewards for each market in the pool, incentiviz
 
 ### Isolated Pools Architecture
 
-The Isolated Pools system is based on the _PoolRegistry_ contract. It maintains a directory of isolated lending pools, allows the creation and registration of new pools, and offers getter methods to fetch pool details.
+The Isolated Pools system is based on the *PoolRegistry* contract. It maintains a directory of isolated lending pools, allows the creation and registration of new pools, and offers getter methods to fetch pool details.
 
 To add a new market to an existing lending pool, the PoolRegistry deploys a JumpRateModelV2 or a WhitePaperInterestRateModel contract, deploying the upgradable VToken for the market before gaining the approval of the market's Comptroller.
 

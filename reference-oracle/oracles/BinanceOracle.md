@@ -103,7 +103,7 @@ function getUnderlyingPrice(address vToken) external view returns (uint256)
 
 | Name | Type    | Description  |
 | ---- | ------- | ------------ |
-| [0]  | uint256 | Price in USD |
+| \[0]  | uint256 | Price in USD |
 
 ---
 
@@ -119,6 +119,6 @@ function getFeedRegistryAddress() public view returns (address)
 
 | Name | Type    | Description                                                  |
 | ---- | ------- | ------------------------------------------------------------ |
-| [0]  | address | feedRegistryAddress Address of binance oracle feed registry. |
+| \[0]  | address | feedRegistryAddress Address of binance oracle feed registry. |
 
 ---

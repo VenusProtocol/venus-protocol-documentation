@@ -21,10 +21,8 @@ be invalidated. The lower bound ratio presents the deviation between reported pr
 which the reported price will be invalidated. So for oracle price to be considered valid the below statement
 should be true:
 
-```
-anchorRatio = anchorPrice/reporterPrice
-isValid = anchorRatio <= upperBoundAnchorRatio && anchorRatio >= lowerBoundAnchorRatio
-```
+    anchorRatio = anchorPrice/reporterPrice
+    isValid = anchorRatio <= upperBoundAnchorRatio && anchorRatio >= lowerBoundAnchorRatio
 
 In most cases, Chainlink is used as the main oracle, TWAP or Pyth oracles are used as the pivot oracle depending
 on which supports the given market and Binance oracle is used as the fallback oracle. For some markets we may
@@ -71,7 +69,7 @@ address vai
 
 ---
 
-### BNB_ADDR
+### BNB\_ADDR
 
 Set this as asset address for BNB. This is the underlying for vBNB
 
@@ -135,7 +133,7 @@ function pause() external
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 ---
 
@@ -149,7 +147,7 @@ function unpause() external
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 ---
 
@@ -165,15 +163,15 @@ function setTokenConfigs(struct ResilientOracle.TokenConfig[] tokenConfigs_) ext
 
 | Name           | Type                                 | Description        |
 | -------------- | ------------------------------------ | ------------------ |
-| tokenConfigs\_ | struct ResilientOracle.TokenConfig[] | Token config array |
+| tokenConfigs\_ | struct ResilientOracle.TokenConfig\[] | Token config array |
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- Throws a length error if the length of the token configs array is 0
+* Throws a length error if the length of the token configs array is 0
 
 ---
 
@@ -195,17 +193,17 @@ function setOracle(address asset, address oracle, enum ResilientOracle.OracleRol
 
 #### 📅 Events
 
-- Emits OracleSet event with asset address, oracle address and role of the oracle for the asset
+* Emits OracleSet event with asset address, oracle address and role of the oracle for the asset
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- Null address error if main-role oracle address is null
-- NotNullAddress error is thrown if asset address is null
-- TokenConfigExistance error is thrown if token config is not set
+* Null address error if main-role oracle address is null
+* NotNullAddress error is thrown if asset address is null
+* TokenConfigExistance error is thrown if token config is not set
 
 ---
 
@@ -227,12 +225,12 @@ function enableOracle(address asset, enum ResilientOracle.OracleRole role, bool 
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- NotNullAddress error is thrown if asset address is null
-- TokenConfigExistance error is thrown if token config is not set
+* NotNullAddress error is thrown if asset address is null
+* TokenConfigExistance error is thrown if token config is not set
 
 ---
 
@@ -256,10 +254,10 @@ function updatePrice(address vToken) external
 
 Gets price of the underlying asset for a given vToken. Validation flow:
 
-- Check if the oracle is paused globally
-- Validate price from main oracle against pivot oracle
-- Validate price from fallback oracle against pivot oracle if the first validation failed
-- Validate price from main oracle against fallback oracle if the second validation failed
+* Check if the oracle is paused globally
+* Validate price from main oracle against pivot oracle
+* Validate price from fallback oracle against pivot oracle if the first validation failed
+* Validate price from main oracle against fallback oracle if the second validation failed
   In the case that the pivot oracle is not available but main price is available and validation is successful,
   main oracle price is returned.
 
@@ -277,12 +275,12 @@ function getUnderlyingPrice(address vToken) external view returns (uint256)
 
 | Name | Type    | Description                               |
 | ---- | ------- | ----------------------------------------- |
-| [0]  | uint256 | price USD price in scaled decimal places. |
+| \[0]  | uint256 | price USD price in scaled decimal places. |
 
 #### ❌ Errors
 
-- Paused error is thrown when resilent oracle is paused
-- Invalid resilient oracle price error is thrown if fetched prices from oracle is invalid
+* Paused error is thrown when resilent oracle is paused
+* Invalid resilient oracle price error is thrown if fetched prices from oracle is invalid
 
 ---
 
@@ -302,16 +300,16 @@ function setTokenConfig(struct ResilientOracle.TokenConfig tokenConfig) public
 
 #### 📅 Events
 
-- Emits TokenConfigAdded event when vToken config is set successfully by governnace
+* Emits TokenConfigAdded event when vToken config is set successfully by governnace
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- NotNullAddress is thrown if asset address is null
-- NotNullAddress is thrown if main-role oracle address for asset is null
+* NotNullAddress is thrown if asset address is null
+* NotNullAddress is thrown if main-role oracle address for asset is null
 
 ---
 

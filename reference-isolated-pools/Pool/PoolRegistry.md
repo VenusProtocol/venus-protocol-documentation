@@ -129,11 +129,11 @@ function setProtocolShareReserve(address payable protocolShareReserve_) external
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- ZeroAddressNotAllowed is thrown when protocol share reserve address is zero
+* ZeroAddressNotAllowed is thrown when protocol share reserve address is zero
 
 ---
 
@@ -153,11 +153,11 @@ function setShortfallContract(contract Shortfall shortfall_) external
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- ZeroAddressNotAllowed is thrown when shortfall contract address is zero
+* ZeroAddressNotAllowed is thrown when shortfall contract address is zero
 
 ---
 
@@ -177,10 +177,10 @@ function addMarket(struct PoolRegistry.AddMarketInput input) external
 
 #### ❌ Errors
 
-- ZeroAddressNotAllowed is thrown when Comptroller address is zero
-- ZeroAddressNotAllowed is thrown when asset address is zero
-- ZeroAddressNotAllowed is thrown when VToken beacon address is zero
-- ZeroAddressNotAllowed is thrown when vTokenReceiver address is zero
+* ZeroAddressNotAllowed is thrown when Comptroller address is zero
+* ZeroAddressNotAllowed is thrown when asset address is zero
+* ZeroAddressNotAllowed is thrown when VToken beacon address is zero
+* ZeroAddressNotAllowed is thrown when vTokenReceiver address is zero
 
 ---
 
@@ -230,7 +230,7 @@ function getAllPools() external view returns (struct PoolRegistryInterface.Venus
 
 | Name | Type                                     | Description                                                         |
 | ---- | ---------------------------------------- | ------------------------------------------------------------------- |
-| [0]  | struct PoolRegistryInterface.VenusPool[] | A list of all pools within PoolRegistry, with details for each pool |
+| \[0]  | struct PoolRegistryInterface.VenusPool\[] | A list of all pools within PoolRegistry, with details for each pool |
 
 ---
 

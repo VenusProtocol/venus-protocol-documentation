@@ -11,19 +11,19 @@ The Jump Rate Model uses the following formulas to calculate the interest:
 For Borrow rate:&#x20;
 
 $$
-borrow\_rate (u) = b + a_1 \cdot kink + a_1 \cdot \min(0, u-kink) + a_2 \cdot \max(0,u-kink)
+borrow\_rate (u) = b + a\_1 \cdot kink + a\_1 \cdot \min(0, u-kink) + a\_2 \cdot \max(0,u-kink)
 $$
 
 And, for Supply rate:
 
 $$
-supply\_rate(u) = borrow\_rate(u) \cdot u_s \cdot (1 - reserve\_factor)
+supply\_rate(u) = borrow\_rate(u) \cdot u\_s \cdot (1 - reserve\_factor)
 $$
 
 Where,
 
 $$
-u_s = \frac{borrows}{cash + borrows - reserves + badDebt}
+u\_s = \frac{borrows}{cash + borrows - reserves + badDebt}
 $$
 
 Take note that `a_2 > a_1` and `0 \leq kink \leq 1`.
@@ -33,22 +33,22 @@ The borrow rate employs different formulas when the utilization rate falls into 
 If `u < kink`:
 
 $$
-borrow\_rate(u) = a_1 \cdot u + b
+borrow\_rate(u) = a\_1 \cdot u + b
 $$
 
 If `u > kink`:
 
 $$
-borrow\_rate(u) = a_1 \cdot kink + a_2 \cdot (u-kink) + b
+borrow\_rate(u) = a\_1 \cdot kink + a\_2 \cdot (u-kink) + b
 $$
 
 **Model Parameters**
 
-- `a_1`: Variable interest rate slope1.
-- `a_2`: Variable interest rate slope2.
-- `b`: Base rate per block (`baseRatePerYear / blocksPerYear`).
-- `kink`: Optimal utilization rate, at which the variable interest rate slope shifts from slope1 to slope2.
-- `reserve_factor`: Part of interest income withdrawn from the protocol, i.e., not distributed to suppliers.
+* `a_1`: Variable interest rate slope1.
+* `a_2`: Variable interest rate slope2.
+* `b`: Base rate per block (`baseRatePerYear / blocksPerYear`).
+* `kink`: Optimal utilization rate, at which the variable interest rate slope shifts from slope1 to slope2.
+* `reserve_factor`: Part of interest income withdrawn from the protocol, i.e., not distributed to suppliers.
 
 The utilization rate (`u`) is defined as:
 
@@ -58,10 +58,10 @@ $$
 
 Where:
 
-- `borrows`: Amount of borrows in the market, in terms of the underlying asset, excluding bad debt.
-- `cash`: Total amount of the underlying asset owned by the market at a specific time.
-- `reserves`: Amount of the underlying asset owned by the market but unavailable for borrowers or suppliers, reserved for various uses defined by the protocol's tokenomics.
-- `bad_debt`: After liquidators repay as much debt as possible, reducing collateral to a minimal amount, the remaining debt is tagged as bad debt. Bad debt doesn’t accrue interest.
+* `borrows`: Amount of borrows in the market, in terms of the underlying asset, excluding bad debt.
+* `cash`: Total amount of the underlying asset owned by the market at a specific time.
+* `reserves`: Amount of the underlying asset owned by the market but unavailable for borrowers or suppliers, reserved for various uses defined by the protocol's tokenomics.
+* `bad_debt`: After liquidators repay as much debt as possible, reducing collateral to a minimal amount, the remaining debt is tagged as bad debt. Bad debt doesn’t accrue interest.
 
 #### Whitepaper Rate Model
 
@@ -76,11 +76,11 @@ $$
 For Supply rate:
 
 $$
-supply\_rate(u) = borrow\_rate(u) \cdot u_s \cdot (1 - reserve\_factor)
+supply\_rate(u) = borrow\_rate(u) \cdot u\_s \cdot (1 - reserve\_factor)
 $$
 
 Where,
 
 $$
-u_s = \frac{borrows}{cash + borrows - reserves + badDebt}
+u\_s = \frac{borrows}{cash + borrows - reserves + badDebt}
 $$
