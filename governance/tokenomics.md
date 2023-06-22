@@ -1,24 +1,26 @@
 # Tokenomics
 
-### Overview
+## Overview
 
-Venus Protocol's revenue distribution model addresses different revenue streams, applying distinct allocation schemes to protocol reserves and other sources of income such as liquidation penalties and new product revenues.
+The Venus Protocol tokenomics have been reevaluated to optimize income distribution and cater to the protocol's present and future needs. Version 3.1 of the Venus Protocol revenue distribution model addresses this need and optimizes the allocation between rewards and treasury reserves.
 
 ### Revenue Distribution from Protocol Reserves
 
-Protocol reserves primarily consist of accumulated borrow fees subjected to reserve factors. The revenue allocation model for these reserves divides income into four main categories:
+Protocol reserves are mainly composed of accumulated borrow fees. The model for revenue allocation from these reserves divides income into four main segments:
 
-1. **Risk Fund (40%):** This fund is established to address potential shortfalls in the protocol, particularly in situations of ineffective or delayed liquidations. The allocation to the risk fund also serves as a financial buffer, potentially facilitating the protocol's current shortfall via a financing (bond) mechanism.
-2. **XVS Vault Rewards (20%):** The Venus protocol incentivizes users through XVS Vault Rewards, maintaining a stable allocation of 20% of the reserve revenue.
-3. **DAO Operations and Funding (20%):** To ensure smooth operations and continuous development, 20% of the reserve revenue is assigned to Decentralized Autonomous Organization (DAO) operations and funding.
-4. **Venus Prime Token Program (20%):** Previously used for buyback and burn allocation, this 20% of reserve revenue is now directed to the Venus Prime Token program.
+* **Risk Fund (40%)**: This fund is established to address potential shortfalls in the protocol, particularly in situations of ineffective or delayed liquidations. The allocation to the risk fund remains unchanged to maintain a strong financial buffer.
+* **Treasury Reserve (40%)**: The treasury reserve bolsters the protocol's resilience and provides a robust safety net for its ongoing operations.
+* **XVS Vault Rewards (10%)**: Venus protocol continues to incentivize users through XVS Vault Rewards.
+* **Venus Prime Token Program (10%)**: This program utilizes a portion of the reserve revenue to incentivize user participation and boost the APYs for qualified users in the main market.
 
 ### Allocation for Additional Revenue Streams
 
-Other revenue streams include liquidation penalties, where the protocol takes a 5% fee from the liquidated amount, and potential income generated from future product releases. The revenue distribution for these streams will be as follows:
+Other revenue streams include liquidation penalties and potential income generated from future product releases. The revenue distribution for these streams is as follows:
 
-1. **Risk Fund (48%):** The allocation towards the Risk Fund, including financing, will increase to 48% of these additional revenue streams.
-2. **XVS Vault Rewards (26%):** The rewards allocated to XVS vault holders will see an increase to 26% of the total revenue from these sources.
-3. **DAO Operations and Funding (26%):** The allocation for DAO operations and funding will also be increased to 26% of the additional revenue.
+* **Risk Fund (50%)**
+* **Treasury Reserves (30%)**
+* **XVS Vault Rewards (20%)**
+
+The methodology behind these adjustments includes an assessment of the existing tokenomics, past changes, their impact on the ecosystem, and analysis of market dynamics and trends.
 
 This dual allocation model accounts for the diverse revenue sources within the Venus Protocol ecosystem, ensuring robust and responsive financial management. As the protocol evolves and introduces new products, these models may further be adjusted to optimally serve the Venus community.

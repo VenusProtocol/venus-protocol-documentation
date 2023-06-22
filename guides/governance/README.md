@@ -1,5 +1,6 @@
 # Governance
 
+<<<<<<< HEAD
 ### Overview
 
 Participation in the Venus Protocol governance process requires that users delegate their voting power. This process ensures that XVS tokens held in the vault are eligible to vote on Venus Improvement Proposals (VIPs). Notably, with the new governance model, this process needs to be done only once.
@@ -37,3 +38,6 @@ Click on the "Redelegate" button. This will submit the address for vote delegati
 A confirmation prompt will appear in your connected wallet (for example, MetaMask). Confirm the transaction to complete the voting power delegation process.
 
 Congratulations, you've now enabled your XVS in the vault to participate in Venus Protocol's governance. Your tokens are now ready to vote on upcoming VIP proposals. Remember, your engagement in the protocol’s decision-making process is vital for its future development and success.
+=======
+###
+>>>>>>> main

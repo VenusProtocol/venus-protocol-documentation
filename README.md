@@ -7,3 +7,5 @@ The latest iteration of Venus Protocol, the most trusted and battle tested lendi
 1. Risk management
 2. Decentralization
 3. User experience
+
+In doing so, Venus continues to push the boundaries of what's possible within the realm of decentralized finance.

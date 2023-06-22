@@ -2,14 +2,18 @@
 
 ### Overview
 
-VAI is the stablecoin of Venus Protocol. To ensure its stability and peg to 1 USD, Venus V4 introduces several mechanisms to maintain its value at $1.
+VAI is the primary stablecoin of the Venus Protocol. It is carefully designed and integrated with a series of stability mechanisms to maintain its peg to 1 USD. This secure pegging mechanism allows for optimized minting processes, a capped minting rate, and a unique integration of the Oracle Price.
 
 ### Stability Fee and Optimised Minting
 
-VAI’s value is maintained via a stability fee. Users pay this fee when repaying minted VAI. It gets added continuously to the user's VAI minted balance every block. The fee encourages users to mint or burn VAI according to its price, helping to maintain the stable value.
+VAI sustains its value via a stability fee system. This fee is a charge that users incur when they repay their minted VAI. Calculated on a block-by-block basis, this fee gets added to the user's minted VAI balance. This fee system encourages users to either mint or burn VAI in response to its price fluctuations, thereby contributing to its stability.
 
-### VAI Minting Rate and Minting Cap
+The stability fee is determined through the following formula:
 
-Venus V4 modifies how much VAI a user can mint, taking into account their weighted supply. This change protects users from potential liquidation due to minting excessive VAI.
+$$
+\text{{stabilityFee}}(\%) = \text{{baseRate}}(\%) + \max(0, (1 - \text{{currentPriceOfVAI}})) \times \text{{floatingRate}}(\%)
+$$
 
-A global cap on total VAI minting is also introduced, controlling how much total VAI can be minted across the platform, providing another layer of stability.
+The `baseRate` is a fixed rate that users must always pay, while `max(0, (1 - currentPriceOfVAI)) * floatingRate` is a variable rate that users pay based on outstanding VAI. This incentivizes users to burn or mint VAI according to its price. The variable rate will always be greater or equal to zero, meaning the minimum stability fee will be the base rate.
+
+Revenue generated from the stability fee serves as a financial cushion during extreme market conditions, such as bad debt scenarios.
