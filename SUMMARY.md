@@ -18,7 +18,6 @@
 * [VIPs](governance/decentralization.md)
 * [Tokenomics](governance/tokenomics.md)
 * [Community Forum](https://community.venus.io/top?period=quarterly)
-* [Governance Community Forum](https://community.venus.io/top?period=quarterly)
 
 ## Risk
 
