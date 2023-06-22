@@ -13,8 +13,8 @@ Granular roles are built by hashing the contract address and its function signat
 is guarded by ACM, calling `giveRolePermission` for account B do the following:
 
 1. Compute `keccak256(contractFooAddress,functionSignatureBar)`
-1. Add the computed role to the roles of account B
-1. Account B now can call `ContractFoo.bar()`
+2. Add the computed role to the roles of account B
+3. Account B now can call `ContractFoo.bar()`
 
 ## Admin Roles
 
@@ -32,7 +32,7 @@ All restricted functions in Venus Protocol use a hook to ACM in order to check i
 `AccessControlledV5` and `AccessControlledV8` abstract contract makes this integration easier. They call ACM's external method
 `isAllowedToCall(address caller, string functionSig)`. Here is an example of how `setCollateralFactor` function in `Comptroller` is integrated with ACM:
 
-```
+```solidity
     contract Comptroller is [...] AccessControlledV8 {
         [...]
         function setCollateralFactor(VToken vToken, uint256 newCollateralFactorMantissa, uint256 newLiquidationThresholdMantissa) external {
@@ -62,7 +62,7 @@ function giveCallPermission(address contractAddress, string functionSig, address
 
 #### 📅 Events
 
-- Emits a {RoleGranted} and {PermissionGranted} events.
+* Emits a {RoleGranted} and {PermissionGranted} events.
 
 ---
 
@@ -84,7 +84,7 @@ function revokeCallPermission(address contractAddress, string functionSig, addre
 
 #### 📅 Events
 
-- Emits {RoleRevoked} and {PermissionRevoked} events.
+* Emits {RoleRevoked} and {PermissionRevoked} events.
 
 ---
 
@@ -107,7 +107,7 @@ function isAllowedToCall(address account, string functionSig) public view return
 
 | Name | Type | Description                                                            |
 | ---- | ---- | ---------------------------------------------------------------------- |
-| [0]  | bool | false if the user account cannot call the particular contract function |
+| \[0]  | bool | false if the user account cannot call the particular contract function |
 
 ---
 
@@ -131,6 +131,6 @@ function hasPermission(address account, address contractAddress, string function
 
 | Name | Type | Description                                                            |
 | ---- | ---- | ---------------------------------------------------------------------- |
-| [0]  | bool | false if the user account cannot call the particular contract function |
+| \[0]  | bool | false if the user account cannot call the particular contract function |
 
 ---

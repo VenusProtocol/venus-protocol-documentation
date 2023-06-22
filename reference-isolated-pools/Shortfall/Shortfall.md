@@ -131,8 +131,8 @@ function initialize(address convertibleBaseAsset_, contract IRiskFund riskFund_,
 
 #### ❌ Errors
 
-- ZeroAddressNotAllowed is thrown when convertible base asset address is zero
-- ZeroAddressNotAllowed is thrown when risk fund address is zero
+* ZeroAddressNotAllowed is thrown when convertible base asset address is zero
+* ZeroAddressNotAllowed is thrown when risk fund address is zero
 
 ---
 
@@ -153,7 +153,7 @@ function placeBid(address comptroller, uint256 bidBps) external
 
 #### 📅 Events
 
-- Emits BidPlaced event on success
+* Emits BidPlaced event on success
 
 ---
 
@@ -173,7 +173,7 @@ function closeAuction(address comptroller) external
 
 #### 📅 Events
 
-- Emits AuctionClosed event on successful close
+* Emits AuctionClosed event on successful close
 
 ---
 
@@ -193,8 +193,8 @@ function startAuction(address comptroller) external
 
 #### 📅 Events
 
-- Emits AuctionStarted event on success
-- Errors if auctions are paused
+* Emits AuctionStarted event on success
+* Errors if auctions are paused
 
 ---
 
@@ -214,7 +214,7 @@ function restartAuction(address comptroller) external
 
 #### 📅 Events
 
-- Emits AuctionRestarted event on successful restart
+* Emits AuctionRestarted event on successful restart
 
 ---
 
@@ -234,11 +234,11 @@ function updateNextBidderBlockLimit(uint256 _nextBidderBlockLimit) external
 
 #### 📅 Events
 
-- Emits NextBidderBlockLimitUpdated on success
+* Emits NextBidderBlockLimitUpdated on success
 
 #### ⛔️ Access Requirements
 
-- Restricted to owner
+* Restricted to owner
 
 ---
 
@@ -258,11 +258,11 @@ function updateIncentiveBps(uint256 _incentiveBps) external
 
 #### 📅 Events
 
-- Emits IncentiveBpsUpdated on success
+* Emits IncentiveBpsUpdated on success
 
 #### ⛔️ Access Requirements
 
-- Restricted to owner
+* Restricted to owner
 
 ---
 
@@ -282,11 +282,11 @@ function updateMinimumPoolBadDebt(uint256 _minimumPoolBadDebt) external
 
 #### 📅 Events
 
-- Emits MinimumPoolBadDebtUpdated on success
+* Emits MinimumPoolBadDebtUpdated on success
 
 #### ⛔️ Access Requirements
 
-- Restricted to owner
+* Restricted to owner
 
 ---
 
@@ -306,11 +306,11 @@ function updateWaitForFirstBidder(uint256 _waitForFirstBidder) external
 
 #### 📅 Events
 
-- Emits WaitForFirstBidderUpdated on success
+* Emits WaitForFirstBidderUpdated on success
 
 #### ⛔️ Access Requirements
 
-- Restricted to owner
+* Restricted to owner
 
 ---
 
@@ -330,15 +330,15 @@ function updatePoolRegistry(address poolRegistry_) external
 
 #### 📅 Events
 
-- Emits PoolRegistryUpdated on success
+* Emits PoolRegistryUpdated on success
 
 #### ⛔️ Access Requirements
 
-- Restricted to owner
+* Restricted to owner
 
 #### ❌ Errors
 
-- ZeroAddressNotAllowed is thrown when pool registry address is zero
+* ZeroAddressNotAllowed is thrown when pool registry address is zero
 
 ---
 
@@ -352,15 +352,15 @@ function pauseAuctions() external
 
 #### 📅 Events
 
-- Emits AuctionsPaused on success
+* Emits AuctionsPaused on success
 
 #### ⛔️ Access Requirements
 
-- Restricted by ACM
+* Restricted by ACM
 
 #### ❌ Errors
 
-- Errors is auctions are paused
+* Errors is auctions are paused
 
 ---
 
@@ -374,14 +374,14 @@ function resumeAuctions() external
 
 #### 📅 Events
 
-- Emits AuctionsResumed on success
+* Emits AuctionsResumed on success
 
 #### ⛔️ Access Requirements
 
-- Restricted by ACM
+* Restricted by ACM
 
 #### ❌ Errors
 
-- Errors is auctions are active
+* Errors is auctions are active
 
 ---

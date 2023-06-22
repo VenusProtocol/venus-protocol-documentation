@@ -1,4 +1,4 @@
-# Compound&#x27;s InterestRateModel Interface
+# Compound's InterestRateModel Interface
 
 # Solidity API
 
@@ -23,7 +23,7 @@ function getBorrowRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 
 
 | Name | Type    | Description                                                     |
 | ---- | ------- | --------------------------------------------------------------- |
-| [0]  | uint256 | The borrow rate per block (as a percentage, and scaled by 1e18) |
+| \[0]  | uint256 | The borrow rate per block (as a percentage, and scaled by 1e18) |
 
 ---
 
@@ -49,7 +49,7 @@ function getSupplyRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 
 
 | Name | Type    | Description                                                     |
 | ---- | ------- | --------------------------------------------------------------- |
-| [0]  | uint256 | The supply rate per block (as a percentage, and scaled by 1e18) |
+| \[0]  | uint256 | The supply rate per block (as a percentage, and scaled by 1e18) |
 
 ---
 
@@ -65,6 +65,6 @@ function isInterestRateModel() external pure virtual returns (bool)
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0]  | bool | Always true |
+| \[0]  | bool | Always true |
 
 ---

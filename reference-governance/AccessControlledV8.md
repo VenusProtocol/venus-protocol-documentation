@@ -21,11 +21,11 @@ function setAccessControlManager(address accessControlManager_) external
 
 #### 📅 Events
 
-- Emits NewAccessControlManager event
+* Emits NewAccessControlManager event
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 ---
 

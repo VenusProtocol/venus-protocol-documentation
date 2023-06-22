@@ -16,19 +16,19 @@ function swapPoolsAssets(address[] markets, uint256[] amountsOutMin, address[][]
 
 | Name          | Type        | Description                                          |
 | ------------- | ----------- | ---------------------------------------------------- |
-| markets       | address[]   | Array of vTokens whose assets to swap for base asset |
-| amountsOutMin | uint256[]   | Minimum amount to receive for swap                   |
-| paths         | address[][] | A path conststing of PCS token pairs for each swap   |
+| markets       | address\[]   | Array of vTokens whose assets to swap for base asset |
+| amountsOutMin | uint256\[]   | Minimum amount to receive for swap                   |
+| paths         | address\[]\[] | A path conststing of PCS token pairs for each swap   |
 
 #### Return Values
 
 | Name | Type    | Description              |
 | ---- | ------- | ------------------------ |
-| [0]  | uint256 | Number of swapped tokens |
+| \[0]  | uint256 | Number of swapped tokens |
 
 #### ❌ Errors
 
-- ZeroAddressNotAllowed is thrown if PoolRegistry contract address is not configured
+* ZeroAddressNotAllowed is thrown if PoolRegistry contract address is not configured
 
 ---
 

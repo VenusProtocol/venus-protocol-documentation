@@ -8,6 +8,45 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
-- [Certik](https://docs.venus.io/docs/security#introduction)
-- [PeckShield](https://github.com/peckshield/publications/blob/master/audit_reports/PeckShield-Audit-Report-VenusGrant-v1.0.pdf)
-- [Code4rena](https://github.com/code-423n4/2023-05-venus)
+### Oracles
+
+**Scope**: new Resilient Price Feeds, enabled on [VIP-123](https://app.venus.io/governance/proposal/123).
+
+* [OpenZeppeling audit report - 2023/06/06](https://github.com/VenusProtocol/oracle/blob/6f7a3d8769c28881661953e7ee3299b1d5b31e17/audits/026_oracles_openzeppelin_20230606.pdf)
+* [Peckshield audit report - 2023/04/24](https://github.com/VenusProtocol/oracle/blob/6f7a3d8769c28881661953e7ee3299b1d5b31e17/audits/013_oracles_peckshield_20230424.pdf)
+* [Certik audit report - 2023/05/22](https://github.com/VenusProtocol/oracle/blob/6f7a3d8769c28881661953e7ee3299b1d5b31e17/audits/024_oracles_certik_20230522.pdf)
+* [Hacken audit report - 2023/04/26](https://github.com/VenusProtocol/oracle/blob/6f7a3d8769c28881661953e7ee3299b1d5b31e17/audits/016_oracles_hacken_20230426.pdf)
+
+### Vaults
+
+**Scope**: upgrade of the XVSVault, VAIVault and VRTVault, enabled on [VIP-127](https://app.venus.io/governance/proposal/127).
+
+* [Quantstamp audit report - 2023/05/19](https://github.com/VenusProtocol/venus-protocol/blob/cb91c322f9d267cac11f532924b07a4b1991be64/audits/031_vaults_quantstamp_20230519.pdf)
+* [Peckshield audit report 1 - 2023/03/22](https://github.com/VenusProtocol/venus-protocol/blob/cb91c322f9d267cac11f532924b07a4b1991be64/audits/012_vaults_peckshield_20230322.pdf)
+* [Peckshield audit report 2 - 2023/04/19](https://github.com/VenusProtocol/venus-protocol/blob/cb91c322f9d267cac11f532924b07a4b1991be64/audits/018_vaults_peckshield_20230419.pdf)
+* [Fairyproof audit report - 2023/05/17](https://github.com/VenusProtocol/venus-protocol/blob/cb91c322f9d267cac11f532924b07a4b1991be64/audits/025_vaults_fairyproof_20230517.pdf)
+* Certik audit report - it will be published soon
+
+### Swap router
+
+**Scope**: new SwapRouter contract, enabled on [VIP-131](https://app.venus.io/governance/proposal/131).
+
+* [OpenZeppelin audit report - 2023/06/16](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/027_swapRouter_openzeppelin_20230616.pdf)
+* [Certik audit report - 2023/05/30](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/030_swapRouter_certik_20230530.pdf)
+* [Peckshield audit report - 2023/04/19](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/014_swapRouter_peckshield_20230419.pdf)
+* [Hacken audit report - 2023/05/24](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/029_swapRouter_hacken_20230524.pdf)
+
+### Isolated pools
+
+**Scope**: new Isolated pools.
+
+* Certik audit report - it will be published soon
+* Peckshield audit report - it will be published soon
+* Hacken audit report - it will be published soon
+* [Code4rena contest - 2023/05/15](https://code4rena.com/contests/2023-05-venus-protocol-isolated-pools)
+
+### VToken
+
+**Scope**: Delegate Borrowing in Venus. Upgrade of BUSD, USDC, USDT, BTCB and ETH markets, to reduce the risks on Venus that resulted from the September 2022 BNB Bridge incident. Executed on [VIP-99](https://app.venus.io/governance/proposal/99).
+
+* [Peckshield audit report - 2023/02/27](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/009_vtoken_peckshield_20230227.pdf)

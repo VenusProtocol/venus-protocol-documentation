@@ -1,4 +1,4 @@
-# Compound&#x27;s JumpRateModel Contract V2 for V2 vTokens
+# Compound's JumpRateModel Contract V2 for V2 vTokens
 
 Supports only for V2 vTokens
 
@@ -25,6 +25,6 @@ function getBorrowRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 
 
 | Name | Type    | Description                                                         |
 | ---- | ------- | ------------------------------------------------------------------- |
-| [0]  | uint256 | The borrow rate percentage per block as a mantissa (scaled by 1e18) |
+| \[0]  | uint256 | The borrow rate percentage per block as a mantissa (scaled by 1e18) |
 
 ---

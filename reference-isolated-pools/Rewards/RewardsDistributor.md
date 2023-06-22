@@ -22,7 +22,7 @@ struct RewardToken {
 
 ```
 
-### INITIAL_INDEX
+### INITIAL\_INDEX
 
 The initial REWARD TOKEN index for a market
 
@@ -189,9 +189,9 @@ function setRewardTokenSpeeds(contract VToken[] vTokens, uint256[] supplySpeeds,
 
 | Name         | Type              | Description                                                     |
 | ------------ | ----------------- | --------------------------------------------------------------- |
-| vTokens      | contract VToken[] | The markets whose REWARD TOKEN speed to update                  |
-| supplySpeeds | uint256[]         | New supply-side REWARD TOKEN speed for the corresponding market |
-| borrowSpeeds | uint256[]         | New borrow-side REWARD TOKEN speed for the corresponding market |
+| vTokens      | contract VToken\[] | The markets whose REWARD TOKEN speed to update                  |
+| supplySpeeds | uint256\[]         | New supply-side REWARD TOKEN speed for the corresponding market |
+| borrowSpeeds | uint256\[]         | New borrow-side REWARD TOKEN speed for the corresponding market |
 
 ---
 
@@ -273,6 +273,6 @@ function claimRewardToken(address holder, contract VToken[] vTokens) public
 | Name    | Type              | Description                                  |
 | ------- | ----------------- | -------------------------------------------- |
 | holder  | address           | The address to claim REWARD TOKEN for        |
-| vTokens | contract VToken[] | The list of markets to claim REWARD TOKEN in |
+| vTokens | contract VToken\[] | The list of markets to claim REWARD TOKEN in |
 
 ---

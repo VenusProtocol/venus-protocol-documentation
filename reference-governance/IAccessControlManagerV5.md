@@ -59,6 +59,6 @@ function isAllowedToCall(address account, string functionSig) external view retu
 
 | Name | Type | Description                                                            |
 | ---- | ---- | ---------------------------------------------------------------------- |
-| [0]  | bool | false if the user account cannot call the particular contract function |
+| \[0]  | bool | false if the user account cannot call the particular contract function |
 
 ---

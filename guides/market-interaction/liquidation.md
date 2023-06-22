@@ -31,10 +31,10 @@ Here's a suggested approach to finding under-collateralized accounts:
 
 1. To identify under-collateralized accounts efficiently, liquidators must maintains an off-chain mapping for accounts and balances by indexing market events to detect new positions or update existing ones:
 
-   - `Mint`: Event emitted when tokens are minted.
+   * `Mint`: Event emitted when tokens are minted.
      Redeem: Event emitted when tokens are redeemed.
-   - `Borrow`: Event emitted when underlying is borrowed.
-   - `RepayBorrow`: Event emitted when a borrow is repaid.By listening to these events, liquidators can track changes in positions and update the balances of users accordingly.
+   * `Borrow`: Event emitted when underlying is borrowed.
+   * `RepayBorrow`: Event emitted when a borrow is repaid.By listening to these events, liquidators can track changes in positions and update the balances of users accordingly.
 
 2. Use the `vTokenBalancesAll` function: The `vTokenBalancesAll` function provided by PoolLens supports retrieving supply and borrow balances for multiple vTokens associated with an account. This function requires an array of vTokens and the account address as parameters.
 

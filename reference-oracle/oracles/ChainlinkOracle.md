@@ -32,7 +32,7 @@ address vai
 
 ---
 
-### BNB_ADDR
+### BNB\_ADDR
 
 Set this as asset address for BNB. This is the underlying address for vBNB
 
@@ -96,15 +96,15 @@ function setUnderlyingPrice(contract VBep20Interface vToken, uint256 underlyingP
 
 #### 📅 Events
 
-- Emits PricePosted event on succesfully setup of underlying price
+* Emits PricePosted event on succesfully setup of underlying price
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- NotNullAddress thrown if address of vToken is null
+* NotNullAddress thrown if address of vToken is null
 
 ---
 
@@ -125,11 +125,11 @@ function setDirectPrice(address asset, uint256 price) external
 
 #### 📅 Events
 
-- Emits PricePosted event on succesfully setup of underlying price
+* Emits PricePosted event on succesfully setup of underlying price
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 ---
 
@@ -145,15 +145,15 @@ function setTokenConfigs(struct ChainlinkOracle.TokenConfig[] tokenConfigs_) ext
 
 | Name           | Type                                 | Description  |
 | -------------- | ------------------------------------ | ------------ |
-| tokenConfigs\_ | struct ChainlinkOracle.TokenConfig[] | config array |
+| tokenConfigs\_ | struct ChainlinkOracle.TokenConfig\[] | config array |
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- Zero length error thrown, if length of the array in parameter is 0
+* Zero length error thrown, if length of the array in parameter is 0
 
 ---
 
@@ -191,7 +191,7 @@ function getUnderlyingPrice(address vToken) external view returns (uint256)
 
 | Name | Type    | Description                   |
 | ---- | ------- | ----------------------------- |
-| [0]  | uint256 | price Underlying price in USD |
+| \[0]  | uint256 | price Underlying price in USD |
 
 ---
 
@@ -211,16 +211,16 @@ function setTokenConfig(struct ChainlinkOracle.TokenConfig tokenConfig) public
 
 #### 📅 Events
 
-- Emits TokenConfigAdded event on succesfully setting of the token config
+* Emits TokenConfigAdded event on succesfully setting of the token config
 
 #### ⛔️ Access Requirements
 
-- Only Governance
+* Only Governance
 
 #### ❌ Errors
 
-- NotNullAddress error is thrown if asset address is null
-- NotNullAddress error is thrown if token feed address is null
-- Range error is thrown if maxStale period of token is not greater than zero
+* NotNullAddress error is thrown if asset address is null
+* NotNullAddress error is thrown if token feed address is null
+* Range error is thrown if maxStale period of token is not greater than zero
 
 ---

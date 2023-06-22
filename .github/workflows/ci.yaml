@@ -23,4 +23,4 @@ jobs:
         run: yarn
 
       - name: Check formatting
-        run: yarn prettier
+        run: yarn format:check
