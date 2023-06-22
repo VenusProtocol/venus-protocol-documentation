@@ -31,10 +31,10 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 **Scope**: new SwapRouter contract, enabled on [VIP-131](https://app.venus.io/governance/proposal/131).
 
-* [OpenZeppelin audit report - 2023/](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/027_swapRouter_openzeppelin_20230616.pdf)
-* [Certik audit report - 2023/](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/030_swapRouter_certik_20230530.pdf)
-* [Peckshield audit report - 2023/](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/014_swapRouter_peckshield_20230419.pdf)
-* [Hacken audit report - 2023/](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/029_swapRouter_hacken_20230524.pdf)
+* [OpenZeppelin audit report - 2023/06/16](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/027_swapRouter_openzeppelin_20230616.pdf)
+* [Certik audit report - 2023/05/30](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/030_swapRouter_certik_20230530.pdf)
+* [Peckshield audit report - 2023/04/19](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/014_swapRouter_peckshield_20230419.pdf)
+* [Hacken audit report - 2023/05/24](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/029_swapRouter_hacken_20230524.pdf)
 
 ### Isolated pools
 
@@ -43,7 +43,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
 * Certik audit report - it will be published soon
 * Peckshield audit report - it will be published soon
 * Hacken audit report - it will be published soon
-* Code4rena audit report - it will be published soon (https://github.com/code-423n4/2023-05-venus)
+* [Code4rena contest - 2023/05/15](https://code4rena.com/contests/2023-05-venus-protocol-isolated-pools)
 
 ### VToken
 
