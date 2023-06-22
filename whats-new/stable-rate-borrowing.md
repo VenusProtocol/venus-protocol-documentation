@@ -1,6 +1,3 @@
----
-description: To be released
----
-
 # Stable Rate Borrowing
 
+## To be released

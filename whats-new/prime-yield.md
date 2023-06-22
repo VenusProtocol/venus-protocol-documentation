@@ -1,6 +1,3 @@
----
-description: To be released
----
-
 # Prime Yield
 
+## To be released

@@ -1,6 +1,3 @@
----
-description: To be released
----
-
 # Liquidation Mechanical Changes
 
+## To be released

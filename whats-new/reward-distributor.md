@@ -1,6 +1,3 @@
----
-description: To be released
----
-
 # Reward Distributor
 
+## To be released
