@@ -36,4 +36,4 @@ Venus V4 employs a separate Access Control Manager contract that validates acces
 
 A fine-grained pause mechanism allows the pause guardian to individually halt any action on any market. Unlike previous versions, where the entire protocol was paused for damage control or protection against attacks, the updated model enables guardians to pause individual market actions like supply, borrow, and enabling collateral, offering greater control and flexibility.
 
-<figure><img src="../.gitbook/assets/Governance.svg" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/0ba42e0a-87cc-4694-9a73-52334a5fd28e.png" alt=""><figcaption><p><em>Governance Process</em></p></figcaption></figure>

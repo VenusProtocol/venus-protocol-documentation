@@ -24,7 +24,6 @@
 * [Resilient Price Oracle](risk/resilient-price-oracle.md)
 * [Interest Rate Model](risk/interest-rate-model.md)
 * [Risk Fund and Shortfall Handling](risk/risk-fund-and-shortfall-handling.md)
-* [Liquidation Mechanical Changes](risk/liquidation-mechanical-changes.md)
 
 ## Tokens
 
@@ -38,8 +37,7 @@
 * [Liquidations](guides/market-interaction/liquidation.md)
 * [Governance](guides/governance/README.md)
   * [Submitting a VIP](guides/governance-guide/vip.md)
-  * [Delegating](guides/governance-guide/delegating.md)
-  * [Voting](guides/governance-guide/voting.md)
+  * [Delegating & Voting](guides/governance-guide/delegating.md)
 * [Contributing](guides/contributing.md)
 * [Vaults](guides/vaults.md)
 

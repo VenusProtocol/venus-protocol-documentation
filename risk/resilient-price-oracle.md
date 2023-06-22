@@ -26,7 +26,7 @@ In implementing the Resilient Price Oracle, several safety measures have been ad
 * **Testnet Deployment:** The oracles have been deployed and tested in the Venus Protocol testnet environment.
 * **Auditing:** The code has been audited by OpenZeppelin, Peckshield, Certik, and Hacken.
 
-<figure><img src="../.gitbook/assets/Oracles.svg" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/17b75928-d6a2-4207-9a0b-89d1d41690d4.png" alt=""><figcaption></figcaption></figure>
 
 ### Further Reading
 

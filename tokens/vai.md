@@ -2,7 +2,7 @@
 
 ### Overview
 
-VAI is the primary stablecoin of the Venus Protocol. It is carefully designed and integrated with a series of stability mechanisms to maintain its peg to 1 USD. This secure pegging mechanism allows for optimized minting processes, a capped minting rate, and a unique integration of the Oracle Price.
+VAI is the primary stablecoin of the Venus Protocol. It is carefully designed and integrated with a series of stability mechanisms to maintain its peg to 1 USD.&#x20;
 
 ### Stability Fee and Optimised Minting
 

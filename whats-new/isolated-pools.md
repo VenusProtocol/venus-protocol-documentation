@@ -12,7 +12,7 @@ The Isolated Pools system is based on the _PoolRegistry_ contract. It maintains 
 
 To add a new market to an existing lending pool, the PoolRegistry deploys a JumpRateModelV2 or a WhitePaperInterestRateModel contract, deploying the upgradable VToken for the market before gaining the approval of the market's Comptroller.
 
-<figure><img src="../.gitbook/assets/Isolated Pools.svg" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/fd111ec8-a057-490c-bb3d-d1a8c026bb12.png" alt=""><figcaption><p><em>Isolated Lending Pools Architecture</em></p></figcaption></figure>
 
 ### User Actions
 

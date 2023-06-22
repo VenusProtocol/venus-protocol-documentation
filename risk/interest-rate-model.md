@@ -8,44 +8,42 @@ Venus Protocol offers variable interest rates for markets using two different mo
 
 The Jump Rate Model uses the following formulas to calculate the interest:
 
-For Borrow rate:&#x20;
+For Borrow rate:
 
 $$
-borrow\_rate (u) = b + a\_1 \cdot kink + a\_1 \cdot \min(0, u-kink) + a\_2 \cdot \max(0,u-kink)
+borrow\_rate (u) = b + a_1 \cdot kink + a_1 \cdot \min(0, u-kink) + a_2 \cdot \max(0,u-kink)
 $$
 
 And, for Supply rate:
 
 $$
-supply\_rate(u) = borrow\_rate(u) \cdot u\_s \cdot (1 - reserve\_factor)
+supply\_rate(u) = borrow\_rate(u) \cdot us \cdot (1 - reserve\_factor)
 $$
 
 Where,
 
 $$
-u\_s = \frac{borrows}{cash + borrows - reserves + badDebt}
+us = \frac{borrows}{cash + borrows - reserves + badDebt}
 $$
-
-Take note that `a_2 > a_1` and `0 \leq kink \leq 1`.
 
 The borrow rate employs different formulas when the utilization rate falls into two distinct ranges:
 
 If `u < kink`:
 
 $$
-borrow\_rate(u) = a\_1 \cdot u + b
+borrow\_rate(u) = a_1 \cdot u + b
 $$
 
 If `u > kink`:
 
 $$
-borrow\_rate(u) = a\_1 \cdot kink + a\_2 \cdot (u-kink) + b
+borrow\_rate(u) = a_1 \cdot kink + a_2 \cdot (u-kink) + b
 $$
 
 **Model Parameters**
 
-* `a_1`: Variable interest rate slope1.
-* `a_2`: Variable interest rate slope2.
+* `a1`: Variable interest rate slope1.
+* `a2`: Variable interest rate slope2.
 * `b`: Base rate per block (`baseRatePerYear / blocksPerYear`).
 * `kink`: Optimal utilization rate, at which the variable interest rate slope shifts from slope1 to slope2.
 * `reserve_factor`: Part of interest income withdrawn from the protocol, i.e., not distributed to suppliers.
@@ -76,11 +74,11 @@ $$
 For Supply rate:
 
 $$
-supply\_rate(u) = borrow\_rate(u) \cdot u\_s \cdot (1 - reserve\_factor)
+supply\_rate(u) = borrow\_rate(u) \cdot us \cdot (1 - reserve\_factor)
 $$
 
 Where,
 
 $$
-u\_s = \frac{borrows}{cash + borrows - reserves + badDebt}
+us = \frac{borrows}{cash + borrows - reserves + badDebt}
 $$
