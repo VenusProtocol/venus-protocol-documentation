@@ -11,7 +11,7 @@ The Jump Rate Model uses the following formulas to calculate the interest:
 For Borrow rate:
 
 $$
-borrow\_rate (u) = b + a_1 \cdot kink + a_1 \cdot \min(0, u-kink) + a_2 \cdot \max(0,u-kink)
+borrow\_rate (u) = b + a\_1 \cdot kink + a\_1 \cdot \min(0, u-kink) + a\_2 \cdot \max(0,u-kink)
 $$
 
 And, for Supply rate:
@@ -31,13 +31,13 @@ The borrow rate employs different formulas when the utilization rate falls into 
 If `u < kink`:
 
 $$
-borrow\_rate(u) = a_1 \cdot u + b
+borrow\_rate(u) = a\_1 \cdot u + b
 $$
 
 If `u > kink`:
 
 $$
-borrow\_rate(u) = a_1 \cdot kink + a_2 \cdot (u-kink) + b
+borrow\_rate(u) = a\_1 \cdot kink + a\_2 \cdot (u-kink) + b
 $$
 
 **Model Parameters**

@@ -1,4 +1,6 @@
-# JumpRateModel Contract
+# WhitePaperInterestRateModel Contract
+
+The parameterized model described in section 2.4 of the original Venus Protocol whitepaper
 
 # Solidity API
 
@@ -7,7 +9,7 @@
 Construct an interest rate model
 
 ```solidity
-constructor(uint256 baseRatePerYear, uint256 multiplierPerYear, uint256 jumpMultiplierPerYear, uint256 kink_) public
+constructor(uint256 baseRatePerYear, uint256 multiplierPerYear) public
 ```
 
 #### Parameters
@@ -16,8 +18,6 @@ constructor(uint256 baseRatePerYear, uint256 multiplierPerYear, uint256 jumpMult
 | ---- | ---- | ----------- |
 | baseRatePerYear | uint256 | The approximate target base APR, as a mantissa (scaled by 1e18) |
 | multiplierPerYear | uint256 | The rate of increase in interest rate wrt utilization (scaled by 1e18) |
-| jumpMultiplierPerYear | uint256 | The multiplierPerBlock after hitting a specified utilization point |
-| kink\_ | uint256 | The utilization point at which the jump multiplier is applied |
 
 ---
 

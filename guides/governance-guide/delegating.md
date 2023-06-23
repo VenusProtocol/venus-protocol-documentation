@@ -8,7 +8,7 @@ Here's how to delegate your voting power:
 
 **Step 1: Visit the Venus Governance Portal**
 
-Access the Venus governance portal via your browser. The URL is [https://app.venus.io/governance](https://app.venus.io/governance).
+Access the Venus governance portal via your browser. The URL is <https://app.venus.io/governance>.
 
 **Step 2: Connect Your Wallet**
 

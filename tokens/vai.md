@@ -11,7 +11,7 @@ VAI sustains its value via a stability fee system. This fee is a charge that use
 The stability fee is determined through the following formula:
 
 $$
-\text{{stabilityFee}}(\%) = \text{{baseRate}}(\%) + \max(0, (1 - \text{{currentPriceOfVAI}})) \times \text{{floatingRate}}(\%)
+\text{{stabilityFee}}(%) = \text{{baseRate}}(%) + \max(0, (1 - \text{{currentPriceOfVAI}})) \times \text{{floatingRate}}(%)
 $$
 
 The `baseRate` is a fixed rate that users must always pay, while `max(0, (1 - currentPriceOfVAI)) * floatingRate` is a variable rate that users pay based on outstanding VAI. This incentivizes users to burn or mint VAI according to its price. The variable rate will always be greater or equal to zero, meaning the minimum stability fee will be the base rate.
