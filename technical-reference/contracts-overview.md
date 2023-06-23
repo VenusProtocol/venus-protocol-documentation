@@ -125,10 +125,6 @@ Another interest rate model that can be deployed with markets is the [WhitePaper
 
 When a borrow becomes insolvent it may be liquidated. The [Liquidator](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Liquidator.sol) handles this process. When a borrow is liquidated the seized amount is split between the liquidator and the [treasury](../reference-core-pool/vtreasury.md)
 
-[**Maximillion**](../reference-core-pool/maximillion.md)
-
-The [Maximillion](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Maximillion.sol) is a special contract for repaying debt owed in BNB.
-
 [**VTreasury**](../reference-core-pool/vtreasury.md)
 
 Revenue earned by the protocol is kept in the [VTreasury](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/VTreasury.sol).
