@@ -44,6 +44,18 @@
 ## Technical reference
 
 * [Contracts Overview](technical-reference/contracts-overview.md)
+* [Core Pool](reference-core-pool/README.md)
+  * [Comptroller](reference-core-pool/comptroller.md)
+    * [Comptroller](reference-core-pool/comptroller-lens.md)
+  * [VToken](reference-core-pool/vtoken.md)
+  * [InterestRateModels](reference-core-pool/interest-rate-model.md)
+    * [JumpModel](reference-core-pool/jump-model.md)
+    * [WhitePaperModel](reference-core-pool/white-paper-interest-rate-model.md)
+    * [InterestRateModelLens](reference-core-pool/interest-rate-model-lens.md)
+  * [Liquidator](reference-core-pool/liquidator.md)
+  * [Maximillion](reference-core-pool/maximillion.md)
+  * [VTreasury](reference-core-pool/vtreasury.md)
+  * [VenusLens](reference-core-pool/venus-lens.md)
 * [Isolated Pools](reference-isolated-pools/README.md)
   * [Comptroller](reference-isolated-pools/comptroller/README.md)
     * [Comptroller](reference-isolated-pools/comptroller.md)
