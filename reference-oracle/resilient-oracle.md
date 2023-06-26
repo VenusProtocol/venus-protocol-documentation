@@ -21,8 +21,10 @@ be invalidated. The lower bound ratio presents the deviation between reported pr
 which the reported price will be invalidated. So for oracle price to be considered valid the below statement
 should be true:
 
+```solidity
     anchorRatio = anchorPrice/reporterPrice
     isValid = anchorRatio <= upperBoundAnchorRatio && anchorRatio >= lowerBoundAnchorRatio
+```
 
 In most cases, Chainlink is used as the main oracle, TWAP or Pyth oracles are used as the pivot oracle depending
 on which supports the given market and Binance oracle is used as the fallback oracle. For some markets we may

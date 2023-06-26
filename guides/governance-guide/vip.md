@@ -6,7 +6,7 @@ Venus Protocol's governance model allows token holders to propose and vote on Ve
 
 ### Step 1: Visit the Venus Governance Portal
 
-Navigate to the Venus Governance Portal using your preferred web browser. You can access the portal at [https://app.venus.io/governance](https://app.venus.io/governance).
+Navigate to the Venus Governance Portal using your preferred web browser. You can access the portal at <https://app.venus.io/governance>.
 
 ### Step 2: Connect Your Wallet
 
