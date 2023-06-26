@@ -29,6 +29,8 @@
 
 * [XVS](tokens/xvs.md)
 * [VAI](tokens/vai.md)
+  * [VAIController](tokens/vai-controller.md)
+  * [VAIUnitroller](tokens/vai-unitroller.md)
 
 ## Guides
 
