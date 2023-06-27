@@ -13,20 +13,52 @@ struct MintLocalVars {
 }
 ```
 
+### mintVAI
+
+The mintVAI function mints and transfers VAI from the protocol to the user, and adds a borrow balance.
+The amount minted must be less than the user's Account Liquidity and the mint vai limit.
+
+```solidity
+function mintVAI(uint256 mintVAIAmount) external returns (uint256)
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| mintVAIAmount | uint256 | The amount of the VAI to be minted. |
+
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint256 | 0 on success, otherwise an error code |
+
+- - -
+
 ### repayVAI
 
-Repay VAI
+The repay function transfers VAI into the protocol and burn, reducing the user's borrow balance.
+Before repaying an asset, users must first approve the VAI to access their VAI balance.
 
 ```solidity
 function repayVAI(uint256 repayVAIAmount) external returns (uint256, uint256)
 ```
 
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| repayVAIAmount | uint256 | The amount of the VAI to be repaid. |
+
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint256 | 0 on success, otherwise an error code |
+| [1] | uint256 |  |
+
 - - -
 
 ### liquidateVAI
 
-The sender liquidates the vai minters collateral.
- The collateral seized is transferred to the liquidator.
+The sender liquidates the vai minters collateral. The collateral seized is transferred to the liquidator.
 
 ```solidity
 function liquidateVAI(address borrower, uint256 repayAmount, contract VTokenInterface vTokenCollateral) external returns (uint256, uint256)
