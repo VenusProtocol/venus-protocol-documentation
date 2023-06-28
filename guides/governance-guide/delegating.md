@@ -2,7 +2,24 @@
 
 ### Overview
 
-Participation in the Venus Protocol governance process requires that users delegate their voting power. This process ensures that XVS tokens held in the vault are eligible to vote on Venus Improvement Proposals (VIPs). Notably, with the new governance model, this process needs to be done only once.
+Venus DAO is an autonomous and decentralized organization that functions via smart contracts on a blockchain, meaning it operates without any central authority or control. The purpose of DAOs is to facilitate trustless collaboration and decision-making among members, who can be individuals or entities involved in the organization. Governance within Venus DAO encompasses making decisions, establishing rules, and managing resources.
+
+### It includes the following components:
+
+**1/ Token Holders:** DAOs typically have a native token, representing membership and voting rights within the organization. For Venus Protocol, this native token is XVS. Token holders partake in the decision-making process by voting on proposals.
+
+**2/ Proposals:** Venus DAO members who stake XVS in the Vault can create proposals, which suggest changes, initiatives, or organizational actions. Proposals can span a variety of topics such as protocol upgrades, funding requests, or changes to the DAO's rules. To propose, one requires "Voting power" of 300,000 XVS. To vote on a proposal, one needs "Voting power" of 600,000 XVS, either individually owned or delegated by other members.
+
+**3/ Voting:** Following a proposal's creation, token holders can vote on it. Venus DAO manages the voting process, queuing and voting on protocol updates within 48-hour timelocks. The voting method could entail a simple majority vote, a supermajority, or weighted voting based on each participant's token count, as is the case with Venus Protocol.
+
+**4/ Voting Period:** Venus DAO recognizes three Venus Improvement Proposals (VIP) roles: Normal, Fast Track, and Critical. Each VIP role has a unique proposal threshold, timelock, and voting period, which can be configured by Governance. This duration allows token holders ample time to review, discuss, and cast their votes. The votes are tallied once the voting period concludes.
+
+**5/ Execution:** After a proposal garners support and votes, all Venus DAO members can execute the VIP directly in the Venus dapp through smart contracts.
+
+**6/ Transparency and Auditability:** All Venus DAO transactions and governance activities take place on a public blockchain, enabling transparency and auditability for anyone interested. This level of transparency helps maintain accountability and minimizes potential fraud or manipulation risks.
+
+It's crucial to understand that DAO governance is an evolving field, with different DAOs adopting unique governance structures and processes. The specific rules and mechanisms are continually refined and adapted to best meet the needs of all Venus DAO members.\
+
 
 ### Delegate Voting Power
 
