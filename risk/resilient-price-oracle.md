@@ -32,15 +32,25 @@ In implementing the Resilient Price Oracle, several safety measures have been ad
 
 For more detailed information, refer to the following resources:
 
-TODO: Update the links using the links included here: https://app.venus.io/governance/proposal/123
+**Audit reports**
 
-* [Peckshield Audit Report](https://chat.openai.com/?model=gpt-4)
-* [Certik Audit Report](https://chat.openai.com/?model=gpt-4)
-* [Hacken Audit Report](https://chat.openai.com/?model=gpt-4)
-* [Deployed Contracts on Main Net](https://chat.openai.com/?model=gpt-4)
-* [Repository](https://chat.openai.com/?model=gpt-4)
-* [Simulation Pre/Post Upgrade](https://chat.openai.com/?model=gpt-4)
-* [Deployment on Testnet](https://chat.openai.com/?model=gpt-4)
-* [Community Post about Venus V4, introducing Resilient Price Feeds](https://chat.openai.com/?model=gpt-4)
-* [Venus Stars Blog Post about Binance Oracle](https://chat.openai.com/?model=gpt-4)
-* [Community Discussion about Pyth Oracle](https://chat.openai.com/?model=gpt-4)
+* [Peckshield audit report](https://github.com/VenusProtocol/oracle/blob/develop/audits/013\_oracles\_peckshield\_20230424.pdf)
+* [Certik audit report](https://github.com/VenusProtocol/oracle/blob/develop/audits/024\_oracles\_certik\_20230522.pdf)
+* [Hacken audit report](https://github.com/VenusProtocol/oracle/blob/develop/audits/016\_oracles\_hacken\_20230426.pdf)
+
+**Deployed contracts on main net:**
+
+* [ResilientOracle](https://bscscan.com/address/0x6592b5DE802159F3E74B2486b091D11a8256ab8A)
+* [ChainlinkOracle](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F)
+* [BinanceOracle](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820)
+* [PythOracle](https://bscscan.com/address/0xb893E38162f55fb80B18Aa44da76FaDf8E9B2262)
+* [TWAPOracle](https://bscscan.com/address/0xea2f042e1A4f057EF8A5220e57733AD747ea8867)
+
+**References**
+
+* [Repository](https://github.com/VenusProtocol/oracle)
+* [Simulation pre/post upgrade](https://github.com/VenusProtocol/vips/pull/4/)
+* [Deployment on testnet](https://github.com/VenusProtocol/oracle/tree/develop/deployments/bsctestnet)
+* [Community post about Venus V4, introducing Resilient Price Feeds](https://community.venus.io/t/proposing-venus-v4/3188#price-feed-redundancy-6)
+* [Venus Stars blog post about Binance Oracle](https://venusstars.io/community/index.php/2023/05/09/venus-enhances-resilience-binance-oracle-feeds/)
+* [Community discussion about Pyth Oracle](https://community.venus.io/t/vip-xx-integrate-with-pyth-as-an-oracle/2723/6)
