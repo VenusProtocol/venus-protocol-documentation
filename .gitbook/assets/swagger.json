@@ -1,0 +1,1340 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Venus Protocol API",
+    "version": "1.5.0-dev.26",
+    "summary": "API to support the Venus Protocol with data indexed from on chain activity",
+    "description": ""
+  },
+  "paths": {
+    "/api/governance/venus": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/asset",
+            "required": false
+          }
+        ],
+        "description": "Returns Market data for listed markets. Optionally filterable by address.\nFiltering by address will be deprecated and is not fully documented.\n",
+        "responses": {
+          "200": {
+            "description": "Returns Market data for all listed markets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GetVenus"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/market_history/graph": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/asset"
+          }
+        ],
+        "description": "Given an asset, this endpoint returns its historical data points",
+        "responses": {
+          "200": {
+            "description": "Returns historical data for the requested asset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MarketGraphData"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/transactions": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/limit",
+            "default": 20
+          },
+          {
+            "$ref": "#/parameters/category"
+          },
+          {
+            "$ref": "#/parameters/event"
+          },
+          {
+            "$ref": "#/parameters/address",
+            "description": "Filter by from address"
+          },
+          {
+            "$ref": "#/parameters/vTokenAddress"
+          },
+          {
+            "$ref": "#/parameters/transactionHash"
+          },
+          {
+            "$ref": "#/parameters/order",
+            "name": "sort"
+          },
+          {
+            "$ref": "#/parameters/orderBy",
+            "description": "Filter by proposal model key",
+            "name": "order",
+            "default": "blockNumber"
+          },
+          {
+            "$ref": "#/parameters/page"
+          }
+        ],
+        "description": "Returns paginated array of queried transactions",
+        "responses": {
+          "200": {
+            "description": "Returns paginated queried transactions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Transaction"
+                      }
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/proposals": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/proposalIds"
+          },
+          {
+            "$ref": "#/parameters/state"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/orderBy",
+            "default": "id",
+            "description": "Proposal model properties to use when ordering proposals"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          }
+        ],
+        "description": "Returns paginated array of proposals. It takes an optional array of proposal ids.",
+        "responses": {
+          "200": {
+            "description": "Returns an array of proposals.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "offset",
+                        "limit",
+                        "total",
+                        "result"
+                      ],
+                      "properties": {
+                        "offset": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": "number"
+                        },
+                        "result": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Proposal"
+                          }
+                        }
+                      }
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/proposals/:id": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/proposalId"
+          }
+        ],
+        "description": "Returns details for a single proposal.",
+        "responses": {
+          "200": {
+            "description": "Returns a detailed proposal.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Proposal"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/voters/:id": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/proposalId"
+          }
+        ],
+        "description": "Get Voter details for a given proposal",
+        "responses": {
+          "200": {
+            "description": "Pagination object with paginated voter activity and a summary of proposal votes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "offset",
+                        "limit",
+                        "total",
+                        "result",
+                        "sumVotes"
+                      ],
+                      "properties": {
+                        "offset": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": "number"
+                        },
+                        "result": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Voter"
+                          }
+                        },
+                        "sumVotes": {
+                          "$ref": "#/components/schemas/sumVotes"
+                        }
+                      }
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/voters/accounts": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          }
+        ],
+        "description": "Query voter accounts ordered by vote weight.",
+        "responses": {
+          "200": {
+            "description": "Returns an array of voter accounts ordered by vote weight",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "offset",
+                        "limit",
+                        "total",
+                        "result"
+                      ],
+                      "properties": {
+                        "offset": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": "number"
+                        },
+                        "result": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/VoterAccounts"
+                          }
+                        }
+                      }
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/voters/accounts/:address": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/address",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "description": "Retrieve a summary of an accounts voter profile.",
+        "responses": {
+          "200": {
+            "description": "A summary of an accounts voter profile including latest XVS transfers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "delegateCount": {
+                          "type": "number"
+                        },
+                        "votes": {
+                          "type": "string"
+                        },
+                        "balance": {
+                          "type": "string"
+                        },
+                        "delegates": {
+                          "type": "string"
+                        },
+                        "txs": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "$ref": "#/components/schemas/TransferLog"
+                              },
+                              {
+                                "$ref": "#/components/schemas/Voter"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api//voters/history/:address": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/address",
+            "in": "path",
+            "required": true
+          },
+          {
+            "$ref": "#/parameters/state"
+          },
+          {
+            "$ref": "#/parameters/order"
+          },
+          {
+            "$ref": "#/parameters/orderBy",
+            "default": "proposalId",
+            "description": "Proposal model properties to use when ordering proposals"
+          },
+          {
+            "$ref": "#/parameters/proposalIds"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "$ref": "#/parameters/limit"
+          }
+        ],
+        "description": "Returns an array of voter activity for a specified account",
+        "responses": {
+          "200": {
+            "description": "Paginated response of an account's voter history",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "offset": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": "number"
+                        },
+                        "result": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "$ref": "#/components/schemas/TransferLog"
+                              },
+                              {
+                                "$ref": "#/components/schemas/Voter"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "asset": {
+      "name": "asset",
+      "description": "Filter by vToken address",
+      "in": "query",
+      "required": true,
+      "type": "string"
+    },
+    "proposalIds": {
+      "name": "proposal_ids",
+      "description": "Filter results with a comma separated proposal numbers",
+      "in": "query",
+      "required": false,
+      "type": "string"
+    },
+    "proposalId": {
+      "name": "id",
+      "description": "Proposal Id for fetching a detailed proposal",
+      "in": "param",
+      "required": true,
+      "type": "integer"
+    },
+    "state": {
+      "name": "state",
+      "description": "Filter by proposal state",
+      "in": "query",
+      "required": false,
+      "type": "string",
+      "enum": [
+        "Pending",
+        "Active",
+        "Canceled",
+        "Defeated",
+        "Succeeded",
+        "Queued",
+        "Expired",
+        "Executed"
+      ]
+    },
+    "order": {
+      "name": "order",
+      "description": "Set the order direction of results",
+      "in": "query",
+      "required": false,
+      "type": "string",
+      "default": "DESC",
+      "enum": [
+        "DESC",
+        "ASC"
+      ]
+    },
+    "orderBy": {
+      "name": "orderBy",
+      "in": "query",
+      "required": false,
+      "type": "string"
+    },
+    "offset": {
+      "name": "offset",
+      "description": "Offset used for pagination",
+      "in": "query",
+      "required": false,
+      "type": "integer",
+      "default": 0
+    },
+    "limit": {
+      "name": "limit",
+      "description": "Limit used for pagination",
+      "in": "query",
+      "required": false,
+      "type": "integer",
+      "default": 0
+    },
+    "category": {
+      "name": "category",
+      "description": "Filter by token transaction type",
+      "in": "query",
+      "required": false,
+      "type": "string",
+      "enum": [
+        "vtoken",
+        "vai",
+        "vote"
+      ]
+    },
+    "event": {
+      "name": "event",
+      "description": "Event log",
+      "in": "query",
+      "required": false,
+      "type": "string"
+    },
+    "address": {
+      "name": "address",
+      "description": "Account address",
+      "in": "query",
+      "required": false,
+      "type": "string"
+    },
+    "vTokenAddress": {
+      "name": "vtoken",
+      "description": "Filter transactions by vTokenAddress",
+      "in": "query",
+      "required": false,
+      "type": "string"
+    },
+    "transactionHash": {
+      "name": "transactionhash",
+      "description": "Filter transactions by vTokenAddress",
+      "in": "query",
+      "required": false,
+      "type": "string"
+    },
+    "page": {
+      "name": "page",
+      "description": "Page number to fetch",
+      "in": "query",
+      "required": false,
+      "default": 1,
+      "type": "integer"
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "required": [
+          "message",
+          "status"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MarketGraphData": {
+        "type": "object",
+        "required": [
+          "asset",
+          "data",
+          "updatedAt"
+        ],
+        "properties": {
+          "asset": {
+            "type": "string"
+          },
+          "updateAt": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "blockNumber",
+                "blockTimestamp",
+                "supplyApy",
+                "borrowApy",
+                "totalSupplyCents",
+                "totalBorrowCents"
+              ],
+              "properties": {
+                "blockNumber": {
+                  "type": "integer"
+                },
+                "blockTimestamp": {
+                  "type": "integer"
+                },
+                "supplyApy": {
+                  "type": "string"
+                },
+                "borrowApy": {
+                  "type": "string"
+                },
+                "totalSupplyCents": {
+                  "type": "string"
+                },
+                "totalBorrowCents": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetVenus": {
+        "type": "object",
+        "required": [
+          "venusRate",
+          "dailyVenus",
+          "markets"
+        ],
+        "properties": {
+          "venusRate": {
+            "type": "string"
+          },
+          "dailyVenus": {
+            "type": "string"
+          },
+          "markets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "address",
+                "symbol",
+                "name",
+                "underlyingAddress",
+                "underlyingName",
+                "underlyingSymbol",
+                "underlyingDecimal",
+                "borrowerDailyVenus",
+                "supplierDailyVenus",
+                "venusBorrowIndex",
+                "venusSupplyIndex",
+                "borrowRatePerBlock",
+                "exchangeRate",
+                "underlyingPrice",
+                "totalBorrows",
+                "totalBorrows2",
+                "totalBorrowsUsd",
+                "totalSupply",
+                "totalSupply2",
+                "totalSupplyUsd",
+                "cash",
+                "totalReserves",
+                "reserveFactor",
+                "collateralFactor",
+                "borrowApy",
+                "supplyApy",
+                "borrowVenusApy",
+                "supplyVenusApy",
+                "borrowVenusApr",
+                "supplyVenusApr",
+                "liquidity",
+                "tokenPrice",
+                "totalDistributed",
+                "totalDistributed2",
+                "supplyCaps",
+                "borrowCaps",
+                "lastCalculatedBlockNumber",
+                "borrowerCount",
+                "supplierCount"
+              ],
+              "properties": {
+                "address": {
+                  "type": "string"
+                },
+                "symbol": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "underlyingAddress": {
+                  "type": "string"
+                },
+                "underlyingName": {
+                  "type": "string"
+                },
+                "underlyingSymbol": {
+                  "type": "string"
+                },
+                "underlyingDecimal": {
+                  "type": "integer"
+                },
+                "borrowerDailyVenus": {
+                  "type": "string"
+                },
+                "supplierDailyVenus": {
+                  "type": "string"
+                },
+                "venusBorrowIndex": {
+                  "type": "string"
+                },
+                "venusSupplyIndex": {
+                  "type": "string"
+                },
+                "borrowRatePerBlock": {
+                  "type": "string"
+                },
+                "exchangeRate": {
+                  "type": "string"
+                },
+                "underlyingPrice": {
+                  "type": "string"
+                },
+                "totalBorrows": {
+                  "type": "string"
+                },
+                "totalBorrows2": {
+                  "type": "string"
+                },
+                "totalBorrowsUsd": {
+                  "type": "string"
+                },
+                "totalSupply": {
+                  "type": "string"
+                },
+                "totalSupply2": {
+                  "type": "string"
+                },
+                "totalSupplyUsd": {
+                  "type": "string"
+                },
+                "cash": {
+                  "type": "string"
+                },
+                "totalReserves": {
+                  "type": "string"
+                },
+                "reserveFactor": {
+                  "type": "string"
+                },
+                "collateralFactor": {
+                  "type": "string"
+                },
+                "borrowApy": {
+                  "type": "string"
+                },
+                "supplyApy": {
+                  "type": "string"
+                },
+                "borrowVenusApy": {
+                  "type": "string"
+                },
+                "supplyVenusApy": {
+                  "type": "string"
+                },
+                "borrowVenusApr": {
+                  "type": "string"
+                },
+                "supplyVenusApr": {
+                  "type": "string"
+                },
+                "liquidity": {
+                  "type": "string"
+                },
+                "tokenPrice": {
+                  "type": "string"
+                },
+                "totalDistributed": {
+                  "type": "string"
+                },
+                "totalDistributed2": {
+                  "type": "string"
+                },
+                "supplyCaps": {
+                  "type": "string"
+                },
+                "borrowCaps": {
+                  "type": "string"
+                },
+                "lastCalculatedBlockNumber": {
+                  "type": "integer"
+                },
+                "borrowerCount": {
+                  "type": "integer"
+                },
+                "supplierCount": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Proposal": {
+        "type": "object",
+        "required": [
+          "id",
+          "description",
+          "abstainedVotes",
+          "actions",
+          "againstVotes",
+          "cancelBlock",
+          "cancelTimestamp",
+          "cancelTxHash",
+          "canceled",
+          "createdBlock",
+          "createdTimestamp",
+          "createdTxHash",
+          "endBlock",
+          "endTimestamp",
+          "endTxHash",
+          "eta",
+          "executed",
+          "executedBlock",
+          "executedTimestamp",
+          "executedTxHash",
+          "forVotes",
+          "governorName",
+          "proposer",
+          "queuedBlock",
+          "queuedTimestamp",
+          "queuedTxHash",
+          "startBlock",
+          "startTimestamp",
+          "startTxHash",
+          "state",
+          "voterCount",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          },
+          "action": {
+            "type": "array"
+          },
+          "createdBlock": {
+            "type": "integer"
+          },
+          "createdTxHash": {
+            "type": "string"
+          },
+          "createdTimestamp": {
+            "type": "integer"
+          },
+          "startBlock": {
+            "type": "integer"
+          },
+          "startTxHash": {
+            "type": "string"
+          },
+          "startTimestamp": {
+            "type": "integer"
+          },
+          "cancelBlock": {
+            "type": "integer"
+          },
+          "cancelTxHash": {
+            "type": "string"
+          },
+          "cancelTimestamp": {
+            "type": "integer"
+          },
+          "endBlock": {
+            "type": "integer"
+          },
+          "endTxHash": {
+            "type": "string"
+          },
+          "endTimestamp": {
+            "type": "integer"
+          },
+          "queuedBlock": {
+            "type": "integer"
+          },
+          "queuedTxHash": {
+            "type": "string"
+          },
+          "queuedTimestamp": {
+            "type": "integer"
+          },
+          "executedBlock": {
+            "type": "integer"
+          },
+          "executedTxHash": {
+            "type": "string"
+          },
+          "executedTimestamp": {
+            "type": "integer"
+          },
+          "proposer": {
+            "type": "string"
+          },
+          "eta": {
+            "type": "integer"
+          },
+          "forVotes": {
+            "type": "string"
+          },
+          "againstVotes": {
+            "type": "string"
+          },
+          "canceled": {
+            "type": "boolean"
+          },
+          "executed": {
+            "type": "boolean"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "Pending",
+              "Active",
+              "Canceled",
+              "Defeated",
+              "Succeeded",
+              "Queued",
+              "Expired",
+              "Executed"
+            ]
+          },
+          "voterCount": {
+            "type": "integer"
+          },
+          "abstainedVotes": {
+            "type": "string"
+          },
+          "governorName": {
+            "type": "string"
+          },
+          "proposalType": {
+            "type": "string",
+            "enum": [
+              "Normal",
+              "FastTrack",
+              "Critical"
+            ]
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        }
+      },
+      "Transaction": {
+        "type": "object",
+        "required": [
+          "category",
+          "event",
+          "transactionHash",
+          "from",
+          "to",
+          "tokenAddress",
+          "amount",
+          "blockNumber",
+          "timestamp",
+          "id",
+          "logIndex"
+        ],
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "vtoken",
+              "vai",
+              "vote"
+            ]
+          },
+          "event": {
+            "type": "string"
+          },
+          "transactionHash": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "tokenAddress": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer"
+          },
+          "blockNumber": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "logIndex": {
+            "type": "integer"
+          }
+        }
+      },
+      "VoterAccounts": {
+        "type": "object",
+        "required": [
+          "address",
+          "createdAt",
+          "id",
+          "proposalsVoted",
+          "updatedAt",
+          "voteWeight",
+          "votes",
+          "votes2"
+        ],
+        "properties": {
+          "address": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "proposalsVoted": {
+            "type": "integer"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "voteWeight": {
+            "type": "integer"
+          },
+          "votes": {
+            "type": "string"
+          },
+          "votes2": {
+            "type": "string"
+          }
+        }
+      },
+      "TransferLog": {
+        "type": "object",
+        "required": [
+          "id",
+          "from",
+          "to",
+          "amount",
+          "blockNumber",
+          "blockTimestamp",
+          "transactionHash",
+          "transactionIndex",
+          "logIndex"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "string"
+          },
+          "blockNumber": {
+            "type": "string"
+          },
+          "blockTimestamp": {
+            "type": "string"
+          },
+          "transactionHash": {
+            "type": "string"
+          },
+          "transactionIndex": {
+            "type": "string"
+          },
+          "logIndex": {
+            "type": "string"
+          }
+        }
+      },
+      "Voter": {
+        "type": "object",
+        "required": [
+          "id",
+          "address",
+          "hasVoted",
+          "support",
+          "blockNumber",
+          "blockTimestamp",
+          "votes",
+          "reason"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "hasVoted": {
+            "type": "string"
+          },
+          "support": {
+            "type": "string"
+          },
+          "blockNumber": {
+            "type": "string"
+          },
+          "blockTimestamp": {
+            "type": "string"
+          },
+          "votes": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      },
+      "sumVotes": {
+        "type": "object",
+        "required": [
+          "for",
+          "against",
+          "abstain",
+          "total"
+        ],
+        "properties": {
+          "for": {
+            "type": "string"
+          },
+          "against": {
+            "type": "string"
+          },
+          "abstain": {
+            "type": "string"
+          },
+          "total": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}

@@ -112,5 +112,6 @@
 
 ## Links
 
+* [API (Beta)](links/api-beta.md)
 * [Security & Audits](security-and-audits.md)
 * [Resources](resources.md)
