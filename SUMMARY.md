@@ -110,9 +110,10 @@
 * [Governance](deployed-contracts/governance.md)
 * [Peripherial](deployed-contracts/peripherial.md)
 
-***
+## Services
 
-* [API (Beta)](api-beta.md)
+* [API (Beta)](services/api-beta.md)
+* [Subgraphs](services/subgraphs.md)
 
 ## Links
 
