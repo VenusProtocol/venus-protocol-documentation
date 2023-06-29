@@ -1,78 +1,40 @@
 # Isolated Pools - Deployed Contracts
 
 ## BNB Chain Mainnet
-* DefaultProxyAdmin: 0x1BB765b741A5f3C2A338369DAb539385534E3343
-* JumpRateModelV2 (base 200bps, slope 1000bps, jump 30000bps, kink 8000bps): 0x4021Da92B4e64126Cd5A2d6B305FB0e9e4ed2024
-* JumpRateModelV2 (base 200bps, slope 500bps, jump 25000bps, kink 6000bps): 0x06BBC500ceA7842508307dE77bCFe30635FDf1a0
-* PoolLens: 0xe12da02820fAD83e0369C6De7Ae30721eaB60E32
-* Comptroller Beacon: 0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2
-* Comptroller Implementation: 0x939C05e2E694db68cE54d80bf29926b09190aA0F
-* PoolRegistry: 0x9F7b01A536aFA00EF10310A162877fd792cD0666
-* PoolRegistry Implementation: 0xc4953e157D057941A9a71273B0aF4d4477ED2770
-* VToken Beacon: 0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4
-* VToken Implementation:  0x3E4F3F90fD01766472E654748509C6eD81e7C62c
 
-### Oracles
-  * ResilientOracle: 0x6592b5DE802159F3E74B2486b091D11a8256ab8A
-  * ResilientOracle Implementation: 0xfE872ddeAe0A53486c25ed882786D592e302d80C
-  * BinanceOracle: 0x594810b741d136f1960141C0d8Fb4a91bE78A820
-  * BinanceOracleImplementation: 0xe38AbE42948ef249E84f4e935e4f56483C1EE3B9
-  * BoundValidator: 0x6E332fF0bB52475304494E4AE5063c1051c7d735
-  * BoundValidator Implementation: 0x753192648599F58eEEd782cBf9A5880fFfEfd133
-  * ChainlinkOracle: 0x1B2103441A0A108daD8848D8F5d790e4D402921F
-  * ChainlinkOracle Implementation: 0xEebBfFC42e26386C631914e69B86aD398e91DD7f
-  * PythOracle: 0xb893E38162f55fb80B18Aa44da76FaDf8E9B2262
-  * PythOracle Implementation: 0x01e12AFa8D016D11dFBBde48e1a51038072b2129
-  * TwapOracle: 0xea2f042e1A4f057EF8A5220e57733AD747ea8867
-  * TwapOracle Implementation: 0x17D00a8926566CB4b02B25f4EE6ecC2cEB34A784
+* PoolRegistry: [`0x9F7b01A536aFA00EF10310A162877fd792cD0666`](https://bscscan.com/address/0x9F7b01A536aFA00EF10310A162877fd792cD0666)
+* PoolLens: [`0xe12da02820fAD83e0369C6De7Ae30721eaB60E32`](https://bscscan.com/address/0xe12da02820fAD83e0369C6De7Ae30721eaB60E32)
+* DefaultProxyAdmin: [`0x1BB765b741A5f3C2A338369DAb539385534E3343`](https://bscscan.com/address/0x1BB765b741A5f3C2A338369DAb539385534E3343)
+* Comptroller Beacon: [`0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2`](https://bscscan.com/address/0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2)
+* VToken Beacon: [`0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4`](https://bscscan.com/address/0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4)
 
 ### Pools
 
 * Stablecoin Pool:
-  * Comptroller:  0x94c1495cD4c557f1560Cbd68EAB0d197e6291571
-  * SwapRouter: 0x50d8ac56FC8525dcA9F41b12De0dbc6bDf7771e3
+  * Comptroller: [`0x94c1495cD4c557f1560Cbd68EAB0d197e6291571`](https://bscscan.com/address/0x94c1495cD4c557f1560Cbd68EAB0d197e6291571)
+  * SwapRouter: [`0x50d8ac56FC8525dcA9F41b12De0dbc6bDf7771e3`](https://bscscan.com/address/0x50d8ac56FC8525dcA9F41b12De0dbc6bDf7771e3)
   * Tokens 
-    * VToken vHAY: 0xCa2D81AA7C09A1a025De797600A7081146dceEd9
-    * VToken vUSDD: 0xc3a45ad8812189cAb659aD99E64B1376f6aCD035
-    * VToken vUSDT: 0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B
+    * VToken vHAY: [`0xCa2D81AA7C09A1a025De797600A7081146dceEd9`](https://bscscan.com/address/0xCa2D81AA7C09A1a025De797600A7081146dceEd9)
+    * VToken vUSDD: [`0xc3a45ad8812189cAb659aD99E64B1376f6aCD035`](https://bscscan.com/address/0xc3a45ad8812189cAb659aD99E64B1376f6aCD035)
+    * VToken vUSDT: [`0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B`](https://bscscan.com/address/0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B)
 
 ## BNB Chain Testnet
 
-## BNB Chain Mainnet
+* PoolRegistry: [`0xC85491616Fa949E048F3aAc39fbf5b0703800667`](https://testnet.bscscan.com/address/0xC85491616Fa949E048F3aAc39fbf5b0703800667)
+* PoolLens: [`0x559936086C5f65b92240012ae0D2F70C082Ac0b0`](https://testnet.bscscan.com/address/0x559936086C5f65b92240012ae0D2F70C082Ac0b0)
 * DefaultProxyAdmin:
-* JumpRateModelV2 (base 200bps, slope 1000bps, jump 30000bps, kink 8000bps): 0x42D9AFb65d2C89fB8bFF6Fe88eFC55922Ec3bD44
-* JumpRateModelV2 (base 200bps, slope 500bps, jump 25000bps, kink 6000bps): 0x870BF9ba9b371297F4637f0686468E9a60cF5F12
-* PoolLens: 0x559936086C5f65b92240012ae0D2F70C082Ac0b0
-* Comptroller Beacon: 0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74
-* Comptroller Implementation: 0x80691DaD6dAb8a028FFE68bb8045f2547d210f9D
-* PoolRegistry: 0xC85491616Fa949E048F3aAc39fbf5b0703800667
-* PoolRegistry Implementation: 0xed659A02c5f63f299C28F6A246143326b922e3d9 
-* VToken Beacon: 0xBF85A90673E61956f8c79b9150BAB7893b791bDd
-* VToken Implementation: 0x91D2c7BCA6Ea3313E07e0F6B3D0D00c4Fae482df
-
-### Oracles
-  * ResilientOracle: 0x3cD69251D04A28d887Ac14cbe2E14c52F3D57823
-  * ResilientOracle Implementation: 0x360506E086d6E4788b0970CD576307CCEccECbe6
-  * BinanceOracle: 0xB58BFDCE610042311Dc0e034a80Cc7776c1D68f5
-  * BinanceOracleImplementation: 0x693A5ae5F9b8da5b8125f9BC0d8f04C7c63d2384
-  * BoundValidator: 0x2842140e4Ad3a92e9af30e27e290300dd785076d
-  * BoundValidator Implementation: 0x0EbBBc805Ed9b6F4FAe2cd3103a3653547018dba
-  * ChainlinkOracle: 0xCeA29f1266e880A1482c06eD656cD08C148BaA32
-  * ChainlinkOracle Implementation: 0xb6D0D2a0B8Eb799Fc1Bcf63D31011878F576EeC3
-  * PythOracle: 0x94E1534c14e0736BB24decA625f2F5364B198E0C
-  * PythOracle Implementation: 0xb830C5F05334a364a80957dDACF5A336dc55Bab2
-  * TwapOracle: 0x3eeE05d929D1E9816185B1b6d8c470eC192b4432
-  * TwapOracle Implementation: 0xA65d9c3593B8ca0EF4C475E16Eb93f92Ca81F98B
+* Comptroller Beacon: [`0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74`](https://testnet.bscscan.com/address/0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74)
+* VToken Beacon: [`0xBF85A90673E61956f8c79b9150BAB7893b791bDd`](https://testnet.bscscan.com/address/0xBF85A90673E61956f8c79b9150BAB7893b791bDd)
 
 ### Pools
 
 * Stablecoin Pool:
-  * Comptroller:  0x10b57706AD2345e590c2eA4DC02faef0d9f5b08B
-  * SwapRouter: 0x625921c940a4321305313d6b3dca0dbd560afc25
+  * Comptroller:  [`0x10b57706AD2345e590c2eA4DC02faef0d9f5b08B`](https://testnet.bscscan.com/address/0x10b57706AD2345e590c2eA4DC02faef0d9f5b08B)
+  * SwapRouter: [`0x625921c940a4321305313d6b3dca0dbd560afc25`](https://testnet.bscscan.com/address/0x625921c940a4321305313d6b3dca0dbd560afc25)
   * Tokens: 
-    * VToken vHAY: 0x170d3b2da05cc2124334240fB34ad1359e34C562
-    * VToken vUSDD: 0x899dDf81DfbbF5889a16D075c352F2b959Dd24A4
-    * VToken vUSDT: 0x3338988d0beb4419Acb8fE624218754053362D06
+    * VToken vHAY: [`0x170d3b2da05cc2124334240fB34ad1359e34C562`](https://testnet.bscscan.com/address/0x170d3b2da05cc2124334240fB34ad1359e34C562)
+    * VToken vUSDD: [`0x899dDf81DfbbF5889a16D075c352F2b959Dd24A4`](https://testnet.bscscan.com/address/0x899dDf81DfbbF5889a16D075c352F2b959Dd24A4)
+    * VToken vUSDT: [`0x3338988d0beb4419Acb8fE624218754053362D06`](https://testnet.bscscan.com/address/0x3338988d0beb4419Acb8fE624218754053362D06)
   * Rewards Distributors:
-    * RewardsDistributor HAY: 0xb0269d68CfdCc30Cb7Cd2E0b52b08Fa7Ffd3079b
-    * RewardsDistributor HAY Implementation: 0x69b26CCa98609156e98bb2973A80749D6dc24D38
+    * RewardsDistributor HAY: [`0xb0269d68CfdCc30Cb7Cd2E0b52b08Fa7Ffd3079b`](https://testnet.bscscan.com/address/0xb0269d68CfdCc30Cb7Cd2E0b52b08Fa7Ffd3079b)
+    * RewardsDistributor HAY Implementation: [`0x69b26CCa98609156e98bb2973A80749D6dc24D38`](https://testnet.bscscan.com/address/0x69b26CCa98609156e98bb2973A80749D6dc24D38)

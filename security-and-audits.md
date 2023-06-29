@@ -27,25 +27,24 @@ We firmly believe that the true test of a smart contract's security lies in its 
 * [Fairyproof audit report - 2023/05/17](https://github.com/VenusProtocol/venus-protocol/blob/cb91c322f9d267cac11f532924b07a4b1991be64/audits/025_vaults_fairyproof_20230517.pdf)
 * Certik audit report - it will be published soon
 
-<mark style="color:blue;">TODO: change swap name</mark>
+### Isolated pools
 
-### <mark style="color:yellow;">Swap</mark> router
+**Scope**: Isolated pools, first enabled on [VIP-134](https://app.venus.io/governance/proposal/134).
 
-**Scope**: new <mark style="color:yellow;">Swap</mark>Router contract, enabled on [VIP-131](https://app.venus.io/governance/proposal/131).
+* [Certik audit report](https://github.com/VenusProtocol/isolated-pools/blob/1d60500e28d4912601bac461870c754dd9e72341/audits/036_isolatedPools_certik_20230619.pdf)
+* [Peckshield audit report 1](https://github.com/VenusProtocol/isolated-pools/blob/c801e898e034e313e885c5d486ed27c15e7e2abf/audits/003_isolatedPools_peckshield_20230112.pdf)
+* [Peckshield audit report 2](https://github.com/VenusProtocol/isolated-pools/blob/1d60500e28d4912601bac461870c754dd9e72341/audits/037_isolatedPools_peckshield_20230625.pdf)
+* [Hacken audit report](https://github.com/VenusProtocol/isolated-pools/blob/c801e898e034e313e885c5d486ed27c15e7e2abf/audits/016_isolatedPools_hacken_20230426.pdf)
+* [Code4rena contest - 2023/05/15](https://code4rena.com/contests/2023-05-venus-protocol-isolated-pools)
+
+### Swap router
+
+**Scope**: SwapRouter contract, enabled on [VIP-131](https://app.venus.io/governance/proposal/131).
 
 * [OpenZeppelin audit report - 2023/06/16](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/027_swapRouter_openzeppelin_20230616.pdf)
 * [Certik audit report - 2023/05/30](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/030_swapRouter_certik_20230530.pdf)
 * [Peckshield audit report - 2023/04/19](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/014_swapRouter_peckshield_20230419.pdf)
 * [Hacken audit report - 2023/05/24](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/029_swapRouter_hacken_20230524.pdf)
-
-### Isolated pools
-
-**Scope**: new Isolated pools.
-
-* Certik audit report - it will be published soon
-* Peckshield audit report - it will be published soon
-* Hacken audit report - it will be published soon
-* [Code4rena contest - 2023/05/15](https://code4rena.com/contests/2023-05-venus-protocol-isolated-pools)
 
 ### VToken
 
