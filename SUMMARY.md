@@ -110,8 +110,11 @@
 * [Governance](deployed-contracts/governance.md)
 * [Peripherial](deployed-contracts/peripherial.md)
 
+***
+
+* [API (Beta)](api-beta.md)
+
 ## Links
 
-* [API (Beta)](links/api-beta.md)
 * [Security & Audits](security-and-audits.md)
 * [Resources](resources.md)
