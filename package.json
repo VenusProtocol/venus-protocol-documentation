@@ -28,6 +28,7 @@
       "remark-preset-lint-recommended",
       ["remark-lint-list-item-indent", "space"],
       ["remark-lint-code-block-style", "fenced"],
+      ["remark-lint-no-consecutive-blank-lines", false],
       [
         "remark-toc",
         {
