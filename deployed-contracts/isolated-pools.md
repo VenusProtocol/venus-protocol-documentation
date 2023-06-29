@@ -8,15 +8,61 @@
 * Comptroller Beacon: [`0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2`](https://bscscan.com/address/0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2)
 * VToken Beacon: [`0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4`](https://bscscan.com/address/0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4)
 
-### Pools
 
-* Stablecoin Pool:
-  * Comptroller: [`0x94c1495cD4c557f1560Cbd68EAB0d197e6291571`](https://bscscan.com/address/0x94c1495cD4c557f1560Cbd68EAB0d197e6291571)
-  * SwapRouter: [`0x50d8ac56FC8525dcA9F41b12De0dbc6bDf7771e3`](https://bscscan.com/address/0x50d8ac56FC8525dcA9F41b12De0dbc6bDf7771e3)
-  * Tokens 
-    * VToken vHAY: [`0xCa2D81AA7C09A1a025De797600A7081146dceEd9`](https://bscscan.com/address/0xCa2D81AA7C09A1a025De797600A7081146dceEd9)
-    * VToken vUSDD: [`0xc3a45ad8812189cAb659aD99E64B1376f6aCD035`](https://bscscan.com/address/0xc3a45ad8812189cAb659aD99E64B1376f6aCD035)
-    * VToken vUSDT: [`0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B`](https://bscscan.com/address/0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B)
+### Pool Stablecoin
+
+* Comptroller: [`0x94c1495cD4c557f1560Cbd68EAB0d197e6291571`](https://bscscan.com/address/0x94c1495cD4c557f1560Cbd68EAB0d197e6291571)
+* SwapRouter: [`0x50d8ac56FC8525dcA9F41b12De0dbc6bDf7771e3`](https://bscscan.com/address/0x50d8ac56FC8525dcA9F41b12De0dbc6bDf7771e3)
+* Tokens 
+  * VToken vHAY: [`0xCa2D81AA7C09A1a025De797600A7081146dceEd9`](https://bscscan.com/address/0xCa2D81AA7C09A1a025De797600A7081146dceEd9)
+  * VToken vUSDD: [`0xc3a45ad8812189cAb659aD99E64B1376f6aCD035`](https://bscscan.com/address/0xc3a45ad8812189cAb659aD99E64B1376f6aCD035)
+  * VToken vUSDT: [`0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B`](https://bscscan.com/address/0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B)
+
+### Pool DeFi
+
+* Comptroller: [`0x3344417c9360b963ca93A4e8305361AEde340Ab9`](https://bscscan.com/address/0x3344417c9360b963ca93A4e8305361AEde340Ab9)
+* Swap router: XX
+* Markets:
+    * vBIFI_DeFi: [`0xC718c51958d3fd44f5F9580c9fFAC2F89815C909`](https://bscscan.com/address/0xC718c51958d3fd44f5F9580c9fFAC2F89815C909)
+    * vBSW_DeFi: [`0x8f657dFD3a1354DEB4545765fE6840cc54AFd379`](https://bscscan.com/address/0x8f657dFD3a1354DEB4545765fE6840cc54AFd379)
+    * vALPACA_DeFi: [`0x02c5Fb0F26761093D297165e902e96D08576D344`](https://bscscan.com/address/0x02c5Fb0F26761093D297165e902e96D08576D344)
+    * vUSDT_DeFi: [`0x1D8bBDE12B6b34140604E18e9f9c6e14deC16854`](https://bscscan.com/address/0x1D8bBDE12B6b34140604E18e9f9c6e14deC16854)
+    * vUSDD_DeFi: [`0xA615467caE6B9E0bb98BC04B4411d9296fd1dFa0`](https://bscscan.com/address/0xA615467caE6B9E0bb98BC04B4411d9296fd1dFa0)
+    * vANKR_DeFi: [`0x19CE11C8817a1828D1d357DFBF62dCf5b0B2A362`](https://bscscan.com/address/0x19CE11C8817a1828D1d357DFBF62dCf5b0B2A362)
+
+### Pool GameFi
+
+* Comptroller: [`0x1b43ea8622e76627B81665B1eCeBB4867566B963`](https://bscscan.com/address/0x1b43ea8622e76627B81665B1eCeBB4867566B963)
+* Swap router: XX    
+* Markets:
+    * vRACA_GameFi: [`0xE5FE5527A5b76C75eedE77FdFA6B80D52444A465`](https://bscscan.com/address/0xE5FE5527A5b76C75eedE77FdFA6B80D52444A465)
+    * vFLOKI_GameFi: [`0xc353B7a1E13dDba393B5E120D4169Da7185aA2cb`](https://bscscan.com/address/0xc353B7a1E13dDba393B5E120D4169Da7185aA2cb)
+    * vUSDD_GameFi: [`0x9f2FD23bd0A5E08C5f2b9DD6CF9C96Bfb5fA515C`](https://bscscan.com/address/0x9f2FD23bd0A5E08C5f2b9DD6CF9C96Bfb5fA515C)
+    * vUSDT_GameFi: [`0x4978591f17670A846137d9d613e333C38dc68A37`](https://bscscan.com/address/0x4978591f17670A846137d9d613e333C38dc68A37)
+
+### Pool Liquid Staked BNB
+
+* Comptroller: [`0xd933909A4a2b7A4638903028f44D1d38ce27c352`](https://bscscan.com/address/0xd933909A4a2b7A4638903028f44D1d38ce27c352)
+* Swap router: XX
+* Markets:
+    * vankrBNB_LiquidStakedBNB: [`0xBfe25459BA784e70E2D7a718Be99a1f3521cA17f`](https://bscscan.com/address/0xBfe25459BA784e70E2D7a718Be99a1f3521cA17f)
+    * vBNBx_LiquidStakedBNB: [`0x5E21bF67a6af41c74C1773E4b473ca5ce8fd3791`](https://bscscan.com/address/0x5E21bF67a6af41c74C1773E4b473ca5ce8fd3791)
+    * vstkBNB_LiquidStakedBNB: [`0xcc5D9e502574cda17215E70bC0B4546663785227`](https://bscscan.com/address/0xcc5D9e502574cda17215E70bC0B4546663785227)
+    * vWBNB_LiquidStakedBNB: [`0xe10E80B7FD3a29fE46E16C30CC8F4dd938B742e2`](https://bscscan.com/address/0xe10E80B7FD3a29fE46E16C30CC8F4dd938B742e2)
+    * vUSDD_LiquidStakedBNB: [`0x3ee4be3425e5CC72445cd4C5325A6B5A15507670`](https://bscscan.com/address/0x3ee4be3425e5CC72445cd4C5325A6B5A15507670)
+    * vUSDT_LiquidStakedBNB: [`0xB3CD745D46A7551C7DF21e0DEfEB710f546bca62`](https://bscscan.com/address/0xB3CD745D46A7551C7DF21e0DEfEB710f546bca62)
+
+### Pool Tron
+
+* Comptroller: [`0x23b4404E4E5eC5FF5a6FFb70B7d14E3FabF237B0`](https://bscscan.com/address/0x23b4404E4E5eC5FF5a6FFb70B7d14E3FabF237B0)
+* Swap router: XX
+* Markets:
+    * vBTT_Tron: [`0x49c26e12959345472E2Fd95E5f79F8381058d3Ee`](https://bscscan.com/address/0x49c26e12959345472E2Fd95E5f79F8381058d3Ee)
+    * vNFT_Tron: [`0x85baA9CD6186B416Ef92c0587Cd9E9Be3BCe2a4D`](https://bscscan.com/address/0x85baA9CD6186B416Ef92c0587Cd9E9Be3BCe2a4D)
+    * vTRX_Tron: [`0x836beb2cB723C498136e1119248436A645845F4E`](https://bscscan.com/address/0x836beb2cB723C498136e1119248436A645845F4E)
+    * vWIN_Tron: [`0xb114cfA615c828D88021a41bFc524B800E64a9D5`](https://bscscan.com/address/0xb114cfA615c828D88021a41bFc524B800E64a9D5)
+    * vUSDD_Tron: [`0xf1da185CCe5BeD1BeBbb3007Ef738Ea4224025F7`](https://bscscan.com/address/0xf1da185CCe5BeD1BeBbb3007Ef738Ea4224025F7)
+    * vUSDT_Tron: [`0x281E5378f99A4bc55b295ABc0A3E7eD32Deba059`](https://bscscan.com/address/0x281E5378f99A4bc55b295ABc0A3E7eD32Deba059)
 
 ## BNB Chain Testnet
 
@@ -26,15 +72,60 @@
 * Comptroller Beacon: [`0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74`](https://testnet.bscscan.com/address/0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74)
 * VToken Beacon: [`0xBF85A90673E61956f8c79b9150BAB7893b791bDd`](https://testnet.bscscan.com/address/0xBF85A90673E61956f8c79b9150BAB7893b791bDd)
 
-### Pools
+### Pool Stablecoin
 
-* Stablecoin Pool:
-  * Comptroller:  [`0x10b57706AD2345e590c2eA4DC02faef0d9f5b08B`](https://testnet.bscscan.com/address/0x10b57706AD2345e590c2eA4DC02faef0d9f5b08B)
-  * SwapRouter: [`0x625921c940a4321305313d6b3dca0dbd560afc25`](https://testnet.bscscan.com/address/0x625921c940a4321305313d6b3dca0dbd560afc25)
-  * Tokens: 
-    * VToken vHAY: [`0x170d3b2da05cc2124334240fB34ad1359e34C562`](https://testnet.bscscan.com/address/0x170d3b2da05cc2124334240fB34ad1359e34C562)
-    * VToken vUSDD: [`0x899dDf81DfbbF5889a16D075c352F2b959Dd24A4`](https://testnet.bscscan.com/address/0x899dDf81DfbbF5889a16D075c352F2b959Dd24A4)
-    * VToken vUSDT: [`0x3338988d0beb4419Acb8fE624218754053362D06`](https://testnet.bscscan.com/address/0x3338988d0beb4419Acb8fE624218754053362D06)
-  * Rewards Distributors:
-    * RewardsDistributor HAY: [`0xb0269d68CfdCc30Cb7Cd2E0b52b08Fa7Ffd3079b`](https://testnet.bscscan.com/address/0xb0269d68CfdCc30Cb7Cd2E0b52b08Fa7Ffd3079b)
-    * RewardsDistributor HAY Implementation: [`0x69b26CCa98609156e98bb2973A80749D6dc24D38`](https://testnet.bscscan.com/address/0x69b26CCa98609156e98bb2973A80749D6dc24D38)
+* Comptroller:  [`0x10b57706AD2345e590c2eA4DC02faef0d9f5b08B`](https://testnet.bscscan.com/address/0x10b57706AD2345e590c2eA4DC02faef0d9f5b08B)
+* SwapRouter: [`0x625921c940a4321305313d6b3dca0dbd560afc25`](https://testnet.bscscan.com/address/0x625921c940a4321305313d6b3dca0dbd560afc25)
+* Markets: 
+  * VToken vHAY: [`0x170d3b2da05cc2124334240fB34ad1359e34C562`](https://testnet.bscscan.com/address/0x170d3b2da05cc2124334240fB34ad1359e34C562)
+  * VToken vUSDD: [`0x899dDf81DfbbF5889a16D075c352F2b959Dd24A4`](https://testnet.bscscan.com/address/0x899dDf81DfbbF5889a16D075c352F2b959Dd24A4)
+  * VToken vUSDT: [`0x3338988d0beb4419Acb8fE624218754053362D06`](https://testnet.bscscan.com/address/0x3338988d0beb4419Acb8fE624218754053362D06)
+* Rewards Distributors:
+  * RewardsDistributor HAY: [`0xb0269d68CfdCc30Cb7Cd2E0b52b08Fa7Ffd3079b`](https://testnet.bscscan.com/address/0xb0269d68CfdCc30Cb7Cd2E0b52b08Fa7Ffd3079b)
+  * RewardsDistributor HAY Implementation: [`0x69b26CCa98609156e98bb2973A80749D6dc24D38`](https://testnet.bscscan.com/address/0x69b26CCa98609156e98bb2973A80749D6dc24D38)
+
+### Pool DeFi
+
+* Comptroller: [`0x23a73971A6B9f6580c048B9CB188869B2A2aA2aD`](https://testnet.bscscan.com/address/0x23a73971A6B9f6580c048B9CB188869B2A2aA2aD)
+* Swap router: XX
+* Markets:
+    * vBIFI_DeFi: [`0xEF949287834Be010C1A5EDd757c385FB9b644E4A`](https://testnet.bscscan.com/address/0xEF949287834Be010C1A5EDd757c385FB9b644E4A)
+    * vBSW_DeFi: [`0x5e68913fbbfb91af30366ab1B21324410b49a308`](https://testnet.bscscan.com/address/0x5e68913fbbfb91af30366ab1B21324410b49a308)
+    * vALPACA_DeFi: [`0xb7caC5Ef82cb7f9197ee184779bdc52c5490C02a`](https://testnet.bscscan.com/address/0xb7caC5Ef82cb7f9197ee184779bdc52c5490C02a)
+    * vUSDT_DeFi: [`0x80CC30811e362aC9aB857C3d7875CbcCc0b65750`](https://testnet.bscscan.com/address/0x80CC30811e362aC9aB857C3d7875CbcCc0b65750)
+    * vUSDD_DeFi: [`0xa109DE0abaeefC521Ec29D89eA42E64F37A6882E`](https://testnet.bscscan.com/address/0xa109DE0abaeefC521Ec29D89eA42E64F37A6882E)
+    * vANKR_DeFi: [`0xb677e080148368EeeE70fA3865d07E92c6500174`](https://testnet.bscscan.com/address/0xb677e080148368EeeE70fA3865d07E92c6500174)
+
+### Pool GameFi
+
+* Comptroller: [`0x1F4f0989C51f12DAcacD4025018176711f3Bf289`](https://testnet.bscscan.com/address/0x1F4f0989C51f12DAcacD4025018176711f3Bf289)
+* Swap router: XX
+* Markets:
+    * vRACA_GameFi: [`0x1958035231E125830bA5d17D168cEa07Bb42184a`](https://testnet.bscscan.com/address/0x1958035231E125830bA5d17D168cEa07Bb42184a)
+    * vFLOKI_GameFi: [`0xef470AbC365F88e4582D8027172a392C473A5B53`](https://testnet.bscscan.com/address/0xef470AbC365F88e4582D8027172a392C473A5B53)
+    * vUSDD_GameFi: [`0xdeDf3B2bcF25d0023115fd71a0F8221C91C92B1a`](https://testnet.bscscan.com/address/0xdeDf3B2bcF25d0023115fd71a0F8221C91C92B1a)
+    * vUSDT_GameFi: [`0x0bFE4e0B8A2a096A27e5B18b078d25be57C08634`](https://testnet.bscscan.com/address/0x0bFE4e0B8A2a096A27e5B18b078d25be57C08634)
+
+### Pool Liquid Staked BNB
+
+* Comptroller: [`0x596B11acAACF03217287939f88d63b51d3771704`](https://testnet.bscscan.com/address/0x596B11acAACF03217287939f88d63b51d3771704)
+* Swap router: XX
+* Markets:
+    * vankrBNB_LiquidStakedBNB: [`0x57a664Dd7f1dE19545fEE9c86C949e3BF43d6D47`](https://testnet.bscscan.com/address/0x57a664Dd7f1dE19545fEE9c86C949e3BF43d6D47)
+    * vBNBx_LiquidStakedBNB: [`0x644A149853E5507AdF3e682218b8AC86cdD62951`](https://testnet.bscscan.com/address/0x644A149853E5507AdF3e682218b8AC86cdD62951)
+    * vstkBNB_LiquidStakedBNB: [`0x75aa42c832a8911B77219DbeBABBB40040d16987`](https://testnet.bscscan.com/address/0x75aa42c832a8911B77219DbeBABBB40040d16987)
+    * vWBNB_LiquidStakedBNB: [`0x231dED0Dfc99634e52EE1a1329586bc970d773b3`](https://testnet.bscscan.com/address/0x231dED0Dfc99634e52EE1a1329586bc970d773b3)
+    * vUSDD_LiquidStakedBNB: [`0xD5b20708d8f0FcA52cb609938D0594C4e32E5DaD`](https://testnet.bscscan.com/address/0xD5b20708d8f0FcA52cb609938D0594C4e32E5DaD)
+    * vUSDT_LiquidStakedBNB: [`0x2197d02cC9cd1ad51317A0a85A656a0c82383A7c`](https://testnet.bscscan.com/address/0x2197d02cC9cd1ad51317A0a85A656a0c82383A7c)
+
+### Pool Tron
+
+* Comptroller: [`0x11537D023f489E4EF0C7157cc729C7B69CbE0c97`](https://testnet.bscscan.com/address/0x11537D023f489E4EF0C7157cc729C7B69CbE0c97)
+* Swap router: XX
+* Markets:
+    * vBTT_Tron: [`0x47793540757c6E6D84155B33cd8D9535CFdb9334`](https://testnet.bscscan.com/address/0x47793540757c6E6D84155B33cd8D9535CFdb9334)
+    * vNFT_Tron: [`0x67cD2A8aFF63C7eBbC7A601506f9Dbb8557d6547`](https://testnet.bscscan.com/address/0x67cD2A8aFF63C7eBbC7A601506f9Dbb8557d6547)
+    * vTRX_Tron: [`0x410286c43a525E1DCC7468a9B091C111C8324cd1`](https://testnet.bscscan.com/address/0x410286c43a525E1DCC7468a9B091C111C8324cd1)
+    * vWIN_Tron: [`0xEe543D5de2Dbb5b07675Fc72831A2f1812428393`](https://tesnet.bscscan.com/address/0xEe543D5de2Dbb5b07675Fc72831A2f1812428393)
+    * vUSDD_Tron: [`0xD804F74fe21290d213c46610ab171f7c2EeEBDE7`](https://testnet.bscscan.com/address/0xD804F74fe21290d213c46610ab171f7c2EeEBDE7)
+    * vUSDT_Tron: [`0x712774CBFFCBD60e9825871CcEFF2F917442b2c3`](https://testnet.bscscan.com/address/0x712774CBFFCBD60e9825871CcEFF2F917442b2c3)
