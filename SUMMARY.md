@@ -3,7 +3,6 @@
 ## Getting Started
 
 * [Overview](README.md)
-* [V4 Whitepaper](getting-started/v4-whitepaper.md)
 * [FAQ](getting-started/faq.md)
 
 ## What's New?
@@ -112,10 +111,9 @@
 * [Governance](deployed-contracts/governance.md)
 * [Peripherial](deployed-contracts/peripherial.md)
 
-## Services
+***
 
-* [API (Beta)](services/api-beta.md)
-* [Subgraphs](services/subgraphs.md)
+* [API (Beta)](api-beta.md)
 
 ## Links
 
