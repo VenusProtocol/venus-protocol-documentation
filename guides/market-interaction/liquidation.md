@@ -65,14 +65,32 @@ Once an under-collateralized account has been identified, the liquidation proces
 
 3. Handle liquidation results: After invoking `liquidateBorrow`, monitor the transaction's success and handle any resulting events or errors. Successful liquidations will transfer the seized collateral to the liquidator's address and repay the debt from the borrower's account.
 
+ {% hint style="warning" %}
+   Please note that the liquidation process involves complex calculations and requires a deep understanding of Venus Protocol. It's essential to thoroughly test and validate your liquidation bot before deploying it in a production environment. Additionally, keep track of any changes or updates to the Venus Protocol that may impact the liquidation process.
+{% endhint %}
+
 {% hint style="info" %}
 ### Example
+
 Collateral Factor: 50%
+
 Liquidation Threshold: 60%
-Borrow Amount: $10,000
+
+Borrow Amount: $13,000
+
 Collateral Amount: $20,000
 
-If the value of the borrowed asset increases to $12,000 or more, the position would be eligible for liquidation.
+Liquidation Incentive: 5% (0.05)
+
+
+The borrow amount is $1000 above liquidation threshold ($12 000), therefore the position is eligible for liquidation.
+Let's Calculate the Liquidation Amount:
+
+`Liquidation Amount = Liquidation Amount * (1 + Liquidation Incentive)`
+`Liquidation Amount = $1,000 * (1 + 0.05)`
+`Liquidation Amount = $1,050`
+
+Therefore, if the borrowed asset value reaches $13,000, the repayment amount would be $1,050 considering the liquidation incentive of 5%.
 
 {% endhint %}
 
