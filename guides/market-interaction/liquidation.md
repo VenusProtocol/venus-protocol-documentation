@@ -115,7 +115,7 @@ Position is already eligible for liquidation since Borrow Amount >= $54. We shou
 {% endhint %}
 
 
-- **Collateral < minLiquidatableCollateral && account is insolvent -->** `healAccount()`: this function seizes all the remaining collateral from the borrower, requires the person initiating the liquidation (msg.sender) to repay the borrower's existing debt, and treats any remaining debt as bad debt.The sender has to repay a certain percentage of the debt, computed as
+- **Collateral < minLiquidatableCollateral && account is insolvent -->** `healAccount()`: this function seizes all the remaining collateral from the borrower, requires the person initiating the liquidation (msg.sender) to repay the borrower's existing debt, and treats any remaining debt as bad debt. The sender has to repay a certain percentage of the debt, computed as
 `collateral / (borrows * liquidationIncentive)`
 
 {% hint style="info" %}
