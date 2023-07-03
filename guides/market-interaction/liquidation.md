@@ -78,7 +78,7 @@ Please note that `healAccount` is an extension of the liquidation mechanism to a
 
 **Collateral Amount: $20,000**
 
-**Liquidation Incentive: 5% (0.05)**
+**Liquidation Incentive: 5%**
 
 
 The borrow amount is $1000 above liquidation threshold ($12 000), therefore the position is eligible for liquidation.
