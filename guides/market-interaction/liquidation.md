@@ -66,7 +66,7 @@ Please note that `healAccount` is an extension of the liquidation mechanism to a
 1. Calculate the liquidation amount: Determine the amount of debt to be repaid and the collateral to be seized. This is typically calculated by examining the borrower's debt balance, the market's collateral factor, and any discounts or liquidation incentives offered.
 
 2. When performing the liquidation, there are 3 different types of liquidations that can be called, taking in mind the **collateral, minimum liquidatable collateral** and **solvency** of the account:
-- **Collateral > minLiquidatableCollateral -->** `liquidateBorrow()`: Call the `liquidateBorrow` function on the relevant vToken contract. This function requires several parameters, including the borrower's address, the liquidator's address, the amount of debt to be repaid, and the collateral to be seized. Refer to the vToken contract documentation for specific details on the function's required parameters.
+- **Collateral > `minLiquidatableCollateral` -->** `liquidateBorrow()`: Call the `liquidateBorrow` function on the relevant vToken contract. This function requires several parameters, including the borrower's address, the liquidator's address, the amount of debt to be repaid, and the collateral to be seized. Refer to the vToken contract documentation for specific details on the function's required parameters.
 {% hint style="info" %}
 ### Example
 
