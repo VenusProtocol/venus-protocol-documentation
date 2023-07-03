@@ -81,7 +81,7 @@ Please note that `healAccount` is an extension of the liquidation mechanism to a
 **Liquidation Incentive: 5%**
 
 
-The borrow amount is $1000 above liquidation threshold ($12 000), therefore the position is eligible for liquidation.
+The borrowed amount is $1,000 above the liquidation threshold ($12.000), therefore the position is eligible for liquidation.
 Let's Calculate the Liquidation Amount:
 
 `Liquidation Amount = Liquidation Amount * (1 + Liquidation Incentive)`
