@@ -81,14 +81,14 @@ Please note that `healAccount` is an extension of the liquidation mechanism to a
 **Liquidation Incentive: 5%**
 
 
-The borrowed amount is $1,000 above the liquidation threshold ($12.000), therefore the position is eligible for liquidation.
-Let's Calculate the Liquidation Amount:
+The borrowed amount is $1,000 above the liquidation threshold ($12.000), therefore the position is eligible for liquidation.Since, liquidation can be called with repayment amount of $1000
+Let's Calculate the Collateral Seized Amount (amount that liquidator will receive):
 
-`Liquidation Amount = Liquidation Amount * (1 + Liquidation Incentive)`
+`Collateral Seized Amount = Repayment Amount * (1 + Liquidation Incentive)`
 
-`Liquidation Amount = $1,000 * (1 + 0.05)`
+`Collateral Seized Amount = $1,000 * (1 + 0.05)`
 
-`Liquidation Amount = $1,050`
+`Collateral Seized Amount = $1,050`
 
 Therefore, if the borrowed asset value reaches **$13,000**, the repayment amount would be **$1,050** considering the liquidation incentive of 5%.
 
@@ -131,7 +131,7 @@ Position is already eligible for liquidation since Borrow Amount >= $54. We shou
 
 **Collateral Amount: $60**
 
-Position is eligible for liquidation, **collateral is < $100**, but account is **insolvent** and we need to call `healAccount()` so we can treat the remaining debt as bad debt for the protocol.
+Position is eligible for liquidation, **collateral is < $100**, but account is **insolvent** and we need to call `healAccount()` to ensure that the remaining debt ($30) is treated as bad debt for the protocol.
 {% endhint %}
 
 3. Handle liquidation results: After invoking `liquidateBorrow`, monitor the transaction's success and handle any resulting events or errors. Successful liquidations will transfer the seized collateral to the liquidator's address and repay the debt from the borrower's account.
