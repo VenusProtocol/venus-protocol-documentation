@@ -109,7 +109,6 @@
 * [Oracles](deployed-contracts/oracles.md)
 * [Core Pool](deployed-contracts/core-pool.md)
 * [Governance](deployed-contracts/governance.md)
-* [Peripherial](deployed-contracts/peripherial.md)
 
 ***
 

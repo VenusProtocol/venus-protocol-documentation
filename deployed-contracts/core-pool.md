@@ -12,6 +12,8 @@
 * XVS Vault Proxy: [`0x051100480289e704d20e9DB4804837068f3f9204`](https://bscscan.com/address/0x051100480289e704d20e9DB4804837068f3f9204)
 * XVS Vault(Impl): [`0x6eF49b4e0772Fe78128F981d42D54172b55eCF9F`](https://bscscan.com/address/0x6eF49b4e0772Fe78128F981d42D54172b55eCF9F)
 * Liquidator: [`0x0870793286aaDA55D39CE7f82fb2766e8004cF43`](https://bscscan.com/address/0x0870793286aaDA55D39CE7f82fb2766e8004cF43)
+* Venus Treasury: [`0xf322942f644a996a617bd29c16bd7d231d9f35e9`](https://bscscan.com/address/0xf322942f644a996a617bd29c16bd7d231d9f35e9)
+* SwapRouter: [`0x8938E6dA30b59c1E27d5f70a94688A89F7c815a4`](https://bscscan.com/address/0x8938E6dA30b59c1E27d5f70a94688A89F7c815a4)
 
 ### Underlying tokens
 
@@ -89,6 +91,8 @@
 * XVS Vault(Impl): [`0x2B62C479A5554991264FBd1D83c756abF558F88b`](https://testnet.bscscan.com/address/0x2B62C479A5554991264FBd1D83c756abF558F88b)
 * Venus Lens: [`0x4C97B56d596d5cCc11727c0AD7d171E7F0d5134e`](https://testnet.bscscan.com/address/0x4C97B56d596d5cCc11727c0AD7d171E7F0d5134e)
 * Liquidator: [`0x40FB27A83e52E7B213CC345f5b6ACA17bf7D5139`](https://testnet.bscscan.com/address/0x40FB27A83e52E7B213CC345f5b6ACA17bf7D5139)
+* Venus Treasury: [`0x8b293600c50d6fbdc6ed4251cc75ece29880276f`](https://testnet.bscscan.com/address/0x8b293600c50d6fbdc6ed4251cc75ece29880276f)
+* SwapRouter: [`0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0`](https://testnet.bscscan.com/address/0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0)
 
 ### Underlying tokens
 

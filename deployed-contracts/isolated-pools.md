@@ -11,16 +11,16 @@
 ### Pool Stablecoin
 
 * Comptroller: [`0x94c1495cD4c557f1560Cbd68EAB0d197e6291571`](https://bscscan.com/address/0x94c1495cD4c557f1560Cbd68EAB0d197e6291571)
-* SwapRouter: [`0x50d8ac56FC8525dcA9F41b12De0dbc6bDf7771e3`](https://bscscan.com/address/0x50d8ac56FC8525dcA9F41b12De0dbc6bDf7771e3)
+* SwapRouter: [`0xBBd8E2b5d69fcE9Aaa599c50F0f0960AA58B32aA`](https://bscscan.com/address/0xBBd8E2b5d69fcE9Aaa599c50F0f0960AA58B32aA)
 * Tokens
-  * VToken vHAY: [`0xCa2D81AA7C09A1a025De797600A7081146dceEd9`](https://bscscan.com/address/0xCa2D81AA7C09A1a025De797600A7081146dceEd9)
-  * VToken vUSDD: [`0xc3a45ad8812189cAb659aD99E64B1376f6aCD035`](https://bscscan.com/address/0xc3a45ad8812189cAb659aD99E64B1376f6aCD035)
-  * VToken vUSDT: [`0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B`](https://bscscan.com/address/0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B)
+  * vHAY\_Stablecoins: [`0xCa2D81AA7C09A1a025De797600A7081146dceEd9`](https://bscscan.com/address/0xCa2D81AA7C09A1a025De797600A7081146dceEd9)
+  * vUSDD\_Stablecoins: [`0xc3a45ad8812189cAb659aD99E64B1376f6aCD035`](https://bscscan.com/address/0xc3a45ad8812189cAb659aD99E64B1376f6aCD035)
+  * vUSDT\_Stablecoins: [`0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B`](https://bscscan.com/address/0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B)
 
 ### Pool DeFi
 
 * Comptroller: [`0x3344417c9360b963ca93A4e8305361AEde340Ab9`](https://bscscan.com/address/0x3344417c9360b963ca93A4e8305361AEde340Ab9)
-* Swap router: XX
+* Swap router: [`0x47bEe99BD8Cf5D8d7e815e2D2a3E2985CBCcC04b`](https://bscscan.com/address/0x47bEe99BD8Cf5D8d7e815e2D2a3E2985CBCcC04b)
 * Markets:
   * vBIFI\_DeFi: [`0xC718c51958d3fd44f5F9580c9fFAC2F89815C909`](https://bscscan.com/address/0xC718c51958d3fd44f5F9580c9fFAC2F89815C909)
   * vBSW\_DeFi: [`0x8f657dFD3a1354DEB4545765fE6840cc54AFd379`](https://bscscan.com/address/0x8f657dFD3a1354DEB4545765fE6840cc54AFd379)
@@ -32,7 +32,7 @@
 ### Pool GameFi
 
 * Comptroller: [`0x1b43ea8622e76627B81665B1eCeBB4867566B963`](https://bscscan.com/address/0x1b43ea8622e76627B81665B1eCeBB4867566B963)
-* Swap router: XX
+* Swap router: [`0x9B15462a79D0948BdDF679E0E5a9841C44aAFB7A`](https://bscscan.com/address/0x9B15462a79D0948BdDF679E0E5a9841C44aAFB7A)
 * Markets:
   * vRACA\_GameFi: [`0xE5FE5527A5b76C75eedE77FdFA6B80D52444A465`](https://bscscan.com/address/0xE5FE5527A5b76C75eedE77FdFA6B80D52444A465)
   * vFLOKI\_GameFi: [`0xc353B7a1E13dDba393B5E120D4169Da7185aA2cb`](https://bscscan.com/address/0xc353B7a1E13dDba393B5E120D4169Da7185aA2cb)
@@ -42,19 +42,17 @@
 ### Pool Liquid Staked BNB
 
 * Comptroller: [`0xd933909A4a2b7A4638903028f44D1d38ce27c352`](https://bscscan.com/address/0xd933909A4a2b7A4638903028f44D1d38ce27c352)
-* Swap router: XX
+* Swap router: [`0x5f0ce69Aa564468492e860e8083BB001e4eb8d56`](https://bscscan.com/address/0x5f0ce69Aa564468492e860e8083BB001e4eb8d56)
 * Markets:
   * vankrBNB\_LiquidStakedBNB: [`0xBfe25459BA784e70E2D7a718Be99a1f3521cA17f`](https://bscscan.com/address/0xBfe25459BA784e70E2D7a718Be99a1f3521cA17f)
   * vBNBx\_LiquidStakedBNB: [`0x5E21bF67a6af41c74C1773E4b473ca5ce8fd3791`](https://bscscan.com/address/0x5E21bF67a6af41c74C1773E4b473ca5ce8fd3791)
   * vstkBNB\_LiquidStakedBNB: [`0xcc5D9e502574cda17215E70bC0B4546663785227`](https://bscscan.com/address/0xcc5D9e502574cda17215E70bC0B4546663785227)
   * vWBNB\_LiquidStakedBNB: [`0xe10E80B7FD3a29fE46E16C30CC8F4dd938B742e2`](https://bscscan.com/address/0xe10E80B7FD3a29fE46E16C30CC8F4dd938B742e2)
-  * vUSDD\_LiquidStakedBNB: [`0x3ee4be3425e5CC72445cd4C5325A6B5A15507670`](https://bscscan.com/address/0x3ee4be3425e5CC72445cd4C5325A6B5A15507670)
-  * vUSDT\_LiquidStakedBNB: [`0xB3CD745D46A7551C7DF21e0DEfEB710f546bca62`](https://bscscan.com/address/0xB3CD745D46A7551C7DF21e0DEfEB710f546bca62)
 
 ### Pool Tron
 
 * Comptroller: [`0x23b4404E4E5eC5FF5a6FFb70B7d14E3FabF237B0`](https://bscscan.com/address/0x23b4404E4E5eC5FF5a6FFb70B7d14E3FabF237B0)
-* Swap router: XX
+* Swap router: [`0xacD270Ed7DFd4466Bd931d84fe5B904080E28Bfc`](https://bscscan.com/address/0xacD270Ed7DFd4466Bd931d84fe5B904080E28Bfc)
 * Markets:
   * vBTT\_Tron: [`0x49c26e12959345472E2Fd95E5f79F8381058d3Ee`](https://bscscan.com/address/0x49c26e12959345472E2Fd95E5f79F8381058d3Ee)
   * vNFT\_Tron: [`0x85baA9CD6186B416Ef92c0587Cd9E9Be3BCe2a4D`](https://bscscan.com/address/0x85baA9CD6186B416Ef92c0587Cd9E9Be3BCe2a4D)
@@ -74,7 +72,7 @@
 ### Pool Stablecoin
 
 * Comptroller:  [`0x10b57706AD2345e590c2eA4DC02faef0d9f5b08B`](https://testnet.bscscan.com/address/0x10b57706AD2345e590c2eA4DC02faef0d9f5b08B)
-* SwapRouter: [`0x625921c940a4321305313d6b3dca0dbd560afc25`](https://testnet.bscscan.com/address/0x625921c940a4321305313d6b3dca0dbd560afc25)
+* SwapRouter: [`0x8Ff3c0a74b4CBD4dFA3A35Cca756490bE351F936`](https://testnet.bscscan.com/address/0x8Ff3c0a74b4CBD4dFA3A35Cca756490bE351F936)
 * Markets:
   * VToken vHAY: [`0x170d3b2da05cc2124334240fB34ad1359e34C562`](https://testnet.bscscan.com/address/0x170d3b2da05cc2124334240fB34ad1359e34C562)
   * VToken vUSDD: [`0x899dDf81DfbbF5889a16D075c352F2b959Dd24A4`](https://testnet.bscscan.com/address/0x899dDf81DfbbF5889a16D075c352F2b959Dd24A4)
@@ -86,7 +84,7 @@
 ### Pool DeFi
 
 * Comptroller: [`0x23a73971A6B9f6580c048B9CB188869B2A2aA2aD`](https://testnet.bscscan.com/address/0x23a73971A6B9f6580c048B9CB188869B2A2aA2aD)
-* Swap router: XX
+* Swap router: [`0x89Bc8dFe0Af08b60ec285071d133FCdfa9B3C08e`](https://testnet.bscscan.com/address/0x89Bc8dFe0Af08b60ec285071d133FCdfa9B3C08e)
 * Markets:
   * vBIFI\_DeFi: [`0xEF949287834Be010C1A5EDd757c385FB9b644E4A`](https://testnet.bscscan.com/address/0xEF949287834Be010C1A5EDd757c385FB9b644E4A)
   * vBSW\_DeFi: [`0x5e68913fbbfb91af30366ab1B21324410b49a308`](https://testnet.bscscan.com/address/0x5e68913fbbfb91af30366ab1B21324410b49a308)
@@ -98,7 +96,7 @@
 ### Pool GameFi
 
 * Comptroller: [`0x1F4f0989C51f12DAcacD4025018176711f3Bf289`](https://testnet.bscscan.com/address/0x1F4f0989C51f12DAcacD4025018176711f3Bf289)
-* Swap router: XX
+* Swap router: [`0x5D254Bc7c7f2670395B9E0716C21249083D41a4f`](https://testnet.bscscan.com/address/0x5D254Bc7c7f2670395B9E0716C21249083D41a4f)
 * Markets:
   * vRACA\_GameFi: [`0x1958035231E125830bA5d17D168cEa07Bb42184a`](https://testnet.bscscan.com/address/0x1958035231E125830bA5d17D168cEa07Bb42184a)
   * vFLOKI\_GameFi: [`0xef470AbC365F88e4582D8027172a392C473A5B53`](https://testnet.bscscan.com/address/0xef470AbC365F88e4582D8027172a392C473A5B53)
@@ -108,19 +106,17 @@
 ### Pool Liquid Staked BNB
 
 * Comptroller: [`0x596B11acAACF03217287939f88d63b51d3771704`](https://testnet.bscscan.com/address/0x596B11acAACF03217287939f88d63b51d3771704)
-* Swap router: XX
+* Swap router: [`0xb16792E90d6478DaBbd0144e13f41CeA21ACE116`](https://testnet.bscscan.com/address/0xb16792E90d6478DaBbd0144e13f41CeA21ACE116)
 * Markets:
   * vankrBNB\_LiquidStakedBNB: [`0x57a664Dd7f1dE19545fEE9c86C949e3BF43d6D47`](https://testnet.bscscan.com/address/0x57a664Dd7f1dE19545fEE9c86C949e3BF43d6D47)
   * vBNBx\_LiquidStakedBNB: [`0x644A149853E5507AdF3e682218b8AC86cdD62951`](https://testnet.bscscan.com/address/0x644A149853E5507AdF3e682218b8AC86cdD62951)
   * vstkBNB\_LiquidStakedBNB: [`0x75aa42c832a8911B77219DbeBABBB40040d16987`](https://testnet.bscscan.com/address/0x75aa42c832a8911B77219DbeBABBB40040d16987)
   * vWBNB\_LiquidStakedBNB: [`0x231dED0Dfc99634e52EE1a1329586bc970d773b3`](https://testnet.bscscan.com/address/0x231dED0Dfc99634e52EE1a1329586bc970d773b3)
-  * vUSDD\_LiquidStakedBNB: [`0xD5b20708d8f0FcA52cb609938D0594C4e32E5DaD`](https://testnet.bscscan.com/address/0xD5b20708d8f0FcA52cb609938D0594C4e32E5DaD)
-  * vUSDT\_LiquidStakedBNB: [`0x2197d02cC9cd1ad51317A0a85A656a0c82383A7c`](https://testnet.bscscan.com/address/0x2197d02cC9cd1ad51317A0a85A656a0c82383A7c)
 
 ### Pool Tron
 
 * Comptroller: [`0x11537D023f489E4EF0C7157cc729C7B69CbE0c97`](https://testnet.bscscan.com/address/0x11537D023f489E4EF0C7157cc729C7B69CbE0c97)
-* Swap router: XX
+* Swap router: [`0x1D8cA5AFB88F07489786A3d2E0FF50F3F9314d97`](https://testnet.bscscan.com/address/0x1D8cA5AFB88F07489786A3d2E0FF50F3F9314d97)
 * Markets:
   * vBTT\_Tron: [`0x47793540757c6E6D84155B33cd8D9535CFdb9334`](https://testnet.bscscan.com/address/0x47793540757c6E6D84155B33cd8D9535CFdb9334)
   * vNFT\_Tron: [`0x67cD2A8aFF63C7eBbC7A601506f9Dbb8557d6547`](https://testnet.bscscan.com/address/0x67cD2A8aFF63C7eBbC7A601506f9Dbb8557d6547)
