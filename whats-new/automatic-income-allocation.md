@@ -1,4 +1,4 @@
-# Venus Protocol Automatic Reward Allocation
+# Venus Protocol Automatic Income Allocation
 
 ## To be released
 
