@@ -103,6 +103,7 @@
   * [IAccessControlManagerV5](reference-governance/iaccess-control-manager-v5.md)
   * [IAccessControlManagerV8](reference-governance/iaccess-control-manager-v8.md)
   * [AccessControlledV8](reference-governance/access-controlled-v8.md)
+* [Contracts Overview](technical-reference/automatic-income-allocation.md)
 
 ## Deployed Contracts
 
