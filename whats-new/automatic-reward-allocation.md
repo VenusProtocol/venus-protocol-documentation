@@ -30,7 +30,8 @@ The income distribution takes place within the Protocol Share Reserve contract a
 
 ## Income Transformation
 
-Initially, the income is held in the Protocol Share Reserve and then distributed to various destinations, including the Risk Fund, the Treasury Reserve, the XVS Vault Rewards, and the Venus Prime Token Program.
-The XVSVaultSwapper and RiskFundSwapper are responsible for converting the received income into specific tokens (XVS in the XVSVaultSwapper and USDT in the RiskFundSwapper).
-The income is distributed in a near-streaming manner, meaning it is distributed as it is generated.
-The income is distributed in the underlying tokens, rather than in vTokens.
+- Initially, the income is held in the Protocol Share Reserve and then distributed to various destinations, including the Risk Fund, the Treasury
+- Reserve, the XVS Vault Rewards, and the Venus Prime Token Program.
+- The XVSVaultSwapper and RiskFundSwapper are responsible for converting the received income into specific tokens (XVS in the XVSVaultSwapper and USDT in the RiskFundSwapper).
+- The income is distributed in a near-streaming manner, meaning it is distributed as it is generated.
+- The income is distributed in the underlying tokens, rather than in vTokens.
