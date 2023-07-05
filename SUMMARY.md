@@ -11,6 +11,7 @@
 * [Prime Yield](whats-new/prime-yield.md)
 * [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
 * [Reward Distributor](whats-new/reward-distributor.md)
+* [Automatic Reward Allocation](whats-new/automatic-reward-allocation.md)
 
 ## Governance
 
