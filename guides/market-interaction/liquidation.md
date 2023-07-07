@@ -82,7 +82,6 @@ Please note that `healAccount` is an extension of the liquidation mechanism to a
 
 **Liquidation Incentive: 5%**
 
-
 The borrowed amount is $1,000 above the liquidation threshold ($12,000), therefore the position is eligible for liquidation. Liquidation can be called with a repayment of up to $6,500 (borrow amount * close factor). Let's assume the liquidator initiates the liquidation process with a repayment amount of $1,000
 Let's Calculate the Collateral Seized Amount (amount that liquidator will receive):
 
@@ -92,7 +91,15 @@ Let's Calculate the Collateral Seized Amount (amount that liquidator will receiv
 
 `Collateral Seized Amount = $1,050`
 
-Therefore, if the borrowed asset value reaches **$13,000**, the repayment amount would be **$1,050** considering the liquidation incentive of 5%.
+Therefore, if the borrowed asset value reaches **$13,000**, the repayment amount would be **$1,000**, and the total collateral seized will be  **$1,050** considering the liquidation incentive of 5%. In order to calculate what amount the liquidator will get we need to take into account `treasuryPercentMantissa` (in core-pool) or `protocolSeizeShareMantissa` (in isolated-pools). This variable sets the percentage out of the collateral seized that will go to the protocol. Lets assume that the protocl share for liquidation is `2%` and calculate the liquidator receive amount:
+
+`Liquidator Receive Amount = Collateral Seized * (1 - Protocol Share Percent)`
+
+`Liquidator Receive Amount = $1,050 * (1 - 0.02)`
+
+`Liquidator Receive Amount = $1,029 * (1 - 0.02)`
+
+In conclusion, the liquidator will provide **$1,000** for the liquidation. After the liquidation, liquidator will receive **$1,029** and the rest **$21** will go to the protocol.
 
 {% endhint %}
 
