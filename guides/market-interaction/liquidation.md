@@ -144,7 +144,7 @@ Position is already eligible for liquidation since Borrow Amount >= $54. We shou
 
 **Collateral Amount: $60**
 
-Position is eligible for liquidation, **collateral is < $100**, but account is **insolvent** and we need to call `healAccount()` to ensure that the remaining debt ($30) is treated as bad debt for the protocol.
+Position is eligible for liquidation and **collateral is < $100**, but the account is **insolvent**, so we need to call `healAccount()` to ensure that the remaining debt ($30) is treated as bad debt for the protocol.
 {% endhint %}
 
 3. Handle liquidation results: After invoking `liquidateBorrow`, monitor the transaction's success and handle any resulting events or errors. Successful liquidations will transfer the seized collateral to the liquidator's address and repay the debt from the borrower's account.
