@@ -97,11 +97,11 @@ Therefore, if the borrowed asset value reaches **$13,000**, the repayment amount
 
 `Liquidator Receive Amount = Collateral Seized - Protocol Shares`
 
-`Protocol Shares = `(Collateral Seized / Liquidation Incentive) * Protocol Share Percentage`
+`Protocol Shares = (Collateral Seized / Liquidation Incentive) * Protocol Share Percentage`
 
 `Protocol Shares = ($1,100 / 1.1) * 0.05 = $50`
 
-`Liquidator Receive Amount = $1,050 * (1 - 0.02)`
+`Liquidator Receive Amount = $1,100 - $50 = $1,050`
 
 In conclusion, the liquidator will provide **$1,000** for the liquidation. After the liquidation, the liquidator will receive **$1,050** and the rest **$50** will go to the protocol.
 
