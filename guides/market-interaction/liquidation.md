@@ -89,7 +89,7 @@ Let's Calculate the Collateral Seized Amount (the amount that is seized from the
 
 `Collateral Seized Amount = Repayment Amount * Liquidation Incentive`
 
-`Collateral Seized Amount = $1,000 * (1 + 0.05)`
+`Collateral Seized Amount = $1,000 * 1.1`
 
 `Collateral Seized Amount = $1,100`
 
