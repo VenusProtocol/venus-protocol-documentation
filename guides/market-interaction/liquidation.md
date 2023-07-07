@@ -103,8 +103,6 @@ Therefore, if the borrowed asset value reaches **$13,000**, the repayment amount
 
 `Liquidator Receive Amount = $1,050 * (1 - 0.02)`
 
-`Liquidator Receive Amount = $1,029 * (1 - 0.02)`
-
 In conclusion, the liquidator will provide **$1,000** for the liquidation. After the liquidation, liquidator will receive **$1,029** and the rest **$21** will go to the protocol.
 
 {% endhint %}
