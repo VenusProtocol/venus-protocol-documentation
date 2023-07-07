@@ -83,7 +83,7 @@ Please note that `healAccount` is an extension of the liquidation mechanism to a
 **Liquidation Incentive: 5%**
 
 
-The borrowed amount is $1,000 above the liquidation threshold ($12.000), therefore the position is eligible for liquidation.Since, liquidation can be called with repayment amount of $1000
+The borrowed amount is $1,000 above the liquidation threshold ($12,000), therefore the position is eligible for liquidation. Liquidation can be called with a repayment of up to $6,500 (borrow amount * close factor). Let's assume the liquidator initiates the liquidation process with a repayment amount of $1,000
 Let's Calculate the Collateral Seized Amount (amount that liquidator will receive):
 
 `Collateral Seized Amount = Repayment Amount * (1 + Liquidation Incentive)`
