@@ -93,7 +93,7 @@ Let's Calculate the Collateral Seized Amount (the amount that is seized from the
 
 `Collateral Seized Amount = $1,100`
 
-Therefore, if the borrowed asset value reaches **$13,000**, the repayment amount would be **$1,000**, and the total collateral seized will be  **$1,050** considering the liquidation incentive of 5%. In order to calculate what amount the liquidator will get we need to take into account `treasuryPercentMantissa` (in core-pool) or `protocolSeizeShareMantissa` (in isolated-pools). This variable sets the percentage out of the collateral seized that will go to the protocol. Lets assume that the protocl share for liquidation is `2%` and calculate the liquidator receive amount:
+Therefore, if the borrowed asset value reaches **$13,000** and the repayment amount is **$1,000**, the total collateral seized will be  **$1,100** considering the liquidation incentive of 10%. In order to calculate what amount the liquidator will get we need to consider `treasuryPercentMantissa` (in the Core pool) or `protocolSeizeShareMantissa` (in the Isolated pools). This variable (`Protocol Share Percentage`) sets the percentage of the collateral seized that will go to the protocol. Let's assume that the protocol shares for liquidations is `5%` and calculate the liquidator received amount:
 
 `Liquidator Receive Amount = Collateral Seized - Protocol Shares`
 
