@@ -72,6 +72,8 @@ Please note that `healAccount` is an extension of the liquidation mechanism to a
 
 **Collateral Factor: 50%**
 
+**Close Factor: 50%**
+
 **Liquidation Threshold: 60%**
 
 **Borrow Amount: $13,000**
