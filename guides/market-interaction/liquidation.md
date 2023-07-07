@@ -26,7 +26,7 @@ By combining the information obtained from these functions, one can accurately i
 
 ### Minimum Liquidatable Collateral
 
-The `Comptroller.minLiquidatableCollateral` variable represents the minimal collateral in USD required for regular (non-batch) liquidations. Accounts with collateral below this threshold may not be eligible for non-batch liquidations. It's defined in atoms of USD (18 decimals).
+The `Comptroller.minLiquidatableCollateral` variable represents the minimal collateral in USD required for regular (non-batch) liquidations. Accounts with collateral below this threshold may not be eligible for non-batch liquidations. It's defined in USD value (18 decimals scale).
 
 ## Finding Under-Collateralized Accounts
 
@@ -57,13 +57,98 @@ Please note that the functions mentioned above are provided by PoolLens and may 
 
 ## Performing the Liquidation
 
-Once an under-collateralized account has been identified, the liquidation process can be initiated using the `liquidateBorrow` function provided by the relevant vToken contract (Liquidator contract on the Core Pool). Here's an overview of the steps involved:
+Once an under-collateralized account has been identified, the liquidation process can be initiated using either `liquidateBorrow` , `liquidateAccount` or `healAccount` function. `liquidateBorrow` is provided by the relevant vToken contract (Liquidator contract on the Core Pool) whereas  `liquidateAccount` and `healAccount` are provided in Comptroller. Here's an overview of the steps involved:
+
+{% hint style="warning" %}
+Please note that `healAccount` is an extension of the liquidation mechanism to address handling of bad debt and offseting it with protocol revenue/fees. On the other hand, `liquidateAccount` allows batches of liquidations in a single transaction. In both cases, the total collateral must be lower than the threshold `Comptroller.minLiquidatableCollateral`. Those two functions are only available in Isolated Pools. For Core Pool `liquidateBorrow` function provided by `Liquidator` contract is the only available mechanism to perform liquidations.
+{% endhint %}
 
 1. Calculate the liquidation amount: Determine the amount of debt to be repaid and the collateral to be seized. This is typically calculated by examining the borrower's debt balance, the market's collateral factor, and any discounts or liquidation incentives offered.
 
-2. Invoke the `liquidateBorrow` function: Call the `liquidateBorrow` function on the relevant vToken contract. This function requires several parameters, including the borrower's address, the liquidator's address, the amount of debt to be repaid, and the collateral to be seized. Refer to the vToken contract documentation for specific details on the function's required parameters.
+2. When performing the liquidation, there are 3 different types of liquidations that can be called, taking in mind the **collateral**, **minimum liquidatable collateral** and **solvency** of the account:
+- **Collateral > `minLiquidatableCollateral` -->** `liquidateBorrow()`: Call the `liquidateBorrow` function on the relevant vToken contract. This function requires several parameters, including the borrower's address, the liquidator's address, the amount of debt to be repaid, and the collateral to be seized. Refer to the vToken contract documentation for specific details on the function's required parameters.
+{% hint style="info" %}
+### Example
+
+**Collateral Factor: 50%**
+
+**Close Factor: 50%**
+
+**Liquidation Threshold: 60%**
+
+**Borrow Amount: $13,000**
+
+**Collateral Amount: $20,000**
+
+**Liquidation Incentive: 110%**
+
+**Protocol Share Percentage: 5%**
+
+The borrowed amount is $1,000 above the liquidation threshold ($12,000), therefore the position is eligible for liquidation. Liquidation can be called with a repayment of up to $6,500 (borrow amount * close factor). Let's assume the liquidator initiates the liquidation process with a repayment amount of $1,000
+Let's Calculate the Collateral Seized Amount (the amount that is seized from the borrower's collateral):
+
+`Collateral Seized Amount = Repayment Amount * Liquidation Incentive`
+
+`Collateral Seized Amount = $1,000 * 1.1`
+
+`Collateral Seized Amount = $1,100`
+
+Therefore, if the borrowed asset value reaches **$13,000** and the repayment amount is **$1,000**, the total collateral seized will be  **$1,100** considering the liquidation incentive of 10%. In order to calculate what amount the liquidator will get we need to consider `treasuryPercentMantissa` (in the Core pool) or `protocolSeizeShareMantissa` (in the Isolated pools). This variable (`Protocol Share Percentage`) sets the percentage of the collateral seized that will go to the protocol. Let's assume that the protocol shares for liquidations is `5%` and calculate the liquidator received amount:
+
+`Liquidator Receive Amount = Collateral Seized - Protocol Shares`
+
+`Protocol Shares = (Collateral Seized / Liquidation Incentive) * Protocol Share Percentage`
+
+`Protocol Shares = ($1,100 / 1.1) * 0.05 = $50`
+
+`Liquidator Receive Amount = $1,100 - $50 = $1,050`
+
+In conclusion, the liquidator will provide **$1,000** for the liquidation. After the liquidation, the liquidator will receive **$1,050** and the rest **$50** will go to the protocol.
+
+{% endhint %}
+
+
+- **Collateral < minLiquidatableCollateral && account is solvent -->** `liquidateAccount()`: this function liquidates all borrows of the borrower.
+
+{% hint style="info" %}
+### Example
+
+**Collateral Factor: 50%**
+
+**Liquidation Threshold: 60%**
+
+**Min Liquidatable Collateral: $100**
+
+**Borrow Amount: $60**
+
+**Collateral Amount: $90**
+
+Position is already eligible for liquidation since Borrow Amount >= $54. We should call `liquidateAccount()` because **collateral < $100** and account is **solvent**.
+
+{% endhint %}
+
+
+- **Collateral < minLiquidatableCollateral && account is insolvent -->** `healAccount()`: this function seizes all the remaining collateral from the borrower, requires the person initiating the liquidation (msg.sender) to repay the borrower's existing debt, and treats any remaining debt as bad debt. The sender has to repay a certain percentage of the debt, computed as
+`collateral / (borrows * liquidationIncentive)`
+
+{% hint style="info" %}
+### Example
+
+**Collateral Factor: 50%**
+
+**Liquidation Threshold: 60%**
+
+**Min Liquidatable Collateral: $100**
+
+**Borrow Amount: $90**
+
+**Collateral Amount: $60**
+
+Position is eligible for liquidation and **collateral is < $100**, but the account is **insolvent**, so we need to call `healAccount()` to ensure that the remaining debt ($30) is treated as bad debt for the protocol.
+{% endhint %}
 
 3. Handle liquidation results: After invoking `liquidateBorrow`, monitor the transaction's success and handle any resulting events or errors. Successful liquidations will transfer the seized collateral to the liquidator's address and repay the debt from the borrower's account.
-   {% hint style="warning" %}
+
+ {% hint style="warning" %}
    Please note that the liquidation process involves complex calculations and requires a deep understanding of Venus Protocol. It's essential to thoroughly test and validate your liquidation bot before deploying it in a production environment. Additionally, keep track of any changes or updates to the Venus Protocol that may impact the liquidation process.
-   {% endhint %}
+{% endhint %}
