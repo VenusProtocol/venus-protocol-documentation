@@ -22,7 +22,6 @@
 * Comptroller: [`0x3344417c9360b963ca93A4e8305361AEde340Ab9`](https://bscscan.com/address/0x3344417c9360b963ca93A4e8305361AEde340Ab9)
 * Swap router: [`0x47bEe99BD8Cf5D8d7e815e2D2a3E2985CBCcC04b`](https://bscscan.com/address/0x47bEe99BD8Cf5D8d7e815e2D2a3E2985CBCcC04b)
 * Markets:
-  * vBIFI\_DeFi: [`0xC718c51958d3fd44f5F9580c9fFAC2F89815C909`](https://bscscan.com/address/0xC718c51958d3fd44f5F9580c9fFAC2F89815C909)
   * vBSW\_DeFi: [`0x8f657dFD3a1354DEB4545765fE6840cc54AFd379`](https://bscscan.com/address/0x8f657dFD3a1354DEB4545765fE6840cc54AFd379)
   * vALPACA\_DeFi: [`0x02c5Fb0F26761093D297165e902e96D08576D344`](https://bscscan.com/address/0x02c5Fb0F26761093D297165e902e96D08576D344)
   * vUSDT\_DeFi: [`0x1D8bBDE12B6b34140604E18e9f9c6e14deC16854`](https://bscscan.com/address/0x1D8bBDE12B6b34140604E18e9f9c6e14deC16854)
@@ -86,7 +85,6 @@
 * Comptroller: [`0x23a73971A6B9f6580c048B9CB188869B2A2aA2aD`](https://testnet.bscscan.com/address/0x23a73971A6B9f6580c048B9CB188869B2A2aA2aD)
 * Swap router: [`0x89Bc8dFe0Af08b60ec285071d133FCdfa9B3C08e`](https://testnet.bscscan.com/address/0x89Bc8dFe0Af08b60ec285071d133FCdfa9B3C08e)
 * Markets:
-  * vBIFI\_DeFi: [`0xEF949287834Be010C1A5EDd757c385FB9b644E4A`](https://testnet.bscscan.com/address/0xEF949287834Be010C1A5EDd757c385FB9b644E4A)
   * vBSW\_DeFi: [`0x5e68913fbbfb91af30366ab1B21324410b49a308`](https://testnet.bscscan.com/address/0x5e68913fbbfb91af30366ab1B21324410b49a308)
   * vALPACA\_DeFi: [`0xb7caC5Ef82cb7f9197ee184779bdc52c5490C02a`](https://testnet.bscscan.com/address/0xb7caC5Ef82cb7f9197ee184779bdc52c5490C02a)
   * vUSDT\_DeFi: [`0x80CC30811e362aC9aB857C3d7875CbcCc0b65750`](https://testnet.bscscan.com/address/0x80CC30811e362aC9aB857C3d7875CbcCc0b65750)
