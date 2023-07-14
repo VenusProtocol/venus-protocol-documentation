@@ -3,6 +3,7 @@
 ## Getting Started
 
 * [Overview](README.md)
+* [Whitepaper](https://github.com/VenusProtocol/venus-protocol-documentation/blob/main/whitepapers/Venus-whitepaper-v4.pdf)
 * [FAQ](getting-started/faq.md)
 
 ## What's New?
