@@ -3,7 +3,7 @@
 ## BNB Chain Mainnet
 
 * PoolRegistry: [`0x9F7b01A536aFA00EF10310A162877fd792cD0666`](https://bscscan.com/address/0x9F7b01A536aFA00EF10310A162877fd792cD0666)
-* PoolLens: [`0xe12da02820fAD83e0369C6De7Ae30721eaB60E32`](https://bscscan.com/address/0xe12da02820fAD83e0369C6De7Ae30721eaB60E32)
+* PoolLens: [`0x25E215CcE40bD849B7c286912B85212F984Ff1e0`](https://bscscan.com/address/0x25E215CcE40bD849B7c286912B85212F984Ff1e0)
 * DefaultProxyAdmin: [`0x1BB765b741A5f3C2A338369DAb539385534E3343`](https://bscscan.com/address/0x1BB765b741A5f3C2A338369DAb539385534E3343)
 * Comptroller Beacon: [`0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2`](https://bscscan.com/address/0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2)
 * VToken Beacon: [`0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4`](https://bscscan.com/address/0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4)
@@ -54,7 +54,6 @@
 * Swap router: [`0xacD270Ed7DFd4466Bd931d84fe5B904080E28Bfc`](https://bscscan.com/address/0xacD270Ed7DFd4466Bd931d84fe5B904080E28Bfc)
 * Markets:
   * vBTT\_Tron: [`0x49c26e12959345472E2Fd95E5f79F8381058d3Ee`](https://bscscan.com/address/0x49c26e12959345472E2Fd95E5f79F8381058d3Ee)
-  * vNFT\_Tron: [`0x85baA9CD6186B416Ef92c0587Cd9E9Be3BCe2a4D`](https://bscscan.com/address/0x85baA9CD6186B416Ef92c0587Cd9E9Be3BCe2a4D)
   * vTRX\_Tron: [`0x836beb2cB723C498136e1119248436A645845F4E`](https://bscscan.com/address/0x836beb2cB723C498136e1119248436A645845F4E)
   * vWIN\_Tron: [`0xb114cfA615c828D88021a41bFc524B800E64a9D5`](https://bscscan.com/address/0xb114cfA615c828D88021a41bFc524B800E64a9D5)
   * vUSDD\_Tron: [`0xf1da185CCe5BeD1BeBbb3007Ef738Ea4224025F7`](https://bscscan.com/address/0xf1da185CCe5BeD1BeBbb3007Ef738Ea4224025F7)
@@ -63,7 +62,7 @@
 ## BNB Chain Testnet
 
 * PoolRegistry: [`0xC85491616Fa949E048F3aAc39fbf5b0703800667`](https://testnet.bscscan.com/address/0xC85491616Fa949E048F3aAc39fbf5b0703800667)
-* PoolLens: [`0x559936086C5f65b92240012ae0D2F70C082Ac0b0`](https://testnet.bscscan.com/address/0x559936086C5f65b92240012ae0D2F70C082Ac0b0)
+* PoolLens: [`0x6492dF28A9478230205c940A245Ffb114EaEb9d1`](https://testnet.bscscan.com/address/0x6492dF28A9478230205c940A245Ffb114EaEb9d1)
 * DefaultProxyAdmin:
 * Comptroller Beacon: [`0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74`](https://testnet.bscscan.com/address/0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74)
 * VToken Beacon: [`0xBF85A90673E61956f8c79b9150BAB7893b791bDd`](https://testnet.bscscan.com/address/0xBF85A90673E61956f8c79b9150BAB7893b791bDd)
@@ -117,7 +116,6 @@
 * Swap router: [`0x1D8cA5AFB88F07489786A3d2E0FF50F3F9314d97`](https://testnet.bscscan.com/address/0x1D8cA5AFB88F07489786A3d2E0FF50F3F9314d97)
 * Markets:
   * vBTT\_Tron: [`0x47793540757c6E6D84155B33cd8D9535CFdb9334`](https://testnet.bscscan.com/address/0x47793540757c6E6D84155B33cd8D9535CFdb9334)
-  * vNFT\_Tron: [`0x67cD2A8aFF63C7eBbC7A601506f9Dbb8557d6547`](https://testnet.bscscan.com/address/0x67cD2A8aFF63C7eBbC7A601506f9Dbb8557d6547)
   * vTRX\_Tron: [`0x410286c43a525E1DCC7468a9B091C111C8324cd1`](https://testnet.bscscan.com/address/0x410286c43a525E1DCC7468a9B091C111C8324cd1)
   * vWIN\_Tron: [`0xEe543D5de2Dbb5b07675Fc72831A2f1812428393`](https://tesnet.bscscan.com/address/0xEe543D5de2Dbb5b07675Fc72831A2f1812428393)
   * vUSDD\_Tron: [`0xD804F74fe21290d213c46610ab171f7c2EeEBDE7`](https://testnet.bscscan.com/address/0xD804F74fe21290d213c46610ab171f7c2EeEBDE7)

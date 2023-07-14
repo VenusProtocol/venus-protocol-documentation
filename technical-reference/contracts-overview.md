@@ -30,14 +30,6 @@ Configuration contracts are used to deploy, configure, and manage pools.
 
 Creating and managing pools is done by the [PoolRegistry](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/Pool/PoolRegistry.sol). It can add markets to pools, update pool metadata, and return pool information.
 
-[**JumpRateModelFactory**](../reference-isolated-pools/JumpRateModelV2.md)
-
-In addition to a vToken, an interest rate model is also deployed when a market is launched. [JumpRateModelFactory](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/Factories/JumpRateModelFactory.sol) is a factory to deploy the jump rate interest rate model. When using this model, interest follows a linear curve until supply or demand reaches the kink after which there is a steep increase in interest rates.
-
-[**WhitePaperInterestRateModelFactory**](../reference-isolated-pools/WhitePaperInterestRateModel.md)
-
-[WhitePaperInterestRateModelFactory](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/Factories/WhitePaperInterestRateModelFactory.sol) is another interest rate model that can be deployed with a market. It is similar to the jump rate model but uses a base rate and doesn't include a kink.
-
 #### Logic contracts
 
 [**Comptroller**](../reference-isolated-pools/Comptroller.md)
