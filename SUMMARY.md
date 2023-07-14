@@ -3,7 +3,7 @@
 ## Getting Started
 
 * [Overview](README.md)
-* [Whitepaper V4](https://raw.githubusercontent.com/VenusProtocol/venus-protocol-documentation/main/whitepapers/Venus-whitepaper-v4.pdf)
+* [Whitepaper](https://github.com/VenusProtocol/venus-protocol-documentation/blob/main/whitepapers/Venus-whitepaper-v4.pdf)
 * [FAQ](getting-started/faq.md)
 
 ## What's New?
@@ -48,7 +48,7 @@
 
 * [Contracts Overview](technical-reference/contracts-overview.md)
 * [Core Pool](technical-reference/reference-core-pool/README.md)
-  * [Comptroller](technical-reference/reference-isolated-pools/comptroller/README.md)
+  * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
     * [ComptrollerLens](technical-reference/reference-core-pool/comptroller/comptroller-lens.md)
     * [Comptroller](technical-reference/reference-core-pool/comptroller/comptroller.md)
   * [VToken](technical-reference/reference-core-pool/vtoken.md)
@@ -60,7 +60,7 @@
   * [VTreasury](technical-reference/reference-core-pool/vtreasury.md)
   * [VenusLens](technical-reference/reference-core-pool/venus-lens.md)
 * [Isolated Pools](technical-reference/reference-isolated-pools/README.md)
-  * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
+  * [Comptroller](technical-reference/reference-isolated-pools/comptroller/README.md)
     * [Comptroller](technical-reference/reference-isolated-pools/comptroller/comptroller.md)
     * [ComptrollerStorage](technical-reference/reference-isolated-pools/comptroller/comptroller-storage.md)
   * [VToken](technical-reference/reference-isolated-pools/vtoken/README.md)
