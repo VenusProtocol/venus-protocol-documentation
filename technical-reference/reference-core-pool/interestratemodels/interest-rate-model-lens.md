@@ -1,10 +1,8 @@
-# InterestRateModelLens
-
-## InterestRateModelLens Contract
+# InterestRateModelLens Contract
 
 Lens for querying interest rate model simulations
 
-## Solidity API
+# Solidity API
 
 ```solidity
 struct SimulationResponse {
@@ -13,7 +11,7 @@ struct SimulationResponse {
 }
 ```
 
-#### getSimulationResponse
+### getSimulationResponse
 
 Simulate interest rate curve fo a specific interest rate model given a reference borrow amount and reserve factor
 
@@ -21,17 +19,18 @@ Simulate interest rate curve fo a specific interest rate model given a reference
 function getSimulationResponse(uint256 referenceAmountInWei, address interestRateModel, uint256 reserveFactorMantissa) external view returns (struct InterestRateModelLens.SimulationResponse)
 ```
 
-**Parameters**
+#### Parameters
 
-| Name                  | Type    | Description                                 |
-| --------------------- | ------- | ------------------------------------------- |
-| referenceAmountInWei  | uint256 | Borrow amount to use in simulation          |
-| interestRateModel     | address | Address for interest rate model to simulate |
-| reserveFactorMantissa | uint256 | Reserve Factor to use in simulation         |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| referenceAmountInWei | uint256 | Borrow amount to use in simulation |
+| interestRateModel | address | Address for interest rate model to simulate |
+| reserveFactorMantissa | uint256 | Reserve Factor to use in simulation |
 
-**Return Values**
+#### Return Values
 
-| Name | Type                                            | Description |
-| ---- | ----------------------------------------------- | ----------- |
-| \[0] | struct InterestRateModelLens.SimulationResponse |             |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | struct InterestRateModelLens.SimulationResponse |  |
 
+---

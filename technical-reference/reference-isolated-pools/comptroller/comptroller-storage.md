@@ -1,10 +1,8 @@
 # ComptrollerStorage
 
-## ComptrollerStorage
-
 Storage layout for the `Comptroller` contract.
 
-## Solidity API
+# Solidity API
 
 ```solidity
 struct LiquidationOrder {
@@ -60,7 +58,7 @@ enum Action {
 
 ```
 
-#### oracle
+### oracle
 
 Oracle which gives the price of any given asset
 
@@ -68,9 +66,9 @@ Oracle which gives the price of any given asset
 contract ResilientOracleInterface oracle
 ```
 
+---
 
-
-#### closeFactorMantissa
+### closeFactorMantissa
 
 Multiplier used to calculate the maximum repayAmount when liquidating a borrow
 
@@ -78,9 +76,9 @@ Multiplier used to calculate the maximum repayAmount when liquidating a borrow
 uint256 closeFactorMantissa
 ```
 
+---
 
-
-#### liquidationIncentiveMantissa
+### liquidationIncentiveMantissa
 
 Multiplier representing the discount on collateral that a liquidator receives
 
@@ -88,9 +86,9 @@ Multiplier representing the discount on collateral that a liquidator receives
 uint256 liquidationIncentiveMantissa
 ```
 
+---
 
-
-#### accountAssets
+### accountAssets
 
 Per-account mapping of "assets you are in"
 
@@ -98,9 +96,9 @@ Per-account mapping of "assets you are in"
 mapping(address => contract VToken[]) accountAssets
 ```
 
+---
 
-
-#### markets
+### markets
 
 Official mapping of vTokens -> Market metadata
 
@@ -108,9 +106,9 @@ Official mapping of vTokens -> Market metadata
 mapping(address => struct ComptrollerStorage.Market) markets
 ```
 
+---
 
-
-#### allMarkets
+### allMarkets
 
 A list of all markets
 
@@ -118,9 +116,9 @@ A list of all markets
 contract VToken[] allMarkets
 ```
 
+---
 
-
-#### borrowCaps
+### borrowCaps
 
 Borrow caps enforced by borrowAllowed for each vToken address. Defaults to zero which restricts borrowing.
 
@@ -128,9 +126,9 @@ Borrow caps enforced by borrowAllowed for each vToken address. Defaults to zero 
 mapping(address => uint256) borrowCaps
 ```
 
+---
 
-
-#### minLiquidatableCollateral
+### minLiquidatableCollateral
 
 Minimal collateral required for regular (non-batch) liquidations
 
@@ -138,9 +136,9 @@ Minimal collateral required for regular (non-batch) liquidations
 uint256 minLiquidatableCollateral
 ```
 
+---
 
-
-#### supplyCaps
+### supplyCaps
 
 Supply caps enforced by mintAllowed for each vToken address. Defaults to zero which corresponds to minting not allowed
 
@@ -148,3 +146,4 @@ Supply caps enforced by mintAllowed for each vToken address. Defaults to zero wh
 mapping(address => uint256) supplyCaps
 ```
 
+---

@@ -1,27 +1,39 @@
 # ResilientOracle
 
-## ResilientOracle
-
 The Resilient Oracle is the main contract that the protocol uses to fetch prices of assets.
 
-DeFi protocols are vulnerable to price oracle failures including oracle manipulation and incorrectly reported prices. If only one oracle is used, this creates a single point of failure and opens a vector for attacking the protocol.
+DeFi protocols are vulnerable to price oracle failures including oracle manipulation and incorrectly
+reported prices. If only one oracle is used, this creates a single point of failure and opens a vector
+for attacking the protocol.
 
-The Resilient Oracle uses multiple sources and fallback mechanisms to provide accurate prices and protect the protocol from oracle attacks. Currently it includes integrations with Chainlink, Pyth, Binance Oracle and TWAP (Time-Weighted Average Price) oracles. TWAP uses PancakeSwap as the on-chain price source.
+The Resilient Oracle uses multiple sources and fallback mechanisms to provide accurate prices and protect
+the protocol from oracle attacks. Currently it includes integrations with Chainlink, Pyth, Binance Oracle
+and TWAP (Time-Weighted Average Price) oracles. TWAP uses PancakeSwap as the on-chain price source.
 
-For every market (vToken) we configure the main, pivot and fallback oracles. The main oracle oracle is the most trustworthy price source, the pivot oracle is used as a loose sanity checker and the fallback oracle is used as a backup price source.
+For every market (vToken) we configure the main, pivot and fallback oracles. The main oracle oracle is the
+most trustworthy price source, the pivot oracle is used as a loose sanity checker and the fallback oracle
+is used as a backup price source.
 
-To validate prices returned from two oracles, we use an upper and lower bound ratio that is set for every market. The upper bound ratio represents the deviation between reported price (the price that’s being validated) and the anchor price (the price we are validating against) above which the reported price will be invalidated. The lower bound ratio presents the deviation between reported price and anchor price below which the reported price will be invalidated. So for oracle price to be considered valid the below statement should be true:
+To validate prices returned from two oracles, we use an upper and lower bound ratio that is set for every
+market. The upper bound ratio represents the deviation between reported price (the price that’s being
+validated) and the anchor price (the price we are validating against) above which the reported price will
+be invalidated. The lower bound ratio presents the deviation between reported price and anchor price below
+which the reported price will be invalidated. So for oracle price to be considered valid the below statement
+should be true:
 
 ```solidity
     anchorRatio = anchorPrice/reporterPrice
     isValid = anchorRatio <= upperBoundAnchorRatio && anchorRatio >= lowerBoundAnchorRatio
 ```
 
-In most cases, Chainlink is used as the main oracle, TWAP or Pyth oracles are used as the pivot oracle depending on which supports the given market and Binance oracle is used as the fallback oracle. For some markets we may use Pyth or TWAP as the main oracle if the token price is not supported by Chainlink or Binance oracles.
+In most cases, Chainlink is used as the main oracle, TWAP or Pyth oracles are used as the pivot oracle depending
+on which supports the given market and Binance oracle is used as the fallback oracle. For some markets we may
+use Pyth or TWAP as the main oracle if the token price is not supported by Chainlink or Binance oracles.
 
-For a fetched price to be valid it must be positive and not stagnant. If the price is invalid then we consider the oracle to be stagnant and treat it like it's disabled.
+For a fetched price to be valid it must be positive and not stagnant. If the price is invalid then we consider the
+oracle to be stagnant and treat it like it's disabled.
 
-## Solidity API
+# Solidity API
 
 ```solidity
 enum OracleRole {
@@ -39,7 +51,7 @@ struct TokenConfig {
 }
 ```
 
-#### vBnb
+### vBnb
 
 vBNB address
 
@@ -47,9 +59,9 @@ vBNB address
 address vBnb
 ```
 
+---
 
-
-#### vai
+### vai
 
 VAI address
 
@@ -57,9 +69,9 @@ VAI address
 address vai
 ```
 
+---
 
-
-#### BNB\_ADDR
+### BNB\_ADDR
 
 Set this as asset address for BNB. This is the underlying for vBNB
 
@@ -67,9 +79,9 @@ Set this as asset address for BNB. This is the underlying for vBNB
 address BNB_ADDR
 ```
 
+---
 
-
-#### boundValidator
+### boundValidator
 
 Bound validator contract address
 
@@ -77,9 +89,9 @@ Bound validator contract address
 contract BoundValidatorInterface boundValidator
 ```
 
+---
 
-
-#### constructor
+### constructor
 
 Constructor for the implementation contract. Sets immutable variables.
 
@@ -87,7 +99,7 @@ Constructor for the implementation contract. Sets immutable variables.
 constructor(address vBnbAddress, address vaiAddress, contract BoundValidatorInterface _boundValidator) public
 ```
 
-**Parameters**
+#### Parameters
 
 | Name             | Type                             | Description                             |
 | ---------------- | -------------------------------- | --------------------------------------- |
@@ -95,9 +107,9 @@ constructor(address vBnbAddress, address vaiAddress, contract BoundValidatorInte
 | vaiAddress       | address                          | The address of the VAI                  |
 | \_boundValidator | contract BoundValidatorInterface | Address of the bound validator contract |
 
+---
 
-
-#### initialize
+### initialize
 
 Initializes the contract admin and sets the BoundValidator contract address
 
@@ -105,15 +117,15 @@ Initializes the contract admin and sets the BoundValidator contract address
 function initialize(address accessControlManager_) external
 ```
 
-**Parameters**
+#### Parameters
 
 | Name                   | Type    | Description                                    |
 | ---------------------- | ------- | ---------------------------------------------- |
 | accessControlManager\_ | address | Address of the access control manager contract |
 
+---
 
-
-#### pause
+### pause
 
 Pauses oracle
 
@@ -121,13 +133,13 @@ Pauses oracle
 function pause() external
 ```
 
-**⛔️ Access Requirements**
+#### ⛔️ Access Requirements
 
 * Only Governance
 
+---
 
-
-#### unpause
+### unpause
 
 Unpauses oracle
 
@@ -135,13 +147,13 @@ Unpauses oracle
 function unpause() external
 ```
 
-**⛔️ Access Requirements**
+#### ⛔️ Access Requirements
 
 * Only Governance
 
+---
 
-
-#### setTokenConfigs
+### setTokenConfigs
 
 Batch sets token configs
 
@@ -149,23 +161,23 @@ Batch sets token configs
 function setTokenConfigs(struct ResilientOracle.TokenConfig[] tokenConfigs_) external
 ```
 
-**Parameters**
+#### Parameters
 
-| Name           | Type                                  | Description        |
-| -------------- | ------------------------------------- | ------------------ |
+| Name           | Type                                 | Description        |
+| -------------- | ------------------------------------ | ------------------ |
 | tokenConfigs\_ | struct ResilientOracle.TokenConfig\[] | Token config array |
 
-**⛔️ Access Requirements**
+#### ⛔️ Access Requirements
 
 * Only Governance
 
-**❌ Errors**
+#### ❌ Errors
 
 * Throws a length error if the length of the token configs array is 0
 
+---
 
-
-#### setOracle
+### setOracle
 
 Sets oracle for a given vToken and role.
 
@@ -173,7 +185,7 @@ Sets oracle for a given vToken and role.
 function setOracle(address asset, address oracle, enum ResilientOracle.OracleRole role) external
 ```
 
-**Parameters**
+#### Parameters
 
 | Name   | Type                            | Description    |
 | ------ | ------------------------------- | -------------- |
@@ -181,23 +193,23 @@ function setOracle(address asset, address oracle, enum ResilientOracle.OracleRol
 | oracle | address                         | Oracle address |
 | role   | enum ResilientOracle.OracleRole | Oracle role    |
 
-**📅 Events**
+#### 📅 Events
 
 * Emits OracleSet event with asset address, oracle address and role of the oracle for the asset
 
-**⛔️ Access Requirements**
+#### ⛔️ Access Requirements
 
 * Only Governance
 
-**❌ Errors**
+#### ❌ Errors
 
 * Null address error if main-role oracle address is null
 * NotNullAddress error is thrown if asset address is null
 * TokenConfigExistance error is thrown if token config is not set
 
+---
 
-
-#### enableOracle
+### enableOracle
 
 Enables/ disables oracle for the input vToken, input vToken **must** exist
 
@@ -205,7 +217,7 @@ Enables/ disables oracle for the input vToken, input vToken **must** exist
 function enableOracle(address asset, enum ResilientOracle.OracleRole role, bool enable) external
 ```
 
-**Parameters**
+#### Parameters
 
 | Name   | Type                            | Description                   |
 | ------ | ------------------------------- | ----------------------------- |
@@ -213,18 +225,18 @@ function enableOracle(address asset, enum ResilientOracle.OracleRole role, bool 
 | role   | enum ResilientOracle.OracleRole | Oracle role                   |
 | enable | bool                            | Enabled boolean of the oracle |
 
-**⛔️ Access Requirements**
+#### ⛔️ Access Requirements
 
 * Only Governance
 
-**❌ Errors**
+#### ❌ Errors
 
 * NotNullAddress error is thrown if asset address is null
 * TokenConfigExistance error is thrown if token config is not set
 
+---
 
-
-#### updatePrice
+### updatePrice
 
 Updates the TWAP pivot oracle price.
 
@@ -232,47 +244,49 @@ Updates the TWAP pivot oracle price.
 function updatePrice(address vToken) external
 ```
 
-**Parameters**
+#### Parameters
 
 | Name   | Type    | Description    |
 | ------ | ------- | -------------- |
 | vToken | address | vToken address |
 
+---
 
-
-#### getUnderlyingPrice
+### getUnderlyingPrice
 
 Gets price of the underlying asset for a given vToken. Validation flow:
 
 * Check if the oracle is paused globally
 * Validate price from main oracle against pivot oracle
 * Validate price from fallback oracle against pivot oracle if the first validation failed
-* Validate price from main oracle against fallback oracle if the second validation failed In the case that the pivot oracle is not available but main price is available and validation is successful, main oracle price is returned.
+* Validate price from main oracle against fallback oracle if the second validation failed
+  In the case that the pivot oracle is not available but main price is available and validation is successful,
+  main oracle price is returned.
 
 ```solidity
 function getUnderlyingPrice(address vToken) external view returns (uint256)
 ```
 
-**Parameters**
+#### Parameters
 
 | Name   | Type    | Description    |
 | ------ | ------- | -------------- |
 | vToken | address | vToken address |
 
-**Return Values**
+#### Return Values
 
 | Name | Type    | Description                               |
 | ---- | ------- | ----------------------------------------- |
-| \[0] | uint256 | price USD price in scaled decimal places. |
+| \[0]  | uint256 | price USD price in scaled decimal places. |
 
-**❌ Errors**
+#### ❌ Errors
 
 * Paused error is thrown when resilent oracle is paused
 * Invalid resilient oracle price error is thrown if fetched prices from oracle is invalid
 
+---
 
-
-#### setTokenConfig
+### setTokenConfig
 
 Sets/resets single token configs.
 
@@ -280,28 +294,28 @@ Sets/resets single token configs.
 function setTokenConfig(struct ResilientOracle.TokenConfig tokenConfig) public
 ```
 
-**Parameters**
+#### Parameters
 
 | Name        | Type                               | Description         |
 | ----------- | ---------------------------------- | ------------------- |
 | tokenConfig | struct ResilientOracle.TokenConfig | Token config struct |
 
-**📅 Events**
+#### 📅 Events
 
 * Emits TokenConfigAdded event when vToken config is set successfully by governnace
 
-**⛔️ Access Requirements**
+#### ⛔️ Access Requirements
 
 * Only Governance
 
-**❌ Errors**
+#### ❌ Errors
 
 * NotNullAddress is thrown if asset address is null
 * NotNullAddress is thrown if main-role oracle address for asset is null
 
+---
 
-
-#### getOracle
+### getOracle
 
 Gets oracle and enabled status by vToken address
 
@@ -309,17 +323,18 @@ Gets oracle and enabled status by vToken address
 function getOracle(address vToken, enum ResilientOracle.OracleRole role) public view returns (address oracle, bool enabled)
 ```
 
-**Parameters**
+#### Parameters
 
 | Name   | Type                            | Description    |
 | ------ | ------------------------------- | -------------- |
 | vToken | address                         | vToken address |
 | role   | enum ResilientOracle.OracleRole | Oracle role    |
 
-**Return Values**
+#### Return Values
 
 | Name    | Type    | Description                                      |
 | ------- | ------- | ------------------------------------------------ |
 | oracle  | address | Oracle address based on role                     |
 | enabled | bool    | Enabled flag of the oracle based on token config |
 
+---

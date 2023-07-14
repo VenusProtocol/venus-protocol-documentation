@@ -1,10 +1,8 @@
-# VTokenInterfaces
-
-## VTokenStorage
+# VTokenStorage
 
 Storage layout used by the `VToken` contract
 
-## Solidity API
+# Solidity API
 
 ```solidity
 struct BorrowSnapshot {
@@ -14,7 +12,7 @@ struct BorrowSnapshot {
 
 ```
 
-#### underlying
+### underlying
 
 Underlying asset for this VToken
 
@@ -22,9 +20,9 @@ Underlying asset for this VToken
 address underlying
 ```
 
+---
 
-
-#### name
+### name
 
 EIP-20 token name for this token
 
@@ -32,9 +30,9 @@ EIP-20 token name for this token
 string name
 ```
 
+---
 
-
-#### symbol
+### symbol
 
 EIP-20 token symbol for this token
 
@@ -42,9 +40,9 @@ EIP-20 token symbol for this token
 string symbol
 ```
 
+---
 
-
-#### decimals
+### decimals
 
 EIP-20 token decimals for this token
 
@@ -52,9 +50,9 @@ EIP-20 token decimals for this token
 uint8 decimals
 ```
 
+---
 
-
-#### protocolShareReserve
+### protocolShareReserve
 
 Protocol share Reserve contract address
 
@@ -62,9 +60,9 @@ Protocol share Reserve contract address
 address payable protocolShareReserve
 ```
 
+---
 
-
-#### comptroller
+### comptroller
 
 Contract which oversees inter-vToken operations
 
@@ -72,9 +70,9 @@ Contract which oversees inter-vToken operations
 contract ComptrollerInterface comptroller
 ```
 
+---
 
-
-#### interestRateModel
+### interestRateModel
 
 Model which tells what the current interest rate should be
 
@@ -82,9 +80,9 @@ Model which tells what the current interest rate should be
 contract InterestRateModel interestRateModel
 ```
 
+---
 
-
-#### reserveFactorMantissa
+### reserveFactorMantissa
 
 Fraction of interest currently set aside for reserves
 
@@ -92,9 +90,9 @@ Fraction of interest currently set aside for reserves
 uint256 reserveFactorMantissa
 ```
 
+---
 
-
-#### accrualBlockNumber
+### accrualBlockNumber
 
 Block number that interest was last accrued at
 
@@ -102,9 +100,9 @@ Block number that interest was last accrued at
 uint256 accrualBlockNumber
 ```
 
+---
 
-
-#### borrowIndex
+### borrowIndex
 
 Accumulator of the total earned interest rate since the opening of the market
 
@@ -112,9 +110,9 @@ Accumulator of the total earned interest rate since the opening of the market
 uint256 borrowIndex
 ```
 
+---
 
-
-#### totalBorrows
+### totalBorrows
 
 Total amount of outstanding borrows of the underlying in this market
 
@@ -122,9 +120,9 @@ Total amount of outstanding borrows of the underlying in this market
 uint256 totalBorrows
 ```
 
+---
 
-
-#### totalReserves
+### totalReserves
 
 Total amount of reserves of the underlying held in this market
 
@@ -132,9 +130,9 @@ Total amount of reserves of the underlying held in this market
 uint256 totalReserves
 ```
 
+---
 
-
-#### totalSupply
+### totalSupply
 
 Total number of tokens in circulation
 
@@ -142,9 +140,9 @@ Total number of tokens in circulation
 uint256 totalSupply
 ```
 
+---
 
-
-#### badDebt
+### badDebt
 
 Total bad debt of the market
 
@@ -152,9 +150,9 @@ Total bad debt of the market
 uint256 badDebt
 ```
 
+---
 
-
-#### protocolSeizeShareMantissa
+### protocolSeizeShareMantissa
 
 Share of seized collateral that is added to reserves
 
@@ -162,9 +160,9 @@ Share of seized collateral that is added to reserves
 uint256 protocolSeizeShareMantissa
 ```
 
+---
 
-
-#### shortfall
+### shortfall
 
 Storage of Shortfall contract address
 
@@ -172,7 +170,7 @@ Storage of Shortfall contract address
 address shortfall
 ```
 
-
+---
 
 ```solidity
 struct RiskManagementInit {
@@ -182,7 +180,7 @@ struct RiskManagementInit {
 
 ```
 
-#### isVToken
+### isVToken
 
 Indicator that this is a VToken contract (for inspection)
 
@@ -190,9 +188,10 @@ Indicator that this is a VToken contract (for inspection)
 function isVToken() external pure virtual returns (bool)
 ```
 
-**Return Values**
+#### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| \[0] | bool | Always true |
+| \[0]  | bool | Always true |
 
+---
