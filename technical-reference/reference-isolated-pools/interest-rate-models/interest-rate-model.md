@@ -1,8 +1,10 @@
-# Compound's InterestRateModel Interface
+# InterestRateModel
 
-# Solidity API
+## Compound's InterestRateModel Interface
 
-### getBorrowRate
+## Solidity API
+
+#### getBorrowRate
 
 Calculates the current borrow interest rate per block
 
@@ -10,7 +12,7 @@ Calculates the current borrow interest rate per block
 function getBorrowRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 badDebt) external view virtual returns (uint256)
 ```
 
-#### Parameters
+**Parameters**
 
 | Name     | Type    | Description                                            |
 | -------- | ------- | ------------------------------------------------------ |
@@ -19,15 +21,15 @@ function getBorrowRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 
 | reserves | uint256 | The total amount of reserves the market has            |
 | badDebt  | uint256 | The amount of badDebt in the market                    |
 
-#### Return Values
+**Return Values**
 
 | Name | Type    | Description                                                     |
 | ---- | ------- | --------------------------------------------------------------- |
-| \[0]  | uint256 | The borrow rate per block (as a percentage, and scaled by 1e18) |
+| \[0] | uint256 | The borrow rate per block (as a percentage, and scaled by 1e18) |
 
----
 
-### getSupplyRate
+
+#### getSupplyRate
 
 Calculates the current supply interest rate per block
 
@@ -35,7 +37,7 @@ Calculates the current supply interest rate per block
 function getSupplyRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 reserveFactorMantissa, uint256 badDebt) external view virtual returns (uint256)
 ```
 
-#### Parameters
+**Parameters**
 
 | Name                  | Type    | Description                                            |
 | --------------------- | ------- | ------------------------------------------------------ |
@@ -45,15 +47,15 @@ function getSupplyRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 
 | reserveFactorMantissa | uint256 | The current reserve factor the market has              |
 | badDebt               | uint256 | The amount of badDebt in the market                    |
 
-#### Return Values
+**Return Values**
 
 | Name | Type    | Description                                                     |
 | ---- | ------- | --------------------------------------------------------------- |
-| \[0]  | uint256 | The supply rate per block (as a percentage, and scaled by 1e18) |
+| \[0] | uint256 | The supply rate per block (as a percentage, and scaled by 1e18) |
 
----
 
-### isInterestRateModel
+
+#### isInterestRateModel
 
 Indicator that this is an InterestRateModel contract (for inspection)
 
@@ -61,10 +63,9 @@ Indicator that this is an InterestRateModel contract (for inspection)
 function isInterestRateModel() external pure virtual returns (bool)
 ```
 
-#### Return Values
+**Return Values**
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| \[0]  | bool | Always true |
+| \[0] | bool | Always true |
 
----

@@ -1,8 +1,10 @@
-# GovernorBravoEvents
+# GovernorBravoInterfaces
+
+## GovernorBravoEvents
 
 Set of events emitted by the GovernorBravo contracts.
 
-# Solidity API
+## Solidity API
 
 ```solidity
 struct Proposal {
@@ -62,7 +64,7 @@ struct ProposalConfig {
 }
 ```
 
-### proposalCount
+#### proposalCount
 
 The total number of proposals
 
@@ -70,4 +72,3 @@ The total number of proposals
 function proposalCount() external returns (uint256)
 ```
 
----

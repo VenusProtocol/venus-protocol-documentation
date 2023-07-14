@@ -2,17 +2,26 @@
 
 ## To be released
 
-### Overview:
+### **Overview**
 
-Venus Prime is a dynamic rewards initiative that leverages protocol revenues to reward its most committed users. Eligibility hinges on meeting certain conditions, leading to the receipt of unique, non-transferable Soul Bound Tokens (NFTs), which grant access to the Venus Prime program.
+Venus Protocol is excited to announce Venus Prime, a revolutionary incentive program aimed to bolster user engagement and growth within the protocol. An integral part of Venus Tokenomics v3.1, Venus Prime aims to enhance yields and promote $XVS staking, focusing on markets including USDT, BNB, BTC and ETH. The launch is targeted for Q3 2023.
 
-### Prime Tokens:
+### **Venus Prime Essentials**
 
-Two variants of Prime Tokens exist:
+Venus Prime's uniqueness lies in its self-sustaining rewards system, instead of external sources, rewards are derived from the protocol's revenue, fostering a sustainable and ever-growing program.
 
-1. Irrevocable Prime Token - Granted to long-term, active users.
-2. Revocable Prime Token - Available to users who stake a minimum quantity of XVS for a specific duration.
+Eligible $XVS holders will receive a unique, non-transferable Soulbound Token, which boosts the annual percentage yields (APYs) across selected markets. This token, known as a Prime Token, enables users to enjoy elevated APYs and intensifies their engagement with the protocol.
 
-### Rewards:
+Venus Prime encourages user commitment through two unique Prime Tokens. The revocable Prime Token can be obtained by staking a minimum of 1,000 XVS for at least 90 days, and the OG Prime Token rewards long-term commitment and active involvement.
 
-Prime token holders earn a portion of the Venus Protocol's income, dependent on their total "Qualified Value Locked" (QVL). The Venus Prime program provides a lucrative avenue for dedicated Venus Protocol users.
+
+
+<figure><img src="../.gitbook/assets/6e01c33d-ac9e-41d6-9542-fc2f3b0ecb90.png" alt=""><figcaption></figcaption></figure>
+
+### **Expected Impact and Launch**
+
+Venus Prime aims to incentivize larger stake sizes and diverse user participation. This is expected to significantly increase the staking of XVS, the Total Value Locked (TVL), and market growth.
+
+Venus Prime intends to promote user loyalty and the overall growth of the protocol. By endorsing long-term staking, discouraging premature withdrawals, and incentivizing larger stakes, Venus Prime sets a new course in user engagement and liquidity, contributing to Venus Protocol's success.
+
+Stake your $XVS tokens today to be eligible for Venus Prime, an exciting new venture in the DeFi landscape, set to launch in Q3 2023!

@@ -1,11 +1,12 @@
 # AccessControlledV8
 
-This contract is helper between access control manager and actual contract. This contract further inherited by other contract (using solidity 0.8.13)
-to integrate access controlled mechanism. It provides initialise methods and verifying access methods.
+## AccessControlledV8
 
-# Solidity API
+This contract is helper between access control manager and actual contract. This contract further inherited by other contract (using solidity 0.8.13) to integrate access controlled mechanism. It provides initialise methods and verifying access methods.
 
-### setAccessControlManager
+## Solidity API
+
+#### setAccessControlManager
 
 Sets the address of AccessControlManager
 
@@ -13,23 +14,23 @@ Sets the address of AccessControlManager
 function setAccessControlManager(address accessControlManager_) external
 ```
 
-#### Parameters
+**Parameters**
 
 | Name                   | Type    | Description                                 |
 | ---------------------- | ------- | ------------------------------------------- |
 | accessControlManager\_ | address | The new address of the AccessControlManager |
 
-#### 📅 Events
+**📅 Events**
 
 * Emits NewAccessControlManager event
 
-#### ⛔️ Access Requirements
+**⛔️ Access Requirements**
 
 * Only Governance
 
----
 
-### accessControlManager
+
+#### accessControlManager
 
 Returns the address of the access control manager contract
 
@@ -37,4 +38,3 @@ Returns the address of the access control manager contract
 function accessControlManager() external view returns (contract IAccessControlManagerV8)
 ```
 
----
