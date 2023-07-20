@@ -27,6 +27,7 @@
   * vUSDT\_DeFi: [`0x1D8bBDE12B6b34140604E18e9f9c6e14deC16854`](https://bscscan.com/address/0x1D8bBDE12B6b34140604E18e9f9c6e14deC16854)
   * vUSDD\_DeFi: [`0xA615467caE6B9E0bb98BC04B4411d9296fd1dFa0`](https://bscscan.com/address/0xA615467caE6B9E0bb98BC04B4411d9296fd1dFa0)
   * vANKR\_DeFi: [`0x19CE11C8817a1828D1d357DFBF62dCf5b0B2A362`](https://bscscan.com/address/0x19CE11C8817a1828D1d357DFBF62dCf5b0B2A362)
+  * vankrBNB\_DeFi: [`0x53728FD51060a85ac41974C6C3Eb1DaE42776723`](https://bscscan.com/address/0x53728FD51060a85ac41974C6C3Eb1DaE42776723)
 
 ### Pool GameFi
 
@@ -89,6 +90,7 @@
   * vUSDT\_DeFi: [`0x80CC30811e362aC9aB857C3d7875CbcCc0b65750`](https://testnet.bscscan.com/address/0x80CC30811e362aC9aB857C3d7875CbcCc0b65750)
   * vUSDD\_DeFi: [`0xa109DE0abaeefC521Ec29D89eA42E64F37A6882E`](https://testnet.bscscan.com/address/0xa109DE0abaeefC521Ec29D89eA42E64F37A6882E)
   * vANKR\_DeFi: [`0xb677e080148368EeeE70fA3865d07E92c6500174`](https://testnet.bscscan.com/address/0xb677e080148368EeeE70fA3865d07E92c6500174)
+  * vankrBNB\_DeFi: [`0xe507B30C41E9e375BCe05197c1e09fc9ee40c0f6`](https://testnet.bscscan.com/address/0xe507B30C41E9e375BCe05197c1e09fc9ee40c0f6)
 
 ### Pool GameFi
 
