@@ -8,6 +8,13 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Oracles upgrade (2023/07/24)
+
+**Scope**: upgrade of the Resilient Price Feeds, enabled on [VIP-XXX](https://app.venus.io/governance/proposal/XXX).
+
+* [Peckshield audit report - 2023/07/12](https://github.com/VenusProtocol/oracle/blob/fb02cdd3865fb5c34e0cd65cbeda02f87841371a/audits/045_getPrice_peckshield_20230712.pdf)
+* [Certik audit report - 2023/07/17](https://github.com/VenusProtocol/oracle/blob/fb02cdd3865fb5c34e0cd65cbeda02f87841371a/audits/043_getPrice_certik_20230717.pdf)
+
 ### Oracles
 
 **Scope**: new Resilient Price Feeds, enabled on [VIP-123](https://app.venus.io/governance/proposal/123).
