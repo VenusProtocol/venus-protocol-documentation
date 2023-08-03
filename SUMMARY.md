@@ -9,9 +9,9 @@
 ## What's New?
 
 * [Isolated Pools](whats-new/isolated-pools.md)
+* [Reward Distributor](whats-new/reward-distributor.md)
 * [Prime Yield](whats-new/prime-yield.md)
 * [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
-* [Reward Distributor](whats-new/reward-distributor.md)
 
 ## Governance
 
