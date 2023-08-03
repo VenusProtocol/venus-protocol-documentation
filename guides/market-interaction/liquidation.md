@@ -142,3 +142,33 @@ Position is eligible for liquidation and **collateral is < $100**, but the accou
 {% hint style="warning" %}
 Please note that the liquidation process involves complex calculations and requires a deep understanding of Venus Protocol. It's essential to thoroughly test and validate your liquidation bot before deploying it in a production environment. Additionally, keep track of any changes or updates to the Venus Protocol that may impact the liquidation process.
 {% endhint %}
+
+## Force VAI Debt First
+
+Without taking into account the specific VAI debt level, liquidation was carried out on all accounts in the aforementioned section. Ahe `forceVAILiquidate` feature is designed to enhance the liquidation process in the Venus protocol by allowing the liquidation of borrowers with VAI debt above a specified threshold (`minLiquidatableVAI`) while bypassing certain checks that might prevent the liquidation. By enabling this feature, the protocol can take more aggressive actions to manage risk and prevent potential losses due to excessive VAI debt accumulation.
+
+For borrowers with outstanding VAI debt, the force VAI liquidation first adds extra checks before starting the liquidation process. By ensuring that only eligible accounts are liquidated.
+
+#### Checks
+
+{% code title="forceVAIDebtFirst" overflow="wrap" lineNumbers="true" %}
+```solidity
+      uint256 _vaiDebt = vaiController.getVAIRepayAmount(borrower_);
+      bool _isVAILiquidationPaused = comptroller.actionPaused(address(vaiController), IComptroller.Action.LIQUIDATE);
+      if (
+         _isVAILiquidationPaused ||
+         !forceVAILiquidate ||
+         _vaiDebt < minLiquidatableVAI ||
+         vToken_ == address(vaiController)
+      ) return;
+      revert VAIDebtTooHigh(_vaiDebt, minLiquidatableVAI);
+```
+{% endcode %}
+
+1. Checks wheather VAI liquidation are not paused in Comptroller.
+2. The forceVAILiquidate flag is set to true.
+3. Verify whether the borrower's VAI debt is greater than the minimum amount of liquidable VAI.
+
+{% hint style="warning" %}
+If above all conditions are true then protocol checks that the current vToken sent to be liquidate is VAI otherwise liquidation fails, It prevent potential losses due to excessive VAI debt.
+{% endhint %}
