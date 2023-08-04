@@ -61,7 +61,7 @@ Returns the amount of VAI that the receiver would receive after executing the `s
 
 ## Integration of the Oracle Price
 
-<figure><img src="../.gitbook/assets/psm.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/psm.png" alt="USD price considered by the Peg Stability Module at Venus"><figcaption></figcaption></figure>
 
 To protect the value of VAI and consider the USD value of the stablecoin, the PSM integrates with an Oracle Price system. The following rules are applied:
 
