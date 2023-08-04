@@ -55,6 +55,7 @@ The PSM also offers preview functions that help users estimate the outcome of co
 
 ### `previewSwapVAIForStable(uint256 stableTknAmount)`
 Returns the amount of VAI that the sender would transfer (burnt + fee) to receive the specified stablecoin amount.
+
 ### `previewSwapStableForVAI(uint256 stableTknAmount)`
 Returns the amount of VAI that the receiver would receive after executing the `swapVAIForStable` function with the specified stablecoin amount.
 
