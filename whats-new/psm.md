@@ -4,8 +4,8 @@
 
 The Peg Stability Module (PSM) is a crucial component of the Venus Protocol designed to maintain the peg of the VAI stablecoin to $1. It functions similarly to the system provided by MakerDAO for DAI. The PSM contract works with two stablecoins: VAI (the target stablecoin) and USDT (used to help maintain the peg). The main features of the PSM are as follows:
 
-**Swap Functionality**:
--  Users can exchange VAI and USDT with a fixed conversion rate of 1 VAI = $1.
+**Convert Functionality**:
+- Users can exchange VAI and USDT with a fixed conversion rate of 1 VAI = $1.
 - Users can send VAI to the PSM and receive USDT if enough USDT is available in the PSM.
 - Users can send USDT to the PSM and receive VAI, provided that the PSM hasn't reached its maximum allowed minted VAI limit.
   
@@ -18,11 +18,11 @@ The VAI minted through the PSM does not accrue any interest or stability fee.
 The PSM contract has three configurable variables, settable via the Venus Improvement Proposal (VIP):
   - `feeIn`: Fee charged when users send USDT to the PSM.
   - `feeOut`: Fee charged when users send VAI to the PSM.
-  - `maxMintedVAI`: The maximum amount of VAI that the PSM can distribute. Swaps that exceed this limit will be reverted.
+  - `maxMintedVAI`: The maximum amount of VAI that the PSM can distribute. Converts that exceed this limit will be reverted.
 **Fees Sent to Treasury**: The collected fees are sent to the Venus Treasury contract in each operation.
 **Integration with Oracle Price**: The PSM considers the USD value of the stablecoin to peg VAI to its value accurately.
 
-## Swap Functions
+## Convert Functions
 
 ### Function `swapStableForVAI`
 
@@ -30,7 +30,7 @@ This function allows users to exchange stablecoins (USDT) for VAI.
 
 **Expected Parameters**:
 - `receiver`: Address of the user who will receive the VAI.
-- `amount`: The amount of stablecoin (USDT) the sender wants to swap.
+- `amount`: The amount of stablecoin (USDT) the sender wants to convert.
 
 The received stablecoins will be held by the PSM, and the fee specified by `feeIn` will be applied.
 
@@ -50,7 +50,7 @@ This function returns the amount of VAI transferred from the sender (burnt + fee
 
 ## Preview Functions
 
-The PSM also offers preview functions that help users estimate the outcome of swap operations:
+The PSM also offers preview functions that help users estimate the outcome of convert operations:
 
 ### `previewSwapVAIForStable(uint256 stableTknAmount)`
 Returns the amount of VAI that the sender would transfer (burnt + fee) to receive the specified stablecoin amount.
