@@ -145,7 +145,7 @@ Please note that the liquidation process involves complex calculations and requi
 
 ## Force VAI Debt First
 
-Without taking into account the specific VAI debt level, liquidation was carried out on all accounts in the aforementioned section. Ahe `forceVAILiquidate` feature is designed to enhance the liquidation process in the Venus protocol by allowing the liquidation of borrowers with VAI debt above a specified threshold (`minLiquidatableVAI`) while bypassing certain checks that might prevent the liquidation. By enabling this feature, the protocol can take more aggressive actions to manage risk and prevent potential losses due to excessive VAI debt accumulation.
+Without taking into account the specific VAI debt level, liquidation was carried out on all accounts in the aforementioned section. The `forceVAILiquidate` feature is designed to enhance the liquidation process in the Venus protocol by allowing the liquidation of borrowers with VAI debt above a specified threshold (`minLiquidatableVAI`) while bypassing certain checks that might prevent the liquidation. By enabling this feature, the protocol can take more aggressive actions to manage risk and prevent potential losses due to excessive VAI debt accumulation.
 
 For borrowers with outstanding VAI debt, the force VAI liquidation first adds extra checks before starting the liquidation process. By ensuring that only eligible accounts are liquidated.
 
@@ -170,5 +170,5 @@ For borrowers with outstanding VAI debt, the force VAI liquidation first adds ex
 3. Verify whether the borrower's VAI debt is greater than the minimum amount of liquidable VAI.
 
 {% hint style="warning" %}
-If above all conditions are true then protocol checks that the current vToken sent to be liquidate is VAI otherwise liquidation fails, It prevent potential losses due to excessive VAI debt.
+If the above conditions are true then protocol checks that the current vToken sent to be liquidated is VAI otherwise liquidation fails. It prevents potential losses due to excessive VAI debt.
 {% endhint %}
