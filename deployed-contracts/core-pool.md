@@ -14,6 +14,7 @@
 * Liquidator: [`0x0870793286aaDA55D39CE7f82fb2766e8004cF43`](https://bscscan.com/address/0x0870793286aaDA55D39CE7f82fb2766e8004cF43)
 * Venus Treasury: [`0xf322942f644a996a617bd29c16bd7d231d9f35e9`](https://bscscan.com/address/0xf322942f644a996a617bd29c16bd7d231d9f35e9)
 * SwapRouter: [`0x8938E6dA30b59c1E27d5f70a94688A89F7c815a4`](https://bscscan.com/address/0x8938E6dA30b59c1E27d5f70a94688A89F7c815a4)
+* Peg Stability Module: [`0xC138aa4E424D1A8539e8F38Af5a754a2B7c3Cc36`](https://bscscan.com/address/0xC138aa4E424D1A8539e8F38Af5a754a2B7c3Cc36)
 
 ### Underlying tokens
 
@@ -93,6 +94,7 @@
 * Liquidator: [`0x40FB27A83e52E7B213CC345f5b6ACA17bf7D5139`](https://testnet.bscscan.com/address/0x40FB27A83e52E7B213CC345f5b6ACA17bf7D5139)
 * Venus Treasury: [`0x8b293600c50d6fbdc6ed4251cc75ece29880276f`](https://testnet.bscscan.com/address/0x8b293600c50d6fbdc6ed4251cc75ece29880276f)
 * SwapRouter: [`0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0`](https://testnet.bscscan.com/address/0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0)
+* Peg Stability Module: [`0xB21E69eef4Bc1D64903fa28D9b32491B1c0786F1`](https://testnet.bscscan.com/address/0xB21E69eef4Bc1D64903fa28D9b32491B1c0786F1)
 
 ### Underlying tokens
 
