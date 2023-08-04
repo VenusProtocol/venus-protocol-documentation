@@ -113,5 +113,5 @@ Please note that the conversion rates of **USDT/USD** are determined based on th
   - The fee is calculated considering the "principal" VAI amount (10 VAI = $10).
 
 {% hint style="warning" %}
-Please note that this documentation is designed to be user-friendly and does not cover the technical implementation details of the Peg Stability Module. For technical information, developers and smart contract auditors can refer to the [smart contract code](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/PegStability/PegStability.sol) and the associated [Venus Improvement Proposals (VIPs)](https://app.venus.io/#/governance).
+Please note that this documentation is designed to be user-friendly and does not cover the technical implementation details of the Peg Stability Module. For technical information, developers and smart contract auditors can refer to the [smart contract code](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/PegStability/PegStability.sol).
 {% endhint %}
