@@ -20,6 +20,7 @@ The PSM contract has three configurable variables, settable via the Venus Improv
   - `feeOut`: Fee charged when users send VAI to the PSM.
   - `maxMintedVAI`: The maximum amount of VAI that the PSM can distribute. Conversions that exceed this limit will be reverted.
 **Fees Sent to Treasury**: The collected fees are sent to the Venus Treasury contract in each operation.
+
 **Integration with Oracle Price**: The PSM considers the USD value of the stablecoin to peg VAI to its value accurately.
 
 ## Convert Functions
