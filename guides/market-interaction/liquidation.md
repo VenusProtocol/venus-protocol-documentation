@@ -162,3 +162,23 @@ For borrowers with outstanding VAI debt, the force VAI liquidation first include
 {% hint style="warning" %}
 If the above conditions are true then the protocol checks that the current vToken sent to be liquidated is VAI, otherwise the liquidation fails.
 {% endhint %}
+{% hint style="info" %}
+#### Example 1
+
+Given this feature is enabled, and a user is eligible to be liquidated with the following debt:
+
+* 2,000 VAI
+* 5,000 USDT
+
+Liquidators will be required to liquidate the VAI position first because it is greater than `minLiquidatableVAI`. If they try to liquidate first the USDT position, the liquidation transaction will be reverted.
+
+#### Example 2
+
+Given this feature is enabled, and a user eligible to be liquidated with the following debts:
+
+* 500 VAI
+* 5,000 USDT
+
+Liquidators will be allowed to liquidate first the VAI position **or** the USDT position. Both liquidations will work because the VAI debt is less than `minLiquidatableVAI`
+
+{% endhint %}
