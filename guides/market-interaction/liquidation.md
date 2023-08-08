@@ -153,7 +153,7 @@ For borrowers with outstanding VAI debt, the force VAI liquidation first include
 
 1. Check that VAI liquidations are not paused in Comptroller.
 2. The forceVAILiquidate flag is set to true.
-3. Verify whether the borrower's VAI debt is greater than the minimum amount of liquidatable VAI.
+3. Verify whether the borrower's VAI debt is greater than the minimum amount of liquidatable VAI (initially 1,000 VAI).
 
 {% hint style="warning" %}
 If the above conditions are true then the protocol checks that the current vToken sent to be liquidated is VAI, otherwise the liquidation fails. Liquidating excessive VAI debt is also not allowed to prevent potential losses.
