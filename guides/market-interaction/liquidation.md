@@ -145,30 +145,40 @@ Please note that the liquidation process involves complex calculations and requi
 
 ## Force VAI Debt First
 
-Without taking into account the specific VAI debt level, liquidation was carried out on all accounts in the aforementioned section. The `forceVAILiquidate` feature is designed to enhance the liquidation process in the Venus protocol by allowing the liquidation of borrowers with VAI debt above a specified threshold (`minLiquidatableVAI`) while bypassing certain checks that might prevent the liquidation. By enabling this feature, the protocol can take more aggressive actions to manage risk and prevent potential losses due to excessive VAI debt accumulation.
+{% hint style="danger" %}
+This feature is disabled. Liquidators will have to change their codebase to consider the forced sequence of liquidations when there is a VAI debt. After having the confirmation from the main Liquidators that they have adapted their code, a VIP will be proposed to enable this feature.
+{% endhint %}
 
-For borrowers with outstanding VAI debt, the force VAI liquidation first adds extra checks before starting the liquidation process. By ensuring that only eligible accounts are liquidated.
+In the previous section, liquidations are carried out on all accounts without taking into consideration specific amounts of VAI debt. The `forceVAILiquidate` feature enhances the liquidation process by forcing liquidations of borrowers with VAI debt greater than `minLiquidatableVAI`. Forcing VAI liquidations allows the protocol to better manage risk and prevent potential losses due to excessive VAI debt accumulation.
+
+For borrowers with outstanding VAI debt, the force VAI liquidation first includes checks to ensure that only eligible accounts are liquidated before starting the liquidation process.
 
 #### Checks
 
-{% code title="forceVAIDebtFirst" overflow="wrap" lineNumbers="true" %}
-```solidity
-      uint256 _vaiDebt = vaiController.getVAIRepayAmount(borrower_);
-      bool _isVAILiquidationPaused = comptroller.actionPaused(address(vaiController), IComptroller.Action.LIQUIDATE);
-      if (
-         _isVAILiquidationPaused ||
-         !forceVAILiquidate ||
-         _vaiDebt < minLiquidatableVAI ||
-         vToken_ == address(vaiController)
-      ) return;
-      revert VAIDebtTooHigh(_vaiDebt, minLiquidatableVAI);
-```
-{% endcode %}
-
-1. Checks wheather VAI liquidation are not paused in Comptroller.
+1. Check that VAI liquidations are not paused in Comptroller.
 2. The forceVAILiquidate flag is set to true.
-3. Verify whether the borrower's VAI debt is greater than the minimum amount of liquidable VAI.
+3. Verify whether the borrower's VAI debt is greater than the minimum amount of liquidatable VAI (initially 1,000 VAI).
 
 {% hint style="warning" %}
-If the above conditions are true then protocol checks that the current vToken sent to be liquidated is VAI otherwise liquidation fails. It prevents potential losses due to excessive VAI debt.
+If the above conditions are true then the protocol checks that the current vToken sent to be liquidated is VAI, otherwise the liquidation fails.
+{% endhint %}
+{% hint style="info" %}
+#### Example 1
+
+Given this feature is enabled, and a user is eligible to be liquidated with the following debt:
+
+* 2,000 VAI
+* 5,000 USDT
+
+Liquidators will be required to liquidate the VAI position first because it is greater than `minLiquidatableVAI`. If they try to liquidate first the USDT position, the liquidation transaction will be reverted.
+
+#### Example 2
+
+Given this feature is enabled, and a user eligible to be liquidated with the following debts:
+
+* 500 VAI
+* 5,000 USDT
+
+Liquidators will be allowed to liquidate first the VAI position **or** the USDT position. Both liquidations will work because the VAI debt is less than `minLiquidatableVAI`
+
 {% endhint %}
