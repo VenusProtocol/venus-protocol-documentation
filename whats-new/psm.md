@@ -1,6 +1,8 @@
 # Peg Stability Module (PSM)
 
-## To be released
+{% hint style="warning" %}
+This feature is not available on mainnet yet.
+{% endhint %}
 
 ## Overview
 

@@ -1,4 +1,6 @@
-## To be released
+{% hint style="warning" %}
+This feature is not available on mainnet yet.
+{% endhint %}
 
 # Peg Stability Contract.
 Contract for swapping stable token for VAI token and vice versa to maintain the peg stability between them.
