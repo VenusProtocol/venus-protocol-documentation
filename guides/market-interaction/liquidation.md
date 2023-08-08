@@ -145,6 +145,10 @@ Please note that the liquidation process involves complex calculations and requi
 
 ## Force VAI Debt First
 
+{% hint style="danger" %}
+This feature is disabled. Liquidators will have to change their codebase to consider the forced sequence of liquidations when there is a VAI debt. After having the confirmation from the main Liquidators that they have adapted their code, a VIP will be proposed to enable this feature.
+{% endhint %}
+
 In the previous section, liquidations are carried out on all accounts without taking into consideration specific amounts of VAI debt. The `forceVAILiquidate` feature enhances the liquidation process by forcing liquidations of borrowers with VAI debt greater than `minLiquidatableVAI`. Forcing VAI liquidations allows the protocol to better manage risk and prevent potential losses due to excessive VAI debt accumulation.
 
 For borrowers with outstanding VAI debt, the force VAI liquidation first includes checks to ensure that only eligible accounts are liquidated before starting the liquidation process.
