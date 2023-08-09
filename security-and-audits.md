@@ -8,9 +8,18 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Peg Stability Module (PSM)
+
+**Scope**: Peg Stability Module [contract](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/PegStability/PegStability.sol) for VAI/USDT.
+
+* [Quantstamp audit report - 2023/08/07](https://github.com/VenusProtocol/venus-protocol/blob/90dfde3af29470938032c88ad7f9b31b3a4c503b/audits/057_psm_quantstamp_20230807.pdf)
+* [Certik audit report - 2023/05/24](https://github.com/VenusProtocol/venus-protocol/blob/90dfde3af29470938032c88ad7f9b31b3a4c503b/audits/021_psm_certik_20230524.pdf)
+* [Peckshield audit report - 2023/04/26](https://github.com/VenusProtocol/venus-protocol/blob/90dfde3af29470938032c88ad7f9b31b3a4c503b/audits/022_psm_peckshield_20230426.pdf)
+* [Hacken audit report - 2023/06/26](https://github.com/VenusProtocol/venus-protocol/blob/90dfde3af29470938032c88ad7f9b31b3a4c503b/audits/028_psm_hacken_20230626.pdf)
+
 ### Oracles upgrade (2023/07/24)
 
-**Scope**: upgrade of the Resilient Price Feeds, enabled on [VIP-XXX](https://app.venus.io/governance/proposal/XXX).
+**Scope**: upgrade of the Resilient Price Feeds, enabled on [VIP-145](https://app.venus.io/governance/proposal/145).
 
 * [Peckshield audit report - 2023/07/12](https://github.com/VenusProtocol/oracle/blob/fb02cdd3865fb5c34e0cd65cbeda02f87841371a/audits/045_getPrice_peckshield_20230712.pdf)
 * [Certik audit report - 2023/07/17](https://github.com/VenusProtocol/oracle/blob/fb02cdd3865fb5c34e0cd65cbeda02f87841371a/audits/043_getPrice_certik_20230717.pdf)
