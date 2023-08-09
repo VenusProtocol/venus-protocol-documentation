@@ -12,6 +12,7 @@
 * [Reward Distributor](whats-new/reward-distributor.md)
 * [Prime Yield](whats-new/prime-yield.md)
 * [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
+* [Peg Stability Module](whats-new/psm.md)
 
 ## Governance
 
@@ -59,6 +60,7 @@
   * [Liquidator](technical-reference/reference-core-pool/liquidator.md)
   * [VTreasury](technical-reference/reference-core-pool/vtreasury.md)
   * [VenusLens](technical-reference/reference-core-pool/venus-lens.md)
+  * [PSM](technical-reference/reference-core-pool/psm/peg-stability.md)
 * [Isolated Pools](technical-reference/reference-isolated-pools/README.md)
   * [Comptroller](technical-reference/reference-isolated-pools/comptroller/README.md)
     * [Comptroller](technical-reference/reference-isolated-pools/comptroller/comptroller.md)
