@@ -1,11 +1,10 @@
-{% hint style="warning" %}
-This feature is not available on mainnet yet.
-{% endhint %}
+# PSM
 
-# Peg Stability Contract.
+## Peg Stability Contract.
+
 Contract for swapping stable token for VAI token and vice versa to maintain the peg stability between them.
 
-# Solidity API
+## Solidity API
 
 ```solidity
 enum FeeDirection {
@@ -14,7 +13,7 @@ enum FeeDirection {
 }
 ```
 
-### BASIS_POINTS_DIVISOR
+#### BASIS\_POINTS\_DIVISOR
 
 The divisor used to convert fees to basis points.
 
@@ -22,9 +21,9 @@ The divisor used to convert fees to basis points.
 uint256 BASIS_POINTS_DIVISOR
 ```
 
-- - -
+***
 
-### MANTISSA_ONE
+#### MANTISSA\_ONE
 
 The mantissa value representing 1 (used for calculations).
 
@@ -32,9 +31,9 @@ The mantissa value representing 1 (used for calculations).
 uint256 MANTISSA_ONE
 ```
 
-- - -
+***
 
-### ONE_DOLLAR
+#### ONE\_DOLLAR
 
 The value representing one dollar in the stable token.
 
@@ -42,9 +41,9 @@ The value representing one dollar in the stable token.
 uint256 ONE_DOLLAR
 ```
 
-- - -
+***
 
-### VAI
+#### VAI
 
 VAI token contract.
 
@@ -52,9 +51,9 @@ VAI token contract.
 contract IVAI VAI
 ```
 
-- - -
+***
 
-### STABLE_TOKEN_ADDRESS
+#### STABLE\_TOKEN\_ADDRESS
 
 The address of the stable token contract.
 
@@ -62,9 +61,9 @@ The address of the stable token contract.
 address STABLE_TOKEN_ADDRESS
 ```
 
-- - -
+***
 
-### oracle
+#### oracle
 
 The address of ResilientOracle contract wrapped in its interface.
 
@@ -72,9 +71,9 @@ The address of ResilientOracle contract wrapped in its interface.
 contract ResilientOracleInterface oracle
 ```
 
-- - -
+***
 
-### venusTreasury
+#### venusTreasury
 
 The address of the Venus Treasury contract.
 
@@ -82,9 +81,9 @@ The address of the Venus Treasury contract.
 address venusTreasury
 ```
 
-- - -
+***
 
-### feeIn
+#### feeIn
 
 The incoming stableCoin fee. (Fee for swapStableForVAI).
 
@@ -92,9 +91,9 @@ The incoming stableCoin fee. (Fee for swapStableForVAI).
 uint256 feeIn
 ```
 
-- - -
+***
 
-### feeOut
+#### feeOut
 
 The outgoing stableCoin fee. (Fee for swapVAIForStable).
 
@@ -102,9 +101,9 @@ The outgoing stableCoin fee. (Fee for swapVAIForStable).
 uint256 feeOut
 ```
 
-- - -
+***
 
-### vaiMintCap
+#### vaiMintCap
 
 The maximum amount of VAI that can be minted through this contract.
 
@@ -112,9 +111,9 @@ The maximum amount of VAI that can be minted through this contract.
 uint256 vaiMintCap
 ```
 
-- - -
+***
 
-### vaiMinted
+#### vaiMinted
 
 The total amount of VAI minted through this contract.
 
@@ -122,9 +121,9 @@ The total amount of VAI minted through this contract.
 uint256 vaiMinted
 ```
 
-- - -
+***
 
-### isPaused
+#### isPaused
 
 A flag indicating whether the contract is currently paused or not.
 
@@ -132,9 +131,9 @@ A flag indicating whether the contract is currently paused or not.
 bool isPaused
 ```
 
-- - -
+***
 
-### initialize
+#### initialize
 
 Initializes the contract via Proxy Contract with the required parameters.
 
@@ -142,19 +141,20 @@ Initializes the contract via Proxy Contract with the required parameters.
 function initialize(address accessControlManager_, address venusTreasury_, address oracleAddress_, uint256 feeIn_, uint256 feeOut_, uint256 vaiMintCap_) external
 ```
 
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| accessControlManager_ | address | The address of the AccessControlManager contract. |
-| venusTreasury_ | address | The address where fees will be sent. |
-| oracleAddress_ | address | The address of the ResilientOracle contract. |
-| feeIn_ | uint256 | The percentage of fees to be applied to a stablecoin -> VAI swap. |
-| feeOut_ | uint256 | The percentage of fees to be applied to a VAI -> stablecoin swap. |
-| vaiMintCap_ | uint256 | The cap for the total amount of VAI that can be minted. |
+**Parameters**
 
-- - -
+| Name                   | Type    | Description                                                       |
+| ---------------------- | ------- | ----------------------------------------------------------------- |
+| accessControlManager\_ | address | The address of the AccessControlManager contract.                 |
+| venusTreasury\_        | address | The address where fees will be sent.                              |
+| oracleAddress\_        | address | The address of the ResilientOracle contract.                      |
+| feeIn\_                | uint256 | The percentage of fees to be applied to a stablecoin -> VAI swap. |
+| feeOut\_               | uint256 | The percentage of fees to be applied to a VAI -> stablecoin swap. |
+| vaiMintCap\_           | uint256 | The cap for the total amount of VAI that can be minted.           |
 
-### swapVAIForStable
+***
+
+#### swapVAIForStable
 
 Swaps VAI for a stable token.
 
@@ -162,20 +162,22 @@ Swaps VAI for a stable token.
 function swapVAIForStable(address receiver, uint256 stableTknAmount) external returns (uint256)
 ```
 
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| receiver | address | The address where the stablecoin will be sent. |
-| stableTknAmount | uint256 | The amount of stable tokens to receive. |
+**Parameters**
 
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | The amount of VAI received and burnt from the sender. |
+| Name            | Type    | Description                                    |
+| --------------- | ------- | ---------------------------------------------- |
+| receiver        | address | The address where the stablecoin will be sent. |
+| stableTknAmount | uint256 | The amount of stable tokens to receive.        |
 
-- - -
+**Return Values**
 
-### swapStableForVAI
+| Name | Type    | Description                                           |
+| ---- | ------- | ----------------------------------------------------- |
+| \[0] | uint256 | The amount of VAI received and burnt from the sender. |
+
+***
+
+#### swapStableForVAI
 
 Swaps stable tokens for VAI with fees.
 
@@ -183,20 +185,22 @@ Swaps stable tokens for VAI with fees.
 function swapStableForVAI(address receiver, uint256 stableTknAmount) external returns (uint256)
 ```
 
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| receiver | address | The address that will receive the VAI tokens. |
-| stableTknAmount | uint256 | The amount of stable tokens to be swapped. |
+**Parameters**
 
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | Amount of VAI minted to the sender. |
+| Name            | Type    | Description                                   |
+| --------------- | ------- | --------------------------------------------- |
+| receiver        | address | The address that will receive the VAI tokens. |
+| stableTknAmount | uint256 | The amount of stable tokens to be swapped.    |
 
-- - -
+**Return Values**
 
-### pause
+| Name | Type    | Description                         |
+| ---- | ------- | ----------------------------------- |
+| \[0] | uint256 | Amount of VAI minted to the sender. |
+
+***
+
+#### pause
 
 Pause the PSM contract.
 
@@ -204,9 +208,9 @@ Pause the PSM contract.
 function pause() external
 ```
 
-- - -
+***
 
-### resume
+#### resume
 
 Resume the PSM contract.
 
@@ -214,9 +218,9 @@ Resume the PSM contract.
 function resume() external
 ```
 
-- - -
+***
 
-### setFeeIn
+#### setFeeIn
 
 Set the fee percentage for incoming swaps.
 
@@ -224,14 +228,15 @@ Set the fee percentage for incoming swaps.
 function setFeeIn(uint256 feeIn_) external
 ```
 
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| feeIn_ | uint256 | The new fee percentage for incoming swaps. |
+**Parameters**
 
-- - -
+| Name    | Type    | Description                                |
+| ------- | ------- | ------------------------------------------ |
+| feeIn\_ | uint256 | The new fee percentage for incoming swaps. |
 
-### setFeeOut
+***
+
+#### setFeeOut
 
 Set the fee percentage for outgoing swaps.
 
@@ -239,14 +244,15 @@ Set the fee percentage for outgoing swaps.
 function setFeeOut(uint256 feeOut_) external
 ```
 
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| feeOut_ | uint256 | The new fee percentage for outgoing swaps. |
+**Parameters**
 
-- - -
+| Name     | Type    | Description                                |
+| -------- | ------- | ------------------------------------------ |
+| feeOut\_ | uint256 | The new fee percentage for outgoing swaps. |
 
-### setVenusTreasury
+***
+
+#### setVenusTreasury
 
 Set the address of the Venus Treasury contract.
 
@@ -254,14 +260,15 @@ Set the address of the Venus Treasury contract.
 function setVenusTreasury(address venusTreasury_) external
 ```
 
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| venusTreasury_ | address | The new address of the Venus Treasury contract. |
+**Parameters**
 
-- - -
+| Name            | Type    | Description                                     |
+| --------------- | ------- | ----------------------------------------------- |
+| venusTreasury\_ | address | The new address of the Venus Treasury contract. |
 
-### setOracle
+***
+
+#### setOracle
 
 Set the address of the ResilientOracle contract.
 
@@ -269,14 +276,15 @@ Set the address of the ResilientOracle contract.
 function setOracle(address oracleAddress_) external
 ```
 
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| oracleAddress_ | address | The new address of the ResilientOracle contract. |
+**Parameters**
 
-- - -
+| Name            | Type    | Description                                      |
+| --------------- | ------- | ------------------------------------------------ |
+| oracleAddress\_ | address | The new address of the ResilientOracle contract. |
 
-### previewSwapVAIForStable
+***
+
+#### previewSwapVAIForStable
 
 Calculates the amount of VAI that would be burnt from the user.
 
@@ -284,19 +292,21 @@ Calculates the amount of VAI that would be burnt from the user.
 function previewSwapVAIForStable(uint256 stableTknAmount) external view returns (uint256)
 ```
 
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+**Parameters**
+
+| Name            | Type    | Description                                                |
+| --------------- | ------- | ---------------------------------------------------------- |
 | stableTknAmount | uint256 | The amount of stable tokens to be received after the swap. |
 
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | The amount of VAI that would be taken from the user. |
+**Return Values**
 
-- - -
+| Name | Type    | Description                                          |
+| ---- | ------- | ---------------------------------------------------- |
+| \[0] | uint256 | The amount of VAI that would be taken from the user. |
 
-### previewSwapStableForVAI
+***
+
+#### previewSwapStableForVAI
 
 Calculates the amount of VAI that would be sent to the receiver.
 
@@ -304,15 +314,16 @@ Calculates the amount of VAI that would be sent to the receiver.
 function previewSwapStableForVAI(uint256 stableTknAmount) external view returns (uint256)
 ```
 
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+**Parameters**
+
+| Name            | Type    | Description                                        |
+| --------------- | ------- | -------------------------------------------------- |
 | stableTknAmount | uint256 | The amount of stable tokens provided for the swap. |
 
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | The amount of VAI that would be sent to the receiver. |
+**Return Values**
 
-- - -
+| Name | Type    | Description                                           |
+| ---- | ------- | ----------------------------------------------------- |
+| \[0] | uint256 | The amount of VAI that would be sent to the receiver. |
 
+***
