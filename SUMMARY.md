@@ -113,7 +113,7 @@
 
 ***
 
-* [API (Beta)](api-beta.md)
+* [API](api-beta.md)
 
 ## Links
 

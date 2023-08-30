@@ -2,11 +2,13 @@
 description: The Venus Protocol API providing access to indexed protocol data.
 ---
 
-# API (Beta)
+# API
 
-Venus Protocol  API provides two groups of endpoints
+Venus Protocol API provides two groups of endpoints
 
-**Market Data -** Endpoints relating to lending markets and user interactions with markets
+**Market Data -** Endpoints relating to lending markets
+
+**Activity -** Endpoints relating to user interactions with markets
 
 **Governance -** Endpoints providing information about proposals and voter activity
 
@@ -24,6 +26,7 @@ Endpoints are versioned using the `accept-version` header. The values for this h
 When the latest `next` version is made stable and the previous stable version is deprecated, both values for `accept-version` will return the latest version. Using the `next` header at this point will add a `Warning - 299` header alerting the client to remove `accept-version: next` to avoid receiving unexpected changes in the future.
 
 #### Versioning Choreography
+
 These steps describe the process of upgrading endpoints to new versions as they are released
 
 1. A `next` version is made available, accessible with the `accept-version: next` header. A `Warning - 299` header is added to the stable version with details about breaking changes.
@@ -34,6 +37,28 @@ These steps describe the process of upgrading endpoints to new versions as they 
 
 ### Market Endpoints
 
+{% swagger src=".gitbook/assets/swagger.json" path="/markets/core-pool" method="get" fullWidth="true" %}
+[swagger.json](.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/swagger.json" path="/markets/history" method="get" fullWidth="true" %}
+[swagger.json](.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/swagger.json" path="/markets/daily-xvs" method="get" fullWidth="true" %}
+[swagger.json](.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/swagger.json" path="/markets/{address}/cmc-total-supply" method="get" fullWidth="true" %}
+[swagger.json](.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/swagger.json" path="/markets/{address}/cmc-circulating-supply" method="get" fullWidth="true" %}
+[swagger.json](.gitbook/assets/swagger.json)
+{% endswagger %}
+
+#### Deprecated
+
 {% swagger src=".gitbook/assets/swagger.json" path="/api/governance/venus" method="get" fullWidth="true" %}
 [swagger.json](.gitbook/assets/swagger.json)
 {% endswagger %}
@@ -42,11 +67,45 @@ These steps describe the process of upgrading endpoints to new versions as they 
 [swagger.json](.gitbook/assets/swagger.json)
 {% endswagger %}
 
+## Activity
+
+{% swagger src=".gitbook/assets/swagger.json" path="/activity/transactions" method="get" fullWidth="true" %}
+[swagger.json](.gitbook/assets/swagger.json)
+{% endswagger %}
+
+#### Deprecated
+
 {% swagger src=".gitbook/assets/swagger.json" path="/api/transactions" method="get" expanded="false" fullWidth="true" %}
 [swagger.json](.gitbook/assets/swagger.json)
 {% endswagger %}
 
 ### Governance Endpoints
+
+{% swagger src=".gitbook/assets/swagger.json" path="/governance/proposals" method="get" fullWidth="true" %}
+[swagger.json](.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/swagger.json" path="/governance/proposals/:id" method="get" fullWidth="true" %}
+[swagger.json](.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/swagger.json" path="/governance/proposals/:proposalId/voteSummary" method="get" fullWidth="true" %}
+[swagger.json](.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/swagger.json" path="/governance/proposals/votes" method="get" expanded="false" fullWidth="true" %}
+[swagger.json](.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/swagger.json" path="/governance/voters" method="get" fullWidth="true" %}
+[swagger.json](.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src=".gitbook/assets/swagger.json" path="/governance/voters/:address/summary" method="get" fullWidth="true" %}
+[swagger.json](.gitbook/assets/swagger.json)
+{% endswagger %}
+
+#### Deprecated
 
 {% swagger src=".gitbook/assets/swagger.json" path="/api/proposals" method="get" fullWidth="true" %}
 [swagger.json](.gitbook/assets/swagger.json)
@@ -68,6 +127,6 @@ These steps describe the process of upgrading endpoints to new versions as they 
 [swagger.json](.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger.json" path="/api//voters/history/:address" method="get" fullWidth="true" %}
+{% swagger src=".gitbook/assets/swagger.json" path="/api/voters/history/:address" method="get" fullWidth="true" %}
 [swagger.json](.gitbook/assets/swagger.json)
 {% endswagger %}
