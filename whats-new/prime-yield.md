@@ -4,7 +4,7 @@
 
 ### **Overview**
 
-Venus Protocol is excited to announce Venus Prime, a revolutionary incentive program aimed to bolster user engagement and growth within the protocol. An integral part of Venus Tokenomics v3.1, Venus Prime aims to enhance yields and promote $XVS staking, focusing on markets including USDT, BNB, BTC and ETH. The launch is targeted for Q3 2023.
+Venus Protocol is excited to announce Venus Prime, a revolutionary incentive program aimed to bolster user engagement and growth within the protocol. An integral part of Venus Tokenomics v3.1, Venus Prime aims to enhance yields and promote $XVS staking, focusing on markets including USDT, USDC, BTC and ETH. The launch is targeted for Q4 2023.
 
 ### **Venus Prime Essentials**
 
@@ -24,4 +24,4 @@ Venus Prime aims to incentivize larger stake sizes and diverse user participatio
 
 Venus Prime intends to promote user loyalty and the overall growth of the protocol. By endorsing long-term staking, discouraging premature withdrawals, and incentivizing larger stakes, Venus Prime sets a new course in user engagement and liquidity, contributing to Venus Protocol's success.
 
-Stake your $XVS tokens today to be eligible for Venus Prime, an exciting new venture in the DeFi landscape, set to launch in Q3 2023!
+Stake your $XVS tokens today to be eligible for Venus Prime, an exciting new venture in the DeFi landscape.
