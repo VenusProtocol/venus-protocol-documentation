@@ -10,9 +10,11 @@
 
 * [Isolated Pools](whats-new/isolated-pools.md)
 * [Reward Distributor](whats-new/reward-distributor.md)
+* [Peg Stability Module](whats-new/psm.md)
+* [Automatic Income Allocation](whats-new/automatic-income-allocation.md)
+* [Token Converter](whats-new/token-converter.md)
 * [Prime Yield](whats-new/prime-yield.md)
 * [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
-* [Peg Stability Module](whats-new/psm.md)
 
 ## Governance
 
