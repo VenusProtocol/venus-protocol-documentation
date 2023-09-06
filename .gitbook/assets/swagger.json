@@ -2,103 +2,17 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Venus Protocol API",
-    "version": "1.5.0-dev.26",
+    "version": "1.6.4",
     "summary": "API to support the Venus Protocol with data indexed from on chain activity",
     "description": ""
   },
   "paths": {
-    "/api/governance/venus": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/asset",
-            "required": false
-          }
-        ],
-        "description": "Returns Market data for listed markets. Optionally filterable by address.\nFiltering by address will be deprecated and is not fully documented.\n",
-        "responses": {
-          "200": {
-            "description": "Returns Market data for all listed markets.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/GetVenus"
-                    },
-                    "status": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/market_history/graph": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/asset"
-          }
-        ],
-        "description": "Given an asset, this endpoint returns its historical data points",
-        "responses": {
-          "200": {
-            "description": "Returns historical data for the requested asset.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/MarketGraphData"
-                    },
-                    "status": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/transactions": {
       "get": {
         "parameters": [
+          {
+            "$ref": "#/parameters/versionStable"
+          },
           {
             "$ref": "#/parameters/limit",
             "default": 20
@@ -133,7 +47,7 @@
             "$ref": "#/parameters/page"
           }
         ],
-        "description": "Returns paginated array of queried transactions",
+        "description": "Query and paginate transactions.",
         "responses": {
           "200": {
             "description": "Returns paginated queried transactions.",
@@ -147,9 +61,23 @@
                   ],
                   "properties": {
                     "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Transaction"
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "page": {
+                          "type": "integer"
+                        },
+                        "total": {
+                          "type": "integer"
+                        },
+                        "result": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/TransactionV1"
+                          }
+                        }
                       }
                     },
                     "status": {
@@ -173,6 +101,133 @@
         }
       }
     },
+    "/activity/transactions": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/versionNext"
+          },
+          {
+            "$ref": "#/parameters/limit",
+            "default": 20
+          },
+          {
+            "$ref": "#/parameters/category"
+          },
+          {
+            "$ref": "#/parameters/event"
+          },
+          {
+            "$ref": "#/parameters/address",
+            "description": "Filter by from address"
+          },
+          {
+            "$ref": "#/parameters/vTokenAddress"
+          },
+          {
+            "$ref": "#/parameters/transactionHash"
+          },
+          {
+            "$ref": "#/parameters/orderV2",
+            "description": "Filter by proposal model key",
+            "name": "order",
+            "default": "blockNumber"
+          },
+          {
+            "$ref": "#/parameters/page"
+          }
+        ],
+        "description": "Query and paginate transactions.",
+        "responses": {
+          "200": {
+            "description": "Returns paginated queried transactions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "limit",
+                    "page",
+                    "total",
+                    "result"
+                  ],
+                  "properties": {
+                    "limit": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Transaction"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MalformedRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/authentication/:address": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/address",
+            "in": "path"
+          }
+        ],
+        "description": "Check if an account is blacklisted from UI",
+        "responses": {
+          "200": {
+            "description": "Returned if account is allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned if account is not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/proposals": {
       "get": {
         "parameters": [
@@ -188,7 +243,7 @@
           {
             "$ref": "#/parameters/orderBy",
             "default": "id",
-            "description": "Proposal model properties to use when ordering proposals"
+            "description": "Order by Proposal properties."
           },
           {
             "$ref": "#/parameters/limit"
@@ -197,7 +252,7 @@
             "$ref": "#/parameters/offset"
           }
         ],
-        "description": "Returns paginated array of proposals. It takes an optional array of proposal ids.",
+        "description": "Returns paginated array of proposals. It takes an optional array of proposal ids to filter by.",
         "responses": {
           "200": {
             "description": "Returns an array of proposals.",
@@ -231,7 +286,7 @@
                         "result": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/Proposal"
+                            "$ref": "#/components/schemas/ProposalV1"
                           }
                         }
                       }
@@ -278,7 +333,7 @@
                   ],
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/Proposal"
+                      "$ref": "#/components/schemas/ProposalV1"
                     },
                     "status": {
                       "type": "boolean"
@@ -308,7 +363,7 @@
             "$ref": "#/parameters/proposalId"
           }
         ],
-        "description": "Get Voter details for a given proposal",
+        "description": "Get voter details for a given proposal.",
         "responses": {
           "200": {
             "description": "Pagination object with paginated voter activity and a summary of proposal votes.",
@@ -353,6 +408,58 @@
                     },
                     "status": {
                       "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/governance/proposals/:proposalId/voteSummary": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/proposalId"
+          }
+        ],
+        "description": "Get vote summary for a given proposal, includes sums of for, against, abstain and total votes.",
+        "responses": {
+          "200": {
+            "description": null,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "for",
+                    "against",
+                    "abstain",
+                    "total"
+                  ],
+                  "properties": {
+                    "for": {
+                      "type": "string"
+                    },
+                    "against": {
+                      "type": "string"
+                    },
+                    "abstain": {
+                      "type": "string"
+                    },
+                    "total": {
+                      "type": "string"
                     }
                   }
                 }
@@ -451,10 +558,10 @@
             "required": true
           }
         ],
-        "description": "Retrieve a summary of an accounts voter profile.",
+        "description": "Retrieve a summary of an account's voter profile.",
         "responses": {
           "200": {
-            "description": "A summary of an accounts voter profile including latest XVS transfers",
+            "description": "A summary of an account's voter profile including latest XVS transfers and governance transactions.",
             "content": {
               "application/json": {
                 "schema": {
@@ -515,7 +622,64 @@
         }
       }
     },
-    "/api//voters/history/:address": {
+    "/governance/voters/:address/summary": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/address",
+            "in": "path",
+            "required": true
+          },
+          {
+            "$ref": "#/parameters/versionNext"
+          }
+        ],
+        "description": "Retrieve a summary of an account's voter profile.",
+        "responses": {
+          "200": {
+            "description": "A summary of an account's voter profile including latest governance transactions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "delegateCount": {
+                      "type": "number"
+                    },
+                    "votes": {
+                      "type": "string"
+                    },
+                    "balance": {
+                      "type": "string"
+                    },
+                    "delegates": {
+                      "type": "string"
+                    },
+                    "txs": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Transaction"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/voters/history/:address": {
       "get": {
         "parameters": [
           {
@@ -544,10 +708,10 @@
             "$ref": "#/parameters/limit"
           }
         ],
-        "description": "Returns an array of voter activity for a specified account",
+        "description": "Returns an array of voter activity for a specified account.",
         "responses": {
           "200": {
-            "description": "Paginated response of an account's voter history",
+            "description": "Paginated response of an account's voter history.",
             "content": {
               "application/json": {
                 "schema": {
@@ -604,9 +768,188 @@
           }
         }
       }
+    },
+    "/api/governance/venus": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/asset",
+            "required": false
+          }
+        ],
+        "description": "Returns market data for listed markets, optionally filterable by asset address.\nFiltering by address will be deprecated and is not fully documented.\n",
+        "responses": {
+          "200": {
+            "description": "Returns Market data for all listed markets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/GetVenus"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/market_history/graph": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/asset"
+          }
+        ],
+        "description": "Fetch an array of daily snapshots of supply and borrow totals and supply and borrow apy over the previous 365 days for a given asset.",
+        "responses": {
+          "200": {
+            "description": "Returns historical data for the requested asset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MarketGraphData"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/markets/{address}/cmc-circulating-supply": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/asset",
+            "in": "path"
+          }
+        ],
+        "description": "Return circulating supply by token",
+        "responses": {
+          "200": {
+            "description": "Return circulating supply by token",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed Query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MalformedRequest"
+                }
+              }
+            }
+          },
+          "500": "#/components/responses/500ServerError"
+        }
+      }
+    },
+    "/markets/{address}/cmc-total-supply": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/asset",
+            "in": "path"
+          }
+        ],
+        "description": "Return total supply by token",
+        "responses": {
+          "200": {
+            "description": "Return total supply by token",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed Query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MalformedRequest"
+                }
+              }
+            }
+          },
+          "500": "#/components/responses/500ServerError"
+        }
+      }
     }
   },
   "parameters": {
+    "versionStable": {
+      "in": "header",
+      "name": "accept-version",
+      "required": false,
+      "schema": {
+        "type": "string",
+        "enum": [
+          "stable"
+        ]
+      }
+    },
+    "versionNext": {
+      "in": "header",
+      "name": "accept-version",
+      "required": true,
+      "schema": {
+        "type": "string",
+        "enum": [
+          "next"
+        ]
+      }
+    },
     "asset": {
       "name": "asset",
       "description": "Filter by vToken address",
@@ -659,6 +1002,13 @@
     },
     "orderBy": {
       "name": "orderBy",
+      "in": "query",
+      "required": false,
+      "type": "string"
+    },
+    "orderV2": {
+      "name": "order",
+      "description": "Array of columns to order results. Default sort is descending. If '+' is prepended to a column it will be sorted ascending.",
       "in": "query",
       "required": false,
       "type": "string"
@@ -726,9 +1076,56 @@
       "required": false,
       "default": 1,
       "type": "integer"
+    },
+    "symbol": {
+      "name": "symbol",
+      "description": "Filter by asset symbol",
+      "in": "query",
+      "required": false,
+      "type": "string"
+    },
+    "name": {
+      "name": "name",
+      "description": "Filter by asset name",
+      "in": "query",
+      "required": false,
+      "type": "string"
+    },
+    "underlyingAddress": {
+      "name": "underlyingAddress",
+      "description": "Filter by underlying address",
+      "in": "query",
+      "required": false,
+      "type": "string"
+    },
+    "underlyingName": {
+      "name": "underlyingName",
+      "description": "Filter by underlying name",
+      "in": "query",
+      "required": false,
+      "type": "string"
+    },
+    "underlyingSymbol": {
+      "name": "underlyingSymbol",
+      "description": "Filter by underlying symbol",
+      "in": "query",
+      "required": false,
+      "type": "string"
     }
   },
   "components": {
+    "responses": {
+      "500ServerError": {
+        "description": "Malformed Query",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MalformedRequest"
+            }
+          }
+        }
+      }
+    },
     "schemas": {
       "ErrorResponse": {
         "type": "object",
@@ -742,6 +1139,17 @@
           },
           "status": {
             "type": "boolean"
+          }
+        }
+      },
+      "MalformedRequest": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
           }
         }
       },
@@ -977,7 +1385,146 @@
           }
         }
       },
-      "Proposal": {
+      "Market": {
+        "type": "object",
+        "required": [
+          "address",
+          "symbol",
+          "name",
+          "underlyingAddress",
+          "underlyingName",
+          "underlyingSymbol",
+          "underlyingDecimal",
+          "borrowerDailyXvsMantissa",
+          "supplierDailyXvsMantissa",
+          "xvsBorrowIndex",
+          "xvsSupplyIndex",
+          "borrowRatePerBlock",
+          "supplyRatePerBlock",
+          "exchangeRateMantissa",
+          "underlyingPriceMantissa",
+          "totalBorrowsMantissa",
+          "totalSupplyMantissa",
+          "cashMantissa",
+          "totalReservesMantissa",
+          "reserveFactorMantissa",
+          "collateralFactorMantissa",
+          "borrowApy",
+          "supplyApy",
+          "borrowXvsApy",
+          "supplyXvsApy",
+          "borrowXvsApr",
+          "supplyXvsApr",
+          "liquidityCents",
+          "tokenPriceCents",
+          "supplyCapsMantissa",
+          "borrowCapsMantissa",
+          "borrowerCount",
+          "supplierCount"
+        ],
+        "properties": {
+          "address": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "underlyingAddress": {
+            "type": "string"
+          },
+          "underlyingName": {
+            "type": "string"
+          },
+          "underlyingSymbol": {
+            "type": "string"
+          },
+          "underlyingDecimal": {
+            "type": "integer"
+          },
+          "borrowerDailyXvsMantissa": {
+            "type": "string"
+          },
+          "supplierDailyXvsMantissa": {
+            "type": "string"
+          },
+          "venusBorrowIndex": {
+            "type": "string"
+          },
+          "venusSupplyIndex": {
+            "type": "string"
+          },
+          "borrowRatePerBlock": {
+            "type": "string"
+          },
+          "supplyRatePerBlock": {
+            "type": "string"
+          },
+          "exchangeRateMantissa": {
+            "type": "string"
+          },
+          "underlyingPriceMantissa": {
+            "type": "string"
+          },
+          "totalBorrowsMantissa": {
+            "type": "string"
+          },
+          "totalSupplyMantissa": {
+            "type": "string"
+          },
+          "cashMantissa": {
+            "type": "string"
+          },
+          "totalReservesMantissa": {
+            "type": "string"
+          },
+          "reserveFactorMantissa": {
+            "type": "string"
+          },
+          "collateralFactorMantissa": {
+            "type": "string"
+          },
+          "borrowApy": {
+            "type": "string"
+          },
+          "supplyApy": {
+            "type": "string"
+          },
+          "borrowXvsApy": {
+            "type": "string"
+          },
+          "supplyXvsApy": {
+            "type": "string"
+          },
+          "borrowXvsApr": {
+            "type": "string"
+          },
+          "supplyXvsApr": {
+            "type": "string"
+          },
+          "liquidityCents": {
+            "type": "string"
+          },
+          "tokenPriceCents": {
+            "type": "string"
+          },
+          "supplyCapsMantissa": {
+            "type": "string"
+          },
+          "borrowCapsMantissa": {
+            "type": "string"
+          },
+          "borrowerCount": {
+            "type": "integer"
+          },
+          "supplierCount": {
+            "type": "integer"
+          }
+        }
+      },
+      "ProposalV1": {
         "type": "object",
         "required": [
           "id",
@@ -1021,7 +1568,7 @@
           "description": {
             "type": "string"
           },
-          "action": {
+          "actions": {
             "type": "array"
           },
           "createdBlock": {
@@ -1134,7 +1681,296 @@
           }
         }
       },
-      "Transaction": {
+      "ProposalList": {
+        "type": "object",
+        "required": [
+          "id",
+          "description",
+          "abstainedVotesMantissa",
+          "againstVotesMantissa",
+          "cancelBlock",
+          "cancelTimestamp",
+          "cancelTxHash",
+          "createdBlock",
+          "createdTimestamp",
+          "createdTxHash",
+          "endBlock",
+          "endTimestamp",
+          "endTxHash",
+          "eta",
+          "executedBlock",
+          "executedTimestamp",
+          "executedTxHash",
+          "forVotesMantissa",
+          "governorName",
+          "proposer",
+          "queuedBlock",
+          "queuedTimestamp",
+          "queuedTxHash",
+          "startBlock",
+          "startTimestamp",
+          "startTxHash",
+          "state"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          },
+          "createdBlock": {
+            "type": "integer"
+          },
+          "createdTxHash": {
+            "type": "string"
+          },
+          "createdTimestamp": {
+            "type": "integer"
+          },
+          "startBlock": {
+            "type": "integer"
+          },
+          "startTxHash": {
+            "type": "string"
+          },
+          "startTimestamp": {
+            "type": "integer"
+          },
+          "cancelBlock": {
+            "type": "integer"
+          },
+          "cancelTxHash": {
+            "type": "string"
+          },
+          "cancelTimestamp": {
+            "type": "integer"
+          },
+          "endBlock": {
+            "type": "integer"
+          },
+          "endTxHash": {
+            "type": "string"
+          },
+          "endTimestamp": {
+            "type": "integer"
+          },
+          "queuedBlock": {
+            "type": "integer"
+          },
+          "queuedTxHash": {
+            "type": "string"
+          },
+          "queuedTimestamp": {
+            "type": "integer"
+          },
+          "executedBlock": {
+            "type": "integer"
+          },
+          "executedTxHash": {
+            "type": "string"
+          },
+          "executedTimestamp": {
+            "type": "integer"
+          },
+          "proposer": {
+            "type": "string"
+          },
+          "eta": {
+            "type": "integer"
+          },
+          "forVotes": {
+            "type": "string"
+          },
+          "againstVotes": {
+            "type": "string"
+          },
+          "canceled": {
+            "type": "boolean"
+          },
+          "executed": {
+            "type": "boolean"
+          },
+          "state": {
+            "type": "integer"
+          },
+          "voterCount": {
+            "type": "integer"
+          },
+          "abstainedVotes": {
+            "type": "string"
+          },
+          "governorName": {
+            "type": "string"
+          },
+          "proposalType": {
+            "type": "integer"
+          }
+        }
+      },
+      "ProposalDetail": {
+        "type": "object",
+        "required": [
+          "id",
+          "description",
+          "abstainedVotesMantissa",
+          "againstVotesMantissa",
+          "cancelBlock",
+          "cancelTimestamp",
+          "cancelTxHash",
+          "createdBlock",
+          "createdTimestamp",
+          "createdTxHash",
+          "endBlock",
+          "endTimestamp",
+          "endTxHash",
+          "eta",
+          "executedBlock",
+          "executedTimestamp",
+          "executedTxHash",
+          "forVotesMantissa",
+          "governorName",
+          "proposer",
+          "queuedBlock",
+          "queuedTimestamp",
+          "queuedTxHash",
+          "startBlock",
+          "startTimestamp",
+          "startTxHash",
+          "state",
+          "proposalActions"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          },
+          "createdBlock": {
+            "type": "integer"
+          },
+          "createdTxHash": {
+            "type": "string"
+          },
+          "createdTimestamp": {
+            "type": "integer"
+          },
+          "startBlock": {
+            "type": "integer"
+          },
+          "startTxHash": {
+            "type": "string"
+          },
+          "startTimestamp": {
+            "type": "integer"
+          },
+          "cancelBlock": {
+            "type": "integer"
+          },
+          "cancelTxHash": {
+            "type": "string"
+          },
+          "cancelTimestamp": {
+            "type": "integer"
+          },
+          "endBlock": {
+            "type": "integer"
+          },
+          "endTxHash": {
+            "type": "string"
+          },
+          "endTimestamp": {
+            "type": "integer"
+          },
+          "queuedBlock": {
+            "type": "integer"
+          },
+          "queuedTxHash": {
+            "type": "string"
+          },
+          "queuedTimestamp": {
+            "type": "integer"
+          },
+          "executedBlock": {
+            "type": "integer"
+          },
+          "executedTxHash": {
+            "type": "string"
+          },
+          "executedTimestamp": {
+            "type": "integer"
+          },
+          "proposer": {
+            "type": "string"
+          },
+          "eta": {
+            "type": "integer"
+          },
+          "forVotes": {
+            "type": "string"
+          },
+          "againstVotes": {
+            "type": "string"
+          },
+          "canceled": {
+            "type": "boolean"
+          },
+          "executed": {
+            "type": "boolean"
+          },
+          "state": {
+            "type": "integer"
+          },
+          "voterCount": {
+            "type": "integer"
+          },
+          "abstainedVotes": {
+            "type": "string"
+          },
+          "governorName": {
+            "type": "string"
+          },
+          "proposalType": {
+            "type": "integer"
+          },
+          "proposalActions": {
+            "$ref": "#/components/schemas/ProposalAction"
+          }
+        }
+      },
+      "ProposalAction": {
+        "type": "object",
+        "required": [
+          "proposalId",
+          "actionIndex",
+          "target",
+          "value",
+          "signature",
+          "calldata"
+        ],
+        "properties": {
+          "proposalId": {
+            "type": "integer"
+          },
+          "actionIndex": {
+            "type": "integer"
+          },
+          "target": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "signature": {
+            "type": "string"
+          },
+          "calldata": {
+            "type": "string"
+          }
+        }
+      },
+      "TransactionV1": {
         "type": "object",
         "required": [
           "category",
@@ -1143,7 +1979,6 @@
           "from",
           "to",
           "tokenAddress",
-          "amount",
           "blockNumber",
           "timestamp",
           "id",
@@ -1174,6 +2009,61 @@
             "type": "string"
           },
           "amount": {
+            "type": "integer"
+          },
+          "blockNumber": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "logIndex": {
+            "type": "integer"
+          }
+        }
+      },
+      "Transaction": {
+        "type": "object",
+        "required": [
+          "category",
+          "event",
+          "transactionHash",
+          "from",
+          "to",
+          "tokenAddress",
+          "blockNumber",
+          "timestamp",
+          "id",
+          "logIndex"
+        ],
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "vtoken",
+              "vai",
+              "vote"
+            ]
+          },
+          "event": {
+            "type": "string"
+          },
+          "transactionHash": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "tokenAddress": {
+            "type": "string"
+          },
+          "amountMantissa": {
             "type": "integer"
           },
           "blockNumber": {
@@ -1225,6 +2115,37 @@
             "type": "string"
           },
           "votes2": {
+            "type": "string"
+          }
+        }
+      },
+      "VoterAccount": {
+        "type": "object",
+        "required": [
+          "id",
+          "address",
+          "proposalsVoted",
+          "voteWeight",
+          "votesMantissa",
+          "stakedVotesMantissa"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "proposalsVoted": {
+            "type": "integer"
+          },
+          "voteWeight": {
+            "type": "integer"
+          },
+          "votesMantissa": {
+            "type": "string"
+          },
+          "stakedVotesMantissa": {
             "type": "string"
           }
         }
@@ -1330,6 +2251,41 @@
             "type": "string"
           },
           "total": {
+            "type": "string"
+          }
+        }
+      },
+      "Vote": {
+        "type": "object",
+        "required": [
+          "id",
+          "address",
+          "support",
+          "blockNumber",
+          "blockTimestamp",
+          "votesMantissa",
+          "reason"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "support": {
+            "type": "string"
+          },
+          "blockNumber": {
+            "type": "string"
+          },
+          "blockTimestamp": {
+            "type": "string"
+          },
+          "votesMantissa": {
+            "type": "string"
+          },
+          "reason": {
             "type": "string"
           }
         }
