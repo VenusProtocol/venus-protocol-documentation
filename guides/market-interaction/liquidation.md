@@ -153,13 +153,17 @@ Please note that the liquidation process involves complex calculations and requi
 
 ## Forced liquidations
 
-Usually, accounts are only eligible to be liquidated if they are under-collateralized, as it is described in the previous sections. Exceptionally, if the feature "forced liquidations" is enabled in one market, borrow positions can be liquidated in that market even when the health rate of the involved user is greater than 1 (that means, when the account is collateralized). Moreover, the close factor check would be ignored, allowing the liquidation of 100% of the debt in one transaction.
+Usually, accounts are only eligible to be liquidated if they are under-collateralized, as described in the previous sections. An exception is if "forced liquidations" are enabled for a market. In this case borrow positions can be liquidated in that market even when the health rate of the user is greater than 1 (i.e. when the account is collateralized). Additionally, the close factor check is ignored, allowing the liquidation of 100% of the debt in one transaction.
 
-This feature is based on the implementation done by Compound V2 [here](https://github.com/compound-finance/compound-protocol/pull/123/files). Compound V2 allows "forced liquidations" on markets as soon as the Collateral factor is zero, the Reserve factor is 100% and the borrows are paused. Venus defines a feature flag to enable/disable "forced liquidations", setteable directly via VIP, not based on other parameters. Compound community talked about this feature in [this post](https://www.comp.xyz/t/deprecate-fei-market/3513).
+This feature is based on the implementation done by Compound V2 [here](https://github.com/compound-finance/compound-protocol/pull/123/files). Compound V2 allows "forced liquidations" on markets as soon as the Collateral factor is zero, the Reserve factor is 100% and the borrows are paused. Venus defines a feature flag to enable/disable "forced liquidations", configurable directly via VIP, not based on other parameters. Compound community talked about this feature in [this post](https://www.comp.xyz/t/deprecate-fei-market/3513).
 
 To check if "forced liquidations" are enabled in one market, the function `Comptroller.isForcedLiquidationEnabled(address vToken)` can be called on the Comptroller contract of the pool, providing the address of the market to check.
 
-**Availability**: this feature is only available right now in the Core pool. It will be enabled in the Isolated pools soon.
+
+{% hint style="info" %}
+**Availability**: 
+Forced Liquidations are only available in the Core pool. They will be enabled in the Isolated pools soon.
+{% endhint %}
 
 ### Example
 
