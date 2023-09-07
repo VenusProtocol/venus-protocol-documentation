@@ -155,7 +155,7 @@ Please note that the liquidation process involves complex calculations and requi
 
 Usually, accounts are only eligible to be liquidated if they are under-collateralized, as it is described in the previous sections. Exceptionally, if the feature "forced liquidations" is enabled in one market, borrow positions can be liquidated in that market even when the health rate of the involved user is greater than 1 (that means, when the account is collateralized). Moreover, the close factor check would be ignored, allowing the liquidation of 100% of the debt in one transaction.
 
-Based on the implementation done by Compound [here](https://github.com/compound-finance/compound-protocol/pull/123/files), the idea is to support force liquidations in a similar way, but with a custom feature flat setteable via VIP. Compound community talked about this feature in [this post](https://www.comp.xyz/t/deprecate-fei-market/3513).
+This feature is based on the implementation done by Compound V2 [here](https://github.com/compound-finance/compound-protocol/pull/123/files). Compound V2 allows "forced liquidations" on markets as soon as the Collateral factor is zero, the Reserve factor is 100% and the borrows are paused. Venus defines a feature flag to enable/disable "forced liquidations", setteable directly via VIP, not based on other parameters. Compound community talked about this feature in [this post](https://www.comp.xyz/t/deprecate-fei-market/3513).
 
 To check if "forced liquidations" are enabled in one market, the function `Comptroller.isForcedLiquidationEnabled(address vToken)` can be called on the Comptroller contract of the pool, providing the address of the market to check.
 
