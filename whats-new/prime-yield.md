@@ -12,7 +12,7 @@ layout:
     visible: true
 ---
 
-# Prime Yield
+# Venus Prime
 
 {% hint style="warning" %}
 **To be released**
@@ -20,13 +20,13 @@ layout:
 
 ### **Overview**
 
-Venus Protocol is excited to announce Venus Prime, a revolutionary incentive program aimed to bolster user engagement and growth within the protocol. An integral part of Venus Tokenomics v3.1, Venus Prime aims to enhance yields and promote $XVS staking, focusing on markets including USDT, USDC, BTC and ETH. The launch is targeted for early Q4 2023.
+Venus Protocol is excited to announce Venus Prime, a revolutionary incentive program aimed to bolster user engagement and growth within the protocol. An integral part of Venus Tokenomics v3.1, Venus Prime aims to enhance rewards and promote $XVS staking, focusing on markets including USDT, USDC, BTC and ETH. The launch is targeted for early Q4 2023.
 
 ### **Venus Prime Essentials**
 
 Venus Prime's uniqueness lies in its self-sustaining rewards system, instead of external sources, rewards are derived from the protocol's revenue, fostering a sustainable and ever-growing program.
 
-Eligible $XVS holders will receive a unique, non-transferable Soulbound Token, which boosts the annual percentage yields (APYs) across selected markets.&#x20;
+Eligible $XVS holders will receive a unique, non-transferable Soulbound Token, which boosts rewards across selected markets.&#x20;
 
 **Prime Tokens:**
 

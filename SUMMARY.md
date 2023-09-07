@@ -13,7 +13,7 @@
 * [Peg Stability Module](whats-new/psm.md)
 * [Automatic Income Allocation](whats-new/automatic-income-allocation.md)
 * [Token Converter](whats-new/token-converter.md)
-* [Prime Yield](whats-new/prime-yield.md)
+* [Venus Prime](whats-new/prime-yield.md)
 * [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
 
 ## Governance
