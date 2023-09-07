@@ -1,7 +1,7 @@
 # Automatic Income Allocation
 
 {% hint style="warning" %}
-To be released
+**To be released**
 {% endhint %}
 
 ### Overview
