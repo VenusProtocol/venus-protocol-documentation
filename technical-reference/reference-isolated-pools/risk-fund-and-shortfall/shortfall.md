@@ -268,7 +268,7 @@ function updateMinimumPoolBadDebt(uint256 _minimumPoolBadDebt) external
 #### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _minimumPoolBadDebt | uint256 | Minimum bad debt in BUSD for a pool to start auction |
+| _minimumPoolBadDebt | uint256 | Minimum bad debt in the base asset for a pool to start auction |
 
 #### 📅 Events
 * Emits MinimumPoolBadDebtUpdated on success
