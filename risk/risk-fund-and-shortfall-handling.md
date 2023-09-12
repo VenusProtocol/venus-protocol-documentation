@@ -32,5 +32,11 @@ The main configurable parameteres in the `Shortfall` contract (via VIP), and the
 * Incentive to auction participants. Initial value set to 1000 or 10%
 
 {% hint style="info" %}
-**Availability**: `Shortfall` contract will be used only for the markets in the Isolated Pools. The markets in the Core pool don't track the bad debt at the moment, so it cannot be reduced automatically. The funds associated with the Core pool, accumulated in the `RiskFund` contract, will be used to repay the bad debt of the Core pool via VIP.
+**Availability**:
+
+* `Shortfall` contract will be used only for the markets in the Isolated Pools.
+* The markets in the Core pool don't track the bad debt at the moment, so it cannot be reduced automatically.
+* The funds generated in the Core pool, that should be allocated to the risk fund, are temporarily sent to the [Venus Treasury](https://bscscan.com/address/0xf322942f644a996a617bd29c16bd7d231d9f35e9) contract. With the relase of the [Automatic income allocation](../whats-new/automatic-income-allocation.md) feature, this income will be sent to the `ProtocolShareReserve` contract, where there will be distributed following the [tokenomics](../governance/tokenomics.md) of the project.
+* The funds associated with the Core pool, accumulated in the `RiskFund` contract, will be used to repay the bad debt of the Core pool via VIP.
+
 {% endhint %}
