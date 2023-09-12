@@ -10,7 +10,7 @@ Remember, you need a voting weight of at least 300,000 to submit a proposal.
 
 ### Step 1: Visit the Venus Governance Portal
 
-Navigate to the Venus Governance Portal using your preferred web browser. You can access the portal at <https://app.venus.io/governance>.
+Navigate to the Venus Governance Portal using your preferred web browser. You can access the portal at [https://app.venus.io/governance](https://app.venus.io/governance).
 
 ### Step 2: Connect Your Wallet
 
@@ -20,7 +20,7 @@ To submit a proposal, you need to connect your wallet by clicking on the "Connec
 
 Now that your wallet is connected, you can create a proposal. Look for the "Create Proposal" button at the top right corner of the screen and click on it.
 
-<figure><img src="../../.gitbook/assets/VIP_create_proposal_3.jpg" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/VIP_create_proposal_3 (1).jpg" alt=""><figcaption></figcaption></figure>
 
 This action will open a modal presenting two options - "Upload file" and "Create Manually":
 
