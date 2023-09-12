@@ -7,9 +7,9 @@
 * DefaultProxyAdmin: [`0x1BB765b741A5f3C2A338369DAb539385534E3343`](https://bscscan.com/address/0x1BB765b741A5f3C2A338369DAb539385534E3343)
 * Comptroller Beacon: [`0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2`](https://bscscan.com/address/0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2)
 * VToken Beacon: [`0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4`](https://bscscan.com/address/0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4)
-* ProtocolShareReserve: [`0x99731dDeA6e0d721dfeb434Cb20b200E72709056`](https://bscscan.com/address/0x99731dDeA6e0d721dfeb434Cb20b200E72709056)
-* RiskFund: [`0xDF829fB0861DA07a0a935486738dFa65ED007927`](https://bscscan.com/address/0xDF829fB0861DA07a0a935486738dFa65ED007927)
-* Shortfall: [`0x51dcdD4Ee45c0e8c04DE4C54908C2Ada38fd99B5`](https://bscscan.com/address/0x51dcdD4Ee45c0e8c04DE4C54908C2Ada38fd99B5)
+* ProtocolShareReserve: [`0xfB5bE09a1FA6CFDA075aB1E69FE83ce8324682e4`](https://bscscan.com/address/0xfB5bE09a1FA6CFDA075aB1E69FE83ce8324682e4)
+* RiskFund: [`0xdF31a28D68A2AB381D42b380649Ead7ae2A76E42`](https://bscscan.com/address/0xdF31a28D68A2AB381D42b380649Ead7ae2A76E42)
+* Shortfall: [`0xf37530A8a810Fcb501AA0Ecd0B0699388F0F2209`](https://bscscan.com/address/0xf37530A8a810Fcb501AA0Ecd0B0699388F0F2209)
 
 ### Pool Stablecoin
 
@@ -71,9 +71,9 @@
 * DefaultProxyAdmin:
 * Comptroller Beacon: [`0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74`](https://testnet.bscscan.com/address/0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74)
 * VToken Beacon: [`0xBF85A90673E61956f8c79b9150BAB7893b791bDd`](https://testnet.bscscan.com/address/0xBF85A90673E61956f8c79b9150BAB7893b791bDd)
-* ProtocolShareReserve: [`0xCc096D31b291DF58B9da7Ae109a367771fD5EAd1`](https://testnet.bscscan.com/address/0xCc096D31b291DF58B9da7Ae109a367771fD5EAd1)
-* RiskFund: [`0x7dF785302793155fcD6033f2b8487a7107546e48`](https://testnet.bscscan.com/address/0x7dF785302793155fcD6033f2b8487a7107546e48)
-* Shortfall: [`0xd50392301b7f02eEDf3f33e54FE5de2e508c9DE5`](https://testnet.bscscan.com/address/0xd50392301b7f02eEDf3f33e54FE5de2e508c9DE5)
+* ProtocolShareReserve: [`0xc987a03ab6C2A5891Fc0919f021cc693B5E55278`](https://testnet.bscscan.com/address/0xc987a03ab6C2A5891Fc0919f021cc693B5E55278)
+* RiskFund: [`0x487CeF72dacABD7E12e633bb3B63815a386f7012`](https://testnet.bscscan.com/address/0x487CeF72dacABD7E12e633bb3B63815a386f7012)
+* Shortfall: [`0x503574a82fE2A9f968d355C8AAc1Ba0481859369`](https://testnet.bscscan.com/address/0x503574a82fE2A9f968d355C8AAc1Ba0481859369)
 
 ### Pool Stablecoin
 
