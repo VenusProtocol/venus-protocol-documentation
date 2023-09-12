@@ -98,6 +98,7 @@
   * vUSDD\_DeFi: [`0xa109DE0abaeefC521Ec29D89eA42E64F37A6882E`](https://testnet.bscscan.com/address/0xa109DE0abaeefC521Ec29D89eA42E64F37A6882E)
   * vANKR\_DeFi: [`0xb677e080148368EeeE70fA3865d07E92c6500174`](https://testnet.bscscan.com/address/0xb677e080148368EeeE70fA3865d07E92c6500174)
   * vankrBNB\_DeFi: [`0xe507B30C41E9e375BCe05197c1e09fc9ee40c0f6`](https://testnet.bscscan.com/address/0xe507B30C41E9e375BCe05197c1e09fc9ee40c0f6)
+  * vTWT\_DeFi: [`0xb677e080148368EeeE70fA3865d07E92c6500174`](https://testnet.bscscan.com/0xb677e080148368EeeE70fA3865d07E92c6500174)
 
 ### Pool GameFi
 
