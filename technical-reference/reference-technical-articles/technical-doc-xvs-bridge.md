@@ -61,7 +61,7 @@ The actual token transfer is performed using the `sendFrom` function of the Brid
 
 ### 2.1. Sending Tokens <a name="sending-tokens"></a>
 
-<figure><img src="../../.gitbook/assets/bnb-dest.drawio.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/bnb-dest1.jpg" alt=""><figcaption></figcaption></figure>
 
 1. Call the `sendFrom` function of the Bridge contract with the following parameters:
    - `_from`: Your address on the BNB
@@ -79,7 +79,7 @@ When you send XVS tokens to the Destination Chain using the Bridge, the tokens w
 
 ## 4. Transferring Tokens Back to the BNB <a name="transferring-tokens-back-to-the-local-chain"></a>
 
-<figure><img src="../../.gitbook/assets/dest-bnb.drawio.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/dest-bnb.jpg" alt=""><figcaption></figcaption></figure>
 
 To transfer XVS tokens back to the BNB, follow a similar process as mentioned in the earlier send section. You don't need to approve the Bridge contract on the Destination Chain to spend XVS tokens on your behalf. The tokens will be burned on the Destination Chain on your behalf and unlocked and transferred to the receiver's address on the BNB.
 
