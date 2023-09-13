@@ -137,7 +137,7 @@ $$\text{User APY Increase} = \dfrac{0.00372}{0.097} = 3.88\%$$&#x20;
 
 Rewards in the Venus Prime program will automatically increase as a user increases its XVS Stake, so long as the amount staked and market participation fall within the limits outlined in the "Technical Reward Details" section below.&#x20;
 
-<figure><img src="../.gitbook/assets/apy_graph_transparent_2500_spaced (1).png" alt=""><figcaption><p><em>Please note that the rewards can vary based on the total market participation and the amount of XVS staked, as illustrated by the formula and example above.</em></p></figcaption></figure>
+<figure><img src="../.gitbook/assets/apy_graph_transparent_2500_corrected_labels.png" alt=""><figcaption><p><em>Please note that the rewards can vary based on the total market participation and the amount of XVS staked, as illustrated by the formula and example above.</em></p></figcaption></figure>
 
 The graph above demonstrates the relationship between an increased XVS staked amount and its effect on market rewards, assuming a constant participation of $2.5K USD in the BTC supply market. This helps visualize how an increase in the staked amount influences the APY.
 
