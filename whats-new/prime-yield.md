@@ -91,6 +91,8 @@ $$
 \end{align*}
 $$
 
+_Note: There will be a limit for the qualifiable supply and borrow amounts, set by the staked XVS limit and the market multiplier._
+
 ### User Reward Example:
 
 **Model Parameters**
