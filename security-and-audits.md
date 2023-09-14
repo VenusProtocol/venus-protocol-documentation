@@ -8,9 +8,44 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Diamond Comptroller
+
+**Scope**: upgrade of the Comptroller contract in the Core pool, implementing the Diamond pattern.
+
+- [Fairyproof audit report (2023/06/25)](https://github.com/VenusProtocol/venus-protocol/blob/2c278c500a522030fc6109b79f18cdd740d53082/audits/040_diamondComptroller_fairyproof_20230625.pdf)
+- [Peckshield audit report (2023/07/28)](https://github.com/VenusProtocol/venus-protocol/blob/2c278c500a522030fc6109b79f18cdd740d53082/audits/042_diamondComptroller_peckshield_20230718.pdf)
+- [Certik audit audit report (2023/08/03)](https://github.com/VenusProtocol/venus-protocol/blob/2c278c500a522030fc6109b79f18cdd740d53082/audits/044_diamondComptroller_certik_20230803.pdf)
+- [OpenZeppelin audit report (2023/08/17)](https://github.com/VenusProtocol/venus-protocol/blob/2c278c500a522030fc6109b79f18cdd740d53082/audits/049_diamondComptroller_openzeppelin_20230817.pdf)
+- Quantstamp audit report - soon
+
+<details>
+<summary>Detailed scope</summary>
+
+**Code to be audited**: https://github.com/VenusProtocol/venus-protocol/pull/224
+**Last commit**: 331394866b0b78ea3b65efe03931acd582d0382e
+Files in the scope of the audit:
+
+- `contracts/Comptroller/ComptrollerStorage.sol`
+- `contracts/Comptroller/Diamond/Diamond.sol`
+- `contracts/Comptroller/Diamond/facets/FacetBase.sol`
+- `contracts/Comptroller/Diamond/facets/MarketFacet.sol`
+- `contracts/Comptroller/Diamond/facets/PolicyFacet.sol`
+- `contracts/Comptroller/Diamond/facets/RewardFacet.sol`
+- `contracts/Comptroller/Diamond/facets/SetterFacet.sol`
+- `contracts/Comptroller/Diamond/facets/XVSRewardsHelper.sol`
+- `contracts/Comptroller/Diamond/interfaces/IDiamondCut.sol`
+- `contracts/Comptroller/Diamond/interfaces/IMarketFacet.sol`
+- `contracts/Comptroller/Diamond/interfaces/IPolicyFacet.sol`
+- `contracts/Comptroller/Diamond/interfaces/IRewardFacet.sol`
+- `contracts/Comptroller/Diamond/interfaces/ISetterFacet.sol`
+- `contracts/Lens/ComptrollerLens.sol`
+- `contracts/Lens/SnapshotLens.sol`
+
+</details>
+
 ### Peg Stability Module (PSM)
 
-**Scope**: Peg Stability Module [contract](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/PegStability/PegStability.sol) for VAI/USDT.
+**Scope**: Peg Stability Module [contract](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/PegStability/PegStability.sol) for VAI/USDT, enabled on [VIP-157](https://app.venus.io/#/governance/proposal/157)
 
 * [Quantstamp audit report - 2023/08/07](https://github.com/VenusProtocol/venus-protocol/blob/90dfde3af29470938032c88ad7f9b31b3a4c503b/audits/057_psm_quantstamp_20230807.pdf)
 * [Certik audit report - 2023/05/24](https://github.com/VenusProtocol/venus-protocol/blob/90dfde3af29470938032c88ad7f9b31b3a4c503b/audits/021_psm_certik_20230524.pdf)
