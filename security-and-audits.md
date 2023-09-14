@@ -8,6 +8,13 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Forced liquidations in the Core pool
+
+**Scope**: upgrade of the Comptroller contract in the Core pool, adding the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations).
+
+* [Certik audit report (2023/09/08)](https://github.com/VenusProtocol/venus-protocol/blob/957fa3706b341c3a0ebb68b2c82df834ea2a624b/audits/072_forcedLiquidations_certik_20230908.pdf)
+* [Peckshield audit report (2023/09/12)](https://github.com/VenusProtocol/venus-protocol/blob/957fa3706b341c3a0ebb68b2c82df834ea2a624b/audits/073_forcedLiquidations_peckshield_20230912.pdf)
+
 ### Peg Stability Module (PSM)
 
 **Scope**: Peg Stability Module [contract](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/PegStability/PegStability.sol) for VAI/USDT.
