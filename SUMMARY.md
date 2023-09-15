@@ -13,7 +13,7 @@
 * [Peg Stability Module](whats-new/psm.md)
 * [Automatic Income Allocation](whats-new/automatic-income-allocation.md)
 * [Token Converter](whats-new/token-converter.md)
-* [Prime Yield](whats-new/prime-yield.md)
+* [Venus Prime](whats-new/prime-yield.md)
 * [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
 
 ## Governance
@@ -50,6 +50,8 @@
 ## Technical reference
 
 * [Contracts Overview](technical-reference/contracts-overview.md)
+* [Technical articles](technical-reference/reference-technical-articles/README.md)
+  * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
 * [Core Pool](technical-reference/reference-core-pool/README.md)
   * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
     * [ComptrollerLens](technical-reference/reference-core-pool/comptroller/comptroller-lens.md)

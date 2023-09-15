@@ -15,9 +15,18 @@ We firmly believe that the true test of a smart contract's security lies in its 
 * [Certik audit report (2023/09/08)](https://github.com/VenusProtocol/venus-protocol/blob/957fa3706b341c3a0ebb68b2c82df834ea2a624b/audits/072_forcedLiquidations_certik_20230908.pdf)
 * [Peckshield audit report (2023/09/12)](https://github.com/VenusProtocol/venus-protocol/blob/957fa3706b341c3a0ebb68b2c82df834ea2a624b/audits/073_forcedLiquidations_peckshield_20230912.pdf)
 
+### RiskFund and Shortfall handling
+
+**Scope**: `RiskFund`, `Shortfall` and `ProtocolShareReserve` contracts in the [isolated-pools repo](https://github.com/VenusProtocol/isolated-pools)
+
+These contracts were in the scope of the audits done before the launch of Isolated Pools in the [VIP-134](https://app.venus.io/#/governance/proposal/134). Some upgrades were done on these contracts, and a new round of audits were done focused on these changes.
+
+* [Certik audit report - 2023/08/24](https://github.com/VenusProtocol/isolated-pools/blob/1116c02c253e82cb0483afc47fb1fa104152601e/audits/061_riskFundShortfall_certik_20230824.pdf)
+* [Peckshield audit report - 2023/08/25](https://github.com/VenusProtocol/isolated-pools/blob/1116c02c253e82cb0483afc47fb1fa104152601e/audits/062_riskFundShortfall_peckshield_20230825.pdf)
+
 ### Peg Stability Module (PSM)
 
-**Scope**: Peg Stability Module [contract](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/PegStability/PegStability.sol) for VAI/USDT.
+**Scope**: Peg Stability Module [contract](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/PegStability/PegStability.sol) for VAI/USDT, enabled on [VIP-157](https://app.venus.io/#/governance/proposal/157)
 
 * [Quantstamp audit report - 2023/08/07](https://github.com/VenusProtocol/venus-protocol/blob/90dfde3af29470938032c88ad7f9b31b3a4c503b/audits/057_psm_quantstamp_20230807.pdf)
 * [Certik audit report - 2023/05/24](https://github.com/VenusProtocol/venus-protocol/blob/90dfde3af29470938032c88ad7f9b31b3a4c503b/audits/021_psm_certik_20230524.pdf)
