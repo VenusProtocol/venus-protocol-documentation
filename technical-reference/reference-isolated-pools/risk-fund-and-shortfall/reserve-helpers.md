@@ -1,4 +1,5 @@
-# 
+# ReserveHelpers
+Parent contract of the RiskFund and ProtocolShareReserve contracts.
 
 # Solidity API
 
