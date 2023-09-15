@@ -50,6 +50,8 @@
 ## Technical reference
 
 * [Contracts Overview](technical-reference/contracts-overview.md)
+* [Technical articles](technical-reference/reference-technical-articles/README.md)
+  * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
 * [Core Pool](technical-reference/reference-core-pool/README.md)
   * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
     * [ComptrollerLens](technical-reference/reference-core-pool/comptroller/comptroller-lens.md)
