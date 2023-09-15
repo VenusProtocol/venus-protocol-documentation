@@ -15,9 +15,9 @@ Auction participants receive a maximum 10% incentive (configurable by the commun
 
 *N* represents the total pool’s bad debt denoted in USD and *M* represents total risk fund balance in USD.  When an auction begins, a starting bid is set to prevent bidders from taking advantage of the auction by opening with an undervalued bid. The highest bidder’s funds are locked, and when the auction closes the market(s) total cash reserve is increased, the bad debt of the market(s) is decreased and the risk fund partially/completely transferred to the winning bidder.
 
-**TODO**: upload auction diagram here
+<figure><img src="../../.gitbook/assets/auctions.png" alt="Auction scenarios"><figcaption></figcaption></figure>
 
-*Auction scenarios*
+## Auction scenarios
 
 In scenario 1, X% indicates the percentage of bad debt the bidder is willing to pay and in scenario 2, the Y% indicates the percentage of the risk fund the bidder is willing to seize. During the auction, bidders are only allowed to specify X% or Y% depending on the type of auction.
 
@@ -25,7 +25,7 @@ A bid will be successful only if the bidder has sufficient funds to cover the ba
 
 The auction process attempts to cover as much market bad debt as possible. In scenario 1, all of the bad debt may not be covered by the auction. In this case, the bad debt not covered will be maintained in the system until a new auction is started.
 
-Examples
+## Examples
 
 Let’s take a scenario when bad debt is greater than the total risk fund balance.
 
@@ -53,6 +53,8 @@ Let’s take a scenario when bad debt is greater than the total risk fund balanc
     - **Close Auction Signature**: `closeAuction(comptrollerAddress)`
     - **Risk Fund Transfer**: At this point in time all the 100,000 USDT is transferred from the risk fund to user A’s address.
 
+---
+
 Scenario when bad debt is less than total risk fund balance
 - **Bad Debt**:  Assuming pool bad debt is 10 BTC and the price of BTC is $20,000. Then, the total bad debt is $200,000. Suppose the incentive is 10% then the final bad debt is $220,000.
 - **Risk Fund**: Given the risk fund is stored in USDT token, the token risk fund balance is 500,000 USDT and 1 USDT is equal to $1, then the total risk fund balance is $500,000
@@ -77,6 +79,8 @@ Scenario when bad debt is less than total risk fund balance
 - **User A Closed Auction**: After placing a bid, User A waits for 100 blocks and sees there are no new bids that outperform their bid then they can close the auction and win it.
     - **Close Auction Signature**: `closeAuction(comptrollerAddress)`
     - **Risk Fund Transfer**: At this point in time 94% of 242,000 USDT i.e., 227,480 USDT is transferred from the risk fund to user A’s address.
+
+---
 
 Scenario when the auction was started and nobody participated so instead of starting a new auction we need to restart the auction
 - **Auction Started**: Suppose an auction was started and there was no bidder till 100 blocks. Then in this case the auction is stale and bids cannot be placed.
