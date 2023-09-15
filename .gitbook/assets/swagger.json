@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Venus Protocol API",
-    "version": "1.6.0-dev.12",
+    "version": "1.6.4",
     "summary": "API to support the Venus Protocol with data indexed from on chain activity",
     "description": ""
   },
@@ -858,50 +858,6 @@
         }
       }
     },
-    "/markets/history": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/asset"
-          }
-        ],
-        "description": "Fetch an array of daily snapshots of supply and borrow totals and supply and borrow apy over the previous 365 days for a given asset.",
-        "responses": {
-          "200": {
-            "description": "Returns historical data for the requested asset.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/MarketGraphData"
-                    },
-                    "status": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/markets/{address}/cmc-circulating-supply": {
       "get": {
         "parameters": [
@@ -967,319 +923,6 @@
             }
           },
           "500": "#/components/responses/500ServerError"
-        }
-      }
-    },
-    "/markets/core-pool": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/versionNext"
-          },
-          {
-            "$ref": "#/parameters/asset",
-            "name": "address",
-            "required": false
-          },
-          {
-            "$ref": "#/parameters/symbol"
-          },
-          {
-            "$ref": "#/parameters/name"
-          },
-          {
-            "$ref": "#/parameters/underlyingAddress"
-          },
-          {
-            "$ref": "#/parameters/underlyingName"
-          },
-          {
-            "$ref": "#/parameters/underlyingSymbol"
-          }
-        ],
-        "description": "Returns market data for listed markets, optionally filterable by asset address.\n",
-        "responses": {
-          "200": {
-            "description": "Returns Market data for all listed markets.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "limit",
-                    "page",
-                    "total",
-                    "result"
-                  ],
-                  "properties": {
-                    "limit": {
-                      "type": "number"
-                    },
-                    "page": {
-                      "type": "number"
-                    },
-                    "total": {
-                      "type": "number"
-                    },
-                    "result": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Market"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Malformed Query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MalformedRequest"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/markets/daily-xvs": {
-      "get": {
-        "description": "Daily rate for XVS rewards\n",
-        "responses": {
-          "200": {
-            "description": "Returns Daily rate for supply and borrow XVS rewards.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "number"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Malformed Query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MalformedRequest"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/governance/proposals": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/versionNext"
-          },
-          {
-            "$ref": "#/parameters/proposalId"
-          },
-          {
-            "$ref": "#/parameters/state"
-          },
-          {
-            "$ref": "#/parameters/order"
-          },
-          {
-            "$ref": "#/parameters/orderBy",
-            "default": "id",
-            "description": "Order by Proposal properties."
-          },
-          {
-            "$ref": "#/parameters/limit"
-          },
-          {
-            "$ref": "#/parameters/offset"
-          }
-        ],
-        "description": "Returns paginated array of proposals.",
-        "responses": {
-          "200": {
-            "description": "Returns an array of proposals.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "offset": {
-                      "type": "number"
-                    },
-                    "limit": {
-                      "type": "number"
-                    },
-                    "total": {
-                      "type": "number"
-                    },
-                    "result": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/ProposalList"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/governance/voters": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/address"
-          },
-          {
-            "$ref": "#/parameters/limit"
-          },
-          {
-            "$ref": "#/parameters/offset"
-          }
-        ],
-        "description": "Query voter accounts ordered by votes.",
-        "responses": {
-          "200": {
-            "description": "Returns an array of voter accounts ordered by votes",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "offset": {
-                      "type": "number"
-                    },
-                    "limit": {
-                      "type": "number"
-                    },
-                    "total": {
-                      "type": "number"
-                    },
-                    "result": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/VoterAccount"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/governance/proposals/votes": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/proposalId"
-          },
-          {
-            "$ref": "#/parameters/address"
-          }
-        ],
-        "description": "Get voter details for a given proposal.",
-        "responses": {
-          "200": {
-            "description": "Pagination object with paginated voter activity and a summary of proposal votes.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "offset": {
-                      "type": "number"
-                    },
-                    "limit": {
-                      "type": "number"
-                    },
-                    "total": {
-                      "type": "number"
-                    },
-                    "result": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Vote"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/governance/proposals/:id": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/versionNext"
-          },
-          {
-            "$ref": "#/parameters/proposalId"
-          }
-        ],
-        "description": "Returns paginated array of proposals. It takes an optional array of proposal ids to filter by.",
-        "responses": {
-          "200": {
-            "description": "Returns an array of proposals.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProposalDetail"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
         }
       }
     }
@@ -2149,17 +1792,7 @@
             "type": "boolean"
           },
           "state": {
-            "type": "string",
-            "enum": [
-              "Pending",
-              "Active",
-              "Canceled",
-              "Defeated",
-              "Succeeded",
-              "Queued",
-              "Expired",
-              "Executed"
-            ]
+            "type": "integer"
           },
           "voterCount": {
             "type": "integer"
@@ -2171,12 +1804,7 @@
             "type": "string"
           },
           "proposalType": {
-            "type": "string",
-            "enum": [
-              "Normal",
-              "FastTrack",
-              "Critical"
-            ]
+            "type": "integer"
           }
         }
       },
@@ -2292,17 +1920,7 @@
             "type": "boolean"
           },
           "state": {
-            "type": "string",
-            "enum": [
-              "Pending",
-              "Active",
-              "Canceled",
-              "Defeated",
-              "Succeeded",
-              "Queued",
-              "Expired",
-              "Executed"
-            ]
+            "type": "integer"
           },
           "voterCount": {
             "type": "integer"
@@ -2314,12 +1932,7 @@
             "type": "string"
           },
           "proposalType": {
-            "type": "string",
-            "enum": [
-              "Normal",
-              "FastTrack",
-              "Critical"
-            ]
+            "type": "integer"
           },
           "proposalActions": {
             "$ref": "#/components/schemas/ProposalAction"

@@ -43,6 +43,15 @@ Files in the scope of the audit:
 
 </details>
 
+### RiskFund and Shortfall handling
+
+**Scope**: `RiskFund`, `Shortfall` and `ProtocolShareReserve` contracts in the [isolated-pools repo](https://github.com/VenusProtocol/isolated-pools)
+
+These contracts were in the scope of the audits done before the launch of Isolated Pools in the [VIP-134](https://app.venus.io/#/governance/proposal/134). Some upgrades were done on these contracts, and a new round of audits were done focused on these changes.
+
+* [Certik audit report - 2023/08/24](https://github.com/VenusProtocol/isolated-pools/blob/1116c02c253e82cb0483afc47fb1fa104152601e/audits/061_riskFundShortfall_certik_20230824.pdf)
+* [Peckshield audit report - 2023/08/25](https://github.com/VenusProtocol/isolated-pools/blob/1116c02c253e82cb0483afc47fb1fa104152601e/audits/062_riskFundShortfall_peckshield_20230825.pdf)
+
 ### Peg Stability Module (PSM)
 
 **Scope**: Peg Stability Module [contract](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/PegStability/PegStability.sol) for VAI/USDT, enabled on [VIP-157](https://app.venus.io/#/governance/proposal/157)
