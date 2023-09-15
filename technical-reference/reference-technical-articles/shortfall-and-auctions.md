@@ -1,6 +1,6 @@
 # Shortfall and auctions
 
-A set of processes is executed in a market when a shortfall (total borrowed amount converted to USD is greater than the total supplied amount converted to USD) is detected for the borrower to pause the interest accrual on the borrow, write off the borrower's borrow balance and track the market bad debt.
+A set of processes are executed in a market when a shortfall (total borrowed amount converted to USD is greater than the total supplied amount converted to USD) is detected for a borrower to pause the interest accrual on the borrow, write off the borrower's borrow balance and track the market bad debt.
 
 *V* represents the total bad debt including the accrued interest on the bad debt. To calculate the accrued interest the borrow index when the bad debt is detected is divided by the initial borrow index and then multiplied by the borrowed amount. For example, if the initial borrow index is 1.2 and when bad debt of 100 USDC is detected the borrow index is 1.5 then the *V* (total bad debt) becomes 100 * (1.5/1.2) = 125 USDC.
 
