@@ -12,12 +12,12 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 **Scope**: upgrade of the Comptroller contract in the Core pool, adding the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations).
 
-* [Certik audit report (2023/09/08)](https://github.com/VenusProtocol/venus-protocol/blob/957fa3706b341c3a0ebb68b2c82df834ea2a624b/audits/072_forcedLiquidations_certik_20230908.pdf)
-* [Peckshield audit report (2023/09/12)](https://github.com/VenusProtocol/venus-protocol/blob/957fa3706b341c3a0ebb68b2c82df834ea2a624b/audits/073_forcedLiquidations_peckshield_20230912.pdf)
+* [Certik audit report (2023/09/16)](https://github.com/VenusProtocol/venus-protocol/blob/80cf9b36ea900d71c5e97a5b1d5e2706ecefb9c3/audits/072_forcedLiquidations_certik_20230916.pdf)
+* [Peckshield audit report (2023/09/16)](https://github.com/VenusProtocol/venus-protocol/blob/80cf9b36ea900d71c5e97a5b1d5e2706ecefb9c3/audits/073_forcedLiquidations_peckshield_20230916.pdf)
 
 ### RiskFund and Shortfall handling
 
-**Scope**: `RiskFund`, `Shortfall` and `ProtocolShareReserve` contracts in the [isolated-pools repo](https://github.com/VenusProtocol/isolated-pools)
+**Scope**: `RiskFund`, `Shortfall` and `ProtocolShareReserve` contracts in the [isolated-pools repo](https://github.com/VenusProtocol/isolated-pools), enabled on [VIP-170](https://app.venus.io/#/governance/proposal/170)
 
 These contracts were in the scope of the audits done before the launch of Isolated Pools in the [VIP-134](https://app.venus.io/#/governance/proposal/134). Some upgrades were done on these contracts, and a new round of audits were done focused on these changes.
 
