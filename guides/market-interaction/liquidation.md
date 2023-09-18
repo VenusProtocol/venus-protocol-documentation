@@ -162,7 +162,7 @@ To check if "forced liquidations" are enabled in one market, the function `Compt
 
 {% hint style="info" %}
 **Availability**: 
-Forced Liquidations are only available in the Core pool. They will be enabled in the Isolated pools soon.
+Forced Liquidations are only available in the Core pool (see [VIP-172](https://app.venus.io/#/governance/proposal/172)). They will be enabled in the Isolated pools in the future.
 {% endhint %}
 
 ### Example
