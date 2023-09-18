@@ -180,7 +180,7 @@ Given:
 
 The health rate for this user would be `(500 * 0.8) / (200 + 100) = 1.33`. So, in normal circumstances, this user is not eligible to be liquidated.
 
-No, let’s say we enable the **forced liquidations in the BUSD market** (via VIP). Then:
+Now, let’s say we enable the **forced liquidations in the BUSD market** (via VIP). Then:
 
 * Anyone will be allowed to liquidate the BUSD position of the previous user. Moreover, the close factor limit won’t be taken into account. So, the following liquidation would be doable:
   * Repay amount: 200 BUSD
