@@ -7,6 +7,9 @@
 * DefaultProxyAdmin: [`0x1BB765b741A5f3C2A338369DAb539385534E3343`](https://bscscan.com/address/0x1BB765b741A5f3C2A338369DAb539385534E3343)
 * Comptroller Beacon: [`0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2`](https://bscscan.com/address/0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2)
 * VToken Beacon: [`0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4`](https://bscscan.com/address/0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4)
+* ProtocolShareReserve: [`0xfB5bE09a1FA6CFDA075aB1E69FE83ce8324682e4`](https://bscscan.com/address/0xfB5bE09a1FA6CFDA075aB1E69FE83ce8324682e4)
+* RiskFund: [`0xdF31a28D68A2AB381D42b380649Ead7ae2A76E42`](https://bscscan.com/address/0xdF31a28D68A2AB381D42b380649Ead7ae2A76E42)
+* Shortfall: [`0xf37530A8a810Fcb501AA0Ecd0B0699388F0F2209`](https://bscscan.com/address/0xf37530A8a810Fcb501AA0Ecd0B0699388F0F2209)
 
 ### Pool Stablecoin
 
@@ -68,6 +71,9 @@
 * DefaultProxyAdmin:
 * Comptroller Beacon: [`0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74`](https://testnet.bscscan.com/address/0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74)
 * VToken Beacon: [`0xBF85A90673E61956f8c79b9150BAB7893b791bDd`](https://testnet.bscscan.com/address/0xBF85A90673E61956f8c79b9150BAB7893b791bDd)
+* ProtocolShareReserve: [`0xc987a03ab6C2A5891Fc0919f021cc693B5E55278`](https://testnet.bscscan.com/address/0xc987a03ab6C2A5891Fc0919f021cc693B5E55278)
+* RiskFund: [`0x487CeF72dacABD7E12e633bb3B63815a386f7012`](https://testnet.bscscan.com/address/0x487CeF72dacABD7E12e633bb3B63815a386f7012)
+* Shortfall: [`0x503574a82fE2A9f968d355C8AAc1Ba0481859369`](https://testnet.bscscan.com/address/0x503574a82fE2A9f968d355C8AAc1Ba0481859369)
 
 ### Pool Stablecoin
 
@@ -92,6 +98,7 @@
   * vUSDD\_DeFi: [`0xa109DE0abaeefC521Ec29D89eA42E64F37A6882E`](https://testnet.bscscan.com/address/0xa109DE0abaeefC521Ec29D89eA42E64F37A6882E)
   * vANKR\_DeFi: [`0xb677e080148368EeeE70fA3865d07E92c6500174`](https://testnet.bscscan.com/address/0xb677e080148368EeeE70fA3865d07E92c6500174)
   * vankrBNB\_DeFi: [`0xe507B30C41E9e375BCe05197c1e09fc9ee40c0f6`](https://testnet.bscscan.com/address/0xe507B30C41E9e375BCe05197c1e09fc9ee40c0f6)
+  * vTWT\_DeFi: [`0xb677e080148368EeeE70fA3865d07E92c6500174`](https://testnet.bscscan.com/0xb677e080148368EeeE70fA3865d07E92c6500174)
 
 ### Pool GameFi
 
