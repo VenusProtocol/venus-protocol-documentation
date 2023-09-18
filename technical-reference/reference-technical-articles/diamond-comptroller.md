@@ -1,4 +1,4 @@
-## Overview:
+# Diamond Comptroller in the Core pool
 
 The problem at hand arose when additional features were introduced to the Comptroller contract within the core pool, causing it to surpass the [maximum allowable size of 24KB](https://eips.ethereum.org/EIPS/eip-170). In response to this challenge and to preemptively address similar issues in the future, a multifaceted solution was implemented.
 
@@ -12,7 +12,7 @@ The previous implementation of Venus used a transparent upgrade proxy pattern wi
 
 The following diagram shows the previous situation:
 
-<figure><img src="../../.gitbook/assets/Screenshot from 2023-09-15 16-14-16.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/diamond-previous.png" alt="Diamond - Previous hierarchy of contracts"><figcaption></figcaption></figure>
 
 The Unitroller contract delegated calls to the Comptroller. The Comptroller had the storage layout defined by ComptrollerV12Storage, which extended the UnitrollerAdminStorage.
 
@@ -33,7 +33,7 @@ The Diamond Proxy pattern is widely used in Solidity development for its ability
 
 Chained delegate calls are used, meaning calldata is delegated from Unitroller to the Diamond contract, and then a chained delegate call is made to a specific facet based on the function selector. 
 
-<figure><img src="../../.gitbook/assets/Screenshot from 2023-09-04 15-48-55.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/diamond-facets.png" alt="Diamond facets"><figcaption></figcaption></figure>
 
 The Diamond contract checks for the facet address in the **selectors-to-facet-address** mapping (`_selectorToFacetAndPosition` internal variable) and then makes a delegate call to that facet address. Facets inherit the ComptrollerStorage (ComptrollerV13Storage) to access the states.
 
@@ -80,4 +80,4 @@ The Comptroller of the core pool is divided into 4 facets and 2 parent contracts
 
 The following diagram shows the inheritance and association relationships among the different contracts:
 
-<figure><img src="../../.gitbook/assets/Screenshot from 2023-09-15 16-21-06.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/diamond-hierarchy.png" alt="Diamond - New hierarchy of contracts"><figcaption></figcaption></figure>
