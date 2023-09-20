@@ -12,11 +12,11 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 **Scope**: upgrade of the Comptroller contract in the Core pool, implementing the Diamond pattern.
 
-- [Fairyproof audit report (2023/06/25)](https://github.com/VenusProtocol/venus-protocol/blob/2c278c500a522030fc6109b79f18cdd740d53082/audits/040_diamondComptroller_fairyproof_20230625.pdf)
-- [Peckshield audit report (2023/07/28)](https://github.com/VenusProtocol/venus-protocol/blob/2c278c500a522030fc6109b79f18cdd740d53082/audits/042_diamondComptroller_peckshield_20230718.pdf)
-- [Certik audit audit report (2023/08/03)](https://github.com/VenusProtocol/venus-protocol/blob/2c278c500a522030fc6109b79f18cdd740d53082/audits/044_diamondComptroller_certik_20230803.pdf)
-- [OpenZeppelin audit report (2023/08/17)](https://github.com/VenusProtocol/venus-protocol/blob/2c278c500a522030fc6109b79f18cdd740d53082/audits/049_diamondComptroller_openzeppelin_20230817.pdf)
-- Quantstamp audit report - soon
+- [Fairyproof audit report (2023/06/25)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/040_diamondComptroller_fairyproof_20230625.pdf)
+- [Peckshield audit report (2023/07/28)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/042_diamondComptroller_peckshield_20230718.pdf)
+- [Certik audit audit report (2023/08/03)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/044_diamondComptroller_certik_20230803.pdf)
+- [OpenZeppelin audit report (2023/08/17)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/049_diamondComptroller_openzeppelin_20230817.pdf)
+- [Quantstamp audit audit report (2023/09/20)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/047_diamondComptroller_quantstamp_20230919.pdf)
 
 <details>
 <summary>Detailed scope</summary>
