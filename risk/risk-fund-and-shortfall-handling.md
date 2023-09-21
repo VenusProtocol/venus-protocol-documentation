@@ -1,9 +1,5 @@
 # Risk Fund and Shortfall Handling
 
-{% hint style="warning" %}
-**To be released**
-{% endhint %}
-
 ### **Overview**
 
 Venus Protocol manages risks of high volatility tokens with isolated pools. Each pool (Isolated Pools and the Core pool) has an associated risk fund receiving a percentage of the pool's income (interest and liquidation bonus) in USDT to prevent insolvency. The specific percentage is defined by the [tokenomics](../governance/tokenomics.md) of the project. The risk fund also covers bad debt in case of bankruptcy without a liquidator.
