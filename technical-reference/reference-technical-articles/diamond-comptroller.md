@@ -63,7 +63,7 @@ Deploy the facet with the functions/methods that need to be added to the Comptro
 
 Execute the `diamondCut` method(admin access) to add the new facet to the `comptrollerStorage`.
 
-To execute the `diamondCut` through VIP, the cut argument can be generated using the facet-[cut-params-generator script](https://github.com/VenusProtocol/venus-protocol/blob/develop/script/deploy/comptroller/facet-cut-params-generator.ts) by customizing the `generateCutParams` to provide the correct actions on the provided function seletors.
+To execute the `diamondCut` through VIP, the cut argument can be generated using the [facet-cut-params-generator script](https://github.com/VenusProtocol/venus-protocol/blob/develop/script/deploy/comptroller/facet-cut-params-generator.ts) by customizing the `generateCutParams` to provide the correct actions on the provided function seletors.
 
 ## Diamond proxy implementation for Core Pool Comptroller
 The Comptroller of the core pool is divided into 4 facets and 2 parent contracts extended by the facets. Facets will receive the function call through a chained delegateCall from Unitroller, and each facet holds its own responsibility as explained below:
