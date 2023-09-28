@@ -8,9 +8,44 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Diamond Comptroller
+
+**Scope**: upgrade of the Comptroller contract in the Core pool, implementing the Diamond pattern.
+
+- [Fairyproof audit report (2023/06/25)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/040_diamondComptroller_fairyproof_20230625.pdf)
+- [Peckshield audit report (2023/07/28)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/042_diamondComptroller_peckshield_20230718.pdf)
+- [Certik audit audit report (2023/08/03)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/044_diamondComptroller_certik_20230803.pdf)
+- [OpenZeppelin audit report (2023/08/17)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/049_diamondComptroller_openzeppelin_20230817.pdf)
+- [Quantstamp audit audit report (2023/09/20)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/047_diamondComptroller_quantstamp_20230919.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+**Code to be audited**: https://github.com/VenusProtocol/venus-protocol/pull/224
+**Last commit**: 331394866b0b78ea3b65efe03931acd582d0382e
+Files in the scope of the audit:
+
+- `contracts/Comptroller/ComptrollerStorage.sol`
+- `contracts/Comptroller/Diamond/Diamond.sol`
+- `contracts/Comptroller/Diamond/facets/FacetBase.sol`
+- `contracts/Comptroller/Diamond/facets/MarketFacet.sol`
+- `contracts/Comptroller/Diamond/facets/PolicyFacet.sol`
+- `contracts/Comptroller/Diamond/facets/RewardFacet.sol`
+- `contracts/Comptroller/Diamond/facets/SetterFacet.sol`
+- `contracts/Comptroller/Diamond/facets/XVSRewardsHelper.sol`
+- `contracts/Comptroller/Diamond/interfaces/IDiamondCut.sol`
+- `contracts/Comptroller/Diamond/interfaces/IMarketFacet.sol`
+- `contracts/Comptroller/Diamond/interfaces/IPolicyFacet.sol`
+- `contracts/Comptroller/Diamond/interfaces/IRewardFacet.sol`
+- `contracts/Comptroller/Diamond/interfaces/ISetterFacet.sol`
+- `contracts/Lens/ComptrollerLens.sol`
+- `contracts/Lens/SnapshotLens.sol`
+
+</details>
+
 ### Forced liquidations in the Core pool
 
-**Scope**: upgrade of the Comptroller contract in the Core pool, adding the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations).
+**Scope**: upgrade of the Comptroller contract in the Core pool, adding the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations), enabled on [VIP-172](https://app.venus.io/#/governance/proposal/172)
 
 * [Certik audit report (2023/09/16)](https://github.com/VenusProtocol/venus-protocol/blob/80cf9b36ea900d71c5e97a5b1d5e2706ecefb9c3/audits/072_forcedLiquidations_certik_20230916.pdf)
 * [Peckshield audit report (2023/09/16)](https://github.com/VenusProtocol/venus-protocol/blob/80cf9b36ea900d71c5e97a5b1d5e2706ecefb9c3/audits/073_forcedLiquidations_peckshield_20230916.pdf)

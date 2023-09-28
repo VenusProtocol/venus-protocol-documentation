@@ -3,7 +3,7 @@
 ## BNB Chain Mainnet
 
 * Unitroller: [`0xfD36E2c2a6789Db23113685031d7F16329158384`](https://bscscan.com/address/0xfD36E2c2a6789Db23113685031d7F16329158384)
-* Comptroller: [`0xf6C14D4DFE45C132822Ce28c646753C54994E59C`](https://bscscan.com/address/0xf6C14D4DFE45C132822Ce28c646753C54994E59C)
+* Diamond (Comptroller implementation): [`0xAd69AA3811fE0EE7dBd4e25C4bae40e6422c76C8`](https://bscscan.com/address/0xAd69AA3811fE0EE7dBd4e25C4bae40e6422c76C8)
 * VAI Unitroller: [`0x004065D34C6b18cE4370ced1CeBDE94865DbFAFE`](https://bscscan.com/address/0x004065D34C6b18cE4370ced1CeBDE94865DbFAFE)
 * VAI Controller: [`0x793ff22b882665CA492843962aD945cAf5440F3c`](https://bscscan.com/address/0x793ff22b882665CA492843962aD945cAf5440F3c)
 * VBep20 Delegate: [`0xf9f48874050264664bf3d383C7289a0a5BD98896`](https://bscscan.com/address/0xf9f48874050264664bf3d383C7289a0a5BD98896)
@@ -84,7 +84,7 @@
 ## BNB Chain Testnet
 
 * Unitroller: [`0x94d1820b2D1c7c7452A163983Dc888CEC546b77D`](https://testnet.bscscan.com/address/0x94d1820b2D1c7c7452A163983Dc888CEC546b77D)
-* Comptroller: [`0xfd301ad2503b25a7670a45b11a043c20b04ee896`](https://testnet.bscscan.com/address/0xfd301ad2503b25a7670a45b11a043c20b04ee896)
+* Diamond (Comptroller implementation): [`0x7e0298880224B8116F3462c50917249E94b3DC53`](https://testnet.bscscan.com/address/0x7e0298880224B8116F3462c50917249E94b3DC53)
 * VAI Unitroller: [`0xf70C3C6b749BbAb89C081737334E74C9aFD4BE16`](https://testnet.bscscan.com/address/0xf70C3C6b749BbAb89C081737334E74C9aFD4BE16)
 * VAI Controller: [`0x7CE5E45a34104d6Df05779c3d3Fe71c9F11843C5`](https://testnet.bscscan.com/address/0x7CE5E45a34104d6Df05779c3d3Fe71c9F11843C5)
 * VBep20 Delegate: [`0xAF1b4826c8396A99139af3c9359044D34c8d1f1f`](https://testnet.bscscan.com/address/0xAF1b4826c8396A99139af3c9359044D34c8d1f1f)
