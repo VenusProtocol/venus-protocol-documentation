@@ -56,7 +56,7 @@
 * [Core Pool](technical-reference/reference-core-pool/README.md)
   * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
     * [ComptrollerLens](technical-reference/reference-core-pool/comptroller/comptroller-lens.md)
-    * [Diamond Proxy](technical-reference/reference-core-pool/comptroller/Diamond/diamond.md)
+    * [Diamond Proxy](technical-reference/reference-core-pool/comptroller/diamond-proxy/README.md)
       * [Facets](technical-reference/reference-core-pool/comptroller/Diamond/Facets.md)
         * [MarketFacet](technical-reference/reference-core-pool/comptroller/Diamond/Facets/MarketFacet.md)
         * [PolicyFacet](technical-reference/reference-core-pool/comptroller/Diamond/Facets/PolicyFacet.md)
