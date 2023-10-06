@@ -15,6 +15,7 @@
 * Venus Treasury: [`0xf322942f644a996a617bd29c16bd7d231d9f35e9`](https://bscscan.com/address/0xf322942f644a996a617bd29c16bd7d231d9f35e9)
 * SwapRouter: [`0x8938E6dA30b59c1E27d5f70a94688A89F7c815a4`](https://bscscan.com/address/0x8938E6dA30b59c1E27d5f70a94688A89F7c815a4)
 * Peg Stability Module: [`0xC138aa4E424D1A8539e8F38Af5a754a2B7c3Cc36`](https://bscscan.com/address/0xC138aa4E424D1A8539e8F38Af5a754a2B7c3Cc36)
+* vBNB Admin: [`0xBC612ec01bB52349De615112F65A3DA66fb02648`](https://bscscan.com/address/0xBC612ec01bB52349De615112F65A3DA66fb02648)
 
 ### Underlying tokens
 
@@ -95,6 +96,7 @@
 * Venus Treasury: [`0x8b293600c50d6fbdc6ed4251cc75ece29880276f`](https://testnet.bscscan.com/address/0x8b293600c50d6fbdc6ed4251cc75ece29880276f)
 * SwapRouter: [`0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0`](https://testnet.bscscan.com/address/0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0)
 * Peg Stability Module: [`0xB21E69eef4Bc1D64903fa28D9b32491B1c0786F1`](https://testnet.bscscan.com/address/0xB21E69eef4Bc1D64903fa28D9b32491B1c0786F1)
+* vBNB Admin: [`0x7Ef464ac0BE8A0dC1e90185bf92a20e769f3B114`](https://testnet.bscscan.com/address/0x7Ef464ac0BE8A0dC1e90185bf92a20e769f3B114)
 
 ### Underlying tokens
 

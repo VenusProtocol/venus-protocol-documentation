@@ -77,3 +77,11 @@ The `releaseFunds` function is responsible for distributing the accumulated fund
 
 1. Transfer the tokens to the destination addresses.
 2. Invoke the `updateAssetsState` function in the receiver contract.
+
+## VBNBAdmin
+
+VBNBAdmin contract is the admin of the vBNB vToken. All the other vToken contracts send revenue to PSR directly whereas vBNB sends the reserves to the admin i.e., the vBNBAdmin contract. This pattern is different for vBNB because it's not a upgradable contract. 
+
+Whenever VBNBAdmin receives BNB from vBNB contract it converts it to WBNB and then sends it to the Protocol share reserve contract.
+
+To release the reserves of vBNB contract you need to call the `reduceReserves()` function of the VBNBAdmin contract.
