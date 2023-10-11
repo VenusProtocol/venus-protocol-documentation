@@ -10,7 +10,7 @@
 * ProtocolShareReserve: [`0xfB5bE09a1FA6CFDA075aB1E69FE83ce8324682e4`](https://bscscan.com/address/0xfB5bE09a1FA6CFDA075aB1E69FE83ce8324682e4) [Note: used by the VToken contracts of the Isolated pools]
 * RiskFund: [`0xdF31a28D68A2AB381D42b380649Ead7ae2A76E42`](https://bscscan.com/address/0xdF31a28D68A2AB381D42b380649Ead7ae2A76E42)
 * Shortfall: [`0xf37530A8a810Fcb501AA0Ecd0B0699388F0F2209`](https://bscscan.com/address/0xf37530A8a810Fcb501AA0Ecd0B0699388F0F2209)
-* ProtocolShareReserve: [`0x4E5A49Ce81993504327a848167d76212b7a341E2`](https://bscscan.com/address/0x4E5A49Ce81993504327a848167d76212b7a341E2) [Note: used by the VBNBAdmin contract]
+* ProtocolShareReserve: [`0xCa01D5A9A248a830E9D93231e791B1afFed7c446`](https://bscscan.com/address/0xCa01D5A9A248a830E9D93231e791B1afFed7c446) [Note: used by the VBNBAdmin contract]
 
 ### Pool Stablecoin
 
@@ -77,7 +77,7 @@
 * ProtocolShareReserve: [`0xc987a03ab6C2A5891Fc0919f021cc693B5E55278`](https://testnet.bscscan.com/address/0xc987a03ab6C2A5891Fc0919f021cc693B5E55278)  [note: used by the VToken contracts of the Isolated pools]
 * RiskFund: [`0x487CeF72dacABD7E12e633bb3B63815a386f7012`](https://testnet.bscscan.com/address/0x487CeF72dacABD7E12e633bb3B63815a386f7012)
 * Shortfall: [`0x503574a82fE2A9f968d355C8AAc1Ba0481859369`](https://testnet.bscscan.com/address/0x503574a82fE2A9f968d355C8AAc1Ba0481859369)
-* ProtocolShareReserve: [`0xB46BDd025F8FB78eD5174155F74Cb452DF15d6D4`](https://testnet.bscscan.com/address/0xB46BDd025F8FB78eD5174155F74Cb452DF15d6D4) [Note: used by the VBNBAdmin contract]
+* ProtocolShareReserve: [`0x25c7c7D6Bf710949fD7f03364E9BA19a1b3c10E3`](https://testnet.bscscan.com/address/0x25c7c7D6Bf710949fD7f03364E9BA19a1b3c10E3) [Note: used by the VBNBAdmin contract]
 
 
 ### Pool Stablecoin
