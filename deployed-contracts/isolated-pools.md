@@ -4,7 +4,7 @@
 
 * PoolRegistry: [`0x9F7b01A536aFA00EF10310A162877fd792cD0666`](https://bscscan.com/address/0x9F7b01A536aFA00EF10310A162877fd792cD0666)
 * PoolLens: [`0x25E215CcE40bD849B7c286912B85212F984Ff1e0`](https://bscscan.com/address/0x25E215CcE40bD849B7c286912B85212F984Ff1e0)
-* DefaultProxyAdmin: [`0x1BB765b741A5f3C2A338369DAb539385534E3343`](https://bscscan.com/address/0x1BB765b741A5f3C2A338369DAb539385534E3343)
+* DefaultProxyAdmin: [`0x6beb6D2695B67FEb73ad4f172E8E2975497187e4`](https://bscscan.com/address/0x6beb6D2695B67FEb73ad4f172E8E2975497187e4)
 * Comptroller Beacon: [`0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2`](https://bscscan.com/address/0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2)
 * VToken Beacon: [`0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4`](https://bscscan.com/address/0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4)
 * ProtocolShareReserve: [`0xfB5bE09a1FA6CFDA075aB1E69FE83ce8324682e4`](https://bscscan.com/address/0xfB5bE09a1FA6CFDA075aB1E69FE83ce8324682e4) [Note: used by the VToken contracts of the Isolated pools]
@@ -71,7 +71,7 @@
 
 * PoolRegistry: [`0xC85491616Fa949E048F3aAc39fbf5b0703800667`](https://testnet.bscscan.com/address/0xC85491616Fa949E048F3aAc39fbf5b0703800667)
 * PoolLens: [`0x6492dF28A9478230205c940A245Ffb114EaEb9d1`](https://testnet.bscscan.com/address/0x6492dF28A9478230205c940A245Ffb114EaEb9d1)
-* DefaultProxyAdmin:
+* DefaultProxyAdmin: [`0x7877ffd62649b6a1557b55d4c20fcbab17344c91`](https://testnet.bscscan.com/address/0x7877ffd62649b6a1557b55d4c20fcbab17344c91)
 * Comptroller Beacon: [`0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74`](https://testnet.bscscan.com/address/0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74)
 * VToken Beacon: [`0xBF85A90673E61956f8c79b9150BAB7893b791bDd`](https://testnet.bscscan.com/address/0xBF85A90673E61956f8c79b9150BAB7893b791bDd)
 * ProtocolShareReserve: [`0xc987a03ab6C2A5891Fc0919f021cc693B5E55278`](https://testnet.bscscan.com/address/0xc987a03ab6C2A5891Fc0919f021cc693B5E55278)  [note: used by the VToken contracts of the Isolated pools]
