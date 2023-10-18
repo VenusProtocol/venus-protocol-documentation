@@ -43,6 +43,12 @@ Files in the scope of the audit:
 
 </details>
 
+### Forced liquidations in the Isolated pools
+
+**Scope**: upgrade of the Comptroller contract in the Isolated pools, adding the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations), enabled on [VIP-186](https://app.venus.io/#/governance/proposal/186)
+
+* [Certik audit report (2023/10/16)](https://github.com/VenusProtocol/isolated-pools/blob/41a96ca24b0e32b8087ea7b916ae2864cbf1a05f/audits/078_forcedLiquidations_certik_20231016.pdf)
+
 ### Forced liquidations in the Core pool
 
 **Scope**: upgrade of the Comptroller contract in the Core pool, adding the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations), enabled on [VIP-172](https://app.venus.io/#/governance/proposal/172)
