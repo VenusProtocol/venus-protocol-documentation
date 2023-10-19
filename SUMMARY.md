@@ -80,6 +80,7 @@
   * [VTreasury](technical-reference/reference-core-pool/vtreasury.md)
   * [VenusLens](technical-reference/reference-core-pool/venus-lens.md)
   * [PSM](technical-reference/reference-core-pool/psm/peg-stability.md)
+  * [VBNBAdmin](technical-reference/reference-core-pool/vbnbadmin.md)
 * [Isolated Pools](technical-reference/reference-isolated-pools/README.md)
   * [Comptroller](technical-reference/reference-isolated-pools/comptroller/README.md)
     * [Comptroller](technical-reference/reference-isolated-pools/comptroller/comptroller.md)
