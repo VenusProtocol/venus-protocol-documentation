@@ -8,6 +8,7 @@
 * Pyth Oracle:[`0xb893E38162f55fb80B18Aa44da76FaDf8E9B2262`](https://bscscan.com/address/0xb893E38162f55fb80B18Aa44da76FaDf8E9B2262)
 * Resilient Oracle:[`0x6592b5DE802159F3E74B2486b091D11a8256ab8A`](https://bscscan.com/address/0x6592b5DE802159F3E74B2486b091D11a8256ab8A)
 * TWAP Oracle:[`0xea2f042e1A4f057EF8A5220e57733AD747ea8867`](https://bscscan.com/address/0xea2f042e1A4f057EF8A5220e57733AD747ea8867)
+* DefaultProxyAdmin: [`0x1BB765b741A5f3C2A338369DAb539385534E3343`](https://bscscan.com/address/0x1BB765b741A5f3C2A338369DAb539385534E3343)
 
 ## BNB Chain Testnet
 
@@ -17,3 +18,4 @@
 * Pyth Oracle:[`0x94E1534c14e0736BB24decA625f2F5364B198E0C`](https://testnet.bscscan.com/address/0x94E1534c14e0736BB24decA625f2F5364B198E0C)
 * Resilient Oracle:[`0x3cD69251D04A28d887Ac14cbe2E14c52F3D57823`](https://testnet.bscscan.com/address/0x3cD69251D04A28d887Ac14cbe2E14c52F3D57823)
 * TWAP Oracle:[`0x3eeE05d929D1E9816185B1b6d8c470eC192b4432`](https://testnet.bscscan.com/address/0x3eeE05d929D1E9816185B1b6d8c470eC192b4432)
+* DefaultProxyAdmin:[`0xef480a5654b231ff7d80A0681F938f3Db71a6Ca6`](https://testnet.bscscan.com/address/0xef480a5654b231ff7d80A0681F938f3Db71a6Ca6)

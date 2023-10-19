@@ -51,6 +51,7 @@
 
 * [Contracts Overview](technical-reference/contracts-overview.md)
 * [Technical articles](technical-reference/reference-technical-articles/README.md)
+  * [Automatic income allocation](technical-reference/reference-technical-articles/automatic-income-allocation.md)
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
 * [Core Pool](technical-reference/reference-core-pool/README.md)
@@ -79,6 +80,7 @@
   * [VTreasury](technical-reference/reference-core-pool/vtreasury.md)
   * [VenusLens](technical-reference/reference-core-pool/venus-lens.md)
   * [PSM](technical-reference/reference-core-pool/psm/peg-stability.md)
+  * [VBNBAdmin](technical-reference/reference-core-pool/vbnbadmin.md)
 * [Isolated Pools](technical-reference/reference-isolated-pools/README.md)
   * [Comptroller](technical-reference/reference-isolated-pools/comptroller/README.md)
     * [Comptroller](technical-reference/reference-isolated-pools/comptroller/comptroller.md)

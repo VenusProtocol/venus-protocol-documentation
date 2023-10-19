@@ -8,6 +8,47 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Automatic income allocation
+
+**Scope**: Changes in the VToken contracts of the Core and IL pools (including the VBNB market), to send automatically the interest reserves to the new ProtocolShareReserve contract, where configured rules will distribute the income following the tokenomics of the project.
+
+- [Quantstamp audit report (2023/09/13)](https://github.com/VenusProtocol/venus-protocol/blob/9ef8901dfef84a11338751881fd10a2d36c576ad/audits/058_automatic_income_allocation_quantstamp_20230913.pdf)
+- [Certik audit audit report (2023/09/12)](https://github.com/VenusProtocol/venus-protocol/blob/90f913fd345c24c60efa613ab5ab7e633b7aa07a/audits/059_automatic_income_allocation_certik_20230912.pdf)
+- [Peckshield audit report (2023/08/12)](https://github.com/VenusProtocol/venus-protocol/blob/90f913fd345c24c60efa613ab5ab7e633b7aa07a/audits/054_automatic_income_allocation_peckshield_20230812.pdf)
+- [Fairyproof audit report (2023/08/03)](https://github.com/VenusProtocol/venus-protocol/blob/90f913fd345c24c60efa613ab5ab7e633b7aa07a/audits/050_automatic_income_allocation_fairyproof_20230803.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Core pool - interest reserves: 
+  - Pull request: https://github.com/VenusProtocol/venus-protocol/pull/262
+  - Files:
+    - contracts/Tokens/VTokens/VToken.sol
+    - contracts/Tokens/VTokens/VTokenInterfaces.sol
+    - contracts/Utils/ErrorReporter.sol
+- Harvesting BNB income:
+  - Pull request: https://github.com/VenusProtocol/venus-protocol/pull/289
+  - Files:
+    - contracts/Admin/VBNBAdmin.sol
+    - contracts/Admin/VBNBAdminStorage.sol
+- Isolated pools - Liquidations & interest reserves:
+  - Pull request: https://github.com/VenusProtocol/isolated-pools/pull/207
+  - Files:
+    - contracts/VToken.sol
+    - contracts/VTokenInterfaces.sol
+- Distribute the collected incomes - `ProtocolShareReserve` contract
+  - Branch `develop` in the repo https://github.com/VenusProtocol/protocol-reserve. Last commit to consider: dfb653d2e3fe163a248bbd9f8951cd6b96b06390
+  - Files:
+    - contracts/ProtocolReserve/ProtocolShareReserve.sol
+    - contracts/Interfaces/IIncomeDestination.sol
+    - contracts/Interfaces/IPrime.sol
+    - contracts/Interfaces/IProtocolShareReserve.sol
+    - contracts/Interfaces/IVToken.sol
+    - contracts/Interfaces/ComptrollerInterface.sol
+    - contracts/Interfaces/PoolRegistryInterface.sol
+
+</details>
+
 ### Diamond Comptroller
 
 **Scope**: upgrade of the Comptroller contract in the Core pool, implementing the Diamond pattern.
