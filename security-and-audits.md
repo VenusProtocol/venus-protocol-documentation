@@ -84,6 +84,20 @@ Files in the scope of the audit:
 
 </details>
 
+### BUSDLiquidator
+
+**Scope**: contract to forcibly liquidate BUSD positions after enabling the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations) in the BUSD market, in the [VIP-191](https://app.venus.io/#/governance/proposal/191)
+
+* [Peckshield audit report (2023/10/20)](https://github.com/VenusProtocol/venus-protocol/blob/b9dff61b16c4002db4cc01d3f25db160209a3d8d/audits/077_busdLiquidator_peckshield_20231020.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+**Code to be audited**: https://github.com/VenusProtocol/venus-protocol/pull/362
+**Last commit**: 592b022723740c6b7b066445f407f12253d85637
+
+</details>
+
 ### Forced liquidations in the Isolated pools
 
 **Scope**: upgrade of the Comptroller contract in the Isolated pools, adding the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations), enabled on [VIP-186](https://app.venus.io/#/governance/proposal/186)
