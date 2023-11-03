@@ -1,4 +1,5 @@
 # RiskFund
+
 Contract with basic features to track/hold different assets for different Comptrollers.
 
 # Solidity API
@@ -12,19 +13,21 @@ function initialize(address pancakeSwapRouter_, uint256 minAmountToConvert_, add
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| pancakeSwapRouter_ | address | Address of the PancakeSwap router |
-| minAmountToConvert_ | uint256 | Minimum amount assets must be worth to convert into base asset |
-| convertibleBaseAsset_ | address | Address of the base asset |
-| accessControlManager_ | address | Address of the access control contract |
-| loopsLimit_ | uint256 | Limit for the loops in the contract to avoid DOS |
+
+| Name                   | Type    | Description                                                    |
+| ---------------------- | ------- | -------------------------------------------------------------- |
+| pancakeSwapRouter\_    | address | Address of the PancakeSwap router                              |
+| minAmountToConvert\_   | uint256 | Minimum amount assets must be worth to convert into base asset |
+| convertibleBaseAsset\_ | address | Address of the base asset                                      |
+| accessControlManager\_ | address | Address of the access control contract                         |
+| loopsLimit\_           | uint256 | Limit for the loops in the contract to avoid DOS               |
 
 #### ❌ Errors
-* ZeroAddressNotAllowed is thrown when PCS router address is zero
-* ZeroAddressNotAllowed is thrown when convertible base asset address is zero
 
-- - -
+- ZeroAddressNotAllowed is thrown when PCS router address is zero
+- ZeroAddressNotAllowed is thrown when convertible base asset address is zero
+
+---
 
 ### setPoolRegistry
 
@@ -35,14 +38,16 @@ function setPoolRegistry(address poolRegistry_) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| poolRegistry_ | address | Address of the pool registry |
+
+| Name           | Type    | Description                  |
+| -------------- | ------- | ---------------------------- |
+| poolRegistry\_ | address | Address of the pool registry |
 
 #### ❌ Errors
-* ZeroAddressNotAllowed is thrown when pool registry address is zero
 
-- - -
+- ZeroAddressNotAllowed is thrown when pool registry address is zero
+
+---
 
 ### setShortfallContractAddress
 
@@ -53,14 +58,16 @@ function setShortfallContractAddress(address shortfallContractAddress_) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| shortfallContractAddress_ | address | Address of the auction contract |
+
+| Name                       | Type    | Description                     |
+| -------------------------- | ------- | ------------------------------- |
+| shortfallContractAddress\_ | address | Address of the auction contract |
 
 #### ❌ Errors
-* ZeroAddressNotAllowed is thrown when shortfall contract address is zero
 
-- - -
+- ZeroAddressNotAllowed is thrown when shortfall contract address is zero
+
+---
 
 ### setPancakeSwapRouter
 
@@ -71,14 +78,16 @@ function setPancakeSwapRouter(address pancakeSwapRouter_) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| pancakeSwapRouter_ | address | Address of the PancakeSwap router |
+
+| Name                | Type    | Description                       |
+| ------------------- | ------- | --------------------------------- |
+| pancakeSwapRouter\_ | address | Address of the PancakeSwap router |
 
 #### ❌ Errors
-* ZeroAddressNotAllowed is thrown when PCS router address is zero
 
-- - -
+- ZeroAddressNotAllowed is thrown when PCS router address is zero
+
+---
 
 ### setMinAmountToConvert
 
@@ -89,11 +98,12 @@ function setMinAmountToConvert(uint256 minAmountToConvert_) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| minAmountToConvert_ | uint256 | Min amount to convert. |
 
-- - -
+| Name                 | Type    | Description            |
+| -------------------- | ------- | ---------------------- |
+| minAmountToConvert\_ | uint256 | Min amount to convert. |
+
+---
 
 ### setConvertibleBaseAsset
 
@@ -104,11 +114,12 @@ function setConvertibleBaseAsset(address _convertibleBaseAsset) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _convertibleBaseAsset | address | Address for new convertible base asset. |
 
-- - -
+| Name                   | Type    | Description                             |
+| ---------------------- | ------- | --------------------------------------- |
+| \_convertibleBaseAsset | address | Address for new convertible base asset. |
+
+---
 
 ### swapPoolsAssets
 
@@ -119,22 +130,25 @@ function swapPoolsAssets(address[] markets, uint256[] amountsOutMin, address[][]
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| markets | address[] | Array of vTokens whose assets to swap for base asset |
-| amountsOutMin | uint256[] | Minimum amount to receive for swap |
-| paths | address[][] | A path consisting of PCS token pairs for each swap |
-| deadline | uint256 | Deadline for the swap |
+
+| Name          | Type        | Description                                          |
+| ------------- | ----------- | ---------------------------------------------------- |
+| markets       | address[]   | Array of vTokens whose assets to swap for base asset |
+| amountsOutMin | uint256[]   | Minimum amount to receive for swap                   |
+| paths         | address[][] | A path consisting of PCS token pairs for each swap   |
+| deadline      | uint256     | Deadline for the swap                                |
 
 #### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | Number of swapped tokens |
+
+| Name | Type    | Description              |
+| ---- | ------- | ------------------------ |
+| [0]  | uint256 | Number of swapped tokens |
 
 #### ❌ Errors
-* ZeroAddressNotAllowed is thrown if PoolRegistry contract address is not configured
 
-- - -
+- ZeroAddressNotAllowed is thrown if PoolRegistry contract address is not configured
+
+---
 
 ### transferReserveForAuction
 
@@ -145,17 +159,19 @@ function transferReserveForAuction(address comptroller, uint256 amount) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| comptroller | address | Comptroller of the pool. |
-| amount | uint256 | Amount to be transferred to auction contract. |
+
+| Name        | Type    | Description                                   |
+| ----------- | ------- | --------------------------------------------- |
+| comptroller | address | Comptroller of the pool.                      |
+| amount      | uint256 | Amount to be transferred to auction contract. |
 
 #### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | Number reserved tokens. |
 
-- - -
+| Name | Type    | Description             |
+| ---- | ------- | ----------------------- |
+| [0]  | uint256 | Number reserved tokens. |
+
+---
 
 ### setMaxLoopsLimit
 
@@ -166,11 +182,12 @@ function setMaxLoopsLimit(uint256 limit) external
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name  | Type    | Description                                   |
+| ----- | ------- | --------------------------------------------- |
 | limit | uint256 | Limit for the max loops can execute at a time |
 
-- - -
+---
 
 ### getPoolsBaseAssetReserves
 
@@ -181,16 +198,18 @@ function getPoolsBaseAssetReserves(address comptroller) external view returns (u
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name        | Type    | Description                |
+| ----------- | ------- | -------------------------- |
 | comptroller | address | Comptroller address(pool). |
 
 #### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | Base Asset's reserve in risk fund. |
 
-- - -
+| Name | Type    | Description                        |
+| ---- | ------- | ---------------------------------- |
+| [0]  | uint256 | Base Asset's reserve in risk fund. |
+
+---
 
 ### updateAssetsState
 
@@ -201,10 +220,10 @@ function updateAssetsState(address comptroller, address asset) public
 ```
 
 #### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+
+| Name        | Type    | Description                |
+| ----------- | ------- | -------------------------- |
 | comptroller | address | Comptroller address(pool). |
-| asset | address | Asset address. |
+| asset       | address | Asset address.             |
 
-- - -
-
+---
