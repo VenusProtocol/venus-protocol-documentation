@@ -1,4 +1,4 @@
-# RewardsDistributor
+# &#x60;RewardsDistributor&#x60;
 
 Contract used to configure, track and distribute rewards to users based on their actions (borrows and supplies) in the protocol.
 Users can receive additional rewards through a `RewardsDistributor`. Each `RewardsDistributor` proxy is initialized with a specific reward
@@ -18,11 +18,11 @@ entities to ensure that the `RewardsDistributor` holds enough tokens to distribu
 struct RewardToken {
   uint224 index;
   uint32 block;
+  uint32 lastRewardingBlock;
 }
-
 ```
 
-### INITIAL\_INDEX
+### INITIAL_INDEX
 
 The initial REWARD TOKEN index for a market
 
@@ -189,9 +189,27 @@ function setRewardTokenSpeeds(contract VToken[] vTokens, uint256[] supplySpeeds,
 
 | Name         | Type              | Description                                                     |
 | ------------ | ----------------- | --------------------------------------------------------------- |
-| vTokens      | contract VToken\[] | The markets whose REWARD TOKEN speed to update                  |
-| supplySpeeds | uint256\[]         | New supply-side REWARD TOKEN speed for the corresponding market |
-| borrowSpeeds | uint256\[]         | New borrow-side REWARD TOKEN speed for the corresponding market |
+| vTokens      | contract VToken[] | The markets whose REWARD TOKEN speed to update                  |
+| supplySpeeds | uint256[]         | New supply-side REWARD TOKEN speed for the corresponding market |
+| borrowSpeeds | uint256[]         | New borrow-side REWARD TOKEN speed for the corresponding market |
+
+---
+
+### setLastRewardingBlocks
+
+Set REWARD TOKEN last rewarding block for the specified markets
+
+```solidity
+function setLastRewardingBlocks(contract VToken[] vTokens, uint32[] supplyLastRewardingBlocks, uint32[] borrowLastRewardingBlocks) external
+```
+
+#### Parameters
+
+| Name                      | Type              | Description                                                                    |
+| ------------------------- | ----------------- | ------------------------------------------------------------------------------ |
+| vTokens                   | contract VToken[] | The markets whose REWARD TOKEN last rewarding block to update                  |
+| supplyLastRewardingBlocks | uint32[]          | New supply-side REWARD TOKEN last rewarding block for the corresponding market |
+| borrowLastRewardingBlocks | uint32[]          | New borrow-side REWARD TOKEN last rewarding block for the corresponding market |
 
 ---
 
@@ -273,6 +291,6 @@ function claimRewardToken(address holder, contract VToken[] vTokens) public
 | Name    | Type              | Description                                  |
 | ------- | ----------------- | -------------------------------------------- |
 | holder  | address           | The address to claim REWARD TOKEN for        |
-| vTokens | contract VToken\[] | The list of markets to claim REWARD TOKEN in |
+| vTokens | contract VToken[] | The list of markets to claim REWARD TOKEN in |
 
 ---
