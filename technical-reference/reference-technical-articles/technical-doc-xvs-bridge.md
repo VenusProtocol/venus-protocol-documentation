@@ -2,6 +2,8 @@
 
 This documentation provides detailed instructions and explanations for using the Cross-Chain Bridge. The Bridge allows users to transfer tokens between different blockchain networks, specifically between the BNB and the Destination Chain. The system consists of multiple contracts, including XVSBridgeAdmin, XVSProxySrc, XVSProxyDest, and XVS token contracts.
 
+**_The functionality of the protocol relies on LayerZero for the seamless transfer of XVS tokens across different networks. Consequently, the security and integrity of the token on each network are subject to potential vulnerabilities inherent in the bridging mechanism. It is essential to note that these risks are a general characteristic of integrating with network bridges and do not stem from any particular weaknesses within the token implementation._**
+
 ## Table of Contents
 
 1. [Getting Started](#1-getting-started)
@@ -32,6 +34,9 @@ This documentation provides detailed instructions and explanations for using the
    - [9.2. Whitelist Mechanism](#92-whitelist-mechanism)
    - [9.3. Transaction Limits](#93-transaction-limits)
    - [9.4. Pause and Unpause Mechanism](#94-pause-and-unpause-mechanism)
+10. [Possible Failures of Bridging XVS Tokens](#10-possible-failures-of-bridging-xvs-tokens)
+    - [10.1. Sending XVS tokens from the source chain](#101-sending-xvs-tokens-from-the-source-chain)
+    - [10.2. Receiving XVS tokens on the destination chain](#102-receiving-xvs-tokens-on-the-destination-chain)
 
 ## 1. Getting Started <a name="getting-started"></a>
 
@@ -101,6 +106,7 @@ After initiating a token transfer, you should wait for the transaction to confir
 
 - The Bridge includes a pause and unpause mechanism. Use the `pause` method to halt the contract's functionality and `unpause` to resume.
 - Pausing is a security measure to prevent further transactions during emergencies or potential attacks.
+- Cross-chain messages that attempt to mint or release tokens to the receiver can be received by the destination bridge. These messages will fail, but they can be retried once the destination bridge has been unpaused.
 
 ### 6.3. Limit the Amount of XVS Transfers <a name="limit-the-amount-of-XVS-transfers"></a>
 
@@ -192,6 +198,23 @@ In addition to the core functionality, the Bridge includes additional features t
 ### 9.4. Pause and Unpause Mechanism <a name="pause-and-unpause-mechanism"></a>
 
 - The contract incorporates a pause and unpause mechanism using the `Pausable` library. The `pause` and `unpause` functions can be used to halt and resume the contract's functionality, respectively.
+
+## 10. Possible Failures of Bridging XVS Tokens <a name="possible-failures-of-bridging-XVS-tokens"></a>
+
+### 10.1. Sending XVS tokens from the source chain <a name="sending-XVS-tokens-from-the-source-chain"></a>
+
+- The oracle temporarily fails due to reasons including being paused by the owner, incorrect address configuration, or price validation failures.
+- The transfer amount exceeds the single or daily sending transaction limit.
+- The transfer amount is too small, becoming zero after removing dust.
+- The sender is blacklisted by the XVS token.
+- The destination bridge is not configured as a trusted remote.
+
+### 10.2. Receiving XVS tokens on the destination chain <a name="receiving-XVS-tokens-on-the-destination-chain"></a>
+
+- The oracle temporarily fails due to reasons including being paused by the owner, incorrect address configuration, or price validation failures.
+- The transfer amount exceeds the single or daily receiving transaction limit.
+- The recipient is blacklisted by the XVS token.
+- The minting cap on the destination bridge is exceeded.
 
 ## Conclusion
 
