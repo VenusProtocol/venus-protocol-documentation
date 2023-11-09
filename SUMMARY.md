@@ -125,6 +125,7 @@
   * [Timelock](technical-reference/reference-governance/timelock.md)
   * [GovernorBravoInterfaces](technical-reference/reference-governance/governor-bravo-interfaces.md)
   * [AccessControlledV8](technical-reference/reference-governance/access-controlled-v8.md)
+* [Prime Program Overview](technical-reference/reference-technical-articles/prime.md)
 
 ## Deployed Contracts
 
