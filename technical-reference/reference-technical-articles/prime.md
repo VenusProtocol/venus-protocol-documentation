@@ -85,7 +85,7 @@ Then we will update the `userRewardIndex` (`interests[market][account]`) to thei
 
 ## Income collection and distribution
 
-Every market in Venus (including Isolated lending markets) contributes to the rewards that Prime contract will distribute, following the protocol [tokenomics](../../governance/tokenomics.md). The following diagram shows the flow of funds implemented.
+Every market in Venus (including Isolated Lending markets) contributes to the rewards that the Prime contract will distribute, following the protocol [tokenomics](../../governance/tokenomics.md). The following diagram shows the current implementation for the flow of funds.
 
 <figure><img src="../../.gitbook/assets/prime_funds.png" alt="Flow of funds related to Prime"><figcaption></figcaption></figure>
 
