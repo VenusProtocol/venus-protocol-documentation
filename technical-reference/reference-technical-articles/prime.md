@@ -134,7 +134,7 @@ As markets won't be paused, there could be inconsistencies due to user supply/bo
 There are two main objectives for creating this script:
 
 - If the Venus community wants to update the scores of all users when multipliers or alpha are updated then we have an immediate option.
-- After minting Prime tokens if the Venus community decides to add an existing market to the Prime token program then the score of all users has to be updated to start giving them rewards. The scores cannot be applied gradually in this case as the initial Prime users for the market will get large rewards for some time. So this script will prevent this scenario.
+- After minting Prime tokens if the Venus community decides to add an existing market to the Prime token program then users scores need to be updated in order for them to being receiving rewards. The scores cannot be applied gradually in this case as the first Prime users in the market will receive disproportionally large rewards until the rest of the users in the market have their scores updated. A script to quickly update score for all users in a market will prevent this scenario.
 
 There is a variable named `totalScoreUpdatesRequired` to track how many score updates are pending. This is for tracking purposes and visible to the community.
 
