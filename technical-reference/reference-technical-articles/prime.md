@@ -89,7 +89,7 @@ Every market in Venus (including Isolated Lending markets) contributes to the re
 
 <figure><img src="../../.gitbook/assets/prime_funds.png" alt="Flow of funds related to Prime"><figcaption></figcaption></figure>
 
-Rewards will be distributed to Prime users only in USDT, USDC, BTC and ETH tokens. So, other tokens have to be converted to the tokens used for rewarding users in Prime. This conversion should follow a configurable (via VIP) distribution table, that initially will be this:
+Rewards will be distributed to Prime users only in USDT, USDC, BTC and ETH tokens. Other tokens will have to be converted to the tokens used for rewarding users in Prime. This conversion should follow a configurable (via VIP) distribution table, that initially will be:
 
 | Prime market | Distribution |
 | --- | --- |
