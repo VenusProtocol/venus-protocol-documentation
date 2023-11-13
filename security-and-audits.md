@@ -8,9 +8,43 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Venus Prime
+
+**Scope**: `Prime` and `PrimeLiquidityProvider` contracts, to manage the eligibility of Prime tokens and the rewards distributions.
+
+- [OpenZeppelin audit report (2023/10/03)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/065_prime_openzeppelin_20231003.pdf)
+- [Certik audit audit report (2023/XX/XX)](XXX)
+- [Peckshield audit report (2023/08/26)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/055_prime_peckshield_20230826.pdf)
+- [Fairyproof audit report (2023/09/10)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/056_prime_fairyproof_20230910.pdf)
+- [Code4rena contest (2023/09/28)](https://code4rena.com/contests/2023-09-venus-prime)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#196](https://github.com/VenusProtocol/venus-protocol/pull/196/) in the core pool repo.
+    - Prime feature:
+        - contracts/Tokens/Prime/IPrime.sol
+        - contracts/Tokens/Prime/Prime.sol
+        - contracts/Tokens/Prime/PrimeStorage.sol
+        - contracts/Tokens/Prime/PrimeLiquidityProvider.sol
+    - Comptroller integration:
+        - contracts/Comptroller/ComptrollerStorage.sol
+        - contracts/Comptroller/Diamond/facets/PolicyFacet.sol
+        - contracts/Comptroller/Diamond/facets/SetterFacet.sol
+    - XVSVault integration:
+        - contracts/XVSVault/XVSVault.sol
+        - contracts/XVSVault/XVSVaultStorage.sol
+    - Libs:
+        - contracts/Tokens/Prime/libs/Scores.sol
+        - contracts/Tokens/Prime/libs/FixedMath.sol
+        - contracts/Tokens/Prime/libs/FixedMath0x.sol
+
+</details>
+
+
 ### Automatic income allocation
 
-**Scope**: Changes in the VToken contracts of the Core and IL pools (including the VBNB market), to send automatically the interest reserves to the new ProtocolShareReserve contract, where configured rules will distribute the income following the tokenomics of the project.
+**Scope**: Changes in the VToken contracts of the Core and IL pools (including the VBNB market), to send automatically the interest reserves to the new ProtocolShareReserve contract, where configured rules will distribute the income following the tokenomics of the project. Enabled in [VIP-189](https://app.venus.io/#/governance/proposal/189), [VIP-192](https://app.venus.io/#/governance/proposal/192), [VIP-193](https://app.venus.io/#/governance/proposal/193) and [VIP-194](https://app.venus.io/#/governance/proposal/194).
 
 - [Quantstamp audit report (2023/09/13)](https://github.com/VenusProtocol/venus-protocol/blob/9ef8901dfef84a11338751881fd10a2d36c576ad/audits/058_automatic_income_allocation_quantstamp_20230913.pdf)
 - [Certik audit audit report (2023/09/12)](https://github.com/VenusProtocol/venus-protocol/blob/90f913fd345c24c60efa613ab5ab7e633b7aa07a/audits/059_automatic_income_allocation_certik_20230912.pdf)
@@ -51,7 +85,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ### Diamond Comptroller
 
-**Scope**: upgrade of the Comptroller contract in the Core pool, implementing the Diamond pattern.
+**Scope**: upgrade of the Comptroller contract in the Core pool, implementing the Diamond pattern. Enabled in the [VIP-174](https://app.venus.io/#/governance/proposal/174).
 
 - [Fairyproof audit report (2023/06/25)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/040_diamondComptroller_fairyproof_20230625.pdf)
 - [Peckshield audit report (2023/07/28)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/042_diamondComptroller_peckshield_20230718.pdf)
