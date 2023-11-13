@@ -85,7 +85,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ### Diamond Comptroller
 
-**Scope**: upgrade of the Comptroller contract in the Core pool, implementing the Diamond pattern. Enabled in the [VIP-174](https://app.venus.io/#/governance/proposal/174).
+**Scope**: Upgrade of the Comptroller contract in the Core pool, implementing the Diamond pattern. Enabled in the [VIP-174](https://app.venus.io/#/governance/proposal/174).
 
 - [Fairyproof audit report (2023/06/25)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/040_diamondComptroller_fairyproof_20230625.pdf)
 - [Peckshield audit report (2023/07/28)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/042_diamondComptroller_peckshield_20230718.pdf)
@@ -120,7 +120,7 @@ Files in the scope of the audit:
 
 ### BUSDLiquidator
 
-**Scope**: contract to forcibly liquidate BUSD positions after enabling the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations) in the BUSD market, in the [VIP-191](https://app.venus.io/#/governance/proposal/191)
+**Scope**: Contract to forcibly liquidate BUSD positions after enabling the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations) in the BUSD market, in the [VIP-191](https://app.venus.io/#/governance/proposal/191)
 
 * [Peckshield audit report (2023/10/20)](https://github.com/VenusProtocol/venus-protocol/blob/b9dff61b16c4002db4cc01d3f25db160209a3d8d/audits/077_busdLiquidator_peckshield_20231020.pdf)
 
@@ -134,13 +134,13 @@ Files in the scope of the audit:
 
 ### Forced liquidations in the Isolated pools
 
-**Scope**: upgrade of the Comptroller contract in the Isolated pools, adding the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations), enabled on [VIP-186](https://app.venus.io/#/governance/proposal/186)
+**Scope**: Upgrade of the Comptroller contract in the Isolated pools, adding the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations), enabled on [VIP-186](https://app.venus.io/#/governance/proposal/186)
 
 * [Certik audit report (2023/10/16)](https://github.com/VenusProtocol/isolated-pools/blob/41a96ca24b0e32b8087ea7b916ae2864cbf1a05f/audits/078_forcedLiquidations_certik_20231016.pdf)
 
 ### Forced liquidations in the Core pool
 
-**Scope**: upgrade of the Comptroller contract in the Core pool, adding the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations), enabled on [VIP-172](https://app.venus.io/#/governance/proposal/172)
+**Scope**: Upgrade of the Comptroller contract in the Core pool, adding the ["forced liquidations" feature](./guides/market-interaction/liquidation.md#forced-liquidations), enabled on [VIP-172](https://app.venus.io/#/governance/proposal/172)
 
 * [Certik audit report (2023/09/16)](https://github.com/VenusProtocol/venus-protocol/blob/80cf9b36ea900d71c5e97a5b1d5e2706ecefb9c3/audits/072_forcedLiquidations_certik_20230916.pdf)
 * [Peckshield audit report (2023/09/16)](https://github.com/VenusProtocol/venus-protocol/blob/80cf9b36ea900d71c5e97a5b1d5e2706ecefb9c3/audits/073_forcedLiquidations_peckshield_20230916.pdf)
@@ -165,14 +165,14 @@ These contracts were in the scope of the audits done before the launch of Isolat
 
 ### Oracles upgrade (2023/07/24)
 
-**Scope**: upgrade of the Resilient Price Feeds, enabled on [VIP-145](https://app.venus.io/governance/proposal/145).
+**Scope**: Upgrade of the Resilient Price Feeds, enabled on [VIP-145](https://app.venus.io/governance/proposal/145).
 
 * [Peckshield audit report - 2023/07/12](https://github.com/VenusProtocol/oracle/blob/fb02cdd3865fb5c34e0cd65cbeda02f87841371a/audits/045_getPrice_peckshield_20230712.pdf)
 * [Certik audit report - 2023/07/17](https://github.com/VenusProtocol/oracle/blob/fb02cdd3865fb5c34e0cd65cbeda02f87841371a/audits/043_getPrice_certik_20230717.pdf)
 
 ### Oracles
 
-**Scope**: new Resilient Price Feeds, enabled on [VIP-123](https://app.venus.io/governance/proposal/123).
+**Scope**: New Resilient Price Feeds, enabled on [VIP-123](https://app.venus.io/governance/proposal/123).
 
 * [OpenZeppeling audit report - 2023/06/06](https://github.com/VenusProtocol/oracle/blob/6f7a3d8769c28881661953e7ee3299b1d5b31e17/audits/026_oracles_openzeppelin_20230606.pdf)
 * [Peckshield audit report - 2023/04/24](https://github.com/VenusProtocol/oracle/blob/6f7a3d8769c28881661953e7ee3299b1d5b31e17/audits/013_oracles_peckshield_20230424.pdf)
@@ -181,7 +181,7 @@ These contracts were in the scope of the audits done before the launch of Isolat
 
 ### Vaults
 
-**Scope**: upgrade of the XVSVault, VAIVault and VRTVault, enabled on [VIP-127](https://app.venus.io/governance/proposal/127).
+**Scope**: Upgrade of the XVSVault, VAIVault and VRTVault, enabled on [VIP-127](https://app.venus.io/governance/proposal/127).
 
 * [Quantstamp audit report - 2023/05/19](https://github.com/VenusProtocol/venus-protocol/blob/cb91c322f9d267cac11f532924b07a4b1991be64/audits/031_vaults_quantstamp_20230519.pdf)
 * [Peckshield audit report 1 - 2023/03/22](https://github.com/VenusProtocol/venus-protocol/blob/cb91c322f9d267cac11f532924b07a4b1991be64/audits/012_vaults_peckshield_20230322.pdf)
