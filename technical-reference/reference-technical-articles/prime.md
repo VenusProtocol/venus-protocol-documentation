@@ -1,93 +1,23 @@
 # Venus Prime
 
-- [Venus Prime](#venus-prime)
-  - [Overview](#overview)
-  - [Venus Prime essentials](#venus-prime-essentials)
-  - [Prime tokens](#prime-tokens)
-  - [Expected impact and launch](#expected-impact-and-launch)
-  - [Rewards](#rewards)
-    - [User rewards example](#user-rewards-example)
-    - [Implementation of the rewards in solidity](#implementation-of-the-rewards-in-solidity)
-  - [Income collection and distribution](#income-collection-and-distribution)
-  - [Update cap multipliers and alpha](#update-cap-multipliers-and-alpha)
-  - [Calculate APR associated with a Prime market and user](#calculate-apr-associated-with-a-prime-market-and-user)
-  - [Bootstrap liquidity for the Prime program](#bootstrap-liquidity-for-the-prime-program)
-  - [Pause `claimInterest`](#pause-claiminterest)
-  - [Audit reports](#audit-reports)
+- [Overview](#overview)
+- [Rewards](#rewards)
+  - [Implementation of the rewards in solidity](#implementation-of-the-rewards-in-solidity)
+- [Income collection and distribution](#income-collection-and-distribution)
+- [Update cap multipliers and alpha](#update-cap-multipliers-and-alpha)
+- [Calculate APR associated with a Prime market and user](#calculate-apr-associated-with-a-prime-market-and-user)
+- [Bootstrap liquidity for the Prime program](#bootstrap-liquidity-for-the-prime-program)
+- [Pause `claimInterest`](#pause-claiminterest)
 
 ## Overview
 
-Venus Protocol is excited to announce Venus Prime, a revolutionary incentive program aimed to bolster user engagement and growth within the protocol. An integral part of [Venus Tokenomics v3.1](https://docs-v4.venus.io/governance/tokenomics), Venus Prime aims to enhance rewards and promote $XVS staking, focusing on markets including USDT, USDC, BTC and ETH.
-
-## Venus Prime essentials
-
-Venus Prime's uniqueness lies in its self-sustaining rewards system, instead of external sources, rewards are derived from the protocol's revenue, fostering a sustainable and ever-growing program.
-
-Eligible $XVS holders will receive a unique, non-transferable Soulbound Token, which boosts rewards across selected markets.
-
-## Prime tokens
-
-Venus Prime encourages user commitment through two unique Prime Tokens:
-
-1.  **Revocable Prime Token:**
-
-    - Users need to stake at least 1,000 XVS for 90 days in a row.
-    - After these 90 days, users can mint their Prime Token.
-    - If a user decides to withdraw XVS and their balance falls below 1,000 XVS, their Prime Token will be automatically revoked.
-
-2.  **Irrevocable "OG" Prime Token (Phase 2):**
-    - Irrevocable Prime Token is isssued through Governance to the top Venus protocol users. These tokens are irrevocable. 
-
-<figure><img src="https://github.com/VenusProtocol/venus-protocol-documentation/blob/127301b54fb5aa7048aaa65256615690d2c807fb/.gitbook/assets/6e01c33d-ac9e-41d6-9542-fc2f3b0ecb90.png" alt=""><figcaption></figcaption></figure>
-
-## Expected impact and launch
-
-Venus Prime aims to incentivize larger stake sizes and diverse user participation. This is expected to significantly increase the staking of XVS, the Total Value Locked (TVL), and market growth.
-
-Venus Prime intends to promote user loyalty and the overall growth of the protocol. By endorsing long-term staking, discouraging premature withdrawals, and incentivizing larger stakes, Venus Prime sets a new course in user engagement and liquidity, contributing to Venus Protocol's success.
-
-Stake your $XVS tokens today to be eligible for Venus Prime, an exciting new venture in the DeFi landscape.
+This is a technical article, explaining some implementaton details of the Venus Prime program. The overview of the Venus Prime program can be checked [here](../../whats-new/prime-yield.md).
 
 ## Rewards
 
-This section explains the usage of the Cobb-Douglas function to calculate scores and rewards for users, inspired by the [Goldfinch rewards mechanism](https://docs.goldfinch.finance/goldfinch/protocol-mechanics/membership).
+([*Main explanation of Prime rewards*](../../whats-new/prime-yield.md#technical-reward-details))
 
-**Reward Formula: Cobb-Douglas function**
-
-$$
-Rewards_{i,m} = \Gamma_m \times \mu \times \frac{\tau_{i}^\alpha \times \sigma_{i,m}^{1-\alpha}}{\sum_{j,m} \tau_{j}^\alpha \times \sigma_{j,m}^{1-\alpha}}
-$$
-
-Where:
-
-- $$Rewards_{i,m}$$ = Rewards for user $$i$$ in market $$m$$
-- $$\Gamma_m$$ = Protocol Reserve Revenue for market $$m$$
-- $$μ$$ = Proportion to be distributed as rewards
-- $$α$$ = Protocol stake and supply & borrow amplification weight
-- $$τ_{i}​$$ = XVS staked amount for user $$i$$
-- $$\sigma_i$$ = Sum of **qualified** supply and borrow balance for user $$i$$
-- $$∑_{j,m}​$$ = Sum for all users $$j$$ in markets $$m$$
-
-**Qualifiable XVS Staked:**
-
-$$
-\tau_i =
-\begin{cases}
-\min(100000, \tau_i) & \text{if } \tau_i \geq 1000 \\
-0 & \text{otherwise}
-\end{cases}
-$$
-
-**Qualifiable supply and borrow:**
-
-$$
-\begin{align*}
-\sigma_{i,m} &= \min(\tau_i \times borrowMultiplier_m, borrowedAmount_{i,m}) \\
-&+ \min(\tau_i \times supplyMultiplier_m, suppliedAmount_{i,m})
-\end{align*}
-$$
-
-A limit for qualifiable supply and borrow amounts is set by the staked XVS limit and the market multiplier. The USD values of the tokens and the USD value of XVS will be taken into account to calculate these caps. The following pseudecode shows how $$\sigma_{i,m}$$ considering the caps:
+A limit for qualifiable supply and borrow amounts is set by the staked XVS limit and the market multiplier. The USD values of the tokens and the USD value of XVS will be taken into account to calculate these caps. The following pseudecode shows how $$\sigma_{i,m}$$ is calculated considering the caps:
 
 ```jsx
 borrowUSDCap = toUSD(xvsBalanceOfUser * marketBorrowMultipler)
@@ -114,7 +44,7 @@ return borrowQVL + supplyQVL
 
 **Significance of α**
 
-A higher value of α increases the weight on stake contributions in the determination of rewards and decreases the weight on supply/borrow contributions. The value of α is between 0-1
+A higher value of α increases the weight on stake contributions in the determination of rewards and decreases the weight on supply/borrow contributions. The value of α is between 0-1 (both excluded).
 
 A default weight of 0.5 weight has been evaluated as a good ratio and is not likely to be changed. A higher value will only be needed if we want to attract more XVS stake from the Prime token holders at the expense of supply/ borrow rewards.
 
@@ -137,48 +67,6 @@ If alpha is 0.3 then:
 user A score: 379.8288965
 user B score: 501.1872336
 ```
-
-### User rewards example
-
-**Model Parameters**
-
-- $$α$$ = 0.5
-- $${\sum_{j,BTC} \tau_{j}^\alpha \times \sigma_{j,BTC}^{1-\alpha}}$$ = 744,164
-- $$\Gamma_{BTC}$$ = 8 BTC
-- $$\mu$$ = 0.2
-- BTC Supply Multiplier = 2
-- XVS Price = $4.0
-
-**User Parameters**
-
-| User Parameters | Token Value | USD Value |
-| --------------- | ----------- | --------- |
-| Staked XVS      | 1,200 XVS   | $4,800    |
-| BTC Supply      | 0.097 BTC   | $2,500    |
-
-**Qualifiable Staked XVS**
-
-$$\tau_i=min(100000,\text{ } 1200)$$
-
-**Qualifiable Supply and Borrow**
-
-$$σ_{i,BTC} =min($9600,\text{ } $2500)$$
-
-**User Rewards**
-
-$$Rewards_{i, BTC} = 8\times 0.2\times \dfrac{1,200^{0.5}\times 2,500^{0.5}}{744,164}$$
-
-$$Rewards_{i, BTC} = \ 0.00372$$
-
-$$\text{User APY Increase} = \dfrac{0.00372}{0.097} = 3.88\%$$
-
-**Expected Rewards Function**
-
-Venus Prime program rewards will automatically increase as a user increases their XVS stake, as long as the amount staked and market participation fall within the limits outlined in the "Rewards" section above.
-
-<figure><img src="https://github.com/VenusProtocol/venus-protocol-documentation/blob/127301b54fb5aa7048aaa65256615690d2c807fb/.gitbook/assets/apy_graph_transparent_2500_corrected_labels.png" alt=""><figcaption><p><em>Please note that the rewards can vary based on the total market participation and the amount of XVS staked, as illustrated by the formula and example above.</em></p></figcaption></figure>
-
-The graph above demonstrates the relationship between an increased XVS staked amount and its effect on market rewards, assuming a constant participation of $2.5K USD in the BTC supply market. This helps visualize how an increase in the staked amount influences the APY.
 
 ### Implementation of the rewards in solidity
 
@@ -205,11 +93,11 @@ Then we will update the `userRewardIndex` (`interests[market][account]`) to thei
 
 ## Income collection and distribution
 
-We want every market in Venus (including Isolated lending markets) to contribute to the rewards Prime contract will distribute. The following diagram shows implementation.
+Every market in Venus (including Isolated lending markets) contributes to the rewards that Prime contract will distribute, following the protocol [tokenomics](../../governance/tokenomics.md). The following diagram shows the flow of funds implemented.
 
-<figure><img src="../../.gitbook/assets/prime.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/prime_funds.png" alt="Flow of funds related to Prime"><figcaption></figcaption></figure>
 
-We will distribute rewards to Prime users only in USDT, USDC, BTC and ETH tokens. So we would need to convert other tokens to the tokens used for rewarding users in Prime. This conversion should follow a configurable (via VIP) distribution table, that initially will be this:
+Rewards will be distributed to Prime users only in USDT, USDC, BTC and ETH tokens. So, other tokens have to be converted to the tokens used for rewarding users in Prime. This conversion should follow a configurable (via VIP) distribution table, that initially will be this:
 
 | Prime market | Distribution |
 | --- | --- |
@@ -218,11 +106,10 @@ We will distribute rewards to Prime users only in USDT, USDC, BTC and ETH tokens
 | BTC | 17.70% |
 | ETH | 21.13% |
 
-
 For Example:
 
 - The CAKE market generates 1,000 CAKE of total income
-- 10% of the CAKE total income should be allocated to Prime → 100 CAKE
+- 10% of the CAKE total income should be allocated to Prime → 100 CAKE (following the protocol tokenomics)
 - We should convert 100 CAKE to USDC, USDT, BTC and ETH, because in Prime the rewards are defined in these tokens
 - The conversion should follow the previous table:
     - 19.24 CAKE should be converted to USDC
@@ -230,15 +117,19 @@ For Example:
     - 17.70 CAKE should be converted to BTC
     - 21.13 CAKE should be converted to ETH
 
-Interest reserves (part of the protocol income) from IL and core pool markets are sent to the PSR ([Protocol Share Reserve](https://github.com/VenusProtocol/protocol-reserve/blob/develop/contracts/ProtocolReserve/ProtocolShareReserve.sol)) contract. Based on configuration a certain percentage of income from all markers is reserved for Prime token holders. The interest reserves will be sent to the PSR every 10 blocks (this can be changed by the community via [VIP](https://app.venus.io/governance)).
+Interest reserves (part of the protocol income) from Isolated pools and core pool markets are sent to the PSR ([Protocol Share Reserve](https://github.com/VenusProtocol/protocol-reserve/blob/main/contracts/ProtocolReserve/ProtocolShareReserve.sol)) contract. Based on configuration a certain percentage of income from all markers is reserved for Prime token holders. The interest reserves will be sent to the PSR periodically (currently every 24 hours, but this can be changed by the community via [VIP](https://app.venus.io/governance)).
 
-The PSR has a function `releaseFunds` that needs to be invoked to release the funds to the destination contracts. We have [SingleTokenConverter](https://github.com/VenusProtocol/protocol-reserve/contracts/TokenConverter/SingleTokenConverter.sol) contracts which receive income from PSR and convert them to Prime supported reward tokens. 
+The PSR has a function `releaseFunds` that needs to be invoked to release the funds to the destination contracts. We have [SingleTokenConverter](https://github.com/VenusProtocol/protocol-reserve/contracts/TokenConverter/SingleTokenConverter.sol) contracts which receive income from the PSR and convert them to Prime supported reward tokens. 
 
-The `SingleTokenConverter` sends funds to `PrimeLiquidityProvider` contract which releases the funds to `Prime` contract. Distribution speeds for each of the reward token is configured in PrimeLiquidityProvider contract and based on those speeds `Prime` distirbutes rewards. 
+Each `SingleTokenConverter` sends funds to `PrimeLiquidityProvider` contract which releases the funds to `Prime` contract. Distribution speeds for each of the reward token is configured in the `PrimeLiquidityProvider` contract and based on those speeds `Prime` distirbutes rewards. 
 
-When a user claims their rewards and if the contract doesn’t have enough funds then we trigger the release of funds from `PrimeLiquidityProvider` to `Prime` contract in the same transaction i.e., in the `claim` function.
+When a user claims their rewards and if the `Prime` contract doesn’t have enough funds then we trigger the release of funds from `PrimeLiquidityProvider` to `Prime` contract in the same transaction i.e., in the `claimInterest` function.
 
-More information about Income collection and distribution [here](https://docs-v4.venus.io/whats-new/automatic-income-allocation).
+The following diagram shows the integration of the `SingleTokenConverter` contracts with the Prime contracts:
+
+<figure><img src="../../.gitbook/assets/prime_token_converter.png" alt="Integration of the SingleTokenConverter contracts with the Prime contracts"><figcaption></figcaption></figure>
+
+More information about Income collection and distribution can be found [here](../../whats-new/automatic-income-allocation.md).
 
 ## Update cap multipliers and alpha
 
@@ -264,7 +155,7 @@ The steps to perform this calculation are:
 1. Fetch the income per block from PrimeLiquidityProvider
 2. Calculate the capped supply and borrow of the user for the market
 3. Calculate the capped XVS balance of the user 
-4. We calculate the user yearly income by multiplying (1) with blocks per year
+4. Calculate the user yearly income by multiplying (1) with blocks per year
 5. Now borrow and supply APR of user can be calculated based on ratio of capped borrow and supply of the user. 
 
 **Example:**
@@ -282,7 +173,7 @@ The steps to perform this calculation are:
    1. borrow: 56.76/30 = 1.89 = 189%
    2. supply: 37.84/10 = 3.78 = 378%
 
-Only part of the supplied and borrowed amounts (the capped amounts) are actually "working" to increase the Prime rewards. The rest of the supplied or borrowed amounts do not generate extra rewards. In the example, if the user supplies more USDT, they won't generate more rewards (because the supply amount to be considered is capped at 15 USDT). So, it would make sense that the supply APR would decrease if they supply more USDT.
+Only part of the supplied and borrowed amounts (the capped amounts) are actually "working" on increasing the Prime rewards. The rest of the supplied or borrowed amounts do not generate extra rewards. In the example, if the user supplies more USDT, they won't generate more rewards (because the supply amount to be considered is capped at 15 USDT). So, it would make sense that the supply APR would decrease if they supply more USDT.
 
 ## Bootstrap liquidity for the Prime program
 
@@ -291,10 +182,10 @@ There will be a bootstrap liquidity available for the Prime program. This liquid
 - should be uniformly distributed during a period of time, configurable via VIP
 - is defined in the multiple tokens enabled for the Prime program
 
-This requirement will be mainly satisfied with the `PrimeLiquidityProvider` contract:
+These requirements will be mainly satisfied with the `PrimeLiquidityProvider` contract:
 
 - The `Prime` contract has a reference to the `PrimeLiquidityProvider` contract
-- The `Prime` contract will transfer to itself the available liquidity from the `PrimeLiquidityProvider` as soon as it’s needed when a user claims interests (as it's done with the `ProtocolShareReserve` contract), to reduce the number of transfers
+- The `Prime` contract will transfer to itself the available liquidity from the `PrimeLiquidityProvider` as soon as it’s needed when a user claims interests, to reduce the number of transfers
 - The `Prime` contract takes into account the tokens available in the `PrimeLiquidityProvider` contract, when the interests are accrued and the estimated APR calculated
 
 Regarding the `PrimeLiquidityProvider`,
@@ -310,11 +201,6 @@ Regarding the `PrimeLiquidityProvider`,
 
 ## Pause `claimInterest`
 
-It is desired to have a feature flag to enable/disable the function `claimInterest`. When this feature paused, no users will be able to invoke this function.
+There is a feature flag to enable/disable the function `claimInterest`. When this feature is paused, no users will be able to invoke this function.
 
 The OpenZeppelin Plausable contract is used. Only the `claimInterest` function is under control of this pause mechanism.
-
-## Audit reports
-
-- [Peckshield (2023/August/26)](https://github.com/VenusProtocol/venus-protocol/blob/25f863877a8ef7731652a6209b23ca0c703060ba/audits/055_prime_peckshield_20230826.pdf)
-- [Fairyproof (2023/September/10)](https://github.com/VenusProtocol/venus-protocol/blob/25f863877a8ef7731652a6209b23ca0c703060ba/audits/056_prime_fairyproof_20230910.pdf)

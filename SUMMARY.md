@@ -54,6 +54,7 @@
   * [Automatic income allocation](technical-reference/reference-technical-articles/automatic-income-allocation.md)
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
+  * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
 * [Core Pool](technical-reference/reference-core-pool/README.md)
   * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
     * [ComptrollerLens](technical-reference/reference-core-pool/comptroller/comptroller-lens.md)
@@ -125,7 +126,7 @@
   * [Timelock](technical-reference/reference-governance/timelock.md)
   * [GovernorBravoInterfaces](technical-reference/reference-governance/governor-bravo-interfaces.md)
   * [AccessControlledV8](technical-reference/reference-governance/access-controlled-v8.md)
-* [Prime Program Overview](technical-reference/reference-technical-articles/prime.md)
+
 
 ## Deployed Contracts
 
