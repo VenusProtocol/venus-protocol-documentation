@@ -180,7 +180,7 @@ These requirements will be enforced with the `PrimeLiquidityProvider` contract:
 - The `Prime` contract will transfer to itself the available liquidity from the `PrimeLiquidityProvider` as soon as it’s needed when a user claims interests, to reduce the number of transfers
 - The `Prime` contract takes into account the tokens available in the `PrimeLiquidityProvider` contract, when the interests are accrued and the estimated APR calculated
 
-Regarding the `PrimeLiquidityProvider`,
+Regarding the `PrimeLiquidityProvider`:
 
 - The `PrimeLiquidityProvider` contract maintains a speed per token (see `tokenDistributionSpeeds`, with the number of tokens to release each block), and the needed indexes, to release the required funds per block
 - Anyone could send tokens to the `PrimeLiquidityProvider` contract
