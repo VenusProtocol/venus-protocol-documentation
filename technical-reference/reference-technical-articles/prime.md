@@ -165,7 +165,7 @@ The steps to perform this calculation are:
    1. borrow: 56.76/30 = 1.89 = 189%
    2. supply: 37.84/10 = 3.78 = 378%
 
-Only part of the supplied and borrowed amounts (the capped amounts) are actually "working" on increasing the Prime rewards. The rest of the supplied or borrowed amounts do not generate extra rewards. In the example, if the user supplies more USDT, they won't generate more rewards (because the supply amount to be considered is capped at 15 USDT). So, it would make sense that the supply APR would decrease if they supply more USDT.
+Only the supply and borrow amounts below the cap generate Prime rewards. The supply and borrow amounts above the cap do not generate extra rewards. In the example, if the user supplies more USDT, they won't generate more rewards (because the supply amount to be considered is capped at 15 USDT). Therefore the supply APR would decrease if they supply more USDT.
 
 ## Bootstrap liquidity for the Prime program
 
