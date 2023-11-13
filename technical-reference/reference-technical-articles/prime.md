@@ -9,7 +9,7 @@ This technical article explains implementation details of the Venus Prime progra
 
 ([*Main explanation of Prime rewards*](../../whats-new/prime-yield.md#technical-reward-details))
 
-A limit for qualifiable supply and borrow amounts is set by the staked XVS limit and the market multiplier. The USD values of the tokens and the USD value of XVS will be taken into account to calculate these caps. The following pseudecode shows how $$\sigma_{i,m}$$ is calculated considering the caps:
+Qualifiable supply and borrow amounts limits are set by the staked XVS limit and the market multiplier. The USD values of the tokens and the USD value of XVS will be taken into account to calculate these caps. The following pseudocode shows how $$\sigma_{i,m}$$ is calculated considering the caps:
 
 ```jsx
 borrowUSDCap = toUSD(xvsBalanceOfUser * marketBorrowMultipler)
