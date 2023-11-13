@@ -3,7 +3,7 @@
 
 ## Overview
 
-This is a technical article, explaining some implementaton details of the Venus Prime program. The overview of the Venus Prime program can be checked [here](../../whats-new/prime-yield.md).
+This technical article explains implementation details of the Venus Prime program. The overview of the Venus Prime program can be checked [here](../../whats-new/prime-yield.md).
 
 ## Rewards
 
