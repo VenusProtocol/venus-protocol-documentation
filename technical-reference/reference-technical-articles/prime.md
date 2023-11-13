@@ -145,10 +145,11 @@ The goal is to offer a view function that allows the [Venus UI](https://app.venu
 The steps to perform this calculation are:
 
 1. Fetch the income per block from PrimeLiquidityProvider
-2. Calculate the capped supply and borrow of the user for the market
-3. Calculate the capped XVS balance of the user 
-4. Calculate the user yearly income by multiplying (1) with blocks per year
-5. Now borrow and supply APR of user can be calculated based on ratio of capped borrow and supply of the user. 
+2. Calculate the user yearly income by multiplying (1) with blocks per year
+3. Calculate the user score and total sum of scores for the market. This we can calculate the total rewards aloocation for the user for an year. 
+4. Calculate the capped supply and borrow of the user for the market
+5. Calculate the ratio of allocation of the rewards based on capped supply and borrow of the user
+6. Now borrow and supply APR of user can be calculated based on ratio of capped borrow and supply of the user. 
 
 **Example:**
 
