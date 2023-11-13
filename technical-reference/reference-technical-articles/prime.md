@@ -87,7 +87,7 @@ Then we will update the `userRewardIndex` (`interests[market][account]`) to thei
 
 Every market in Venus (including Isolated Lending markets) contributes to the rewards that the Prime contract will distribute, following the protocol [tokenomics](../../governance/tokenomics.md). The following diagram shows the current implementation for the flow of funds.
 
-<figure><img src="../../.gitbook/assets/prime_funds.png" alt="Flow of funds related to Prime"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/prime_funds.svg" alt="Flow of funds related to Prime"><figcaption></figcaption></figure>
 
 Rewards will be distributed to Prime users only in USDT, USDC, BTC and ETH tokens. Other tokens will have to be converted to the tokens used for rewarding users in Prime. This conversion should follow a configurable (via VIP) distribution table, that initially will be:
 
@@ -119,7 +119,7 @@ If a user tries to claim their rewards and the `Prime` contract doesn’t have e
 
 The following diagram shows the integration of the `SingleTokenConverter` contracts with the Prime contracts:
 
-<figure><img src="../../.gitbook/assets/prime_token_converter.png" alt="Integration of the SingleTokenConverter contracts with the Prime contracts"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/prime_token_converter.svg" alt="Integration of the SingleTokenConverter contracts with the Prime contracts"><figcaption></figcaption></figure>
 
 More information about income collection and distribution can be found [here](../../whats-new/automatic-income-allocation.md).
 
