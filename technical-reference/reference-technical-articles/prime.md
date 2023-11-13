@@ -98,7 +98,7 @@ Rewards will be distributed to Prime users only in USDT, USDC, BTC and ETH token
 | BTC | 17.70% |
 | ETH | 21.13% |
 
-For Example:
+For example:
 
 - The CAKE market generates 1,000 CAKE of total income
 - 10% of the CAKE total income should be allocated to Prime → 100 CAKE (following the protocol tokenomics)
