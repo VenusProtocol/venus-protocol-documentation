@@ -121,7 +121,7 @@ The following diagram shows the integration of the `SingleTokenConverter` contra
 
 <figure><img src="../../.gitbook/assets/prime_token_converter.png" alt="Integration of the SingleTokenConverter contracts with the Prime contracts"><figcaption></figcaption></figure>
 
-More information about Income collection and distribution can be found [here](../../whats-new/automatic-income-allocation.md).
+More information about income collection and distribution can be found [here](../../whats-new/automatic-income-allocation.md).
 
 ## Update cap multipliers and alpha
 
