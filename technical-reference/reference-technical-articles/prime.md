@@ -113,7 +113,7 @@ Interest reserves (part of the protocol income) from Isolated Pools and the Core
 
 The PSR has a function `releaseFunds` that needs to be invoked to release the funds to the destination contracts. We have [SingleTokenConverter](https://github.com/VenusProtocol/protocol-reserve/contracts/TokenConverter/SingleTokenConverter.sol) contracts which receive income from the PSR and convert them to Prime supported reward tokens. 
 
-Each `SingleTokenConverter` sends funds to `PrimeLiquidityProvider` contract which releases the funds to `Prime` contract. Distribution speeds for each of the reward token is configured in the `PrimeLiquidityProvider` contract and based on those speeds `Prime` distirbutes rewards. 
+Each `SingleTokenConverter` sends funds to `PrimeLiquidityProvider` contract which releases the funds to `Prime` contract. Distribution speeds for each of the reward token is configured in the `PrimeLiquidityProvider` contract and based on those speeds `Prime` distributes rewards. 
 
 When a user claims their rewards and if the `Prime` contract doesn’t have enough funds then we trigger the release of funds from `PrimeLiquidityProvider` to `Prime` contract in the same transaction i.e., in the `claimInterest` function.
 
