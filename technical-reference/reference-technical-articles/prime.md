@@ -62,7 +62,7 @@ user B score: 501.1872336
 
 ### Implementation of the rewards in solidity
 
-There is a global `rewardIndex` and `sumOfMembersScore` variables per supported market. `sumOfMembersScore` represents the current sum of all the Prime token holders score. And `rewardIndex` needs to be updated whenever a user’s staked XVS or supply/borrow changes.
+`rewardIndex` and `sumOfMembersScore` are global variables in supported markets used when calculating rewards. `sumOfMembersScore` represents the current sum of all the Prime token holders score and `rewardIndex` needs to be updated whenever a user’s staked XVS or supply/borrow changes.
 
 ```jsx
 // every time accrueInterest is called. delta is interest per score
