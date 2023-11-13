@@ -125,7 +125,7 @@ More information about Income collection and distribution can be found [here](..
 
 ## Update cap multipliers and alpha
 
-Market multipliers and alpha can be updated at anytime and need to be propagated to all users. Changes will be gradually applied to users as they borrow/supply assets and their individual scores are recalculated. This strategy has limitations because the scores will be wrong in aggregate.
+Market multipliers and alpha can be updated at anytime and then need to be propagated to all users. Changes will be gradually applied to users as they borrow/supply assets and their individual scores are recalculated. This strategy has limitations because the scores will be wrong in aggregate until all Prime users have interacted with the markets.
 
 To mitigate this issue, Venus will supply a script that will use the permission-less function `updateScores` to update the scores of all users. This script won’t pause the market or `Prime` contract. Scores need to be updated in multiple transactions because it will run out of gas trying to update all scores in 1 transaction.
 
