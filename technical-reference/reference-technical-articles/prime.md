@@ -1,13 +1,5 @@
 # Venus Prime
 
-- [Overview](#overview)
-- [Rewards](#rewards)
-  - [Implementation of the rewards in solidity](#implementation-of-the-rewards-in-solidity)
-- [Income collection and distribution](#income-collection-and-distribution)
-- [Update cap multipliers and alpha](#update-cap-multipliers-and-alpha)
-- [Calculate APR associated with a Prime market and user](#calculate-apr-associated-with-a-prime-market-and-user)
-- [Bootstrap liquidity for the Prime program](#bootstrap-liquidity-for-the-prime-program)
-- [Pause `claimInterest`](#pause-claiminterest)
 
 ## Overview
 
