@@ -115,7 +115,7 @@ The PSR has a function `releaseFunds` that needs to be invoked to release the fu
 
 Each `SingleTokenConverter` sends funds to `PrimeLiquidityProvider` contract which releases the funds to `Prime` contract. Distribution speeds for each of the reward token is configured in the `PrimeLiquidityProvider` contract and based on those speeds `Prime` distributes rewards. 
 
-When a user claims their rewards and if the `Prime` contract doesn’t have enough funds then we trigger the release of funds from `PrimeLiquidityProvider` to `Prime` contract in the same transaction i.e., in the `claimInterest` function.
+If a user tries to claim their rewards and the `Prime` contract doesn’t have enough funds, then we trigger the release of funds from `PrimeLiquidityProvider` to `Prime` contract in the same transaction i.e., in the `claimInterest` function.
 
 The following diagram shows the integration of the `SingleTokenConverter` contracts with the Prime contracts:
 
