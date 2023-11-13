@@ -38,7 +38,7 @@ return borrowQVL + supplyQVL
 
 A higher α value increases the weight of stake contributions when determining rewards and decreases the weight of supply/borrow contributions. The value of α is between 0-1 (both excluded).
 
-A default weight of 0.5 weight has been evaluated as a good ratio and is not likely to be changed. A higher value will only be needed if we want to attract more XVS stake from the Prime token holders at the expense of supply/ borrow rewards.
+A default weight of 0.5 has been evaluated as a good ratio and is not likely to be changed. A higher value would only be needed if Venus wanted to attract more XVS stake from the Prime token holders at the expense of supply/borrow rewards.
 
 Here is an example to show how the score is impacted based on the value of α:
 
