@@ -136,7 +136,7 @@ There are two main objectives for creating this script:
 - If the Venus community wants to update the scores of all users when multipliers or alpha are updated then we have an immediate option.
 - After minting Prime tokens if the Venus community decides to add an existing market to the Prime token program then the score of all users has to be updated to start giving them rewards. The scores cannot be applied gradually in this case as the initial Prime users for the market will get large rewards for some time. So this script will prevent this scenario.
 
-There is a variable named `totalScoreUpdatesRequired` to track how many scores updates are pending. This is for tracking purposes and visibility to the community.
+There is a variable named `totalScoreUpdatesRequired` to track how many score updates are pending. This is for tracking purposes and visible to the community.
 
 ## Calculate APR associated with a Prime market and user
 
