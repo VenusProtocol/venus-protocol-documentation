@@ -129,7 +129,7 @@ Market multipliers and alpha can be updated at anytime and then need to be propa
 
 To mitigate this issue, Venus will supply a script that will use the permission-less function `updateScores` to update the scores of all users. This script won’t pause market and `Prime` contracts. The scores will need to be updated in multiple transactions because a single transaction will run out of gas trying to update all scores.
 
-As the market won't be paused, there could be inconsistencies because there will be user supply/borrow transactions in between updating scores transactions. These inconsistencies will be very minor compared to letting it update gradually when users will borrow/supply.
+As markets won't be paused, there could be inconsistencies due to user supply/borrow transactions in between updating scores transactions. These inconsistencies will be very minor compared to letting it update gradually when users will borrow/supply.
 
 There are two main objectives for creating this script:
 
