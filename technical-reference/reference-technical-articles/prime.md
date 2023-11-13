@@ -183,7 +183,7 @@ These requirements will be enforced with the `PrimeLiquidityProvider` contract:
 Regarding the `PrimeLiquidityProvider`:
 
 - The `PrimeLiquidityProvider` contract maintains a speed per token (see `tokenDistributionSpeeds`, with the number of tokens to release each block), and the needed indexes, to release the required funds per block
-- Anyone could send tokens to the `PrimeLiquidityProvider` contract
+- Anyone can send tokens to the `PrimeLiquidityProvider` contract
 - Only accounts authorized via ACM will be able to change the `tokenDistributionSpeeds` attribute
 - The `PrimeLiquidityProvider` provides a view function to get the available funds that could be transferred for a specific token, taking into account:
   - the current block number
