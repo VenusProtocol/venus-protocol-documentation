@@ -169,7 +169,7 @@ Only the supply and borrow amounts below the cap generate Prime rewards. The sup
 
 ## Bootstrap liquidity for the Prime program
 
-There will be a bootstrap liquidity available for the Prime program. This liquidity:
+There will be bootstrap liquidity available for the Prime program. This liquidity:
 
 - should be uniformly distributed during a period of time, configurable via VIP
 - is defined in the multiple tokens enabled for the Prime program
