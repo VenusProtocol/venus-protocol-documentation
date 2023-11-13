@@ -174,7 +174,7 @@ There will be bootstrap liquidity available for the Prime program. This liquidit
 - should be uniformly distributed over a period of time, configurable via VIP
 - is defined by the tokens enabled for the Prime program
 
-These requirements will be mainly satisfied with the `PrimeLiquidityProvider` contract:
+These requirements will be enforced with the `PrimeLiquidityProvider` contract:
 
 - The `Prime` contract has a reference to the `PrimeLiquidityProvider` contract
 - The `Prime` contract will transfer to itself the available liquidity from the `PrimeLiquidityProvider` as soon as it’s needed when a user claims interests, to reduce the number of transfers
