@@ -70,7 +70,7 @@ delta = totalIncomeToDistribute / sumOfMembersScore;
 rewardIndex += delta;
 ```
 
-Whenever a user’s supply/borrow or XVS vault balance changes we will calculate the rewards accrued and add them to their account:
+Whenever a user’s supply/borrow or XVS Vault balance changes we will recalculate the rewards accrued and add them to their account:
 
 - In Comptroller (specifically in the `PolicyFacet`), after executing any operation that could impact the Prime score or interest, we accrue the interest and update the score for the Prime user by calling `accrueInterestAndUpdateScore`.
 - In the `XVSVault`, after depositing or requesting a withdrawal, the function `xvsUpdated` is invoked, to review the requirements of Prime holders.
