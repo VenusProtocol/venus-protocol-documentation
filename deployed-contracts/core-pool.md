@@ -16,6 +16,8 @@
 * SwapRouter: [`0x8938E6dA30b59c1E27d5f70a94688A89F7c815a4`](https://bscscan.com/address/0x8938E6dA30b59c1E27d5f70a94688A89F7c815a4)
 * Peg Stability Module: [`0xC138aa4E424D1A8539e8F38Af5a754a2B7c3Cc36`](https://bscscan.com/address/0xC138aa4E424D1A8539e8F38Af5a754a2B7c3Cc36)
 * vBNB Admin: [`0x9A7890534d9d91d473F28cB97962d176e2B65f1d`](https://bscscan.com/address/0x9A7890534d9d91d473F28cB97962d176e2B65f1d)
+* Prime: [`0xBbCD063efE506c3D42a0Fa2dB5C08430288C71FC`](https://bscscan.com/address/0xBbCD063efE506c3D42a0Fa2dB5C08430288C71FC)
+* Prime Liquidity Provider: [`0x23c4F844ffDdC6161174eB32c770D4D8C07833F2`](https://bscscan.com/address/0x23c4F844ffDdC6161174eB32c770D4D8C07833F2)
 
 ### Underlying tokens
 
@@ -99,6 +101,8 @@
 * SwapRouter: [`0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0`](https://testnet.bscscan.com/address/0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0)
 * Peg Stability Module: [`0xB21E69eef4Bc1D64903fa28D9b32491B1c0786F1`](https://testnet.bscscan.com/address/0xB21E69eef4Bc1D64903fa28D9b32491B1c0786F1)
 * vBNB Admin: [`0x04109575c1dbB4ac2e59e60c783800ea10441BBe`](https://testnet.bscscan.com/address/0x04109575c1dbB4ac2e59e60c783800ea10441BBe)
+* Prime: [`0xe840F8EC2Dc50E7D22e5e2991975b9F6e34b62Ad`](https://testnet.bscscan.com/address/0xe840F8EC2Dc50E7D22e5e2991975b9F6e34b62Ad)
+* Prime Liquidity Provider: [`0xAdeddc73eAFCbed174e6C400165b111b0cb80B7E`](https://testnet.bscscan.com/address/0xAdeddc73eAFCbed174e6C400165b111b0cb80B7E)
 
 ### Underlying tokens
 
