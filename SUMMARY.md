@@ -54,6 +54,7 @@
   * [Automatic income allocation](technical-reference/reference-technical-articles/automatic-income-allocation.md)
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
+  * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
 * [Core Pool](technical-reference/reference-core-pool/README.md)
   * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
     * [ComptrollerLens](technical-reference/reference-core-pool/comptroller/comptroller-lens.md)
@@ -66,6 +67,10 @@
         * [RewardFacet](technical-reference/reference-core-pool/comptroller/diamond/facets/reward-facet.md)
         * [SetterFacet](technical-reference/reference-core-pool/comptroller/diamond/facets/setter-facet.md)
   * [VToken](technical-reference/reference-core-pool/vtoken.md)
+  * [Prime](technical-reference/reference-core-pool/prime/README.md)
+    * [Prime token](technical-reference/reference-core-pool/prime/prime.md)
+    * [Prime liquidity provider](technical-reference/reference-core-pool/prime/prime-liquidity-provider.md)
+    * [Prime storage](technical-reference/reference-core-pool/prime/prime-storage.md)
   * [Vaults](technical-reference/reference-core-pool/vaults/README.md)
     * [XVS](technical-reference/reference-core-pool/vaults/xvs/README.md)
       * [XVSVault](technical-reference/reference-core-pool/vaults/xvs/xvs-vault.md)
@@ -125,6 +130,7 @@
   * [Timelock](technical-reference/reference-governance/timelock.md)
   * [GovernorBravoInterfaces](technical-reference/reference-governance/governor-bravo-interfaces.md)
   * [AccessControlledV8](technical-reference/reference-governance/access-controlled-v8.md)
+
 
 ## Deployed Contracts
 

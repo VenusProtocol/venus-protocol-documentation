@@ -15,7 +15,7 @@ The initial distribution excludes VAI funds, which are kept in the VTreasury.
 
 ## Streaming Income Distribution
 
-<figure><img src="../.gitbook/assets/autoamtic-income-allocation.png" alt=""></figure>
+<figure><img src="../.gitbook/assets/automatic-income-allocation.png" alt=""></figure>
 
 The Venus Protocol aims to distribute accumulated reserves in the markets automatically and in near-real-time, leveraging transactions executed by users. This approach eliminates the need for external tools to manage the distribution process. The `ProtocolShareReserve` contract serves as the designated destination for liquidation incomes, allowing for tracking and distribution within the Venus Protocol.
 
