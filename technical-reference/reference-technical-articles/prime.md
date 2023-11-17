@@ -196,4 +196,4 @@ Regarding the `PrimeLiquidityProvider`:
 
 There is a feature flag to enable/disable the function `claimInterest`. When this feature is paused, no users will be able to invoke this function.
 
-The OpenZeppelin Plausable contract is used. Only the `claimInterest` function is under control of this pause mechanism.
+The OpenZeppelin `PausableUpgradeable` contract is used. Only the `claimInterest` function is under control of this pause mechanism.
