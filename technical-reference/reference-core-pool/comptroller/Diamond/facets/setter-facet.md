@@ -313,3 +313,55 @@ function _setVAIVaultInfo(address vault_, uint256 releaseStartBlock_, uint256 mi
 
 - - -
 
+### _setPrimeToken
+
+Sets the prime token contract for the comptroller
+
+```solidity
+function _setPrimeToken(contract IPrime _prime) external returns (uint256)
+```
+
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint256 | uint 0=success, otherwise a failure (see ErrorReporter.sol for details) |
+
+- - -
+
+### _setForcedLiquidation
+
+Enables forced liquidations for a market. If forced liquidation is enabled,
+borrows in the market may be liquidated regardless of the account liquidity
+
+```solidity
+function _setForcedLiquidation(address vTokenBorrowed, bool enable) external
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| vTokenBorrowed | address | Borrowed vToken |
+| enable | bool | Whether to enable forced liquidations |
+
+- - -
+
+### _setForcedLiquidationForUser
+
+Enables forced liquidations for user's borrows in a certain market. If forced
+liquidation is enabled, user's borrows in the market may be liquidated regardless of
+the account liquidity. Forced liquidation may be enabled for a user even if it is not
+enabled for the entire market.
+
+```solidity
+function _setForcedLiquidationForUser(address borrower, address vTokenBorrowed, bool enable) external
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| borrower | address | The address of the borrower |
+| vTokenBorrowed | address | Borrowed vToken |
+| enable | bool | Whether to enable forced liquidations |
+
+- - -
+
