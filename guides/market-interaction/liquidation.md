@@ -153,16 +153,18 @@ Please note that the liquidation process involves complex calculations and requi
 
 ## Forced liquidations
 
-Usually, accounts are only eligible to be liquidated if they are under-collateralized, as described in the previous sections. An exception is if "forced liquidations" are enabled for a market. In this case borrow positions can be liquidated in that market even when the health rate of the user is greater than 1 (i.e. when the account is collateralized). Additionally, the close factor check is ignored, allowing the liquidation of 100% of the debt in one transaction.
+Usually, accounts are only eligible to be liquidated if they are under-collateralized, as described in the previous sections. An exception is if "forced liquidations" are enabled for a market or an individual account in a market. In this case, borrow positions can be liquidated in that market even when the health rate of the account is greater than 1 (i.e. when the account is sufficiently collateralized). Additionally, the close factor check is ignored, allowing the liquidation of 100% of the debt in one transaction.
 
 This feature is based on the implementation done by Compound V2 [here](https://github.com/compound-finance/compound-protocol/pull/123/files). Compound V2 allows "forced liquidations" on markets as soon as the Collateral factor is zero, the Reserve factor is 100% and the borrows are paused. Venus defines a feature flag to enable/disable "forced liquidations", configurable directly via VIP, not based on other parameters. Compound community talked about this feature in [this post](https://www.comp.xyz/t/deprecate-fei-market/3513).
 
-To check if "forced liquidations" are enabled in one market, the function `Comptroller.isForcedLiquidationEnabled(address vToken)` can be called on the Comptroller contract of the pool, providing the address of the market to check.
+On Venus, forced liquidations can be enabled either for an entire market (all borrow positions in the market can be forcefully liquidated), or for individual accounts in a market (only the borrows of a particular account can be forcefully liquidated in the market).
+
+To check if forced liquidations are enabled for an entire market, the function `Comptroller.isForcedLiquidationEnabled(address vToken)` can be called on the Comptroller contract of the pool with the address of the market. To check if forced liquidations are enabled for an individual account in the market, the function `Comptroller.isForcedLiquidationEnabledForUser(address borrower, address vToken)` can be used, providing the account and market address as arguments.
 
 
 {% hint style="info" %}
-**Availability**: 
-Forced Liquidations are available in the Core pool since [VIP-172](https://app.venus.io/#/governance/proposal/172), in the Isolated pools since [VIP-186](https://app.venus.io/#/governance/proposal/186).
+**Availability**:
+Forced Liquidations for entire markets are available in the Core pool since [VIP-172](https://app.venus.io/#/governance/proposal/172), in the Isolated pools since [VIP-186](https://app.venus.io/#/governance/proposal/186). Forced Liquidations for individual accounts are available only in the Core pool since [VIP-210](https://app.venus.io/#/governance/proposal/210).
 {% endhint %}
 
 ### Example
