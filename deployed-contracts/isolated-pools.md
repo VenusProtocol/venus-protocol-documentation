@@ -74,10 +74,9 @@
 * DefaultProxyAdmin: [`0x7877ffd62649b6a1557b55d4c20fcbab17344c91`](https://testnet.bscscan.com/address/0x7877ffd62649b6a1557b55d4c20fcbab17344c91)
 * Comptroller Beacon: [`0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74`](https://testnet.bscscan.com/address/0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74)
 * VToken Beacon: [`0xBF85A90673E61956f8c79b9150BAB7893b791bDd`](https://testnet.bscscan.com/address/0xBF85A90673E61956f8c79b9150BAB7893b791bDd)
-* ProtocolShareReserve: [`0xc987a03ab6C2A5891Fc0919f021cc693B5E55278`](https://testnet.bscscan.com/address/0xc987a03ab6C2A5891Fc0919f021cc693B5E55278)  [note: used by the VToken contracts of the Isolated pools]
 * RiskFund: [`0x487CeF72dacABD7E12e633bb3B63815a386f7012`](https://testnet.bscscan.com/address/0x487CeF72dacABD7E12e633bb3B63815a386f7012)
 * Shortfall: [`0x503574a82fE2A9f968d355C8AAc1Ba0481859369`](https://testnet.bscscan.com/address/0x503574a82fE2A9f968d355C8AAc1Ba0481859369)
-* ProtocolShareReserve: [`0x25c7c7D6Bf710949fD7f03364E9BA19a1b3c10E3`](https://testnet.bscscan.com/address/0x25c7c7D6Bf710949fD7f03364E9BA19a1b3c10E3) [Note: used by the VBNBAdmin contract]
+* ProtocolShareReserve: [`0x25c7c7D6Bf710949fD7f03364E9BA19a1b3c10E3`](https://testnet.bscscan.com/address/0x25c7c7D6Bf710949fD7f03364E9BA19a1b3c10E3)
 
 
 ### Pool Stablecoin
