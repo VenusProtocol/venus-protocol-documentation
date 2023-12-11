@@ -78,6 +78,10 @@ Venus Protocol implements secondary, primary and pivot oracles to create a valid
 
 [ChainLinkOracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/oracles/ChainlinkOracle.sol) is the primary oracle. If a token isn't support by Chainlink then prices will be fetched from a secondary oracle.
 
+[**RedStoneOracle**](https://redstone.finance/)
+
+[RedstoneOracle](https://docs.redstone.finance/docs/smart-contract-devs/get-started/redstone-classic) is used in the Classic model (Chainlink-compatible interface) as a pivot oracle to validate prices returned by primary and secondary oracles. 
+
 [**BinanceOracle**](./reference-oracle/oracles/binance-oracle.md)
 
 [BinanceOracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/oracles/BinanceOracle.sol) contract is responsible for fetching token prices from the Binance oracle. It is used as a secondary oracle.
