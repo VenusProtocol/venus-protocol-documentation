@@ -80,7 +80,7 @@ Venus Protocol implements secondary, primary and pivot oracles to create a valid
 
 [**RedStoneOracle**](https://redstone.finance/)
 
-[RedstoneOracle](https://docs.redstone.finance/docs/smart-contract-devs/get-started/redstone-classic) is used in the Classic model (Chainlink-compatible interface) as a pivot oracle to validate prices returned by primary and secondary oracles. 
+[RedstoneOracle](https://docs.redstone.finance/docs/smart-contract-devs/get-started/redstone-classic) is used in the Classic model (Chainlink-compatible interface) as a pivot oracle to validate prices returned by main and fallback oracles. 
 
 [**BinanceOracle**](./reference-oracle/oracles/binance-oracle.md)
 
