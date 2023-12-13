@@ -78,7 +78,7 @@ The Comptroller of the core pool is divided into 4 facets and 2 parent contracts
 **[RewardFacet](../reference-core-pool/comptroller/Diamond/Facets/RewardFacet.md):** This facet provides the external functions related to all claims and rewards of the protocol.
 
 ### Parent contracts
-**[FacetBase](../reference-core-pool/comptroller/Diamond/Facets/FacetBase.md):** This contract contains functions related to access and checks.
+**[FacetBase](../reference-core-pool/comptroller/Diamond/facets/facet-base.md):** This contract contains functions related to access and checks.
 
 **XVSRewardsHelper:** This contract contains the shared functions used by the RewardFacet and PolicyFacet.
 
