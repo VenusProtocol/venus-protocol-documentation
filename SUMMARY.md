@@ -110,6 +110,7 @@
 * [Oracles](deployed-contracts/oracles.md)
 * [Core Pool](deployed-contracts/core-pool.md)
 * [Governance](deployed-contracts/governance.md)
+* [XVS Multichain](deployed-contracts/xvs-multichain.md)
 
 ***
 
