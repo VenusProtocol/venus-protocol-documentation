@@ -207,6 +207,7 @@ These contracts were in the scope of the audits done before the launch of Isolat
 * [OpenZeppelin audit report - 2023/06/16](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/027_swapRouter_openzeppelin_20230616.pdf)
 * [Certik audit report - 2023/05/30](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/030_swapRouter_certik_20230530.pdf)
 * [Peckshield audit report - 2023/04/19](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/014_swapRouter_peckshield_20230419.pdf)
+* [Hacken audit report - 2023/06/28](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/029_swapRouter_hacken_20230628.pdf)
 
 ### VToken
 
