@@ -148,3 +148,4 @@
 * [Security & Audits](security-and-audits.md)
 * [Resources](resources.md)
 * [Community Resources](./links/community-resources.md)
+* [Community Resources](./links/brand-kit.md)
