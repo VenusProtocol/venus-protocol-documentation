@@ -62,7 +62,7 @@
       * [Diamond](technical-reference/reference-core-pool/comptroller/diamond/diamond.md)
       * [DiamondConsolidated](technical-reference/reference-core-pool/comptroller/diamond/diamond-consolidated.md)
       * [Facets](technical-reference/reference-core-pool/comptroller/diamond/facets/README.md)
-        * [MarketFacet](technical-reference/reference-core-pool/comptroller/diamond/facets/marketfacet.md)
+        * [Market Facet](technical-reference/reference-core-pool/comptroller/diamond/facets/market-facet.md)
         * [PolicyFacet](technical-reference/reference-core-pool/comptroller/diamond/facets/policy-facet.md)
         * [RewardFacet](technical-reference/reference-core-pool/comptroller/diamond/facets/reward-facet.md)
         * [SetterFacet](technical-reference/reference-core-pool/comptroller/diamond/facets/setter-facet.md)
