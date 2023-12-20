@@ -103,6 +103,13 @@
   * [Timelock](technical-reference/reference-governance/timelock.md)
   * [GovernorBravoInterfaces](technical-reference/reference-governance/governor-bravo-interfaces.md)
   * [AccessControlledV8](technical-reference/reference-governance/access-controlled-v8.md)
+* [XVS Bridge](technical-reference/reference-technical-articles/technical-doc-xvs-bridge.md)
+  * [BaseXVSProxyOFT](technical-reference/reference-xvs-bridge/BaseXVSProxyOFT.md)
+  * [XVSProxyOFTSrc](technical-reference/reference-xvs-bridge/XVSProxyOFTSrc.md)
+  * [XVSProxyOFTDest](technical-reference/reference-xvs-bridge/XVSProxyOFTDest.md)
+  * [XVSBridgeAdmin](technical-reference/reference-xvs-bridge/XVSBridgeAdmin.md)
+  * [XVS](technical-reference/reference-xvs-bridge/XVS.md)
+  * [TokenController](technical-reference/reference-xvs-bridge/TokenController.md)
 
 ## Deployed Contracts
 
