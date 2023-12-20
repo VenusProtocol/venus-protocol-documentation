@@ -1,3 +1,11 @@
+* [Account Liquidity Calculations](#account-liquidity-calculations)
+  * [Collateral Factor (CF)](#collateral-factor-cf)
+  * [Liquidation Threshold (LT)](#liquidation-threshold-lt)
+  * [Minimum Liquidatable Collateral](#minimum-liquidatable-collateral)
+* [Finding Under-Collateralized Accounts](#finding-under-collateralized-accounts)
+* [Performing the Liquidation](#performing-the-liquidation)
+* [Forced liquidations](#forced-liquidations)
+
 # Liquidations
 
 This is a step-by-step guide on how to perform liquidations on the Venus protocol. Liquidations involve seizing collateral from under-collateralized accounts to repay outstanding debts. The instructions are targeted towards developers or bots that aim to automate the liquidation process.
@@ -142,3 +150,51 @@ Position is eligible for liquidation and **collateral is < $100**, but the accou
 {% hint style="warning" %}
 Please note that the liquidation process involves complex calculations and requires a deep understanding of Venus Protocol. It's essential to thoroughly test and validate your liquidation bot before deploying it in a production environment. Additionally, keep track of any changes or updates to the Venus Protocol that may impact the liquidation process.
 {% endhint %}
+
+## Forced liquidations
+
+Usually, accounts are only eligible to be liquidated if they are under-collateralized, as described in the previous sections. An exception is if "forced liquidations" are enabled for a market or an individual account in a market. In this case, borrow positions can be liquidated in that market even when the health rate of the account is greater than 1 (i.e. when the account is sufficiently collateralized). Additionally, the close factor check is ignored, allowing the liquidation of 100% of the debt in one transaction.
+
+This feature is based on the implementation done by Compound V2 [here](https://github.com/compound-finance/compound-protocol/pull/123/files). Compound V2 allows "forced liquidations" on markets as soon as the Collateral factor is zero, the Reserve factor is 100% and the borrows are paused. Venus defines a feature flag to enable/disable "forced liquidations", configurable directly via VIP, not based on other parameters. Compound community talked about this feature in [this post](https://www.comp.xyz/t/deprecate-fei-market/3513).
+
+On Venus, forced liquidations can be enabled either for an entire market (all borrow positions in the market can be forcefully liquidated), or for individual accounts in a market (only the borrows of a particular account can be forcefully liquidated in the market).
+
+To check if forced liquidations are enabled for an entire market, the function `Comptroller.isForcedLiquidationEnabled(address vToken)` can be called on the Comptroller contract of the pool with the address of the market. To check if forced liquidations are enabled for an individual account in the market, the function `Comptroller.isForcedLiquidationEnabledForUser(address borrower, address vToken)` can be used, providing the account and market address as arguments.
+
+
+{% hint style="info" %}
+**Availability**:
+Forced Liquidations for entire markets are available in the Core pool since [VIP-172](https://app.venus.io/#/governance/proposal/172), in the Isolated pools since [VIP-186](https://app.venus.io/#/governance/proposal/186). Forced Liquidations for individual accounts are available only in the Core pool since [VIP-210](https://app.venus.io/#/governance/proposal/210).
+{% endhint %}
+
+### Example
+
+Given:
+
+* `vUSDT` collateral factor: 80%
+* 1 USDT = 1 BUSD = 1 USDC = $1 (for simplicity)
+* Close factor: 50%
+* Liquidation incentive: 10%
+* User with the following positions:
+  * Supply: 500 USDT
+  * Borrow: 200 BUSD
+  * Borrow: 100 USDC
+
+The health rate for this user would be `(500 * 0.8) / (200 + 100) = 1.33`. So, in normal circumstances, this user is not eligible to be liquidated.
+
+Now, let’s say we enable the **forced liquidations in the BUSD market** (via VIP). Then:
+
+* Anyone will be allowed to liquidate the BUSD position of the previous user. Moreover, the close factor limit won’t be taken into account. So, the following liquidation would be doable:
+  * Repay amount: 200 BUSD
+  * Collateral market to seize: USDT
+    
+* By doing this liquidation, 220 USDT (repay amount + liquidation incentive) would be seized from the user’s collateral.
+    
+* After the liquidation, the global position of our user would be:
+  * Supply: 280 USDT (500 USDT - 220 USDT seized during the liquidation)
+  * Borrow: 0 BUSD
+  * Borrow: 100 USDC
+    
+* So, the new health rate would be `(280 * 0.8 / 100) = 2.24`. They will be still ineligible for regular liquidations
+    
+* Because the forced liquidation is not enabled in the USDC market, the USDC debt cannot be liquidated (because the health rate is greater than 1).

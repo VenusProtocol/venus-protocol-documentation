@@ -4,10 +4,10 @@ Each asset that is supported by a pool is integrated through an instance of the 
 each isolated pool creates its own `vToken` corresponding to an asset. Within a given pool, each included `vToken` is referred to as a market of
 the pool. The main actions a user regularly interacts with in a market are:
 
-* mint/redeem of vTokens;
-* transfer of vTokens;
-* borrow/repay a loan on an underlying asset;
-* liquidate a borrow or liquidate/heal an account.
+- mint/redeem of vTokens;
+- transfer of vTokens;
+- borrow/repay a loan on an underlying asset;
+- liquidate a borrow or liquidate/heal an account.
 
 A user supplies the underlying asset to a pool by minting `vTokens`, where the corresponding `vToken` amount is determined by the `exchangeRate`.
 The `exchangeRate` will change over time, dependent on a number of factors, some of which accrue interest. Additionally, once users have minted
@@ -51,9 +51,9 @@ function initialize(address underlying_, contract ComptrollerInterface comptroll
 
 #### ❌ Errors
 
-* ZeroAddressNotAllowed is thrown when admin address is zero
-* ZeroAddressNotAllowed is thrown when shortfall contract address is zero
-* ZeroAddressNotAllowed is thrown when protocol share reserve address is zero
+- ZeroAddressNotAllowed is thrown when admin address is zero
+- ZeroAddressNotAllowed is thrown when shortfall contract address is zero
+- ZeroAddressNotAllowed is thrown when protocol share reserve address is zero
 
 ---
 
@@ -76,19 +76,19 @@ function transfer(address dst, uint256 amount) external returns (bool)
 
 | Name | Type | Description                                               |
 | ---- | ---- | --------------------------------------------------------- |
-| \[0]  | bool | success True if the transfer succeeded, reverts otherwise |
+| [0]  | bool | success True if the transfer succeeded, reverts otherwise |
 
 #### 📅 Events
 
-* Emits Transfer event on success
+- Emits Transfer event on success
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* TransferNotAllowed is thrown if trying to transfer to self
+- TransferNotAllowed is thrown if trying to transfer to self
 
 ---
 
@@ -112,19 +112,19 @@ function transferFrom(address src, address dst, uint256 amount) external returns
 
 | Name | Type | Description                                               |
 | ---- | ---- | --------------------------------------------------------- |
-| \[0]  | bool | success True if the transfer succeeded, reverts otherwise |
+| [0]  | bool | success True if the transfer succeeded, reverts otherwise |
 
 #### 📅 Events
 
-* Emits Transfer event on success
+- Emits Transfer event on success
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* TransferNotAllowed is thrown if trying to transfer to self
+- TransferNotAllowed is thrown if trying to transfer to self
 
 ---
 
@@ -147,19 +147,19 @@ function approve(address spender, uint256 amount) external returns (bool)
 
 | Name | Type | Description                                   |
 | ---- | ---- | --------------------------------------------- |
-| \[0]  | bool | success Whether or not the approval succeeded |
+| [0]  | bool | success Whether or not the approval succeeded |
 
 #### 📅 Events
 
-* Emits Approval event
+- Emits Approval event
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* ZeroAddressNotAllowed is thrown when spender address is zero
+- ZeroAddressNotAllowed is thrown when spender address is zero
 
 ---
 
@@ -182,19 +182,19 @@ function increaseAllowance(address spender, uint256 addedValue) external returns
 
 | Name | Type | Description                                   |
 | ---- | ---- | --------------------------------------------- |
-| \[0]  | bool | success Whether or not the approval succeeded |
+| [0]  | bool | success Whether or not the approval succeeded |
 
 #### 📅 Events
 
-* Emits Approval event
+- Emits Approval event
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* ZeroAddressNotAllowed is thrown when spender address is zero
+- ZeroAddressNotAllowed is thrown when spender address is zero
 
 ---
 
@@ -217,19 +217,19 @@ function decreaseAllowance(address spender, uint256 subtractedValue) external re
 
 | Name | Type | Description                                   |
 | ---- | ---- | --------------------------------------------- |
-| \[0]  | bool | success Whether or not the approval succeeded |
+| [0]  | bool | success Whether or not the approval succeeded |
 
 #### 📅 Events
 
-* Emits Approval event
+- Emits Approval event
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* ZeroAddressNotAllowed is thrown when spender address is zero
+- ZeroAddressNotAllowed is thrown when spender address is zero
 
 ---
 
@@ -251,7 +251,7 @@ function balanceOfUnderlying(address owner) external returns (uint256)
 
 | Name | Type    | Description                                      |
 | ---- | ------- | ------------------------------------------------ |
-| \[0]  | uint256 | amount The amount of underlying owned by `owner` |
+| [0]  | uint256 | amount The amount of underlying owned by `owner` |
 
 ---
 
@@ -267,7 +267,7 @@ function totalBorrowsCurrent() external returns (uint256)
 
 | Name | Type    | Description                                  |
 | ---- | ------- | -------------------------------------------- |
-| \[0]  | uint256 | totalBorrows The total borrows with interest |
+| [0]  | uint256 | totalBorrows The total borrows with interest |
 
 ---
 
@@ -289,7 +289,7 @@ function borrowBalanceCurrent(address account) external returns (uint256)
 
 | Name | Type    | Description                          |
 | ---- | ------- | ------------------------------------ |
-| \[0]  | uint256 | borrowBalance The calculated balance |
+| [0]  | uint256 | borrowBalance The calculated balance |
 
 ---
 
@@ -311,15 +311,15 @@ function mint(uint256 mintAmount) external returns (uint256)
 
 | Name | Type    | Description                                                     |
 | ---- | ------- | --------------------------------------------------------------- |
-| \[0]  | uint256 | error Always NO\_ERROR for compatibility with Venus core tooling |
+| [0]  | uint256 | error Always NO_ERROR for compatibility with Venus core tooling |
 
 #### 📅 Events
 
-* Emits Mint and Transfer events; may emit AccrueInterest
+- Emits Mint and Transfer events; may emit AccrueInterest
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 ---
 
@@ -342,19 +342,19 @@ function mintBehalf(address minter, uint256 mintAmount) external returns (uint25
 
 | Name | Type    | Description                                                     |
 | ---- | ------- | --------------------------------------------------------------- |
-| \[0]  | uint256 | error Always NO\_ERROR for compatibility with Venus core tooling |
+| [0]  | uint256 | error Always NO_ERROR for compatibility with Venus core tooling |
 
 #### 📅 Events
 
-* Emits Mint and Transfer events; may emit AccrueInterest
+- Emits Mint and Transfer events; may emit AccrueInterest
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* ZeroAddressNotAllowed is thrown when minter address is zero
+- ZeroAddressNotAllowed is thrown when minter address is zero
 
 ---
 
@@ -376,19 +376,19 @@ function redeem(uint256 redeemTokens) external returns (uint256)
 
 | Name | Type    | Description                                                     |
 | ---- | ------- | --------------------------------------------------------------- |
-| \[0]  | uint256 | error Always NO\_ERROR for compatibility with Venus core tooling |
+| [0]  | uint256 | error Always NO_ERROR for compatibility with Venus core tooling |
 
 #### 📅 Events
 
-* Emits Redeem and Transfer events; may emit AccrueInterest
+- Emits Redeem and Transfer events; may emit AccrueInterest
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* RedeemTransferOutNotPossible is thrown when the protocol has insufficient cash
+- RedeemTransferOutNotPossible is thrown when the protocol has insufficient cash
 
 ---
 
@@ -410,7 +410,7 @@ function redeemUnderlying(uint256 redeemAmount) external returns (uint256)
 
 | Name | Type    | Description                                                     |
 | ---- | ------- | --------------------------------------------------------------- |
-| \[0]  | uint256 | error Always NO\_ERROR for compatibility with Venus core tooling |
+| [0]  | uint256 | error Always NO_ERROR for compatibility with Venus core tooling |
 
 ---
 
@@ -432,19 +432,19 @@ function borrow(uint256 borrowAmount) external returns (uint256)
 
 | Name | Type    | Description                                                     |
 | ---- | ------- | --------------------------------------------------------------- |
-| \[0]  | uint256 | error Always NO\_ERROR for compatibility with Venus core tooling |
+| [0]  | uint256 | error Always NO_ERROR for compatibility with Venus core tooling |
 
 #### 📅 Events
 
-* Emits Borrow event; may emit AccrueInterest
+- Emits Borrow event; may emit AccrueInterest
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* BorrowCashNotAvailable is thrown when the protocol has insufficient cash
+- BorrowCashNotAvailable is thrown when the protocol has insufficient cash
 
 ---
 
@@ -466,15 +466,15 @@ function repayBorrow(uint256 repayAmount) external returns (uint256)
 
 | Name | Type    | Description                                                     |
 | ---- | ------- | --------------------------------------------------------------- |
-| \[0]  | uint256 | error Always NO\_ERROR for compatibility with Venus core tooling |
+| [0]  | uint256 | error Always NO_ERROR for compatibility with Venus core tooling |
 
 #### 📅 Events
 
-* Emits RepayBorrow event; may emit AccrueInterest
+- Emits RepayBorrow event; may emit AccrueInterest
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 ---
 
@@ -497,15 +497,15 @@ function repayBorrowBehalf(address borrower, uint256 repayAmount) external retur
 
 | Name | Type    | Description                                                     |
 | ---- | ------- | --------------------------------------------------------------- |
-| \[0]  | uint256 | error Always NO\_ERROR for compatibility with Venus core tooling |
+| [0]  | uint256 | error Always NO_ERROR for compatibility with Venus core tooling |
 
 #### 📅 Events
 
-* Emits RepayBorrow event; may emit AccrueInterest
+- Emits RepayBorrow event; may emit AccrueInterest
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 ---
 
@@ -530,23 +530,23 @@ function liquidateBorrow(address borrower, uint256 repayAmount, contract VTokenI
 
 | Name | Type    | Description                                                     |
 | ---- | ------- | --------------------------------------------------------------- |
-| \[0]  | uint256 | error Always NO\_ERROR for compatibility with Venus core tooling |
+| [0]  | uint256 | error Always NO_ERROR for compatibility with Venus core tooling |
 
 #### 📅 Events
 
-* Emits LiquidateBorrow event; may emit AccrueInterest
+- Emits LiquidateBorrow event; may emit AccrueInterest
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* LiquidateAccrueCollateralInterestFailed is thrown when it is not possible to accrue interest on the collateral vToken
-* LiquidateCollateralFreshnessCheck is thrown when interest has not been accrued on the collateral vToken
-* LiquidateLiquidatorIsBorrower is thrown when trying to liquidate self
-* LiquidateCloseAmountIsZero is thrown when repayment amount is zero
-* LiquidateCloseAmountIsUintMax is thrown when repayment amount is UINT\_MAX
+- LiquidateAccrueCollateralInterestFailed is thrown when it is not possible to accrue interest on the collateral vToken
+- LiquidateCollateralFreshnessCheck is thrown when interest has not been accrued on the collateral vToken
+- LiquidateLiquidatorIsBorrower is thrown when trying to liquidate self
+- LiquidateCloseAmountIsZero is thrown when repayment amount is zero
+- LiquidateCloseAmountIsUintMax is thrown when repayment amount is UINT_MAX
 
 ---
 
@@ -566,16 +566,16 @@ function setProtocolSeizeShare(uint256 newProtocolSeizeShareMantissa_) external
 
 #### 📅 Events
 
-* Emits NewProtocolSeizeShare event on success
+- Emits NewProtocolSeizeShare event on success
 
 #### ⛔️ Access Requirements
 
-* Controlled by AccessControlManager
+- Controlled by AccessControlManager
 
 #### ❌ Errors
 
-* Unauthorized error is thrown when the call is not authorized by AccessControlManager
-* ProtocolSeizeShareTooBig is thrown when the new seize share is too high
+- Unauthorized error is thrown when the call is not authorized by AccessControlManager
+- ProtocolSeizeShareTooBig is thrown when the new seize share is too high
 
 ---
 
@@ -595,16 +595,16 @@ function setReserveFactor(uint256 newReserveFactorMantissa) external
 
 #### 📅 Events
 
-* Emits NewReserveFactor event; may emit AccrueInterest
+- Emits NewReserveFactor event; may emit AccrueInterest
 
 #### ⛔️ Access Requirements
 
-* Controlled by AccessControlManager
+- Controlled by AccessControlManager
 
 #### ❌ Errors
 
-* Unauthorized error is thrown when the call is not authorized by AccessControlManager
-* SetReserveFactorBoundsCheck is thrown when the new reserve factor is too high
+- Unauthorized error is thrown when the call is not authorized by AccessControlManager
+- SetReserveFactorBoundsCheck is thrown when the new reserve factor is too high
 
 ---
 
@@ -624,16 +624,16 @@ function reduceReserves(uint256 reduceAmount) external
 
 #### 📅 Events
 
-* Emits ReservesReduced event; may emit AccrueInterest
+- Emits ReservesReduced event; may emit AccrueInterest
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* ReduceReservesCashNotAvailable is thrown when the vToken does not have sufficient cash
-* ReduceReservesCashValidation is thrown when trying to withdraw more cash than the reserves have
+- ReduceReservesCashNotAvailable is thrown when the vToken does not have sufficient cash
+- ReduceReservesCashValidation is thrown when trying to withdraw more cash than the reserves have
 
 ---
 
@@ -653,11 +653,11 @@ function addReserves(uint256 addAmount) external
 
 #### 📅 Events
 
-* Emits ReservesAdded event; may emit AccrueInterest
+- Emits ReservesAdded event; may emit AccrueInterest
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 ---
 
@@ -677,15 +677,15 @@ function setInterestRateModel(contract InterestRateModel newInterestRateModel) e
 
 #### 📅 Events
 
-* Emits NewMarketInterestRateModel event; may emit AccrueInterest
+- Emits NewMarketInterestRateModel event; may emit AccrueInterest
 
 #### ⛔️ Access Requirements
 
-* Controlled by AccessControlManager
+- Controlled by AccessControlManager
 
 #### ❌ Errors
 
-* Unauthorized error is thrown when the call is not authorized by AccessControlManager
+- Unauthorized error is thrown when the call is not authorized by AccessControlManager
 
 ---
 
@@ -710,15 +710,15 @@ function healBorrow(address payer, address borrower, uint256 repayAmount) extern
 
 #### 📅 Events
 
-* Emits RepayBorrow, BadDebtIncreased events; may emit AccrueInterest
+- Emits RepayBorrow, BadDebtIncreased events; may emit AccrueInterest
 
 #### ⛔️ Access Requirements
 
-* Only Comptroller
+- Only Comptroller
 
 #### ❌ Errors
 
-* HealBorrowUnauthorized is thrown when the request does not come from Comptroller
+- HealBorrowUnauthorized is thrown when the request does not come from Comptroller
 
 ---
 
@@ -743,20 +743,20 @@ function forceLiquidateBorrow(address liquidator, address borrower, uint256 repa
 
 #### 📅 Events
 
-* Emits LiquidateBorrow event; may emit AccrueInterest
+- Emits LiquidateBorrow event; may emit AccrueInterest
 
 #### ⛔️ Access Requirements
 
-* Only Comptroller
+- Only Comptroller
 
 #### ❌ Errors
 
-* ForceLiquidateBorrowUnauthorized is thrown when the request does not come from Comptroller
-* LiquidateAccrueCollateralInterestFailed is thrown when it is not possible to accrue interest on the collateral vToken
-* LiquidateCollateralFreshnessCheck is thrown when interest has not been accrued on the collateral vToken
-* LiquidateLiquidatorIsBorrower is thrown when trying to liquidate self
-* LiquidateCloseAmountIsZero is thrown when repayment amount is zero
-* LiquidateCloseAmountIsUintMax is thrown when repayment amount is UINT\_MAX
+- ForceLiquidateBorrowUnauthorized is thrown when the request does not come from Comptroller
+- LiquidateAccrueCollateralInterestFailed is thrown when it is not possible to accrue interest on the collateral vToken
+- LiquidateCollateralFreshnessCheck is thrown when interest has not been accrued on the collateral vToken
+- LiquidateLiquidatorIsBorrower is thrown when trying to liquidate self
+- LiquidateCloseAmountIsZero is thrown when repayment amount is zero
+- LiquidateCloseAmountIsUintMax is thrown when repayment amount is UINT_MAX
 
 ---
 
@@ -778,15 +778,15 @@ function seize(address liquidator, address borrower, uint256 seizeTokens) extern
 
 #### 📅 Events
 
-* Emits Transfer, ReservesAdded events
+- Emits Transfer, ReservesAdded events
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* LiquidateSeizeLiquidatorIsBorrower is thrown when trying to liquidate self
+- LiquidateSeizeLiquidatorIsBorrower is thrown when trying to liquidate self
 
 ---
 
@@ -806,11 +806,11 @@ function badDebtRecovered(uint256 recoveredAmount_) external
 
 #### 📅 Events
 
-* Emits BadDebtRecovered event
+- Emits BadDebtRecovered event
 
 #### ⛔️ Access Requirements
 
-* Only Shortfall contract
+- Only Shortfall contract
 
 ---
 
@@ -830,11 +830,11 @@ function setProtocolShareReserve(address payable protocolShareReserve_) external
 
 #### ⛔️ Access Requirements
 
-* Only Governance
+- Only Governance
 
 #### ❌ Errors
 
-* ZeroAddressNotAllowed is thrown when protocol share reserve address is zero
+- ZeroAddressNotAllowed is thrown when protocol share reserve address is zero
 
 ---
 
@@ -854,11 +854,11 @@ function setShortfallContract(address shortfall_) external
 
 #### ⛔️ Access Requirements
 
-* Only Governance
+- Only Governance
 
 #### ❌ Errors
 
-* ZeroAddressNotAllowed is thrown when shortfall contract address is zero
+- ZeroAddressNotAllowed is thrown when shortfall contract address is zero
 
 ---
 
@@ -878,7 +878,27 @@ function sweepToken(contract IERC20Upgradeable token) external
 
 #### ⛔️ Access Requirements
 
-* Only Governance
+- Only Governance
+
+---
+
+### setReduceReservesBlockDelta
+
+A public function to set new threshold of block difference after which funds will be sent to the protocol share reserve
+
+```solidity
+function setReduceReservesBlockDelta(uint256 _newReduceReservesBlockDelta) external
+```
+
+#### Parameters
+
+| Name                          | Type    | Description            |
+| ----------------------------- | ------- | ---------------------- |
+| \_newReduceReservesBlockDelta | uint256 | block difference value |
+
+#### ⛔️ Access Requirements
+
+- Only Governance
 
 ---
 
@@ -901,7 +921,7 @@ function allowance(address owner, address spender) external view returns (uint25
 
 | Name | Type    | Description                                                                        |
 | ---- | ------- | ---------------------------------------------------------------------------------- |
-| \[0]  | uint256 | amount The number of tokens allowed to be spent (type(uint256).max means infinite) |
+| [0]  | uint256 | amount The number of tokens allowed to be spent (type(uint256).max means infinite) |
 
 ---
 
@@ -923,7 +943,7 @@ function balanceOf(address owner) external view returns (uint256)
 
 | Name | Type    | Description                                  |
 | ---- | ------- | -------------------------------------------- |
-| \[0]  | uint256 | amount The number of tokens owned by `owner` |
+| [0]  | uint256 | amount The number of tokens owned by `owner` |
 
 ---
 
@@ -945,7 +965,7 @@ function getAccountSnapshot(address account) external view returns (uint256 erro
 
 | Name          | Type    | Description                                               |
 | ------------- | ------- | --------------------------------------------------------- |
-| error         | uint256 | Always NO\_ERROR for compatibility with Venus core tooling |
+| error         | uint256 | Always NO_ERROR for compatibility with Venus core tooling |
 | vTokenBalance | uint256 | User's balance of vTokens                                 |
 | borrowBalance | uint256 | Amount owed in terms of underlying                        |
 | exchangeRate  | uint256 | Stored exchange rate                                      |
@@ -964,7 +984,7 @@ function getCash() external view returns (uint256)
 
 | Name | Type    | Description                                                  |
 | ---- | ------- | ------------------------------------------------------------ |
-| \[0]  | uint256 | cash The quantity of underlying asset owned by this contract |
+| [0]  | uint256 | cash The quantity of underlying asset owned by this contract |
 
 ---
 
@@ -980,7 +1000,7 @@ function borrowRatePerBlock() external view returns (uint256)
 
 | Name | Type    | Description                                             |
 | ---- | ------- | ------------------------------------------------------- |
-| \[0]  | uint256 | rate The borrow interest rate per block, scaled by 1e18 |
+| [0]  | uint256 | rate The borrow interest rate per block, scaled by 1e18 |
 
 ---
 
@@ -996,7 +1016,7 @@ function supplyRatePerBlock() external view returns (uint256)
 
 | Name | Type    | Description                                             |
 | ---- | ------- | ------------------------------------------------------- |
-| \[0]  | uint256 | rate The supply interest rate per block, scaled by 1e18 |
+| [0]  | uint256 | rate The supply interest rate per block, scaled by 1e18 |
 
 ---
 
@@ -1018,7 +1038,7 @@ function borrowBalanceStored(address account) external view returns (uint256)
 
 | Name | Type    | Description                          |
 | ---- | ------- | ------------------------------------ |
-| \[0]  | uint256 | borrowBalance The calculated balance |
+| [0]  | uint256 | borrowBalance The calculated balance |
 
 ---
 
@@ -1034,7 +1054,7 @@ function exchangeRateStored() external view returns (uint256)
 
 | Name | Type    | Description                                          |
 | ---- | ------- | ---------------------------------------------------- |
-| \[0]  | uint256 | exchangeRate Calculated exchange rate scaled by 1e18 |
+| [0]  | uint256 | exchangeRate Calculated exchange rate scaled by 1e18 |
 
 ---
 
@@ -1050,7 +1070,7 @@ function exchangeRateCurrent() public returns (uint256)
 
 | Name | Type    | Description                                          |
 | ---- | ------- | ---------------------------------------------------- |
-| \[0]  | uint256 | exchangeRate Calculated exchange rate scaled by 1e18 |
+| [0]  | uint256 | exchangeRate Calculated exchange rate scaled by 1e18 |
 
 ---
 
@@ -1066,14 +1086,14 @@ function accrueInterest() public virtual returns (uint256)
 
 | Name | Type    | Description     |
 | ---- | ------- | --------------- |
-| \[0]  | uint256 | Always NO\_ERROR |
+| [0]  | uint256 | Always NO_ERROR |
 
 #### 📅 Events
 
-* Emits AccrueInterest event on success
+- Emits AccrueInterest event on success
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 ---

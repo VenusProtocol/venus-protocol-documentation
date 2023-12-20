@@ -10,9 +10,11 @@
 
 * [Isolated Pools](whats-new/isolated-pools.md)
 * [Reward Distributor](whats-new/reward-distributor.md)
-* [Prime Yield](whats-new/prime-yield.md)
-* [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
 * [Peg Stability Module](whats-new/psm.md)
+* [Automatic Income Allocation](whats-new/automatic-income-allocation.md)
+* [Token Converter](whats-new/token-converter.md)
+* [Venus Prime](whats-new/prime-yield.md)
+* [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
 
 ## Governance
 
@@ -48,11 +50,35 @@
 ## Technical reference
 
 * [Contracts Overview](technical-reference/contracts-overview.md)
+* [Technical articles](technical-reference/reference-technical-articles/README.md)
+  * [Automatic income allocation](technical-reference/reference-technical-articles/automatic-income-allocation.md)
+  * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
+  * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
+  * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
 * [Core Pool](technical-reference/reference-core-pool/README.md)
   * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
     * [ComptrollerLens](technical-reference/reference-core-pool/comptroller/comptroller-lens.md)
-    * [Comptroller](technical-reference/reference-core-pool/comptroller/comptroller.md)
+    * [Diamond](technical-reference/reference-core-pool/comptroller/diamond/README.md)
+      * [Diamond](technical-reference/reference-core-pool/comptroller/diamond/diamond.md)
+      * [DiamondConsolidated](technical-reference/reference-core-pool/comptroller/diamond/diamond-consolidated.md)
+      * [Facets](technical-reference/reference-core-pool/comptroller/diamond/facets/README.md)
+        * [MarketFacet](technical-reference/reference-core-pool/comptroller/diamond/facets/market-facet.md)
+        * [PolicyFacet](technical-reference/reference-core-pool/comptroller/diamond/facets/policy-facet.md)
+        * [RewardFacet](technical-reference/reference-core-pool/comptroller/diamond/facets/reward-facet.md)
+        * [SetterFacet](technical-reference/reference-core-pool/comptroller/diamond/facets/setter-facet.md)
   * [VToken](technical-reference/reference-core-pool/vtoken.md)
+  * [Prime](technical-reference/reference-core-pool/prime/README.md)
+    * [Prime token](technical-reference/reference-core-pool/prime/prime.md)
+    * [Prime liquidity provider](technical-reference/reference-core-pool/prime/prime-liquidity-provider.md)
+    * [Prime storage](technical-reference/reference-core-pool/prime/prime-storage.md)
+  * [Vaults](technical-reference/reference-core-pool/vaults/README.md)
+    * [XVS](technical-reference/reference-core-pool/vaults/xvs/README.md)
+      * [XVSVault](technical-reference/reference-core-pool/vaults/xvs/xvs-vault.md)
+      * [XVSVaultProxy](technical-reference/reference-core-pool/vaults/xvs/xvs-vault-proxy.md)
+      * [XVSStore](technical-reference/reference-core-pool/vaults/xvs/xvs-store.md)
+    * [VAI](technical-reference/reference-core-pool/vaults/vai/README.md)
+      * [VAIVault](technical-reference/reference-core-pool/vaults/xvs/vai-vault.md)
+      * [VAIVaultProxy](technical-reference/reference-core-pool/vaults/xvs/vai-vault-proxy.md)
   * [InterestRateModels](technical-reference/reference-core-pool/interestratemodels/README.md)
     * [JumpModel](technical-reference/reference-core-pool/interestratemodels/jump-model.md)
     * [WhitePaperModel](technical-reference/reference-core-pool/interestratemodels/white-paper-interest-rate-model.md)
@@ -61,6 +87,7 @@
   * [VTreasury](technical-reference/reference-core-pool/vtreasury.md)
   * [VenusLens](technical-reference/reference-core-pool/venus-lens.md)
   * [PSM](technical-reference/reference-core-pool/psm/peg-stability.md)
+  * [VBNBAdmin](technical-reference/reference-core-pool/vbnbadmin.md)
 * [Isolated Pools](technical-reference/reference-isolated-pools/README.md)
   * [Comptroller](technical-reference/reference-isolated-pools/comptroller/README.md)
     * [Comptroller](technical-reference/reference-isolated-pools/comptroller/comptroller.md)
@@ -110,6 +137,7 @@
   * [XVSBridgeAdmin](technical-reference/reference-xvs-bridge/XVSBridgeAdmin.md)
   * [XVS](technical-reference/reference-xvs-bridge/XVS.md)
   * [TokenController](technical-reference/reference-xvs-bridge/TokenController.md)
+
 
 ## Deployed Contracts
 

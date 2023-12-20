@@ -22,86 +22,16 @@ specific assets and custom risk management configurations according to their mar
 # Solidity API
 
 ```solidity
-enum InterestRateModels {
-  WhitePaper,
-  JumpRate
-}
-
-```
-
-```solidity
 struct AddMarketInput {
-  address comptroller;
-  address asset;
-  uint8 decimals;
-  string name;
-  string symbol;
-  enum PoolRegistry.InterestRateModels rateModel;
-  uint256 baseRatePerYear;
-  uint256 multiplierPerYear;
-  uint256 jumpMultiplierPerYear;
-  uint256 kink_;
+  contract VToken vToken;
   uint256 collateralFactor;
   uint256 liquidationThreshold;
-  uint256 reserveFactor;
-  contract AccessControlManager accessControlManager;
-  address beaconAddress;
   uint256 initialSupply;
   address vTokenReceiver;
   uint256 supplyCap;
   uint256 borrowCap;
 }
 ```
-
-### vTokenFactory
-
-VTokenProxyFactory contract address
-
-```solidity
-contract VTokenProxyFactory vTokenFactory
-```
-
----
-
-### jumpRateFactory
-
-JumpRateModelFactory contract address
-
-```solidity
-contract JumpRateModelFactory jumpRateFactory
-```
-
----
-
-### whitePaperFactory
-
-WhitePaperInterestRateModelFactory contract address
-
-```solidity
-contract WhitePaperInterestRateModelFactory whitePaperFactory
-```
-
----
-
-### shortfall
-
-Shortfall contract address
-
-```solidity
-contract Shortfall shortfall
-```
-
----
-
-### protocolShareReserve
-
-Shortfall contract address
-
-```solidity
-address payable protocolShareReserve
-```
-
----
 
 ### metadata
 
@@ -113,57 +43,56 @@ mapping(address => struct PoolRegistryInterface.VenusPoolMetaData) metadata
 
 ---
 
-### setProtocolShareReserve
+### initialize
 
-Sets protocol share reserve contract address
+Initializes the deployer to owner
 
 ```solidity
-function setProtocolShareReserve(address payable protocolShareReserve_) external
+function initialize(address accessControlManager_) external
 ```
 
 #### Parameters
 
-| Name                   | Type            | Description                                        |
-| ---------------------- | --------------- | -------------------------------------------------- |
-| protocolShareReserve\_ | address payable | The address of the protocol share reserve contract |
-
-#### ⛔️ Access Requirements
-
-* Only Governance
-
-#### ❌ Errors
-
-* ZeroAddressNotAllowed is thrown when protocol share reserve address is zero
+| Name                   | Type    | Description                           |
+| ---------------------- | ------- | ------------------------------------- |
+| accessControlManager\_ | address | AccessControlManager contract address |
 
 ---
 
-### setShortfallContract
+### addPool
 
-Sets shortfall contract address
+Adds a new Venus pool to the directory
 
 ```solidity
-function setShortfallContract(contract Shortfall shortfall_) external
+function addPool(string name, contract Comptroller comptroller, uint256 closeFactor, uint256 liquidationIncentive, uint256 minLiquidatableCollateral) external virtual returns (uint256 index)
 ```
 
 #### Parameters
 
-| Name        | Type               | Description                           |
-| ----------- | ------------------ | ------------------------------------- |
-| shortfall\_ | contract Shortfall | The address of the shortfall contract |
+| Name                      | Type                 | Description                                                  |
+| ------------------------- | -------------------- | ------------------------------------------------------------ |
+| name                      | string               | The name of the pool                                         |
+| comptroller               | contract Comptroller | Pool's Comptroller contract                                  |
+| closeFactor               | uint256              | The pool's close factor (scaled by 1e18)                     |
+| liquidationIncentive      | uint256              | The pool's liquidation incentive (scaled by 1e18)            |
+| minLiquidatableCollateral | uint256              | Minimal collateral for regular (non-batch) liquidations flow |
 
-#### ⛔️ Access Requirements
+#### Return Values
 
-* Only Governance
+| Name  | Type    | Description                            |
+| ----- | ------- | -------------------------------------- |
+| index | uint256 | The index of the registered Venus pool |
 
 #### ❌ Errors
 
-* ZeroAddressNotAllowed is thrown when shortfall contract address is zero
+- ZeroAddressNotAllowed is thrown when Comptroller address is zero
+- ZeroAddressNotAllowed is thrown when price oracle address is zero
 
 ---
 
 ### addMarket
 
-Add a market to an existing pool and then mint to provide initial supply.
+Add a market to an existing pool and then mint to provide initial supply
 
 ```solidity
 function addMarket(struct PoolRegistry.AddMarketInput input) external
@@ -171,16 +100,14 @@ function addMarket(struct PoolRegistry.AddMarketInput input) external
 
 #### Parameters
 
-| Name  | Type                               | Description                                                            |
-| ----- | ---------------------------------- | ---------------------------------------------------------------------- |
-| input | struct PoolRegistry.AddMarketInput | The structure describing the parameters for adding a market to a pool. |
+| Name  | Type                               | Description                                                           |
+| ----- | ---------------------------------- | --------------------------------------------------------------------- |
+| input | struct PoolRegistry.AddMarketInput | The structure describing the parameters for adding a market to a pool |
 
 #### ❌ Errors
 
-* ZeroAddressNotAllowed is thrown when Comptroller address is zero
-* ZeroAddressNotAllowed is thrown when asset address is zero
-* ZeroAddressNotAllowed is thrown when VToken beacon address is zero
-* ZeroAddressNotAllowed is thrown when vTokenReceiver address is zero
+- ZeroAddressNotAllowed is thrown when vToken address is zero
+- ZeroAddressNotAllowed is thrown when vTokenReceiver address is zero
 
 ---
 
@@ -230,7 +157,7 @@ function getAllPools() external view returns (struct PoolRegistryInterface.Venus
 
 | Name | Type                                     | Description                                                         |
 | ---- | ---------------------------------------- | ------------------------------------------------------------------- |
-| \[0]  | struct PoolRegistryInterface.VenusPool\[] | A list of all pools within PoolRegistry, with details for each pool |
+| [0]  | struct PoolRegistryInterface.VenusPool[] | A list of all pools within PoolRegistry, with details for each pool |
 
 ---
 

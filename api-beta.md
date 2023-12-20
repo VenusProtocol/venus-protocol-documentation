@@ -63,10 +63,6 @@ These steps describe the process of upgrading endpoints to new versions as they 
 [swagger.json](.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger.json" path="/api/market_history/graph" method="get" fullWidth="true" %}
-[swagger.json](.gitbook/assets/swagger.json)
-{% endswagger %}
-
 ## Activity
 
 {% swagger src=".gitbook/assets/swagger.json" path="/activity/transactions" method="get" fullWidth="true" %}

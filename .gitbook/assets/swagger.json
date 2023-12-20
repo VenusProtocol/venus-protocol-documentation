@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Venus Protocol API",
-    "version": "1.6.0-dev.12",
+    "version": "1.8.0",
     "summary": "API to support the Venus Protocol with data indexed from on chain activity",
     "description": ""
   },
@@ -119,10 +119,18 @@
           },
           {
             "$ref": "#/parameters/address",
+            "name": "from",
             "description": "Filter by from address"
           },
           {
-            "$ref": "#/parameters/vTokenAddress"
+            "$ref": "#/parameters/address",
+            "name": "to",
+            "description": "Filter by to address"
+          },
+          {
+            "$ref": "#/parameters/vTokenAddress",
+            "name": "tokenAddress",
+            "description": "Filter transactions by tokenAddress"
           },
           {
             "$ref": "#/parameters/transactionHash"
@@ -178,49 +186,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MalformedRequest"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/authentication/:address": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/address",
-            "in": "path"
-          }
-        ],
-        "description": "Check if an account is blacklisted from UI",
-        "responses": {
-          "200": {
-            "description": "Returned if account is allowed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Returned if account is not allowed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
                 }
               }
             }
@@ -769,6 +734,109 @@
         }
       }
     },
+    "/governance/voters/:address/history": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/address",
+            "in": "path",
+            "required": true
+          },
+          {
+            "$ref": "#/parameters/versionNext"
+          }
+        ],
+        "description": "Retrieve the history of proposals a given account has voted on",
+        "responses": {
+          "200": {
+            "description": "Array of proposals in which the given account has voted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "number"
+                    },
+                    "limit": {
+                      "type": "number"
+                    },
+                    "total": {
+                      "type": "number"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ProposalList"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/governance/voters/": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/versionNext"
+          }
+        ],
+        "description": "Retrieve the leaderboard of voter accounts",
+        "responses": {
+          "200": {
+            "description": "Paginated response of the voter accounts, ordered by most voting weight to the least",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "number"
+                    },
+                    "limit": {
+                      "type": "number"
+                    },
+                    "total": {
+                      "type": "number"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/VoterAccount"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/governance/venus": {
       "get": {
         "parameters": [
@@ -792,94 +860,6 @@
                   "properties": {
                     "data": {
                       "$ref": "#/components/schemas/GetVenus"
-                    },
-                    "status": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/market_history/graph": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/asset"
-          }
-        ],
-        "description": "Fetch an array of daily snapshots of supply and borrow totals and supply and borrow apy over the previous 365 days for a given asset.",
-        "responses": {
-          "200": {
-            "description": "Returns historical data for the requested asset.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/MarketGraphData"
-                    },
-                    "status": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/markets/history": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/asset"
-          }
-        ],
-        "description": "Fetch an array of daily snapshots of supply and borrow totals and supply and borrow apy over the previous 365 days for a given asset.",
-        "responses": {
-          "200": {
-            "description": "Returns historical data for the requested asset.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/MarketGraphData"
                     },
                     "status": {
                       "type": "boolean"
@@ -1065,6 +1045,46 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MalformedRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/markets/history": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/asset"
+          }
+        ],
+        "description": "Fetch an array of daily snapshots of supply and borrow totals and supply and borrow apy over the previous 365 days for a given asset.",
+        "responses": {
+          "200": {
+            "description": "Returns historical data for the requested asset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "result"
+                  ],
+                  "properties": {
+                    "result": {
+                      "$ref": "#/components/schemas/MarketGraphData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1563,14 +1583,10 @@
       "GetVenus": {
         "type": "object",
         "required": [
-          "venusRate",
           "dailyVenus",
           "markets"
         ],
         "properties": {
-          "venusRate": {
-            "type": "string"
-          },
           "dailyVenus": {
             "type": "string"
           },
@@ -2149,17 +2165,7 @@
             "type": "boolean"
           },
           "state": {
-            "type": "string",
-            "enum": [
-              "Pending",
-              "Active",
-              "Canceled",
-              "Defeated",
-              "Succeeded",
-              "Queued",
-              "Expired",
-              "Executed"
-            ]
+            "type": "integer"
           },
           "voterCount": {
             "type": "integer"
@@ -2171,12 +2177,7 @@
             "type": "string"
           },
           "proposalType": {
-            "type": "string",
-            "enum": [
-              "Normal",
-              "FastTrack",
-              "Critical"
-            ]
+            "type": "integer"
           }
         }
       },
@@ -2292,17 +2293,7 @@
             "type": "boolean"
           },
           "state": {
-            "type": "string",
-            "enum": [
-              "Pending",
-              "Active",
-              "Canceled",
-              "Defeated",
-              "Succeeded",
-              "Queued",
-              "Expired",
-              "Executed"
-            ]
+            "type": "integer"
           },
           "voterCount": {
             "type": "integer"
@@ -2314,12 +2305,7 @@
             "type": "string"
           },
           "proposalType": {
-            "type": "string",
-            "enum": [
-              "Normal",
-              "FastTrack",
-              "Critical"
-            ]
+            "type": "integer"
           },
           "proposalActions": {
             "$ref": "#/components/schemas/ProposalAction"
