@@ -2,6 +2,6 @@
 
 ## XVS logo
 
-<figure><img src=".gitbook/assets/bradn_kit/XVS/preview.png" alt="XVS logo"><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/brand_kit/XVS/preview.png" alt="XVS logo"><figcaption></figcaption></figure>
 
-[[SVG](.gitbook/assets/bradn_kit/XVS/XVS.svg)] [[PNG](.gitbook/assets/bradn_kit/XVS/XVS.png)] [[PNG 2x](.gitbook/assets/bradn_kit/XVS/XVS_2x.png)]
+[[SVG](.gitbook/assets/brand_kit/XVS/XVS.svg)] [[PNG](.gitbook/assets/brand_kit/XVS/XVS.png)] [[PNG 2x](.gitbook/assets/brand_kit/XVS/XVS_2x.png)]
