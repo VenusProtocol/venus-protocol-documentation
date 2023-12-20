@@ -1,3 +1,9 @@
+# Monitoring
+
+* [Dune dashboard](https://dune.com/xvslove_team/xvs)
+* [Chaos labs analytics](https://community.chaoslabs.xyz/venus/risk/overview)
+* [Messari dashboard](https://messari.io/project/venus/protocols/venus)
+
 # Telegram groups
 
 * [Main Venus group](https://t.me/venusprotocol)
