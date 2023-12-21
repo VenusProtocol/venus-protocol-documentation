@@ -10,12 +10,10 @@ Thus, if we wanted to store the 5.1, mantissa would store 5.1e18. That is:
 struct Exp {
   uint256 mantissa;
 }
-
 ```
 
 ```solidity
 struct Double {
   uint256 mantissa;
 }
-
 ```
