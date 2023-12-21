@@ -37,7 +37,7 @@ The actual token transfer is performed using the `sendFrom` function of the Brid
 
 ### 2.1. Sending Tokens
 
-<figure><img src="../../.gitbook/assets/bnb-dest1.jpg" alt="Assets bridging from src chain to dest chain"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/XVS_bridge_BNB_to_dest.svg" alt="Assets bridging from src chain to dest chain"><figcaption></figcaption></figure>
 
 1. Call the `sendFrom` function of the `Bridge` contract with the following parameters::
    - `_from`: Your address on the BNB chain
@@ -55,7 +55,7 @@ When you send XVS tokens to the destination chain using the Bridge, the tokens w
 
 ## 4. Transferring Tokens Back to the BNB chain
 
-<figure><img src="../../.gitbook/assets/dest-bnb.jpg" alt="Assets bridging from dest chain to src chain"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/XVS_bridge_dest_to_BNB.svg" alt="Assets bridging from dest chain to src chain"><figcaption></figcaption></figure>
 
 To transfer XVS tokens back to the BNB chain, follow a similar process as mentioned in the earlier send section. You don't need to approve the `Bridge` contract on the destination chain to spend XVS tokens on your behalf. The tokens will be burned on the destination chain on your behalf and unlocked and transferred to the receiver's address on the BNB chain.
 
@@ -65,7 +65,7 @@ After initiating a token transfer, you should wait for the transaction to confir
 
 ## 6. Security and Risks
 
-<figure><img src="../../.gitbook/assets/risk.jpg" alt="Risks and security"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/XVS_bridge_risks.svg" alt="Risks and security"><figcaption></figcaption></figure>
 
 ### 6.1. Ownership Transfer
 
