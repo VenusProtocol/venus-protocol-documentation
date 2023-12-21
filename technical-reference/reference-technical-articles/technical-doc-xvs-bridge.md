@@ -96,9 +96,49 @@ After initiating a token transfer, you should wait for the transaction to confir
 
 - Cap on the amount of tokens that can be minted in the destination target network. This feature can be integrated in Token Controller.
 
-### 6.7. Bridge Model
+### 6.7. Mitigation Plans for Mint Cap Reached
 
-- The `XVSProxyOFTDest` contract serves as the bridge model. It will be authorized to mint and burn tokens in the destination chain. Limits on these actions will be set by Governance or the Guardian.
+- If XVS become stuck between bridges due to exceeding the mint cap, the system will extend the mint cap via VIP. The failed message will be retried.
+
+### 6.8. Bridge Model
+
+- The `XVSProxyOFTDest` contract serves as the bridge model. It will be authorized to mint and burn XVS in the destination chain. Limits on these actions will be set by Governance or the Guardian.
+- While the initial deployment involves one bridge contract per network, the system is designed to support several bridges simultaneously, providing users with flexibility.
+- The system's architecture allows for the deployment of multiple bridges within the same network, offering users the option to choose different bridges for their transactions. This flexibility ensures efficient and diverse token bridging capabilities.
+
+**Example of Bridging in Case of Multiple Active Bridges:**
+
+**Initial Setup:**
+- Bridge Contract A (`BridgeA`) has a `minterToMintedAmount` of 100 XVS.
+- User A holds all 100 XVS minted by `BridgeA`.
+
+**Separate Bridge Contract B Setup:**
+- Bridge Contract B (`BridgeB`) has a separate `minterToMintedAmount` of 50 XVS.
+- User B holds all 50 XVS minted by `BridgeB`.
+
+**User B Bridges Off Tokens Using Bridge A:**
+- User B decides to use `BridgeA` to bridge off his 50 XVS.
+- After the successful bridging process, `BridgeA`'s `minterToMintedAmount` is now 50, reflecting the XVS burned by User B through this `BridgeA`.
+
+**User A Bridges Off Tokens Using Both Bridges:**
+- Now, User A intends to bridge off his 100 XVS, splitting them between `BridgeA` and `BridgeB`.
+- User A uses `BridgeA` for 50 XVS and `BridgeB` for the remaining 50 XVS.
+
+### 6.9. Bridge Replacement Scenario
+In the event that a bridge contract needs replacement, such as due to a security risk, the following steps will be taken:
+1. **Pause the Bridge:**
+   - Temporarily pause the bridge to prevent further transactions.
+
+2. **Token Evaluation:**
+   - Evaluate whether pausing the XVS token is necessary during the replacement process.
+
+3. **Migrate MinterToMintedAmount:**
+   - Move the `minterToMintedAmount` value to a different bridge using the new `migrateMintedTokens` function.
+
+4. **Reduce MintCap:**
+   - Reduce the `mintCap` to zero for the bridge with security issues.
+
+These steps ensure a secure and systematic replacement of a bridge contract within the Venus Bridge network, maintaining the integrity of the token system.
 
 ## 7. Contract Details
 
