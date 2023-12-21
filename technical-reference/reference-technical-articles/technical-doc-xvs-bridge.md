@@ -1,4 +1,4 @@
-# Cross-Chain Bridge Documentation
+# XVS Cross-Chain Bridge Documentation
 
 This documentation provides detailed instructions and explanations for using the XVS Cross-Chain Bridge. The bridge allows users to transfer tokens between different blockchain networks, specifically between the [BNB chain](https://www.bnbchain.org) and a destination chain. The supported Destination Chains are:
 
@@ -15,10 +15,10 @@ To start using the XVS Cross-Chain Bridge, follow these steps:
 
 ### 1.1. Approving XVS Tokens
 
-Before transferring XVS tokens, you need to approve the Bridge contract on the BNB chain to spend XVS tokens on your behalf. Follow these steps:
+Before transferring XVS tokens, you need to approve the `Bridge` contract on the BNB chain to spend XVS tokens on your behalf. Follow these steps:
 
 1. Call the `approve` function of the XVS token contract with the following parameters:
-   - `_spender`: Address of the Bridge contract on the BNB chain.
+   - `_spender`: Address of the `Bridge` contract on the BNB chain.
    - `_amount`: Amount of XVS tokens to approve for transfer.
 
 ### 1.2. Estimating Transaction Fees
@@ -33,7 +33,7 @@ To estimate the transaction fees required to send XVS tokens to the destination 
 
 ## 2. Transferring Tokens
 
-The actual token transfer is performed using the `sendFrom` function of the Bridge contract. Follow these steps:
+The actual token transfer is performed using the `sendFrom` function of the `Bridge` contract. Follow these steps:
 
 ### 2.1. Sending Tokens
 
@@ -51,7 +51,7 @@ The actual token transfer is performed using the `sendFrom` function of the Brid
 
 ## 3. Receiving Tokens on the Destination Chain
 
-When you send XVS tokens to the destination chain using the Bridge, the tokens will be minted by the Bridge contract to the receiver's address on the destination chain.
+When you send XVS tokens to the destination chain using the bridge, the tokens will be minted by the `Bridge` contract to the receiver's address on the destination chain.
 
 ## 4. Transferring Tokens Back to the BNB chain
 
@@ -70,7 +70,7 @@ After initiating a token transfer, you should wait for the transaction to confir
 ### 6.1. Ownership Transfer
 
 - Use the `transferOwnership` method in the `XVSBridgeAdmin` contract to transfer ownership of the admin contract.
-- Use the `transferBridgeOwnership` method to transfer ownership of the Bridge contract from one contract to another.
+- Use the `transferBridgeOwnership` method to transfer ownership of the `Bridge` contract from one contract to another.
 - Ownership control is crucial in case of emergencies or security issues.
 - The owner of the `XVSBridgeAdmin` contract will be initially the `Guardian`, but it will be transferred to Governance as soon as the `MultichainGovernance` module is deployed.
 
@@ -78,7 +78,7 @@ After initiating a token transfer, you should wait for the transaction to confir
 
 - The `Bridge` includes a pause and unpause mechanism. Use the `pause` method to halt the contract's functionality and `unpause` to resume.
 - Pausing is a security measure to prevent further transactions during emergencies or potential attacks.
-- Cross-chain messages that attempt to mint or release tokens to the receiver can be received by the destination bridge. These messages will fail, but they can be retried once the destination bridge has been unpaused.
+- XVS Cross-chain messages that attempt to mint or release tokens to the receiver can be received by the destination `Bridge` contract. These messages will fail, but they can be retried once the destination `Bridge` Contract has been unpaused.
 
 ### 6.3. Limit the Amount of XVS Transfers
 
@@ -102,43 +102,43 @@ After initiating a token transfer, you should wait for the transaction to confir
 
 ### 6.8. Bridge Model
 
-- The `XVSProxyOFTDest` contract serves as the bridge model. It will be authorized to mint and burn XVS in the destination chain. Limits on these actions will be set by Governance or the Guardian.
-- While the initial deployment involves one bridge contract per network, the system is designed to support several bridges simultaneously, providing users with flexibility.
+- The `XVSProxyOFTDest` contract serves as the `Bridge` model. It will be authorized to mint and burn XVS in the destination chain. Limits on these actions will be set by Governance or the Guardian.
+- While the initial deployment involves one `Bridge` contract per network, the system is designed to support several bridges simultaneously, providing users with flexibility.
 - The system's architecture allows for the deployment of multiple bridges within the same network, offering users the option to choose different bridges for their transactions. This flexibility ensures efficient and diverse token bridging capabilities.
 
-**Example of Bridging in Case of Multiple Active Bridges:**
+   **Example of Bridging in Case of Multiple Active Bridges:**
 
-**Initial Setup:**
-- Bridge Contract A (`BridgeA`) has a `minterToMintedAmount` of 100 XVS.
-- User A holds all 100 XVS minted by `BridgeA`.
+      1. Initial Setup:
+         - Bridge Contract A (BridgeA) has a minterToMintedAmount of 100 XVS.
+         - User A holds all 100 XVS minted by BridgeA.
 
-**Separate Bridge Contract B Setup:**
-- Bridge Contract B (`BridgeB`) has a separate `minterToMintedAmount` of 50 XVS.
-- User B holds all 50 XVS minted by `BridgeB`.
+      2. Separate Bridge Contract B Setup:
+         - Bridge Contract B (BridgeB) has a separate minterToMintedAmount of 50 XVS.
+         - User B holds all 50 XVS minted by BridgeB.
 
-**User B Bridges Off Tokens Using Bridge A:**
-- User B decides to use `BridgeA` to bridge off his 50 XVS.
-- After the successful bridging process, `BridgeA`'s `minterToMintedAmount` is now 50, reflecting the XVS burned by User B through this `BridgeA`.
+      3. User B Bridges Off Tokens Using Bridge A:
+         - User B decides to use BridgeA to bridge off his 50 XVS.
+         - After the successful bridging process, BridgeA's minterToMintedAmount is now 50, reflecting the XVS burned by User B through this BridgeA.
 
-**User A Bridges Off Tokens Using Both Bridges:**
-- Now, User A intends to bridge off his 100 XVS, splitting them between `BridgeA` and `BridgeB`.
-- User A uses `BridgeA` for 50 XVS and `BridgeB` for the remaining 50 XVS.
+      4. User A Bridges Off Tokens Using Both Bridges:
+         - Now, User A intends to bridge off his 100 XVS, splitting them between BridgeA and BridgeB.
+         - User A uses BridgeA for 50 XVS and BridgeB for the remaining 50 XVS.
 
 ### 6.9. Bridge Replacement Scenario
-In the event that a bridge contract needs replacement, such as due to a security risk, the following steps will be taken:
+In the event that a `Bridge` contract needs replacement, such as due to a security risk, the following steps will be taken:
 1. **Pause the Bridge:**
-   - Temporarily pause the bridge to prevent further transactions.
+   - Temporarily pause the `Bridge` contract to prevent further transactions.
 
 2. **Token Evaluation:**
    - Evaluate whether pausing the XVS token is necessary during the replacement process.
 
 3. **Migrate MinterToMintedAmount:**
-   - Move the `minterToMintedAmount` value to a different bridge using the new `migrateMintedTokens` function.
+   - Move the `minterToMintedAmount` value to a different `Bridge` contract address using the new `migrateMintedTokens` function.
 
 4. **Reduce MintCap:**
-   - Reduce the `mintCap` to zero for the bridge with security issues.
+   - Reduce the `mintCap` to zero for the `Bridge` contract address with security issues.
 
-These steps ensure a secure and systematic replacement of a bridge contract within the Venus Bridge network, maintaining the integrity of the token system.
+These steps ensure a secure and systematic replacement of a `Bridge` contract, maintaining the integrity of the token. Simultaneously, on the BNB chain, the locked XVS will be transferred and locked in the other `Bridge` contract, ensuring a fix total supply of XVS.
 
 ## 7. Contract Details
 
@@ -148,7 +148,7 @@ Here, we provide more details about the key contracts used in the XVS Cross-chai
 
 - [XVSBridgeAdmin](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSBridgeAdmin.sol) is the admin contract for the bridge, ensuring proper setup.
 - It contains a `functionRegistry` mapping for function signatures, allowing the contract to call corresponding methods in destination contracts after ensuring access control permissions.
-- Ownership transfers for XVSBridgeAdmin and Bridge can be executed via the `transferOwnership` and `transferBridgeOwnership` methods respectively.
+- Ownership transfers for `XVSBridgeAdmin` and `Bridge` can be executed via the `transferOwnership` and `transferBridgeOwnership` methods respectively.
 
 ### 7.2. XVSProxySrc
 
@@ -170,9 +170,9 @@ Here, we provide more details about the key contracts used in the XVS Cross-chai
 
 - The [XVS](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/token/XVS.sol) token contract is deployed on destination chains, and it is used within the `XVSProxyDest` contract.
 - The XVS token follows the ERC20 standard and extends the [TokenController](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/token/TokenController.sol) ownable contract, which contains all controlling mechanisms of the XVS.
-- It is responsible for setting minting limits for the minter (in this case, the remote bridge contract).
-- When receiving transactions and tokens from the source chain's Bridge contract, an external call is made to mint tokens for the receiver.
-- When sending tokens to the source chain's Bridge contract, an external call is made from the bridge contract to burn tokens from the sender.
+- It is responsible for setting minting limits for the minter (in this case, the remote `Bridge` contract).
+- When receiving transactions and tokens from the source chain's `Bridge` contract, an external call is made to mint tokens for the receiver.
+- When sending tokens to the source chain's `Bridge` contract, an external call is made from the `Bridge` contract to burn tokens from the sender.
 - Offers a blacklisting feature to prevent certain users from receiving, transferring and bridging XVS tokens.
 - [ACM](https://github.com/VenusProtocol/governance-contracts/blob/develop/contracts/Governance/AccessControlManager.sol) integration is used for setting minting caps and blacklisting, and these settings can be configured via VIPs or Guardian.
 
