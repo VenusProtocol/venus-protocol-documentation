@@ -6,17 +6,17 @@ Contract with basic features to track/hold different assets for different Comptr
 
 ### sweepToken
 
-Function to sweep baseAsset for pool, Tokens are sent to admin (timelock)
+Function to sweep baseAsset for pool, Tokens are sent to address(to)
 
 ```solidity
-function sweepToken(address comptroller, address asset, uint256 amount) external
+function sweepToken(address tokenAddress, address to, uint256 amount) external
 ```
 
 #### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| comptroller | address | The address of the pool for the amount need to be sweeped |
-| asset | address | Address of the asset(token) |
+| tokenAddress | address | Address of the asset(token) |
+| to | address | Address to which assets will be transferred |
 | amount | uint256 | Amount need to sweep for the pool |
 
 #### 📅 Events
@@ -27,7 +27,27 @@ function sweepToken(address comptroller, address asset, uint256 amount) external
 
 #### ❌ Errors
 * ZeroAddressNotAllowed is thrown when tokenAddress/to address is zero
-* InsufficientPoolReserve is thrown when pool reserve is less than the amount needed
+* ZeroValueNotAllowed is thrown when amount is zero
+
+- - -
+
+### getPoolsBaseAssetReserves
+
+Get the Amount of the Base asset in the risk fund for the specific pool.
+
+```solidity
+function getPoolsBaseAssetReserves(address comptroller) external view returns (uint256)
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| comptroller | address | Comptroller address(pool). |
+
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint256 | Base Asset's reserve in risk fund. |
 
 - - -
 

@@ -14,6 +14,16 @@ uint256 MAX_INCENTIVE
 
 - - -
 
+### minAmountToConvert
+
+Min amount to convert for private conversions. Defined in USD, with 18 decimals
+
+```solidity
+uint256 minAmountToConvert
+```
+
+- - -
+
 ### priceOracle
 
 Venus price oracle contract
@@ -24,19 +34,19 @@ contract ResilientOracle priceOracle
 
 - - -
 
-### convertConfigurations
+### conversionConfigurations
 
 conversion configurations for the existing pairs
 
 ```solidity
-mapping(address => mapping(address => struct IAbstractTokenConverter.ConversionConfig)) convertConfigurations
+mapping(address => mapping(address => struct IAbstractTokenConverter.ConversionConfig)) conversionConfigurations
 ```
 
 - - -
 
 ### destinationAddress
 
-Address at all incoming tokens are transferred to
+Address that all incoming tokens are transferred to
 
 ```solidity
 address destinationAddress
@@ -46,10 +56,20 @@ address destinationAddress
 
 ### conversionPaused
 
-Boolean of if convert is paused
+Boolean for if conversion is paused
 
 ```solidity
 bool conversionPaused
+```
+
+- - -
+
+### converterNetwork
+
+Address of the converterNetwork contract
+
+```solidity
+contract IConverterNetwork converterNetwork
 ```
 
 - - -
@@ -69,7 +89,7 @@ function pauseConversion() external
 * Restricted by ACM
 
 #### ❌ Errors
-* ConversionTokensPaused thrown when convert is already paused
+* ConversionTokensPaused thrown when conversion is already paused
 
 - - -
 
@@ -88,7 +108,7 @@ function resumeConversion() external
 * Restricted by ACM
 
 #### ❌ Errors
-* ConversionTokensActive thrown when convert is already active
+* ConversionTokensActive thrown when conversion is already active
 
 - - -
 
@@ -121,44 +141,75 @@ function setDestination(address destinationAddress_) external
 #### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| destinationAddress_ | address | Address of the new price oracle to set |
+| destinationAddress_ | address | The new destination address to be set |
 
 #### ⛔️ Access Requirements
 * Only Governance
 
 - - -
 
-### setConversionConfig
+### setConverterNetwork
 
-Set the configuration for new or existing convert pair
+Sets a converter network contract address
 
 ```solidity
-function setConversionConfig(struct IAbstractTokenConverter.ConversionConfig conversionConfig) external
+function setConverterNetwork(contract IConverterNetwork converterNetwork_) external
 ```
 
 #### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| conversionConfig | struct IAbstractTokenConverter.ConversionConfig | ConversionConfig config details to update |
-
-#### 📅 Events
-* Emits ConversionConfigUpdated event on success
+| converterNetwork_ | contract IConverterNetwork | The converterNetwork address to be set |
 
 #### ⛔️ Access Requirements
-* Controlled by AccessControlManager
+* Only Governance
+
+- - -
+
+### setMinAmountToConvert
+
+Min amount to convert setter
+
+```solidity
+function setMinAmountToConvert(uint256 minAmountToConvert_) external
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| minAmountToConvert_ | uint256 | Min amount to convert |
+
+#### ⛔️ Access Requirements
+* Only Governance
+
+- - -
+
+### setConversionConfigs
+
+Batch sets the conversion configurations
+
+```solidity
+function setConversionConfigs(address tokenAddressIn, address[] tokenAddressesOut, struct IAbstractTokenConverter.ConversionConfig[] conversionConfigs) external
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| tokenAddressIn | address | Address of tokenIn |
+| tokenAddressesOut | address[] | Array of addresses of tokenOut |
+| conversionConfigs | struct IAbstractTokenConverter.ConversionConfig[] | Array of conversionConfig config details to update |
 
 #### ❌ Errors
-* Unauthorized error is thrown when the call is not authorized by AccessControlManager
-* ZeroAddressNotAllowed is thrown when pool registry address is zero
+* InputLengthMisMatch is thrown when tokenAddressesOut and conversionConfigs array length mismatches
 
 - - -
 
 ### convertExactTokens
 
-Convert exact amount of tokenAddressIn for tokenAddressOut
+Converts exact amount of tokenAddressIn for tokenAddressOut if there is enough tokens held by the contract
 
 ```solidity
-function convertExactTokens(uint256 amountInMantissa, uint256 amountOutMinMantissa, address tokenAddressIn, address tokenAddressOut, address to) external
+function convertExactTokens(uint256 amountInMantissa, uint256 amountOutMinMantissa, address tokenAddressIn, address tokenAddressOut, address to) external returns (uint256 actualAmountIn, uint256 actualAmountOut)
 ```
 
 #### Parameters
@@ -167,24 +218,33 @@ function convertExactTokens(uint256 amountInMantissa, uint256 amountOutMinMantis
 | amountInMantissa | uint256 | Amount of tokenAddressIn |
 | amountOutMinMantissa | uint256 | Min amount of tokenAddressOut required as output |
 | tokenAddressIn | address | Address of the token to convert |
-| tokenAddressOut | address | Address of the token to get after convert |
+| tokenAddressOut | address | Address of the token to get after conversion |
 | to | address | Address of the tokenAddressOut receiver |
 
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| actualAmountIn | uint256 | Actual amount transferred to destination |
+| actualAmountOut | uint256 | Actual amount transferred to user |
+
 #### 📅 Events
-* Emits ConvertExactTokens event on success
+* Emits ConvertedExactTokens event on success
 
 #### ❌ Errors
+* ZeroAddressNotAllowed is thrown when to address is zero
+* InvalidToAddress error is thrown when address(to) is same as tokenAddressIn or tokenAddressOut
 * AmountOutLowerThanMinRequired error is thrown when amount of output tokenAddressOut is less than amountOutMinMantissa
-* AmountInOrAmountOutMismatched error is thrown when Amount of tokenAddressIn or tokenAddressOut is lower than expected fater transfer
+* AmountInMismatched error is thrown when amount of output tokenAddressOut is less than amountOutMinMantissa
 
 - - -
 
 ### convertForExactTokens
 
-Convert tokens for tokenAddressIn for exact amount of tokenAddressOut
+Converts tokens for tokenAddressIn for exact amount of tokenAddressOut if there is enough tokens held by the contract,
+otherwise the amount is adjusted
 
 ```solidity
-function convertForExactTokens(uint256 amountInMaxMantissa, uint256 amountOutMantissa, address tokenAddressIn, address tokenAddressOut, address to) external
+function convertForExactTokens(uint256 amountInMaxMantissa, uint256 amountOutMantissa, address tokenAddressIn, address tokenAddressOut, address to) external returns (uint256 actualAmountIn, uint256 actualAmountOut)
 ```
 
 #### Parameters
@@ -193,24 +253,32 @@ function convertForExactTokens(uint256 amountInMaxMantissa, uint256 amountOutMan
 | amountInMaxMantissa | uint256 | Max amount of tokenAddressIn |
 | amountOutMantissa | uint256 | Amount of tokenAddressOut required as output |
 | tokenAddressIn | address | Address of the token to convert |
-| tokenAddressOut | address | Address of the token to get after convert |
+| tokenAddressOut | address | Address of the token to get after conversion |
 | to | address | Address of the tokenAddressOut receiver |
 
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| actualAmountIn | uint256 | Actual amount transferred to destination |
+| actualAmountOut | uint256 | Actual amount transferred to user |
+
 #### 📅 Events
-* Emits ConvertForExactTokens event on success
+* Emits ConvertedForExactTokens event on success
 
 #### ❌ Errors
+* ZeroAddressNotAllowed is thrown when to address is zero
+* InvalidToAddress error is thrown when address(to) is same as tokenAddressIn or tokenAddressOut
 * AmountInHigherThanMax error is thrown when amount of tokenAddressIn is higher than amountInMaxMantissa
-* AmountInOrAmountOutMismatched error is thrown when Amount of tokenAddressIn or tokenAddressOut is lower than expected fater transfer
+* AmountOutMismatched error is thrown when actualAmountOut is does not match amountOutMantissa
 
 - - -
 
 ### convertExactTokensSupportingFeeOnTransferTokens
 
-Convert exact amount of tokenAddressIn for tokenAddressOut
+Converts exact amount of tokenAddressIn for tokenAddressOut if there is enough tokens held by the contract
 
 ```solidity
-function convertExactTokensSupportingFeeOnTransferTokens(uint256 amountInMantissa, uint256 amountOutMinMantissa, address tokenAddressIn, address tokenAddressOut, address to) external
+function convertExactTokensSupportingFeeOnTransferTokens(uint256 amountInMantissa, uint256 amountOutMinMantissa, address tokenAddressIn, address tokenAddressOut, address to) external returns (uint256 actualAmountIn, uint256 actualAmountOut)
 ```
 
 #### Parameters
@@ -219,23 +287,33 @@ function convertExactTokensSupportingFeeOnTransferTokens(uint256 amountInMantiss
 | amountInMantissa | uint256 | Amount of tokenAddressIn |
 | amountOutMinMantissa | uint256 | Min amount of tokenAddressOut required as output |
 | tokenAddressIn | address | Address of the token to convert |
-| tokenAddressOut | address | Address of the token to get after convert |
+| tokenAddressOut | address | Address of the token to get after conversion |
 | to | address | Address of the tokenAddressOut receiver |
 
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| actualAmountIn | uint256 | Actual amount transferred to destination |
+| actualAmountOut | uint256 | Actual amount transferred to user |
+
 #### 📅 Events
-* Emits ConvertExactTokensSupportingFeeOnTransferTokens event on success
+* Emits ConvertedExactTokensSupportingFeeOnTransferTokens event on success
 
 #### ❌ Errors
+* ZeroAddressNotAllowed is thrown when to address is zero
+* InvalidToAddress error is thrown when address(to) is same as tokenAddressIn or tokenAddressOut
 * AmountOutLowerThanMinRequired error is thrown when amount of output tokenAddressOut is less than amountOutMinMantissa
 
 - - -
 
 ### convertForExactTokensSupportingFeeOnTransferTokens
 
-Convert tokens for tokenAddressIn for exact amount of tokenAddressOut
+Converts tokens for tokenAddressIn for amount of tokenAddressOut calculated on the basis of amount of
+tokenAddressIn received by the contract, if there is enough tokens held by the contract, otherwise the amount is adjusted.
+The user will be responsible for bearing any fees associated with token transfers, whether pulling in or pushing out tokens
 
 ```solidity
-function convertForExactTokensSupportingFeeOnTransferTokens(uint256 amountInMaxMantissa, uint256 amountOutMantissa, address tokenAddressIn, address tokenAddressOut, address to) external
+function convertForExactTokensSupportingFeeOnTransferTokens(uint256 amountInMaxMantissa, uint256 amountOutMantissa, address tokenAddressIn, address tokenAddressOut, address to) external returns (uint256 actualAmountIn, uint256 actualAmountOut)
 ```
 
 #### Parameters
@@ -244,20 +322,28 @@ function convertForExactTokensSupportingFeeOnTransferTokens(uint256 amountInMaxM
 | amountInMaxMantissa | uint256 | Max amount of tokenAddressIn |
 | amountOutMantissa | uint256 | Amount of tokenAddressOut required as output |
 | tokenAddressIn | address | Address of the token to convert |
-| tokenAddressOut | address | Address of the token to get after convert |
+| tokenAddressOut | address | Address of the token to get after conversion |
 | to | address | Address of the tokenAddressOut receiver |
 
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| actualAmountIn | uint256 | Actual amount transferred to destination |
+| actualAmountOut | uint256 | Actual amount transferred to user |
+
 #### 📅 Events
-* Emits ConvertForExactTokensSupportingFeeOnTransferTokens event on success
+* Emits ConvertedForExactTokensSupportingFeeOnTransferTokens event on success
 
 #### ❌ Errors
+* ZeroAddressNotAllowed is thrown when to address is zero
+* InvalidToAddress error is thrown when address(to) is same as tokenAddressIn or tokenAddressOut
 * AmountInHigherThanMax error is thrown when amount of tokenAddressIn is higher than amountInMaxMantissa
 
 - - -
 
 ### sweepToken
 
-A public function to sweep ERC20 tokens and transfer them to user(to address)
+To sweep ERC20 tokens and transfer them to user(to address)
 
 ```solidity
 function sweepToken(address tokenAddress, address to, uint256 amount) external
@@ -267,8 +353,8 @@ function sweepToken(address tokenAddress, address to, uint256 amount) external
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | tokenAddress | address | The address of the ERC-20 token to sweep |
-| to | address |  |
-| amount | uint256 |  |
+| to | address | The address to which tokens will be transferred |
+| amount | uint256 | The amount to transfer |
 
 #### 📅 Events
 * Emits SweepToken event on success
@@ -281,27 +367,13 @@ function sweepToken(address tokenAddress, address to, uint256 amount) external
 
 - - -
 
-### balanceOf
-
-Get the balance for specific token
-
-```solidity
-function balanceOf(address token) public virtual returns (uint256 tokenBalance)
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| token | address | Address of the token |
-
-- - -
-
 ### getAmountOut
 
-To get the amount of tokenAddressOut tokens sender could receive on providing amountInMantissa tokens of tokenAddressIn
+To get the amount of tokenAddressOut tokens sender could receive on providing amountInMantissa tokens of tokenAddressIn.
+This function does not account for potential token transfer fees(in case of deflationary tokens)
 
 ```solidity
-function getAmountOut(uint256 amountInMantissa, address tokenAddressIn, address tokenAddressOut) public returns (uint256 amountConvertedMantissa, uint256 amountOutMantissa)
+function getAmountOut(uint256 amountInMantissa, address tokenAddressIn, address tokenAddressOut) external view returns (uint256 amountConvertedMantissa, uint256 amountOutMantissa)
 ```
 
 #### Parameters
@@ -309,26 +381,28 @@ function getAmountOut(uint256 amountInMantissa, address tokenAddressIn, address 
 | ---- | ---- | ----------- |
 | amountInMantissa | uint256 | Amount of tokenAddressIn |
 | tokenAddressIn | address | Address of the token to convert |
-| tokenAddressOut | address | Address of the token to get after convert |
+| tokenAddressOut | address | Address of the token to get after conversion |
 
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| amountConvertedMantissa | uint256 | Amount of tokenAddressIn should be transferred after convert |
-| amountOutMantissa | uint256 | Amount of the tokenAddressOut sender should receive after convert |
+| amountConvertedMantissa | uint256 | Amount of tokenAddressIn should be transferred after conversion |
+| amountOutMantissa | uint256 | Amount of the tokenAddressOut sender should receive after conversion |
 
 #### ❌ Errors
 * InsufficientInputAmount error is thrown when given input amount is zero
-* ConversionConfigNotEnabled is thrown when convert is disabled or config does not exist for given pair
+* ConversionConfigNotEnabled is thrown when conversion is disabled or config does not exist for given pair
+* ConversionEnabledOnlyForPrivateConversions is thrown when conversion is only enabled for private conversion
 
 - - -
 
 ### getAmountIn
 
-To get the amount of tokenAddressIn tokens sender would send on receiving amountOutMantissa tokens of tokenAddressOut
+To get the amount of tokenAddressIn tokens sender would send on receiving amountOutMantissa tokens of tokenAddressOut.
+This function does not account for potential token transfer fees(in case of deflationary tokens)
 
 ```solidity
-function getAmountIn(uint256 amountOutMantissa, address tokenAddressIn, address tokenAddressOut) public returns (uint256 amountConvertedMantissa, uint256 amountInMantissa)
+function getAmountIn(uint256 amountOutMantissa, address tokenAddressIn, address tokenAddressOut) external view returns (uint256 amountConvertedMantissa, uint256 amountInMantissa)
 ```
 
 #### Parameters
@@ -336,17 +410,137 @@ function getAmountIn(uint256 amountOutMantissa, address tokenAddressIn, address 
 | ---- | ---- | ----------- |
 | amountOutMantissa | uint256 | Amount of tokenAddressOut user wants to receive |
 | tokenAddressIn | address | Address of the token to convert |
-| tokenAddressOut | address | Address of the token to get after convert |
+| tokenAddressOut | address | Address of the token to get after conversion |
 
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| amountConvertedMantissa | uint256 | Amount of tokenAddressOut should be transferred after convert |
-| amountInMantissa | uint256 | Amount of the tokenAddressIn sender would send to contract before convert |
+| amountConvertedMantissa | uint256 | Amount of tokenAddressOut should be transferred after conversion |
+| amountInMantissa | uint256 | Amount of the tokenAddressIn sender would send to contract before conversion |
 
 #### ❌ Errors
 * InsufficientInputAmount error is thrown when given input amount is zero
-* ConversionConfigNotEnabled is thrown when convert is disabled or config does not exist for given pair
+* ConversionConfigNotEnabled is thrown when conversion is disabled or config does not exist for given pair
+* ConversionEnabledOnlyForPrivateConversions is thrown when conversion is only enabled for private conversion
+
+- - -
+
+### getUpdatedAmountOut
+
+To get the amount of tokenAddressOut tokens sender could receive on providing amountInMantissa tokens of tokenAddressIn
+
+```solidity
+function getUpdatedAmountOut(uint256 amountInMantissa, address tokenAddressIn, address tokenAddressOut) public returns (uint256 amountConvertedMantissa, uint256 amountOutMantissa)
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| amountInMantissa | uint256 | Amount of tokenAddressIn |
+| tokenAddressIn | address | Address of the token to convert |
+| tokenAddressOut | address | Address of the token to get after conversion |
+
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| amountConvertedMantissa | uint256 | Amount of tokenAddressIn should be transferred after conversion |
+| amountOutMantissa | uint256 | Amount of the tokenAddressOut sender should receive after conversion |
+
+#### ❌ Errors
+* InsufficientInputAmount error is thrown when given input amount is zero
+* ConversionConfigNotEnabled is thrown when conversion is disabled or config does not exist for given pair
+
+- - -
+
+### getUpdatedAmountIn
+
+To get the amount of tokenAddressIn tokens sender would send on receiving amountOutMantissa tokens of tokenAddressOut
+
+```solidity
+function getUpdatedAmountIn(uint256 amountOutMantissa, address tokenAddressIn, address tokenAddressOut) public returns (uint256 amountConvertedMantissa, uint256 amountInMantissa)
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| amountOutMantissa | uint256 | Amount of tokenAddressOut user wants to receive |
+| tokenAddressIn | address | Address of the token to convert |
+| tokenAddressOut | address | Address of the token to get after conversion |
+
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| amountConvertedMantissa | uint256 | Amount of tokenAddressOut should be transferred after conversion |
+| amountInMantissa | uint256 | Amount of the tokenAddressIn sender would send to contract before conversion |
+
+#### ❌ Errors
+* InsufficientInputAmount error is thrown when given input amount is zero
+* ConversionConfigNotEnabled is thrown when conversion is disabled or config does not exist for given pair
+
+- - -
+
+### updateAssetsState
+
+This method updated the states of this contract after getting funds from PSR
+after settling the amount(if any) through privateConversion between converters
+
+```solidity
+function updateAssetsState(address comptroller, address asset) public
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| comptroller | address | Comptroller address (pool) |
+| asset | address | Asset address |
+
+- - -
+
+### setConversionConfig
+
+Set the configuration for new or existing conversion pair
+
+```solidity
+function setConversionConfig(address tokenAddressIn, address tokenAddressOut, struct IAbstractTokenConverter.ConversionConfig conversionConfig) public
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| tokenAddressIn | address | Address of tokenIn |
+| tokenAddressOut | address | Address of tokenOut |
+| conversionConfig | struct IAbstractTokenConverter.ConversionConfig | ConversionConfig config details to update |
+
+#### 📅 Events
+* Emits ConversionConfigUpdated event on success
+
+#### ⛔️ Access Requirements
+* Controlled by AccessControlManager
+
+#### ❌ Errors
+* Unauthorized error is thrown when the call is not authorized by AccessControlManager
+* ZeroAddressNotAllowed is thrown when pool registry address is zero
+* NonZeroIncentiveForPrivateConversion is thrown when incentive is non zero for private conversion
+
+- - -
+
+### balanceOf
+
+Get the balance for specific token
+
+```solidity
+function balanceOf(address token) public view virtual returns (uint256 tokenBalance)
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| token | address | Address of the token |
+
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| tokenBalance | uint256 | Balance of the token the contract has |
 
 - - -
 

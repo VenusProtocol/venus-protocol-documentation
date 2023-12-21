@@ -6,15 +6,15 @@ Contract used to store and distribute the reserves generated in the markets.
 
 ```solidity
 enum Schema {
-  DEFAULT,
-  SPREAD_PRIME_CORE
+  PROTOCOL_RESERVES,
+  ADDITIONAL_REVENUE
 }
 ```
 
 ```solidity
 struct DistributionConfig {
   enum ProtocolShareReserve.Schema schema;
-  uint256 percentage;
+  uint16 percentage;
   address destination;
 }
 ```
@@ -45,16 +45,6 @@ address of vBNB contract
 
 ```solidity
 address vBNB
-```
-
-- - -
-
-### prime
-
-address of Prime contract
-
-```solidity
-address prime
 ```
 
 - - -
