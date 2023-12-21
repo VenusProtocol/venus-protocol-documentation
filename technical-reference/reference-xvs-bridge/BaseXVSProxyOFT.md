@@ -1,5 +1,5 @@
 # BaseXVSProxyOFT
-The BaseXVSProxyOFT contract is tailored for facilitating cross-chain transactions with an ERC20 token.
+The `BaseXVSProxyOFT` contract is tailored for facilitating cross-chain transactions with an ERC20 token.
 It manages transaction limits of a single and daily transactions.
 This contract inherits key functionalities from other contracts, including pausing capabilities and error handling.
 It holds state variables for the inner token and maps for tracking transaction limits and statistics across various chains and addresses.
@@ -10,7 +10,7 @@ Internal functions conduct eligibility check of transactions, making the contrac
 
 ### oracle
 
-The address of ResilientOracle contract wrapped in its interface.
+The address of `ResilientOracle` contract wrapped in its interface.
 
 ```solidity
 contract ResilientOracleInterface oracle
