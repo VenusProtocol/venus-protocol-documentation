@@ -10,4 +10,4 @@ The latest iteration of Venus Protocol, the most trusted and battle-tested lendi
 
 In doing so, Venus continues to push the boundaries of what's possible within the realm of decentralized finance.
 
-<figure><img src=".gitbook/assets/6b4914b7-6e4c-4be7-931d-402f664a1a07.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/overview.svg" alt=""><figcaption></figcaption></figure>
