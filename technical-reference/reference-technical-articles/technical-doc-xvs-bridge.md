@@ -133,7 +133,7 @@ In the event that a `Bridge` contract needs replacement, such as due to a securi
    - Evaluate whether pausing the XVS token is necessary during the replacement process.
 
 3. **Migrate MinterToMintedAmount:**
-   - Move the `minterToMintedAmount` value to a different `Bridge` contract address using the new `migrateMintedTokens` function.
+   - Move the `minterToMintedAmount` value to a different `Bridge` contract address using the `migrateMintedTokens` function.
 
 4. **Reduce MintCap:**
    - Reduce the `mintCap` to zero for the `Bridge` contract address with security issues.
