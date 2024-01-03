@@ -55,6 +55,7 @@
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
+  * [XVS Bridge](technical-reference/reference-technical-articles/technical-doc-xvs-bridge.md)
 * [Core Pool](technical-reference/reference-core-pool/README.md)
   * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
     * [ComptrollerLens](technical-reference/reference-core-pool/comptroller/comptroller-lens.md)
@@ -130,6 +131,13 @@
   * [Timelock](technical-reference/reference-governance/timelock.md)
   * [GovernorBravoInterfaces](technical-reference/reference-governance/governor-bravo-interfaces.md)
   * [AccessControlledV8](technical-reference/reference-governance/access-controlled-v8.md)
+* [XVS Bridge](technical-reference/reference-xvs-bridge/README.md)
+  * [BaseXVSProxyOFT](technical-reference/reference-xvs-bridge/BaseXVSProxyOFT.md)
+  * [XVSProxyOFTSrc](technical-reference/reference-xvs-bridge/XVSProxyOFTSrc.md)
+  * [XVSProxyOFTDest](technical-reference/reference-xvs-bridge/XVSProxyOFTDest.md)
+  * [XVSBridgeAdmin](technical-reference/reference-xvs-bridge/XVSBridgeAdmin.md)
+  * [XVS](technical-reference/reference-xvs-bridge/XVS.md)
+  * [TokenController](technical-reference/reference-xvs-bridge/TokenController.md)
 
 
 ## Deployed Contracts
@@ -138,6 +146,7 @@
 * [Oracles](deployed-contracts/oracles.md)
 * [Core Pool](deployed-contracts/core-pool.md)
 * [Governance](deployed-contracts/governance.md)
+* [XVS Multichain](deployed-contracts/xvs-multichain.md)
 
 ***
 
