@@ -28,7 +28,7 @@
 * [Slovenian](https://t.me/VenusSlovenian)
 * [Spanish](https://t.me/venusesp)
 * [Thai](https://t.me/venusprotocolthailand)
-* [Tusrkish](https://t.me/VenusTurkish)
+* [Turkish](https://t.me/VenusTurkish)
 * [Ukrainian](https://t.me/VenusProtocolUkraine)
 * [Vietnamese](https://t.me/venusvietnam)
 
