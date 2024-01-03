@@ -3,14 +3,9 @@
 ## BNB Chain Mainnet
 
 * Unitroller: [`0xfD36E2c2a6789Db23113685031d7F16329158384`](https://bscscan.com/address/0xfD36E2c2a6789Db23113685031d7F16329158384)
-* Diamond (Comptroller implementation): [`0xAd69AA3811fE0EE7dBd4e25C4bae40e6422c76C8`](https://bscscan.com/address/0xAd69AA3811fE0EE7dBd4e25C4bae40e6422c76C8)
 * VAI Unitroller: [`0x004065D34C6b18cE4370ced1CeBDE94865DbFAFE`](https://bscscan.com/address/0x004065D34C6b18cE4370ced1CeBDE94865DbFAFE)
-* VAI Controller: [`0x793ff22b882665CA492843962aD945cAf5440F3c`](https://bscscan.com/address/0x793ff22b882665CA492843962aD945cAf5440F3c)
-* VBep20 Delegate: [`0xf9f48874050264664bf3d383C7289a0a5BD98896`](https://bscscan.com/address/0xf9f48874050264664bf3d383C7289a0a5BD98896)
 * Venus Lens: [`0xfB0f09dB330dC842a6637BfB959209424BbFE8C7`](https://bscscan.com/address/0xfB0f09dB330dC842a6637BfB959209424BbFE8C7)
-* Whitepaper Interest Rate Model - [`0x49fADE95f94e5EC7C1f4AE13a6d6f9ca18B2F430`](https://bscscan.com/address/0x49fADE95f94e5EC7C1f4AE13a6d6f9ca18B2F430)
 * XVS Vault Proxy: [`0x051100480289e704d20e9DB4804837068f3f9204`](https://bscscan.com/address/0x051100480289e704d20e9DB4804837068f3f9204)
-* XVS Vault(Impl): [`0x6eF49b4e0772Fe78128F981d42D54172b55eCF9F`](https://bscscan.com/address/0x6eF49b4e0772Fe78128F981d42D54172b55eCF9F)
 * Liquidator: [`0x0870793286aaDA55D39CE7f82fb2766e8004cF43`](https://bscscan.com/address/0x0870793286aaDA55D39CE7f82fb2766e8004cF43)
 * Venus Treasury: [`0xf322942f644a996a617bd29c16bd7d231d9f35e9`](https://bscscan.com/address/0xf322942f644a996a617bd29c16bd7d231d9f35e9)
 * SwapRouter: [`0x8938E6dA30b59c1E27d5f70a94688A89F7c815a4`](https://bscscan.com/address/0x8938E6dA30b59c1E27d5f70a94688A89F7c815a4)
@@ -89,12 +84,8 @@
 ## BNB Chain Testnet
 
 * Unitroller: [`0x94d1820b2D1c7c7452A163983Dc888CEC546b77D`](https://testnet.bscscan.com/address/0x94d1820b2D1c7c7452A163983Dc888CEC546b77D)
-* Diamond (Comptroller implementation): [`0x7e0298880224B8116F3462c50917249E94b3DC53`](https://testnet.bscscan.com/address/0x7e0298880224B8116F3462c50917249E94b3DC53)
 * VAI Unitroller: [`0xf70C3C6b749BbAb89C081737334E74C9aFD4BE16`](https://testnet.bscscan.com/address/0xf70C3C6b749BbAb89C081737334E74C9aFD4BE16)
-* VAI Controller: [`0x7CE5E45a34104d6Df05779c3d3Fe71c9F11843C5`](https://testnet.bscscan.com/address/0x7CE5E45a34104d6Df05779c3d3Fe71c9F11843C5)
-* VBep20 Delegate: [`0xAF1b4826c8396A99139af3c9359044D34c8d1f1f`](https://testnet.bscscan.com/address/0xAF1b4826c8396A99139af3c9359044D34c8d1f1f)
 * XVS Vault Proxy: [`0x9aB56bAD2D7631B2A857ccf36d998232A8b82280`](https://testnet.bscscan.com/address/0x9aB56bAD2D7631B2A857ccf36d998232A8b82280)
-* XVS Vault(Impl): [`0x2B62C479A5554991264FBd1D83c756abF558F88b`](https://testnet.bscscan.com/address/0x2B62C479A5554991264FBd1D83c756abF558F88b)
 * Venus Lens: [`0x11c8dC3DcA87E8205ec01e6d79Be9442d31701d3`](https://testnet.bscscan.com/address/0x11c8dC3DcA87E8205ec01e6d79Be9442d31701d3)
 * Liquidator: [`0x40FB27A83e52E7B213CC345f5b6ACA17bf7D5139`](https://testnet.bscscan.com/address/0x40FB27A83e52E7B213CC345f5b6ACA17bf7D5139)
 * Venus Treasury: [`0x8b293600c50d6fbdc6ed4251cc75ece29880276f`](https://testnet.bscscan.com/address/0x8b293600c50d6fbdc6ed4251cc75ece29880276f)
@@ -152,3 +143,11 @@
 * vWBETH: [`0x35566ED3AF9E537Be487C98b1811cDf95ad0C32b`](https://testnet.bscscan.com/address/0x35566ED3AF9E537Be487C98b1811cDf95ad0C32b)
 * vXRP: [`0x488aB2826a154da01CC4CC16A8C83d4720D3cA2C`](https://testnet.bscscan.com/address/0x488aB2826a154da01CC4CC16A8C83d4720D3cA2C)
 * vXVS: [`0x6d6F697e34145Bb95c54E77482d97cc261Dc237E`](https://testnet.bscscan.com/address/0x6d6F697e34145Bb95c54E77482d97cc261Dc237E)
+
+## Ethereum mainnet
+
+* Venus Treasury: [`0xFD9B071168bC27DBE16406eC3Aba050Ce8Eb22FA`](https://etherscan.io/address/0xFD9B071168bC27DBE16406eC3Aba050Ce8Eb22FA)
+
+## Sepolia (Ethereum testnet)
+
+* Venus Treasury: [`0x4116CA92960dF77756aAAc3aFd91361dB657fbF8`](https://sepolia.etherscan.io/address/0x4116CA92960dF77756aAAc3aFd91361dB657fbF8)

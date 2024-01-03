@@ -1,5 +1,9 @@
 # XVS Multichain - Deployed Contracts
 
+ {% hint style="warning" %}
+ **To be released**
+ {% endhint %}
+
 ## Mainnet chains
 
 ### BNB Chain
