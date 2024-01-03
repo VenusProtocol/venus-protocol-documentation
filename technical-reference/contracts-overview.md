@@ -1,11 +1,12 @@
 # Contracts Overview
 
-Venus Protocol contracts are divided in three repositories:
+Venus Protocol contracts are divided in these repositories:
 
 * [isolated-pools](https://github.com/VenusProtocol/isolated-pools): Contains core contracts for isolated lending, including logic for supplying, borrowing, liquidations, pool and market deployments, and interest rate models.
 * [oracle](https://github.com/VenusProtocol/oracle): This repo has contracts for oracles that we support as well as logic for validating prices returned from those oracles.
 * [venus-protocol](https://github.com/VenusProtocol/venus-protocol): The core protocol is located in this repo. It contains logic central to lending and borrowing of the core pool.
 * [governance-contracts](https://github.com/VenusProtocol/governance-contracts): The contracts used for proposing, voting and executing changes are kept in the \`governance-contracts repo.
+* [token-bridge](https://github.com/VenusProtocol/token-bridge): The contracts use to bridge XVS to different networks.
 
 ## Isolated Pools Contracts
 
