@@ -7,6 +7,4 @@ We have compiled a list of helpful resources to provide you with the necessary i
 * [How to setup BNB Chain on MetaMask?](https://medium.com/venusprotocol/venus-protocol-main-network-launched-52ea9929091f)
 * [How to use XVS Vault? How to stake XVS?](https://medium.com/@Venus_protocol/venus-vault-user-guide-cd1042b18401)
 * [How do liquidations work?](https://community.venus.io/t/liquidation-guide-for-venus-protocol/2930)
-* [How to use Venus for lending or borrowing?](https://youtu.be/ZZMFM1gYFNw)
-* [Venus Dapp Radar Video Review and Tutorial](https://www.youtube.com/watch?v=8Pjky-zKCBw)
 * [Venus All Social Media Links](https://linktr.ee/venusprotocol)

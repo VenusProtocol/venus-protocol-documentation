@@ -78,8 +78,8 @@
       * [XVSVaultProxy](technical-reference/reference-core-pool/vaults/xvs/xvs-vault-proxy.md)
       * [XVSStore](technical-reference/reference-core-pool/vaults/xvs/xvs-store.md)
     * [VAI](technical-reference/reference-core-pool/vaults/vai/README.md)
-      * [VAIVault](technical-reference/reference-core-pool/vaults/xvs/vai-vault.md)
-      * [VAIVaultProxy](technical-reference/reference-core-pool/vaults/xvs/vai-vault-proxy.md)
+      * [VAIVault](technical-reference/reference-core-pool/vaults/vai/vai-vault.md)
+      * [VAIVaultProxy](technical-reference/reference-core-pool/vaults/vai/vai-vault-proxy.md)
   * [InterestRateModels](technical-reference/reference-core-pool/interestratemodels/README.md)
     * [JumpModel](technical-reference/reference-core-pool/interestratemodels/jump-model.md)
     * [WhitePaperModel](technical-reference/reference-core-pool/interestratemodels/white-paper-interest-rate-model.md)
@@ -156,3 +156,5 @@
 
 * [Security & Audits](security-and-audits.md)
 * [Resources](resources.md)
+* [Community Resources](./links/community-resources.md)
+* [Brand kit](./links/brand-kit.md)

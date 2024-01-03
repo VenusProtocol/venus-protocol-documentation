@@ -111,7 +111,7 @@ For example:
 
 Interest reserves (part of the protocol income) from Isolated Pools and the Core Pool markets are sent to the PSR ([Protocol Share Reserve](https://github.com/VenusProtocol/protocol-reserve/blob/main/contracts/ProtocolReserve/ProtocolShareReserve.sol)) contract. Based on the configuration, a percentage of income from all markers is reserved for Prime token holders. The interest reserves will be sent to the PSR periodically (currently every 24 hours, but this can be changed by the community via [VIP](https://app.venus.io/governance)).
 
-The PSR has a function `releaseFunds` that needs to be invoked to release the funds to the destination contracts. We have [SingleTokenConverter](https://github.com/VenusProtocol/protocol-reserve/contracts/TokenConverter/SingleTokenConverter.sol) contracts which receive income from the PSR and convert them to Prime supported reward tokens. 
+The PSR has a function `releaseFunds` that needs to be invoked to release the funds to the destination contracts. We have [SingleTokenConverter](https://github.com/VenusProtocol/protocol-reserve/blob/main/contracts/TokenConverter/SingleTokenConverter.sol) contracts which receive income from the PSR and convert them to Prime supported reward tokens. 
 
 Each `SingleTokenConverter` sends funds to `PrimeLiquidityProvider` contract which releases the funds to `Prime` contract. Distribution speeds for each of the reward token is configured in the `PrimeLiquidityProvider` contract and based on those speeds `Prime` distributes rewards. 
 
