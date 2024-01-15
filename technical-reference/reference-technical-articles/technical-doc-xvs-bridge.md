@@ -1,9 +1,5 @@
 # XVS Cross-Chain Bridge Documentation
 
-{% hint style="warning" %}
-**To be released**
-{% endhint %}
-
 This documentation provides detailed instructions and explanations for using the XVS Cross-Chain Bridge. The bridge allows users to transfer tokens between different blockchain networks, specifically between the [BNB chain](https://www.bnbchain.org) and a destination chain. The supported Destination Chains are:
 
 * [Ethereum](https://ethereum.org)
