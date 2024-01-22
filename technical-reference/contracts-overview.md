@@ -1,11 +1,12 @@
 # Contracts Overview
 
-Venus Protocol contracts are divided in three repositories:
+Venus Protocol contracts are divided in these repositories:
 
 * [isolated-pools](https://github.com/VenusProtocol/isolated-pools): Contains core contracts for isolated lending, including logic for supplying, borrowing, liquidations, pool and market deployments, and interest rate models.
 * [oracle](https://github.com/VenusProtocol/oracle): This repo has contracts for oracles that we support as well as logic for validating prices returned from those oracles.
 * [venus-protocol](https://github.com/VenusProtocol/venus-protocol): The core protocol is located in this repo. It contains logic central to lending and borrowing of the core pool.
 * [governance-contracts](https://github.com/VenusProtocol/governance-contracts): The contracts used for proposing, voting and executing changes are kept in the \`governance-contracts repo.
+* [token-bridge](https://github.com/VenusProtocol/token-bridge): The contracts use to bridge XVS to different networks.
 
 ## Isolated Pools Contracts
 
@@ -64,7 +65,7 @@ When bad deb is auctioned off the [Shortfall](https://github.com/VenusProtocol/i
 
 [**ProtocolShareReserve**](./reference-isolated-pools/risk-fund-and-shortfall/protocol-share-reserve.md)
 
-The [ProtocolShareReserve](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/RiskFund/ProtocolShareReserve.sol) acts as a treasury where each isolated pool can transfer their revenue.
+The [ProtocolShareReserve](https://github.com/VenusProtocol/protocol-reserve/blob/main/contracts/ProtocolReserve/ProtocolShareReserve.sol) acts as a treasury where each isolated pool can transfer their revenue.
 
 ## Oracle Contracts
 
@@ -105,7 +106,7 @@ Venus Protocol contracts can be grouped as follows:
 
 ### Lending Contracts
 
-[**Comptroller**](./reference-core-pool/comptroller/diamond/diamond.md)
+[**Comptroller**](./reference-core-pool/comptroller/Diamond/Diamond.md)
 
 At the heart of the Core Pool is the comptroller. The latest version is [Comptroller](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/Comptroller/Diamond/Diamond.sol). The comptroller is responsible for listing markets, managing user's positions in markets, liquidations, and emitting rewards. It contains setters and getters for market configuration variables such as collateral factor, close factor, and liquidation incentive. Lending actions can be be paused globally or per market from the comptroller.
 
@@ -127,11 +128,11 @@ Revenue earned by the protocol is kept in the [VTreasury](https://github.com/Ven
 
 ### Token Contracts
 
-[**XVS**](./tokens/xvs.md)
+[**XVS**](../tokens/xvs.md)
 
 XVS is an important token in the Venus ecosystem because it powers Venus governance. The [XVS](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/XVS/XVS.sol) token contract defines a lockable BEP20 token with additional methods that enable voting and vote delegation. To vote, a user must first lock their XVS in the vault. The [XVSVesting](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/XVS/XVSVesting.sol) controlled XVS emissions when converting VRT to XVS. The time period to convert VRT to XVS has expired.
 
-[**VAI**](./tokens/vai.md)
+[**VAI**](../tokens/vai.md)
 
 [VAI](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/VAI/VAI.sol) is the Venus stable coin that can be minted against collateral. Users who mint VAI are charged a fee based on the outstanding supply and price of VAI to keep its value pegged at $1. The [VAIController](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/Tokens/VAI/VAIController.sol) controls the amount of VAI a user is allowed to mint which is determined by the collateral a user has provided and their liquidity.
 

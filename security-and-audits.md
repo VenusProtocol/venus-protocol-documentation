@@ -8,6 +8,30 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### XVS bridge
+
+**Scope**: [token-bridge](https://github.com/VenusProtocol/token-bridge) repository, with contracts to allow the bridge of XVS tokens from/to BNB to/from other EVM compatible networks, like Ethereum. Extend the OFTV2 LayerZero contracts, adding custom security rules. XVS and TokenController contract, to be used on the destination chains (initially Ethereum mainnet, Arbitrum one, Polygon zkEVM and opBNB)
+
+- [Certik audit report (2023/12/26)](https://github.com/VenusProtocol/token-bridge/blob/323e95fa3c0167cca2fc1d2807e911e0bae54de9/audits/083_multichain_token_bridge_certik_20231226.pdf)
+
+- [Quantstamp audit report (2023/12/19)](https://github.com/VenusProtocol/token-bridge/blob/323e95fa3c0167cca2fc1d2807e911e0bae54de9/audits/064_multichain_token_bridge_quantstamp_20231219.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+- [token-bridge](https://github.com/VenusProtocol/token-bridge) repository
+- Branch: `develop`
+- Last commit: `91b640fffb0c374bdb63a0f6e8e756793e892ad6`
+- List of files in the scope:
+    - contracts/Bridge/BaseXVSProxyOFT.sol
+    - contracts/Bridge/XVSBridgeAdmin.sol
+    - contracts/Bridge/XVSProxyOFTDest.sol
+    - contracts/Bridge/XVSProxyOFTSrc.sol
+    - contracts/Bridge/token/TokenController.sol
+    - contracts/Bridge/token/XVS.sol
+    - contracts/Bridge/interfaces/IXVSProxyOFT.sol
+    - contracts/Bridge/interfaces/IXVS.sol
+</details>
+
 ### Venus Prime
 
 **Scope**: `Prime` and `PrimeLiquidityProvider` contracts, to manage the eligibility of Prime tokens and the rewards distributions.
@@ -207,7 +231,7 @@ These contracts were in the scope of the audits done before the launch of Isolat
 * [OpenZeppelin audit report - 2023/06/16](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/027_swapRouter_openzeppelin_20230616.pdf)
 * [Certik audit report - 2023/05/30](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/030_swapRouter_certik_20230530.pdf)
 * [Peckshield audit report - 2023/04/19](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/014_swapRouter_peckshield_20230419.pdf)
-* [Hacken audit report - 2023/05/24](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/029_swapRouter_hacken_20230524.pdf)
+* [Hacken audit report - 2023/06/28](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/029_swapRouter_hacken_20230628.pdf)
 
 ### VToken
 

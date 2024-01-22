@@ -52,10 +52,11 @@
 * [Contracts Overview](technical-reference/contracts-overview.md)
 * [Technical articles](technical-reference/reference-technical-articles/README.md)
   * [Automatic income allocation](technical-reference/reference-technical-articles/automatic-income-allocation.md)
-  * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
+  * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
   * [Token Converter](technical-reference/reference-technical-articles/technical-doc-token-converter.md)
+  * [XVS Bridge](technical-reference/reference-technical-articles/technical-doc-xvs-bridge.md)
 * [Core Pool](technical-reference/reference-core-pool/README.md)
   * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
     * [ComptrollerLens](technical-reference/reference-core-pool/comptroller/comptroller-lens.md)
@@ -78,8 +79,8 @@
       * [XVSVaultProxy](technical-reference/reference-core-pool/vaults/xvs/xvs-vault-proxy.md)
       * [XVSStore](technical-reference/reference-core-pool/vaults/xvs/xvs-store.md)
     * [VAI](technical-reference/reference-core-pool/vaults/vai/README.md)
-      * [VAIVault](technical-reference/reference-core-pool/vaults/xvs/vai-vault.md)
-      * [VAIVaultProxy](technical-reference/reference-core-pool/vaults/xvs/vai-vault-proxy.md)
+      * [VAIVault](technical-reference/reference-core-pool/vaults/vai/vai-vault.md)
+      * [VAIVaultProxy](technical-reference/reference-core-pool/vaults/vai/vai-vault-proxy.md)
   * [InterestRateModels](technical-reference/reference-core-pool/interestratemodels/README.md)
     * [JumpModel](technical-reference/reference-core-pool/interestratemodels/jump-model.md)
     * [WhitePaperModel](technical-reference/reference-core-pool/interestratemodels/white-paper-interest-rate-model.md)
@@ -136,6 +137,13 @@
   * [Timelock](technical-reference/reference-governance/timelock.md)
   * [GovernorBravoInterfaces](technical-reference/reference-governance/governor-bravo-interfaces.md)
   * [AccessControlledV8](technical-reference/reference-governance/access-controlled-v8.md)
+* [XVS Bridge](technical-reference/reference-xvs-bridge/README.md)
+  * [BaseXVSProxyOFT](technical-reference/reference-xvs-bridge/BaseXVSProxyOFT.md)
+  * [XVSProxyOFTSrc](technical-reference/reference-xvs-bridge/XVSProxyOFTSrc.md)
+  * [XVSProxyOFTDest](technical-reference/reference-xvs-bridge/XVSProxyOFTDest.md)
+  * [XVSBridgeAdmin](technical-reference/reference-xvs-bridge/XVSBridgeAdmin.md)
+  * [XVS](technical-reference/reference-xvs-bridge/XVS.md)
+  * [TokenController](technical-reference/reference-xvs-bridge/TokenController.md)
 
 
 ## Deployed Contracts
@@ -144,6 +152,7 @@
 * [Oracles](deployed-contracts/oracles.md)
 * [Core Pool](deployed-contracts/core-pool.md)
 * [Governance](deployed-contracts/governance.md)
+* [XVS Multichain](deployed-contracts/xvs-multichain.md)
 
 ***
 
@@ -153,3 +162,5 @@
 
 * [Security & Audits](security-and-audits.md)
 * [Resources](resources.md)
+* [Community Resources](./links/community-resources.md)
+* [Brand kit](./links/brand-kit.md)
