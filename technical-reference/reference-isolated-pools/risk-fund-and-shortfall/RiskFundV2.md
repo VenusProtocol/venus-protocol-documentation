@@ -31,6 +31,33 @@ function sweepToken(address tokenAddress, address to, uint256 amount) external
 
 - - -
 
+### sweepTokenFromPool
+
+Function to sweep baseAsset to pool
+
+```solidity
+function sweepTokenFromPool(address tokenAddress, address comptroller, uint256 amount) external
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| tokenAddress | address | Address of the asset(token) |
+| comptroller | address | Pool address to which assets will be transferred |
+| amount | uint256 | Amount need to sweep for the pool |
+
+#### 📅 Events
+* Emits sweepTokenFromPool event on success
+
+#### ⛔️ Access Requirements
+* Only Governance
+
+#### ❌ Errors
+* ZeroAddressNotAllowed is thrown when tokenAddress/comptroller address is zero
+* ZeroValueNotAllowed is thrown when amount is zero
+
+- - -
+
 ### getPoolsBaseAssetReserves
 
 Get the Amount of the Base asset in the risk fund for the specific pool.

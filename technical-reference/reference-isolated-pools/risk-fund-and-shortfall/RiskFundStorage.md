@@ -26,6 +26,26 @@ uint256 maxLoopsLimit
 
 - - -
 
+### convertibleBaseAsset
+
+Address of base asset
+
+```solidity
+address convertibleBaseAsset
+```
+
+- - -
+
+### shortfall
+
+Address of shortfall contract
+
+```solidity
+address shortfall
+```
+
+- - -
+
 ### riskFundConverter
 
 Risk fund converter address

@@ -73,7 +73,6 @@
 
 * RiskFundConverter: [`0xA5622D276CcbB8d9BBE3D1ffd1BB11a0032E53F0`](https://bscscan.com/address/0xA5622D276CcbB8d9BBE3D1ffd1BB11a0032E53F0)
 * XVSVaultTreasury: [`0x269ff7818DB317f60E386D2be0B259e1a324a40a`](https://bscscan.com/address/0x269ff7818DB317f60E386D2be0B259e1a324a40a)
-* SingleTokenConverterImp: [`0xe80f5A2adE24bEd740408B944197b3c24f2f2e91`](https://bscscan.com/address/0xe80f5A2adE24bEd740408B944197b3c24f2f2e91)
 * SingleTokenConverterBeacon: [`0x4c9D57b05B245c40235D720A5f3A592f3DfF11ca`](https://bscscan.com/address/0x4c9D57b05B245c40235D720A5f3A592f3DfF11ca)
 * USDTPrimeConverter: [`0xD9f101AA67F3D72662609a2703387242452078C3`](https://bscscan.com/address/0xD9f101AA67F3D72662609a2703387242452078C3)
 * USDCPrimeConverter: [`0xa758c9C215B6c4198F0a0e3FA46395Fa15Db691b`](https://bscscan.com/address/0xa758c9C215B6c4198F0a0e3FA46395Fa15Db691b)
@@ -158,7 +157,6 @@
 
 * RiskFundConverter: [`0x32Fbf7bBbd79355B86741E3181ef8c1D9bD309Bb`](https://testnet.bscscan.com/address/0x32Fbf7bBbd79355B86741E3181ef8c1D9bD309Bb)
 * XVSVaultTreasury: [`0x317c6C4c9AA7F87170754DB08b4804dD689B68bF`](https://testnet.bscscan.com/address/0x317c6C4c9AA7F87170754DB08b4804dD689B68bF)
-* SingleTokenConverterImp: [`0xf014C86b6071cfFB8fE39306F802770C70733a23`](https://testnet.bscscan.com/address/0xf014C86b6071cfFB8fE39306F802770C70733a23)
 * SingleTokenConverterBeacon: [`0xD2410D8B581D37c5B474CD9Ee0C15F02138AC028`](https://testnet.bscscan.com/address/0xD2410D8B581D37c5B474CD9Ee0C15F02138AC028)
 * USDTPrimeConverter: [`0xf1FA230D25fC5D6CAfe87C5A6F9e1B17Bc6F194E`](https://testnet.bscscan.com/address/0xf1FA230D25fC5D6CAfe87C5A6F9e1B17Bc6F194E)
 * USDCPrimeConverter: [`0x2ecEdE6989d8646c992344fF6C97c72a3f811A13`](https://testnet.bscscan.com/address/0x2ecEdE6989d8646c992344fF6C97c72a3f811A13)
