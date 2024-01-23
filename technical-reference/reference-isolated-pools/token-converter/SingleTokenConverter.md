@@ -1,3 +1,7 @@
+# SingleTokenConverter
+
+Used for token conversions and sends received tokens
+
 # Solidity API
 
 ### baseAsset

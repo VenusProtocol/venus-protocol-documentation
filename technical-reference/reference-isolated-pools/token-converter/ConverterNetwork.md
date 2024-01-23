@@ -1,3 +1,7 @@
+# ConverterNetwork
+
+Keeps track of all the converters and is used to fetch valid converters which provide conversions according to token addresses provided
+
 # Solidity API
 
 ### allConverters
