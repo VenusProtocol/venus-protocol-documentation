@@ -33,7 +33,7 @@ function sweepToken(address tokenAddress, address to, uint256 amount) external
 
 ### sweepTokenFromPool
 
-Function to sweep baseAsset to pool
+Function to sweep token from pool
 
 ```solidity
 function sweepTokenFromPool(address tokenAddress, address comptroller, uint256 amount) external
@@ -44,7 +44,7 @@ function sweepTokenFromPool(address tokenAddress, address comptroller, uint256 a
 | ---- | ---- | ----------- |
 | tokenAddress | address | Address of the asset(token) |
 | comptroller | address | Pool address to which assets will be transferred |
-| amount | uint256 | Amount need to sweep for the pool |
+| amount | uint256 | Amount need to sweep from the pool |
 
 #### 📅 Events
 * Emits sweepTokenFromPool event on success
