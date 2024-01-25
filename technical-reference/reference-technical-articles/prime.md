@@ -93,10 +93,10 @@ Rewards will be distributed to Prime users only in USDT, USDC, BTC and ETH token
 
 | Prime market | Distribution |
 | --- | --- |
-| USDC | 19.24% |
-| USDT | 41.94% |
-| BTC | 17.70% |
-| ETH | 21.13% |
+| USDT | 40% |
+| USDC | 30% |
+| ETH | 25% |
+| BTC | 5% |
 
 For example:
 
@@ -104,10 +104,10 @@ For example:
 - 10% of the CAKE total income should be allocated to Prime → 100 CAKE (following the protocol tokenomics)
 - We should convert 100 CAKE to USDC, USDT, BTC and ETH, because in Prime the rewards are defined in these tokens
 - The conversion should follow the previous table:
-    - 19.24 CAKE should be converted to USDC
-    - 41.94 CAKE should be converted to USDT
-    - 17.70 CAKE should be converted to BTC
-    - 21.13 CAKE should be converted to ETH
+    - 40 CAKE should be converted to USDT
+    - 30 CAKE should be converted to USDC
+    - 25 CAKE should be converted to ETH
+    - 5 CAKE should be converted to BTC
 
 Interest reserves (part of the protocol income) from Isolated Pools and the Core Pool markets are sent to the PSR ([Protocol Share Reserve](https://github.com/VenusProtocol/protocol-reserve/blob/main/contracts/ProtocolReserve/ProtocolShareReserve.sol)) contract. Based on the configuration, a percentage of income from all markers is reserved for Prime token holders. The interest reserves will be sent to the PSR periodically (currently every 24 hours, but this can be changed by the community via [VIP](https://app.venus.io/governance)).
 
