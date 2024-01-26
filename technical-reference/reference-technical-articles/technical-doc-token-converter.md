@@ -23,7 +23,7 @@ Venus encourages these conversions by providing incentives that create arbitrage
 
 The diagram below illustrates the connection between income harvesting (the process by which Venus transfers income from its sources to the ProtocolShareReserve), distribution (application of the protocol's Tokenomics-defined rules), and conversion (acquiring the required base assets).
 
-<figure><img src="../../.gitbook/assets/Screenshot from 2023-09-05 11-45-26.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/token_converters_sequence.svg" alt=""><figcaption></figcaption></figure>
 
 ## What is the need for a converter?
 
@@ -54,7 +54,7 @@ Private conversion aims to maximize the conversion of tokens received from PSR (
 
 The following diagram illustrates the flow of private conversion.
 
-<figure><img src="../../.gitbook/assets/Screenshot from 2023-12-21 15-24-18.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/private_conversions_sequence.svg" alt=""><figcaption></figcaption></figure>
 
 # RiskFundConverter
 
