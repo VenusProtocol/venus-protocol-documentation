@@ -15,7 +15,7 @@ The **Venus** **Protocol** generates income in various underlying tokens that su
 
 The following diagram illustrates the flow of funds between contracts and the architecture it has:
 
-<figure><img src="../../.gitbook/assets/Screenshot from 2023-12-21 15-49-37.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/token_converter_funds.svg" alt=""><figcaption></figcaption></figure>
 
 **RiskFundConverter** and **SingleTokenConverters** possess the ability to "facilitate" token conversions for the income they receive, obtaining the desired tokens(base asset) by relying on oracle prices as reference points to accept conversions that external agents will carry out.
 
