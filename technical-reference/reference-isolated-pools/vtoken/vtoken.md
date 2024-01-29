@@ -17,7 +17,7 @@ a user may borrow up to a portion of their collateral determined by the market�
 calculated using the market’s corresponding liquidation threshold, the borrow is eligible for liquidation. When a user repays a borrow, they must also
 pay off interest accrued on the borrow.
 
-The Venus protocol includes unique mechanisms for healing an account and liquidating an account. These actions are performed in the `Comptroller`
+The Venus Protocol includes unique mechanisms for healing an account and liquidating an account. These actions are performed in the `Comptroller`
 and consider all borrows and collateral for which a given account is entered within a market. These functions may only be called on an account with a
 total collateral amount that is no larger than a universal `minLiquidatableCollateral` value, which is used for all markets within a `Comptroller`.
 Both functions settle all of an account’s borrows, but `healAccount()` may add `badDebt` to a vToken. For more detail, see the description of
