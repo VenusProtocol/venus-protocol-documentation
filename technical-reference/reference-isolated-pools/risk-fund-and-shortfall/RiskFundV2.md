@@ -6,7 +6,7 @@ Contract with basic features to track/hold different assets for different Comptr
 
 ### sweepToken
 
-Function to sweep baseAsset for pool, Tokens are sent to address(to)
+Function to sweep baseAsset for pool; Tokens are sent to address(to)
 
 ```solidity
 function sweepToken(address tokenAddress, address to, uint256 amount) external

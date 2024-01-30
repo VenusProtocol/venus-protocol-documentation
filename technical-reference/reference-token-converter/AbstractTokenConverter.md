@@ -6,7 +6,7 @@ This contract provides every feature to configure and convert the desired assets
 
 ### MAX_INCENTIVE
 
-Maximum incentive could be
+Maximum incentive allowed
 
 ```solidity
 uint256 MAX_INCENTIVE
@@ -36,7 +36,7 @@ contract ResilientOracle priceOracle
 
 ### conversionConfigurations
 
-conversion configurations for the existing pairs
+Conversion configurations for the existing pairs
 
 ```solidity
 mapping(address => mapping(address => struct IAbstractTokenConverter.ConversionConfig)) conversionConfigurations
@@ -240,7 +240,7 @@ function convertExactTokens(uint256 amountInMantissa, uint256 amountOutMinMantis
 
 ### convertForExactTokens
 
-Converts tokens for tokenAddressIn for exact amount of tokenAddressOut if there is enough tokens held by the contract,
+Converts tokens for tokenAddressIn for exact amount of tokenAddressOut if there are enough tokens held by the contract.
 otherwise the amount is adjusted
 
 ```solidity
@@ -481,7 +481,7 @@ function getUpdatedAmountIn(uint256 amountOutMantissa, address tokenAddressIn, a
 
 ### updateAssetsState
 
-This method updated the states of this contract after getting funds from PSR
+This method updates the states of this contract after getting funds from PSR
 after settling the amount(if any) through privateConversion between converters
 
 ```solidity
