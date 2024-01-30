@@ -33,7 +33,6 @@ Venus Prime encourages user commitment through two unique Prime Tokens:
     * Users need to stake at least 1,000 XVS for 90 days in a row.
     * After these 90 days, users can mint their Prime Token.
     * If a user decides to withdraw XVS and their balance falls below 1000, their Prime Token will be automatically revoked.
-    * The limit to the number of revocable Prime tokens is 500 on BNB chain. [Source](https://app.venus.io/#/governance/proposal/201). It can be changed with a VIP.
 
 
 2. **Irrevocable "OG" Prime Token (Phase 2):**
