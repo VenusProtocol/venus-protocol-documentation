@@ -8,28 +8,59 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
-### XVS bridge
+### XVS bridge and multichain deployment
 
-**Scope**: [token-bridge](https://github.com/VenusProtocol/token-bridge) repository, with contracts to allow the bridge of XVS tokens from/to BNB to/from other EVM compatible networks, like Ethereum. Extend the OFTV2 LayerZero contracts, adding custom security rules. XVS and TokenController contract, to be used on the destination chains (initially Ethereum mainnet, Arbitrum one, Polygon zkEVM and opBNB)
+**Scope**: [token-bridge](https://github.com/VenusProtocol/token-bridge) repository, with contracts to allow the bridge of XVS tokens from/to BNB to/from other EVM compatible networks, like Ethereum. Extend the OFTV2 LayerZero contracts, adding custom security rules. XVS and TokenController contract, to be used on the destination chains (initially Ethereum mainnet, Arbitrum one, Polygon zkEVM and opBNB). Moreover, the audit scope included: a new [`VTreasuryV8`](https://github.com/VenusProtocol/venus-protocol/pull/345) contract, and changes in the [Resilient Oracle](https://github.com/VenusProtocol/oracle/pull/124) and Isolated pools](https://github.com/VenusProtocol/isolated-pools/pull/294) to make them compatible with other networks.
 
 - [Certik audit report (2023/12/26)](https://github.com/VenusProtocol/token-bridge/blob/323e95fa3c0167cca2fc1d2807e911e0bae54de9/audits/083_multichain_token_bridge_certik_20231226.pdf)
 
 - [Quantstamp audit report (2023/12/19)](https://github.com/VenusProtocol/token-bridge/blob/323e95fa3c0167cca2fc1d2807e911e0bae54de9/audits/064_multichain_token_bridge_quantstamp_20231219.pdf)
 
+- [Peckshield audit report (2023/10/20)](https://github.com/VenusProtocol/token-bridge/blob/04b0a8526bb2fa916785c41eefd94b4f84c12819/audits/079_multichain_token_bridge_peckshield_20231020.pdf)
+
 <details>
 <summary>Detailed scope</summary>
-- [token-bridge](https://github.com/VenusProtocol/token-bridge) repository
-- Branch: `develop`
-- Last commit: `91b640fffb0c374bdb63a0f6e8e756793e892ad6`
-- List of files in the scope:
-    - contracts/Bridge/BaseXVSProxyOFT.sol
-    - contracts/Bridge/XVSBridgeAdmin.sol
-    - contracts/Bridge/XVSProxyOFTDest.sol
-    - contracts/Bridge/XVSProxyOFTSrc.sol
-    - contracts/Bridge/token/TokenController.sol
-    - contracts/Bridge/token/XVS.sol
-    - contracts/Bridge/interfaces/IXVSProxyOFT.sol
-    - contracts/Bridge/interfaces/IXVS.sol
+
+- Certik, Quantstamp and Peckshield audited:
+  - [token-bridge](https://github.com/VenusProtocol/token-bridge) repository
+  - Branch: `develop`
+  - Last commit: `91b640fffb0c374bdb63a0f6e8e756793e892ad6`
+  - List of files in the scope:
+      - contracts/Bridge/BaseXVSProxyOFT.sol
+      - contracts/Bridge/XVSBridgeAdmin.sol
+      - contracts/Bridge/XVSProxyOFTDest.sol
+      - contracts/Bridge/XVSProxyOFTSrc.sol
+      - contracts/Bridge/token/TokenController.sol
+      - contracts/Bridge/token/XVS.sol
+      - contracts/Bridge/interfaces/IXVSProxyOFT.sol
+      - contracts/Bridge/interfaces/IXVS.sol
+
+- Moreover, Peckshield audited this:
+  - [https://github.com/VenusProtocol/venus-protocol/pull/345](https://github.com/VenusProtocol/venus-protocol/pull/345)
+      - This is the treasury contract used in the different networks
+      - Inspired by the VTreasury contract deployed to BNB chain (solidity 0.5.16, [here](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/Governance/VTreasury.sol))
+      - Main chain: adapted to solidity 0.8.20
+      - Last commit: 0a058575a48b3b1d55cf257f2ade768b749f0fc6
+  - Resilient Oracles change
+    - [https://github.com/VenusProtocol/oracle/pull/124](https://github.com/VenusProtocol/oracle/pull/124)
+        - Rename variables related to the native token on each chain and the VAI token
+    - Last commit: a0a36bcd94e5acd41e137e3cef711484f86eb397
+
+- Apart from the previous scopes, Quantstamp also audited:
+  - Isolated pools change
+    - [https://github.com/VenusProtocol/isolated-pools/pull/294](https://github.com/VenusProtocol/isolated-pools/pull/294)
+        - Convert into immutable the number of blocks per year, so it can be configured per chain during the deployment
+    - Last commit: 5e660bffec987b3d31aba3f11b5c4e35f689f646
+  - XVSVault
+    - [https://github.com/VenusProtocol/venus-protocol/tree/develop/contracts/XVSVault](https://github.com/VenusProtocol/venus-protocol/tree/develop/contracts/XVSVault)
+    - Last commit: a158f8c335d0cfad71f1d2c27af6b0d92f4abe41
+  - Protocol Share Reserve
+    - [https://github.com/VenusProtocol/protocol-reserve/blob/develop/contracts/ProtocolReserve/ProtocolShareReserve.sol](https://github.com/VenusProtocol/protocol-reserve/blob/develop/contracts/ProtocolReserve/ProtocolShareReserve.sol)
+    - Last commit: e396119c4442b7811fbeb14ad0851afec1a9d0fa
+  - Access Control Manager
+    - [https://github.com/VenusProtocol/governance-contracts/blob/main/contracts/Governance/AccessControlManager.sol](https://github.com/VenusProtocol/governance-contracts/blob/main/contracts/Governance/AccessControlManager.sol)
+    - Last commit: 358bed476af7d7d871bf59e77c9daba22a7c2339
+
 </details>
 
 ### Venus Prime
