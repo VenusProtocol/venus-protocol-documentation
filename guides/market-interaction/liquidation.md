@@ -8,7 +8,7 @@
 
 # Liquidations
 
-This is a step-by-step guide on how to perform liquidations on the Venus protocol. Liquidations involve seizing collateral from under-collateralized accounts to repay outstanding debts. The instructions are targeted towards developers or bots that aim to automate the liquidation process.
+This is a step-by-step guide on how to perform liquidations on the Venus Protocol. Liquidations involve seizing collateral from under-collateralized accounts to repay outstanding debts. The instructions are targeted towards developers or bots that aim to automate the liquidation process.
 
 ## Account Liquidity Calculations
 

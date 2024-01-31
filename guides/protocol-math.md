@@ -2,7 +2,7 @@
 
 ### Overview
 
-The contracts under the Venus protocol employ a system called Exponential.sol. This system uses exponential mathematics to represent fractional quantities with high precision.&#x20;
+The contracts under the Venus Protocol employ a system called Exponential.sol. This system uses exponential mathematics to represent fractional quantities with high precision.&#x20;
 
 Most numbers in this system are represented by a mantissa, an unsigned integer scaled by a factor of 1 \* 10^18. This scaling ensures basic mathematical operations can be performed with a high degree of accuracy.
 
@@ -53,7 +53,7 @@ For a visualization of the current interest rate model applied to each market, r
 
 The accrual of interest to suppliers and borrowers in a market occurs when any BSC address interacts with the market's vToken contract. This interaction could be any of the following functions: mint, redeem, borrow, or repay. A successful execution of any of these functions triggers the accrueInterest method, leading to the addition of interest to the underlying balance of every supplier and borrower in the market. Interest accrues for the current block, as well as any previous blocks where the accrueInterest method was not triggered due to lack of interaction with the vToken contract. Interest only accumulates during blocks where one of the aforementioned methods is invoked on the vToken contract.
 
-Let's consider an example of supply interest accrual: Alice supplies 1 BNB to the Venus protocol. At the time of her supply, the supplyRatePerBlock is 37893605 Wei, which equates to 0.000000000037893605 BNB per block. For 3 BSC blocks, no interactions occur with the vBNB contract. On the subsequent 4th block, Bob borrows some BNB. As a result, Alice’s underlying balance is updated to 1.000000000151574420 BNB (calculated by multiplying 37893605 Wei by 4 blocks and adding the original 1 BNB). From this point onwards, the accrued interest on Alice’s underlying BNB balance will be based on the updated value of 1.000000000151574420 BNB, rather than the initial 1 BNB. It is important to note that the supplyRatePerBlock value may alter at any given time.
+Let's consider an example of supply interest accrual: Alice supplies 1 BNB to the Venus Protocol. At the time of her supply, the supplyRatePerBlock is 37893605 Wei, which equates to 0.000000000037893605 BNB per block. For 3 BSC blocks, no interactions occur with the vBNB contract. On the subsequent 4th block, Bob borrows some BNB. As a result, Alice’s underlying balance is updated to 1.000000000151574420 BNB (calculated by multiplying 37893605 Wei by 4 blocks and adding the original 1 BNB). From this point onwards, the accrued interest on Alice’s underlying BNB balance will be based on the updated value of 1.000000000151574420 BNB, rather than the initial 1 BNB. It is important to note that the supplyRatePerBlock value may alter at any given time.
 
 ### Calculating the APY Using Rate Per Block
 

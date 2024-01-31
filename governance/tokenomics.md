@@ -16,7 +16,7 @@ Protocol reserves are mainly composed of accumulated borrow fees. The model for 
 
 * **Risk Fund (40%)**: This fund is established to address potential shortfalls in the protocol, particularly in situations of ineffective or delayed liquidations. The allocation to the risk fund remains unchanged to maintain a strong financial buffer.
 * **Treasury Reserve (40%)**: The treasury reserve bolsters the protocol's resilience and provides a robust safety net for its ongoing operations.
-* **XVS Vault Rewards (10%)**: Venus protocol continues to incentivize users through XVS Vault Rewards.
+* **XVS Vault Rewards (10%)**: Venus Protocol continues to incentivize users through XVS Vault Rewards.
 * **Venus Prime Token Program (10%)**: This program utilizes a portion of the reserve revenue to incentivize user participation and boost the APYs for qualified users in the main market.
 
 ### Allocation for Additional Revenue Streams
