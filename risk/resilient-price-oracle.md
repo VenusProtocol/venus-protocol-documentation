@@ -28,6 +28,16 @@ In implementing the Resilient Price Oracle, several safety measures have been ad
 
 <figure><img src="../.gitbook/assets/17b75928-d6a2-4207-9a0b-89d1d41690d4.png" alt=""><figcaption></figcaption></figure>
 
+
+### Liquid Staked Assets Pricing
+For LSTs (Liquid Staked Tokens) pricing, best practice suggests oracles quote the smart contract of the LST to derive its value in underlying token units and then multiply that by the USD price of the underlying. In Venus we use dedicated oracles for each LST asset in order to calculate the price as follows:
+*  convert the LST to the underlying tokens (using the exchange rate provided by the LST contract)
+*  convert the underlying token calculated in the previous step to USD, using a “traditional” oracle based on market price
+
+{% hint style="warning" %}
+It is worth mentioning that with this approach we assume 1:1 USD price ratio between the LSD and Underlying asset (e.g 1 ETH = 1 STETH). The primary risks involved with the above approach are related to smart contract vulnerabilities and other counterparty risks that could affect redemption processes of the LSDs. In scenarios where there is substantial counterparty risk, notably if the underlying tokens are not redeemable against the LSDs, the direct smart contract pricing might become unreliable. Under such circumstances, it is prudent to switch to price oracles that derive quotes from secondary market prices, thereby maintaining pricing accuracy and reliability.
+{% endhint %}
+
 ### Further Reading
 
 For more detailed information, refer to the following resources:
