@@ -1,8 +1,10 @@
+# Token converters
+
 {% hint style="info" %}
 Only available on BNB chain
 {% endhint %}
 
-# Overview
+## Overview
 
 The **Venus Protocol** generates income in various underlying tokens from interest and liquidation fees, that are then sent to the [ProtocolShareReserve](https://bscscan.com/address/0xCa01D5A9A248a830E9D93231e791B1afFed7c446) contract. The `ProtocolShareReserve` contract disburses these earnings to number of destinations:
 
@@ -35,17 +37,17 @@ The diagram below illustrates the connection between income harvesting (the proc
 
 <figure><img src="../../.gitbook/assets/token_converters_sequence.svg" alt="Diagram showing the relationship among the harvesting, distribution, and converting of income"><figcaption>Relationship among the harvesting, distribution, and converting of income</figcaption></figure>
 
-### Token Converters Destinations
+## Token Converters Destinations
 
 - `RiskFund` already includes the integration with the `Shortfall` contract. The USDT received in the conversions will be [auctioned off in the Shortfall contract](shortfall-and-auctions.md).
 - `XVSVaultTreasury` accumulates the XVS received in the conversions. Those XVS will be sent to the `XVSVault` eventually via VIP, which will update also the APR in the `XVSVault`.
 - `PrimeLiquidityProvider` accumulates [the Prime funds](prime.md) and distributes them according to the speeds configured via VIP.
 
-# `AbstractTokenConverter`
+## `AbstractTokenConverter`
 
 `AbstractTokenConverter` contract provides required features to configure and convert desired assets. The `RiskFundConverter` and the `SingleTokenConverters` extend this abstract contract (that could also be extended by other contracts in the future because it provides these features agnostically).
 
-## Configuration of conversions
+### Configuration of conversions
 
 There will be one configuration per pair `tokenAddressIn / tokenAddressOut`. Only authorized contracts (Governance) will be able to add or update these configurations. The configuration for a conversion includes:
 
@@ -64,7 +66,7 @@ For example, in the `XVSVaultConverter` there would be a configuration entry wit
 - `incentive`: 0 (initially there won't be any incentive)
 - `conversionAccess`: ALL (everyone can perform conversions of XVS for BTCB in the `XVSVaultConverter`)
 
-## Incentives
+### Incentives
 
 To incentivize conversions we allow an increase in the final amount sent out from the converter contract.
 
@@ -77,9 +79,9 @@ To incentivize conversions we allow an increase in the final amount sent out fro
 
 The incentive is applied on the base out amount calculated using the conversion rate, which is based on oracle prices. Incentives will be defined using normal VIP’s, following the Governance mechanism. Each pair of tokens can have a different incentive value. Bigger incentives can be set for converting tokens with lower liquidity, for example.
 
-## Interaction with the Token Converter contracts
+### Interaction with the Token Converter contracts
 
-### Get Amount Out
+#### Get Amount Out
 
 View function `getAmountOut(uint256 amountInMantissa, address tokenAddressIn, address tokenAddressOut) returns (uint256 amountConvertedMantissa, uint256 amountOutMantissa)`, to request the amount of `tokenAddressOut` tokens that a sender would receive providing `amountInMantissa` tokens of `tokenAddressIn`.
 
@@ -133,7 +135,7 @@ The convert functions use this view to calculate how many tokens must be transfe
             - 19.80 is the amount of XVS needed to review the available liquidity
         - `amountOutMantissa`: 100 * 10^18. That is **100 USDC**
 
-### Get Amount In
+#### Get Amount In
 
 View function `getAmountIn(uint256 amountOutMantissa, address tokenAddressIn, address tokenAddressOut) returns (uint256 amountInMantissa, uint256 amountConvertedMantissa)`, to request the amount of `tokenAddressIn` tokens that a sender should send to the contract, to receive `amountOutMantissa` tokens of `tokenAddressOut`.
 
@@ -158,7 +160,7 @@ Where:
         - `amountInMantissa`: $20 * 10^{18}$ (XVS)
         - `amountConvertedMantissa`: $100 * 10^{18}$ (USDC), different from the `amountOutMantissa` param because there is not enough liquidity
 
-### Conversions Fixing the Amount In
+#### Conversions Fixing the Amount In
 
 Function `convertExactTokens(uint256 amountInMantissa, uint256 amountOutMinMantissa, address tokenAddressIn, address tokenAddressOut, address to)`.
 
@@ -185,7 +187,7 @@ There must be a `ConversionConfig` entry for the pair `tokenAddressIn / tokenAdd
 It must satisfy the constraint of sending more than `amountOutMinMantissa`
 - See the second invocation example in the section [Get amount out](https://www.notion.so/TD-26-Token-converters-59622320ee6945e2a8e0e6606af2f8b7?pvs=21)
 
-### Conversions Fixing the Amount Out
+#### Conversions Fixing the Amount Out
 
 Function `convertForExactTokens(uint256 amountInMaxMantissa, uint256 amountOutMantissa, address tokenAddressIn, address tokenAddressOut, address to)`.
 
@@ -205,7 +207,7 @@ There must be a `ConversionConfig` entry for the pair `tokenAddressIn / tokenAdd
 
 This implementation of this function can use the `getAmountIn` function internally because the same liquidity check is needed. If the `amountConvertedMantissa` amount is less than the param `amountOutMantissa`, the transaction is reverted. This constraint is similar to checking that the liquidity of `tokenAddressOut` is less than `amountOutMantissa`.
 
-## Private Conversion
+### Private Conversion
 
 Private Conversions aims to maximize the conversion of tokens received from the `ProtocolShareReserve` contract (to any converter) among existing converters in the same `ConverterNetwork` contract. This is done to preserve incentives and reduce the dependency on users to perform conversions. Converters will autonomously carry out Private Conversions whenever funds are received from `ProtocolShareReserve`. No incentives will be provided during this process.
 
@@ -213,20 +215,20 @@ The following diagram illustrates the flow of private conversion.
 
 <figure><img src="../../.gitbook/assets/private_conversions_sequence.svg" alt="Sequence diagram for private conversions"><figcaption>Sequence diagram for private conversions</figcaption></figure>
 
-# RiskFundConverter
+## RiskFundConverter
 
 The `RiskFundConverter` contract extends the `AbtractTokenConverter` contract. It maintains a distribution of assets per comptroller and assets. `ProtocolShareReserve` sends the RiskFund's share of income to this contract which will convert the assets and send them to the `RiskFund` contract.
 
-# SingleTokenConverter
+## SingleTokenConverter
 
 The `SingleTokenConverter` contract extends the `AbtractTokenConverter` contract. `ProtocolShareReserve` distributes the income share among various `SingleTokenConverter` contracts, such as the `USDTPrimeConverter` contract. This particular contract facilitates the conversion of assets to its base asset and subsequently sends them to their designated destination address.
 
 Users can convert tokens through these contracts(`RiskFundConverter` and `SingleTokenConverters`) and receive the converted tokens along with an incentive. A conversion config for the `tokenAddressIn / tokenAddressOut` pair is necessary for a successful conversion; otherwise, the conversion will revert.
 
-# XVSVaultTreasury
+## XVSVaultTreasury
 
 One instance of `XVSVaultTreasury` is configured as the destination address in the `XVSVaultConverter`. This treasury is used to fund the `XVSVault`.
 
-# ConverterNetwork
+## ConverterNetwork
 
 This contract contains the list of all the converters and will provide valid converters which can perform conversions. Converters will interact with this contract to get the list of other converters open for Private Conversions.

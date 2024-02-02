@@ -1,5 +1,8 @@
 # Venus Prime
 
+{% hint style="info" %}
+Only available on BNB chain
+{% endhint %}
 
 ## Overview
 
