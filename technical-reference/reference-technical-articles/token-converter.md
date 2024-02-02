@@ -1,8 +1,8 @@
-# Overview
-
 {% hint style="info" %}
 Only available on BNB chain
 {% endhint %}
+
+# Overview
 
 The **Venus Protocol** generates income in various underlying tokens from interest and liquidation fees, that are then sent to the [ProtocolShareReserve](https://bscscan.com/address/0xCa01D5A9A248a830E9D93231e791B1afFed7c446) contract. The `ProtocolShareReserve` contract disburses these earnings to number of destinations:
 
