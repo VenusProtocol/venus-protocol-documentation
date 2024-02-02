@@ -2,7 +2,7 @@
 
 At Venus, our utmost dedication lies in ensuring the highest levels of security for our users. Throughout the entire Smart Contract development lifecycle, we strictly adhere to industry best practices to uphold the integrity of our platform. To further fortify our security measures, we collaborate with renowned auditing firms in the field. These partnerships enable us to conduct comprehensive security assessments of our protocol, thereby safeguarding our users' funds effectively.
 
-The security of the Venus protocol stands as our highest priority. Our development team, in conjunction with third-party auditors and consultants, has invested substantial efforts to create a protocol that we confidently deem safe and dependable. We prioritize transparency by making all contract code and balances publicly verifiable. Moreover, we offer a bug bounty program to security researchers who report undiscovered vulnerabilities, encouraging continuous improvement and vigilance.
+The security of the Venus Protocol stands as our highest priority. Our development team, in conjunction with third-party auditors and consultants, has invested substantial efforts to create a protocol that we confidently deem safe and dependable. We prioritize transparency by making all contract code and balances publicly verifiable. Moreover, we offer a bug bounty program to security researchers who report undiscovered vulnerabilities, encouraging continuous improvement and vigilance.
 
 We firmly believe that the true test of a smart contract's security lies in its size, visibility, and time. Consequently, we urge users to exercise caution and make independent assessments of the security and suitability of our protocol.
 
@@ -10,7 +10,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ### Token converters
 
-**Scope**: [Token converter contracts](https://github.com/VenusProtocol/protocol-reserve/pull/9). These contracts will allow the protocol to convert the income generated to the needed tokens, following the [Tokenomics](https://snapshot.org/#/venus-xvs.eth/proposal/0xc9d270ccecb7b91c75b95b8d9af24fc7c20cd38c0c0c44888ed4e7724f4e7ce9).
+**Scope**: [Token converter contracts](https://github.com/VenusProtocol/protocol-reserve/pull/9). These contracts will allow the protocol to convert the income generated to the needed tokens, following the [Tokenomics](https://snapshot.org/#/venus-xvs.eth/proposal/0xc9d270ccecb7b91c75b95b8d9af24fc7c20cd38c0c0c44888ed4e7724f4e7ce9). Enabled in [VIP-245](https://app.venus.io/#/governance/proposal/245) and [VIP-248](https://app.venus.io/#/governance/proposal/248).
 
 - Token converters
     - [OpenZeppelin audit report (2023/10/10)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/066_tokenConverter_openzeppelin_20231010.pdf)
@@ -46,35 +46,66 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 </details>
 
-### XVS bridge
+### XVS bridge and multichain deployment
 
-**Scope**: [token-bridge](https://github.com/VenusProtocol/token-bridge) repository, with contracts to allow the bridge of XVS tokens from/to BNB to/from other EVM compatible networks, like Ethereum. Extend the OFTV2 LayerZero contracts, adding custom security rules. XVS and TokenController contract, to be used on the destination chains (initially Ethereum mainnet, Arbitrum one, Polygon zkEVM and opBNB)
+**Scope**: [token-bridge](https://github.com/VenusProtocol/token-bridge) repository, with contracts to allow the bridge of XVS tokens from/to BNB to/from other EVM compatible networks, like Ethereum. Extend the OFTV2 LayerZero contracts, adding custom security rules. XVS and TokenController contract, to be used on the destination chains (initially Ethereum mainnet, Arbitrum one, Polygon zkEVM and opBNB). Moreover, the audit scope included: a new [`VTreasuryV8`](https://github.com/VenusProtocol/venus-protocol/pull/345) contract, and changes in the [Resilient Oracle](https://github.com/VenusProtocol/oracle/pull/124) and Isolated pools](https://github.com/VenusProtocol/isolated-pools/pull/294) to make them compatible with other networks. Enabled in [VIP-232](https://app.venus.io/#/governance/proposal/232).
 
 - [Certik audit report (2023/12/26)](https://github.com/VenusProtocol/token-bridge/blob/323e95fa3c0167cca2fc1d2807e911e0bae54de9/audits/083_multichain_token_bridge_certik_20231226.pdf)
 
 - [Quantstamp audit report (2023/12/19)](https://github.com/VenusProtocol/token-bridge/blob/323e95fa3c0167cca2fc1d2807e911e0bae54de9/audits/064_multichain_token_bridge_quantstamp_20231219.pdf)
 
+- [Peckshield audit report (2023/10/20)](https://github.com/VenusProtocol/token-bridge/blob/04b0a8526bb2fa916785c41eefd94b4f84c12819/audits/079_multichain_token_bridge_peckshield_20231020.pdf)
+
 <details>
 <summary>Detailed scope</summary>
 
-- [token-bridge](https://github.com/VenusProtocol/token-bridge) repository
-- Branch: `develop`
-- Last commit: `91b640fffb0c374bdb63a0f6e8e756793e892ad6`
-- List of files in the scope:
-    - contracts/Bridge/BaseXVSProxyOFT.sol
-    - contracts/Bridge/XVSBridgeAdmin.sol
-    - contracts/Bridge/XVSProxyOFTDest.sol
-    - contracts/Bridge/XVSProxyOFTSrc.sol
-    - contracts/Bridge/token/TokenController.sol
-    - contracts/Bridge/token/XVS.sol
-    - contracts/Bridge/interfaces/IXVSProxyOFT.sol
-    - contracts/Bridge/interfaces/IXVS.sol
+- Certik, Quantstamp and Peckshield audited:
+  - [token-bridge](https://github.com/VenusProtocol/token-bridge) repository
+  - Branch: `develop`
+  - Last commit: `91b640fffb0c374bdb63a0f6e8e756793e892ad6`
+  - List of files in the scope:
+      - contracts/Bridge/BaseXVSProxyOFT.sol
+      - contracts/Bridge/XVSBridgeAdmin.sol
+      - contracts/Bridge/XVSProxyOFTDest.sol
+      - contracts/Bridge/XVSProxyOFTSrc.sol
+      - contracts/Bridge/token/TokenController.sol
+      - contracts/Bridge/token/XVS.sol
+      - contracts/Bridge/interfaces/IXVSProxyOFT.sol
+      - contracts/Bridge/interfaces/IXVS.sol
+
+- Moreover, Peckshield audited this:
+  - [https://github.com/VenusProtocol/venus-protocol/pull/345](https://github.com/VenusProtocol/venus-protocol/pull/345)
+      - This is the treasury contract used in the different networks
+      - Inspired by the VTreasury contract deployed to BNB chain (solidity 0.5.16, [here](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/Governance/VTreasury.sol))
+      - Main chain: adapted to solidity 0.8.20
+      - Last commit: 0a058575a48b3b1d55cf257f2ade768b749f0fc6
+  - Resilient Oracles change
+    - [https://github.com/VenusProtocol/oracle/pull/124](https://github.com/VenusProtocol/oracle/pull/124)
+        - Rename variables related to the native token on each chain and the VAI token
+    - Last commit: a0a36bcd94e5acd41e137e3cef711484f86eb397
+
+- Apart from the previous scopes, Quantstamp also audited:
+  - Isolated pools change
+    - [https://github.com/VenusProtocol/isolated-pools/pull/294](https://github.com/VenusProtocol/isolated-pools/pull/294)
+        - Convert into immutable the number of blocks per year, so it can be configured per chain during the deployment
+    - Last commit: 5e660bffec987b3d31aba3f11b5c4e35f689f646
+  - XVSVault
+    - [https://github.com/VenusProtocol/venus-protocol/tree/develop/contracts/XVSVault](https://github.com/VenusProtocol/venus-protocol/tree/develop/contracts/XVSVault)
+    - Last commit: a158f8c335d0cfad71f1d2c27af6b0d92f4abe41
+  - Protocol Share Reserve
+    - [https://github.com/VenusProtocol/protocol-reserve/blob/develop/contracts/ProtocolReserve/ProtocolShareReserve.sol](https://github.com/VenusProtocol/protocol-reserve/blob/develop/contracts/ProtocolReserve/ProtocolShareReserve.sol)
+    - Last commit: e396119c4442b7811fbeb14ad0851afec1a9d0fa
+  - Access Control Manager
+    - [https://github.com/VenusProtocol/governance-contracts/blob/main/contracts/Governance/AccessControlManager.sol](https://github.com/VenusProtocol/governance-contracts/blob/main/contracts/Governance/AccessControlManager.sol)
+    - Last commit: 358bed476af7d7d871bf59e77c9daba22a7c2339
 
 </details>
 
 ### Venus Prime
 
 **Scope**: `Prime` and `PrimeLiquidityProvider` contracts, to manage the eligibility of Prime tokens and the rewards distributions.
+
+Enabled in [VIP-201](https://app.venus.io/#/governance/proposal/201), [VIP-202](https://app.venus.io/#/governance/proposal/202), [VIP-203](https://app.venus.io/#/governance/proposal/203), [VIP-206](https://app.venus.io/#/governance/proposal/206) and [VIP-210](https://app.venus.io/#/governance/proposal/210).
 
 - [OpenZeppelin audit report (2023/10/03)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/065_prime_openzeppelin_20231003.pdf)
 - [Certik audit audit report (2023/11/13)](https://github.com/VenusProtocol/venus-protocol/blob/2425501070d28c36a73861d9cf6970f641403735/audits/060_prime_certik_20231113.pdf)

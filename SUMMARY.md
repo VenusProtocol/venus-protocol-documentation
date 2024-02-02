@@ -27,6 +27,7 @@
 * [Resilient Price Oracle](risk/resilient-price-oracle.md)
 * [Interest Rate Model](risk/interest-rate-model.md)
 * [Risk Fund and Shortfall Handling](risk/risk-fund-and-shortfall-handling.md)
+* [Risk Management](risk/risk-management.md)
 
 ## Tokens
 
@@ -46,6 +47,7 @@
 * [Contributing](guides/contributing.md)
 * [Vaults](guides/vaults.md)
 * [Protocol Math](guides/protocol-math.md)
+* [XVS Bridge](guides/xvs-bridge.md)
 
 ## Technical reference
 
@@ -82,9 +84,9 @@
       * [VAIVault](technical-reference/reference-core-pool/vaults/vai/vai-vault.md)
       * [VAIVaultProxy](technical-reference/reference-core-pool/vaults/vai/vai-vault-proxy.md)
   * [InterestRateModels](technical-reference/reference-core-pool/interestratemodels/README.md)
-    * [JumpModel](technical-reference/reference-core-pool/interestratemodels/jump-model.md)
-    * [WhitePaperModel](technical-reference/reference-core-pool/interestratemodels/white-paper-interest-rate-model.md)
-    * [InterestRateModelLens](technical-reference/reference-core-pool/interestratemodels/interest-rate-model-lens.md)
+    * [JumpModel](technical-reference/reference-core-pool/interestratemodels/jumpmodel.md)
+    * [WhitePaperModel](technical-reference/reference-core-pool/interestratemodels/whitepapermodel.md)
+    * [InterestRateModelLens](technical-reference/reference-core-pool/interestratemodels/interestratemodellens.md)
   * [Liquidator](technical-reference/reference-core-pool/liquidator.md)
   * [VTreasury](technical-reference/reference-core-pool/vtreasury.md)
   * [VenusLens](technical-reference/reference-core-pool/venus-lens.md)
@@ -117,13 +119,13 @@
     * [ErrorReporter](technical-reference/reference-isolated-pools/utility/error-reporter.md)
     * [ExponentialNoError](technical-reference/reference-isolated-pools/utility/exponential-no-error.md)
 * [Oracle](technical-reference/reference-oracle/README.md)
-  * [ResilientOracle](technical-reference/reference-oracle/ResilientOracle.md)
+  * [ResilientOracle](technical-reference/reference-oracle/resilientoracle.md)
   * [BoundValidator](technical-reference/reference-oracle/oracles/BoundValidator.md)
   * [Sources](technical-reference/reference-oracle/oracles/README.md)
-    * [ChainlinkOracle](technical-reference/reference-oracle/oracles/ChainlinkOracle.md)
-    * [BinanceOracle](technical-reference/reference-oracle/oracles/BinanceOracle.md)
-    * [TwapOracle](technical-reference/reference-oracle/oracles/TwapOracle.md)
-    * [PythOracle](technical-reference/reference-oracle/oracles/PythOracle.md)
+    * [ChainlinkOracle](technical-reference/reference-oracle/oracles/chainlinkoracle.md)
+    * [BinanceOracle](technical-reference/reference-oracle/oracles/binanceoracle.md)
+    * [TwapOracle](technical-reference/reference-oracle/oracles/twaporacle.md)
+    * [PythOracle](technical-reference/reference-oracle/oracles/pythoracle.md)
 * [Governance](technical-reference/reference-governance/README.md)
   * [AccessControlManager](technical-reference/reference-governance/access-control-manager.md)
   * [GovernorBravoDelegate](technical-reference/reference-governance/governor-bravo-delegate.md)
@@ -145,7 +147,6 @@
   * [XVS](technical-reference/reference-xvs-bridge/XVS.md)
   * [TokenController](technical-reference/reference-xvs-bridge/TokenController.md)
 
-
 ## Deployed Contracts
 
 * [Isolated Pool](deployed-contracts/isolated-pools.md)
@@ -163,5 +164,5 @@
 
 * [Security & Audits](security-and-audits.md)
 * [Resources](resources.md)
-* [Community Resources](./links/community-resources.md)
-* [Brand kit](./links/brand-kit.md)
+* [Community Resources](links/community-resources.md)
+* [Brand kit](links/brand-kit.md)
