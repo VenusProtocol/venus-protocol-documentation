@@ -57,7 +57,7 @@
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
-  * [Token Converter](technical-reference/reference-technical-articles/token-converter.md)
+  * [Token Converter](technical-reference/reference-technical-articles/token-converters.md)
   * [XVS Bridge](technical-reference/reference-technical-articles/xvs-bridge.md)
 * [Core Pool](technical-reference/reference-core-pool/README.md)
   * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
