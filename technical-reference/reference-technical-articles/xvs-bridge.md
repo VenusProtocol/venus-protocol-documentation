@@ -3,7 +3,7 @@
 This documentation provides detailed instructions and explanations for using the XVS Cross-Chain Bridge. The bridge allows users to transfer tokens between different blockchain networks, specifically between the [BNB chain](https://www.bnbchain.org) and a destination chain. The supported Destination Chains are:
 
 * [Ethereum](https://ethereum.org)
-* [opBNB](https://opbnb.bnbchain.org)
+* [opBNB](https://opbnb.bnbchain.org) (not available yet)
 
 The system consists of multiple contracts, including [XVSBridgeAdmin](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSBridgeAdmin.sol), [XVSProxySrc](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSProxyOFTSrc.sol), [XVSProxyDest](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSProxyOFTDest.sol), and [XVS](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/token/XVS.sol) token contracts.
 
