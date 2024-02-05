@@ -212,3 +212,23 @@ In addition to the core functionality, the XVS Cross-chain Bridge includes addit
 - The transfer amount exceeds the single or daily receiving transaction limit.
 - The recipient is blacklisted by the XVS token.
 - The minting cap on the destination bridge is exceeded.
+
+### Retry Mechanism for Failed Transactions
+
+In the event of a failed transaction, follow a step-by-step process using block explorers and the `retryMessage` function to retry transactions on the respective blockchain. Here's a detailed guide:
+
+1. **Identify the Failed Transaction:**
+   - Use a block explorer (e.g., Etherscan) to locate the failed transaction on the respective blockchain.
+
+2. **Examine the FailedMessage Log:**
+   - Access the emitted events of the failed transaction and specifically examine the `failedMessage` log. This log contains essential function parameters needed for the retry.
+
+3. **Extract Function Parameters:**
+   - From the `failedMessage` log, extract the following essential function parameters:
+     - `_srcChainId`
+     - `_srcAddress`
+     - `_nonce`
+     - `_payload`
+
+4. **Construct a RetryMessage:**
+   - Use the extracted parameters to construct a new transaction by invoking the `retryMessage` function.
