@@ -12,11 +12,11 @@ the borrow is eligible for liquidation.
 The `Comptroller` also includes two functions `liquidateAccount()` and `healAccount()`, which are meant to handle accounts that do not exceed
 the `minLiquidatableCollateral` for the `Comptroller`:
 
-* `healAccount()`: This function is called to seize all of a given user’s collateral, requiring the `msg.sender` repay a certain percentage
+- `healAccount()`: This function is called to seize all of a given user’s collateral, requiring the `msg.sender` repay a certain percentage
   of the debt calculated by `collateral/(borrows*liquidationIncentive)`. The function can only be called if the calculated percentage does not exceed
   100%, because otherwise no `badDebt` would be created and `liquidateAccount()` should be used instead. The difference in the actual amount of debt
   and debt paid off is recorded as `badDebt` for each market, which can then be auctioned off for the risk reserves of the associated pool.
-* `liquidateAccount()`: This function can only be called if the collateral seized will cover all borrows of an account, as well as the liquidation
+- `liquidateAccount()`: This function can only be called if the collateral seized will cover all borrows of an account, as well as the liquidation
   incentive. Otherwise, the pool will incur bad debt, in which case the function `healAccount()` should be used instead. This function skips the logic
   verifying that the repay amount does not exceed the close factor.
 
@@ -34,26 +34,26 @@ function enterMarkets(address[] vTokens) external returns (uint256[])
 
 | Name    | Type      | Description                                               |
 | ------- | --------- | --------------------------------------------------------- |
-| vTokens | address\[] | The list of addresses of the vToken markets to be enabled |
+| vTokens | address[] | The list of addresses of the vToken markets to be enabled |
 
 #### Return Values
 
 | Name | Type      | Description                                                           |
 | ---- | --------- | --------------------------------------------------------------------- |
-| \[0]  | uint256\[] | errors An array of NO\_ERROR for compatibility with Venus core tooling |
+| [0]  | uint256[] | errors An array of NO_ERROR for compatibility with Venus core tooling |
 
 #### 📅 Events
 
-* MarketEntered is emitted for each market on success
+- MarketEntered is emitted for each market on success
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* ActionPaused error is thrown if entering any of the markets is paused
-* MarketNotListed error is thrown if any of the markets is not listed
+- ActionPaused error is thrown if entering any of the markets is paused
+- MarketNotListed error is thrown if any of the markets is not listed
 
 ---
 
@@ -75,24 +75,24 @@ function exitMarket(address vTokenAddress) external returns (uint256)
 
 | Name | Type    | Description                                                     |
 | ---- | ------- | --------------------------------------------------------------- |
-| \[0]  | uint256 | error Always NO\_ERROR for compatibility with Venus core tooling |
+| [0]  | uint256 | error Always NO_ERROR for compatibility with Venus core tooling |
 
 #### 📅 Events
 
-* MarketExited is emitted on success
+- MarketExited is emitted on success
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* ActionPaused error is thrown if exiting the market is paused
-* NonzeroBorrowBalance error is thrown if the user has an outstanding borrow in this market
-* MarketNotListed error is thrown when the market is not listed
-* InsufficientLiquidity error is thrown if exiting the market would lead to user's insolvency
-* SnapshotError is thrown if some vToken fails to return the account's supply and borrows
-* PriceError is thrown if the oracle returns an incorrect price for some asset
+- ActionPaused error is thrown if exiting the market is paused
+- NonzeroBorrowBalance error is thrown if the user has an outstanding borrow in this market
+- MarketNotListed error is thrown when the market is not listed
+- InsufficientLiquidity error is thrown if exiting the market would lead to user's insolvency
+- SnapshotError is thrown if some vToken fails to return the account's supply and borrows
+- PriceError is thrown if the oracle returns an incorrect price for some asset
 
 ---
 
@@ -114,13 +114,13 @@ function preMintHook(address vToken, address minter, uint256 mintAmount) externa
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* ActionPaused error is thrown if supplying to this market is paused
-* MarketNotListed error is thrown when the market is not listed
-* SupplyCapExceeded error is thrown if the total supply exceeds the cap after minting
+- ActionPaused error is thrown if supplying to this market is paused
+- MarketNotListed error is thrown when the market is not listed
+- SupplyCapExceeded error is thrown if the total supply exceeds the cap after minting
 
 ---
 
@@ -142,15 +142,15 @@ function preRedeemHook(address vToken, address redeemer, uint256 redeemTokens) e
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* ActionPaused error is thrown if withdrawals are paused in this market
-* MarketNotListed error is thrown when the market is not listed
-* InsufficientLiquidity error is thrown if the withdrawal would lead to user's insolvency
-* SnapshotError is thrown if some vToken fails to return the account's supply and borrows
-* PriceError is thrown if the oracle returns an incorrect price for some asset
+- ActionPaused error is thrown if withdrawals are paused in this market
+- MarketNotListed error is thrown when the market is not listed
+- InsufficientLiquidity error is thrown if the withdrawal would lead to user's insolvency
+- SnapshotError is thrown if some vToken fails to return the account's supply and borrows
+- PriceError is thrown if the oracle returns an incorrect price for some asset
 
 ---
 
@@ -181,12 +181,12 @@ function preRepayHook(address vToken, address borrower) external
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* ActionPaused error is thrown if repayments are paused in this market
-* MarketNotListed error is thrown when the market is not listed
+- ActionPaused error is thrown if repayments are paused in this market
+- MarketNotListed error is thrown when the market is not listed
 
 ---
 
@@ -210,13 +210,13 @@ function preLiquidateHook(address vTokenBorrowed, address vTokenCollateral, addr
 
 #### ❌ Errors
 
-* ActionPaused error is thrown if liquidations are paused in this market
-* MarketNotListed error is thrown if either collateral or borrowed token is not listed
-* TooMuchRepay error is thrown if the liquidator is trying to repay more than allowed by close factor
-* MinimalCollateralViolated is thrown if the users' total collateral is lower than the threshold for non-batch liquidations
-* InsufficientShortfall is thrown when trying to liquidate a healthy account
-* SnapshotError is thrown if some vToken fails to return the account's supply and borrows
-* PriceError is thrown if the oracle returns an incorrect price for some asset
+- ActionPaused error is thrown if liquidations are paused in this market
+- MarketNotListed error is thrown if either collateral or borrowed token is not listed
+- TooMuchRepay error is thrown if the liquidator is trying to repay more than allowed by close factor
+- MinimalCollateralViolated is thrown if the users' total collateral is lower than the threshold for non-batch liquidations
+- InsufficientShortfall is thrown when trying to liquidate a healthy account
+- SnapshotError is thrown if some vToken fails to return the account's supply and borrows
+- PriceError is thrown if the oracle returns an incorrect price for some asset
 
 ---
 
@@ -239,13 +239,13 @@ function preSeizeHook(address vTokenCollateral, address seizerContract, address 
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* ActionPaused error is thrown if seizing this type of collateral is paused
-* MarketNotListed error is thrown if either collateral or borrowed token is not listed
-* ComptrollerMismatch error is when seizer contract or seized asset belong to different pools
+- ActionPaused error is thrown if seizing this type of collateral is paused
+- MarketNotListed error is thrown if either collateral or borrowed token is not listed
+- ComptrollerMismatch error is when seizer contract or seized asset belong to different pools
 
 ---
 
@@ -268,15 +268,15 @@ function preTransferHook(address vToken, address src, address dst, uint256 trans
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* ActionPaused error is thrown if withdrawals are paused in this market
-* MarketNotListed error is thrown when the market is not listed
-* InsufficientLiquidity error is thrown if the withdrawal would lead to user's insolvency
-* SnapshotError is thrown if some vToken fails to return the account's supply and borrows
-* PriceError is thrown if the oracle returns an incorrect price for some asset
+- ActionPaused error is thrown if withdrawals are paused in this market
+- MarketNotListed error is thrown when the market is not listed
+- InsufficientLiquidity error is thrown if the withdrawal would lead to user's insolvency
+- SnapshotError is thrown if some vToken fails to return the account's supply and borrows
+- PriceError is thrown if the oracle returns an incorrect price for some asset
 
 ---
 
@@ -299,13 +299,13 @@ function healAccount(address user) external
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* CollateralExceedsThreshold error is thrown when the collateral is too big for healing
-* SnapshotError is thrown if some vToken fails to return the account's supply and borrows
-* PriceError is thrown if the oracle returns an incorrect price for some asset
+- CollateralExceedsThreshold error is thrown when the collateral is too big for healing
+- SnapshotError is thrown if some vToken fails to return the account's supply and borrows
+- PriceError is thrown if the oracle returns an incorrect price for some asset
 
 ---
 
@@ -325,18 +325,18 @@ function liquidateAccount(address borrower, struct ComptrollerStorage.Liquidatio
 | Name     | Type                                         | Description                    |
 | -------- | -------------------------------------------- | ------------------------------ |
 | borrower | address                                      | the borrower address           |
-| orders   | struct ComptrollerStorage.LiquidationOrder\[] | an array of liquidation orders |
+| orders   | struct ComptrollerStorage.LiquidationOrder[] | an array of liquidation orders |
 
 #### ⛔️ Access Requirements
 
-* Not restricted
+- Not restricted
 
 #### ❌ Errors
 
-* CollateralExceedsThreshold error is thrown when the collateral is too big for a batch liquidation
-* InsufficientCollateral error is thrown when there is not enough collateral to cover the debt
-* SnapshotError is thrown if some vToken fails to return the account's supply and borrows
-* PriceError is thrown if the oracle returns an incorrect price for some asset
+- CollateralExceedsThreshold error is thrown when the collateral is too big for a batch liquidation
+- InsufficientCollateral error is thrown when there is not enough collateral to cover the debt
+- SnapshotError is thrown if some vToken fails to return the account's supply and borrows
+- PriceError is thrown if the oracle returns an incorrect price for some asset
 
 ---
 
@@ -356,11 +356,11 @@ function setCloseFactor(uint256 newCloseFactorMantissa) external
 
 #### 📅 Events
 
-* Emits NewCloseFactor on success
+- Emits NewCloseFactor on success
 
 #### ⛔️ Access Requirements
 
-* Only Governance
+- Controlled by AccessControlManager
 
 ---
 
@@ -382,19 +382,19 @@ function setCollateralFactor(contract VToken vToken, uint256 newCollateralFactor
 
 #### 📅 Events
 
-* Emits NewCollateralFactor when collateral factor is updated
-* and NewLiquidationThreshold when liquidation threshold is updated
+- Emits NewCollateralFactor when collateral factor is updated
+- and NewLiquidationThreshold when liquidation threshold is updated
 
 #### ⛔️ Access Requirements
 
-* Controlled by AccessControlManager
+- Controlled by AccessControlManager
 
 #### ❌ Errors
 
-* MarketNotListed error is thrown when the market is not listed
-* InvalidCollateralFactor error is thrown when collateral factor is too high
-* InvalidLiquidationThreshold error is thrown when liquidation threshold is lower than collateral factor
-* PriceError is thrown when the oracle returns an invalid price for the asset
+- MarketNotListed error is thrown when the market is not listed
+- InvalidCollateralFactor error is thrown when collateral factor is too high
+- InvalidLiquidationThreshold error is thrown when liquidation threshold is lower than collateral factor
+- PriceError is thrown when the oracle returns an invalid price for the asset
 
 ---
 
@@ -414,11 +414,11 @@ function setLiquidationIncentive(uint256 newLiquidationIncentiveMantissa) extern
 
 #### 📅 Events
 
-* Emits NewLiquidationIncentive on success
+- Emits NewLiquidationIncentive on success
 
 #### ⛔️ Access Requirements
 
-* Controlled by AccessControlManager
+- Controlled by AccessControlManager
 
 ---
 
@@ -438,11 +438,11 @@ function supportMarket(contract VToken vToken) external
 
 #### ⛔️ Access Requirements
 
-* Only PoolRegistry
+- Only PoolRegistry
 
 #### ❌ Errors
 
-* MarketAlreadyListed is thrown if the market is already listed in this pool
+- MarketAlreadyListed is thrown if the market is already listed in this pool
 
 ---
 
@@ -458,12 +458,12 @@ function setMarketBorrowCaps(contract VToken[] vTokens, uint256[] newBorrowCaps)
 
 | Name          | Type              | Description                                                                                                         |
 | ------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------- |
-| vTokens       | contract VToken\[] | The addresses of the markets (tokens) to change the borrow caps for                                                 |
-| newBorrowCaps | uint256\[]         | The new borrow cap values in underlying to be set. A value of type(uint256).max corresponds to unlimited borrowing. |
+| vTokens       | contract VToken[] | The addresses of the markets (tokens) to change the borrow caps for                                                 |
+| newBorrowCaps | uint256[]         | The new borrow cap values in underlying to be set. A value of type(uint256).max corresponds to unlimited borrowing. |
 
 #### ⛔️ Access Requirements
 
-* Controlled by AccessControlManager
+- Controlled by AccessControlManager
 
 ---
 
@@ -479,12 +479,12 @@ function setMarketSupplyCaps(contract VToken[] vTokens, uint256[] newSupplyCaps)
 
 | Name          | Type              | Description                                                                                                      |
 | ------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------- |
-| vTokens       | contract VToken\[] | The addresses of the markets (tokens) to change the supply caps for                                              |
-| newSupplyCaps | uint256\[]         | The new supply cap values in underlying to be set. A value of type(uint256).max corresponds to unlimited supply. |
+| vTokens       | contract VToken[] | The addresses of the markets (tokens) to change the supply caps for                                              |
+| newSupplyCaps | uint256[]         | The new supply cap values in underlying to be set. A value of type(uint256).max corresponds to unlimited supply. |
 
 #### ⛔️ Access Requirements
 
-* Controlled by AccessControlManager
+- Controlled by AccessControlManager
 
 ---
 
@@ -500,13 +500,13 @@ function setActionsPaused(contract VToken[] marketsList, enum ComptrollerStorage
 
 | Name        | Type                             | Description                                        |
 | ----------- | -------------------------------- | -------------------------------------------------- |
-| marketsList | contract VToken\[]                | Markets to pause/unpause the actions on            |
-| actionsList | enum ComptrollerStorage.Action\[] | List of action ids to pause/unpause                |
+| marketsList | contract VToken[]                | Markets to pause/unpause the actions on            |
+| actionsList | enum ComptrollerStorage.Action[] | List of action ids to pause/unpause                |
 | paused      | bool                             | The new paused state (true=paused, false=unpaused) |
 
 #### ⛔️ Access Requirements
 
-* Controlled by AccessControlManager
+- Controlled by AccessControlManager
 
 ---
 
@@ -528,13 +528,14 @@ function setMinLiquidatableCollateral(uint256 newMinLiquidatableCollateral) exte
 
 #### ⛔️ Access Requirements
 
-* Controlled by AccessControlManager
+- Controlled by AccessControlManager
 
 ---
 
 ### addRewardsDistributor
 
-Add a new RewardsDistributor and initialize it with all markets
+Add a new RewardsDistributor and initialize it with all markets. We can add several RewardsDistributor
+contracts with the same rewardToken, and there could be overlaping among them considering the last reward block
 
 ```solidity
 function addRewardsDistributor(contract RewardsDistributor _rewardsDistributor) external
@@ -548,11 +549,11 @@ function addRewardsDistributor(contract RewardsDistributor _rewardsDistributor) 
 
 #### 📅 Events
 
-* Emits NewRewardsDistributor with distributor address
+- Emits NewRewardsDistributor with distributor address
 
 #### ⛔️ Access Requirements
 
-* Only Governance
+- Only Governance
 
 ---
 
@@ -572,11 +573,11 @@ function setPriceOracle(contract ResilientOracleInterface newOracle) external
 
 #### 📅 Events
 
-* Emits NewPriceOracle on success
+- Emits NewPriceOracle on success
 
 #### ❌ Errors
 
-* ZeroAddressNotAllowed is thrown when the new oracle address is zero
+- ZeroAddressNotAllowed is thrown when the new oracle address is zero
 
 ---
 
@@ -593,6 +594,24 @@ function setMaxLoopsLimit(uint256 limit) external
 | Name  | Type    | Description                                   |
 | ----- | ------- | --------------------------------------------- |
 | limit | uint256 | Limit for the max loops can execute at a time |
+
+---
+
+### setForcedLiquidation
+
+Enables forced liquidations for a market. If forced liquidation is enabled,
+borrows in the market may be liquidated regardless of the account liquidity
+
+```solidity
+function setForcedLiquidation(address vTokenBorrowed, bool enable) external
+```
+
+#### Parameters
+
+| Name           | Type    | Description                           |
+| -------------- | ------- | ------------------------------------- |
+| vTokenBorrowed | address | Borrowed vToken                       |
+| enable         | bool    | Whether to enable forced liquidations |
 
 ---
 
@@ -614,7 +633,7 @@ function getAccountLiquidity(address account) external view returns (uint256 err
 
 | Name      | Type    | Description                                                        |
 | --------- | ------- | ------------------------------------------------------------------ |
-| error     | uint256 | Always NO\_ERROR for compatibility with Venus core tooling          |
+| error     | uint256 | Always NO_ERROR for compatibility with Venus core tooling          |
 | liquidity | uint256 | Account liquidity in excess of liquidation threshold requirements, |
 | shortfall | uint256 | Account shortfall below liquidation threshold requirements         |
 
@@ -638,7 +657,7 @@ function getBorrowingPower(address account) external view returns (uint256 error
 
 | Name      | Type    | Description                                               |
 | --------- | ------- | --------------------------------------------------------- |
-| error     | uint256 | Always NO\_ERROR for compatibility with Venus core tooling |
+| error     | uint256 | Always NO_ERROR for compatibility with Venus core tooling |
 | liquidity | uint256 | Account liquidity in excess of collateral requirements,   |
 | shortfall | uint256 | Account shortfall below collateral requirements           |
 
@@ -665,7 +684,7 @@ function getHypotheticalAccountLiquidity(address account, address vTokenModify, 
 
 | Name      | Type    | Description                                                          |
 | --------- | ------- | -------------------------------------------------------------------- |
-| error     | uint256 | Always NO\_ERROR for compatibility with Venus core tooling            |
+| error     | uint256 | Always NO_ERROR for compatibility with Venus core tooling            |
 | liquidity | uint256 | Hypothetical account liquidity in excess of collateral requirements, |
 | shortfall | uint256 | Hypothetical account shortfall below collateral requirements         |
 
@@ -683,7 +702,7 @@ function getAllMarkets() external view returns (contract VToken[])
 
 | Name | Type              | Description                          |
 | ---- | ----------------- | ------------------------------------ |
-| \[0]  | contract VToken\[] | markets The list of market addresses |
+| [0]  | contract VToken[] | markets The list of market addresses |
 
 ---
 
@@ -705,7 +724,7 @@ function isMarketListed(contract VToken vToken) external view returns (bool)
 
 | Name | Type | Description                           |
 | ---- | ---- | ------------------------------------- |
-| \[0]  | bool | listed True if listed otherwise false |
+| [0]  | bool | listed True if listed otherwise false |
 
 ---
 
@@ -727,7 +746,7 @@ function getAssetsIn(address account) external view returns (contract VToken[])
 
 | Name | Type              | Description                                    |
 | ---- | ----------------- | ---------------------------------------------- |
-| \[0]  | contract VToken\[] | A list with the assets the account has entered |
+| [0]  | contract VToken[] | A list with the assets the account has entered |
 
 ---
 
@@ -750,7 +769,7 @@ function checkMembership(address account, contract VToken vToken) external view 
 
 | Name | Type | Description                                                      |
 | ---- | ---- | ---------------------------------------------------------------- |
-| \[0]  | bool | True if the account is in the market specified, otherwise false. |
+| [0]  | bool | True if the account is in the market specified, otherwise false. |
 
 ---
 
@@ -774,12 +793,12 @@ function liquidateCalculateSeizeTokens(address vTokenBorrowed, address vTokenCol
 
 | Name          | Type    | Description                                                     |
 | ------------- | ------- | --------------------------------------------------------------- |
-| error         | uint256 | Always NO\_ERROR for compatibility with Venus core tooling       |
+| error         | uint256 | Always NO_ERROR for compatibility with Venus core tooling       |
 | tokensToSeize | uint256 | Number of vTokenCollateral tokens to be seized in a liquidation |
 
 #### ❌ Errors
 
-* PriceError if the oracle returns an invalid price
+- PriceError if the oracle returns an invalid price
 
 ---
 
@@ -801,7 +820,7 @@ function getRewardsByMarket(address vToken) external view returns (struct Comptr
 
 | Name         | Type                                     | Description                                                                          |
 | ------------ | ---------------------------------------- | ------------------------------------------------------------------------------------ |
-| rewardSpeeds | struct ComptrollerStorage.RewardSpeeds\[] | Array of total supply and borrow speeds and reward token for all reward distributors |
+| rewardSpeeds | struct ComptrollerStorage.RewardSpeeds[] | Array of total supply and borrow speeds and reward token for all reward distributors |
 
 ---
 
@@ -817,7 +836,7 @@ function getRewardDistributors() external view returns (contract RewardsDistribu
 
 | Name | Type                          | Description                          |
 | ---- | ----------------------------- | ------------------------------------ |
-| \[0]  | contract RewardsDistributor\[] | Array of RewardDistributor addresses |
+| [0]  | contract RewardsDistributor[] | Array of RewardDistributor addresses |
 
 ---
 
@@ -833,7 +852,7 @@ function isComptroller() external pure returns (bool)
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| \[0]  | bool | Always true |
+| [0]  | bool | Always true |
 
 ---
 
@@ -872,28 +891,6 @@ function actionPaused(address market, enum ComptrollerStorage.Action action) pub
 
 | Name | Type | Description                                         |
 | ---- | ---- | --------------------------------------------------- |
-| \[0]  | bool | paused True if the action is paused otherwise false |
-
----
-
-### isDeprecated
-
-Check if a vToken market has been deprecated
-
-```solidity
-function isDeprecated(contract VToken vToken) public view returns (bool)
-```
-
-#### Parameters
-
-| Name   | Type            | Description                       |
-| ------ | --------------- | --------------------------------- |
-| vToken | contract VToken | The market to check if deprecated |
-
-#### Return Values
-
-| Name | Type | Description                                                    |
-| ---- | ---- | -------------------------------------------------------------- |
-| \[0]  | bool | deprecated True if the given vToken market has been deprecated |
+| [0]  | bool | paused True if the action is paused otherwise false |
 
 ---

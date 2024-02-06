@@ -1,6 +1,6 @@
 # Liquidations
 
-This is a step-by-step guide on how to perform liquidations on the Venus protocol. Liquidations involve seizing collateral from under-collateralized accounts to repay outstanding debts. The instructions are targeted towards developers or bots that aim to automate the liquidation process.
+This is a step-by-step guide on how to perform liquidations on the Venus Protocol. Liquidations involve seizing collateral from under-collateralized accounts to repay outstanding debts. The instructions are targeted towards developers or bots that aim to automate the liquidation process.
 
 ## Account Liquidity Calculations
 
@@ -66,19 +66,15 @@ Please note that `healAccount` is an extension of the liquidation mechanism to a
 {% hint style="info" %}
 #### Example
 
-**Collateral Factor: 50%**
+Given:
 
-**Close Factor: 50%**
-
-**Liquidation Threshold: 60%**
-
-**Borrow Amount: $13,000**
-
-**Collateral Amount: $20,000**
-
-**Liquidation Incentive: 110%**
-
-**Protocol Share Percentage: 5%**
+* Collateral Factor: 50%
+* Close Factor: 50%
+* Liquidation Threshold: 60%
+* Borrow Amount: $13,000
+* Collateral Amount: $20,000
+* Liquidation Incentive: 110%
+* Protocol Share Percentage: 5%
 
 The borrowed amount is $1,000 above the liquidation threshold ($12,000), therefore the position is eligible for liquidation. Liquidation can be called with a repayment of up to $6,500 (borrow amount \* close factor). Let's assume the liquidator initiates the liquidation process with a repayment amount of $1,000 Let's Calculate the Collateral Seized Amount (the amount that is seized from the borrower's collateral):
 
@@ -106,15 +102,11 @@ In conclusion, the liquidator will provide **$1,000** for the liquidation. After
 {% hint style="info" %}
 #### Example
 
-**Collateral Factor: 50%**
-
-**Liquidation Threshold: 60%**
-
-**Min Liquidatable Collateral: $100**
-
-**Borrow Amount: $60**
-
-**Collateral Amount: $90**
+* Collateral Factor: 50%
+* Liquidation Threshold: 60%
+* Min Liquidatable Collateral: $100
+* Borrow Amount: $60
+* Collateral Amount: $90
 
 Position is already eligible for liquidation since Borrow Amount >= $54. We should call `liquidateAccount()` because **collateral < $100** and account is **solvent**.
 {% endhint %}
@@ -124,15 +116,11 @@ Position is already eligible for liquidation since Borrow Amount >= $54. We shou
 {% hint style="info" %}
 #### Example
 
-**Collateral Factor: 50%**
-
-**Liquidation Threshold: 60%**
-
-**Min Liquidatable Collateral: $100**
-
-**Borrow Amount: $90**
-
-**Collateral Amount: $60**
+* Collateral Factor: 50%
+* Liquidation Threshold: 60%
+* Min Liquidatable Collateral: $100
+* Borrow Amount: $90
+* Collateral Amount: $60
 
 Position is eligible for liquidation and **collateral is < $100**, but the account is **insolvent**, so we need to call `healAccount()` to ensure that the remaining debt ($30) is treated as bad debt for the protocol.
 {% endhint %}
@@ -141,6 +129,56 @@ Position is eligible for liquidation and **collateral is < $100**, but the accou
 
 {% hint style="warning" %}
 Please note that the liquidation process involves complex calculations and requires a deep understanding of Venus Protocol. It's essential to thoroughly test and validate your liquidation bot before deploying it in a production environment. Additionally, keep track of any changes or updates to the Venus Protocol that may impact the liquidation process.
+{% endhint %}
+
+## Forced liquidations
+
+Usually, accounts are only eligible to be liquidated if they are under-collateralized, as described in the previous sections. An exception is if "forced liquidations" are enabled for a market or an individual account in a market. In this case, borrow positions can be liquidated in that market even when the health rate of the account is greater than 1 (i.e. when the account is sufficiently collateralized). Additionally, the close factor check is ignored, allowing the liquidation of 100% of the debt in one transaction.
+
+This feature is based on the implementation done by Compound V2 [here](https://github.com/compound-finance/compound-protocol/pull/123/files). Compound V2 allows "forced liquidations" on markets as soon as the Collateral factor is zero, the Reserve factor is 100% and the borrows are paused. Venus defines a feature flag to enable/disable "forced liquidations", configurable directly via VIP, not based on other parameters. Compound community talked about this feature in [this post](https://www.comp.xyz/t/deprecate-fei-market/3513).
+
+On Venus, forced liquidations can be enabled either for an entire market (all borrow positions in the market can be forcefully liquidated), or for individual accounts in a market (only the borrows of a particular account can be forcefully liquidated in the market).
+
+To check if forced liquidations are enabled for an entire market, the function `Comptroller.isForcedLiquidationEnabled(address vToken)` can be called on the Comptroller contract of the pool with the address of the market. To check if forced liquidations are enabled for an individual account in the market, the function `Comptroller.isForcedLiquidationEnabledForUser(address borrower, address vToken)` can be used, providing the account and market address as arguments.
+
+
+{% hint style="info" %}
+**Availability**:
+Forced Liquidations for entire markets are available in the Core pool since [VIP-172](https://app.venus.io/#/governance/proposal/172), in the Isolated pools since [VIP-186](https://app.venus.io/#/governance/proposal/186). Forced Liquidations for individual accounts are available only in the Core pool since [VIP-210](https://app.venus.io/#/governance/proposal/210).
+{% endhint %}
+
+{% hint style="info" %}
+### Example
+
+Given:
+
+* `vUSDT` collateral factor: 80%
+* 1 USDT = 1 BUSD = 1 USDC = $1 (for simplicity)
+* Close factor: 50%
+* Liquidation incentive: 10%
+* User with the following positions:
+  * Supply: 500 USDT
+  * Borrow: 200 BUSD
+  * Borrow: 100 USDC
+
+The health rate for this user would be `(500 * 0.8) / (200 + 100) = 1.33`. So, in normal circumstances, this user is not eligible to be liquidated.
+
+Now, let’s say we enable the **forced liquidations in the BUSD market** (via VIP). Then:
+
+* Anyone will be allowed to liquidate the BUSD position of the previous user. Moreover, the close factor limit won’t be taken into account. So, the following liquidation would be doable:
+  * Repay amount: 200 BUSD
+  * Collateral market to seize: USDT
+    
+* By doing this liquidation, 220 USDT (repay amount + liquidation incentive) would be seized from the user’s collateral.
+    
+* After the liquidation, the global position of our user would be:
+  * Supply: 280 USDT (500 USDT - 220 USDT seized during the liquidation)
+  * Borrow: 0 BUSD
+  * Borrow: 100 USDC
+    
+* So, the new health rate would be `(280 * 0.8 / 100) = 2.24`. They will be still ineligible for regular liquidations
+    
+* Because the forced liquidation is not enabled in the USDC market, the USDC debt cannot be liquidated (because the health rate is greater than 1).
 {% endhint %}
 
 ## Force VAI Debt First
@@ -162,23 +200,29 @@ For borrowers with outstanding VAI debt, the force VAI liquidation first include
 {% hint style="warning" %}
 If the above conditions are true then the protocol checks that the current vToken sent to be liquidated is VAI, otherwise the liquidation fails.
 {% endhint %}
+
 {% hint style="info" %}
 #### Example 1
 
-Given this feature is enabled, and a user is eligible to be liquidated with the following debt:
+Given:
 
-* 2,000 VAI
-* 5,000 USDT
+* this feature is enabled
+* a user is eligible to be liquidated with the following debt:
+  * 2,000 VAI
+  * 5,000 USDT
 
 Liquidators will be required to liquidate the VAI position first because it is greater than `minLiquidatableVAI`. If they try to liquidate first the USDT position, the liquidation transaction will be reverted.
+{% endhint %}
 
+{% hint style="info" %}
 #### Example 2
 
-Given this feature is enabled, and a user eligible to be liquidated with the following debts:
+Given:
 
-* 500 VAI
-* 5,000 USDT
+* this feature is enabled
+* a user eligible to be liquidated with the following debts:
+  * 500 VAI
+  * 5,000 USDT
 
 Liquidators will be allowed to liquidate first the VAI position **or** the USDT position. Both liquidations will work because the VAI debt is less than `minLiquidatableVAI`
-
 {% endhint %}

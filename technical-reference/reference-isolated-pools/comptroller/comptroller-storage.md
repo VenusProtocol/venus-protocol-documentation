@@ -21,7 +21,6 @@ struct AccountLiquiditySnapshot {
   uint256 liquidity;
   uint256 shortfall;
 }
-
 ```
 
 ```solidity
@@ -30,7 +29,6 @@ struct RewardSpeeds {
   uint256 supplySpeed;
   uint256 borrowSpeed;
 }
-
 ```
 
 ```solidity
@@ -40,7 +38,6 @@ struct Market {
   uint256 liquidationThresholdMantissa;
   mapping(address => bool) accountMembership;
 }
-
 ```
 
 ```solidity
@@ -55,7 +52,6 @@ enum Action {
   ENTER_MARKET,
   EXIT_MARKET
 }
-
 ```
 
 ### oracle
@@ -144,6 +140,16 @@ Supply caps enforced by mintAllowed for each vToken address. Defaults to zero wh
 
 ```solidity
 mapping(address => uint256) supplyCaps
+```
+
+---
+
+### isForcedLiquidationEnabled
+
+Flag indicating whether forced liquidation enabled for a market
+
+```solidity
+mapping(address => bool) isForcedLiquidationEnabled
 ```
 
 ---

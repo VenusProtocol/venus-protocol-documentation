@@ -9,7 +9,6 @@ struct BorrowSnapshot {
   uint256 principal;
   uint256 interestIndex;
 }
-
 ```
 
 ### underlying
@@ -172,12 +171,31 @@ address shortfall
 
 ---
 
+### reduceReservesBlockDelta
+
+delta block after which reserves will be reduced
+
+```solidity
+uint256 reduceReservesBlockDelta
+```
+
+---
+
+### reduceReservesBlockNumber
+
+last block number at which reserves were reduced
+
+```solidity
+uint256 reduceReservesBlockNumber
+```
+
+---
+
 ```solidity
 struct RiskManagementInit {
   address shortfall;
   address payable protocolShareReserve;
 }
-
 ```
 
 ### isVToken
@@ -192,6 +210,6 @@ function isVToken() external pure virtual returns (bool)
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| \[0]  | bool | Always true |
+| [0]  | bool | Always true |
 
 ---
