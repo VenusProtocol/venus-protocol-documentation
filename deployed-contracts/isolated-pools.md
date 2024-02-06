@@ -67,31 +67,6 @@
   * vUSDD\_Tron: [`0xf1da185CCe5BeD1BeBbb3007Ef738Ea4224025F7`](https://bscscan.com/address/0xf1da185CCe5BeD1BeBbb3007Ef738Ea4224025F7)
   * vUSDT\_Tron: [`0x281E5378f99A4bc55b295ABc0A3E7eD32Deba059`](https://bscscan.com/address/0x281E5378f99A4bc55b295ABc0A3E7eD32Deba059)
 
-## Ethereum
-
-* PoolRegistry: [`0x61CAff113CCaf05FFc6540302c37adcf077C5179`](https://etherscan.io/address/0x61CAff113CCaf05FFc6540302c37adcf077C5179)
-* PoolLens: [`0x5A44D6dc0330A92674F9FAdE1e4eB40b3D2aDf04`](https://etherscan.io/address/0x5A44D6dc0330A92674F9FAdE1e4eB40b3D2aDf04)
-* DefaultProxyAdmin: [`0x567e4cc5e085d09f66f836fa8279f38b4e5866b9`](https://etherscan.io/address/0x567e4cc5e085d09f66f836fa8279f38b4e5866b9)
-* Comptroller Beacon: [`0xAE2C3F21896c02510aA187BdA0791cDA77083708`](https://etherscan.io/address/0xAE2C3F21896c02510aA187BdA0791cDA77083708)
-* VToken Beacon: [`0xfc08aADC7a1A93857f6296C3fb78aBA1d286533a`](https://etherscan.io/address/0xfc08aADC7a1A93857f6296C3fb78aBA1d286533a)
-
-### Core pool
-
-* Comptroller: [`0x687a01ecF6d3907658f7A7c714749fAC32336D1B`](https://etherscan.io/address/0x687a01ecF6d3907658f7A7c714749fAC32336D1B)
-* Tokens
-  * vcrvUSD\_Core: [`0x672208C10aaAA2F9A6719F449C4C8227bc0BC202`](https://etherscan.io/address/0x672208C10aaAA2F9A6719F449C4C8227bc0BC202)
-  * vUSDC\_Core: [`0x17C07e0c232f2f80DfDbd7a95b942D893A4C5ACb`](https://etherscan.io/address/0x17C07e0c232f2f80DfDbd7a95b942D893A4C5ACb)
-  * vUSDT\_Core: [`0x8C3e3821259B82fFb32B2450A95d2dcbf161C24E`](https://etherscan.io/address/0x8C3e3821259B82fFb32B2450A95d2dcbf161C24E)
-  * vWBTC\_Core: [`0x8716554364f20BCA783cb2BAA744d39361fd1D8d`](https://etherscan.io/address/0x8716554364f20BCA783cb2BAA744d39361fd1D8d)
-  * vWETH\_Core: [`0x7c8ff7d2A1372433726f879BD945fFb250B94c65`](https://etherscan.io/address/0x7c8ff7d2A1372433726f879BD945fFb250B94c65)
-
-### Pool Curve
-
-* Comptroller: [`0x67aA3eCc5831a65A5Ba7be76BED3B5dc7DB60796`](https://etherscan.io/address/0x67aA3eCc5831a65A5Ba7be76BED3B5dc7DB60796)
-* Tokens
-  * vcrvUSD\_Curve: [`0x2d499800239C4CD3012473Cb1EAE33562F0A6933`](https://etherscan.io/address/0x2d499800239C4CD3012473Cb1EAE33562F0A6933)
-  * vCRV\_Curve: [`0x30aD10Bd5Be62CAb37863C2BfcC6E8fb4fD85BDa`](https://etherscan.io/address/0x30aD10Bd5Be62CAb37863C2BfcC6E8fb4fD85BDa)
-
 ## BNB Chain Testnet
 
 * PoolRegistry: [`0xC85491616Fa949E048F3aAc39fbf5b0703800667`](https://testnet.bscscan.com/address/0xC85491616Fa949E048F3aAc39fbf5b0703800667)
@@ -161,44 +136,3 @@
   * vWIN\_Tron: [`0xEe543D5de2Dbb5b07675Fc72831A2f1812428393`](https://testnet.bscscan.com/address/0xEe543D5de2Dbb5b07675Fc72831A2f1812428393)
   * vUSDD\_Tron: [`0xD804F74fe21290d213c46610ab171f7c2EeEBDE7`](https://testnet.bscscan.com/address/0xD804F74fe21290d213c46610ab171f7c2EeEBDE7)
   * vUSDT\_Tron: [`0x712774CBFFCBD60e9825871CcEFF2F917442b2c3`](https://testnet.bscscan.com/address/0x712774CBFFCBD60e9825871CcEFF2F917442b2c3)
-
-## Sepolia (Ethereum testnet)
-
-* PoolRegistry: [`0x758f5715d817e02857Ba40889251201A5aE3E186`](https://etherscan.io/address/0x758f5715d817e02857Ba40889251201A5aE3E186)
-* PoolLens: [`0xC319C2E53a5f732ebF0eb87b14F56B53bdc3446b`](https://etherscan.io/address/0xC319C2E53a5f732ebF0eb87b14F56B53bdc3446b)
-* DefaultProxyAdmin: [`0xe98a3110929c6650c73031756288Ec518f65e846`](https://etherscan.io/address/0xe98a3110929c6650c73031756288Ec518f65e846)
-* Comptroller Beacon: [`0x6cE54143a88CC22500D49D744fb6535D66a8294F`](https://etherscan.io/address/0x6cE54143a88CC22500D49D744fb6535D66a8294F)
-* VToken Beacon: [`0x0463a7E5221EAE1990cEddB51A5821a68cdA6008`](https://etherscan.io/address/0x0463a7E5221EAE1990cEddB51A5821a68cdA6008)
-
-### Core pool
-
-* Comptroller: [`0x7Aa39ab4BcA897F403425C9C6FDbd0f882Be0D70`](https://sepolia.etherscan.io/address/0x7Aa39ab4BcA897F403425C9C6FDbd0f882Be0D70)
-* Tokens
-  * vcrvUSD\_Core: [`0xA09cFAd2e138fe6d8FF62df803892cbCb79ED082`](https://sepolia.etherscan.io/address/0xA09cFAd2e138fe6d8FF62df803892cbCb79ED082)
-  * vCRV\_Core: [`0x121E3be152F283319310D807ed847E8b98319C1e`](https://sepolia.etherscan.io/address/0x121E3be152F283319310D807ed847E8b98319C1e)
-  * vUSDC\_Core: [`0xF87bceab8DD37489015B426bA931e08A4D787616`](https://sepolia.etherscan.io/address/0xF87bceab8DD37489015B426bA931e08A4D787616)
-  * vUSDT\_Core: [`0x19252AFD0B2F539C400aEab7d460CBFbf74c17ff`](https://sepolia.etherscan.io/address/0x19252AFD0B2F539C400aEab7d460CBFbf74c17ff)
-  * vWBTC\_Core: [`0x74E708A7F5486ed73CCCAe54B63e71B1988F1383`](https://sepolia.etherscan.io/address/0x74E708A7F5486ed73CCCAe54B63e71B1988F1383)
-  * vWETH\_Core: [`0xc2931B1fEa69b6D6dA65a50363A8D75d285e4da9`](https://sepolia.etherscan.io/address/0xc2931B1fEa69b6D6dA65a50363A8D75d285e4da9)
-
-### Pool Curve
-
-* Comptroller: [`0xD298182D3ACb43e98e32757FF09C91F203e9E67E`](https://sepolia.etherscan.io/address/0xD298182D3ACb43e98e32757FF09C91F203e9E67E)
-* Tokens
-  * vcrvUSD\_Curve: [`0xc7be132027e191636172798B933202E0f9CAD548`](https://sepolia.etherscan.io/address/0xc7be132027e191636172798B933202E0f9CAD548)
-  * vCRV\_Curve: [`0x9Db62c5BBc6fb79416545FcCBDB2204099217b78`](https://sepolia.etherscan.io/address/0x9Db62c5BBc6fb79416545FcCBDB2204099217b78)
-
-### Pool Liquid Staked ETH
-
-* Comptroller: [`0xd79CeB8EF8188E44b7Eb899094e8A3A4d7A1e236`](https://sepolia.etherscan.io/address/0xd79CeB8EF8188E44b7Eb899094e8A3A4d7A1e236)
-* Tokens
-  * vWETH\_LiquidStakedETH: [`0x9f6213dFa9069a5426Fe8fAE73857712E1259Ed4`](https://sepolia.etherscan.io/address/0x9f6213dFa9069a5426Fe8fAE73857712E1259Ed4)
-  * vwstETH\_LiquidStakedETH: [`0x0a95088403229331FeF1EB26a11F9d6C8E73f23D`](https://sepolia.etherscan.io/address/0x0a95088403229331FeF1EB26a11F9d6C8E73f23D)
-
-### Pool Stablecoins
-
-* Comptroller: [`0x18eF8D2bee415b731C25662568dc1035001cEB2c`](https://sepolia.etherscan.io/address/0x18eF8D2bee415b731C25662568dc1035001cEB2c)
-* Tokens
-  * vcrvUSD\_Stablecoins: [`0x9C5e7a3B4db931F07A6534f9e44100DDDc78c408`](https://sepolia.etherscan.io/address/0x9C5e7a3B4db931F07A6534f9e44100DDDc78c408)
-  * vUSDC\_Stablecoins: [`0xD5f83FCbb4a62779D0B37b9E603CD19Ad84884F0`](https://sepolia.etherscan.io/address/0xD5f83FCbb4a62779D0B37b9E603CD19Ad84884F0)
-  * vUSDT\_Stablecoins: [`0x93dff2053D4B08823d8B39F1dCdf8497f15200f4`](https://sepolia.etherscan.io/address/0x93dff2053D4B08823d8B39F1dCdf8497f15200f4)
