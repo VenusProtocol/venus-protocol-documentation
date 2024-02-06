@@ -140,6 +140,10 @@ In the event that a `Bridge` contract needs replacement, such as due to a securi
 
 These steps ensure a secure and systematic replacement of a `Bridge` contract, maintaining the integrity of the token. Simultaneously, on the BNB chain, the locked XVS will be transferred and locked in the other `Bridge` contract, ensuring a fix total supply of XVS.
 
+### 6.10. Default Downtime
+- Currently, the `Bridge` relies on a single relayer, the [default](https://layerzero.gitbook.io/docs/technical-reference/mainnet/default-config) by LayerZero, to generate proofs and submit them to target chains. While this configuration is functional, it's important to be aware of the potential implications. If the relayer goes offline or encounters problems, there's no immediate backup to maintain bridge functionality, potentially delaying or preventing transactions. In the event of unforeseen downtime affecting the default LayerZero relayer, we will designate an authorized user who can temporarily generate proofs and submit them on the target network on behalf of the relayer. This authorization is granted only in exceptional circumstances via VIP.
+
+
 ## 7. Contract Details
 
 Here, we provide more details about the key contracts used in the XVS Cross-chain Bridge:
