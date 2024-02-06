@@ -98,3 +98,13 @@ Specific functions that can be invoked by the guardians
 
 * Access Control Manager: [`0xbf705C00578d43B6147ab4eaE04DBBEd1ccCdc96`](https://sepolia.etherscan.io/address/0xbf705C00578d43B6147ab4eaE04DBBEd1ccCdc96)
 * Guardian: [`0x94fa6078b6b8a26f0b6edffbe6501b22a10470fb`](https://sepolia.etherscan.io/address/0x94fa6078b6b8a26f0b6edffbe6501b22a10470fb)
+
+## opBNB mainnet
+
+* Access Control Manager: [`0xA60Deae5344F1152426cA440fb6552eA0e3005D6`](https://opbnbscan.com/address/0xA60Deae5344F1152426cA440fb6552eA0e3005D6)
+* Guardian: [`0xC46796a21a3A9FAB6546aF3434F2eBfFd0604207`](https://opbnbscan.com/address/0xC46796a21a3A9FAB6546aF3434F2eBfFd0604207)
+
+## opBNB testnet
+
+* Access Control Manager: [`0x049f77F7046266d27C3bC96376f53C17Ef09c986`](https://testnet.opbnbscan.com/address/0x049f77F7046266d27C3bC96376f53C17Ef09c986)
+* Guardian: [`0xb15f6EfEbC276A3b9805df81b5FB3D50C2A62BDf`](https://testnet.opbnbscan.com/address/0xb15f6EfEbC276A3b9805df81b5FB3D50C2A62BDf)
