@@ -141,7 +141,7 @@ In the event that a `Bridge` contract needs replacement, such as due to a securi
 These steps ensure a secure and systematic replacement of a `Bridge` contract, maintaining the integrity of the token. Simultaneously, on the BNB chain, the locked XVS will be transferred and locked in the other `Bridge` contract, ensuring a fix total supply of XVS.
 
 ### 6.10. Default Downtime
-- Currently, the `Bridge` relies on a single relayer, the [default](https://layerzero.gitbook.io/docs/technical-reference/mainnet/default-config) by LayerZero, to generate proofs and submit them to target chains. While this configuration is functional, it's important to be aware of the potential implications. If the relayer goes offline or encounters problems, there's no immediate backup to maintain bridge functionality, potentially delaying or preventing transactions. In the event of unforeseen downtime affecting the default LayerZero relayer, we will designate an authorized user who can temporarily generate proofs and submit them on the target network on behalf of the relayer. This authorization is granted only in exceptional circumstances via VIP.
+- Currently, the `Bridge` relies on a single relayer, the [default](https://layerzero.gitbook.io/docs/technical-reference/mainnet/default-config) by LayerZero, to generate proofs and submit them to target chains. While this configuration is functional, it's important to be aware of the potential implications. If the relayer goes offline or encounters problems, there's no immediate backup to maintain bridge functionality, potentially delaying or preventing transactions. In the event of unforeseen downtime affecting the default LayerZero relayer, a wallet can be authorized to temporarily generate proofs and submit them on the target network on behalf of the relayer. This authorization is granted only in exceptional circumstances via VIP.
 
 
 ## 7. Contract Details
@@ -219,20 +219,20 @@ In addition to the core functionality, the XVS Cross-chain Bridge includes addit
 
 ### Retry Mechanism for Failed Transactions
 
-In the event of a failed transaction, follow a step-by-step process using block explorers and the `retryMessage` function to retry transactions on the respective blockchain. Here's a detailed guide:
+In the event of a failed transaction, follow a step-by-step process using block explorers and the [`retryMessage`](https://github.com/VenusProtocol/token-bridge/blob/main/contracts/Bridge/BaseXVSProxyOFT.sol#L368) function to retry transactions on the respective blockchain. Here's a detailed guide:
 
 1. **Identify the Failed Transaction:**
-   - Use a block explorer (e.g., Etherscan) to locate the failed transaction on the respective blockchain.
+   -  Use [LayerZero scan](https://layerzeroscan.com) to identify the failed transaction within the target network by providing the transaction hash from the source network where the transaction was initiated.
 
-2. **Examine the FailedMessage Log:**
-   - Access the emitted events of the failed transaction and specifically examine the `failedMessage` log. This log contains essential function parameters needed for the retry.
+2. **Examine the MessageFailed Log:**
+   - Access the emitted events of the failed transaction and specifically examine the [`MessageFailed`](https://github.com/LayerZero-Labs/solidity-examples/blob/main/contracts/lzApp/NonblockingLzApp.sol#L20) log. This log contains essential function parameters needed for the retry.
 
 3. **Extract Function Parameters:**
-   - From the `failedMessage` log, extract the following essential function parameters:
+   - From the `MessageFailed` log, extract the following essential function parameters:
      - `_srcChainId`
      - `_srcAddress`
      - `_nonce`
      - `_payload`
 
 4. **Construct a RetryMessage:**
-   - Use the extracted parameters to construct a new transaction by invoking the `retryMessage` function.
+   - In the event of a transaction failure on the BNB chain, invoke the `retryMessage` function of the `XVSProxyOFTSrc` contract on the BNB chain. Use the parameters extracted from the `MessageFailed` log for this operation. Conversely, if the transaction fails on any network other than BNB, invoke the `retryMessage` function of the `XVSProxyOFTDest` contract in that network. 
