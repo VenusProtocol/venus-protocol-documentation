@@ -25,7 +25,7 @@ Venus Protocol is deeply committed to ensuring the highest level of security and
 
 ### Frontend
 
-Several security measures have been implemented to mitigate the security risks associated with the frontend app deployed at [https://app.venus.io](https://app.venus.io).
+Several security measures have been implemented to mitigate the security risks associated with the frontend app deployed at https://app.venus.io.
 
 * The Venus Protocol UI is deployed on AWS infrastructure. Additionally, Cloudflare is employed to distribute the web app. The relevant security services in both AWS and Cloudflare are properly configured to detect and mitigate security risks.
 
