@@ -4,7 +4,7 @@
 
 Venus Protocol is a trusted decentralized finance lending and borrowing protocol that's deployed on the BNB Chain. Initially launched in 2020, it combines the stablecoin minting facility of Maker and the algorithmic money markets developed by Compound, providing a simplified user experience and core capabilities in a single application.
 
-### How do I interact with Venus Protocol?
+### How do I interact with Venus protocol?
 
 Interacting with Venus V4 is straightforward. Supply your chosen asset and the amount to start earning interest. Additionally, once you supply assets, you can also borrow against them. Any interest earned from supplying assets can help offset the interest you accrue when borrowing.
 
