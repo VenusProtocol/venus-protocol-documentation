@@ -1,84 +1,91 @@
 # ProtocolShareReserve
-Contract used to store and distribute the reserves generated in the markets, applying the tokenomics rules.
+
+Contract used to store and distribute the reserves generated in the markets.
 
 # Solidity API
 
-### initialize
-
-Initializes the deployer to owner.
-
 ```solidity
-function initialize(address protocolIncome_, address riskFund_) external
+enum Schema {
+  PROTOCOL_RESERVES,
+  ADDITIONAL_REVENUE
+}
 ```
 
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| protocolIncome_ | address | The address protocol income will be sent to |
-| riskFund_ | address | Risk fund address |
+```solidity
+struct DistributionConfig {
+  enum ProtocolShareReserve.Schema schema;
+  uint16 percentage;
+  address destination;
+}
+```
 
-#### ❌ Errors
-* ZeroAddressNotAllowed is thrown when protocol income address is zero
-* ZeroAddressNotAllowed is thrown when risk fund address is zero
+### CORE_POOL_COMPTROLLER
+
+address of core pool comptroller contract
+
+```solidity
+address CORE_POOL_COMPTROLLER
+```
 
 - - -
 
-### setPoolRegistry
+### WBNB
 
-Pool registry setter.
+address of WBNB contract
 
 ```solidity
-function setPoolRegistry(address poolRegistry_) external
+address WBNB
 ```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| poolRegistry_ | address | Address of the pool registry |
-
-#### ❌ Errors
-* ZeroAddressNotAllowed is thrown when pool registry address is zero
 
 - - -
 
-### releaseFunds
+### vBNB
 
-Release funds
+address of vBNB contract
 
 ```solidity
-function releaseFunds(address comptroller, address asset, uint256 amount) external returns (uint256)
+address vBNB
 ```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| comptroller | address | Pool's Comptroller |
-| asset | address | Asset to be released |
-| amount | uint256 | Amount to release |
-
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | Number of total released tokens |
-
-#### ❌ Errors
-* ZeroAddressNotAllowed is thrown when asset address is zero
 
 - - -
 
-### updateAssetsState
+### poolRegistry
 
-Update the reserve of the asset for the specific pool after transferring to the protocol share reserve.
+address of pool registry contract
 
 ```solidity
-function updateAssetsState(address comptroller, address asset) public
+address poolRegistry
 ```
 
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| comptroller | address | Comptroller address(pool) |
-| asset | address | Asset address. |
+- - -
+
+### assetsReserves
+
+comptroller => asset => schema => balance
+
+```solidity
+mapping(address => mapping(address => mapping(enum ProtocolShareReserve.Schema => uint256))) assetsReserves
+```
+
+- - -
+
+### totalAssetReserve
+
+asset => balance
+
+```solidity
+mapping(address => uint256) totalAssetReserve
+```
+
+- - -
+
+### distributionTargets
+
+configuration for different income distribution targets
+
+```solidity
+struct ProtocolShareReserve.DistributionConfig[] distributionTargets
+```
 
 - - -
 

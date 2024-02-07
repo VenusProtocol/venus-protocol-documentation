@@ -39,3 +39,17 @@
 *  WSTETH Oracle:[`0x92E7F73B0d57902fDC453E8aef990EdEe827b0BF`](https://sepolia.etherscan.io/address/0x92E7F73B0d57902fDC453E8aef990EdEe827b0BF)
 * Resilient Oracle:[`0x8000eca36201dddf5805Aa4BeFD73d1EB4D23264`](https://sepolia.etherscan.io/address/0x8000eca36201dddf5805Aa4BeFD73d1EB4D23264)
 * DefaultProxyAdmin:[`0x01435866babd91311b1355cf3af488cca36db68e`](https://sepolia.etherscan.io/address/0x01435866babd91311b1355cf3af488cca36db68e)
+
+## opBNB mainnet
+
+* Bound Validator:[`0xd1f80C371C6E2Fa395A5574DB3E3b4dAf43dadCE`](https://opbnbscan.com/address/0xd1f80C371C6E2Fa395A5574DB3E3b4dAf43dadCE)
+* Binance Oracle:[`0xB09EC9B628d04E1287216Aa3e2432291f50F9588`](https://opbnbscan.com/address/0xB09EC9B628d04E1287216Aa3e2432291f50F9588)
+* Resilient Oracle:[`0x8f3618c4F0183e14A218782c116fb2438571dAC9`](https://opbnbscan.com/address/0x8f3618c4F0183e14A218782c116fb2438571dAC9)
+* DefaultProxyAdmin:[`0xF77bD1D893F67b3EB2Cd256239c98Ba3F238fb52`](https://opbnbscan.com/address/0xF77bD1D893F67b3EB2Cd256239c98Ba3F238fb52)
+
+## opBNB testnet
+
+* Bound Validator:[`0x049537Bb065e6253e9D8D08B45Bf6b753657A746`](https://testnet.opbnbscan.com/address/0x049537Bb065e6253e9D8D08B45Bf6b753657A746)
+* Binance Oracle:[`0x496B6b03469472572C47bdB407d5549b244a74F2`](https://testnet.opbnbscan.com/address/0x496B6b03469472572C47bdB407d5549b244a74F2)
+* Resilient Oracle:[`0xEF4e53a9A4565ef243A2f0ee9a7fc2410E1aA623`](https://testnet.opbnbscan.com/address/0xEF4e53a9A4565ef243A2f0ee9a7fc2410E1aA623)
+* DefaultProxyAdmin:[`0xB1281ADC816fba7df64B798D7A0BC4bd2a6d42f4`](https://testnet.opbnbscan.com/address/0xB1281ADC816fba7df64B798D7A0BC4bd2a6d42f4)

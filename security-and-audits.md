@@ -8,9 +8,47 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Token converters
+
+**Scope**: [Token converter contracts](https://github.com/VenusProtocol/protocol-reserve/pull/9). These contracts will allow the protocol to convert the income generated to the needed tokens, following the [Tokenomics](https://snapshot.org/#/venus-xvs.eth/proposal/0xc9d270ccecb7b91c75b95b8d9af24fc7c20cd38c0c0c44888ed4e7724f4e7ce9). Enabled in [VIP-245](https://app.venus.io/#/governance/proposal/245) and [VIP-248](https://app.venus.io/#/governance/proposal/248).
+
+- Token converters
+    - [OpenZeppelin audit report (2023/10/10)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/066_tokenConverter_openzeppelin_20231010.pdf)
+    - [Certik audit audit report (2023/11/07)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/074_tokenConverter_certik_20231107.pdf)
+    - [Peckshield audit report (2023/09/27)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/068_tokenConverter_peckshield_20230927.pdf)
+    - [Fairyproof audit report (2023/08/28)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/067_tokenConverter_fairyproof_20230828.pdf)
+- Private conversions (optimization to avoid the payment of incentives to third parties when the conversion can be completed internally)
+    - [Certik audit report (2023/11/27)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/081_privateConversions_certik_20231127.pdf)
+    - [OpenZeppelin report (2024/01/09)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/082_privateConversions_openzeppelin_20240109.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#9](https://github.com/VenusProtocol/protocol-reserve/pull/9) in the `protocol-reserve` repo.
+  - contracts/TokenConverter/AbstractTokenConverter.sol
+  - contracts/TokenConverter/IAbstractTokenConverter.sol
+  - contracts/TokenConverter/RiskFundConverter.sol
+  - contracts/TokenConverter/XVSVaultConverter.sol
+  - contracts/ProtocolReserve/RiskFundStorage.sol
+  - contracts/ProtocolReserve/RiskFundV2.sol
+  - contracts/ProtocolReserve/XVSVaultTreasury.sol
+  - contracts/Utils/Constants.sol
+  - contracts/Utils/Validators.sol
+
+- Pull request [#35](https://github.com/VenusProtocol/protocol-reserve/pull/35) in the `protocol-reserve` repo.
+  - contracts/Interfaces/IConverterNetwork.sol
+  - contracts/TokenConverter/AbstractTokenConverter.sol
+  - contracts/TokenConverter/ConverterNetwork.sol
+  - contracts/TokenConverter/IAbstractTokenConverter.sol
+  - contracts/TokenConverter/RiskFundConverter.sol
+  - contracts/TokenConverter/SingleTokenConverter.sol
+  - contracts/Utils/ArrayHelpers.sol
+
+</details>
+
 ### XVS bridge and multichain deployment
 
-**Scope**: [token-bridge](https://github.com/VenusProtocol/token-bridge) repository, with contracts to allow the bridge of XVS tokens from/to BNB to/from other EVM compatible networks, like Ethereum. Extend the OFTV2 LayerZero contracts, adding custom security rules. XVS and TokenController contract, to be used on the destination chains (initially Ethereum mainnet, Arbitrum one, Polygon zkEVM and opBNB). Moreover, the audit scope included: a new [`VTreasuryV8`](https://github.com/VenusProtocol/venus-protocol/pull/345) contract, and changes in the [Resilient Oracle](https://github.com/VenusProtocol/oracle/pull/124) and Isolated pools](https://github.com/VenusProtocol/isolated-pools/pull/294) to make them compatible with other networks.
+**Scope**: [token-bridge](https://github.com/VenusProtocol/token-bridge) repository, with contracts to allow the bridge of XVS tokens from/to BNB to/from other EVM compatible networks, like Ethereum. Extend the OFTV2 LayerZero contracts, adding custom security rules. XVS and TokenController contract, to be used on the destination chains (initially Ethereum mainnet, Arbitrum one, Polygon zkEVM and opBNB). Moreover, the audit scope included: a new [`VTreasuryV8`](https://github.com/VenusProtocol/venus-protocol/pull/345) contract, and changes in the [Resilient Oracle](https://github.com/VenusProtocol/oracle/pull/124) and Isolated pools](https://github.com/VenusProtocol/isolated-pools/pull/294) to make them compatible with other networks. Enabled in [VIP-232](https://app.venus.io/#/governance/proposal/232).
 
 - [Certik audit report (2023/12/26)](https://github.com/VenusProtocol/token-bridge/blob/323e95fa3c0167cca2fc1d2807e911e0bae54de9/audits/083_multichain_token_bridge_certik_20231226.pdf)
 
@@ -66,6 +104,8 @@ We firmly believe that the true test of a smart contract's security lies in its 
 ### Venus Prime
 
 **Scope**: `Prime` and `PrimeLiquidityProvider` contracts, to manage the eligibility of Prime tokens and the rewards distributions.
+
+Enabled in [VIP-201](https://app.venus.io/#/governance/proposal/201), [VIP-202](https://app.venus.io/#/governance/proposal/202), [VIP-203](https://app.venus.io/#/governance/proposal/203), [VIP-206](https://app.venus.io/#/governance/proposal/206) and [VIP-210](https://app.venus.io/#/governance/proposal/210).
 
 - [OpenZeppelin audit report (2023/10/03)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/065_prime_openzeppelin_20231003.pdf)
 - [Certik audit audit report (2023/11/13)](https://github.com/VenusProtocol/venus-protocol/blob/2425501070d28c36a73861d9cf6970f641403735/audits/060_prime_certik_20231113.pdf)
