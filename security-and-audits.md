@@ -119,13 +119,17 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 **Scope**: `Prime` and `PrimeLiquidityProvider` contracts, to manage the eligibility of Prime tokens and the rewards distributions.
 
-Enabled in [VIP-201](https://app.venus.io/#/governance/proposal/201), [VIP-202](https://app.venus.io/#/governance/proposal/202), [VIP-203](https://app.venus.io/#/governance/proposal/203), [VIP-206](https://app.venus.io/#/governance/proposal/206) and [VIP-210](https://app.venus.io/#/governance/proposal/210).
+Enabled in [VIP-201](https://app.venus.io/#/governance/proposal/201), [VIP-202](https://app.venus.io/#/governance/proposal/202), [VIP-203](https://app.venus.io/#/governance/proposal/203), [VIP-206](https://app.venus.io/#/governance/proposal/206) and [VIP-210](https://app.venus.io/#/governance/proposal/210). Updated in [VIP-225](https://app.venus.io/#/governance/proposal/225).
 
 - [OpenZeppelin audit report (2023/10/03)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/065_prime_openzeppelin_20231003.pdf)
 - [Certik audit audit report (2023/11/13)](https://github.com/VenusProtocol/venus-protocol/blob/2425501070d28c36a73861d9cf6970f641403735/audits/060_prime_certik_20231113.pdf)
 - [Peckshield audit report (2023/08/26)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/055_prime_peckshield_20230826.pdf)
 - [Fairyproof audit report (2023/09/10)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/056_prime_fairyproof_20230910.pdf)
 - [Code4rena contest (2023/09/28)](https://code4rena.com/contests/2023-09-venus-prime)
+- [Certik audit audit report (2023/12/19) - Venus Prime update](https://github.com/VenusProtocol/venus-protocol/blob/9afe804f18cd02318626aea46686522542aa5e4d/audits/087_prime_certik_20231219.pdf)
+  - Allow mint VAI only to Prime holder
+  - Support for Isolated pools
+  - Support for networks without a constant block rate (for example, Arbitrum)
 
 <details>
 <summary>Detailed scope</summary>
@@ -147,6 +151,22 @@ Enabled in [VIP-201](https://app.venus.io/#/governance/proposal/201), [VIP-202](
         - contracts/Tokens/Prime/libs/Scores.sol
         - contracts/Tokens/Prime/libs/FixedMath.sol
         - contracts/Tokens/Prime/libs/FixedMath0x.sol
+
+- Venus Prime update. Enabled in [VIP-225](https://app.venus.io/#/governance/proposal/225).
+
+  - Pull request [#407](https://github.com/VenusProtocol/venus-protocol/pull/407)
+    - contracts/Tokens/Prime/IPrime.sol
+    - contracts/Tokens/Prime/Interfaces/IPrime.sol
+    - contracts/Tokens/Prime/Prime.sol
+    - contracts/Tokens/Prime/PrimeLiquidityProvider.sol
+    - contracts/Tokens/Prime/PrimeStorage.sol
+    - contracts/Utils/TimeManager.sol
+    - contracts/Tokens/VAI/VAIController.sol
+    - contracts/Tokens/VAI/VAIControllerStorage.sol
+  - Pull request [#327](https://github.com/VenusProtocol/isolated-pools/pull/327)
+    - contracts/Comptroller.sol
+    - contracts/ComptrollerStorage.sol
+    - contracts/VToken.sol
 
 </details>
 
