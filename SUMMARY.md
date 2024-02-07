@@ -127,6 +127,7 @@
     * [BinanceOracle](technical-reference/reference-oracle/oracles/binance-oracle.md)
     * [TwapOracle](technical-reference/reference-oracle/oracles/twap-oracle.md)
     * [PythOracle](technical-reference/reference-oracle/oracles/pyth-oracle.md)
+    * [WstETHOracle](technical-reference/reference-oracle/oracles/wstethoracle.md)
 * [Governance](technical-reference/reference-governance/README.md)
   * [AccessControlManager](technical-reference/reference-governance/access-control-manager.md)
   * [GovernorBravoDelegate](technical-reference/reference-governance/governor-bravo-delegate.md)
