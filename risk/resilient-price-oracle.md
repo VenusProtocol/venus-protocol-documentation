@@ -28,22 +28,28 @@ In implementing the Resilient Price Oracle, several safety measures have been ad
 
 <figure><img src="../.gitbook/assets/17b75928-d6a2-4207-9a0b-89d1d41690d4.png" alt=""><figcaption></figcaption></figure>
 
+
+### Pricing for Liquid Staked Tokens
+For LSTs (Liquid Staked Tokens) pricing, best practice suggests oracles quote the smart contract of the LST to derive its value in underlying token units and then multiply that by the USD price of the underlying. In Venus we use dedicated oracles for each LST asset in order to calculate the price as follows:
+*  convert the LST to the underlying tokens (using the exchange rate provided by the LST contract)
+*  convert the underlying token calculated in the previous step to USD, using a “traditional” oracle based on market price
+
+{% hint style="warning" %}
+It is worth mentioning that with this approach we assume 1:1 price ratio between the LST and the underlying asset (e.g. 1 ETH = 1 STETH). The primary risks involved with the above approach are related to smart contract vulnerabilities and other counterparty risks that could affect the redemption processes of the LSTs. In scenarios where there is substantial counterparty risk, notably if the underlying tokens are not redeemable against the LSTs, the direct smart contract pricing might become unreliable. Under such circumstances, it is prudent to switch to price oracles that derive quotes from secondary market prices, thereby maintaining pricing accuracy and reliability.
+{% endhint %}
+
 ### Further Reading
 
 For more detailed information, refer to the following resources:
 
-**Audit reports**
+#### Audit reports
 
-* [Peckshield audit report](https://github.com/VenusProtocol/oracle/blob/develop/audits/013\_oracles\_peckshield\_20230424.pdf)
-* [Certik audit report](https://github.com/VenusProtocol/oracle/blob/develop/audits/024\_oracles\_certik\_20230522.pdf)
-* [Hacken audit report](https://github.com/VenusProtocol/oracle/blob/develop/audits/016\_oracles\_hacken\_20230426.pdf)
+* [Resilient Price Oracle](../security-and-audits.md#oracles)
+* [Resilient Price Oracle upgrade](../security-and-audits.md#oracles-upgrade-2023-07-24)
+* [WstETH oracle](../security-and-audits.md#oracle-for-wsteth)
 
-**References**
+#### References
 
 * [Repository](https://github.com/VenusProtocol/oracle)
-* [Simulation pre/post upgrade](https://github.com/VenusProtocol/vips/pull/4/)
-* [Deployment on testnet](https://github.com/VenusProtocol/oracle/tree/develop/deployments/bsctestnet)
 * [Community post about Venus V4, introducing Resilient Price Feeds](https://community.venus.io/t/proposing-venus-v4/3188#price-feed-redundancy-6)
 * [Venus Stars blog post about Binance Oracle](https://venusstars.io/community/index.php/2023/05/09/venus-enhances-resilience-binance-oracle-feeds/)
-* [Community discussion about Pyth Oracle](https://community.venus.io/t/vip-xx-integrate-with-pyth-as-an-oracle/2723/6)
-* [RedStone’s proposal to be added to the interface](https://community.venus.io/t/adding-redstone-oracles-to-the-venus-oracle-interface/3620)

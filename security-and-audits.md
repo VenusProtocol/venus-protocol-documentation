@@ -8,6 +8,20 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Oracle for wstETH
+
+**Scope**: [Oracle for wstETH](https://github.com/VenusProtocol/oracle/blob/develop/contracts/oracles/WstETHOracle.sol), using the exchange rate `wstETH/stETH` from the `stETH` contract on Ethereum, assuming 1:1 for the conversion rate `stETH:ETH`, and converting `ETH` to `USD` using the Resilient Oracles.
+
+- [Certik audit audit report (2024/01/26)](https://github.com/VenusProtocol/oracle/blob/e99feb67f4677168632f5bedd70034fba8dc55db/audits/090_wstETHOracle_certik_20240126.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#155](https://github.com/VenusProtocol/oracle/pull/155) in the `oracle` repo
+    - contracts/oracles/WstETHOracle.sol
+
+</details>
+
 ### Token converters
 
 **Scope**: [Token converter contracts](https://github.com/VenusProtocol/protocol-reserve/pull/9). These contracts will allow the protocol to convert the income generated to the needed tokens, following the [Tokenomics](https://snapshot.org/#/venus-xvs.eth/proposal/0xc9d270ccecb7b91c75b95b8d9af24fc7c20cd38c0c0c44888ed4e7724f4e7ce9). Enabled in [VIP-245](https://app.venus.io/#/governance/proposal/245) and [VIP-248](https://app.venus.io/#/governance/proposal/248).
