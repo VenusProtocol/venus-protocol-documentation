@@ -42,18 +42,14 @@ It is worth mentioning that with this approach we assume 1:1 USD price ratio bet
 
 For more detailed information, refer to the following resources:
 
-**Audit reports**
+#### Audit reports
 
-* [Peckshield audit report](https://github.com/VenusProtocol/oracle/blob/develop/audits/013\_oracles\_peckshield\_20230424.pdf)
-* [Certik audit report](https://github.com/VenusProtocol/oracle/blob/develop/audits/024\_oracles\_certik\_20230522.pdf)
-* [Hacken audit report](https://github.com/VenusProtocol/oracle/blob/develop/audits/016\_oracles\_hacken\_20230426.pdf)
+* [Resilient Price Oracle](../security-and-audits.md#oracles)
+* [Resilient Price Oracle upgrade](../security-and-audits.md#oracles-upgrade-2023-07-24)
+* [WstETH oracle](../security-and-audits.md#oracle-for-wsteth)
 
-**References**
+#### References
 
 * [Repository](https://github.com/VenusProtocol/oracle)
-* [Simulation pre/post upgrade](https://github.com/VenusProtocol/vips/pull/4/)
-* [Deployment on testnet](https://github.com/VenusProtocol/oracle/tree/develop/deployments/bsctestnet)
 * [Community post about Venus V4, introducing Resilient Price Feeds](https://community.venus.io/t/proposing-venus-v4/3188#price-feed-redundancy-6)
 * [Venus Stars blog post about Binance Oracle](https://venusstars.io/community/index.php/2023/05/09/venus-enhances-resilience-binance-oracle-feeds/)
-* [Community discussion about Pyth Oracle](https://community.venus.io/t/vip-xx-integrate-with-pyth-as-an-oracle/2723/6)
-* [RedStone’s proposal to be added to the interface](https://community.venus.io/t/adding-redstone-oracles-to-the-venus-oracle-interface/3620)
