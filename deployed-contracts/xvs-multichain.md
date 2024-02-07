@@ -18,7 +18,7 @@
 
 * XVSBridgeAdmin: [`0x52fcE05aDbf6103d71ed2BA8Be7A317282731831`](https://opbnbscan.com/address/0x52fcE05aDbf6103d71ed2BA8Be7A317282731831)
 * XVSProxyOFTDest: [`0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2`](https://opbnbscan.com//address/0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2)
-* XVS: [`0xFD9B071168bC27DBE16406eC3Aba050Ce8Eb22FA`](https://opbnbscan.com/address/0xFD9B071168bC27DBE16406eC3Aba050Ce8Eb22FA)
+* XVS: [`0x3E2e61F1c075881F3fB8dd568043d8c221fd5c61`](https://opbnbscan.com/address/0x3E2e61F1c075881F3fB8dd568043d8c221fd5c61)
 
 ## Testnet chains
 
