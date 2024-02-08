@@ -226,3 +226,40 @@ Given:
 
 Liquidators will be allowed to liquidate first the VAI position **or** the USDT position. Both liquidations will work because the VAI debt is less than `minLiquidatableVAI`
 {% endhint %}
+
+## Automatic Income Allocation
+
+In the Core Pool, liquidation income is transferred to the Liquidator contract in the form of vTokens. During a liquidation transaction, the Liquidator contract will try to redeem the protocol's portion of the liquidation incentive in vTokens for the underlying tokens. If the redemption process is successful, the  underlying tokens will be sent to the `ProtocolShareReserve` contract. However, if the redemption fails the underlying tokens will be added to a list of pending redemptions and the Liquidator contract will try to redeem the pending redemptions again in subsequent liquidation transactions.
+
+### Distributing Seized Amount
+
+The seized collateral is distributed between the Liquidator and the Protocol Share Reserve:
+
+1. **Liquidator's Share:**
+   - The Liquidator receives a designated portion of the collateral as an incentive.
+
+2. **Protocol Share Reserve's Share:**
+   - The remaining portion of the collateral is sent to the Protocol Share Reserve.
+
+3. **Conversion (if applicable):**
+   - **BNB:**
+     - If the seized collateral is BNB, it is converted to Wrapped BNB (wBNB) before sending it to the Protocol Share Reserve.
+   - **Other VTokens:**
+     - For other VTokens, the underlying tokens are redeemed and transferred to the Protocol Share Reserve.
+
+### Redemption Handling
+
+The Liquidator contract attempts to redeem the protocol's portion of the liquidation incentive in underlying tokens for the VTokens:
+
+1. **Successful Redemption:**
+   - If the redemption is successful, the underlying tokens are sent to the ProtocolShareReserve contract.
+
+2. **Failed Redemption:**
+   - If the redemption fails due to insufficient liquidity or other reasons, the VTokens representing the pending redemption are added to a list for later processing.
+
+### Pending Redemption Management
+
+Subsequent liquidation transactions leverage the list of pending redemptions:
+
+1. **Redemption Attempt:**
+   - During each liquidation, the Liquidator contract attempts to redeem pending VTokens for their underlying tokens.
