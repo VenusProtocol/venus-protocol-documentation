@@ -62,7 +62,7 @@ Oracle which gives the price of any given asset
 contract ResilientOracleInterface oracle
 ```
 
----
+- - -
 
 ### closeFactorMantissa
 
@@ -72,7 +72,7 @@ Multiplier used to calculate the maximum repayAmount when liquidating a borrow
 uint256 closeFactorMantissa
 ```
 
----
+- - -
 
 ### liquidationIncentiveMantissa
 
@@ -82,7 +82,7 @@ Multiplier representing the discount on collateral that a liquidator receives
 uint256 liquidationIncentiveMantissa
 ```
 
----
+- - -
 
 ### accountAssets
 
@@ -92,7 +92,7 @@ Per-account mapping of "assets you are in"
 mapping(address => contract VToken[]) accountAssets
 ```
 
----
+- - -
 
 ### markets
 
@@ -102,7 +102,7 @@ Official mapping of vTokens -> Market metadata
 mapping(address => struct ComptrollerStorage.Market) markets
 ```
 
----
+- - -
 
 ### allMarkets
 
@@ -112,7 +112,7 @@ A list of all markets
 contract VToken[] allMarkets
 ```
 
----
+- - -
 
 ### borrowCaps
 
@@ -122,7 +122,7 @@ Borrow caps enforced by borrowAllowed for each vToken address. Defaults to zero 
 mapping(address => uint256) borrowCaps
 ```
 
----
+- - -
 
 ### minLiquidatableCollateral
 
@@ -132,7 +132,7 @@ Minimal collateral required for regular (non-batch) liquidations
 uint256 minLiquidatableCollateral
 ```
 
----
+- - -
 
 ### supplyCaps
 
@@ -142,7 +142,7 @@ Supply caps enforced by mintAllowed for each vToken address. Defaults to zero wh
 mapping(address => uint256) supplyCaps
 ```
 
----
+- - -
 
 ### isForcedLiquidationEnabled
 
@@ -152,4 +152,25 @@ Flag indicating whether forced liquidation enabled for a market
 mapping(address => bool) isForcedLiquidationEnabled
 ```
 
----
+- - -
+
+### prime
+
+Prime token address
+
+```solidity
+contract IPrime prime
+```
+
+- - -
+
+### approvedDelegates
+
+Whether the delegate is allowed to borrow or redeem on behalf of the user
+
+```solidity
+mapping(address => mapping(address => bool)) approvedDelegates
+```
+
+- - -
+
