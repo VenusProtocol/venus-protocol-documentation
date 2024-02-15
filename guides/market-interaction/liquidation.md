@@ -233,33 +233,30 @@ In the Core Pool, liquidation income is transferred to the Liquidator contract i
 
 ### Distributing Seized Amount
 
-The seized collateral is distributed between the Liquidator and the Protocol Share Reserve:
+The seized collateral is distributed between the Liquidator and the `ProtocolShareReserve` contract:
 
 1. **Liquidator's Share:**
    - The Liquidator receives a designated portion of the collateral as an incentive.
 
-2. **Protocol Share Reserve's Share:**
-   - The remaining portion of the collateral is sent to the Protocol Share Reserve.
+2. **`ProtocolShareReserve` contract's Share:**
+   - The remaining portion of the collateral is sent to the `ProtocolShareReserve` contract.
 
 3. **Conversion (if applicable):**
    - **BNB:**
-     - If the seized collateral is BNB, it is converted to Wrapped BNB (wBNB) before sending it to the Protocol Share Reserve.
+     - If the seized collateral is BNB, it is converted to Wrapped BNB (wBNB) before sending it to the `ProtocolShareReserve` contract.
    - **Other VTokens:**
-     - For other VTokens, the underlying tokens are redeemed and transferred to the Protocol Share Reserve.
+     - For other VTokens, the underlying tokens are redeemed and transferred to the `ProtocolShareReserve` contract.
 
 ### Redemption Handling
 
 The Liquidator contract attempts to redeem the protocol's portion of the liquidation incentive in underlying tokens for the VTokens:
 
 1. **Successful Redemption:**
-   - If the redemption is successful, the underlying tokens are sent to the ProtocolShareReserve contract.
+   - If the redemption is successful, the underlying tokens are sent to the `ProtocolShareReserve` contract.
 
 2. **Failed Redemption:**
    - If the redemption fails due to insufficient liquidity or other reasons, the VTokens representing the pending redemption are added to a list for later processing.
 
 ### Pending Redemption Management
 
-Subsequent liquidation transactions leverage the list of pending redemptions:
-
-1. **Redemption Attempt:**
-   - During each liquidation, the Liquidator contract attempts to redeem pending VTokens for their underlying tokens.
+Subsequent liquidation transactions leverage the list of pending redemptions: during each liquidation, the Liquidator contract attempts to redeem pending VTokens for their underlying tokens, and send these underlying tokens to the `ProtocolShareReserve` contract.
