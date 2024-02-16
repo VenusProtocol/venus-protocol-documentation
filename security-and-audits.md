@@ -307,6 +307,7 @@ These contracts were in the scope of the audits done before the launch of Isolat
 * [Peckshield audit report - 2023/04/24](https://github.com/VenusProtocol/oracle/blob/6f7a3d8769c28881661953e7ee3299b1d5b31e17/audits/013_oracles_peckshield_20230424.pdf)
 * [Certik audit report - 2023/05/22](https://github.com/VenusProtocol/oracle/blob/6f7a3d8769c28881661953e7ee3299b1d5b31e17/audits/024_oracles_certik_20230522.pdf)
 * [Hacken audit report - 2023/04/26](https://github.com/VenusProtocol/oracle/blob/6f7a3d8769c28881661953e7ee3299b1d5b31e17/audits/016_oracles_hacken_20230426.pdf)
+* [HashEx vulnerability report - 2024/02/01](https://github.com/VenusProtocol/oracle/blob/567b057fd010a0359651db5604defec35a378cf1/audits/097_twap_hashex_20240201.pdf). No risks, because the TWAP oracle is not used at all by the Venus Protocol. The `TwapOracle` is [removed from the repository](https://github.com/VenusProtocol/oracle/pull/167) to avoid any confusion.
 
 ### Vaults
 
