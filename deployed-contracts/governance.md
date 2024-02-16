@@ -73,10 +73,6 @@ Specific functions that can be invoked by the guardians
 
 * PythOracle
   * `setTokenConfig`
-
-* TwapOracle
-  * `setTokenConfig`
-
 </details>
 -->
 

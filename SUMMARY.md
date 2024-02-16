@@ -125,7 +125,6 @@
   * [Sources](technical-reference/reference-oracle/oracles/README.md)
     * [ChainlinkOracle](technical-reference/reference-oracle/oracles/chainlink-oracle.md)
     * [BinanceOracle](technical-reference/reference-oracle/oracles/binance-oracle.md)
-    * [TwapOracle](technical-reference/reference-oracle/oracles/twap-oracle.md)
     * [PythOracle](technical-reference/reference-oracle/oracles/pyth-oracle.md)
     * [WstETHOracle](technical-reference/reference-oracle/oracles/wstethoracle.md)
 * [Governance](technical-reference/reference-governance/README.md)

@@ -12,7 +12,7 @@ Furthermore, the improved oracle infrastructure supports the integration of new 
 
 #### Resilient Price Feeds
 
-The Resilient Price Feeds replace the single source price provider used in the Comptroller contract with a more robust and reliable solution. This new component not only fetches asset prices from various on-chain sources but also includes a fallback mechanism to protect the protocol from oracle failures. Presently, this feature incorporates Chainlink, RedStone, Pyth Network, Binance Oracle, and TWAP oracles, with the possibility of adding more in the future.
+The Resilient Price Feeds replace the single source price provider used in the Comptroller contract with a more robust and reliable solution. This new component not only fetches asset prices from various on-chain sources but also includes a fallback mechanism to protect the protocol from oracle failures. Presently, this feature incorporates Chainlink, RedStone, Pyth Network and Binance oracles, with the possibility of adding more in the future.
 
 #### Governance Configurations
 
