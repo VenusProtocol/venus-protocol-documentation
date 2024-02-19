@@ -329,6 +329,24 @@ These contracts were in the scope of the audits done before the launch of Isolat
 * [Hacken audit report](https://github.com/VenusProtocol/isolated-pools/blob/c801e898e034e313e885c5d486ed27c15e7e2abf/audits/016_isolatedPools_hacken_20230426.pdf)
 * [Code4rena contest - 2023/05/15](https://code4rena.com/contests/2023-05-venus-protocol-isolated-pools)
 
+### Automatic Income Allocation in the Liquidator contract
+
+**Scope**: Integration of the [Automatic Income Allocation](./whats-new/automatic-income-allocation.md) into the [Liquidator contract](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/Liquidator/Liquidator.sol) used in the Core pool on BNB chain.
+
+* [OpenZeppelin audit report (2023/July/20)](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/048_liquidator_openzeppelin_20230720.pdf)
+* [Quantstamp audit report (2023/July/17)](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/046_liquidator_quantstamp_20230717.pdf)
+* [Certik audit report (2023/July/4)](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/041_liquidator_certik_20230704.pdf)
+* [Peckshield audit report (2023/July/5)](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/039_liquidator_peckshield_20230705.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#241](https://github.com/VenusProtocol/venus-protocol/pull/241) in the `venus-protocol` repo.
+  - contracts/Liquidator/Liquidator.sol
+  - contracts/Liquidator/LiquidatorStorage.sol
+
+</details>
+
 ### Swap router
 
 **Scope**: SwapRouter contract, enabled on [VIP-131](https://app.venus.io/governance/proposal/131).
