@@ -87,10 +87,6 @@ Venus Protocol implements secondary, primary and pivot oracles to create a valid
 
 [BinanceOracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/oracles/BinanceOracle.sol) contract is responsible for fetching token prices from the Binance oracle. It is used as a secondary oracle.
 
-[**TWAPOracle**](./reference-oracle/oracles/twap-oracle.md)
-
-The [TWAP (Time Weighted Average Price) Oracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/oracles/TwapOracle.sol) is mainly used as a \[pivot oracle] for validation but can also be used as a primary source if a token isn't supported by the primary and secondary oracles.
-
 [**PythOracle**](./reference-oracle/oracles/pyth-oracle.md)
 
 [PythOracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/oracles/PythOracle.sol) is used as a pivot oracle to validate prices returned by primary and secondary oracles.
