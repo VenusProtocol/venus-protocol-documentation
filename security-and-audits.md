@@ -33,7 +33,9 @@ We firmly believe that the true test of a smart contract's security lies in its 
     - [Fairyproof audit report (2023/08/28)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/067_tokenConverter_fairyproof_20230828.pdf)
 - Private conversions (optimization to avoid the payment of incentives to third parties when the conversion can be completed internally)
     - [Certik audit report (2023/11/27)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/081_privateConversions_certik_20231127.pdf)
+    - [Certik audit addendum (2024/02/15)](https://github.com/VenusProtocol/protocol-reserve/blob/ba39ce060d0716be1131913e4dd6e93c1444e0c3/audits/081_privateConversions_certik_20240215.pdf)
     - [OpenZeppelin report (2024/01/09)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/082_privateConversions_openzeppelin_20240109.pdf)
+    - [OpenZeppelin addendum (2024/02/20)](https://github.com/VenusProtocol/protocol-reserve/blob/ba39ce060d0716be1131913e4dd6e93c1444e0c3/audits/082_privateConversions_openzeppelin_20240220.pdf)
 
 <details>
 <summary>Detailed scope</summary>
