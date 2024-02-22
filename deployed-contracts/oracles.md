@@ -27,7 +27,7 @@
 * Bound Validator:[`0x1Cd5f336A1d28Dff445619CC63d3A0329B4d8a58`](https://etherscan.io/address/0x1Cd5f336A1d28Dff445619CC63d3A0329B4d8a58)
 * Chainlink Oracle:[`0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2`](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2)
 * RedStone Oracle:[`0x0FC8001B2c9Ec90352A46093130e284de5889C86`](https://etherscan.io/address/0x0FC8001B2c9Ec90352A46093130e284de5889C86)
-* WSTETH Oracle:[`0x987F64F99cA9441D9BD141a34E195818961cCBa6`](https://etherscan.io/address/0x987F64F99cA9441D9BD141a34E195818961cCBa6)
+* WSTETH Oracle:[`0xd8B43165a6cdA057DBd3Fcd4745E88FC475398c5`](https://etherscan.io/address/0xd8B43165a6cdA057DBd3Fcd4745E88FC475398c5)
 * Resilient Oracle:[`0xd2ce3fb018805ef92b8C5976cb31F84b4E295F94`](https://etherscan.io/address/0xd2ce3fb018805ef92b8C5976cb31F84b4E295F94)
 * DefaultProxyAdmin:[`0x567e4cc5e085d09f66f836fa8279f38b4e5866b9`](https://etherscan.io/address/0x567e4cc5e085d09f66f836fa8279f38b4e5866b9)
 
