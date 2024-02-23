@@ -91,7 +91,55 @@ function liquidateVAI(address borrower, uint256 repayAmount, contract VTokenInte
 Sets a new comptroller
 
 ```solidity
-function _setComptroller(contract Comptroller comptroller_) external returns (uint256)
+function _setComptroller(contract ComptrollerInterface comptroller_) external returns (uint256)
+```
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | uint 0=success, otherwise a failure (see ErrorReporter.sol for details) |
+
+---
+
+### setPrimeToken
+
+Set the prime token contract address
+
+```solidity
+function setPrimeToken(address prime_) external
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| prime_ | address | The new address of the prime token contract |
+
+---
+
+### setVAIToken
+
+Set the VAI token contract address
+
+```solidity
+function setVAIToken(address vai_) external
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| vai_ | address | The new address of the VAI token contract |
+
+---
+
+### toggleOnlyPrimeHolderMint
+
+Toggle mint only for prime holder
+
+```solidity
+function toggleOnlyPrimeHolderMint() external returns (uint256)
 ```
 
 #### Return Values
@@ -118,6 +166,102 @@ struct AccountAmountLocalVars {
   struct ExponentialNoError.Exp tokensToDenom;
 }
 ```
+
+### getMintableVAI
+
+Function that returns the amount of VAI a user can mint based on their account liquidy and the VAI mint rate
+If mintEnabledOnlyForPrimeHolder is true, only Prime holders are able to mint VAI
+
+```solidity
+function getMintableVAI(address minter) public view returns (uint256, uint256)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| minter | address | The account to check mintable VAI |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | (uint, uint) Tuple of error code and mintable VAI. Error 0 means no error. Mintable amount has 18 decimals |
+| \[1] | uint256 |  |
+
+---
+
+### _setTreasuryData
+
+Update treasury data
+
+```solidity
+function _setTreasuryData(address newTreasuryGuardian, address newTreasuryAddress, uint256 newTreasuryPercent) external returns (uint256)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| newTreasuryGuardian | address | New Treasury Guardian address |
+| newTreasuryAddress | address | New Treasury Address |
+| newTreasuryPercent | uint256 | New fee percentage for minting VAI that is sent to the treasury |
+
+---
+
+### getVAIRepayRate
+
+Gets yearly VAI interest rate based on the VAI price
+
+```solidity
+function getVAIRepayRate() public view returns (uint256)
+```
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | uint Yearly VAI interest rate |
+
+---
+
+### getVAIRepayRatePerBlock
+
+Get interest rate per block
+
+```solidity
+function getVAIRepayRatePerBlock() public view returns (uint256)
+```
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | uint Interest rate per bock |
+
+---
+
+### getVAIMinterInterestIndex
+
+Get the last updated interest index for a VAI Minter
+
+```solidity
+function getVAIMinterInterestIndex(address minter) public view returns (uint256)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| minter | address | Address of VAI minter |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | uint Returns the interest rate index for a minter |
+
+---
 
 ### getVAIRepayAmount
 
@@ -163,6 +307,16 @@ function getVAICalculateRepayAmount(address borrower, uint256 repayAmount) publi
 | \[0] | uint256 | (uint, uint, uint) Amount of VAI to be burned, amount of VAI the user needs to pay in current interest and amount of VAI the user needs to pay in past interest |
 | \[1] | uint256 |  |
 | \[2] | uint256 |  |
+
+---
+
+### accrueVAIInterest
+
+Accrue interest on outstanding minted VAI
+
+```solidity
+function accrueVAIInterest() public
+```
 
 ---
 
