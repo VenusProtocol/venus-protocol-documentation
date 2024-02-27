@@ -92,6 +92,24 @@
   * vcrvUSD\_Curve: [`0x2d499800239C4CD3012473Cb1EAE33562F0A6933`](https://etherscan.io/address/0x2d499800239C4CD3012473Cb1EAE33562F0A6933)
   * vCRV\_Curve: [`0x30aD10Bd5Be62CAb37863C2BfcC6E8fb4fD85BDa`](https://etherscan.io/address/0x30aD10Bd5Be62CAb37863C2BfcC6E8fb4fD85BDa)
 
+## opBNB Chain Mainnet
+
+* PoolRegistry: [`0x345a030Ad22e2317ac52811AC41C1A63cfa13aEe`](https://opbnbscan.com/address/0x345a030Ad22e2317ac52811AC41C1A63cfa13aEe)
+* PoolLens: [`0x83969EBbfC674998070A87e2Da0fa21044d79893`](https://opbnbscan.com/address/0x83969EBbfC674998070A87e2Da0fa21044d79893)
+* DefaultProxyAdmin: [`0xF77bD1D893F67b3EB2Cd256239c98Ba3F238fb52`](https://opbnbscan.com/address/0xF77bD1D893F67b3EB2Cd256239c98Ba3F238fb52)
+* Comptroller Beacon: [`0x11C3e19236ce17729FC66b74B537de00C54d44e7`](https://opbnbscan.com/address/0x11C3e19236ce17729FC66b74B537de00C54d44e7)
+* VToken Beacon: [`0xfeD1d3a13597c5aBc893Af41ED5cb17e64c847c7`](https://opbnbscan.com/address/0xfeD1d3a13597c5aBc893Af41ED5cb17e64c847c7)
+
+### Core Pool
+
+* Comptroller: [`0xD6e3E2A1d8d95caE355D15b3b9f8E5c2511874dd`](https://opbnbscan.com/address/0xD6e3E2A1d8d95caE355D15b3b9f8E5c2511874dd)
+* Tokens
+  * vBTCB\_Core: [`0xED827b80Bd838192EA95002C01B5c6dA8354219a`](https://opbnbscan.com/address/0xED827b80Bd838192EA95002C01B5c6dA8354219a)
+  * vETH\_Core: [`0x509e81eF638D489936FA85BC58F52Df01190d26C`](https://opbnbscan.com/address/0x509e81eF638D489936FA85BC58F52Df01190d26C)
+  * vFDUSD\_Core: [`0x13B492B8A03d072Bab5C54AC91Dba5b830a50917`](https://opbnbscan.com/address/0x13B492B8A03d072Bab5C54AC91Dba5b830a50917)
+  * vUSDT\_Core: [`0xb7a01Ba126830692238521a1aA7E7A7509410b8e`](https://opbnbscan.com/address/0xb7a01Ba126830692238521a1aA7E7A7509410b8e)
+  * vWBNB\_Core: [`0x53d11cB8A0e5320Cd7229C3acc80d1A0707F2672`](https://opbnbscan.com/address/0x53d11cB8A0e5320Cd7229C3acc80d1A0707F2672)
+
 ## BNB Chain Testnet
 
 * PoolRegistry: [`0xC85491616Fa949E048F3aAc39fbf5b0703800667`](https://testnet.bscscan.com/address/0xC85491616Fa949E048F3aAc39fbf5b0703800667)
@@ -202,3 +220,21 @@
   * vcrvUSD\_Stablecoins: [`0x9C5e7a3B4db931F07A6534f9e44100DDDc78c408`](https://sepolia.etherscan.io/address/0x9C5e7a3B4db931F07A6534f9e44100DDDc78c408)
   * vUSDC\_Stablecoins: [`0xD5f83FCbb4a62779D0B37b9E603CD19Ad84884F0`](https://sepolia.etherscan.io/address/0xD5f83FCbb4a62779D0B37b9E603CD19Ad84884F0)
   * vUSDT\_Stablecoins: [`0x93dff2053D4B08823d8B39F1dCdf8497f15200f4`](https://sepolia.etherscan.io/address/0x93dff2053D4B08823d8B39F1dCdf8497f15200f4)
+
+## opBNB Chain Testnet
+
+* PoolRegistry: [`0x560eA4e1cC42591E9f5F5D83Ad2fd65F30128951`](https://testnet.opbnbscan.com/address/0x560eA4e1cC42591E9f5F5D83Ad2fd65F30128951)
+* PoolLens: [`0x8983fd85133877BE52c019ce9538354EFbb238c6`](https://testnet.opbnbscan.com/address/0x8983fd85133877BE52c019ce9538354EFbb238c6)
+* DefaultProxyAdmin: [`0xB1281ADC816fba7df64B798D7A0BC4bd2a6d42f4`](https://testnet.opbnbscan.com/address/0xB1281ADC816fba7df64B798D7A0BC4bd2a6d42f4)
+* Comptroller Beacon: [`0x2020BDa1F931E07B14C9d346E2f6D5943b4cd56D`](https://testnet.opbnbscan.com/address/0x2020BDa1F931E07B14C9d346E2f6D5943b4cd56D)
+* VToken Beacon: [`0xcc633492097078Ae590C0d11924e82A23f3Ab3E2`](https://testnet.opbnbscan.com/address/0xcc633492097078Ae590C0d11924e82A23f3Ab3E2)
+* ProtocolShareReserve: [`0xc355dEb1A9289f8C58CFAa076EEdBf51F3A8Da7F`](https://testnet.opbnbscan.com/address/0xc355dEb1A9289f8C58CFAa076EEdBf51F3A8Da7F)
+
+### Core Pool
+
+* Comptroller: [`0x2FCABb31E57F010D623D8d68e1E18Aed11d5A388`](https://testnet.opbnbscan.com/address/0x2FCABb31E57F010D623D8d68e1E18Aed11d5A388)
+* Tokens
+  * vBTCB\_Core: [`0x86F82bca79774fc04859966917D2291A68b870A9`](https://testnet.opbnbscan.com/address/0x86F82bca79774fc04859966917D2291A68b870A9)
+  * vETH\_Core: [`0x034Cc5097379B13d3Ed5F6c85c8FAf20F48aE480`](https://testnet.opbnbscan.com/address/0x034Cc5097379B13d3Ed5F6c85c8FAf20F48aE480)
+  * vUSDT\_Core: [`0xe3923805f6E117E51f5387421240a86EF1570abC`](https://testnet.opbnbscan.com/address/0xe3923805f6E117E51f5387421240a86EF1570abC)
+  * vWBNB\_Core: [`0xD36a31AcD3d901AeD998da6E24e848798378474e`](https://testnet.opbnbscan.com/address/0xD36a31AcD3d901AeD998da6E24e848798378474e)
