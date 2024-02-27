@@ -7,24 +7,37 @@ The Isolated Pools subgraphs provides endpoints for querying data related to Iso
 
 [Code](https://github.com/VenusProtocol/subgraphs/tree/master/subgraphs/isolated-pools)
 
-### Explorers
-[Mainnet](https://api.thegraph.com/subgraphs/name/venusprotocol/venus-isolated-pools/graphql?query=query+Markets+%7B%0A++markets+%7B%0A++++accounts+%7B%0A++++++id%0A++++%7D%0A++%7D%0A%7D)
+### Deployments
+[Mainnet](https://api.thegraph.com/subgraphs/name/venusprotocol/venus-isolated-pools/graphql)
 
-[Chapel Testnet](https://api.thegraph.com/subgraphs/name/venusprotocol/venus-isolated-pools-chapel/graphql?query=query+Markets+%7B%0A++markets+%7B%0A++++accounts+%7B%0A++++++id%0A++++%7D%0A++%7D%0A%7D)
+[Chapel Testnet](https://api.thegraph.com/subgraphs/name/venusprotocol/venus-isolated-pools-chapel/graphql)
+
+[Ethereum](https://api.thegraph.com/subgraphs/name/venusprotocol/venus-isolated-pools-ethereum/graphql)
 
 [Sepolia](https://thegraph.com/hosted-service/subgraph/venusprotocol/venus-isolated-pools-sepolia)
 
+[OpBnB](https://open-platform-ap.nodereal.io/{apikey}/opbnb-mainnet-graph-query/subgraphs/name/venusprotocol/venus-isolated-pools-opbnb/graphql)
 
 ## Core Pool
 The Core Pool subgraph is responsible for indexing and aggregating events related to market and lending activities in the Core Pool
 
 [Code](https://github.com/VenusProtocol/subgraphs/tree/master/subgraphs/venus)
 
-### Explorers
-[Mainnet](https://api.thegraph.com/subgraphs/name/venusprotocol/venus-subgraph/graphql?query=query+TotalSupplyAndBorrows+%7B%0A++markets+%7B%0A++++id%0A++++totalSupply%0A++++totalBorrows%0A++%7D%0A%7D)
+### Deployments
+[Mainnet](https://api.thegraph.com/subgraphs/name/venusprotocol/venus-subgraph/graphql)
 
 ## Governance
 The Governance subgraph will index events related to Governance including proposals and voting activity.
 
 [Code](https://github.com/VenusProtocol/subgraphs/tree/master/subgraphs/venus-governance)
 
+### Deployments
+[Mainnet](https://api.thegraph.com/subgraphs/name/venusprotocol/venus-governance/graphql)
+
+## Protocol Share Reserve
+The Protocol Share Reserve subgraph
+
+[Code](https://github.com/VenusProtocol/subgraphs/tree/develop/subgraphs/protocol-reserve)
+
+### Deployments
+[Mainnet](https://api.thegraph.com/subgraphs/name/venusprotocol/venus-protocol-reserve/graphql)
