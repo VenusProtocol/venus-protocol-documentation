@@ -8,6 +8,32 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Native token gatewat
+
+**Scope**: [NativeTokenGateway contract](https://github.com/VenusProtocol/isolated-pools//blob/develop/contracts/Gateway/NativeTokenGateway.sol), that facilitates the interaction (borrow, supply, repay and redeem) with markets where the underlying token is a wrapped version of the native token (for example WETH on Ethereum, or BNB on BNB chain).
+
+- [Certik audit audit report (2024/02/26)](https://github.com/VenusProtocol/isolated-pools/blob/652459fed7269dab84628f70c44d8fa56b34203e/audits/092_nativeTokenGateway_certik_20240226.pdf)
+- [Pessimistic audit audit report (2024/02/29)](https://github.com/VenusProtocol/isolated-pools/blob/652459fed7269dab84628f70c44d8fa56b34203e/audits/095_nativeTokenGateway_pessimistic_20240229.pdf)
+- [Quantstamp audit audit report (2024/03/XX)](XX)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#361](https://github.com/VenusProtocol/isolated-pools/pull/361)
+      - contracts/Comptroller.sol
+      - contracts/ComptrollerStorage.sol
+      - contracts/Gateway/Interfaces/IVtoken.sol
+      - contracts/Gateway/Interfaces/IWrappedNative.sol
+      - contracts/Gateway/NativeTokenGateway.sol
+      - contracts/VToken.sol
+      - contracts/VTokenInterfaces.sol
+- Pull request [#442](https://github.com/VenusProtocol/venus-protocol/pull/442)
+      - contracts/Tokens/VTokens/VBep20.sol
+      - contracts/Tokens/VTokens/VToken.sol
+      - contracts/Comptroller/Diamond/facets/MarketFacet.sol
+
+</details>
+
 ### Oracle for wstETH
 
 **Scope**: [Oracle for wstETH](https://github.com/VenusProtocol/oracle/blob/develop/contracts/oracles/WstETHOracle.sol), using the exchange rate `wstETH/stETH` from the `stETH` contract on Ethereum, assuming 1:1 for the conversion rate `stETH:ETH`, and converting `ETH` to `USD` using the Resilient Oracles.
