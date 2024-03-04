@@ -1,9 +1,5 @@
 # Token Converter
 
-{% hint style="warning" %}
-**To be released**
-{% endhint %}
-
 ### Overview
 
 Protocol revenues, sourced from reserve interests and liquidations, are processed through the [Automatic Income Allocation](automatic-income-allocation.md) module. Once allocated, these underlying tokens are subsequently sent to various Token Converters, each transforming the received income into specific tokens, automating and optimizing this conversion process.
