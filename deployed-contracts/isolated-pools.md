@@ -95,7 +95,10 @@
 ### Pool Liquid Staked ETH
 
 * Comptroller: [`0xF522cd0360EF8c2FF48B648d53EA1717Ec0F3Ac3`](https://etherscan.io/address/0xF522cd0360EF8c2FF48B648d53EA1717Ec0F3Ac3)
-* Tokens
+* Underlying tokens:
+  * WETH: [`0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2`](https://etherscan.io/address/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2)
+  * wstETH: [`0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0`](https://etherscan.io/address/0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0)
+* Markets:
   * vWETH\_LiquidStakedETH: [`0xc82780Db1257C788F262FBbDA960B3706Dfdcaf2`](https://etherscan.io/address/0xc82780Db1257C788F262FBbDA960B3706Dfdcaf2)
   * vwstETH\_LiquidStakedETH: [`0x4a240F0ee138697726C8a3E43eFE6Ac3593432CB`](https://etherscan.io/address/0x4a240F0ee138697726C8a3E43eFE6Ac3593432CB)
 
