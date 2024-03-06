@@ -1,8 +1,18 @@
 # WstETHOracle
-This oracle returns the USD price of wstETH asset.
-Price is based on assumption that 1 stETH = 1 ETH.
+Depending on the equivalence flag price is either based on assumption that 1 stETH = 1 ETH
+        or the price of stETH/USD (secondary market price) is obtained from the oracle.
 
 # Solidity API
+
+### ASSUME_STETH_ETH_EQUIVALENCE
+
+A flag assuming 1:1 price equivalence between stETH/ETH
+
+```solidity
+bool ASSUME_STETH_ETH_EQUIVALENCE
+```
+
+- - -
 
 ### STETH
 
@@ -49,7 +59,7 @@ contract OracleInterface RESILIENT_ORACLE
 Constructor for the implementation contract.
 
 ```solidity
-constructor(address wstETHAddress, address wETHAddress, address stETHAddress, address resilientOracleAddress) public
+constructor(address wstETHAddress, address wETHAddress, address stETHAddress, address resilientOracleAddress, bool assumeEquivalence) public
 ```
 
 - - -
@@ -73,3 +83,4 @@ function getPrice(address asset) public view returns (uint256)
 | [0] | uint256 | wstETH Price in USD scaled by 1e18 |
 
 - - -
+

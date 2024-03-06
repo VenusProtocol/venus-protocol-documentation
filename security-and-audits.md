@@ -13,6 +13,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
 **Scope**: [Oracle for wstETH](https://github.com/VenusProtocol/oracle/blob/develop/contracts/oracles/WstETHOracle.sol), using the exchange rate `wstETH/stETH` from the `stETH` contract on Ethereum, assuming 1:1 for the conversion rate `stETH:ETH`, and converting `ETH` to `USD` using the Resilient Oracles.
 
 - [Certik audit audit report (2024/01/26)](https://github.com/VenusProtocol/oracle/blob/e99feb67f4677168632f5bedd70034fba8dc55db/audits/090_wstETHOracle_certik_20240126.pdf)
+- [Quantstamp audit audit report (2024/02/20)](https://github.com/VenusProtocol/oracle/blob/f34d3114267929bbba26743f0a8591c1b016fb94/audits/093_wstETHOracle_quantstamp_20240220.pdf)
 
 <details>
 <summary>Detailed scope</summary>
