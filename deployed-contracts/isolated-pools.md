@@ -105,6 +105,7 @@
 * DefaultProxyAdmin: [`0x567e4cc5e085d09f66f836fa8279f38b4e5866b9`](https://etherscan.io/address/0x567e4cc5e085d09f66f836fa8279f38b4e5866b9)
 * Comptroller Beacon: [`0xAE2C3F21896c02510aA187BdA0791cDA77083708`](https://etherscan.io/address/0xAE2C3F21896c02510aA187BdA0791cDA77083708)
 * VToken Beacon: [`0xfc08aADC7a1A93857f6296C3fb78aBA1d286533a`](https://etherscan.io/address/0xfc08aADC7a1A93857f6296C3fb78aBA1d286533a)
+* ProtocolShareReserve: [`0x8c8c8530464f7D95552A11eC31Adbd4dC4AC4d3E`](https://etherscan.io/address/0x8c8c8530464f7D95552A11eC31Adbd4dC4AC4d3E)
 
 ### Core pool
 
@@ -149,6 +150,7 @@
 * DefaultProxyAdmin: [`0xF77bD1D893F67b3EB2Cd256239c98Ba3F238fb52`](https://opbnbscan.com/address/0xF77bD1D893F67b3EB2Cd256239c98Ba3F238fb52)
 * Comptroller Beacon: [`0x11C3e19236ce17729FC66b74B537de00C54d44e7`](https://opbnbscan.com/address/0x11C3e19236ce17729FC66b74B537de00C54d44e7)
 * VToken Beacon: [`0xfeD1d3a13597c5aBc893Af41ED5cb17e64c847c7`](https://opbnbscan.com/address/0xfeD1d3a13597c5aBc893Af41ED5cb17e64c847c7)
+* ProtocolShareReserve: [`0xA2EDD515B75aBD009161B15909C19959484B0C1e`](https://opbnbscan.com/address/0xA2EDD515B75aBD009161B15909C19959484B0C1e)
 
 ### Core Pool
 
@@ -238,11 +240,12 @@
 
 ## Sepolia (Ethereum testnet)
 
-* PoolRegistry: [`0x758f5715d817e02857Ba40889251201A5aE3E186`](https://etherscan.io/address/0x758f5715d817e02857Ba40889251201A5aE3E186)
-* PoolLens: [`0xC319C2E53a5f732ebF0eb87b14F56B53bdc3446b`](https://etherscan.io/address/0xC319C2E53a5f732ebF0eb87b14F56B53bdc3446b)
-* DefaultProxyAdmin: [`0xe98a3110929c6650c73031756288Ec518f65e846`](https://etherscan.io/address/0xe98a3110929c6650c73031756288Ec518f65e846)
-* Comptroller Beacon: [`0x6cE54143a88CC22500D49D744fb6535D66a8294F`](https://etherscan.io/address/0x6cE54143a88CC22500D49D744fb6535D66a8294F)
-* VToken Beacon: [`0x0463a7E5221EAE1990cEddB51A5821a68cdA6008`](https://etherscan.io/address/0x0463a7E5221EAE1990cEddB51A5821a68cdA6008)
+* PoolRegistry: [`0x758f5715d817e02857Ba40889251201A5aE3E186`](https://sepolia.etherscan.io/address/0x758f5715d817e02857Ba40889251201A5aE3E186)
+* PoolLens: [`0xC319C2E53a5f732ebF0eb87b14F56B53bdc3446b`](https://sepolia.etherscan.io/address/0xC319C2E53a5f732ebF0eb87b14F56B53bdc3446b)
+* DefaultProxyAdmin: [`0xe98a3110929c6650c73031756288Ec518f65e846`](https://sepolia.etherscan.io/address/0xe98a3110929c6650c73031756288Ec518f65e846)
+* Comptroller Beacon: [`0x6cE54143a88CC22500D49D744fb6535D66a8294F`](https://sepolia.etherscan.io/address/0x6cE54143a88CC22500D49D744fb6535D66a8294F)
+* VToken Beacon: [`0x0463a7E5221EAE1990cEddB51A5821a68cdA6008`](https://sepolia.etherscan.io/address/0x0463a7E5221EAE1990cEddB51A5821a68cdA6008)
+* ProtocolShareReserve: [`0xbea70755cc3555708ca11219adB0db4C80F6721B`](https://sepolia.etherscan.io/address/0xbea70755cc3555708ca11219adB0db4C80F6721B)
 
 ### Core pool
 
