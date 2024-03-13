@@ -149,7 +149,13 @@
 ## Ethereum mainnet
 
 * Venus Treasury: [`0xFD9B071168bC27DBE16406eC3Aba050Ce8Eb22FA`](https://etherscan.io/address/0xFD9B071168bC27DBE16406eC3Aba050Ce8Eb22FA)
+* XVS Vault Proxy: [`0xA0882C2D5DF29233A092d2887A258C2b90e9b994`](https://etherscan.io/address/0xA0882C2D5DF29233A092d2887A258C2b90e9b994)
+* Prime: [`0x14C4525f47A7f7C984474979c57a2Dccb8EACB39`](https://etherscan.io/address/0x14C4525f47A7f7C984474979c57a2Dccb8EACB39)
+* Prime Liquidity Provider: [`0x8ba6aFfd0e7Bcd0028D1639225C84DdCf53D8872`](https://etherscan.io/address/0x8ba6aFfd0e7Bcd0028D1639225C84DdCf53D8872)
 
 ## Sepolia (Ethereum testnet)
 
 * Venus Treasury: [`0x4116CA92960dF77756aAAc3aFd91361dB657fbF8`](https://sepolia.etherscan.io/address/0x4116CA92960dF77756aAAc3aFd91361dB657fbF8)
+* XVS Vault Proxy: [`0x1129f882eAa912aE6D4f6D445b2E2b1eCbA99fd5`](https://sepolia.etherscan.io/address/0x1129f882eAa912aE6D4f6D445b2E2b1eCbA99fd5#code)
+* Prime: [`0x27A8ca2aFa10B9Bc1E57FC4Ca610d9020Aab3739`](https://sepolia.etherscan.io/address/0x27A8ca2aFa10B9Bc1E57FC4Ca610d9020Aab3739)
+* Prime Liquidity Provider: [`0x4fCbfE445396f31005b3Fd2F6DE2A986d6E2dCB5`](https://sepolia.etherscan.io/address/0x4fCbfE445396f31005b3Fd2F6DE2A986d6E2dCB5)
