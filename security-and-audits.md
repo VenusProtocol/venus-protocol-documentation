@@ -8,7 +8,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
-### Native token gatewat
+### Native token gateway
 
 **Scope**: [NativeTokenGateway contract](https://github.com/VenusProtocol/isolated-pools//blob/develop/contracts/Gateway/NativeTokenGateway.sol), that facilitates the interaction (borrow, supply, repay and redeem) with markets where the underlying token is a wrapped version of the native token (for example WETH on Ethereum, or BNB on BNB chain).
 
