@@ -14,7 +14,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 - [Certik audit audit report (2024/02/26)](https://github.com/VenusProtocol/isolated-pools/blob/652459fed7269dab84628f70c44d8fa56b34203e/audits/092_nativeTokenGateway_certik_20240226.pdf)
 - [Pessimistic audit audit report (2024/02/29)](https://github.com/VenusProtocol/isolated-pools/blob/652459fed7269dab84628f70c44d8fa56b34203e/audits/095_nativeTokenGateway_pessimistic_20240229.pdf)
-- [Quantstamp audit audit report (2024/03/XX)](XX)
+- [Quantstamp audit audit report (2024/03/01)](https://github.com/VenusProtocol/isolated-pools/blob/0ec94f4636e51d68197fe6918df096864acd0a23/audits/096_nativeTokenGateway_quantstamp_20240301.pdf)
 
 <details>
 <summary>Detailed scope</summary>
