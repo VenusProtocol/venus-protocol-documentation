@@ -22,23 +22,31 @@ This mechanism provides flexibility and control over borrowing and redeeming act
 
 ### Supply (**wrapAndSupply**)
 - The wrapAndSupply function is invoked sending the native currency, and the execution proceeds as follows:
-    - native currency is wrapped, providing wrappedNative.
-    - vWrappedNative tokens are minted on behalf of the user.
-    - vWrappedNative tokens are transferred to the user.
+    - Native currency is wrapped, providing wrappedNative.
+    - VWrappedNative tokens are minted on behalf of the user.
+    - VWrappedNative tokens are transferred to the user.
 
-### Redeem (**redeemUnderlyingAndUnwrap**)
-- The user approves the NativeTokenGateway contract as the delegate.
-- The redeemUnderlyingAndUnwrap function is called, and the execution proceeds as follows:
-  - vWrappedNative tokens are redeemed by the NativeTokenGateway contract on behalf of the user.
-  - Received wrappedNative tokens are unwrapped to obtain native currency.
-  - native currency is transferred to the user.
+### Redeem 
+1. #### redeemUnderlyingAndUnwrap
+   - The user approves the NativeTokenGateway contract as the delegate.
+   - The redeemUnderlyingAndUnwrap function is called with the amount of underlying tokens to redeem, and the execution proceeds as follows:
+     - VWrappedNative tokens are redeemed by the NativeTokenGateway contract on behalf of the user.
+     - Received wrappedNative tokens are unwrapped to obtain native currency.
+     - Native currency is transferred to the user.
+
+ 2. #### redeemAndUnwrap
+    - The user approves the NativeTokenGateway contract as the delegate.
+    - The redeemAndUnwrap function is called with the amount of vWrappedNative tokens to redeem, and the execution proceeds as follows:
+      - VWrappedNative tokens are redeemed by the NativeTokenGateway contract on behalf of the user.
+      - Received wrappedNative tokens are unwrapped to obtain native currency.
+      - Native currency is transferred to the user.
 
 ### Borrow (**borrowAndUnwrap**)
 - The user approves the NativeTokenGateway contract as the delegate.
 - The borrowAndUnwrap function is invoked, and the execution proceeds as follows:
-  - wrappedNative tokens are borrowed on behalf of the user.
+  - WrappedNative tokens are borrowed on behalf of the user.
   - The borrowed wrappedNative tokens are unwrapped to obtain native currency.
-  - native currency is transferred to the user.
+  - Native currency is transferred to the user.
 
 ### Repay (**wrapAndRepay**)
 - The wrapAndRepay function is invoked sending the native currency, and the execution proceeds as follows:

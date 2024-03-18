@@ -55,6 +55,7 @@
 * [Technical articles](technical-reference/reference-technical-articles/README.md)
   * [Automatic income allocation](technical-reference/reference-technical-articles/automatic-income-allocation.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
+  * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
   * [Token Converters](technical-reference/reference-technical-articles/token-converters.md)
@@ -100,6 +101,7 @@
   * [VToken](technical-reference/reference-isolated-pools/vtoken/README.md)
     * [VToken](technical-reference/reference-isolated-pools/vtoken/vtoken.md)
     * [VTokenInterfaces](technical-reference/reference-isolated-pools/vtoken/vtoken-interfaces.md)
+  * [NativeTokenGateway](technical-reference/reference-isolated-pools/native-token-gateway/native-token-gateway.md)
   * [Pool Registry](technical-reference/reference-isolated-pools/pool-registry/README.md)
     * [PoolRegistry](technical-reference/reference-isolated-pools/pool-registry/pool-registry.md)
     * [PoolRegistryInterface](technical-reference/reference-isolated-pools/pool-registry/pool-registry-interface.md)
@@ -157,6 +159,7 @@
 * [Governance](deployed-contracts/governance.md)
 * [XVS Multichain](deployed-contracts/xvs-multichain.md)
 * [Token Converters](deployed-contracts/token-converters.md)
+* [Native Token Gateway](deployed-contracts/native-token-gateway.md)
 
 ***
 

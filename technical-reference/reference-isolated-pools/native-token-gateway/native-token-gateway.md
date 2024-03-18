@@ -1,14 +1,24 @@
 # NativeTokenGateway
-NativeTokenGateway contract facilitates interactions with a vToken market for native tokens (Native or wrappedNativeToken)
+NativeTokenGateway contract facilitates interactions with a vToken market for native tokens (Native or wNativeToken)
 
 # Solidity API
 
-### wrappedNativeToken
+### wNativeToken
 
-Address of wrapped ether token contract
+Address of wrapped native token contract
 
 ```solidity
-contract IWrappedNative wrappedNativeToken
+contract IWrappedNative wNativeToken
+```
+
+- - -
+
+### vWNativeToken
+
+Address of wrapped native token market
+
+```solidity
+contract IVToken vWNativeToken
 ```
 
 - - -
@@ -18,13 +28,13 @@ contract IWrappedNative wrappedNativeToken
 Constructor for NativeTokenGateway
 
 ```solidity
-constructor(contract IWrappedNative wrappedNativeToken_) public
+constructor(contract IVToken vWrappedNativeToken) public
 ```
 
 #### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| wrappedNativeToken_ | contract IWrappedNative | Address of wrapped ether token contract |
+| vWrappedNativeToken | contract IVToken | Address of wrapped native token market |
 
 - - -
 
@@ -50,43 +60,65 @@ fallback() external payable
 
 ### wrapAndSupply
 
-Wrap Native, get wrappedNativeToken, mint vWETH, and supply to the market.
+Wrap Native, get wNativeToken, mint vWNativeToken, and supply to the market.
 
 ```solidity
-function wrapAndSupply(contract IVToken vToken, address minter) external payable
+function wrapAndSupply(address minter) external payable
 ```
 
 #### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| vToken | contract IVToken | The vToken market to interact with. |
 | minter | address | The address on behalf of whom the supply is performed. |
 
 #### 📅 Events
 * TokensWrappedAndSupplied is emitted when assets are supplied to the market
 
 #### ❌ Errors
-* ZeroAddressNotAllowed is thrown if either vToken or minter address is zero address
+* ZeroAddressNotAllowed is thrown if address of minter is zero address
 * ZeroValueNotAllowed is thrown if mintAmount is zero
 
 - - -
 
 ### redeemUnderlyingAndUnwrap
 
-Redeem vWETH, unwrap to ETH, and send to the user
+Redeem vWNativeToken, unwrap to Native Token, and send to the user
 
 ```solidity
-function redeemUnderlyingAndUnwrap(contract IVToken vToken, uint256 redeemAmount) external
+function redeemUnderlyingAndUnwrap(uint256 redeemAmount) external
 ```
 
 #### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| vToken | contract IVToken | The vToken market to interact with |
 | redeemAmount | uint256 | The amount of underlying tokens to redeem |
 
 #### 📅 Events
 * TokensRedeemedAndUnwrapped is emitted when assets are redeemed from a market and unwrapped
+
+#### ❌ Errors
+* ZeroValueNotAllowed is thrown if redeemAmount is zero
+
+- - -
+
+### redeemAndUnwrap
+
+Redeem vWNativeToken, unwrap to Native Token, and send to the user
+
+```solidity
+function redeemAndUnwrap(uint256 redeemTokens) external
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| redeemTokens | uint256 | The amount of vWNative tokens to redeem |
+
+#### 📅 Events
+* TokensRedeemedAndUnwrapped is emitted when assets are redeemed from a market and unwrapped
+
+#### ❌ Errors
+* ZeroValueNotAllowed is thrown if redeemTokens is zero
 
 - - -
 
@@ -95,19 +127,13 @@ function redeemUnderlyingAndUnwrap(contract IVToken vToken, uint256 redeemAmount
 Wrap Native, repay borrow in the market, and send remaining Native to the user
 
 ```solidity
-function wrapAndRepay(contract IVToken vToken) external payable
+function wrapAndRepay() external payable
 ```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| vToken | contract IVToken | The vToken market to interact with |
 
 #### 📅 Events
 * TokensWrappedAndRepaid is emitted when assets are repaid to a market and unwrapped
 
 #### ❌ Errors
-* ZeroAddressNotAllowed is thrown if vToken address is zero address
 * ZeroValueNotAllowed is thrown if repayAmount is zero
 
 - - -
@@ -117,7 +143,7 @@ function wrapAndRepay(contract IVToken vToken) external payable
 Sweeps native assets (Native) from the contract and sends them to the owner
 
 ```solidity
-function sweepNative() external payable
+function sweepNative() external
 ```
 
 #### 📅 Events
@@ -130,11 +156,16 @@ function sweepNative() external payable
 
 ### sweepToken
 
-Sweeps wrappedNativeToken tokens from the contract and sends them to the owner
+Sweeps the input token address tokens from the contract and sends them to the owner
 
 ```solidity
-function sweepToken() external
+function sweepToken(contract IERC20 token) external
 ```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| token | contract IERC20 | Address of the token |
 
 #### 📅 Events
 * SweepToken emits on success
