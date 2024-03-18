@@ -17,7 +17,7 @@
 ### opBNB
 
 * XVSBridgeAdmin: [`0x52fcE05aDbf6103d71ed2BA8Be7A317282731831`](https://opbnbscan.com/address/0x52fcE05aDbf6103d71ed2BA8Be7A317282731831)
-* XVSProxyOFTDest: [`0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2`](https://opbnbscan.com//address/0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2)
+* XVSProxyOFTDest: [`0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2`](https://opbnbscan.com/address/0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2)
 * XVS: [`0x3E2e61F1c075881F3fB8dd568043d8c221fd5c61`](https://opbnbscan.com/address/0x3E2e61F1c075881F3fB8dd568043d8c221fd5c61)
 
 ## Testnet chains
@@ -37,5 +37,5 @@
 ### opBNB
 
 * XVSBridgeAdmin: [`0x19252AFD0B2F539C400aEab7d460CBFbf74c17ff`](https://testnet.opbnbscan.com/address/0x19252AFD0B2F539C400aEab7d460CBFbf74c17ff)
-* XVSProxyOFTDest: [`0xA03205bC635A772E533E7BE36b5701E331a70ea3`](https://testnet.opbnbscan.com/0xA03205bC635A772E533E7BE36b5701E331a70ea3)
+* XVSProxyOFTDest: [`0xA03205bC635A772E533E7BE36b5701E331a70ea3`](https://testnet.opbnbscan.com/address/0xA03205bC635A772E533E7BE36b5701E331a70ea3)
 * XVS: [`0xc2931B1fEa69b6D6dA65a50363A8D75d285e4da9`](https://testnet.opbnbscan.com/address/0xc2931B1fEa69b6D6dA65a50363A8D75d285e4da9)
