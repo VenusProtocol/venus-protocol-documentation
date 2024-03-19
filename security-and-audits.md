@@ -39,6 +39,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
 **Scope**: [Oracle for wstETH](https://github.com/VenusProtocol/oracle/blob/develop/contracts/oracles/WstETHOracle.sol), using the exchange rate `wstETH/stETH` from the `stETH` contract on Ethereum, assuming 1:1 for the conversion rate `stETH:ETH`, and converting `ETH` to `USD` using the Resilient Oracles.
 
 - [Certik audit audit report (2024/01/26)](https://github.com/VenusProtocol/oracle/blob/e99feb67f4677168632f5bedd70034fba8dc55db/audits/090_wstETHOracle_certik_20240126.pdf)
+- [Quantstamp audit audit report (2024/02/20)](https://github.com/VenusProtocol/oracle/blob/f34d3114267929bbba26743f0a8591c1b016fb94/audits/093_wstETHOracle_quantstamp_20240220.pdf)
 
 <details>
 <summary>Detailed scope</summary>
@@ -59,7 +60,9 @@ We firmly believe that the true test of a smart contract's security lies in its 
     - [Fairyproof audit report (2023/08/28)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/067_tokenConverter_fairyproof_20230828.pdf)
 - Private conversions (optimization to avoid the payment of incentives to third parties when the conversion can be completed internally)
     - [Certik audit report (2023/11/27)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/081_privateConversions_certik_20231127.pdf)
+    - [Certik audit addendum (2024/02/15)](https://github.com/VenusProtocol/protocol-reserve/blob/ba39ce060d0716be1131913e4dd6e93c1444e0c3/audits/081_privateConversions_certik_20240215.pdf)
     - [OpenZeppelin report (2024/01/09)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/082_privateConversions_openzeppelin_20240109.pdf)
+    - [OpenZeppelin addendum (2024/02/20)](https://github.com/VenusProtocol/protocol-reserve/blob/ba39ce060d0716be1131913e4dd6e93c1444e0c3/audits/082_privateConversions_openzeppelin_20240220.pdf)
 
 <details>
 <summary>Detailed scope</summary>
@@ -145,13 +148,17 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 **Scope**: `Prime` and `PrimeLiquidityProvider` contracts, to manage the eligibility of Prime tokens and the rewards distributions.
 
-Enabled in [VIP-201](https://app.venus.io/#/governance/proposal/201), [VIP-202](https://app.venus.io/#/governance/proposal/202), [VIP-203](https://app.venus.io/#/governance/proposal/203), [VIP-206](https://app.venus.io/#/governance/proposal/206) and [VIP-210](https://app.venus.io/#/governance/proposal/210).
+Enabled in [VIP-201](https://app.venus.io/#/governance/proposal/201), [VIP-202](https://app.venus.io/#/governance/proposal/202), [VIP-203](https://app.venus.io/#/governance/proposal/203), [VIP-206](https://app.venus.io/#/governance/proposal/206) and [VIP-210](https://app.venus.io/#/governance/proposal/210). Updated in [VIP-225](https://app.venus.io/#/governance/proposal/225).
 
 - [OpenZeppelin audit report (2023/10/03)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/065_prime_openzeppelin_20231003.pdf)
 - [Certik audit audit report (2023/11/13)](https://github.com/VenusProtocol/venus-protocol/blob/2425501070d28c36a73861d9cf6970f641403735/audits/060_prime_certik_20231113.pdf)
 - [Peckshield audit report (2023/08/26)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/055_prime_peckshield_20230826.pdf)
 - [Fairyproof audit report (2023/09/10)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/056_prime_fairyproof_20230910.pdf)
 - [Code4rena contest (2023/09/28)](https://code4rena.com/contests/2023-09-venus-prime)
+- [Certik audit audit report (2023/12/19) - Venus Prime update](https://github.com/VenusProtocol/venus-protocol/blob/9afe804f18cd02318626aea46686522542aa5e4d/audits/087_prime_certik_20231219.pdf)
+  - Allow mint VAI only to Prime holder
+  - Support for Isolated pools
+  - Support for networks without a constant block rate (for example, Arbitrum)
 
 <details>
 <summary>Detailed scope</summary>
@@ -173,6 +180,22 @@ Enabled in [VIP-201](https://app.venus.io/#/governance/proposal/201), [VIP-202](
         - contracts/Tokens/Prime/libs/Scores.sol
         - contracts/Tokens/Prime/libs/FixedMath.sol
         - contracts/Tokens/Prime/libs/FixedMath0x.sol
+
+- Venus Prime update. Enabled in [VIP-225](https://app.venus.io/#/governance/proposal/225).
+
+  - Pull request [#407](https://github.com/VenusProtocol/venus-protocol/pull/407)
+    - contracts/Tokens/Prime/IPrime.sol
+    - contracts/Tokens/Prime/Interfaces/IPrime.sol
+    - contracts/Tokens/Prime/Prime.sol
+    - contracts/Tokens/Prime/PrimeLiquidityProvider.sol
+    - contracts/Tokens/Prime/PrimeStorage.sol
+    - contracts/Utils/TimeManager.sol
+    - contracts/Tokens/VAI/VAIController.sol
+    - contracts/Tokens/VAI/VAIControllerStorage.sol
+  - Pull request [#327](https://github.com/VenusProtocol/isolated-pools/pull/327)
+    - contracts/Comptroller.sol
+    - contracts/ComptrollerStorage.sol
+    - contracts/VToken.sol
 
 </details>
 
@@ -313,6 +336,7 @@ These contracts were in the scope of the audits done before the launch of Isolat
 * [Peckshield audit report - 2023/04/24](https://github.com/VenusProtocol/oracle/blob/6f7a3d8769c28881661953e7ee3299b1d5b31e17/audits/013_oracles_peckshield_20230424.pdf)
 * [Certik audit report - 2023/05/22](https://github.com/VenusProtocol/oracle/blob/6f7a3d8769c28881661953e7ee3299b1d5b31e17/audits/024_oracles_certik_20230522.pdf)
 * [Hacken audit report - 2023/04/26](https://github.com/VenusProtocol/oracle/blob/6f7a3d8769c28881661953e7ee3299b1d5b31e17/audits/016_oracles_hacken_20230426.pdf)
+* [HashEx vulnerability report - 2024/02/01](https://github.com/VenusProtocol/oracle/blob/567b057fd010a0359651db5604defec35a378cf1/audits/097_twap_hashex_20240201.pdf). No risks, because the TWAP oracle is not used at all by the Venus Protocol. The `TwapOracle` is [removed from the repository](https://github.com/VenusProtocol/oracle/pull/167) to avoid any confusion.
 
 ### Vaults
 
@@ -334,6 +358,24 @@ These contracts were in the scope of the audits done before the launch of Isolat
 * [Peckshield audit report 2](https://github.com/VenusProtocol/isolated-pools/blob/1d60500e28d4912601bac461870c754dd9e72341/audits/037_isolatedPools_peckshield_20230625.pdf)
 * [Hacken audit report](https://github.com/VenusProtocol/isolated-pools/blob/c801e898e034e313e885c5d486ed27c15e7e2abf/audits/016_isolatedPools_hacken_20230426.pdf)
 * [Code4rena contest - 2023/05/15](https://code4rena.com/contests/2023-05-venus-protocol-isolated-pools)
+
+### Automatic Income Allocation in the Liquidator contract
+
+**Scope**: Integration of the [Automatic Income Allocation](./whats-new/automatic-income-allocation.md) into the [Liquidator contract](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/Liquidator/Liquidator.sol) used in the Core pool on BNB chain.
+
+* [OpenZeppelin audit report (2023/July/20)](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/048_liquidator_openzeppelin_20230720.pdf)
+* [Quantstamp audit report (2023/July/17)](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/046_liquidator_quantstamp_20230717.pdf)
+* [Certik audit report (2023/July/4)](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/041_liquidator_certik_20230704.pdf)
+* [Peckshield audit report (2023/July/5)](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/039_liquidator_peckshield_20230705.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#241](https://github.com/VenusProtocol/venus-protocol/pull/241) in the `venus-protocol` repo.
+  - contracts/Liquidator/Liquidator.sol
+  - contracts/Liquidator/LiquidatorStorage.sol
+
+</details>
 
 ### Swap router
 

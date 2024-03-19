@@ -1,11 +1,3 @@
-* [Account Liquidity Calculations](#account-liquidity-calculations)
-  * [Collateral Factor (CF)](#collateral-factor-cf)
-  * [Liquidation Threshold (LT)](#liquidation-threshold-lt)
-  * [Minimum Liquidatable Collateral](#minimum-liquidatable-collateral)
-* [Finding Under-Collateralized Accounts](#finding-under-collateralized-accounts)
-* [Performing the Liquidation](#performing-the-liquidation)
-* [Forced liquidations](#forced-liquidations)
-
 # Liquidations
 
 This is a step-by-step guide on how to perform liquidations on the Venus Protocol. Liquidations involve seizing collateral from under-collateralized accounts to repay outstanding debts. The instructions are targeted towards developers or bots that aim to automate the liquidation process.
@@ -74,19 +66,15 @@ Please note that `healAccount` is an extension of the liquidation mechanism to a
 {% hint style="info" %}
 #### Example
 
-**Collateral Factor: 50%**
+Given:
 
-**Close Factor: 50%**
-
-**Liquidation Threshold: 60%**
-
-**Borrow Amount: $13,000**
-
-**Collateral Amount: $20,000**
-
-**Liquidation Incentive: 110%**
-
-**Protocol Share Percentage: 5%**
+* Collateral Factor: 50%
+* Close Factor: 50%
+* Liquidation Threshold: 60%
+* Borrow Amount: $13,000
+* Collateral Amount: $20,000
+* Liquidation Incentive: 110%
+* Protocol Share Percentage: 5%
 
 The borrowed amount is $1,000 above the liquidation threshold ($12,000), therefore the position is eligible for liquidation. Liquidation can be called with a repayment of up to $6,500 (borrow amount \* close factor). Let's assume the liquidator initiates the liquidation process with a repayment amount of $1,000 Let's Calculate the Collateral Seized Amount (the amount that is seized from the borrower's collateral):
 
@@ -114,15 +102,11 @@ In conclusion, the liquidator will provide **$1,000** for the liquidation. After
 {% hint style="info" %}
 #### Example
 
-**Collateral Factor: 50%**
-
-**Liquidation Threshold: 60%**
-
-**Min Liquidatable Collateral: $100**
-
-**Borrow Amount: $60**
-
-**Collateral Amount: $90**
+* Collateral Factor: 50%
+* Liquidation Threshold: 60%
+* Min Liquidatable Collateral: $100
+* Borrow Amount: $60
+* Collateral Amount: $90
 
 Position is already eligible for liquidation since Borrow Amount >= $54. We should call `liquidateAccount()` because **collateral < $100** and account is **solvent**.
 {% endhint %}
@@ -132,15 +116,11 @@ Position is already eligible for liquidation since Borrow Amount >= $54. We shou
 {% hint style="info" %}
 #### Example
 
-**Collateral Factor: 50%**
-
-**Liquidation Threshold: 60%**
-
-**Min Liquidatable Collateral: $100**
-
-**Borrow Amount: $90**
-
-**Collateral Amount: $60**
+* Collateral Factor: 50%
+* Liquidation Threshold: 60%
+* Min Liquidatable Collateral: $100
+* Borrow Amount: $90
+* Collateral Amount: $60
 
 Position is eligible for liquidation and **collateral is < $100**, but the account is **insolvent**, so we need to call `healAccount()` to ensure that the remaining debt ($30) is treated as bad debt for the protocol.
 {% endhint %}
@@ -167,6 +147,7 @@ To check if forced liquidations are enabled for an entire market, the function `
 Forced Liquidations for entire markets are available in the Core pool since [VIP-172](https://app.venus.io/#/governance/proposal/172), in the Isolated pools since [VIP-186](https://app.venus.io/#/governance/proposal/186). Forced Liquidations for individual accounts are available only in the Core pool since [VIP-210](https://app.venus.io/#/governance/proposal/210).
 {% endhint %}
 
+{% hint style="info" %}
 ### Example
 
 Given:
@@ -198,3 +179,84 @@ Now, let’s say we enable the **forced liquidations in the BUSD market** (via V
 * So, the new health rate would be `(280 * 0.8 / 100) = 2.24`. They will be still ineligible for regular liquidations
     
 * Because the forced liquidation is not enabled in the USDC market, the USDC debt cannot be liquidated (because the health rate is greater than 1).
+{% endhint %}
+
+## Force VAI Debt First
+
+{% hint style="danger" %}
+This feature is disabled. Liquidators will have to change their codebase to consider the forced sequence of liquidations when there is a VAI debt. After having the confirmation from the main Liquidators that they have adapted their code, a VIP will be proposed to enable this feature.
+{% endhint %}
+
+In the previous section, liquidations are carried out on all accounts without taking into consideration specific amounts of VAI debt. The `forceVAILiquidate` feature enhances the liquidation process by forcing liquidations of borrowers with VAI debt greater than `minLiquidatableVAI`. Forcing VAI liquidations allows the protocol to better manage risk and prevent potential losses due to excessive VAI debt accumulation.
+
+For borrowers with outstanding VAI debt, the force VAI liquidation first includes checks to ensure that only eligible accounts are liquidated before starting the liquidation process.
+
+#### Checks
+
+1. Check that VAI liquidations are not paused in Comptroller.
+2. The forceVAILiquidate flag is set to true.
+3. Verify whether the borrower's VAI debt is greater than the minimum amount of liquidatable VAI (initially 1,000 VAI).
+
+{% hint style="warning" %}
+If the above conditions are true then the protocol checks that the current vToken sent to be liquidated is VAI, otherwise the liquidation fails.
+{% endhint %}
+
+{% hint style="info" %}
+#### Example 1
+
+Given:
+
+* this feature is enabled
+* a user is eligible to be liquidated with the following debt:
+  * 2,000 VAI
+  * 5,000 USDT
+
+Liquidators will be required to liquidate the VAI position first because it is greater than `minLiquidatableVAI`. If they try to liquidate first the USDT position, the liquidation transaction will be reverted.
+{% endhint %}
+
+{% hint style="info" %}
+#### Example 2
+
+Given:
+
+* this feature is enabled
+* a user eligible to be liquidated with the following debts:
+  * 500 VAI
+  * 5,000 USDT
+
+Liquidators will be allowed to liquidate first the VAI position **or** the USDT position. Both liquidations will work because the VAI debt is less than `minLiquidatableVAI`
+{% endhint %}
+
+## Automatic Income Allocation
+
+In the Core Pool, liquidation income is transferred to the Liquidator contract in the form of vTokens. During a liquidation transaction, the Liquidator contract will try to redeem the protocol's portion of the liquidation incentive in vTokens for the underlying tokens. If the redemption process is successful, the  underlying tokens will be sent to the `ProtocolShareReserve` contract. However, if the redemption fails the underlying tokens will be added to a list of pending redemptions and the Liquidator contract will try to redeem the pending redemptions again in subsequent liquidation transactions.
+
+### Distributing Seized Amount
+
+The seized collateral is distributed between the Liquidator and the `ProtocolShareReserve` contract:
+
+1. **Liquidator's Share:**
+   - The Liquidator receives a designated portion of the collateral as an incentive.
+
+2. **`ProtocolShareReserve` contract's Share:**
+   - The remaining portion of the collateral is sent to the `ProtocolShareReserve` contract.
+
+3. **Conversion (if applicable):**
+   - **BNB:**
+     - If the seized collateral is BNB, it is converted to Wrapped BNB (wBNB) before sending it to the `ProtocolShareReserve` contract.
+   - **Other VTokens:**
+     - For other VTokens, the underlying tokens are redeemed and transferred to the `ProtocolShareReserve` contract.
+
+### Redemption Handling
+
+The Liquidator contract attempts to redeem the protocol's portion of the liquidation incentive in underlying tokens for the VTokens:
+
+1. **Successful Redemption:**
+   - If the redemption is successful, the underlying tokens are sent to the `ProtocolShareReserve` contract.
+
+2. **Failed Redemption:**
+   - If the redemption fails due to insufficient liquidity or other reasons, the VTokens representing the pending redemption are added to a list for later processing.
+
+### Pending Redemption Management
+
+Subsequent liquidation transactions leverage the list of pending redemptions: during each liquidation, the Liquidator contract attempts to redeem pending VTokens for their underlying tokens, and send these underlying tokens to the `ProtocolShareReserve` contract.

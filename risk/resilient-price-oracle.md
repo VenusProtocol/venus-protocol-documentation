@@ -12,7 +12,7 @@ Furthermore, the improved oracle infrastructure supports the integration of new 
 
 #### Resilient Price Feeds
 
-The Resilient Price Feeds replace the single source price provider used in the Comptroller contract with a more robust and reliable solution. This new component not only fetches asset prices from various on-chain sources but also includes a fallback mechanism to protect the protocol from oracle failures. Presently, this feature incorporates Chainlink, RedStone, Pyth Network, Binance Oracle, and TWAP oracles, with the possibility of adding more in the future.
+The Resilient Price Feeds replace the single source price provider used in the Comptroller contract with a more robust and reliable solution. This new component not only fetches asset prices from various on-chain sources but also includes a fallback mechanism to protect the protocol from oracle failures. Presently, this feature incorporates Chainlink, RedStone, Pyth Network and Binance oracles, with the possibility of adding more in the future.
 
 #### Governance Configurations
 
@@ -35,7 +35,13 @@ For LSTs (Liquid Staked Tokens) pricing, best practice suggests oracles quote th
 *  convert the underlying token calculated in the previous step to USD, using a “traditional” oracle based on market price
 
 {% hint style="warning" %}
-It is worth mentioning that with this approach we assume 1:1 price ratio between the LST and the underlying asset (e.g. 1 ETH = 1 STETH). The primary risks involved with the above approach are related to smart contract vulnerabilities and other counterparty risks that could affect the redemption processes of the LSTs. In scenarios where there is substantial counterparty risk, notably if the underlying tokens are not redeemable against the LSTs, the direct smart contract pricing might become unreliable. Under such circumstances, it is prudent to switch to price oracles that derive quotes from secondary market prices, thereby maintaining pricing accuracy and reliability.
+It is worth mentioning that with this approach we assume 1:1 price ratio between the LST and the underlying asset (e.g. 1 ETH = 1 STETH). The primary risks involved with the above approach are related to smart contract vulnerabilities and other counterparty risks that could affect the redemption processes of the LSTs. In scenarios where there is substantial counterparty risk, notably if the underlying tokens are not redeemable against the LSTs, the direct smart contract pricing might become unreliable so here is our plan to mitigate such cases:
+* We will deploy two `wstETH` oracles on-chain:
+  - The first oracle will return the price based on the assumption of a 1:1 ratio between `stETH/ETH`.
+  - The second oracle will return the price based on the `stETH/USD` market price feed.
+* By default, the `ResilientOracle` will be configured to use only the oracle assuming a 1:1 ratio between `stETH/ETH` as the primary oracle.
+* The second oracle, which derives price from the `stETH/USD` price feed without assuming a 1:1 ratio, will not be initially configured in our `ResilientOracle`.
+* We have implemented an off-chain monitoring system to track the prices returned by both oracles. Should there be a significant deviation for a longer period of time, our team will asses the situation and determine whether to switch the primary oracle from the one assuming a 1:1 ratio to the one that does not, or to temporarily include the latter as a pivot oracle in the `ResilientOracle` configuration.
 {% endhint %}
 
 ### Further Reading
