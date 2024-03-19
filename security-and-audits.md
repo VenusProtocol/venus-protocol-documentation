@@ -8,6 +8,62 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Time-based contracts and seize XVS rewards
+
+**Scope**: Changes in the [isolated pools](https://github.com/VenusProtocol/isolated-pools), [core](https://github.com/VenusProtocol/venus-protocol) and [oracle](https://github.com/VenusProtocol/oracle) contracts to support blockchains where the block rate is not constant (i.e. Arbitrum). Add to the Core pool the feature to seize XVS rewards via VIP.
+
+- [Certik audit audit report (2024/01/17)](https://github.com/VenusProtocol/isolated-pools/blob/aa1f7ae61b07839231ec16e9c4143905785d7aae/audits/088_timeBased_certik_20240117.pdf)
+- [Quantstamp audit audit report (2024/03/19)](https://github.com/VenusProtocol/isolated-pools/blob/470416836922656783eab52ded54744489e8c345/audits/089_timeBased_quantstamp_20240319.pdf)
+- [Fairyproof audit report (2024/03/04)](https://github.com/VenusProtocol/isolated-pools/blob/aa1f7ae61b07839231ec16e9c4143905785d7aae/audits/094_timeBased_fairyproof_20240304.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#324](https://github.com/VenusProtocol/isolated-pools/pull/324) in the `isolated-pools` repo
+- Change: Timestamp-based Isolated lending contracts
+    - contracts/JumpRateModelV2.sol
+    - contracts/Lens/PoolLens.sol
+    - contracts/Rewards/RewardsDistributor.sol
+    - contracts/Rewards/RewardsDistributorStorage.sol
+    - contracts/Shortfall/Shortfall.sol
+    - contracts/Shortfall/ShortfallStorage.sol
+    - contracts/VToken.sol
+    - contracts/VTokenInterfaces.sol
+    - contracts/WhitePaperInterestRateModel.sol
+    - contracts/lib/constants.sol
+
+- Pull request [#418](https://github.com/VenusProtocol/venus-protocol/pull/418) in the `venus-protocol` repo
+- Change: Time-based XVSVault
+    - contracts/XVSVault/TimeManagerV5.sol
+    - contracts/XVSVault/XVSVault.sol
+    - contracts/XVSVault/XVSVaultStorage.sol
+
+- Pull request [#128](https://github.com/VenusProtocol/oracle/pull/128) in the `oracle` repo
+- Change: Add Arbitrum sequencer downtime validation for Chainlink Oracle
+    - contracts/oracles/SequencerChainlinkOracle.sol
+    - contracts/oracles/ChainlinkOracle.sol
+
+- Change: Reduce reserves with available cash
+  - Pull request [#414](https://github.com/VenusProtocol/venus-protocol/pull/414) in the `venus-protocol` repo
+      - contracts/Tokens/VTokens/VToken.sol
+  - Pull request [#337](https://github.com/VenusProtocol/isolated-pools/pull/337)
+      - contracts/VToken.sol
+
+- Pull request [#417](https://github.com/VenusProtocol/venus-protocol/pull/417) in the `venus-protocol` repo
+- Change: Seize XVS rewards
+    - contracts/Comptroller/Diamond/facets/RewardFacet.sol
+
+- Pull request [#410] https://github.com/VenusProtocol/venus-protocol/pull/410 in the `venus-protocol` repo
+- Change: Dynamically Set Addresses for XVS and XVSVToken
+    - contracts/Comptroller/ComptrollerStorage.sol
+    - contracts/Comptroller/Diamond/Diamond.sol
+    - contracts/Comptroller/Diamond/facets/FacetBase.sol
+    - contracts/Comptroller/Diamond/facets/RewardFacet.sol
+    - contracts/Comptroller/Diamond/facets/SetterFacet.sol
+
+</details>
+
+
 ### Oracle for wstETH
 
 **Scope**: [Oracle for wstETH](https://github.com/VenusProtocol/oracle/blob/develop/contracts/oracles/WstETHOracle.sol), using the exchange rate `wstETH/stETH` from the `stETH` contract on Ethereum, assuming 1:1 for the conversion rate `stETH:ETH`, and converting `ETH` to `USD` using the Resilient Oracles.
