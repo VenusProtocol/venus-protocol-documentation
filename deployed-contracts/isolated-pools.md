@@ -3,7 +3,7 @@
 ## BNB Chain Mainnet
 
 * PoolRegistry: [`0x9F7b01A536aFA00EF10310A162877fd792cD0666`](https://bscscan.com/address/0x9F7b01A536aFA00EF10310A162877fd792cD0666)
-* PoolLens: [`0x25E215CcE40bD849B7c286912B85212F984Ff1e0`](https://bscscan.com/address/0x25E215CcE40bD849B7c286912B85212F984Ff1e0)
+* PoolLens: [`0x0461c613433d42C06831C8e60Bf0C86FC9495072`](https://bscscan.com/address/0x0461c613433d42C06831C8e60Bf0C86FC9495072)
 * DefaultProxyAdmin: [`0x6beb6D2695B67FEb73ad4f172E8E2975497187e4`](https://bscscan.com/address/0x6beb6D2695B67FEb73ad4f172E8E2975497187e4)
 * Comptroller Beacon: [`0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2`](https://bscscan.com/address/0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2)
 * VToken Beacon: [`0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4`](https://bscscan.com/address/0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4)
@@ -101,7 +101,7 @@
 ## Ethereum
 
 * PoolRegistry: [`0x61CAff113CCaf05FFc6540302c37adcf077C5179`](https://etherscan.io/address/0x61CAff113CCaf05FFc6540302c37adcf077C5179)
-* PoolLens: [`0x5A44D6dc0330A92674F9FAdE1e4eB40b3D2aDf04`](https://etherscan.io/address/0x5A44D6dc0330A92674F9FAdE1e4eB40b3D2aDf04)
+* PoolLens: [`0x57bea400aE7E51855a2e1E1523475d9d2eB0742F`](https://etherscan.io/address/0x57bea400aE7E51855a2e1E1523475d9d2eB0742F)
 * DefaultProxyAdmin: [`0x567e4cc5e085d09f66f836fa8279f38b4e5866b9`](https://etherscan.io/address/0x567e4cc5e085d09f66f836fa8279f38b4e5866b9)
 * Comptroller Beacon: [`0xAE2C3F21896c02510aA187BdA0791cDA77083708`](https://etherscan.io/address/0xAE2C3F21896c02510aA187BdA0791cDA77083708)
 * VToken Beacon: [`0xfc08aADC7a1A93857f6296C3fb78aBA1d286533a`](https://etherscan.io/address/0xfc08aADC7a1A93857f6296C3fb78aBA1d286533a)
@@ -146,7 +146,7 @@
 ## opBNB Chain Mainnet
 
 * PoolRegistry: [`0x345a030Ad22e2317ac52811AC41C1A63cfa13aEe`](https://opbnbscan.com/address/0x345a030Ad22e2317ac52811AC41C1A63cfa13aEe)
-* PoolLens: [`0x83969EBbfC674998070A87e2Da0fa21044d79893`](https://opbnbscan.com/address/0x83969EBbfC674998070A87e2Da0fa21044d79893)
+* PoolLens: [`0x2Ed744F6E722aa5E41E67267774b386D244e5e4e`](https://opbnbscan.com/address/0x2Ed744F6E722aa5E41E67267774b386D244e5e4e)
 * DefaultProxyAdmin: [`0xF77bD1D893F67b3EB2Cd256239c98Ba3F238fb52`](https://opbnbscan.com/address/0xF77bD1D893F67b3EB2Cd256239c98Ba3F238fb52)
 * Comptroller Beacon: [`0x11C3e19236ce17729FC66b74B537de00C54d44e7`](https://opbnbscan.com/address/0x11C3e19236ce17729FC66b74B537de00C54d44e7)
 * VToken Beacon: [`0xfeD1d3a13597c5aBc893Af41ED5cb17e64c847c7`](https://opbnbscan.com/address/0xfeD1d3a13597c5aBc893Af41ED5cb17e64c847c7)
@@ -171,7 +171,7 @@
 ## BNB Chain Testnet
 
 * PoolRegistry: [`0xC85491616Fa949E048F3aAc39fbf5b0703800667`](https://testnet.bscscan.com/address/0xC85491616Fa949E048F3aAc39fbf5b0703800667)
-* PoolLens: [`0x6492dF28A9478230205c940A245Ffb114EaEb9d1`](https://testnet.bscscan.com/address/0x6492dF28A9478230205c940A245Ffb114EaEb9d1)
+* PoolLens: [`0x613d859Bf6CB3557179dC03B8F844E0c48FE9C07`](https://testnet.bscscan.com/address/0x613d859Bf6CB3557179dC03B8F844E0c48FE9C07)
 * DefaultProxyAdmin: [`0x7877ffd62649b6a1557b55d4c20fcbab17344c91`](https://testnet.bscscan.com/address/0x7877ffd62649b6a1557b55d4c20fcbab17344c91)
 * Comptroller Beacon: [`0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74`](https://testnet.bscscan.com/address/0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74)
 * VToken Beacon: [`0xBF85A90673E61956f8c79b9150BAB7893b791bDd`](https://testnet.bscscan.com/address/0xBF85A90673E61956f8c79b9150BAB7893b791bDd)
@@ -241,7 +241,7 @@
 ## Sepolia (Ethereum testnet)
 
 * PoolRegistry: [`0x758f5715d817e02857Ba40889251201A5aE3E186`](https://sepolia.etherscan.io/address/0x758f5715d817e02857Ba40889251201A5aE3E186)
-* PoolLens: [`0xC319C2E53a5f732ebF0eb87b14F56B53bdc3446b`](https://sepolia.etherscan.io/address/0xC319C2E53a5f732ebF0eb87b14F56B53bdc3446b)
+* PoolLens: [`0xa78e0D276203290eB0Be7697104379e14c90698a`](https://sepolia.etherscan.io/address/0xa78e0D276203290eB0Be7697104379e14c90698a)
 * DefaultProxyAdmin: [`0xe98a3110929c6650c73031756288Ec518f65e846`](https://sepolia.etherscan.io/address/0xe98a3110929c6650c73031756288Ec518f65e846)
 * Comptroller Beacon: [`0x6cE54143a88CC22500D49D744fb6535D66a8294F`](https://sepolia.etherscan.io/address/0x6cE54143a88CC22500D49D744fb6535D66a8294F)
 * VToken Beacon: [`0x0463a7E5221EAE1990cEddB51A5821a68cdA6008`](https://sepolia.etherscan.io/address/0x0463a7E5221EAE1990cEddB51A5821a68cdA6008)
@@ -283,7 +283,7 @@
 ## opBNB Chain Testnet
 
 * PoolRegistry: [`0x560eA4e1cC42591E9f5F5D83Ad2fd65F30128951`](https://testnet.opbnbscan.com/address/0x560eA4e1cC42591E9f5F5D83Ad2fd65F30128951)
-* PoolLens: [`0x8983fd85133877BE52c019ce9538354EFbb238c6`](https://testnet.opbnbscan.com/address/0x8983fd85133877BE52c019ce9538354EFbb238c6)
+* PoolLens: [`0x32B3aA8805b4A4b80BA03Bd8f69c2C0e2710803D`](https://testnet.opbnbscan.com/address/0x32B3aA8805b4A4b80BA03Bd8f69c2C0e2710803D)
 * DefaultProxyAdmin: [`0xB1281ADC816fba7df64B798D7A0BC4bd2a6d42f4`](https://testnet.opbnbscan.com/address/0xB1281ADC816fba7df64B798D7A0BC4bd2a6d42f4)
 * Comptroller Beacon: [`0x2020BDa1F931E07B14C9d346E2f6D5943b4cd56D`](https://testnet.opbnbscan.com/address/0x2020BDa1F931E07B14C9d346E2f6D5943b4cd56D)
 * VToken Beacon: [`0xcc633492097078Ae590C0d11924e82A23f3Ab3E2`](https://testnet.opbnbscan.com/address/0xcc633492097078Ae590C0d11924e82A23f3Ab3E2)
