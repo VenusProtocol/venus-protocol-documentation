@@ -101,7 +101,7 @@ It's crucial to understand that the proposal ID for the remote execution on the 
 
 ## Contracts overview
 
-<figure><img src="../../.gitbook/assets/multichain_governance_contracts.png" alt="Multichain governance contracts"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/multichain_governance_contracts.svg" alt="Multichain governance contracts"><figcaption></figcaption></figure>
 
 ### Contract 1: `BaseOmnichainControllerSrc`
 
