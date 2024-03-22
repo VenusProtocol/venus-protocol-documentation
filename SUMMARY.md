@@ -159,7 +159,6 @@
 * [Governance](deployed-contracts/governance.md)
 * [XVS Multichain](deployed-contracts/xvs-multichain.md)
 * [Token Converters](deployed-contracts/token-converters.md)
-* [Native Token Gateway](deployed-contracts/native-token-gateway.md)
 
 ***
 

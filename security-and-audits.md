@@ -20,17 +20,17 @@ We firmly believe that the true test of a smart contract's security lies in its 
 <summary>Detailed scope</summary>
 
 - Pull request [#361](https://github.com/VenusProtocol/isolated-pools/pull/361)
-      - contracts/Comptroller.sol
-      - contracts/ComptrollerStorage.sol
-      - contracts/Gateway/Interfaces/IVtoken.sol
-      - contracts/Gateway/Interfaces/IWrappedNative.sol
-      - contracts/Gateway/NativeTokenGateway.sol
-      - contracts/VToken.sol
-      - contracts/VTokenInterfaces.sol
+    - contracts/Comptroller.sol
+    - contracts/ComptrollerStorage.sol
+    - contracts/Gateway/Interfaces/IVtoken.sol
+    - contracts/Gateway/Interfaces/IWrappedNative.sol
+    - contracts/Gateway/NativeTokenGateway.sol
+    - contracts/VToken.sol
+    - contracts/VTokenInterfaces.sol
 - Pull request [#442](https://github.com/VenusProtocol/venus-protocol/pull/442)
-      - contracts/Tokens/VTokens/VBep20.sol
-      - contracts/Tokens/VTokens/VToken.sol
-      - contracts/Comptroller/Diamond/facets/MarketFacet.sol
+    - contracts/Tokens/VTokens/VBep20.sol
+    - contracts/Tokens/VTokens/VToken.sol
+    - contracts/Comptroller/Diamond/facets/MarketFacet.sol
 
 </details>
 
