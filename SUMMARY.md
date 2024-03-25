@@ -55,7 +55,7 @@
 * [Technical articles](technical-reference/reference-technical-articles/README.md)
   * [Automatic income allocation](technical-reference/reference-technical-articles/automatic-income-allocation.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
-  * [Multichain governance](technical-reference/reference-technical-articles/multichain-governance.md)
+  * [Multichain Governance](technical-reference/reference-technical-articles/multichain-governance.md)
   * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
