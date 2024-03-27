@@ -4,7 +4,7 @@
 
 * Unitroller: [`0xfD36E2c2a6789Db23113685031d7F16329158384`](https://bscscan.com/address/0xfD36E2c2a6789Db23113685031d7F16329158384)
 * VAI Unitroller: [`0x004065D34C6b18cE4370ced1CeBDE94865DbFAFE`](https://bscscan.com/address/0x004065D34C6b18cE4370ced1CeBDE94865DbFAFE)
-* Venus Lens: [`0xfB0f09dB330dC842a6637BfB959209424BbFE8C7`](https://bscscan.com/address/0xfB0f09dB330dC842a6637BfB959209424BbFE8C7)
+* Venus Lens: [`0xe4C455cBf870A86399043B8A36A669FfA1583e95`](https://bscscan.com/address/0xe4C455cBf870A86399043B8A36A669FfA1583e95)
 * XVS Vault Proxy: [`0x051100480289e704d20e9DB4804837068f3f9204`](https://bscscan.com/address/0x051100480289e704d20e9DB4804837068f3f9204)
 * VAI Vault Proxy: [`0x0667Eed0a0aAb930af74a3dfeDD263A73994f216`](https://bscscan.com/address/0x0667Eed0a0aAb930af74a3dfeDD263A73994f216)
 * Liquidator: [`0x0870793286aaDA55D39CE7f82fb2766e8004cF43`](https://bscscan.com/address/0x0870793286aaDA55D39CE7f82fb2766e8004cF43)
@@ -88,7 +88,7 @@
 * VAI Unitroller: [`0xf70C3C6b749BbAb89C081737334E74C9aFD4BE16`](https://testnet.bscscan.com/address/0xf70C3C6b749BbAb89C081737334E74C9aFD4BE16)
 * XVS Vault Proxy: [`0x9aB56bAD2D7631B2A857ccf36d998232A8b82280`](https://testnet.bscscan.com/address/0x9aB56bAD2D7631B2A857ccf36d998232A8b82280)
 * VAI Vault Proxy: [`0x7Db4f5cC3bBA3e12FF1F528D2e3417afb0a57118`](https://testnet.bscscan.com/address/0x7Db4f5cC3bBA3e12FF1F528D2e3417afb0a57118)
-* Venus Lens: [`0x11c8dC3DcA87E8205ec01e6d79Be9442d31701d3`](https://testnet.bscscan.com/address/0x11c8dC3DcA87E8205ec01e6d79Be9442d31701d3)
+* Venus Lens: [`0x068b437aCD9F4668f77Aa24e2B715a41D4a9a599`](https://testnet.bscscan.com/address/0x068b437aCD9F4668f77Aa24e2B715a41D4a9a599)
 * Liquidator: [`0x55AEABa76ecf144031Ef64E222166eb28Cb4865F`](https://testnet.bscscan.com/address/0x55AEABa76ecf144031Ef64E222166eb28Cb4865F)
 * Venus Treasury: [`0x8b293600c50d6fbdc6ed4251cc75ece29880276f`](https://testnet.bscscan.com/address/0x8b293600c50d6fbdc6ed4251cc75ece29880276f)
 * SwapRouter: [`0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0`](https://testnet.bscscan.com/address/0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0)
