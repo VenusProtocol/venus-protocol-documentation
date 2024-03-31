@@ -81,7 +81,7 @@ It's crucial to understand that the proposal ID for the remote execution on the 
 
 <figure><img src="../../.gitbook/assets/multichain_governance_vip_states.svg" alt="Multichain governance VIP states"><figcaption></figcaption></figure>
 
-* Upon successful reception by the destination network's executor contract (`OmnichainProposalExecutor`), the remote proposal enters a "Queued" state.
+* Upon successful reception by the destination network's executor contract (`OmnichainGovernanceExecutor`), the remote proposal enters a "Queued" state.
 * This queuing process applies additional eligibility checks specific to the receiving network, ensuring compliance with its governance rules and thresholds of commands limits.
 
 6. Delay mechanism and execution
@@ -94,10 +94,10 @@ It's crucial to understand that the proposal ID for the remote execution on the 
 * `OmnichainProposalSender` (BNB Chain):
   * Owned by: NormalTimelock contract on the BNB Chain.
   * Authorized callers: Timelocks (Normal, Critical, Fast-track) are authorized to call the `execute` function on this contract.
-* `OmnichainProposalExecutor` (destination network):
-  * Owned by: `OmnichannelEcexutorOwner` contract. This owner performs Access Control Manager (ACM) checks before allowing any function calls on this contract.
+* `OmnichainGovernanceExecutor` (destination network):
+  * Owned by: `OmnichainExecutorOwner` contract. This owner performs Access Control Manager (ACM) checks before allowing any function calls on this contract.
 * `TimelockV8`:
-  * Owned by: `OmnichainProposalExecutor` contract. This ownership grants `TimelockV8` the authority to perform specific actions like queuing, canceling, and executing remote proposals.
+  * Owned by: `OmnichainGovernanceExecutor` contract. This ownership grants `TimelockV8` the authority to perform specific actions like queuing, canceling, and executing remote proposals.
 
 ## Contracts overview
 
