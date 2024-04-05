@@ -32,6 +32,11 @@ This function transfers funds to the XVS vault
 function fundXVSVault(uint256 amountMantissa) external
 ```
 
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| amountMantissa | uint256 | Amount to be sent to XVS vault |
+
 #### 📅 Events
 * FundsTransferredToXVSStore emits on success
 
