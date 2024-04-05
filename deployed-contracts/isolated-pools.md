@@ -19,12 +19,12 @@
   * lisUSD: [`0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5`](https://bscscan.com/address/0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5)
   * USDD: [`0xd17479997f34dd9156deef8f95a52d81d265be9c`](https://bscscan.com/address/0xd17479997f34dd9156deef8f95a52d81d265be9c)
   * USDT: [`0x55d398326f99059fF775485246999027B3197955`](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
-  * agEUR: [`0x12f31B73D812C6Bb0d735a218c086d44D5fe5f89`](https://bscscan.com/address/0x12f31B73D812C6Bb0d735a218c086d44D5fe5f89)
+  * EURA: [`0x12f31B73D812C6Bb0d735a218c086d44D5fe5f89`](https://bscscan.com/address/0x12f31B73D812C6Bb0d735a218c086d44D5fe5f89)
 * Markets:
   * vlisUSD\_Stablecoins: [`0xCa2D81AA7C09A1a025De797600A7081146dceEd9`](https://bscscan.com/address/0xCa2D81AA7C09A1a025De797600A7081146dceEd9)
   * vUSDD\_Stablecoins: [`0xc3a45ad8812189cAb659aD99E64B1376f6aCD035`](https://bscscan.com/address/0xc3a45ad8812189cAb659aD99E64B1376f6aCD035)
   * vUSDT\_Stablecoins: [`0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B`](https://bscscan.com/address/0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B)
-  * vagEUR\_Stablecoins: [`0x795DE779Be00Ea46eA97a28BDD38d9ED570BCF0F`](https://bscscan.com/address/0x795DE779Be00Ea46eA97a28BDD38d9ED570BCF0F)
+  * vEURA\_Stablecoins: [`0x795DE779Be00Ea46eA97a28BDD38d9ED570BCF0F`](https://bscscan.com/address/0x795DE779Be00Ea46eA97a28BDD38d9ED570BCF0F)
 
 ### Pool DeFi
 
@@ -191,7 +191,7 @@
   * VToken lisUSD: [`0x170d3b2da05cc2124334240fB34ad1359e34C562`](https://testnet.bscscan.com/address/0x170d3b2da05cc2124334240fB34ad1359e34C562)
   * VToken vUSDD: [`0x899dDf81DfbbF5889a16D075c352F2b959Dd24A4`](https://testnet.bscscan.com/address/0x899dDf81DfbbF5889a16D075c352F2b959Dd24A4)
   * VToken vUSDT: [`0x3338988d0beb4419Acb8fE624218754053362D06`](https://testnet.bscscan.com/address/0x3338988d0beb4419Acb8fE624218754053362D06)
-  * VToken vagEUR: [`0x4E1D35166776825402d50AfE4286c500027211D1`](https://testnet.bscscan.com/address/0x4E1D35166776825402d50AfE4286c500027211D1)
+  * VToken vEURA: [`0x4E1D35166776825402d50AfE4286c500027211D1`](https://testnet.bscscan.com/address/0x4E1D35166776825402d50AfE4286c500027211D1)
 * Rewards Distributors:
   * RewardsDistributor lisUSD: [`0xb0269d68CfdCc30Cb7Cd2E0b52b08Fa7Ffd3079b`](https://testnet.bscscan.com/address/0xb0269d68CfdCc30Cb7Cd2E0b52b08Fa7Ffd3079b)
   * RewardsDistributor lisUSD Implementation: [`0x69b26CCa98609156e98bb2973A80749D6dc24D38`](https://testnet.bscscan.com/address/0x69b26CCa98609156e98bb2973A80749D6dc24D38)
