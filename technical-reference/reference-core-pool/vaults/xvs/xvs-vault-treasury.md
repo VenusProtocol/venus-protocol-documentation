@@ -32,11 +32,6 @@ This function transfers funds to the XVS vault
 function fundXVSVault(uint256 amountMantissa) external
 ```
 
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| amountMantissa | uint256 | Amount to be sent to XVS vault |
-
 #### 📅 Events
 * FundsTransferredToXVSStore emits on success
 
@@ -46,5 +41,25 @@ function fundXVSVault(uint256 amountMantissa) external
 #### ❌ Errors
 * InsufficientBalance is thrown when amount entered is greater than balance
 
+### sweepToken
+
+This function sweep tokens from the contract
+
+```solidity
+function sweepToken(address tokenAddress, address to, uint256 amount) external
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| tokenAddress | address | Address of the asset(token) |
+| to | address | Address to which assets will be transferred |
+| amount | uint256 | Amount need to sweep from the contract |
+
+#### 📅 Events
+* SweepToken emits on success
+
+#### ⛔️ Access Requirements
+* Restricted by ACM
 - - -
 
