@@ -68,7 +68,7 @@ Before sending the remote execution message, the system verifies eligibility bas
 
 3. Remote proposal ID generation
 
-It's crucial to understand that the proposal ID for the remote execution on the destination network differs from the initial VIP ID proposed on the BNB Chain. This remote proposal ID starts from 0.
+It's crucial to understand that the proposal ID for the remote execution on the destination network differs from the initial VIP ID proposed on the BNB Chain. This remote proposal ID starts from 1.
 
 4. Message relay based on outcome
 
