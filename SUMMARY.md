@@ -48,6 +48,7 @@
 * [Vaults](guides/vaults.md)
 * [Protocol Math](guides/protocol-math.md)
 * [XVS Bridge](guides/xvs-bridge.md)
+* [Borrowing VAI](guides/borrowing-vai.md)
 
 ## Technical reference
 

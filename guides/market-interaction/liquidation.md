@@ -64,7 +64,7 @@ Please note that `healAccount` is an extension of the liquidation mechanism to a
 * **Collateral > `minLiquidatableCollateral` -->** `liquidateBorrow()`: Call the `liquidateBorrow` function on the relevant vToken contract. This function requires several parameters, including the borrower's address, the liquidator's address, the amount of debt to be repaid, and the collateral to be seized. Refer to the vToken contract documentation for specific details on the function's required parameters.
 
 {% hint style="info" %}
-#### Example
+**Example**
 
 Given:
 
@@ -100,7 +100,7 @@ In conclusion, the liquidator will provide **$1,000** for the liquidation. After
 * **Collateral < minLiquidatableCollateral && account is solvent -->** `liquidateAccount()`: this function liquidates all borrows of the borrower.
 
 {% hint style="info" %}
-#### Example
+**Example**
 
 * Collateral Factor: 50%
 * Liquidation Threshold: 60%
@@ -114,7 +114,7 @@ Position is already eligible for liquidation since Borrow Amount >= $54. We shou
 * **Collateral < minLiquidatableCollateral && account is insolvent -->** `healAccount()`: this function seizes all the remaining collateral from the borrower, requires the person initiating the liquidation (msg.sender) to repay the borrower's existing debt, and treats any remaining debt as bad debt. The sender has to repay a certain percentage of the debt, computed as `collateral / (borrows * liquidationIncentive)`
 
 {% hint style="info" %}
-#### Example
+**Example**
 
 * Collateral Factor: 50%
 * Liquidation Threshold: 60%
@@ -141,14 +141,12 @@ On Venus, forced liquidations can be enabled either for an entire market (all bo
 
 To check if forced liquidations are enabled for an entire market, the function `Comptroller.isForcedLiquidationEnabled(address vToken)` can be called on the Comptroller contract of the pool with the address of the market. To check if forced liquidations are enabled for an individual account in the market, the function `Comptroller.isForcedLiquidationEnabledForUser(address borrower, address vToken)` can be used, providing the account and market address as arguments.
 
-
 {% hint style="info" %}
-**Availability**:
-Forced Liquidations for entire markets are available in the Core pool since [VIP-172](https://app.venus.io/#/governance/proposal/172), in the Isolated pools since [VIP-186](https://app.venus.io/#/governance/proposal/186). Forced Liquidations for individual accounts are available only in the Core pool since [VIP-210](https://app.venus.io/#/governance/proposal/210).
+**Availability**: Forced Liquidations for entire markets are available in the Core pool since [VIP-172](https://app.venus.io/#/governance/proposal/172), in the Isolated pools since [VIP-186](https://app.venus.io/#/governance/proposal/186). Forced Liquidations for individual accounts are available only in the Core pool since [VIP-210](https://app.venus.io/#/governance/proposal/210).
 {% endhint %}
 
 {% hint style="info" %}
-### Example
+#### Example
 
 Given:
 
@@ -168,16 +166,12 @@ Now, let’s say we enable the **forced liquidations in the BUSD market** (via V
 * Anyone will be allowed to liquidate the BUSD position of the previous user. Moreover, the close factor limit won’t be taken into account. So, the following liquidation would be doable:
   * Repay amount: 200 BUSD
   * Collateral market to seize: USDT
-    
 * By doing this liquidation, 220 USDT (repay amount + liquidation incentive) would be seized from the user’s collateral.
-    
 * After the liquidation, the global position of our user would be:
   * Supply: 280 USDT (500 USDT - 220 USDT seized during the liquidation)
   * Borrow: 0 BUSD
   * Borrow: 100 USDC
-    
 * So, the new health rate would be `(280 * 0.8 / 100) = 2.24`. They will be still ineligible for regular liquidations
-    
 * Because the forced liquidation is not enabled in the USDC market, the USDC debt cannot be liquidated (because the health rate is greater than 1).
 {% endhint %}
 
@@ -202,7 +196,7 @@ If the above conditions are true then the protocol checks that the current vToke
 {% endhint %}
 
 {% hint style="info" %}
-#### Example 1
+**Example 1**
 
 Given:
 
@@ -215,7 +209,7 @@ Liquidators will be required to liquidate the VAI position first because it is g
 {% endhint %}
 
 {% hint style="info" %}
-#### Example 2
+**Example 2**
 
 Given:
 
@@ -229,33 +223,30 @@ Liquidators will be allowed to liquidate first the VAI position **or** the USDT 
 
 ## Automatic Income Allocation
 
-In the Core Pool, liquidation income is transferred to the Liquidator contract in the form of vTokens. During a liquidation transaction, the Liquidator contract will try to redeem the protocol's portion of the liquidation incentive in vTokens for the underlying tokens. If the redemption process is successful, the  underlying tokens will be sent to the `ProtocolShareReserve` contract. However, if the redemption fails the underlying tokens will be added to a list of pending redemptions and the Liquidator contract will try to redeem the pending redemptions again in subsequent liquidation transactions.
+In the Core Pool, liquidation income is transferred to the Liquidator contract in the form of vTokens. During a liquidation transaction, the Liquidator contract will try to redeem the protocol's portion of the liquidation incentive in vTokens for the underlying tokens. If the redemption process is successful, the underlying tokens will be sent to the `ProtocolShareReserve` contract. However, if the redemption fails the underlying tokens will be added to a list of pending redemptions and the Liquidator contract will try to redeem the pending redemptions again in subsequent liquidation transactions.
 
 ### Distributing Seized Amount
 
 The seized collateral is distributed between the Liquidator and the `ProtocolShareReserve` contract:
 
 1. **Liquidator's Share:**
-   - The Liquidator receives a designated portion of the collateral as an incentive.
-
+   * The Liquidator receives a designated portion of the collateral as an incentive.
 2. **`ProtocolShareReserve` contract's Share:**
-   - The remaining portion of the collateral is sent to the `ProtocolShareReserve` contract.
-
+   * The remaining portion of the collateral is sent to the `ProtocolShareReserve` contract.
 3. **Conversion (if applicable):**
-   - **BNB:**
-     - If the seized collateral is BNB, it is converted to Wrapped BNB (wBNB) before sending it to the `ProtocolShareReserve` contract.
-   - **Other VTokens:**
-     - For other VTokens, the underlying tokens are redeemed and transferred to the `ProtocolShareReserve` contract.
+   * **BNB:**
+     * If the seized collateral is BNB, it is converted to Wrapped BNB (wBNB) before sending it to the `ProtocolShareReserve` contract.
+   * **Other VTokens:**
+     * For other VTokens, the underlying tokens are redeemed and transferred to the `ProtocolShareReserve` contract.
 
 ### Redemption Handling
 
 The Liquidator contract attempts to redeem the protocol's portion of the liquidation incentive in underlying tokens for the VTokens:
 
 1. **Successful Redemption:**
-   - If the redemption is successful, the underlying tokens are sent to the `ProtocolShareReserve` contract.
-
+   * If the redemption is successful, the underlying tokens are sent to the `ProtocolShareReserve` contract.
 2. **Failed Redemption:**
-   - If the redemption fails due to insufficient liquidity or other reasons, the VTokens representing the pending redemption are added to a list for later processing.
+   * If the redemption fails due to insufficient liquidity or other reasons, the VTokens representing the pending redemption are added to a list for later processing.
 
 ### Pending Redemption Management
 
