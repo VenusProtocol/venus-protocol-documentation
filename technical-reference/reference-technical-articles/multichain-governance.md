@@ -57,10 +57,11 @@ The multichain governance system is designed to facilitate the execution of VIP 
 
 * A proposer submits a VIP through the existing governance mechanism on the BNB Chain.
 * The must VIP include a command invoking the `OmnichainProposalSender::execute` function which will send the remote VIP payload.
-* The `execute` function takes three arguments:
+* The `execute` function takes four arguments:
   * `chainID`: Identifies the destination network for the remote execution (`endpointId` according to [LayerZero](https://layerzero.gitbook.io/docs/technical-reference/mainnet/supported-chain-ids)).
   * `payload`: Encoded data (off-chain) containing the specific commands to be executed on the target network.
-  * `adapterParams` : It includes `refundAddress`, `zroPaymentAddress` and encoded destination gas limits
+  * `adapterParams`: The params used to specify the custom amount of gas required for the execution on the destination encoded as (ethers.utils.solidityPack(['uint16','uint256'],[1, gasValue])).
+  * `zroPaymentAddress_`: The address of the ZRO token holder who would pay for the transaction.
 
 2. Eligibility checks and limits
 
@@ -98,6 +99,17 @@ It's crucial to understand that the proposal ID for the remote execution on the 
   * Owned by: `OmnichainExecutorOwner` contract. This owner performs Access Control Manager (ACM) checks before allowing any function calls on this contract.
 * `TimelockV8`:
   * Owned by: `OmnichainGovernanceExecutor` contract. This ownership grants `TimelockV8` the authority to perform specific actions like queuing, canceling, and executing remote proposals.
+
+## Potential Failures and Retry Options
+* If a VIP fails to send the proposal from source chain (BNB Chain) to destination network, the message will be saved and can be retried with the `retryExecute` function. This mechanism allows for the redelivery of the message with potentially adjusted gas fees to ensure successful execution.
+
+* In case where the VIP fails to send the proposal from source chain (BNB Chain) to destination network due to non-retryable conditions and funds are stuck in the `OmnichainProposalSender` contract, funds can be withdrawn by invoking the `fallbackWithdraw` function. This ensures that funds are not permanently locked in the contract due to failed execution attempts.
+
+* If a proposal's queueing fails on the destination network due to insufficient gas, the message will be saved and can be retried with the `retryMessage` function.
+
+* If a proposal's queueing fails on the destination network due to reasons such as reaching caps or other constraints, the message will be saved and can be retried with the `retryMessage` function. This provides flexibility in addressing various failure scenarios and ensures that execution attempts are made until successful.
+
+* If a proposal's queueing fails on the destination network because the contract has been paused, the message will be saved and can be retried with the `retryMessage` function after the contract has been unpaused.
 
 ## Contracts overview
 
@@ -236,6 +248,7 @@ This contract executes proposal transactions sent from the main chain. It contro
 * **`ProposalCanceled (event)`**: Emitted when a proposal is canceled.
 * **`TimelockAdded (event)`**: Emitted when a Timelock is added.
 * **`SetSrcChainId (event)`**: Emitted when the source layer zero endpoint ID is updated.
+* **`SetTimelockPendingAdmin (event)`**: Emitted when pending admin of Timelock is updated.
 
 #### Functions
 
@@ -248,6 +261,7 @@ This contract executes proposal transactions sent from the main chain. It contro
 * **`_blockingLzReceive(...)`** and **`_nonblockingLzReceive(...)`**: Process LayerZero receive requests, with blocking and non-blocking behaviour respectively.
 * **`_queue(uint256 proposalId_)`**: Queues a proposal for execution.
 * **`_queueOrRevertInternal(...)`**: Checks for a unique proposal and queues it or reverts if already queued.
+* **`setTimelockPendingAdmin(address pendingAdmin_, uint8 proposalType_)`**: Sets the new pending admin of the Timelock.
 
 ### Contract 5: `OmnichainExecutorOwner`
 
@@ -265,7 +279,7 @@ The OmnichainExecutorOwner contract serves as a governance and access control me
 
 #### Events
 
-* **`FunctionRegistryChanged` (event):**
+* **`FunctionRegistryChanged (event)`:**
   * This event is emitted when a function is added or removed from the function registry.
   * It provides information about the function signature and whether it is active (added) or inactive (removed).
 
@@ -311,12 +325,12 @@ The `TimelockV8` contract is a Solidity V8 implementation of a timelock mechanis
 
 #### Events
 
-* **`NewAdmin`**: Signals the acceptance of a new admin account.
-* **`NewPendingAdmin`**: Indicates the proposal of a new admin account.
-* **`NewDelay`**: Notifies when the delay period for transaction execution is updated.
-* **`CancelTransaction`**: Broadcasts the cancellation of a queued transaction.
-* **`ExecuteTransaction`**: Broadcasts the execution of a queued transaction.
-* **`QueueTransaction`**: Broadcasts the queuing of a new transaction for future execution.
+* **`NewAdmin (event)`**: Signals the acceptance of a new admin account.
+* **`NewPendingAdmin (event)`**: Indicates the proposal of a new admin account.
+* **`NewDelay (event)`**: Notifies when the delay period for transaction execution is updated.
+* **`CancelTransaction (event)`**: Broadcasts the cancellation of a queued transaction.
+* **`ExecuteTransaction (event)`**: Broadcasts the execution of a queued transaction.
+* **`QueueTransaction (event)`**: Broadcasts the queuing of a new transaction for future execution.
 
 #### Constants
 
@@ -332,9 +346,9 @@ The `TimelockV8` contract is a Solidity V8 implementation of a timelock mechanis
 
 #### Functions
 
-* **`setDelay`**: Allows the admin to set the delay period for transaction execution.
-* **`acceptAdmin`**: Enables the pending admin to accept the admin role.
-* **`setPendingAdmin`**: Allows the admin to propose a new admin account.
-* **`queueTransaction`**: Queues a transaction for future execution after a specified delay.
-* **`cancelTransaction`**: Cancels a queued transaction before execution.
-* **`executeTransaction`**: Executes a queued transaction after the delay period has elapsed.
+* **`setDelay(uint256 delay_)`**: Allows the admin to set the delay period for transaction execution.
+* **`acceptAdmin()`**: Enables the pending admin to accept the admin role.
+* **`setPendingAdmin(address pendingAdmin_)`**: Allows to propose a new admin account via proposal or admin.
+* **`queueTransaction(...)`**: Queues a transaction for future execution after a specified delay.
+* **`cancelTransaction(...)`**: Cancels a queued transaction before execution.
+* **`executeTransaction(...)`**: Executes a queued transaction after the delay period has elapsed.
