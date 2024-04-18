@@ -12,9 +12,9 @@ The **Venus Protocol** generates income in various underlying tokens from intere
 - [XVSVaultConverter](https://bscscan.com/address/0xd5b9AE835F4C59272032B3B954417179573331E0): accepting [XVS](https://bscscan.com/address/0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63), offering 10% of the interest reserves and 10% of the liquidation income
 - Prime converters:
     - [USDTPrimeConverter](https://bscscan.com/address/0xD9f101AA67F3D72662609a2703387242452078C3): accepting [USDT](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955) and offering 4% of the interest reserves
-    - [USDCPrimeConverter](https://bscscan.com/address/0xa758c9C215B6c4198F0a0e3FA46395Fa15Db691b): accepting [USDC](https://bscscan.com/address/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d) and offering 3% of the interest reserves
+    - [USDCPrimeConverter](https://bscscan.com/address/0xa758c9C215B6c4198F0a0e3FA46395Fa15Db691b): accepting [USDC](https://bscscan.com/address/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d) and offering 4% of the interest reserves
     - [BTCBPrimeConverter](https://bscscan.com/address/0xE8CeAa79f082768f99266dFd208d665d2Dd18f53): accepting [BTCB](https://bscscan.com/address/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c) and offering 0.5% of the interest reserves
-    - [ETHPrimeConverter](https://bscscan.com/address/0xca430B8A97Ea918fF634162acb0b731445B8195E): accepting [ETH](https://bscscan.com/address/0x2170Ed0880ac9A755fd29B2688956BD959F933F8) and offering 2.5% of the interest reserves
+    - [ETHPrimeConverter](https://bscscan.com/address/0xca430B8A97Ea918fF634162acb0b731445B8195E): accepting [ETH](https://bscscan.com/address/0x2170Ed0880ac9A755fd29B2688956BD959F933F8) and offering 1.5% of the interest reserves
 - [VTreasury](https://bscscan.com/address/0xf322942f644a996a617bd29c16bd7d231d9f35e9)
 
 `XVSVaultConverter` and every Prime converter are instances of `SingleTokenConverter` contract.
