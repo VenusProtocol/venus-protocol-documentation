@@ -33,6 +33,21 @@ constructor() public
 
 - - -
 
+### initialize
+
+Initializes the owner of the contract
+
+```solidity
+function initialize(address accessControlManager_) external
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| accessControlManager_ | address | Address of the access control manager contract |
+
+- - -
+
 ### setValidateConfigs
 
 Add multiple validation configs at the same time
@@ -54,21 +69,6 @@ function setValidateConfigs(struct BoundValidator.ValidateConfig[] configs) exte
 
 #### ❌ Errors
 * Zero length error is thrown if length of the config array is 0
-
-- - -
-
-### initialize
-
-Initializes the owner of the contract
-
-```solidity
-function initialize(address accessControlManager_) external
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| accessControlManager_ | address | Address of the access control manager contract |
 
 - - -
 

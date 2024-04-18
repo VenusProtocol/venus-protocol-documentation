@@ -11,12 +11,13 @@ struct TokenConfig {
 }
 ```
 
-### BNB_ADDR
+### NATIVE_TOKEN_ADDR
 
-Set this as asset address for BNB. This is the underlying address for vBNB
+Set this as asset address for native token on each chain.
+This is the underlying address for vBNB on BNB chain or an underlying asset for a native market on any chain.
 
 ```solidity
-address BNB_ADDR
+address NATIVE_TOKEN_ADDR
 ```
 
 - - -
@@ -48,6 +49,21 @@ Constructor for the implementation contract.
 ```solidity
 constructor() public
 ```
+
+- - -
+
+### initialize
+
+Initializes the owner of the contract
+
+```solidity
+function initialize(address accessControlManager_) external
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| accessControlManager_ | address | Address of the access control manager contract |
 
 - - -
 
@@ -94,21 +110,6 @@ function setTokenConfigs(struct ChainlinkOracle.TokenConfig[] tokenConfigs_) ext
 
 - - -
 
-### initialize
-
-Initializes the owner of the contract
-
-```solidity
-function initialize(address accessControlManager_) external
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| accessControlManager_ | address | Address of the access control manager contract |
-
-- - -
-
 ### setTokenConfig
 
 Add single token config. asset & feed cannot be null addresses and maxStalePeriod must be positive
@@ -140,7 +141,7 @@ function setTokenConfig(struct ChainlinkOracle.TokenConfig tokenConfig) public
 Gets the price of a asset from the chainlink oracle
 
 ```solidity
-function getPrice(address asset) public view returns (uint256)
+function getPrice(address asset) public view virtual returns (uint256)
 ```
 
 #### Parameters
