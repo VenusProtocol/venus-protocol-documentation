@@ -8,9 +8,36 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Correlated token oracles
+
+**Scope**: set of oracles for tokens whose price is highly correlated with the price of another token. This definition includes Liquid Staked Tokens (like [wsETH](https://etherscan.io/token/0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0), [weETH](https://etherscan.io/token/0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee), [WBETH](https://bscscan.com/address/0xa2e3356610840701bdf5611a53974510ae27e2e1), [ankrBNB](https://bscscan.com/address/0x52F24a5e03aee338Da5fd9Df68D2b6FAe1178827), [BNBx](https://bscscan.com/address/0x1bdd3Cf7F79cfB8EdbB955f20ad99211551BA275), [slisBNB](https://bscscan.com/address/0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B), [stkBNB](https://bscscan.com/address/0xc2E9d07F66A89c44062459A47a0D2Dc038E4fb16)), [ERC-4226 tokens](https://eips.ethereum.org/EIPS/eip-4626) (like [sFRAX](https://etherscan.io/token/0xa663b02cf0a4b149d2ad41910cb81e23e1c41c32), [sfrxETH](https://etherscan.io/token/0xac3e018457b222d93114458476f3e3416abbe38f)) and any token covertible to other token onchain (like the [Pendle](https://www.pendle.finance) PT tokens).
+
+- [Certik audit audit report (2024/04/12)](https://github.com/VenusProtocol/oracle/blob/5cd52976a4c4d24e11ab34ca3aa5f99837eef593/audits/098_correlated_token_oracles_certik_20240412.pdf)
+- [Quantstamp audit audit report (2024/04/12)](https://github.com/VenusProtocol/oracle/blob/5cd52976a4c4d24e11ab34ca3aa5f99837eef593/audits/100_correlated_token_oracles_quantstamp_20240412.pdf)
+- [Fairyproof audit audit report (2024/03/28)](https://github.com/VenusProtocol/oracle/blob/5cd52976a4c4d24e11ab34ca3aa5f99837eef593/audits/101_correlated_token_oracles_fairyproof_20240328.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#165](https://github.com/VenusProtocol/oracle/pull/165)
+    - contracts/oracles/AnkrBNBOracle.sol
+    - contracts/oracles/BNBxOracle.sol
+    - contracts/oracles/OneJumpOracle.sol
+    - contracts/oracles/PendleOracle.sol
+    - contracts/oracles/SFraxOracle.sol
+    - contracts/oracles/SFrxETHOracle.sol
+    - contracts/oracles/SlisBNBOracle.sol
+    - contracts/oracles/StkBNBOracle.sol
+    - contracts/oracles/WBETHOracle.sol
+    - contracts/oracles/WeETHOracle.sol
+    - contracts/oracles/WstETHOracle.sol
+    - contracts/oracles/common/CorrelatedTokenOracle.sol
+
+</details>
+
 ### Native token gateway
 
-**Scope**: [NativeTokenGateway contract](https://github.com/VenusProtocol/isolated-pools//blob/develop/contracts/Gateway/NativeTokenGateway.sol), that facilitates the interaction (borrow, supply, repay and redeem) with markets where the underlying token is a wrapped version of the native token (for example WETH on Ethereum, or BNB on BNB chain).
+**Scope**: [NativeTokenGateway contract](https://github.com/VenusProtocol/isolated-pools//blob/develop/contracts/Gateway/NativeTokenGateway.sol), that facilitates the interaction (borrow, supply, repay and redeem) with markets where the underlying token is a wrapped version of the native token (for example WETH on Ethereum, or BNB on BNB chain). Enabled in [VIP-276](https://app.venus.io/#/governance/proposal/276).
 
 - [Certik audit audit report (2024/02/26)](https://github.com/VenusProtocol/isolated-pools/blob/652459fed7269dab84628f70c44d8fa56b34203e/audits/092_nativeTokenGateway_certik_20240226.pdf)
 - [Pessimistic audit audit report (2024/02/29)](https://github.com/VenusProtocol/isolated-pools/blob/652459fed7269dab84628f70c44d8fa56b34203e/audits/095_nativeTokenGateway_pessimistic_20240229.pdf)

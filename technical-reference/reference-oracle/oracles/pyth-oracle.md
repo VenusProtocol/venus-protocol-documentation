@@ -62,6 +62,22 @@ constructor() public
 
 - - -
 
+### initialize
+
+Initializes the owner of the contract and sets required contracts
+
+```solidity
+function initialize(address underlyingPythOracle_, address accessControlManager_) external
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| underlyingPythOracle_ | address | Address of the Pyth oracle |
+| accessControlManager_ | address | Address of the access control manager contract |
+
+- - -
+
 ### setTokenConfigs
 
 Batch set token configs
@@ -104,22 +120,6 @@ function setUnderlyingPythOracle(contract IPyth underlyingPythOracle_) external
 
 #### ❌ Errors
 * NotNullAddress error thrown if underlyingPythOracle_ address is zero
-
-- - -
-
-### initialize
-
-Initializes the owner of the contract and sets required contracts
-
-```solidity
-function initialize(address underlyingPythOracle_, address accessControlManager_) external
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| underlyingPythOracle_ | address | Address of the Pyth oracle |
-| accessControlManager_ | address | Address of the access control manager contract |
 
 - - -
 
