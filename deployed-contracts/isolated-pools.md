@@ -142,9 +142,11 @@
 * Underlying tokens:
   * WETH: [`0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2`](https://etherscan.io/address/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2)
   * wstETH: [`0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0`](https://etherscan.io/address/0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0)
+  * weETH: [`0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee`](https://etherscan.io/address/0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee)
 * Markets:
   * vWETH\_LiquidStakedETH: [`0xc82780Db1257C788F262FBbDA960B3706Dfdcaf2`](https://etherscan.io/address/0xc82780Db1257C788F262FBbDA960B3706Dfdcaf2)
   * vwstETH\_LiquidStakedETH: [`0x4a240F0ee138697726C8a3E43eFE6Ac3593432CB`](https://etherscan.io/address/0x4a240F0ee138697726C8a3E43eFE6Ac3593432CB)
+  * vweETH\_LiquidStakedETH: [`0xb4933AF59868986316Ed37fa865C829Eba2df0C7`](https://etherscan.io/address/0xb4933AF59868986316Ed37fa865C829Eba2df0C7)
 
 ## opBNB Chain Mainnet
 
@@ -278,6 +280,7 @@
 * Markets:
   * vWETH\_LiquidStakedETH: [`0x9f6213dFa9069a5426Fe8fAE73857712E1259Ed4`](https://sepolia.etherscan.io/address/0x9f6213dFa9069a5426Fe8fAE73857712E1259Ed4)
   * vwstETH\_LiquidStakedETH: [`0x0a95088403229331FeF1EB26a11F9d6C8E73f23D`](https://sepolia.etherscan.io/address/0x0a95088403229331FeF1EB26a11F9d6C8E73f23D)
+  * vweETH\_LiquidStakedETH: [`0x30c31bA6f4652B548fe7a142A949987c3f3Bf80b`](https://sepolia.etherscan.io/address/0x30c31bA6f4652B548fe7a142A949987c3f3Bf80b)
 
 ### Pool Stablecoins
 
