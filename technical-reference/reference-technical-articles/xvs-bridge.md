@@ -1,9 +1,17 @@
 # XVS Cross-Chain Bridge Documentation
 
-This documentation provides detailed instructions and explanations for using the XVS Cross-Chain Bridge. The bridge allows users to transfer tokens between different blockchain networks, specifically between the [BNB chain](https://www.bnbchain.org) and a destination chain. The supported Destination Chains are:
-
+This documentation provides detailed instructions and explanations for using the XVS Cross-Chain Bridge. The bridge allows users to transfer tokens between different blockchain networks, including the [BNB chain](https://www.bnbchain.org) and multiple destination chains. The supported networks are as follows:
+* [BNB](https://www.bnbchain.org)
 * [Ethereum](https://ethereum.org)
 * [opBNB](https://opbnb.bnbchain.org)
+
+## Supported Transfer Paths
+
+The bridge supports transfers between all network pairs, providing users with enhanced flexibility and interoperability across blockchain ecosystems. The supported transfer paths include:
+
+1. BNB Chain <--> opBNB
+2. BNB Chain <--> Ethereum
+3. Ethereum <--> opBNB
 
 The system consists of multiple contracts, including [XVSBridgeAdmin](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSBridgeAdmin.sol), [XVSProxySrc](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSProxyOFTSrc.sol), [XVSProxyDest](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSProxyOFTDest.sol), and [XVS](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/token/XVS.sol) token contracts.
 
@@ -58,6 +66,8 @@ When you send XVS tokens to the destination chain using the bridge, the tokens w
 <figure><img src="../../.gitbook/assets/XVS_bridge_dest_to_BNB.svg" alt="Assets bridging from dest chain to src chain"><figcaption></figcaption></figure>
 
 To transfer XVS tokens back to the BNB chain, follow a similar process as mentioned in the earlier send section. You don't need to approve the `Bridge` contract on the destination chain to spend XVS tokens on your behalf. The tokens will be burned on the destination chain on your behalf and unlocked and transferred to the receiver's address on the BNB chain.
+
+To transfer XVS tokens between destination chains, such as from Ethereum to opBNB, the process remains similar to the earlier send section. You don't need to approve the `Bridge` contract on the destination chain to spend XVS tokens on your behalf. The tokens will be burned on the one destination chain (Ethereum) and minted on the other destination chain (opBNB).
 
 ## 5. Monitoring Transaction Status
 
@@ -195,6 +205,15 @@ In addition to the core functionality, the XVS Cross-chain Bridge includes addit
 ### 8.3. Transaction Limits
 
 - The contract introduces transaction limits for both sending and receiving transactions, based on a daily and single transaction basis. The limits are defined using `chainIdToMaxSingleTransactionLimit`, `chainIdToMaxDailyLimit`, `chainIdToMaxSingleReceiveTransactionLimit`, and `chainIdToMaxDailyReceiveLimit`.
+
+- Transaction Limits
+
+   | Transfer Path      | Single Send Limit | Single Receive Limit | Daily Send Limit | Daily Receive Limit |
+   |--------------------|-------------------|----------------------|------------------|---------------------|
+   | BNB <--> Ethereum  | $100,000          | $102,000             | $1,000,000       | $1,020,000          |
+   | BNB <--> opBNB     | $10,000           | $10,200              | $50,000          | $51,000             |
+   | Ethereum <--> opBNB| $10,000           | $10,200              | $50,000          | $51,000             |
+
 
 ### 8.4. Pause and Unpause Mechanism
 
