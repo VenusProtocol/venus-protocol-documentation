@@ -8,6 +8,11 @@
 * RedStone Oracle:[`0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a`](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a)
 * Pyth Oracle:[`0xb893E38162f55fb80B18Aa44da76FaDf8E9B2262`](https://bscscan.com/address/0xb893E38162f55fb80B18Aa44da76FaDf8E9B2262)
 * Resilient Oracle:[`0x6592b5DE802159F3E74B2486b091D11a8256ab8A`](https://bscscan.com/address/0x6592b5DE802159F3E74B2486b091D11a8256ab8A)
+* ankrBNB Oracle: [`0xb0FCf0d45C15235D4ebC30d3c01d7d0D72Fd44AB`](https://bscscan.com/address/0xb0FCf0d45C15235D4ebC30d3c01d7d0D72Fd44AB)
+* BNBx Oracle: [`0x46F8f9e4cb04ec2Ca4a75A6a4915b823b98A0aA1`](https://bscscan.com/address/0x46F8f9e4cb04ec2Ca4a75A6a4915b823b98A0aA1)
+* slisBNB Oracle: [`0xfE54895445eD2575Bf5386B90FFB098cBC5CA29A`](https://bscscan.com/address/0xfE54895445eD2575Bf5386B90FFB098cBC5CA29A)
+* stkBNB Oracle: [`0xdBAFD16c5eA8C29D1e94a5c26b31bFAC94331Ac6`](https://bscscan.com/address/0xdBAFD16c5eA8C29D1e94a5c26b31bFAC94331Ac6)
+* WBETH Oracle: [`0x739db790c656E54590957Ed4d6B94665bCcb3456`](https://bscscan.com/address/0x739db790c656E54590957Ed4d6B94665bCcb3456)
 * DefaultProxyAdmin: [`0x1BB765b741A5f3C2A338369DAb539385534E3343`](https://bscscan.com/address/0x1BB765b741A5f3C2A338369DAb539385534E3343)
 
 ## BNB Chain Testnet
@@ -18,6 +23,11 @@
 * RedStone Oracle:[`0x0Af51d1504ac5B711A9EAFe2fAC11A51d32029Ad`](https://testnet.bscscan.com/address/0x0Af51d1504ac5B711A9EAFe2fAC11A51d32029Ad)
 * Pyth Oracle:[`0x94E1534c14e0736BB24decA625f2F5364B198E0C`](https://testnet.bscscan.com/address/0x94E1534c14e0736BB24decA625f2F5364B198E0C)
 * Resilient Oracle:[`0x3cD69251D04A28d887Ac14cbe2E14c52F3D57823`](https://testnet.bscscan.com/address/0x3cD69251D04A28d887Ac14cbe2E14c52F3D57823)
+* ankrBNB Oracle: [`0x00ea3D7Abe2f04004Ce71f9ef5C04F5f8Dce2f55`](https://testnet.bscscan.com/address/0x00ea3D7Abe2f04004Ce71f9ef5C04F5f8Dce2f55)
+* BNBx Oracle: [`0x24f6E7f40E3d8782E0c50d749625b6412437Af18`](https://testnet.bscscan.com/address/0x24f6E7f40E3d8782E0c50d749625b6412437Af18)
+* slisBNB Oracle: [`0x57e9230b8e57561e0Be71075A0BAC1B6e6a3369E`](https://testnet.bscscan.com/address/0x57e9230b8e57561e0Be71075A0BAC1B6e6a3369E)
+* stkBNB Oracle: [`0x78c1248c07c3724fe7D6FbD0e8D9859eF206B6d0`](https://testnet.bscscan.com/address/0x78c1248c07c3724fe7D6FbD0e8D9859eF206B6d0)
+* WBETH Oracle: [`0x80f80ad1d963673819752c234339901fa19fA7cb`](https://testnet.bscscan.com/address/0x80f80ad1d963673819752c234339901fa19fA7cb)
 * DefaultProxyAdmin:[`0xef480a5654b231ff7d80A0681F938f3Db71a6Ca6`](https://testnet.bscscan.com/address/0xef480a5654b231ff7d80A0681F938f3Db71a6Ca6)
 
 ## Ethereum mainnet
