@@ -8,15 +8,31 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### VAI Controller
+
+**Scope**: `VAIController` contract, fixing how the seized amounts during a VAI liquidations are calculated, considering the original VAI debt plus the interests generated.
+
+- [Certik audit audit report (2024/04/26)](https://github.com/VenusProtocol/venus-protocol/blob/0000b6b7bb9eaf1d6827993c306b776c371d41b7/audits/107_vaiController_certik_20240426.pdf)
+- [Pessimistic audit audit report (2024/05/02)](https://github.com/VenusProtocol/venus-protocol/blob/c01162eac8a911cd3a45c3d55b91e418e5ec2e6a/audits/109_vaiController_pessimistic_20240502.pdf)
+- [Fairyproof audit audit report (2024/04/18)](https://github.com/VenusProtocol/venus-protocol/blob/0000b6b7bb9eaf1d6827993c306b776c371d41b7/audits/108_vaiController_fairyproof_20240418.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#467](https://github.com/VenusProtocol/venus-protocol/pull/467)
+    - contracts/Tokens/VAI/VAIController.sol
+
+</details>
+
 ### XVS bridge - Mesh architecture
 
-**Scope**: enable XVS transfers between networks different to the BNB Chain, for example, between Ethereum mainnet and opBNB mainnet. [Detailed scope](https://github.com/VenusProtocol/vips/pull/255).
+**Scope**: enable XVS transfers between networks different to the BNB Chain, for example, between Ethereum mainnet and opBNB mainnet. [Detailed scope](https://github.com/VenusProtocol/vips/pull/255). Enabled in [VIP-292](https://app.venus.io/#/governance/proposal/292).
 
 - [Certik audit audit report (2024/04/19)](https://github.com/VenusProtocol/token-bridge/blob/7e13d370fbb8e9fcd6c8e0fde5943e44e0b64bfa/audits/104_mesh_architecture_certik_20240419.pdf)
 
 ### Correlated token oracles
 
-**Scope**: set of oracles for tokens whose price is highly correlated with the price of another token. This definition includes Liquid Staked Tokens (like [wsETH](https://etherscan.io/token/0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0), [weETH](https://etherscan.io/token/0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee), [WBETH](https://bscscan.com/address/0xa2e3356610840701bdf5611a53974510ae27e2e1), [ankrBNB](https://bscscan.com/address/0x52F24a5e03aee338Da5fd9Df68D2b6FAe1178827), [BNBx](https://bscscan.com/address/0x1bdd3Cf7F79cfB8EdbB955f20ad99211551BA275), [slisBNB](https://bscscan.com/address/0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B), [stkBNB](https://bscscan.com/address/0xc2E9d07F66A89c44062459A47a0D2Dc038E4fb16)), [ERC-4226 tokens](https://eips.ethereum.org/EIPS/eip-4626) (like [sFRAX](https://etherscan.io/token/0xa663b02cf0a4b149d2ad41910cb81e23e1c41c32), [sfrxETH](https://etherscan.io/token/0xac3e018457b222d93114458476f3e3416abbe38f)) and any token covertible to other token onchain (like the [Pendle](https://www.pendle.finance) PT tokens). `WeETHOracle` enabled in [VIP-290](https://app.venus.io/#/governance/proposal/290?chainId=56).
+**Scope**: set of oracles for tokens whose price is highly correlated with the price of another token. This definition includes Liquid Staked Tokens (like [wsETH](https://etherscan.io/token/0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0), [weETH](https://etherscan.io/token/0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee), [WBETH](https://bscscan.com/address/0xa2e3356610840701bdf5611a53974510ae27e2e1), [ankrBNB](https://bscscan.com/address/0x52F24a5e03aee338Da5fd9Df68D2b6FAe1178827), [BNBx](https://bscscan.com/address/0x1bdd3Cf7F79cfB8EdbB955f20ad99211551BA275), [slisBNB](https://bscscan.com/address/0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B), [stkBNB](https://bscscan.com/address/0xc2E9d07F66A89c44062459A47a0D2Dc038E4fb16)), [ERC-4226 tokens](https://eips.ethereum.org/EIPS/eip-4626) (like [sFRAX](https://etherscan.io/token/0xa663b02cf0a4b149d2ad41910cb81e23e1c41c32), [sfrxETH](https://etherscan.io/token/0xac3e018457b222d93114458476f3e3416abbe38f)) and any token covertible to other token onchain (like the [Pendle](https://www.pendle.finance) PT tokens). `WeETHOracle` enabled in [VIP-290](https://app.venus.io/#/governance/proposal/290?chainId=56). `AnkrBNBOracle`, `BNBxOracle`, `SlisBNBOracle` and `StkBNBOracle` enabled in [VIP-293](https://app.venus.io/#/governance/proposal/293?chainId=56).
 
 - [Certik audit audit report (2024/04/12)](https://github.com/VenusProtocol/oracle/blob/5cd52976a4c4d24e11ab34ca3aa5f99837eef593/audits/098_correlated_token_oracles_certik_20240412.pdf)
 - [Quantstamp audit audit report (2024/04/12)](https://github.com/VenusProtocol/oracle/blob/5cd52976a4c4d24e11ab34ca3aa5f99837eef593/audits/100_correlated_token_oracles_quantstamp_20240412.pdf)
