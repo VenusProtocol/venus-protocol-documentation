@@ -39,6 +39,7 @@
 * wstETH Oracle (not assuming 1:1 for stETH:ETH):[`0xd082B50b3EeB012605598bB45Fc2Be853b9AFEEf`](https://etherscan.io/address/0xd082B50b3EeB012605598bB45Fc2Be853b9AFEEf)
 * weETH Oracle (assuming 1:1 for eETH:ETH):[`0xEa687c54321Db5b20CA544f38f08E429a4bfCBc8`](https://etherscan.io/address/0xEa687c54321Db5b20CA544f38f08E429a4bfCBc8)
 * weETH Oracle (not assuming 1:1 for eETH:ETH):[`0x660c6d8c5fddc4f47c749e0f7e03634513f23e0e`](https://etherscan.io/address/0x660c6d8c5fddc4f47c749e0f7e03634513f23e0e)
+* sFrax Oracle: [`0x27F811933cA276387554eAffD9860e513bA95AC3`](https://etherscan.io/address/0x27F811933cA276387554eAffD9860e513bA95AC3)
 * Resilient Oracle:[`0xd2ce3fb018805ef92b8C5976cb31F84b4E295F94`](https://etherscan.io/address/0xd2ce3fb018805ef92b8C5976cb31F84b4E295F94)
 * DefaultProxyAdmin:[`0x567e4cc5e085d09f66f836fa8279f38b4e5866b9`](https://etherscan.io/address/0x567e4cc5e085d09f66f836fa8279f38b4e5866b9)
 
@@ -49,6 +50,7 @@
 * RedStone Oracle:[`0x4e6269Ef406B4CEE6e67BA5B5197c2FfD15099AE`](https://sepolia.etherscan.io/address/0x4e6269Ef406B4CEE6e67BA5B5197c2FfD15099AE)
 * wstETH Oracle:[`0x92E7F73B0d57902fDC453E8aef990EdEe827b0BF`](https://sepolia.etherscan.io/address/0x92E7F73B0d57902fDC453E8aef990EdEe827b0BF)
 * weETH Oracle:[`0xc7b78b5c1433C81c455CD1e9A68FF18764acbCe1`](https://sepolia.etherscan.io/address/0xc7b78b5c1433C81c455CD1e9A68FF18764acbCe1)
+* sFrax Oracle: [`0x163cA9Eb6340643154F8691C5DAd3aC844266717`](https://sepolia.etherscan.io/address/0x163cA9Eb6340643154F8691C5DAd3aC844266717)
 * Resilient Oracle:[`0x8000eca36201dddf5805Aa4BeFD73d1EB4D23264`](https://sepolia.etherscan.io/address/0x8000eca36201dddf5805Aa4BeFD73d1EB4D23264)
 * DefaultProxyAdmin:[`0x01435866babd91311b1355cf3af488cca36db68e`](https://sepolia.etherscan.io/address/0x01435866babd91311b1355cf3af488cca36db68e)
 
