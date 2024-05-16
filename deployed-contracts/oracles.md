@@ -52,7 +52,7 @@
 * wstETH Oracle:[`0x92E7F73B0d57902fDC453E8aef990EdEe827b0BF`](https://sepolia.etherscan.io/address/0x92E7F73B0d57902fDC453E8aef990EdEe827b0BF)
 * weETH Oracle:[`0xc7b78b5c1433C81c455CD1e9A68FF18764acbCe1`](https://sepolia.etherscan.io/address/0xc7b78b5c1433C81c455CD1e9A68FF18764acbCe1)
 * sFrax Oracle: [`0x163cA9Eb6340643154F8691C5DAd3aC844266717`](https://sepolia.etherscan.io/address/0x163cA9Eb6340643154F8691C5DAd3aC844266717)
-* PendleOracle PTweETH-26DEC2024 Oracle: [`0xAF83f9C9d849B6FF3A33da059Bf14A0E85493eb4`](https://etherscan.io/address/0xAF83f9C9d849B6FF3A33da059Bf14A0E85493eb4)
+* PendleOracle PTweETH-26DEC2024 Oracle: [`0xAF83f9C9d849B6FF3A33da059Bf14A0E85493eb4`](https://sepolia.etherscan.io/address/0xAF83f9C9d849B6FF3A33da059Bf14A0E85493eb4)
 * Resilient Oracle:[`0x8000eca36201dddf5805Aa4BeFD73d1EB4D23264`](https://sepolia.etherscan.io/address/0x8000eca36201dddf5805Aa4BeFD73d1EB4D23264)
 * DefaultProxyAdmin:[`0x01435866babd91311b1355cf3af488cca36db68e`](https://sepolia.etherscan.io/address/0x01435866babd91311b1355cf3af488cca36db68e)
 
