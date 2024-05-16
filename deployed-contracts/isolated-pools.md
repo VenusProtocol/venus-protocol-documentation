@@ -99,6 +99,17 @@
   * vUSDD\_Tron: [`0xf1da185CCe5BeD1BeBbb3007Ef738Ea4224025F7`](https://bscscan.com/address/0xf1da185CCe5BeD1BeBbb3007Ef738Ea4224025F7)
   * vUSDT\_Tron: [`0x281E5378f99A4bc55b295ABc0A3E7eD32Deba059`](https://bscscan.com/address/0x281E5378f99A4bc55b295ABc0A3E7eD32Deba059)
 
+### Meme Pool
+
+* Comptroller: [`0x33B6fa34cd23e5aeeD1B112d5988B026b8A5567d`](https://bscscan.com/address/0x33B6fa34cd23e5aeeD1B112d5988B026b8A5567d)
+* Swap router: [`0x9Db0CBD9A73339949f98C5E6a51e036d0dEaFf21`](https://bscscan.com/address/0x9Db0CBD9A73339949f98C5E6a51e036d0dEaFf21)
+* Underlying tokens:
+  * BabyDoge: [`0xc748673057861a797275CD8A068AbB95A902e8de`](https://bscscan.com/address/0xc748673057861a797275CD8A068AbB95A902e8de)
+  * USDT: [`0x55d398326f99059fF775485246999027B3197955`](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955)
+* Markets:
+  * vBabyDoge\_Meme: [`0x49c26e12959345472E2Fd95E5f79F8381058d3Ee`](https://bscscan.com/address/0x49c26e12959345472E2Fd95E5f79F8381058d3Ee)
+  * vUSDT\_Meme: [`0x4a9613D06a241B76b81d3777FCe3DDd1F61D4Bd0`](https://bscscan.com/address/0x4a9613D06a241B76b81d3777FCe3DDd1F61D4Bd0)
+
 ## Ethereum
 
 * PoolRegistry: [`0x61CAff113CCaf05FFc6540302c37adcf077C5179`](https://etherscan.io/address/0x61CAff113CCaf05FFc6540302c37adcf077C5179)
@@ -253,6 +264,17 @@
   * vWIN\_Tron: [`0xEe543D5de2Dbb5b07675Fc72831A2f1812428393`](https://testnet.bscscan.com/address/0xEe543D5de2Dbb5b07675Fc72831A2f1812428393)
   * vUSDD\_Tron: [`0xD804F74fe21290d213c46610ab171f7c2EeEBDE7`](https://testnet.bscscan.com/address/0xD804F74fe21290d213c46610ab171f7c2EeEBDE7)
   * vUSDT\_Tron: [`0x712774CBFFCBD60e9825871CcEFF2F917442b2c3`](https://testnet.bscscan.com/address/0x712774CBFFCBD60e9825871CcEFF2F917442b2c3)
+
+### Meme Pool
+
+* Comptroller: [`0x92e8E3C202093A495e98C10f9fcaa5Abe288F74A`](https://testnet.bscscan.com/address/0x92e8E3C202093A495e98C10f9fcaa5Abe288F74A)
+* Swap router: [`0x18995825f033F33fa30CF59c117aD21ff6BdB48c`](https://testnet.bscscan.com/address/0x18995825f033F33fa30CF59c117aD21ff6BdB48c)
+* Underlying tokens:
+  * BabyDoge: [`0x4FA37fFA9f36Ec0e0e685C06a7bF169bb50409ce`](https://testnet.bscscan.com/address/0x4FA37fFA9f36Ec0e0e685C06a7bF169bb50409ce)
+  * USDT: [`0xA11c8D9DC9b66E209Ef60F0C8D969D3CD988782c`](https://testnet.bscscan.com/address/0xA11c8D9DC9b66E209Ef60F0C8D969D3CD988782c)
+* Markets:
+  * vBabyDoge\_Meme: [`0x73d2F6e0708599a4eA70F6A0c55A4C59196a101c`](https://testnet.bscscan.com/address/0x73d2F6e0708599a4eA70F6A0c55A4C59196a101c)
+  * vUSDT\_Meme: [`0x3AF2bE7AbEF0f840b196D99d79F4B803a5dB14a1`](https://testnet.bscscan.com/address/0x3AF2bE7AbEF0f840b196D99d79F4B803a5dB14a1)
 
 ## Sepolia (Ethereum testnet)
 
