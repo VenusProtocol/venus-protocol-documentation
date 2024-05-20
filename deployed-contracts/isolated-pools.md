@@ -293,7 +293,7 @@
 * Comptroller: [`0xd79CeB8EF8188E44b7Eb899094e8A3A4d7A1e236`](https://sepolia.etherscan.io/address/0xd79CeB8EF8188E44b7Eb899094e8A3A4d7A1e236)
 * NativeTokenGateway: [`0x1FD30e761C3296fE36D9067b1e398FD97B4C0407`](https://sepolia.etherscan.io/address/0x1FD30e761C3296fE36D9067b1e398FD97B4C0407)
 * Markets:
-  * * vPT-weETH-26DEC2024\_LiquidStakedETH: [`0x3AF2bE7AbEF0f840b196D99d79F4B803a5dB14a1`](https://sepolia.etherscan.io/address/0x3AF2bE7AbEF0f840b196D99d79F4B803a5dB14a1)
+  * vPT-weETH-26DEC2024\_LiquidStakedETH: [`0x3AF2bE7AbEF0f840b196D99d79F4B803a5dB14a1`](https://sepolia.etherscan.io/address/0x3AF2bE7AbEF0f840b196D99d79F4B803a5dB14a1)
   * vWETH\_LiquidStakedETH: [`0x9f6213dFa9069a5426Fe8fAE73857712E1259Ed4`](https://sepolia.etherscan.io/address/0x9f6213dFa9069a5426Fe8fAE73857712E1259Ed4)
   * vwstETH\_LiquidStakedETH: [`0x0a95088403229331FeF1EB26a11F9d6C8E73f23D`](https://sepolia.etherscan.io/address/0x0a95088403229331FeF1EB26a11F9d6C8E73f23D)
   * vweETH\_LiquidStakedETH: [`0x30c31bA6f4652B548fe7a142A949987c3f3Bf80b`](https://sepolia.etherscan.io/address/0x30c31bA6f4652B548fe7a142A949987c3f3Bf80b)
