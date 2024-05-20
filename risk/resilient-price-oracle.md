@@ -141,7 +141,7 @@ The current list of correlated token oracles in Venus is:
 | Core | sFRAX | [SFraxOracle](https://etherscan.io/address/0x27F811933cA276387554eAffD9860e513bA95AC3) | - | - | |
 | Curve | crvUSD | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Curve | CRV | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Liquid Staked ETH | PTweETH-26DEC2024 | [PendleOracle-PT-weETH-26DEC2024](https://etherscan.io/address/0xAF83f9C9d849B6FF3A33da059Bf14A0E85493eb4) | - | - | |
+| Liquid Staked ETH | PTweETH-26DEC2024 | [PendleOracle-PT-weETH-26DEC2024](https://etherscan.io/address/0xA1eA3cB0FeA73a6c53aB07CcC703Dc039D8EAFb4) | - | - | |
 | Liquid Staked ETH | WETH | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Liquid Staked ETH | wstETH | [WstETHOracle_Equivalence](https://etherscan.io/address/0xd8B43165a6cdA057DBd3Fcd4745E88FC475398c5) | - | - | Assume 1:1 for ETH:stETH |
 | Liquid Staked ETH | weETH | [WeETHOracle_Equivalence](https://etherscan.io/address/0xEa687c54321Db5b20CA544f38f08E429a4bfCBc8) | - | - | Assume 1:1 for ETH:eETH |

@@ -40,7 +40,7 @@
 * weETH Oracle (assuming 1:1 for eETH:ETH):[`0xEa687c54321Db5b20CA544f38f08E429a4bfCBc8`](https://etherscan.io/address/0xEa687c54321Db5b20CA544f38f08E429a4bfCBc8)
 * weETH Oracle (not assuming 1:1 for eETH:ETH):[`0x660c6d8c5fddc4f47c749e0f7e03634513f23e0e`](https://etherscan.io/address/0x660c6d8c5fddc4f47c749e0f7e03634513f23e0e)
 * sFrax Oracle: [`0x27F811933cA276387554eAffD9860e513bA95AC3`](https://etherscan.io/address/0x27F811933cA276387554eAffD9860e513bA95AC3)
-* PendleOracle PTweETH-26DEC2024 Oracle: [`0x16D54113De89ACE580918D15653e9C0d1DE05C35`](https://etherscan.io/address/0x16D54113De89ACE580918D15653e9C0d1DE05C35)
+* PendleOracle PTweETH-26DEC2024 Oracle: [`0xA1eA3cB0FeA73a6c53aB07CcC703Dc039D8EAFb4`](https://etherscan.io/address/0xA1eA3cB0FeA73a6c53aB07CcC703Dc039D8EAFb4)
 * Resilient Oracle:[`0xd2ce3fb018805ef92b8C5976cb31F84b4E295F94`](https://etherscan.io/address/0xd2ce3fb018805ef92b8C5976cb31F84b4E295F94)
 * DefaultProxyAdmin:[`0x567e4cc5e085d09f66f836fa8279f38b4e5866b9`](https://etherscan.io/address/0x567e4cc5e085d09f66f836fa8279f38b4e5866b9)
 
