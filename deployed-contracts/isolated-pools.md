@@ -343,3 +343,23 @@
   * vETH\_Core: [`0x034Cc5097379B13d3Ed5F6c85c8FAf20F48aE480`](https://testnet.opbnbscan.com/address/0x034Cc5097379B13d3Ed5F6c85c8FAf20F48aE480)
   * vUSDT\_Core: [`0xe3923805f6E117E51f5387421240a86EF1570abC`](https://testnet.opbnbscan.com/address/0xe3923805f6E117E51f5387421240a86EF1570abC)
   * vWBNB\_Core: [`0xD36a31AcD3d901AeD998da6E24e848798378474e`](https://testnet.opbnbscan.com/address/0xD36a31AcD3d901AeD998da6E24e848798378474e)
+
+## Arbitrum Sepolia
+
+* PoolRegistry: [`0xf93Df3135e0D555185c0BC888073374cA551C5fE`](https://sepolia.arbiscan.io/address/0xf93Df3135e0D555185c0BC888073374cA551C5fE)
+* PoolLens: [`0xd08422A9A7b19404cC01FB970a247d19CE4EA7fE`](https://sepolia.arbiscan.io/address/0xd08422A9A7b19404cC01FB970a247d19CE4EA7fE)
+* DefaultProxyAdmin: [`0xA78A1Df376c3CEeBC5Fab574fe6EdDbbF76fd03e`](https://sepolia.arbiscan.io/address/0xA78A1Df376c3CEeBC5Fab574fe6EdDbbF76fd03e)
+* Comptroller Beacon: [`0x12Dcb8D9F1eE7Ad7410F5B36B07bcC7891ab4cEf`](https://sepolia.arbiscan.io/address/0x12Dcb8D9F1eE7Ad7410F5B36B07bcC7891ab4cEf)
+* VToken Beacon: [`0x74ae9919F5866cE148c81331a5FCdE71b81c4056`](https://sepolia.arbiscan.io/address/0x74ae9919F5866cE148c81331a5FCdE71b81c4056)
+* ProtocolShareReserve: [`0x09267d30798B59c581ce54E861A084C6FC298666`](https://sepolia.arbiscan.io/address/0x09267d30798B59c581ce54E861A084C6FC298666)
+
+### Core Pool
+
+* Comptroller: [`0x006D44b6f5927b3eD83bD0c1C36Fb1A3BaCaC208`](https://sepolia.arbiscan.io/address/0x006D44b6f5927b3eD83bD0c1C36Fb1A3BaCaC208)
+* NativeTokenGateway: [`0x196b19C2037863409C65CbF63592ae2a3CD2Dc2C`](https://sepolia.arbiscan.io/address/0x196b19C2037863409C65CbF63592ae2a3CD2Dc2C)
+* Markets:
+  * vWBTC\_Core: [`0x49FB90A5815904649C44B87001a160C1301D6a2C`](https://sepolia.arbiscan.io/address/0x49FB90A5815904649C44B87001a160C1301D6a2C)
+  * vWETH\_Core: [`0x807dCB6946dDF4C5C6446B1B07ACd248B08F45e2`](https://sepolia.arbiscan.io/address/0x807dCB6946dDF4C5C6446B1B07ACd248B08F45e2)
+  * vUSDT\_Core: [`0xdEFbf0F9Ab6CdDd0a1FdDC894b358D0c0a39B052`](https://sepolia.arbiscan.io/address/0xdEFbf0F9Ab6CdDd0a1FdDC894b358D0c0a39B052)
+  * vUSDC\_Core: [`0xd9d1e754464eFc7493B177d2c7be04816E089b4C`](https://sepolia.arbiscan.io/address/0xd9d1e754464eFc7493B177d2c7be04816E089b4C)
+  * vARB\_Core: [`0x292Ec2b45C549Bc2c6B31937dBd511beaAEabea8`](https://sepolia.arbiscan.io/address/0x292Ec2b45C549Bc2c6B31937dBd511beaAEabea8)

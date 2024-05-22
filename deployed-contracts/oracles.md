@@ -67,3 +67,10 @@
 * Binance Oracle:[`0x496B6b03469472572C47bdB407d5549b244a74F2`](https://testnet.opbnbscan.com/address/0x496B6b03469472572C47bdB407d5549b244a74F2)
 * Resilient Oracle:[`0xEF4e53a9A4565ef243A2f0ee9a7fc2410E1aA623`](https://testnet.opbnbscan.com/address/0xEF4e53a9A4565ef243A2f0ee9a7fc2410E1aA623)
 * DefaultProxyAdmin:[`0xB1281ADC816fba7df64B798D7A0BC4bd2a6d42f4`](https://testnet.opbnbscan.com/address/0xB1281ADC816fba7df64B798D7A0BC4bd2a6d42f4)
+
+## Arbitrum Sepolia
+
+* Bound Validator:[`0xfe6bc1545Cc14C131bacA97476D6035ffcC0b889`](https://sepolia.arbiscan.io/address/0xfe6bc1545Cc14C131bacA97476D6035ffcC0b889)
+* SequencerChainlink Oracle:[`0xeDd02c7FfA31490b4107e8f2c25e9198a04F9E45`](https://sepolia.arbiscan.io/address/0xeDd02c7FfA31490b4107e8f2c25e9198a04F9E45)
+* Resilient Oracle:[`0x6708bAd042916B47311c8078b29d7f432342102F`](https://sepolia.arbiscan.io/address/0x6708bAd042916B47311c8078b29d7f432342102F)
+* DefaultProxyAdmin:[`0xA78A1Df376c3CEeBC5Fab574fe6EdDbbF76fd03e`](https://sepolia.arbiscan.io/address/0xA78A1Df376c3CEeBC5Fab574fe6EdDbbF76fd03e)
