@@ -3,6 +3,16 @@ This oracle fetches price of assets from Binance.
 
 # Solidity API
 
+### sidRegistryAddress
+
+Used to fetch feed registry address.
+
+```solidity
+address sidRegistryAddress
+```
+
+- - -
+
 ### BNB_ADDR
 
 Set this as asset address for BNB. This is the underlying address for vBNB
@@ -33,6 +43,16 @@ mapping(string => string) symbols
 
 - - -
 
+### feedRegistryAddress
+
+Used to fetch price of assets used directly when space ID is not supported by current chain.
+
+```solidity
+address feedRegistryAddress
+```
+
+- - -
+
 ### constructor
 
 Constructor for the implementation contract.
@@ -40,6 +60,22 @@ Constructor for the implementation contract.
 ```solidity
 constructor() public
 ```
+
+- - -
+
+### initialize
+
+Sets the contracts required to fetch prices
+
+```solidity
+function initialize(address _sidRegistryAddress, address _accessControlManager) external
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _sidRegistryAddress | address | Address of SID registry |
+| _accessControlManager | address | Address of the access control manager contract |
 
 - - -
 
@@ -75,19 +111,18 @@ function setSymbolOverride(string symbol, string overrideSymbol) external
 
 - - -
 
-### initialize
+### setFeedRegistryAddress
 
-Sets the contracts required to fetch prices
+Used to set feed registry address when current chain does not support space ID.
 
 ```solidity
-function initialize(address _sidRegistryAddress, address _accessControlManager) external
+function setFeedRegistryAddress(address newfeedRegistryAddress) external
 ```
 
 #### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _sidRegistryAddress | address | Address of SID registry |
-| _accessControlManager | address | Address of the access control manager contract |
+| newfeedRegistryAddress | address | Address of new feed registry. |
 
 - - -
 
