@@ -193,6 +193,32 @@
   * vUSDT\_Core: [`0xb7a01Ba126830692238521a1aA7E7A7509410b8e`](https://opbnbscan.com/address/0xb7a01Ba126830692238521a1aA7E7A7509410b8e)
   * vWBNB\_Core: [`0x53d11cB8A0e5320Cd7229C3acc80d1A0707F2672`](https://opbnbscan.com/address/0x53d11cB8A0e5320Cd7229C3acc80d1A0707F2672)
 
+## Arbitrum One
+
+* PoolRegistry: [`0x382238f07Bc4Fe4aA99e561adE8A4164b5f815DA`](https://arbiscan.io/address/0x382238f07Bc4Fe4aA99e561adE8A4164b5f815DA)
+* PoolLens: [`0x53F34FF95367B2A4542461a6A63fD321F8da22AD`](https://arbiscan.io/address/0x53F34FF95367B2A4542461a6A63fD321F8da22AD)
+* DefaultProxyAdmin: [`0xF6fF3e9459227f0cDE8B102b90bE25960317b216`](https://arbiscan.io/address/0xF6fF3e9459227f0cDE8B102b90bE25960317b216)
+* Comptroller Beacon: [`0x8b6c2E8672504523Ca3a29a5527EcF47fC7d43FC`](https://arbiscan.io/address/0x8b6c2E8672504523Ca3a29a5527EcF47fC7d43FC)
+* VToken Beacon: [`0xE9381D8CA7006c12Ae9eB97890575E705996fa66`](https://arbiscan.io/address/0xE9381D8CA7006c12Ae9eB97890575E705996fa66)
+* ProtocolShareReserve: [`0xF9263eaF7eB50815194f26aCcAB6765820B13D41`](https://arbiscan.io/address/0xF9263eaF7eB50815194f26aCcAB6765820B13D41)
+
+### Core Pool
+
+* Comptroller: [`0x317c1A5739F39046E20b08ac9BeEa3f10fD43326`](https://arbiscan.io/address/0x317c1A5739F39046E20b08ac9BeEa3f10fD43326)
+* NativeTokenGateway: [`0xc8e51418cadc001157506b306C6d0b878f1ff755`](https://arbiscan.io/address/0xc8e51418cadc001157506b306C6d0b878f1ff755)
+* Underlying tokens:
+  * WBTC: [`0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f`](https://arbiscan.io/address/0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f)
+  * WETH: [`0x82af49447d8a07e3bd95bd0d56f35241523fbab1`](https://arbiscan.io/address/0x82af49447d8a07e3bd95bd0d56f35241523fbab1)
+  * USDT: [`0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9`](https://arbiscan.io/address/0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9)
+  * USDC: [`0xaf88d065e77c8cc2239327c5edb3a432268e5831`](https://arbiscan.io/address/0xaf88d065e77c8cc2239327c5edb3a432268e5831)
+  * ARB: [`0x912ce59144191c1204e64559fe8253a0e49e6548`](https://arbiscan.io/address/0x912ce59144191c1204e64559fe8253a0e49e6548)
+* Markets:
+  * vWBTC\_Core: [`0xaDa57840B372D4c28623E87FC175dE8490792811`](https://arbiscan.io/address/0xaDa57840B372D4c28623E87FC175dE8490792811)
+  * vWETH\_Core: [`0x68a34332983f4Bf866768DD6D6E638b02eF5e1f0`](https://arbiscan.io/address/0x68a34332983f4Bf866768DD6D6E638b02eF5e1f0)
+  * vUSDT\_Core: [`0xB9F9117d4200dC296F9AcD1e8bE1937df834a2fD`](https://arbiscan.io/address/0xB9F9117d4200dC296F9AcD1e8bE1937df834a2fD)
+  * vUSDC\_Core: [`0x7D8609f8da70fF9027E9bc5229Af4F6727662707`](https://arbiscan.io/address/0x7D8609f8da70fF9027E9bc5229Af4F6727662707)
+  * vARB\_Core: [`0xAeB0FEd69354f34831fe1D16475D9A83ddaCaDA6`](https://arbiscan.io/address/0xAeB0FEd69354f34831fe1D16475D9A83ddaCaDA6)
+
 ## BNB Chain Testnet
 
 * PoolRegistry: [`0xC85491616Fa949E048F3aAc39fbf5b0703800667`](https://testnet.bscscan.com/address/0xC85491616Fa949E048F3aAc39fbf5b0703800667)

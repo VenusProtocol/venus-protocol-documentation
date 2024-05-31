@@ -176,6 +176,9 @@
 ## Arbitrum One
 
 * Venus Treasury: [`0x8a662ceAC418daeF956Bc0e6B2dd417c80CDA631`](https://arbiscan.io/address/0x8a662ceac418daef956bc0e6b2dd417c80cda631#code)
+* XVS Vault Proxy: [`0x8b79692AAB2822Be30a6382Eb04763A74752d5B4`](https://arbiscan.io/address/0x8b79692AAB2822Be30a6382Eb04763A74752d5B4)
+* Prime: [`0xFE69720424C954A2da05648a0FAC84f9bf11Ef49`](https://arbiscan.io/address/0xFE69720424C954A2da05648a0FAC84f9bf11Ef49)
+* Prime Liquidity Provider: [`0x86bf21dB200f29F21253080942Be8af61046Ec29`](https://arbiscan.io/address/0x86bf21dB200f29F21253080942Be8af61046Ec29)
 
 ## Arbitrum Sepolia
 

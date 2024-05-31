@@ -4,6 +4,7 @@ This documentation provides detailed instructions and explanations for using the
 * [BNB](https://www.bnbchain.org)
 * [Ethereum](https://ethereum.org)
 * [opBNB](https://opbnb.bnbchain.org)
+* [Arbitrum](https://arbitrum.io)
 
 ## Supported Transfer Paths
 
@@ -11,7 +12,8 @@ The bridge supports transfers between all network pairs, providing users with en
 
 1. BNB Chain <--> opBNB
 2. BNB Chain <--> Ethereum
-3. Ethereum <--> opBNB
+3. BNB Chain <--> Arbitrum
+4. Ethereum <--> opBNB
 
 The system consists of multiple contracts, including [XVSBridgeAdmin](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSBridgeAdmin.sol), [XVSProxySrc](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSProxyOFTSrc.sol), [XVSProxyDest](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSProxyOFTDest.sol), and [XVS](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/token/XVS.sol) token contracts.
 
@@ -212,6 +214,7 @@ In addition to the core functionality, the XVS Cross-chain Bridge includes addit
    |--------------------|-------------------|----------------------|------------------|---------------------|
    | BNB <--> Ethereum  | $100,000          | $102,000             | $1,000,000       | $1,020,000          |
    | BNB <--> opBNB     | $10,000           | $10,200              | $50,000          | $51,000             |
+   | BNB <--> Arbitrum  | $20,000           | $20,400              | $100,000         | $102,000            |
    | Ethereum <--> opBNB| $10,000           | $10,200              | $50,000          | $51,000             |
 
 

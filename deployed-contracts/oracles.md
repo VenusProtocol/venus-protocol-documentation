@@ -68,9 +68,19 @@
 * Resilient Oracle:[`0xEF4e53a9A4565ef243A2f0ee9a7fc2410E1aA623`](https://testnet.opbnbscan.com/address/0xEF4e53a9A4565ef243A2f0ee9a7fc2410E1aA623)
 * DefaultProxyAdmin:[`0xB1281ADC816fba7df64B798D7A0BC4bd2a6d42f4`](https://testnet.opbnbscan.com/address/0xB1281ADC816fba7df64B798D7A0BC4bd2a6d42f4)
 
+## Arbitrum One
+
+* Bound Validator:[`0x2245FA2420925Cd3C2D889Ddc5bA1aefEF0E14CF`](https://arbiscan.io/address/0x2245FA2420925Cd3C2D889Ddc5bA1aefEF0E14CF)
+* SequencerChainlink Oracle:[`0x9cd9Fcc7E3dEDA360de7c080590AaD377ac9F113`](https://arbiscan.io/address/0x9cd9Fcc7E3dEDA360de7c080590AaD377ac9F113)
+* RedStone Oracle:[`0xF792C4D3BdeF534D6d1dcC305056D00C95453dD6`](https://arbiscan.io/address/0xF792C4D3BdeF534D6d1dcC305056D00C95453dD6)
+* Resilient Oracle:[`0xd55A98150e0F9f5e3F6280FC25617A5C93d96007`](https://arbiscan.io/address/0xd55A98150e0F9f5e3F6280FC25617A5C93d96007)
+* DefaultProxyAdmin:[`0xF6fF3e9459227f0cDE8B102b90bE25960317b216`](https://arbiscan.io/address/0xF6fF3e9459227f0cDE8B102b90bE25960317b216)
+
+
 ## Arbitrum Sepolia
 
 * Bound Validator:[`0xfe6bc1545Cc14C131bacA97476D6035ffcC0b889`](https://sepolia.arbiscan.io/address/0xfe6bc1545Cc14C131bacA97476D6035ffcC0b889)
-* SequencerChainlink Oracle:[`0xeDd02c7FfA31490b4107e8f2c25e9198a04F9E45`](https://sepolia.arbiscan.io/address/0xeDd02c7FfA31490b4107e8f2c25e9198a04F9E45)
+* Chainlink Oracle:[`0xeDd02c7FfA31490b4107e8f2c25e9198a04F9E45`](https://sepolia.arbiscan.io/address/0xeDd02c7FfA31490b4107e8f2c25e9198a04F9E45)
+* RedStone Oracle:[`0x15058891ca0c71Bd724b873c41596A682420613C`](https://sepolia.arbiscan.io/address/0x15058891ca0c71Bd724b873c41596A682420613C)
 * Resilient Oracle:[`0x6708bAd042916B47311c8078b29d7f432342102F`](https://sepolia.arbiscan.io/address/0x6708bAd042916B47311c8078b29d7f432342102F)
 * DefaultProxyAdmin:[`0xA78A1Df376c3CEeBC5Fab574fe6EdDbbF76fd03e`](https://sepolia.arbiscan.io/address/0xA78A1Df376c3CEeBC5Fab574fe6EdDbbF76fd03e)

@@ -20,6 +20,12 @@
 * XVSProxyOFTDest: [`0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2`](https://opbnbscan.com/address/0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2)
 * XVS: [`0x3E2e61F1c075881F3fB8dd568043d8c221fd5c61`](https://opbnbscan.com/address/0x3E2e61F1c075881F3fB8dd568043d8c221fd5c61)
 
+### Arbitrum One
+
+* XVSBridgeAdmin: [`0xf5d81C6F7DAA3F97A6265C8441f92eFda22Ad784`](https://arbiscan.io/address/0xf5d81C6F7DAA3F97A6265C8441f92eFda22Ad784)
+* XVSProxyOFTDest: [`0x20cEa49B5F7a6DBD78cAE772CA5973eF360AA1e6`](https://arbiscan.io/address/0x20cEa49B5F7a6DBD78cAE772CA5973eF360AA1e6)
+* XVS: [`0xc1Eb7689147C81aC840d4FF0D298489fc7986d52`](https://arbiscan.io/address/0xc1Eb7689147C81aC840d4FF0D298489fc7986d52)
+
 ## Testnet chains
 
 ### BNB Chain
