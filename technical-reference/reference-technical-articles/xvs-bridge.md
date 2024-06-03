@@ -210,12 +210,14 @@ In addition to the core functionality, the XVS Cross-chain Bridge includes addit
 
 - Transaction Limits
 
-   | Transfer Path      | Single Send Limit | Single Receive Limit | Daily Send Limit | Daily Receive Limit |
-   |--------------------|-------------------|----------------------|------------------|---------------------|
-   | BNB <--> Ethereum  | $100,000          | $102,000             | $1,000,000       | $1,020,000          |
-   | BNB <--> opBNB     | $10,000           | $10,200              | $50,000          | $51,000             |
-   | BNB <--> Arbitrum  | $20,000           | $20,400              | $100,000         | $102,000            |
-   | Ethereum <--> opBNB| $10,000           | $10,200              | $50,000          | $51,000             |
+   | Transfer Path           | Single Send Limit | Single Receive Limit | Daily Send Limit | Daily Receive Limit |
+   |-------------------------|-------------------|----------------------|------------------|---------------------|
+   | BNB <--> Ethereum       | $100,000          | $102,000             | $1,000,000       | $1,020,000          |
+   | BNB <--> opBNB          | $10,000           | $10,200              | $50,000          | $51,000             |
+   | BNB <--> Arbitrum       | $20,000           | $20,400              | $100,000         | $102,000            |
+   | Ethereum <--> opBNB     | $10,000           | $10,200              | $50,000          | $51,000             |
+   | Arbitrum <--> Ethereum  | $20,000           | $20,400              | $100,000         | $102,000            |
+   | Arbitrum <--> opBNB     | $20,000           | $20,400              | $100,000         | $102,000            |
 
 
 ### 8.4. Pause and Unpause Mechanism
