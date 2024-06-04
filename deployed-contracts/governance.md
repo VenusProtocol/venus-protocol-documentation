@@ -112,3 +112,7 @@ Specific functions that can be invoked by the guardians
 ## Arbitrum Sepolia
 
 * Guardian: [`0x1426A5Ae009c4443188DA8793751024E358A61C2`](https://sepolia.arbiscan.io/address/0x1426A5Ae009c4443188DA8793751024E358A61C2)
+
+## Xlayer testnet
+
+* Guardian: [`0x5961449d63149035aCfC0714D5155f24C9819004`](https://www.okx.com/web3/explorer/xlayer-test/address/0x5961449d63149035acfc0714d5155f24c9819004)
