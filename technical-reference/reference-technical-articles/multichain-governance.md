@@ -1,7 +1,7 @@
 # Multichain Governance
 
 {% hint style="warning" %}
-**To be released**
+**Only available on BNB chain, Ethereum and opBNB**
 {% endhint %}
 
 ## System Overview
