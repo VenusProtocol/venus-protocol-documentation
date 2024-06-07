@@ -97,7 +97,7 @@ Specific functions that can be invoked by the guardians
 * Critical Timelock: [`0xeB9b85342c34F65af734C7bd4a149c86c472bC00`](https://etherscan.io/address/0xeB9b85342c34F65af734C7bd4a149c86c472bC00)
 * Omnichain Governance Executor: [`0xd70ffB56E4763078b8B814C0B48938F35D83bE0C`](https://etherscan.io/address/0xd70ffB56E4763078b8B814C0B48938F35D83bE0C)
 * Omnichain Executor Owner Proxy: [`0x87Ed3Fd3a25d157637b955991fb1B41B566916Ba`](https://etherscan.io/address/0x87Ed3Fd3a25d157637b955991fb1B41B566916Ba)
-* Omnichain Executor Owner Implementation: [`0x87Ed3Fd3a25d157637b955991fb1B41B566916Ba`](https://etherscan.io/address/0x87Ed3Fd3a25d157637b955991fb1B41B566916Ba)
+* Omnichain Executor Owner Implementation: [`0xfCaFda9672a120a55E98E1fDd96AC0402c71b4bB`](https://etherscan.io/address/0xfCaFda9672a120a55E98E1fDd96AC0402c71b4bB)
 
 ## Sepolia (Ethereum testnet)
 
