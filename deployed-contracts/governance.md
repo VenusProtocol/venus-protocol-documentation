@@ -12,6 +12,7 @@
   * Guardian 1: [`0x7B1AE5Ea599bC56734624b95589e7E8E64C351c9`](https://bscscan.com/address/0x7B1AE5Ea599bC56734624b95589e7E8E64C351c9) - critical risk parameters
   * Guardian 2: [`0x1C2CAc6ec528c20800B2fe734820D87b581eAA6B`](https://bscscan.com/address/0x1C2CAc6ec528c20800B2fe734820D87b581eAA6B) - pause and resume features
   * Guardian 3: [`0x3a3284dC0FaFfb0b5F0d074c4C704D14326C98cF`](https://bscscan.com/address/0x3a3284dC0FaFfb0b5F0d074c4C704D14326C98cF) - oracles
+* Omnichain Proposal Sender: [`0x36a69dE601381be7b0DcAc5D5dD058825505F8f6`](https://bscscan.com/address/0x36a69dE601381be7b0DcAc5D5dD058825505F8f6)
 
 <!---
 Specific functions that can be invoked by the guardians
@@ -91,6 +92,12 @@ Specific functions that can be invoked by the guardians
 
 * Access Control Manager: [`0x230058da2D23eb8836EC5DB7037ef7250c56E25E`](https://etherscan.io/address/0x230058da2D23eb8836EC5DB7037ef7250c56E25E)
 * Guardian: [`0x285960C5B22fD66A736C7136967A3eB15e93CC67`](https://etherscan.io/address/0x285960C5B22fD66A736C7136967A3eB15e93CC67)
+* Normal Timelock: [`0xd969E79406c35E80750aAae061D402Aab9325714`](https://etherscan.io/address/0xd969E79406c35E80750aAae061D402Aab9325714)
+* FastTrack Timelock: [`0x8764F50616B62a99A997876C2DEAaa04554C5B2E`](https://etherscan.io/address/0x8764F50616B62a99A997876C2DEAaa04554C5B2E)
+* Critical Timelock: [`0xeB9b85342c34F65af734C7bd4a149c86c472bC00`](https://etherscan.io/address/0xeB9b85342c34F65af734C7bd4a149c86c472bC00)
+* Omnichain Governance Executor: [`0xd70ffB56E4763078b8B814C0B48938F35D83bE0C`](https://etherscan.io/address/0xd70ffB56E4763078b8B814C0B48938F35D83bE0C)
+* Omnichain Executor Owner Proxy: [`0x87Ed3Fd3a25d157637b955991fb1B41B566916Ba`](https://etherscan.io/address/0x87Ed3Fd3a25d157637b955991fb1B41B566916Ba)
+* Omnichain Executor Owner Implementation: [`0x87Ed3Fd3a25d157637b955991fb1B41B566916Ba`](https://etherscan.io/address/0x87Ed3Fd3a25d157637b955991fb1B41B566916Ba)
 
 ## Sepolia (Ethereum testnet)
 
@@ -108,6 +115,12 @@ Specific functions that can be invoked by the guardians
 
 * Access Control Manager: [`0xA60Deae5344F1152426cA440fb6552eA0e3005D6`](https://opbnbscan.com/address/0xA60Deae5344F1152426cA440fb6552eA0e3005D6)
 * Guardian: [`0xC46796a21a3A9FAB6546aF3434F2eBfFd0604207`](https://opbnbscan.com/address/0xC46796a21a3A9FAB6546aF3434F2eBfFd0604207)
+* Normal Timelock: [`0x372044f837eBBec77e64a449173732f8955c75bA`](https://opbnbscan.com/address/0x372044f837eBBec77e64a449173732f8955c75bA)
+* FastTrack Timelock: [`0x55fe000003Ad403a2F740dC1D0c58B59de7A6CD9`](https://opbnbscan.com/address/0x55fe000003Ad403a2F740dC1D0c58B59de7A6CD9)
+* Critical Timelock: [`0x372c3318241E430CF32f59a6905841261caE7365`](https://opbnbscan.com/address/0x372c3318241E430CF32f59a6905841261caE7365)
+* Omnichain Governance Executor: [`0xce4684FF3983fa461D7A8ff422Cb29021Cd13d50`](https://opbnbscan.com/address/0xce4684FF3983fa461D7A8ff422Cb29021Cd13d50)
+* Omnichain Executor owner proxy: [`0xf19b44Bf78A5330354312Cbc236EA8984828b4E2`](https://opbnbscan.com/address/0xf19b44Bf78A5330354312Cbc236EA8984828b4E2)
+* Omnichain Executor owner Implementation: [`0x87bEcE0223CB535a1E697386f7f2b136C8402191`](https://opbnbscan.com/address/0x87bEcE0223CB535a1E697386f7f2b136C8402191)
 
 ## opBNB testnet
 
