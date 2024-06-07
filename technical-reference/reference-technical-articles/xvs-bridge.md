@@ -8,12 +8,7 @@ This documentation provides detailed instructions and explanations for using the
 
 ## Supported Transfer Paths
 
-The bridge supports transfers between all network pairs, providing users with enhanced flexibility and interoperability across blockchain ecosystems. The supported transfer paths include:
-
-1. BNB Chain <--> opBNB
-2. BNB Chain <--> Ethereum
-3. BNB Chain <--> Arbitrum
-4. Ethereum <--> opBNB
+The bridge supports transfers between all network pairs, providing users with enhanced flexibility and interoperability across blockchain ecosystems.
 
 The system consists of multiple contracts, including [XVSBridgeAdmin](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSBridgeAdmin.sol), [XVSProxySrc](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSProxyOFTSrc.sol), [XVSProxyDest](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSProxyOFTDest.sol), and [XVS](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/token/XVS.sol) token contracts.
 

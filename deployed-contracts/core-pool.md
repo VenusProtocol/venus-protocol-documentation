@@ -162,8 +162,8 @@
 
 * Venus Treasury: [`0x4116CA92960dF77756aAAc3aFd91361dB657fbF8`](https://sepolia.etherscan.io/address/0x4116CA92960dF77756aAAc3aFd91361dB657fbF8)
 * XVS Vault Proxy: [`0x1129f882eAa912aE6D4f6D445b2E2b1eCbA99fd5`](https://sepolia.etherscan.io/address/0x1129f882eAa912aE6D4f6D445b2E2b1eCbA99fd5)
-* Prime: [`0x27A8ca2aFa10B9Bc1E57FC4Ca610d9020Aab3739`](https://sepolia.etherscan.io/address/0x27A8ca2aFa10B9Bc1E57FC4Ca610d9020Aab3739)
-* Prime Liquidity Provider: [`0x4fCbfE445396f31005b3Fd2F6DE2A986d6E2dCB5`](https://sepolia.etherscan.io/address/0x4fCbfE445396f31005b3Fd2F6DE2A986d6E2dCB5)
+* Prime: [`0x2Ec432F123FEbb114e6fbf9f4F14baF0B1F14AbC`](https://sepolia.etherscan.io/address/0x2Ec432F123FEbb114e6fbf9f4F14baF0B1F14AbC)
+* Prime Liquidity Provider: [`0x15242a55Ad1842A1aEa09c59cf8366bD2f3CE9B4`](https://sepolia.etherscan.io/address/0x15242a55Ad1842A1aEa09c59cf8366bD2f3CE9B4)
 
 ## opBNB Chain Mainnet
 
@@ -175,7 +175,7 @@
 
 ## Arbitrum One
 
-* Venus Treasury: [`0x8a662ceAC418daeF956Bc0e6B2dd417c80CDA631`](https://arbiscan.io/address/0x8a662ceac418daef956bc0e6b2dd417c80cda631#code)
+* Venus Treasury: [`0x8a662ceAC418daeF956Bc0e6B2dd417c80CDA631`](https://arbiscan.io/address/0x8a662ceac418daef956bc0e6b2dd417c80cda631)
 * XVS Vault Proxy: [`0x8b79692AAB2822Be30a6382Eb04763A74752d5B4`](https://arbiscan.io/address/0x8b79692AAB2822Be30a6382Eb04763A74752d5B4)
 * Prime: [`0xFE69720424C954A2da05648a0FAC84f9bf11Ef49`](https://arbiscan.io/address/0xFE69720424C954A2da05648a0FAC84f9bf11Ef49)
 * Prime Liquidity Provider: [`0x86bf21dB200f29F21253080942Be8af61046Ec29`](https://arbiscan.io/address/0x86bf21dB200f29F21253080942Be8af61046Ec29)
