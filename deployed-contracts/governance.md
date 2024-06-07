@@ -107,8 +107,10 @@ Specific functions that can be invoked by the guardians
 
 ## Arbitrum One
 
+* Access Control Manager: [`0xD9dD18EB0cf10CbA837677f28A8F9Bda4bc2b157`](https://arbiscan.io/address/0xD9dD18EB0cf10CbA837677f28A8F9Bda4bc2b157)
 * Guardian: [`0x14e0E151b33f9802b3e75b621c1457afc44DcAA0`](https://arbiscan.io/address/0x14e0e151b33f9802b3e75b621c1457afc44dcaa0)
 
 ## Arbitrum Sepolia
 
+* Access Control Manager: [`0xa36AD96441cB931D8dFEAAaC97D3FaB4B39E590F`](https://sepolia.arbiscan.io/address/0xa36AD96441cB931D8dFEAAaC97D3FaB4B39E590F)
 * Guardian: [`0x1426A5Ae009c4443188DA8793751024E358A61C2`](https://sepolia.arbiscan.io/address/0x1426A5Ae009c4443188DA8793751024E358A61C2)
