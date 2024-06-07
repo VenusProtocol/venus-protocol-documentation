@@ -48,6 +48,6 @@
 
 ### Arbitrum Sepolia
 
-* XVSBridgeAdmin: [`0xc94578cacc89a29b044a0a1d54d20d48a645e5c8`](https://sepolia.arbiscan.io/address/0xc94578cacc89a29b044a0a1d54d20d48a645e5c8)
+* XVSBridgeAdmin: [`0xc94578caCC89a29B044a0a1D54d20d48A645E5C8`](https://sepolia.arbiscan.io/address/0xc94578caCC89a29B044a0a1D54d20d48A645E5C8)
 * XVSProxyOFTDest: [`0xFdC5cEC63FD167DA46cF006585b30D03B104eFD4`](https://sepolia.arbiscan.io/address/0xFdC5cEC63FD167DA46cF006585b30D03B104eFD4)
 * XVS: [`0x877Dc896e7b13096D3827872e396927BbE704407`](https://sepolia.arbiscan.io/address/0x877Dc896e7b13096D3827872e396927BbE704407)
