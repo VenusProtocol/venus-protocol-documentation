@@ -137,7 +137,6 @@ We firmly believe that the true test of a smart contract's security lies in its 
     - contracts/Comptroller/Diamond/facets/MarketFacet.sol
 
 </details>
->>>>>>> main
 
 ### Oracle for wstETH
 
