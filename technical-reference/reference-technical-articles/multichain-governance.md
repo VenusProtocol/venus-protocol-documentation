@@ -1,9 +1,5 @@
 # Multichain Governance
 
-{% hint style="warning" %}
-**Only available on BNB chain, Ethereum and opBNB**
-{% endhint %}
-
 ## System Overview
 
 The multichain governance system is designed to facilitate the execution of VIP across multiple blockchain networks, integrating with the Access Control Manager (ACM) and LayerZero communication protocol. It extends the [governance model proposed by LayerZero](https://github.com/LayerZero-Labs/omnichain-governance-executor/tree/main).

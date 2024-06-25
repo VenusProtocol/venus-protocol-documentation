@@ -115,12 +115,12 @@ Specific functions that can be invoked by the guardians
 
 * Access Control Manager: [`0xA60Deae5344F1152426cA440fb6552eA0e3005D6`](https://opbnbscan.com/address/0xA60Deae5344F1152426cA440fb6552eA0e3005D6)
 * Guardian: [`0xC46796a21a3A9FAB6546aF3434F2eBfFd0604207`](https://opbnbscan.com/address/0xC46796a21a3A9FAB6546aF3434F2eBfFd0604207)
-* Normal Timelock: [`0x372044f837eBBec77e64a449173732f8955c75bA`](https://opbnbscan.com/address/0x372044f837eBBec77e64a449173732f8955c75bA)
-* FastTrack Timelock: [`0x55fe000003Ad403a2F740dC1D0c58B59de7A6CD9`](https://opbnbscan.com/address/0x55fe000003Ad403a2F740dC1D0c58B59de7A6CD9)
-* Critical Timelock: [`0x372c3318241E430CF32f59a6905841261caE7365`](https://opbnbscan.com/address/0x372c3318241E430CF32f59a6905841261caE7365)
-* Omnichain Governance Executor: [`0xce4684FF3983fa461D7A8ff422Cb29021Cd13d50`](https://opbnbscan.com/address/0xce4684FF3983fa461D7A8ff422Cb29021Cd13d50)
-* Omnichain Executor owner proxy: [`0xf19b44Bf78A5330354312Cbc236EA8984828b4E2`](https://opbnbscan.com/address/0xf19b44Bf78A5330354312Cbc236EA8984828b4E2)
-* Omnichain Executor owner Implementation: [`0x87bEcE0223CB535a1E697386f7f2b136C8402191`](https://opbnbscan.com/address/0x87bEcE0223CB535a1E697386f7f2b136C8402191)
+* Normal Timelock: [`0x10f504e939b912569Dca611851fDAC9E3Ef86819`](https://opbnbscan.com/address/0x10f504e939b912569Dca611851fDAC9E3Ef86819)
+* FastTrack Timelock: [`0xEdD04Ecef0850e834833789576A1d435e7207C0d`](https://opbnbscan.com/address/0xEdD04Ecef0850e834833789576A1d435e7207C0d)
+* Critical Timelock: [`0xA7DD2b15B24377296F11c702e758cd9141AB34AA`](https://opbnbscan.com/address/0xA7DD2b15B24377296F11c702e758cd9141AB34AA)
+* Omnichain Governance Executor: [`0x82598878Adc43F1013A27484E61ad663c5d50A03`](https://opbnbscan.com/address/0x82598878Adc43F1013A27484E61ad663c5d50A03)
+* Omnichain Executor owner proxy: [`0xf7e4c81Cf4A03d52472a4d00c3d9Ef35aF127E45`](https://opbnbscan.com/address/0xf7e4c81Cf4A03d52472a4d00c3d9Ef35aF127E45)
+* Omnichain Executor owner Implementation: [`0x1B346E8eFA1Ab5067D4D6eEA96Cfac0E311011Fe`](https://opbnbscan.com/address/0x1B346E8eFA1Ab5067D4D6eEA96Cfac0E311011Fe)
 
 ## opBNB testnet
 
