@@ -12,16 +12,30 @@ The [Token Converter Bot](https://github.com/VenusProtocol/keeper-bots/blob/deve
 
 ## Overview
 
-The **Venus Protocol** generates income in various underlying tokens from interest and liquidation fees, that are then sent to the [ProtocolShareReserve](https://bscscan.com/address/0xCa01D5A9A248a830E9D93231e791B1afFed7c446) contract. The `ProtocolShareReserve` contract disburses these earnings to number of destinations:
+The **Venus Protocol** generates income in various underlying tokens from interest and liquidation fees, that are then sent to the ProtocolShareReserve contract. The `ProtocolShareReserve` contract disburses these earnings to number of destinations.
 
-- [RiskFundConverter](https://bscscan.com/address/0xA5622D276CcbB8d9BBE3D1ffd1BB11a0032E53F0): accepting [USDT](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955), offering 40% of the interest reserves and 50% of the liquidation income
-- [XVSVaultConverter](https://bscscan.com/address/0xd5b9AE835F4C59272032B3B954417179573331E0): accepting [XVS](https://bscscan.com/address/0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63), offering 10% of the interest reserves and 10% of the liquidation income
-- Prime converters:
-    - [USDTPrimeConverter](https://bscscan.com/address/0xD9f101AA67F3D72662609a2703387242452078C3): accepting [USDT](https://bscscan.com/address/0x55d398326f99059fF775485246999027B3197955) and offering 4% of the interest reserves
-    - [USDCPrimeConverter](https://bscscan.com/address/0xa758c9C215B6c4198F0a0e3FA46395Fa15Db691b): accepting [USDC](https://bscscan.com/address/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d) and offering 4% of the interest reserves
-    - [BTCBPrimeConverter](https://bscscan.com/address/0xE8CeAa79f082768f99266dFd208d665d2Dd18f53): accepting [BTCB](https://bscscan.com/address/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c) and offering 0.5% of the interest reserves
-    - [ETHPrimeConverter](https://bscscan.com/address/0xca430B8A97Ea918fF634162acb0b731445B8195E): accepting [ETH](https://bscscan.com/address/0x2170Ed0880ac9A755fd29B2688956BD959F933F8) and offering 1.5% of the interest reserves
-- [VTreasury](https://bscscan.com/address/0xf322942f644a996a617bd29c16bd7d231d9f35e9)
+## Income Distribution
+
+- ## BNB Chain
+
+| Converter               | Accepts           | Interest Reserves (%)| Liquidation Income (%)  |
+|-------------------------|-------------------|----------------------|-------------------------|
+| RiskFundConverter       | 	USDT          | 	40%	             |                     50% |
+| XVSVaultConverter       | 	XVS	          |     10%	             |                     10% |
+| USDTPrimeConverter      | 	USDT          | 	4%	             |                      0% |
+| USDCPrimeConverter      | 	USDC          | 	4%	             |                      0% |
+| BTCBPrimeConverter      | 	BTCB          | 	0.5%             |                      0% |
+| ETHPrimeConverter       | 	ETH	          |     1.5%             |                      0% |
+
+- ## Ethereum Chain
+
+| Converter               | Accepts           | Interest Reserves (%)| Liquidation Income (%)  |
+|-------------------------|-------------------|----------------------|-------------------------|
+| XVSVaultConverter       | 	XVS	          |     20%	             |                     20% |
+| USDTPrimeConverter      | 	USDT          | 	1.4%             |                      0% |
+| USDCPrimeConverter      | 	USDC          | 	1.4%             |                      0% |
+| WBTCPrimeConverter      | 	WBTC          | 	1.4%             |                      0% |
+| WETHPrimeConverter      | 	WETH	      |     15.8%            |                      0% |
 
 `XVSVaultConverter` and every Prime converter are instances of `SingleTokenConverter` contract.
 
