@@ -136,7 +136,19 @@ Specific functions that can be invoked by the guardians
 ## Arbitrum One
 
 * Guardian: [`0x14e0E151b33f9802b3e75b621c1457afc44DcAA0`](https://arbiscan.io/address/0x14e0e151b33f9802b3e75b621c1457afc44dcaa0)
+* Normal Timelock: [`0x4b94589Cc23F618687790036726f744D602c4017`](https://arbiscan.io/address/0x4b94589Cc23F618687790036726f744D602c4017)
+* Fasttrack Timelock: [`0x2286a9B2a5246218f2fC1F380383f45BDfCE3E04`](https://arbiscan.io/address/0x2286a9B2a5246218f2fC1F380383f45BDfCE3E04)
+* Critical Timelock: [`0x181E4f8F21D087bF02Ea2F64D5e550849FBca674`](https://arbiscan.io/address/0x181E4f8F21D087bF02Ea2F64D5e550849FBca674)
+* Omnichain Governance Executor: [`0xc1858cCE6c28295Efd3eE742795bDa316D7c7526`](https://arbiscan.io/address/0xc1858cCE6c28295Efd3eE742795bDa316D7c7526)
+* Omnichain Executor Owner Proxy: [`0xf72C1Aa0A1227B4bCcB28E1B1015F0616E2db7fD`](https://arbiscan.io/address/0xf72C1Aa0A1227B4bCcB28E1B1015F0616E2db7fD)
+* Omnichain Executor Owner Implementation: [`0x56fa88B1dE859624502f6acd8fd48CfA2BA87cb6`](https://arbiscan.io/address/0x56fa88B1dE859624502f6acd8fd48CfA2BA87cb6)
 
 ## Arbitrum Sepolia
 
 * Guardian: [`0x1426A5Ae009c4443188DA8793751024E358A61C2`](https://sepolia.arbiscan.io/address/0x1426A5Ae009c4443188DA8793751024E358A61C2)
+* Normal Timelock: [`0x794BCA78E606f3a462C31e5Aba98653Efc1322F8`](https://sepolia.arbiscan.io/address/0x794BCA78E606f3a462C31e5Aba98653Efc1322F8)
+* Fasttrack Timelock: [`0x14642991184F989F45505585Da52ca6A6a7dD4c8`](https://sepolia.arbiscan.io/address/0x14642991184F989F45505585Da52ca6A6a7dD4c8)
+* Critical Timelock: [`0x0b32Be083f7041608E023007e7802430396a2123`](https://sepolia.arbiscan.io/address/0x0b32Be083f7041608E023007e7802430396a2123)
+* Omnichain Governance Executor: [`0xcf3e6972a8e9c53D33b642a2592938944956f138`](https://sepolia.arbiscan.io/address/0xcf3e6972a8e9c53D33b642a2592938944956f138)
+* Omnichain Executor Owner Proxy : [`0xfCA70dd553b7dF6eB8F813CFEA6a9DD039448878`](https://sepolia.arbiscan.io/address/0xfCA70dd553b7dF6eB8F813CFEA6a9DD039448878)
+* Omnichain Executor Owner Implementation : [`0x0314cfFdE77F6Bb5259B8d0fa5F0e9a9D4dB70dB`](https://sepolia.arbiscan.io/address/0x0314cfFdE77F6Bb5259B8d0fa5F0e9a9D4dB70dB)
