@@ -245,6 +245,7 @@ This contract executes proposal transactions sent from the main chain. It contro
 * **`TimelockAdded (event)`**: Emitted when a Timelock is added.
 * **`SetSrcChainId (event)`**: Emitted when the source layer zero endpoint ID is updated.
 * **`SetTimelockPendingAdmin (event)`**: Emitted when pending admin of Timelock is updated.
+* **`NewGuardian (event)`**: Emitted when guardian of OmnichainGovernanceExecutor is updated.
 
 #### Functions
 
@@ -258,6 +259,7 @@ This contract executes proposal transactions sent from the main chain. It contro
 * **`_queue(uint256 proposalId_)`**: Queues a proposal for execution.
 * **`_queueOrRevertInternal(...)`**: Checks for a unique proposal and queues it or reverts if already queued.
 * **`setTimelockPendingAdmin(address pendingAdmin_, uint8 proposalType_)`**: Sets the new pending admin of the Timelock.
+* **`setGuardian(address newGuardian)`**: Sets the new guardian of the OmnichainGovernanceExecutor.
 
 ### Contract 5: `OmnichainExecutorOwner`
 
