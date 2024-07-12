@@ -23,3 +23,25 @@
 * ETHPrimeConverter: [`0xf358650A007aa12ecC8dac08CF8929Be7f72A4D9`](https://testnet.bscscan.com/address/0xf358650A007aa12ecC8dac08CF8929Be7f72A4D9)
 * XVSVaultConverter: [`0x258f49254C758a0E37DAb148ADDAEA851F4b02a2`](https://testnet.bscscan.com/address/0x258f49254C758a0E37DAb148ADDAEA851F4b02a2)
 * ConverterNetwork: [`0xC8f2B705d5A2474B390f735A5aFb570e1ce0b2cf`](https://testnet.bscscan.com/address/0xC8f2B705d5A2474B390f735A5aFb570e1ce0b2cf)
+
+## Ethereum Mainnet
+
+* XVSVaultTreasury: [`0xaE39C38AF957338b3cEE2b3E5d825ea88df02EfE`](https://etherscan.io/address/0xaE39C38AF957338b3cEE2b3E5d825ea88df02EfE)
+* SingleTokenConverterBeacon: [`0x5C0b5D09388F2BA6441E74D40666C4d96e4527D1`](https://etherscan.io/address/0x5C0b5D09388F2BA6441E74D40666C4d96e4527D1)
+* USDTPrimeConverter: [`0x4f55cb0a24D5542a3478B0E284259A6B850B06BD`](https://etherscan.io/address/0x4f55cb0a24D5542a3478B0E284259A6B850B06BD)
+* USDCPrimeConverter: [`0xcEB9503f10B781E30213c0b320bCf3b3cE54216E`](https://etherscan.io/address/0xcEB9503f10B781E30213c0b320bCf3b3cE54216E)
+* WBTCPrimeConverter: [`0xDcCDE673Cd8988745dA384A7083B0bd22085dEA0`](https://etherscan.io/address/0xDcCDE673Cd8988745dA384A7083B0bd22085dEA0)
+* WETHPrimeConverter: [`0xb8fD67f215117FADeF06447Af31590309750529D`](https://etherscan.io/address/0xb8fD67f215117FADeF06447Af31590309750529D)
+* XVSVaultConverter: [`0x1FD30e761C3296fE36D9067b1e398FD97B4C0407`](https://etherscan.io/address/0x1FD30e761C3296fE36D9067b1e398FD97B4C0407)
+* ConverterNetwork: [`0x232CC47AECCC55C2CAcE4372f5B268b27ef7cac8`](https://etherscan.io/address/0x232CC47AECCC55C2CAcE4372f5B268b27ef7cac8)
+
+## Sepolia Testnet
+
+* XVSVaultTreasury: [`0xCCB08e5107b406E67Ad8356023dd489CEbc79B40`](https://sepolia.etherscan.io/address/0xCCB08e5107b406E67Ad8356023dd489CEbc79B40)
+* SingleTokenConverterBeacon: [`0xb86e532a5333d413A1c35d86cCdF1484B40219eF`](https://sepolia.etherscan.io/address/0xb86e532a5333d413A1c35d86cCdF1484B40219eF)
+* USDTPrimeConverter: [`0x3716C24EA86A67cAf890d7C9e4C4505cDDC2F8A2`](https://sepolia.etherscan.io/address/0x3716C24EA86A67cAf890d7C9e4C4505cDDC2F8A2)
+* USDCPrimeConverter: [`0x511a559a699cBd665546a1F75908f7E9454Bfc67`](https://sepolia.etherscan.io/address/0x511a559a699cBd665546a1F75908f7E9454Bfc67)
+* WBTCPrimeConverter: [`0x8a3937F27921e859db3FDA05729CbCea8cfd82AE`](https://sepolia.etherscan.io/address/0x8a3937F27921e859db3FDA05729CbCea8cfd82AE)
+* WETHPrimeConverter: [`0x274a834eFFA8D5479502dD6e78925Bc04ae82B46`](https://sepolia.etherscan.io/address/0x274a834eFFA8D5479502dD6e78925Bc04ae82B46)
+* XVSVaultConverter: [`0xc203bfA9dCB0B5fEC510Db644A494Ff7f4968ed2`](https://sepolia.etherscan.io/address/0xc203bfA9dCB0B5fEC510Db644A494Ff7f4968ed2)
+* ConverterNetwork: [`0xB5A4208bFC4cC2C4670744849B8fC35B21A690Fa`](https://sepolia.etherscan.io/address/0xB5A4208bFC4cC2C4670744849B8fC35B21A690Fa)
