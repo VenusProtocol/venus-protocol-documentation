@@ -8,6 +8,30 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Multichain Governance
+
+**Scope**: Cross chain messaging, execution of VIP on non-BNB chains. Integration of [Multichain Governance](https://github.com/VenusProtocol/governance-contracts/pull/21) in Venus
+
+* [Openzepplin audit report - 2024/01/19](https://github.com/VenusProtocol/governance-contracts/blob/2915ea772d86d9cc63f88fb6e804eaae53193879/audits/084_multichainGovernance_openzeppelin_20240119.pdf)
+* [Certik audit report - 2024/02/26](https://github.com/VenusProtocol/governance-contracts/blob/2915ea772d86d9cc63f88fb6e804eaae53193879/audits/085_multichainGovernance_certik_20240226.pdf)
+* [Cantina audit report - 2024/04/25](https://github.com/VenusProtocol/governance-contracts/blob/2915ea772d86d9cc63f88fb6e804eaae53193879/audits/105_multichainGovernance_cantina_20240425.pdf)
+* [Quantstamp audit report - 2024/04/29](https://github.com/VenusProtocol/governance-contracts/blob/2915ea772d86d9cc63f88fb6e804eaae53193879/audits/106_multichainGovernance_quantstamp_20240429.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#21](https://github.com/VenusProtocol/governance-contracts/pull/21)
+    - contracts/Cross-chain/BaseOmnichainControllerDest.sol
+    - contracts/Cross-chain/BaseOmnichainControllerSrc.sol
+    - contracts/Cross-chain/OmnichainExecutorOwner.sol
+    - contracts/Cross-chain/OmnichainGovernanceExecutor.sol
+    - contracts/Cross-chain/OmnichainProposalSender.sol
+    - contracts/Cross-chain/interfaces/IGovernananceBravoDelegate.sol
+    - contracts/Cross-chain/interfaces/ITimelock.sol
+    - contracts/Governance/TimelockV8.sol
+
+</details>
+
 ### Time-based contracts and seize XVS rewards
 
 **Scope**: Changes in the [isolated pools](https://github.com/VenusProtocol/isolated-pools), [core](https://github.com/VenusProtocol/venus-protocol) and [oracle](https://github.com/VenusProtocol/oracle) contracts to support blockchains where the block rate is not constant (i.e. Arbitrum). Add to the Core pool the feature to seize XVS rewards via VIP.
