@@ -87,7 +87,6 @@ Specific functions that can be invoked by the guardians
 * Critical Timelock: [`0x23B893a7C45a5Eb8c8C062b9F32d0D2e43eD286D`](https://testnet.bscscan.com/address/0x23B893a7C45a5Eb8c8C062b9F32d0D2e43eD286D)
 * Omnichain Proposal Sender: [`0xCfD34AEB46b1CB4779c945854d405E91D27A1899`](https://testnet.bscscan.com/address/0xCfD34AEB46b1CB4779c945854d405E91D27A1899)
 
-
 ## Ethereum mainnet
 
 * Access Control Manager: [`0x230058da2D23eb8836EC5DB7037ef7250c56E25E`](https://etherscan.io/address/0x230058da2D23eb8836EC5DB7037ef7250c56E25E)
@@ -97,7 +96,6 @@ Specific functions that can be invoked by the guardians
 * Critical Timelock: [`0xeB9b85342c34F65af734C7bd4a149c86c472bC00`](https://etherscan.io/address/0xeB9b85342c34F65af734C7bd4a149c86c472bC00)
 * Omnichain Governance Executor: [`0xd70ffB56E4763078b8B814C0B48938F35D83bE0C`](https://etherscan.io/address/0xd70ffB56E4763078b8B814C0B48938F35D83bE0C)
 * Omnichain Executor Owner Proxy: [`0x87Ed3Fd3a25d157637b955991fb1B41B566916Ba`](https://etherscan.io/address/0x87Ed3Fd3a25d157637b955991fb1B41B566916Ba)
-* Omnichain Executor Owner Implementation: [`0xfCaFda9672a120a55E98E1fDd96AC0402c71b4bB`](https://etherscan.io/address/0xfCaFda9672a120a55E98E1fDd96AC0402c71b4bB)
 
 ## Sepolia (Ethereum testnet)
 
@@ -108,8 +106,6 @@ Specific functions that can be invoked by the guardians
 * Critical Timelock: [`0xA24A7A65b8968a749841988Bd7d05F6a94329fDe`](https://sepolia.etherscan.io/address/0xA24A7A65b8968a749841988Bd7d05F6a94329fDe)
 * Omnichain Governance Executor: [`0xD9B18a43Ee9964061c1A1925Aa907462F0249109`](https://sepolia.etherscan.io/address/0xD9B18a43Ee9964061c1A1925Aa907462F0249109)
 * Omnichain Executor Owner Proxy: [`0xf964158C67439D01e5f17F0A3F39DfF46823F27A`](https://sepolia.etherscan.io/address/0xf964158C67439D01e5f17F0A3F39DfF46823F27A)
-* Omnichain Executor Owner Implementation: [`0x553f01f2c693Cf9B81cC77BACc59dD71E7a14740`](https://sepolia.etherscan.io/address/0x553f01f2c693Cf9B81cC77BACc59dD71E7a14740)
-
 
 ## opBNB mainnet
 
@@ -120,7 +116,6 @@ Specific functions that can be invoked by the guardians
 * Critical Timelock: [`0xA7DD2b15B24377296F11c702e758cd9141AB34AA`](https://opbnbscan.com/address/0xA7DD2b15B24377296F11c702e758cd9141AB34AA)
 * Omnichain Governance Executor: [`0x82598878Adc43F1013A27484E61ad663c5d50A03`](https://opbnbscan.com/address/0x82598878Adc43F1013A27484E61ad663c5d50A03)
 * Omnichain Executor owner proxy: [`0xf7e4c81Cf4A03d52472a4d00c3d9Ef35aF127E45`](https://opbnbscan.com/address/0xf7e4c81Cf4A03d52472a4d00c3d9Ef35aF127E45)
-* Omnichain Executor owner Implementation: [`0x1B346E8eFA1Ab5067D4D6eEA96Cfac0E311011Fe`](https://opbnbscan.com/address/0x1B346E8eFA1Ab5067D4D6eEA96Cfac0E311011Fe)
 
 ## opBNB testnet
 
@@ -131,7 +126,6 @@ Specific functions that can be invoked by the guardians
 * Critical Timelock: [`0xBd06aCDEF38230F4EdA0c6FD392905Ad463e42E3`](https://testnet.opbnbscan.com/address/0xBd06aCDEF38230F4EdA0c6FD392905Ad463e42E3)
 * Omnichain Governance Executor: [`0x0aa644c4408268E9fED5089A113470B6e706bc0C`](https://testnet.opbnbscan.com/address/0x0aa644c4408268E9fED5089A113470B6e706bc0C)
 * Omnichain Executor Owner Proxy: [`0x4F570240FF6265Fbb1C79cE824De6408F1948913`](https://testnet.opbnbscan.com/address/0x4F570240FF6265Fbb1C79cE824De6408F1948913)
-* Omnichain Executor Owner Implementation: [`0x8900AEC43bdf3615fe41e6D7280073A986e89Df6`](https://testnet.opbnbscan.com/address/0x8900AEC43bdf3615fe41e6D7280073A986e89Df6)
 
 ## Arbitrum One
 
@@ -141,7 +135,6 @@ Specific functions that can be invoked by the guardians
 * Critical Timelock: [`0x181E4f8F21D087bF02Ea2F64D5e550849FBca674`](https://arbiscan.io/address/0x181E4f8F21D087bF02Ea2F64D5e550849FBca674)
 * Omnichain Governance Executor: [`0xc1858cCE6c28295Efd3eE742795bDa316D7c7526`](https://arbiscan.io/address/0xc1858cCE6c28295Efd3eE742795bDa316D7c7526)
 * Omnichain Executor Owner Proxy: [`0xf72C1Aa0A1227B4bCcB28E1B1015F0616E2db7fD`](https://arbiscan.io/address/0xf72C1Aa0A1227B4bCcB28E1B1015F0616E2db7fD)
-* Omnichain Executor Owner Implementation: [`0x56fa88B1dE859624502f6acd8fd48CfA2BA87cb6`](https://arbiscan.io/address/0x56fa88B1dE859624502f6acd8fd48CfA2BA87cb6)
 
 ## Arbitrum Sepolia
 
@@ -151,4 +144,3 @@ Specific functions that can be invoked by the guardians
 * Critical Timelock: [`0x0b32Be083f7041608E023007e7802430396a2123`](https://sepolia.arbiscan.io/address/0x0b32Be083f7041608E023007e7802430396a2123)
 * Omnichain Governance Executor: [`0xcf3e6972a8e9c53D33b642a2592938944956f138`](https://sepolia.arbiscan.io/address/0xcf3e6972a8e9c53D33b642a2592938944956f138)
 * Omnichain Executor Owner Proxy : [`0xfCA70dd553b7dF6eB8F813CFEA6a9DD039448878`](https://sepolia.arbiscan.io/address/0xfCA70dd553b7dF6eB8F813CFEA6a9DD039448878)
-* Omnichain Executor Owner Implementation : [`0x0314cfFdE77F6Bb5259B8d0fa5F0e9a9D4dB70dB`](https://sepolia.arbiscan.io/address/0x0314cfFdE77F6Bb5259B8d0fa5F0e9a9D4dB70dB)
