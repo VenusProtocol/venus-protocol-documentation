@@ -8,6 +8,21 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Oracle for sfrxETH on Ethereum
+
+**Scope**: specific oracle for the token [sfrxETH](https://etherscan.io/token/0xac3e018457b222d93114458476f3e3416abbe38f)) on Ethereum, using the `SfrxEthFraxOracle` oracle under the hood, provided by the [FRAX project](https://docs.frax.finance/frax-oracle/advanced-concepts#frax-oracles)
+
+- [Certik audit audit report (2024/05/17)](https://github.com/VenusProtocol/oracle/blob/0b221a7bb7d8e04fd8b013806facb93bcb4038b9/audits/110_sfrxETHOracle_certik_20240517.pdf)
+- [Quantstamp audit audit report (2024/05/20)](https://github.com/VenusProtocol/oracle/blob/0b221a7bb7d8e04fd8b013806facb93bcb4038b9/audits/111_sfrxETHOracle_quantstamp_20240530.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#191](https://github.com/VenusProtocol/oracle/pull/191)
+    - contracts/oracles/SFrxETHOracle.sol
+
+</details>
+
 ### Multichain Governance
 
 **Scope**: Cross chain messaging, execution of VIP on non-BNB chains. Integration of [Multichain Governance](https://github.com/VenusProtocol/governance-contracts/pull/21) in Venus
