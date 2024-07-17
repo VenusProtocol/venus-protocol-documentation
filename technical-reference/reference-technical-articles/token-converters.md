@@ -1,7 +1,7 @@
 # Token converters
 
 {% hint style="info" %}
-Only available on BNB chain
+Only available on BNB chain and Ethereum
 {% endhint %}
 
 {% hint style="info" %}
@@ -12,24 +12,24 @@ The [Token Converter Bot](https://github.com/VenusProtocol/keeper-bots/blob/deve
 
 ## Overview
 
-The **Venus Protocol** generates income in various underlying tokens from interest and liquidation fees, that are then sent to the ProtocolShareReserve contract. The `ProtocolShareReserve` contract disburses these earnings to number of destinations.
+The **Venus Protocol** generates income in various underlying tokens from interest and liquidation fees, that are then sent to the ProtocolShareReserve contract. The `ProtocolShareReserve` contract disburses these earnings to number of destinations. The distributions to the converter contracts are listed next.
 
-## Income Distribution
-
-- ## BNB Chain
+### BNB Chain
 
 | Converter               | Accepts           | Interest Reserves (%)| Liquidation Income (%)  |
 |-------------------------|-------------------|----------------------|-------------------------|
+| RiskFundConverter       |     USDT          |     0%               |                      0% |
 | XVSVaultConverter       | 	XVS	          |     20%	             |                     20% |
 | USDTPrimeConverter      | 	USDT          | 	9%	             |                      0% |
 | USDCPrimeConverter      | 	USDC          | 	7%	             |                      0% |
 | BTCBPrimeConverter      | 	BTCB          | 	1%               |                      0% |
 | ETHPrimeConverter       | 	ETH	          |     3%               |                      0% |
 
-- ## Ethereum Chain
+### Ethereum Chain
 
 | Converter               | Accepts           | Interest Reserves (%)| Liquidation Income (%)  |
 |-------------------------|-------------------|----------------------|-------------------------|
+| RiskFundConverter       |     USDT          |     0%               |                      0% |
 | XVSVaultConverter       | 	XVS	          |     20%	             |                     20% |
 | USDTPrimeConverter      | 	USDT          | 	1.4%             |                      0% |
 | USDCPrimeConverter      | 	USDC          | 	1.4%             |                      0% |
