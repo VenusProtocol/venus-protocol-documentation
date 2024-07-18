@@ -8,9 +8,24 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### VBNBAdmin: new function setInterestRateModel
+
+**Scope**: Update of the VBNBAdmin contract to integrate the AccessControlManager within the `setInterestRateModel` function. This will allow to authorize more timelocks (not only the Normal timelock) to execute this function, so Fast-track and Critical VIP's will be able to update the interest rate model on the VBNB market.
+
+- [Certik audit audit report (2024/07/17)](https://github.com/VenusProtocol/venus-protocol/blob/5e4563ab0f2f98a04659e065b6c49acebf00df3b/audits/112_VBNBAdmin_certik_20240717.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#487](https://github.com/VenusProtocol/venus-protocol/pull/487)
+    - contracts/Admin/VBNBAdmin.sol
+    - contracts/Admin/VBNBAdminStorage.sol
+
+</details>
+
 ### Oracle for sfrxETH on Ethereum
 
-**Scope**: specific oracle for the token [sfrxETH](https://etherscan.io/token/0xac3e018457b222d93114458476f3e3416abbe38f)) on Ethereum, using the `SfrxEthFraxOracle` oracle under the hood, provided by the [FRAX project](https://docs.frax.finance/frax-oracle/advanced-concepts#frax-oracles)
+**Scope**: specific oracle for the token [sfrxETH](https://etherscan.io/token/0xac3e018457b222d93114458476f3e3416abbe38f)) on Ethereum, using the `SfrxEthFraxOracle` oracle under the hood, provided by the [FRAX project](https://docs.frax.finance/frax-oracle/advanced-concepts#frax-oracles). Enabled in [VIP-329](https://app.venus.io/#/governance/proposal/329).
 
 - [Certik audit audit report (2024/05/17)](https://github.com/VenusProtocol/oracle/blob/0b221a7bb7d8e04fd8b013806facb93bcb4038b9/audits/110_sfrxETHOracle_certik_20240517.pdf)
 - [Quantstamp audit audit report (2024/05/20)](https://github.com/VenusProtocol/oracle/blob/0b221a7bb7d8e04fd8b013806facb93bcb4038b9/audits/111_sfrxETHOracle_quantstamp_20240530.pdf)
@@ -25,7 +40,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ### Multichain Governance
 
-**Scope**: Cross chain messaging, execution of VIP on non-BNB chains. Integration of [Multichain Governance](https://github.com/VenusProtocol/governance-contracts/pull/21) in Venus
+**Scope**: Cross chain messaging, execution of VIP on non-BNB chains. Integration of [Multichain Governance](https://github.com/VenusProtocol/governance-contracts/pull/21) in Venus. Enabled in [VIP-330](https://app.venus.io/#/governance/proposal/330) and [VIP-331](https://app.venus.io/#/governance/proposal/331).
 
 * [Openzepplin audit report - 2024/01/19](https://github.com/VenusProtocol/governance-contracts/blob/2915ea772d86d9cc63f88fb6e804eaae53193879/audits/084_multichainGovernance_openzeppelin_20240119.pdf)
 * [Certik audit report - 2024/02/26](https://github.com/VenusProtocol/governance-contracts/blob/2915ea772d86d9cc63f88fb6e804eaae53193879/audits/085_multichainGovernance_certik_20240226.pdf)
@@ -104,7 +119,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ### VAI Controller
 
-**Scope**: `VAIController` contract, fixing how the seized amounts during a VAI liquidations are calculated, considering the original VAI debt plus the interests generated.
+**Scope**: `VAIController` contract, fixing how the seized amounts during a VAI liquidations are calculated, considering the original VAI debt plus the interests generated. Enabled in [VIP-299](https://app.venus.io/#/governance/proposal/299).
 
 - [Certik audit audit report (2024/04/26)](https://github.com/VenusProtocol/venus-protocol/blob/0000b6b7bb9eaf1d6827993c306b776c371d41b7/audits/107_vaiController_certik_20240426.pdf)
 - [Pessimistic audit audit report (2024/05/02)](https://github.com/VenusProtocol/venus-protocol/blob/c01162eac8a911cd3a45c3d55b91e418e5ec2e6a/audits/109_vaiController_pessimistic_20240502.pdf)

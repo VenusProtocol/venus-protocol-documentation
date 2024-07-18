@@ -1,5 +1,4 @@
 # VBNBAdmin
-
 This contract is the "admin" of the vBNB market, reducing the reserves of the market, sending them to the `ProtocolShareReserve` contract,
 and allowing the executions of the rest of the privileged functions in the vBNB contract (after checking if the sender has the required permissions).
 
@@ -13,7 +12,7 @@ address of vBNB
 contract VTokenInterface vBNB
 ```
 
----
+- - -
 
 ### WBNB
 
@@ -23,7 +22,7 @@ address of WBNB contract
 contract IWBNB WBNB
 ```
 
----
+- - -
 
 ### initialize
 
@@ -33,7 +32,7 @@ Used to initialize non-immutable variables
 function initialize(contract IProtocolShareReserve _protocolShareReserve, address accessControlManager) external
 ```
 
----
+- - -
 
 ### setProtocolShareReserve
 
@@ -44,20 +43,17 @@ function setProtocolShareReserve(contract IProtocolShareReserve protocolShareRes
 ```
 
 #### Parameters
-
-| Name                   | Type                           | Description                 |
-| ---------------------- | ------------------------------ | --------------------------- |
-| protocolShareReserve\_ | contract IProtocolShareReserve | Address of the PSR contract |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| protocolShareReserve_ | contract IProtocolShareReserve | Address of the PSR contract |
 
 #### 📅 Events
-
-- Emits ProtocolShareReserveUpdated event.
+* Emits ProtocolShareReserveUpdated event.
 
 #### ⛔️ Access Requirements
+* Only owner (Governance)
 
-- Only owner (Governance)
-
----
+- - -
 
 ### reduceReserves
 
@@ -68,16 +64,32 @@ function reduceReserves(uint256 reduceAmount) external
 ```
 
 #### Parameters
-
-| Name         | Type    | Description                  |
-| ------------ | ------- | ---------------------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | reduceAmount | uint256 | amount of reserves to reduce |
 
 #### 📅 Events
+* Emits ReservesReduced event.
 
-- Emits ReservesReduced event.
+- - -
 
----
+### setInterestRateModel
+
+Sets the interest rate model of the vBNB contract
+
+```solidity
+function setInterestRateModel(address newInterestRateModel) public returns (uint256)
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| newInterestRateModel | address | Address of the new interest rate model |
+
+#### ⛔️ Access Requirements
+* Controlled by ACM
+
+- - -
 
 ### receive
 
@@ -88,10 +100,9 @@ receive() external payable
 ```
 
 #### ⛔️ Access Requirements
+* Only vBNB is considered a valid sender
 
-- Only vBNB is considered a valid sender
-
----
+- - -
 
 ### fallback
 
@@ -102,7 +113,7 @@ fallback(bytes data) external payable returns (bytes)
 ```
 
 #### ⛔️ Access Requirements
+* Only owner (Governance)
 
-- Only owner (Governance)
+- - -
 
----
