@@ -61,8 +61,8 @@
 * PendleOracle PTweETH-26DEC2024 Oracle: [`0xAF83f9C9d849B6FF3A33da059Bf14A0E85493eb4`](https://sepolia.etherscan.io/address/0xAF83f9C9d849B6FF3A33da059Bf14A0E85493eb4)
 * OneJump Oracle rsETH/ETH/USD (having intermediate oracle Chainlink): [`0xDAF249b4A937385dB567B73630539BacDBB04342`](https://sepolia.etherscan.io/address/0xDAF249b4A937385dB567B73630539BacDBB04342)
 * OneJump Oracle rsETH/ETH/USD (having intermediate oracle Redstone): [`0xB15CA4Cd4bA5696FDC1cbBd859588c0421cc1F68`](https://sepolia.etherscan.io/address/0xB15CA4Cd4bA5696FDC1cbBd859588c0421cc1F68)
-* OneJump Oracle ezETH/ETH/USD (having intermediate oracle Chainlink): [`0xdA0817d5626fC3dBc74B678e1DD0397591A39F5b`](https://etherscan.io/address/0xdA0817d5626fC3dBc74B678e1DD0397591A39F5b)
-* OneJump Oracle ezETH/ETH/USD (having intermediate oracle Redstone): [`0x32Aba08E2150BB3D07d77c4945dc7238382FB8eD`](https://etherscan.io/address/0x32Aba08E2150BB3D07d77c4945dc7238382FB8eD)
+* OneJump Oracle ezETH/ETH/USD (having intermediate oracle Chainlink): [`0xdA0817d5626fC3dBc74B678e1DD0397591A39F5b`](https://sepolia.etherscan.io/address/0xdA0817d5626fC3dBc74B678e1DD0397591A39F5b)
+* OneJump Oracle ezETH/ETH/USD (having intermediate oracle Redstone): [`0x32Aba08E2150BB3D07d77c4945dc7238382FB8eD`](https://sepolia.etherscan.io/address/0x32Aba08E2150BB3D07d77c4945dc7238382FB8eD)
 * Resilient Oracle:[`0x8000eca36201dddf5805Aa4BeFD73d1EB4D23264`](https://sepolia.etherscan.io/address/0x8000eca36201dddf5805Aa4BeFD73d1EB4D23264)
 * DefaultProxyAdmin:[`0x01435866babd91311b1355cf3af488cca36db68e`](https://sepolia.etherscan.io/address/0x01435866babd91311b1355cf3af488cca36db68e)
 
