@@ -159,6 +159,7 @@
 * Comptroller: [`0xF522cd0360EF8c2FF48B648d53EA1717Ec0F3Ac3`](https://etherscan.io/address/0xF522cd0360EF8c2FF48B648d53EA1717Ec0F3Ac3)
 * NativeTokenGateway: [`0xBC1471308eb2287eBE137420Eb1664A964895D21`](https://etherscan.io/address/0xBC1471308eb2287eBE137420Eb1664A964895D21)
 * Underlying tokens:
+  * ezETH [`0xbf5495Efe5DB9ce00f80364C8B423567e58d2110`](https://etherscan.io/address/0xbf5495Efe5DB9ce00f80364C8B423567e58d2110) 
   * PTweETH-26DEC2024 [`0x6ee2b5E19ECBa773a352E5B21415Dc419A700d1d`](https://etherscan.io/address/0x6ee2b5E19ECBa773a352E5B21415Dc419A700d1d)
   * rsETH [`0xA1290d69c65A6Fe4DF752f95823fae25cB99e5A7`](https://etherscan.io/address/0xA1290d69c65A6Fe4DF752f95823fae25cB99e5A7)
   * sfrxETH: [`0xac3E018457B222d93114458476f3E3416Abbe38F`](https://etherscan.io/address/0xac3E018457B222d93114458476f3E3416Abbe38F)
@@ -166,6 +167,7 @@
   * wstETH: [`0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0`](https://etherscan.io/address/0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0)
   * weETH: [`0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee`](https://etherscan.io/address/0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee)
 * Markets:
+  * vezETH\_LiquidStakedETH: [`0xA854D35664c658280fFf27B6eDC6C4195c3229B3`](https://etherscan.io/address/0xA854D35664c658280fFf27B6eDC6C4195c3229B3) 
   * vPT-weETH-26DEC2024\_LiquidStakedETH: [`0x76697f8eaeA4bE01C678376aAb97498Ee8f80D5C`](https://etherscan.io/address/0x76697f8eaeA4bE01C678376aAb97498Ee8f80D5C)
   * vrsETH\_LiquidStakedETH: [`0xDB6C345f864883a8F4cae87852Ac342589E76D1B`](https://etherscan.io/address/0xDB6C345f864883a8F4cae87852Ac342589E76D1B)
   * vsfrxETH\_LiquidStakedETH: [`0xF9E9Fe17C00a8B96a8ac20c4E344C8688D7b947E`](https://etherscan.io/address/0xF9E9Fe17C00a8B96a8ac20c4E344C8688D7b947E)
@@ -344,6 +346,7 @@
 * Comptroller: [`0xd79CeB8EF8188E44b7Eb899094e8A3A4d7A1e236`](https://sepolia.etherscan.io/address/0xd79CeB8EF8188E44b7Eb899094e8A3A4d7A1e236)
 * NativeTokenGateway: [`0x1FD30e761C3296fE36D9067b1e398FD97B4C0407`](https://sepolia.etherscan.io/address/0x1FD30e761C3296fE36D9067b1e398FD97B4C0407)
 * Markets:
+  * vezETH\_LiquidStakedETH: [`0xF4C1B7528f8B266D8ADf1a85c91d93114FeDbA2A`](https://sepolia.etherscan.io/address/0xF4C1B7528f8B266D8ADf1a85c91d93114FeDbA2A)
   * vPT-weETH-26DEC2024\_LiquidStakedETH: [`0x3AF2bE7AbEF0f840b196D99d79F4B803a5dB14a1`](https://sepolia.etherscan.io/address/0x3AF2bE7AbEF0f840b196D99d79F4B803a5dB14a1)
   * vrsETH\_LiquidStakedETH: [`0x20a83DE526F2CF2fCec2131E07b11F956d8f3Cdf`](https://sepolia.etherscan.io/address/0x20a83DE526F2CF2fCec2131E07b11F956d8f3Cdf)
   * vsfrxETH\_Core: [`0x83F63118dcAAdAACBFF36D78ffB88dd474309e70`](https://sepolia.etherscan.io/address/0x83F63118dcAAdAACBFF36D78ffB88dd474309e70)
