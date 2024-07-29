@@ -144,7 +144,10 @@ The current list of correlated token oracles in Venus is:
 | Core | sFRAX | [SFraxOracle](https://etherscan.io/address/0x27F811933cA276387554eAffD9860e513bA95AC3) | - | - | |
 | Curve | crvUSD | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Curve | CRV | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
+| Liquid Staked ETH | ezETH | [ezETHOneJumpRedstoneOracle](https://etherscan.io/address/0x8062dC1b38c0b2CF6188dF605B19cFF3c4dc9b29) | [ezETHOneJumpChainlinkOracle](https://etherscan.io/address/0xa87E10C6F6DAD7af6C17f82Ce2C00FA5C64d110c) | [ezETHOneJumpChainlinkOracle](https://etherscan.io/address/0xa87E10C6F6DAD7af6C17f82Ce2C00FA5C64d110c) | Upper bound: 1.01. Lower bound: 0.99 |
 | Liquid Staked ETH | PTweETH-26DEC2024 | [PendleOracle-PT-weETH-26DEC2024](https://etherscan.io/address/0xA1eA3cB0FeA73a6c53aB07CcC703Dc039D8EAFb4) | - | - | |
+| Liquid Staked ETH | rsETH | [rsETHOneJumpRedstoneOracle](https://etherscan.io/address/0xf689AD140BDb9425fB83ba6f55866447244b5a23) | [rsETHOneJumpChainlinkOracle](https://etherscan.io/address/0xD63011ddAc93a6f8348bf7E6Aeb3E30Ad7B46Df8) | [rsETHOneJumpChainlinkOracle](https://etherscan.io/address/0xD63011ddAc93a6f8348bf7E6Aeb3E30Ad7B46Df8) | Upper bound: 1.01. Lower bound: 0.99 |
+| Liquid Staked ETH | sfrxETH | [SFrxETHOracle](https://etherscan.io/address/0x5E06A5f48692E4Fff376fDfCA9E4C0183AAADCD1) | - | - | |
 | Liquid Staked ETH | WETH | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Liquid Staked ETH | wstETH | [WstETHOracle_Equivalence](https://etherscan.io/address/0xd8B43165a6cdA057DBd3Fcd4745E88FC475398c5) | - | - | Assume 1:1 for ETH:stETH |
 | Liquid Staked ETH | weETH | [WeETHOracle_Equivalence](https://etherscan.io/address/0xEa687c54321Db5b20CA544f38f08E429a4bfCBc8) | - | - | Assume 1:1 for ETH:eETH |
