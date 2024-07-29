@@ -25,6 +25,6 @@ Moreover, the introduction of incentives through discounts encourages external a
 
 ### Architecture
 
-<figure><img src="../.gitbook/assets/Group 55080.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/token-converters.svg" alt=""><figcaption></figcaption></figure>
 
 _The dashed lines represent transactions initiated by external agents (VIP’s, scripts, arbitrage bots, etc.), and the solid lines represent transfers of funds._
