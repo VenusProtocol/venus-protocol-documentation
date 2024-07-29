@@ -44,6 +44,8 @@
 * PendleOracle PTweETH-26DEC2024 Oracle: [`0xA1eA3cB0FeA73a6c53aB07CcC703Dc039D8EAFb4`](https://etherscan.io/address/0xA1eA3cB0FeA73a6c53aB07CcC703Dc039D8EAFb4)
 * OneJump Oracle rsETH/ETH/USD (having intermediate oracle Chainlink): [`0xD63011ddAc93a6f8348bf7E6Aeb3E30Ad7B46Df8`](https://etherscan.io/address/0xD63011ddAc93a6f8348bf7E6Aeb3E30Ad7B46Df8)
 * OneJump Oracle rsETH/ETH/USD (having intermediate oracle Redstone): [`0xf689AD140BDb9425fB83ba6f55866447244b5a23`](https://etherscan.io/address/0xf689AD140BDb9425fB83ba6f55866447244b5a23)
+* OneJump Oracle ezETH/ETH/USD (having intermediate oracle Chainlink): [`0xa87E10C6F6DAD7af6C17f82Ce2C00FA5C64d110c`](https://etherscan.io/address/0xa87E10C6F6DAD7af6C17f82Ce2C00FA5C64d110c)
+* OneJump Oracle ezETH/ETH/USD (having intermediate oracle Redstone): [`0x8062dC1b38c0b2CF6188dF605B19cFF3c4dc9b29`](https://etherscan.io/address/0x8062dC1b38c0b2CF6188dF605B19cFF3c4dc9b29)
 * Resilient Oracle:[`0xd2ce3fb018805ef92b8C5976cb31F84b4E295F94`](https://etherscan.io/address/0xd2ce3fb018805ef92b8C5976cb31F84b4E295F94)
 * DefaultProxyAdmin:[`0x567e4cc5e085d09f66f836fa8279f38b4e5866b9`](https://etherscan.io/address/0x567e4cc5e085d09f66f836fa8279f38b4e5866b9)
 
@@ -59,6 +61,8 @@
 * PendleOracle PTweETH-26DEC2024 Oracle: [`0xAF83f9C9d849B6FF3A33da059Bf14A0E85493eb4`](https://sepolia.etherscan.io/address/0xAF83f9C9d849B6FF3A33da059Bf14A0E85493eb4)
 * OneJump Oracle rsETH/ETH/USD (having intermediate oracle Chainlink): [`0xDAF249b4A937385dB567B73630539BacDBB04342`](https://sepolia.etherscan.io/address/0xDAF249b4A937385dB567B73630539BacDBB04342)
 * OneJump Oracle rsETH/ETH/USD (having intermediate oracle Redstone): [`0xB15CA4Cd4bA5696FDC1cbBd859588c0421cc1F68`](https://sepolia.etherscan.io/address/0xB15CA4Cd4bA5696FDC1cbBd859588c0421cc1F68)
+* OneJump Oracle ezETH/ETH/USD (having intermediate oracle Chainlink): [`0xdA0817d5626fC3dBc74B678e1DD0397591A39F5b`](https://sepolia.etherscan.io/address/0xdA0817d5626fC3dBc74B678e1DD0397591A39F5b)
+* OneJump Oracle ezETH/ETH/USD (having intermediate oracle Redstone): [`0x32Aba08E2150BB3D07d77c4945dc7238382FB8eD`](https://sepolia.etherscan.io/address/0x32Aba08E2150BB3D07d77c4945dc7238382FB8eD)
 * Resilient Oracle:[`0x8000eca36201dddf5805Aa4BeFD73d1EB4D23264`](https://sepolia.etherscan.io/address/0x8000eca36201dddf5805Aa4BeFD73d1EB4D23264)
 * DefaultProxyAdmin:[`0x01435866babd91311b1355cf3af488cca36db68e`](https://sepolia.etherscan.io/address/0x01435866babd91311b1355cf3af488cca36db68e)
 
