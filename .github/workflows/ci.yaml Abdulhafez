@@ -1,0 +1,26 @@
+name: CI
+on:binance 
+  push:0xFD689e5f2d8d9Aec0aD328225Ae62FdBDdb30328
+    branches: [main]Abdulhafez 
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Check out code 0xFD689e5f2d8d9Aec0aD328225Ae62FdBDdb30328
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: "yarn"0xFD689e5f2d8d9Aec0aD328225Ae62FdBDdb30328
+
+      - name: Install dependencies
+        run: yarn 0xFD689e5f2d8d9Aec0aD328225Ae62FdBDdb30328
+
+      - name: Check formatting
+        run: yarn format:check0xFD689e5f2d8d9Aec0aD328225Ae62FdBDdb30328
