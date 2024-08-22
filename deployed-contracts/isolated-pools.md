@@ -166,6 +166,7 @@
   * WETH: [`0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2`](https://etherscan.io/address/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2)
   * wstETH: [`0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0`](https://etherscan.io/address/0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0)
   * weETH: [`0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee`](https://etherscan.io/address/0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee)
+  * weETHs: [`0x917ceE801a67f933F2e6b33fC0cD1ED2d5909D88`](https://etherscan.io/address/0x917ceE801a67f933F2e6b33fC0cD1ED2d5909D88)
 * Markets:
   * vezETH\_LiquidStakedETH: [`0xA854D35664c658280fFf27B6eDC6C4195c3229B3`](https://etherscan.io/address/0xA854D35664c658280fFf27B6eDC6C4195c3229B3) 
   * vPT-weETH-26DEC2024\_LiquidStakedETH: [`0x76697f8eaeA4bE01C678376aAb97498Ee8f80D5C`](https://etherscan.io/address/0x76697f8eaeA4bE01C678376aAb97498Ee8f80D5C)
@@ -174,6 +175,7 @@
   * vWETH\_LiquidStakedETH: [`0xc82780Db1257C788F262FBbDA960B3706Dfdcaf2`](https://etherscan.io/address/0xc82780Db1257C788F262FBbDA960B3706Dfdcaf2)
   * vwstETH\_LiquidStakedETH: [`0x4a240F0ee138697726C8a3E43eFE6Ac3593432CB`](https://etherscan.io/address/0x4a240F0ee138697726C8a3E43eFE6Ac3593432CB)
   * vweETH\_LiquidStakedETH: [`0xb4933AF59868986316Ed37fa865C829Eba2df0C7`](https://etherscan.io/address/0xb4933AF59868986316Ed37fa865C829Eba2df0C7)
+  * vweETHs\_LiquidStakedETH: [`0xEF26C64bC06A8dE4CA5D31f119835f9A1d9433b9`](https://etherscan.io/address/0xEF26C64bC06A8dE4CA5D31f119835f9A1d9433b9)
 
 ## opBNB Chain Mainnet
 
@@ -353,6 +355,7 @@
   * vWETH\_LiquidStakedETH: [`0x9f6213dFa9069a5426Fe8fAE73857712E1259Ed4`](https://sepolia.etherscan.io/address/0x9f6213dFa9069a5426Fe8fAE73857712E1259Ed4)
   * vwstETH\_LiquidStakedETH: [`0x0a95088403229331FeF1EB26a11F9d6C8E73f23D`](https://sepolia.etherscan.io/address/0x0a95088403229331FeF1EB26a11F9d6C8E73f23D)
   * vweETH\_LiquidStakedETH: [`0x30c31bA6f4652B548fe7a142A949987c3f3Bf80b`](https://sepolia.etherscan.io/address/0x30c31bA6f4652B548fe7a142A949987c3f3Bf80b)
+  * vweETHs\_LiquidStakedETH: [`0xB3A201887396F57bad3fF50DFd02022fE1Fd1774`](https://sepolia.etherscan.io/address/0xB3A201887396F57bad3fF50DFd02022fE1Fd1774)
 
 ### Pool Stablecoins
 
