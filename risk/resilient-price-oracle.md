@@ -171,6 +171,15 @@ The current list of correlated token oracles in Venus is:
 | Core | USDT | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
 | Core | ARB | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
 
+#### Zksync Sepolia
+| Pool | Market | MAIN oracle | PIVOT oracle | FALLBACK oracle | Notes |
+|---|---|---|---|---|---|
+| Core | WBTC | [ChainlinkOracle](https://sepolia.explorer.zksync.io/address/0x0DFf10dCdb3526010Df01ECc42076C25C27F8323) | - | - | |
+| Core | WETH | [ChainlinkOracle](https://sepolia.explorer.zksync.io/address/0x0DFf10dCdb3526010Df01ECc42076C25C27F8323) | - | - | |
+| Core | USDC_E | [ChainlinkOracle](https://sepolia.explorer.zksync.io/address/0x0DFf10dCdb3526010Df01ECc42076C25C27F8323) | - | - | |
+| Core | USDT | [ChainlinkOracle](https://sepolia.explorer.zksync.io/address/0x0DFf10dCdb3526010Df01ECc42076C25C27F8323) | - | - | |
+| Core | ZK | [ChainlinkOracle](https://sepolia.explorer.zksync.io/address/0x0DFf10dCdb3526010Df01ECc42076C25C27F8323) | - | - | |
+
 ### Further Reading
 
 For more detailed information, refer to the following resources:

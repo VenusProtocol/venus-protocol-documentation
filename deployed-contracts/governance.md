@@ -146,3 +146,14 @@ Specific functions that can be invoked by the guardians
 * Critical Timelock: [`0x0b32Be083f7041608E023007e7802430396a2123`](https://sepolia.arbiscan.io/address/0x0b32Be083f7041608E023007e7802430396a2123)
 * Omnichain Governance Executor: [`0xcf3e6972a8e9c53D33b642a2592938944956f138`](https://sepolia.arbiscan.io/address/0xcf3e6972a8e9c53D33b642a2592938944956f138)
 * Omnichain Executor Owner Proxy : [`0xfCA70dd553b7dF6eB8F813CFEA6a9DD039448878`](https://sepolia.arbiscan.io/address/0xfCA70dd553b7dF6eB8F813CFEA6a9DD039448878)
+
+## Zksync Sepolia
+
+* Access Control Manager: [`0xD07f543d47c3a8997D6079958308e981AC14CD01`](https://sepolia.explorer.zksync.io/address/0xD07f543d47c3a8997D6079958308e981AC14CD01)
+* Guardian: [`0xa2f83de95E9F28eD443132C331B6a9C9B7a9F866`](https://sepolia.explorer.zksync.io/address/0xa2f83de95E9F28eD443132C331B6a9C9B7a9F866)
+
+## Zksync Mainnet
+
+* Access Control Manager: [`0x526159A92A82afE5327d37Ef446b68FD9a5cA914`](https://explorer.zksync.io/address/0x526159A92A82afE5327d37Ef446b68FD9a5cA914)
+* Guardian: [`0x751Aa759cfBB6CE71A43b48e40e1cCcFC66Ba4aa`](https://explorer.zksync.io/address/0x751Aa759cfBB6CE71A43b48e40e1cCcFC66Ba4aa)
+

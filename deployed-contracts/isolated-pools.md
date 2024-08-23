@@ -400,3 +400,24 @@
   * vUSDT\_Core: [`0xdEFbf0F9Ab6CdDd0a1FdDC894b358D0c0a39B052`](https://sepolia.arbiscan.io/address/0xdEFbf0F9Ab6CdDd0a1FdDC894b358D0c0a39B052)
   * vUSDC\_Core: [`0xd9d1e754464eFc7493B177d2c7be04816E089b4C`](https://sepolia.arbiscan.io/address/0xd9d1e754464eFc7493B177d2c7be04816E089b4C)
   * vARB\_Core: [`0x292Ec2b45C549Bc2c6B31937dBd511beaAEabea8`](https://sepolia.arbiscan.io/address/0x292Ec2b45C549Bc2c6B31937dBd511beaAEabea8)
+
+## Zksync Sepolia
+
+* PoolRegistry: [`0x1401404e6279BB8C06E5E3999eCA3e2008B46A76`](https://sepolia.explorer.zksync.io/address/0x1401404e6279BB8C06E5E3999eCA3e2008B46A76)
+* PoolLens: [`0x214Ed51c798EE53f0be79d810E9Fc91662FDE243`](https://sepolia.explorer.zksync.io/address/0x214Ed51c798EE53f0be79d810E9Fc91662FDE243)
+* DefaultProxyAdmin: [`0x18E44f588a4DcF2F7145d35A5C226e129040b6D3`](https://sepolia.explorer.zksync.io/address/0x18E44f588a4DcF2F7145d35A5C226e129040b6D3)
+* Comptroller Beacon: [`0xf8bD27B4a4df30F6c2961663212f2200A8e5D5F3`](https://sepolia.explorer.zksync.io/address/0xf8bD27B4a4df30F6c2961663212f2200A8e5D5F3)
+* VToken Beacon: [`0xA95B8eb3Be3CfFCf340A094574338010A4ffB2Ca`](https://sepolia.explorer.zksync.io/address/0xA95B8eb3Be3CfFCf340A094574338010A4ffB2Ca)
+* ProtocolShareReserve: [`0x5722B43BD91fAaDC4E7f384F4d6Fb32456Ec5ffB`](https://sepolia.explorer.zksync.io/address/0x5722B43BD91fAaDC4E7f384F4d6Fb32456Ec5ffB)
+
+### Core Pool
+
+* Comptroller: [`0xC527DE08E43aeFD759F7c0e6aE85433923064669`](https://sepolia.explorer.zksync.io/address/0xC527DE08E43aeFD759F7c0e6aE85433923064669)
+* NativeTokenGateway: [`0xC2bc5881f2c1ee08a1f0fee65Fbf2BB4C4DD81e9`](https://sepolia.explorer.zksync.io/address/0xC2bc5881f2c1ee08a1f0fee65Fbf2BB4C4DD81e9)
+* Markets:
+  * vWBTC\_Core: [`0x9c2379ed8ab06B44328487f61873C7c44BD6E87D`](https://sepolia.explorer.zksync.io/address/0x9c2379ed8ab06B44328487f61873C7c44BD6E87D)
+  * vWETH\_Core: [`0x31eb7305f9fE281027028D0ba0d7f57ddA836d49`](https://sepolia.explorer.zksync.io/address/0x31eb7305f9fE281027028D0ba0d7f57ddA836d49)
+  * vUSDT\_Core: [`0x7Bfd185eF8380a72027bF65bFEEAb0242b147778`](https://sepolia.explorer.zksync.io/address/0x7Bfd185eF8380a72027bF65bFEEAb0242b147778)
+  * vUSDC_E\_Core: [`0x58b0b248BB11DCAA9336bBf8a81914201fD49461`](https://sepolia.explorer.zksync.io/address/0x58b0b248BB11DCAA9336bBf8a81914201fD49461)
+  * vZK\_Core: [`0x92f4BD794303c0BD0791B350Be5531DB38414f47`](https://sepolia.explorer.zksync.io/address/0x92f4BD794303c0BD0791B350Be5531DB38414f47)
+  

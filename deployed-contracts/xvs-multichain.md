@@ -51,3 +51,9 @@
 * XVSBridgeAdmin: [`0xc94578caCC89a29B044a0a1D54d20d48A645E5C8`](https://sepolia.arbiscan.io/address/0xc94578caCC89a29B044a0a1D54d20d48A645E5C8)
 * XVSProxyOFTDest: [`0xFdC5cEC63FD167DA46cF006585b30D03B104eFD4`](https://sepolia.arbiscan.io/address/0xFdC5cEC63FD167DA46cF006585b30D03B104eFD4)
 * XVS: [`0x877Dc896e7b13096D3827872e396927BbE704407`](https://sepolia.arbiscan.io/address/0x877Dc896e7b13096D3827872e396927BbE704407)
+
+### Zksync Sepolia
+
+* XVSBridgeAdmin: [`0x28cfE3f2D7D8944FAd162a058260ec922C19065E`](https://sepolia.explorer.zksync.io/address/0x28cfE3f2D7D8944FAd162a058260ec922C19065E)
+* XVSProxyOFTDest: [`0x760461ccB2508CAAa2ECe0c28af3a4707b853043`](https://sepolia.explorer.zksync.io/address/0x760461ccB2508CAAa2ECe0c28af3a4707b853043)
+* XVS: [`0x3AeCac43A2ebe5D8184e650403bf9F656F9D1cfA`](https://sepolia.explorer.zksync.io/address/0x3AeCac43A2ebe5D8184e650403bf9F656F9D1cfA)

@@ -96,3 +96,11 @@
 * RedStone Oracle:[`0x15058891ca0c71Bd724b873c41596A682420613C`](https://sepolia.arbiscan.io/address/0x15058891ca0c71Bd724b873c41596A682420613C)
 * Resilient Oracle:[`0x6708bAd042916B47311c8078b29d7f432342102F`](https://sepolia.arbiscan.io/address/0x6708bAd042916B47311c8078b29d7f432342102F)
 * DefaultProxyAdmin:[`0xA78A1Df376c3CEeBC5Fab574fe6EdDbbF76fd03e`](https://sepolia.arbiscan.io/address/0xA78A1Df376c3CEeBC5Fab574fe6EdDbbF76fd03e)
+
+## Zksync Sepolia
+
+* Bound Validator:[`0x0A4daBeF41C83Af7e30FfC33feC56ba769f3D24b`](https://sepolia.explorer.zksync.io/address/0x0A4daBeF41C83Af7e30FfC33feC56ba769f3D24b)
+* Chainlink Oracle:[`0x0DFf10dCdb3526010Df01ECc42076C25C27F8323`](https://sepolia.explorer.zksync.io/address/0x0DFf10dCdb3526010Df01ECc42076C25C27F8323)
+* RedStone Oracle:[`0x3af097f1Dcec172D5ECdD0D1eFA6B118FF15f152`](https://sepolia.explorer.zksync.io/address/0x3af097f1Dcec172D5ECdD0D1eFA6B118FF15f152)
+* Resilient Oracle:[`0x748853B3bE26c46b4562Fd314dfb82708F395bDf`](https://sepolia.explorer.zksync.io/address/0x748853B3bE26c46b4562Fd314dfb82708F395bDf)
+* DefaultProxyAdmin:[`0x18E44f588a4DcF2F7145d35A5C226e129040b6D3`](https://sepolia.explorer.zksync.io/address/0x18E44f588a4DcF2F7145d35A5C226e129040b6D3)
