@@ -36,24 +36,25 @@ function sweepToken(address tokenAddress, address to, uint256 amount) external
 Function to sweep token from pool
 
 ```solidity
-function sweepTokenFromPool(address tokenAddress, address comptroller, uint256 amount) external
+function sweepTokenFromPool(address tokenAddress, address comptroller, address receiver, uint256 amount) external
 ```
 
 #### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | tokenAddress | address | Address of the asset(token) |
-| comptroller | address | Pool address to which assets will be transferred |
+| comptroller | address | Pool address that the assets belong to |
+| receiver | address | The receiver of the funds |
 | amount | uint256 | Amount need to sweep from the pool |
 
 #### 📅 Events
-* Emits sweepTokenFromPool event on success
+* Emits SweepTokenFromPool event on success
 
 #### ⛔️ Access Requirements
-* Only Governance
+* Controlled by AccessControlManager
 
 #### ❌ Errors
-* ZeroAddressNotAllowed is thrown when tokenAddress/comptroller address is zero
+* ZeroAddressNotAllowed is thrown when tokenAddress, comptroller, or receiver address is zero
 * ZeroValueNotAllowed is thrown when amount is zero
 
 - - -
