@@ -89,7 +89,8 @@
 * RedStone Oracle:[`0xF792C4D3BdeF534D6d1dcC305056D00C95453dD6`](https://arbiscan.io/address/0xF792C4D3BdeF534D6d1dcC305056D00C95453dD6)
 * Resilient Oracle:[`0xd55A98150e0F9f5e3F6280FC25617A5C93d96007`](https://arbiscan.io/address/0xd55A98150e0F9f5e3F6280FC25617A5C93d96007)
 * DefaultProxyAdmin:[`0xF6fF3e9459227f0cDE8B102b90bE25960317b216`](https://arbiscan.io/address/0xF6fF3e9459227f0cDE8B102b90bE25960317b216)
-
+* OneJump Oracle weETH/eETH/USD (having intermediate oracle Chainlink): [`0x09eA4825a5e2FB2CB9a44F317c22e7D65053ea9d`](https://arbiscan.io/address/0x09eA4825a5e2FB2CB9a44F317c22e7D65053ea9d)
+* OneJump Oracle wstETH/stETH/USD (having intermediate oracle Chainlink): [`0x748DeFdbaE5215cdF0C436c538804823b55D76bc`](https://arbiscan.io/address/0x748DeFdbaE5215cdF0C436c538804823b55D76bc)
 
 ## Arbitrum Sepolia
 
@@ -98,3 +99,5 @@
 * RedStone Oracle:[`0x15058891ca0c71Bd724b873c41596A682420613C`](https://sepolia.arbiscan.io/address/0x15058891ca0c71Bd724b873c41596A682420613C)
 * Resilient Oracle:[`0x6708bAd042916B47311c8078b29d7f432342102F`](https://sepolia.arbiscan.io/address/0x6708bAd042916B47311c8078b29d7f432342102F)
 * DefaultProxyAdmin:[`0xA78A1Df376c3CEeBC5Fab574fe6EdDbbF76fd03e`](https://sepolia.arbiscan.io/address/0xA78A1Df376c3CEeBC5Fab574fe6EdDbbF76fd03e)
+* OneJump Oracle weETH/eETH/USD (having intermediate oracle Chainlink): [`0x4f894aC6F5e2E2bD72632B137E28234339Db3D53`](https://sepolia.arbiscan.io/address/0x4f894aC6F5e2E2bD72632B137E28234339Db3D53)
+* OneJump Oracle wstETH/stETH/USD (having intermediate oracle Chainlink): [`0x06b47B32d9C4D8f948EB3FFDB4a1ecE93794f922`](https://sepolia.arbiscan.io/address/0x06b47B32d9C4D8f948EB3FFDB4a1ecE93794f922)
