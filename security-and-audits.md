@@ -10,7 +10,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ### Unlist markets
 
-**Scope**: Changes in the [isolated pools](https://github.com/VenusProtocol/isolated-pools) and [core](https://github.com/VenusProtocol/venus-protocol) contracts to support unlisting markets. Fix in the core pool the behaviour of borrow caps set to zero.
+**Scope**: Changes in the [isolated pools](https://github.com/VenusProtocol/isolated-pools) and [core](https://github.com/VenusProtocol/venus-protocol) contracts to support unlisting markets. Fix in the core pool the behaviour of borrow caps set to zero. Enabled in [VIP-361](https://app-alt.venus.io/#/governance/proposal/361).
 
 - [Certik audit audit report (2024/04/09)](https://github.com/VenusProtocol/venus-protocol/blob/e4c4dfe1b78945ea87dca5b7e0c724b6bd317359/audits/099_unlistMarkets_certik_20240409.pdf)
 - [Fairyproof audit report (2024/03/28)](https://github.com/VenusProtocol/venus-protocol/blob/e4c4dfe1b78945ea87dca5b7e0c724b6bd317359/audits/102_unlistMarkets_fairyproof_20240328.pdf)
@@ -35,6 +35,76 @@ Fix Borrow Cap 0 Logic
         - contracts/Comptroller/ComptrollerStorage.sol
         - contracts/Comptroller/Diamond/facets/PolicyFacet.sol
         - contracts/Comptroller/Diamond/facets/SetterFacet.sol
+
+</details>
+
+### Oracle for Ether.fi LRT tokens (weETHs and weETHk) on Ethereum
+
+**Scope**: specific oracle for the tokens [weETHs](https://etherscan.io/token/0x917ceE801a67f933F2e6b33fC0cD1ED2d5909D88) and [weETHk](https://etherscan.io/address/0x7223442cad8e9cA474fC40109ab981608F8c4273) on Ethereum, using an `Accountant` contract under the hood, provided by the [Ether.fi](https://www.ether.fi/) project. Enabled in [VIP-355](https://app-alt.venus.io/#/governance/proposal/355).
+
+- [Certik audit audit report (2024/08/23)](https://github.com/VenusProtocol/oracle/blob/93a79c97e867f61652fc063abb5df323acc9bed4/audits/116_WeETHAccountantOracle_certik_20240823.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#213](https://github.com/VenusProtocol/oracle/pull/213)
+    - contracts/oracles/WeETHAccountantOracle.sol
+    - contracts/interfaces/IAccountant.sol
+
+</details>
+
+### VBNBAdmin: new function setInterestRateModel
+
+**Scope**: Update of the VBNBAdmin contract to integrate the AccessControlManager within the `setInterestRateModel` function. This will allow to authorize more timelocks (not only the Normal timelock) to execute this function, so Fast-track and Critical VIP's will be able to update the interest rate model on the VBNB market. Enabled in [VIP-343](https://app-alt.venus.io/#/governance/proposal/343).
+
+- [Certik audit audit report (2024/07/17)](https://github.com/VenusProtocol/venus-protocol/blob/5e4563ab0f2f98a04659e065b6c49acebf00df3b/audits/112_VBNBAdmin_certik_20240717.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#487](https://github.com/VenusProtocol/venus-protocol/pull/487)
+    - contracts/Admin/VBNBAdmin.sol
+    - contracts/Admin/VBNBAdminStorage.sol
+
+</details>
+
+### Oracle for sfrxETH on Ethereum
+
+**Scope**: specific oracle for the token [sfrxETH](https://etherscan.io/token/0xac3e018457b222d93114458476f3e3416abbe38f) on Ethereum, using the `SfrxEthFraxOracle` oracle under the hood, provided by the [FRAX project](https://docs.frax.finance/frax-oracle/advanced-concepts#frax-oracles). Enabled in [VIP-329](https://app.venus.io/#/governance/proposal/329).
+
+- [Certik audit audit report (2024/05/17)](https://github.com/VenusProtocol/oracle/blob/0b221a7bb7d8e04fd8b013806facb93bcb4038b9/audits/110_sfrxETHOracle_certik_20240517.pdf)
+- [Quantstamp audit audit report (2024/05/20)](https://github.com/VenusProtocol/oracle/blob/0b221a7bb7d8e04fd8b013806facb93bcb4038b9/audits/111_sfrxETHOracle_quantstamp_20240530.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#191](https://github.com/VenusProtocol/oracle/pull/191)
+    - contracts/oracles/SFrxETHOracle.sol
+
+</details>
+
+### Multichain Governance
+
+**Scope**: Cross chain messaging, execution of VIP on non-BNB chains. Integration of [Multichain Governance](https://github.com/VenusProtocol/governance-contracts/pull/21) in Venus. Enabled in [VIP-330](https://app.venus.io/#/governance/proposal/330) and [VIP-331](https://app.venus.io/#/governance/proposal/331).
+
+* [Openzepplin audit report - 2024/01/19](https://github.com/VenusProtocol/governance-contracts/blob/2915ea772d86d9cc63f88fb6e804eaae53193879/audits/084_multichainGovernance_openzeppelin_20240119.pdf)
+* [Certik audit report - 2024/02/26](https://github.com/VenusProtocol/governance-contracts/blob/2915ea772d86d9cc63f88fb6e804eaae53193879/audits/085_multichainGovernance_certik_20240226.pdf)
+* [Cantina audit report - 2024/04/25](https://github.com/VenusProtocol/governance-contracts/blob/2915ea772d86d9cc63f88fb6e804eaae53193879/audits/105_multichainGovernance_cantina_20240425.pdf)
+* [Quantstamp audit report - 2024/04/29](https://github.com/VenusProtocol/governance-contracts/blob/2915ea772d86d9cc63f88fb6e804eaae53193879/audits/106_multichainGovernance_quantstamp_20240429.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#21](https://github.com/VenusProtocol/governance-contracts/pull/21)
+    - contracts/Cross-chain/BaseOmnichainControllerDest.sol
+    - contracts/Cross-chain/BaseOmnichainControllerSrc.sol
+    - contracts/Cross-chain/OmnichainExecutorOwner.sol
+    - contracts/Cross-chain/OmnichainGovernanceExecutor.sol
+    - contracts/Cross-chain/OmnichainProposalSender.sol
+    - contracts/Cross-chain/interfaces/IGovernananceBravoDelegate.sol
+    - contracts/Cross-chain/interfaces/ITimelock.sol
+    - contracts/Governance/TimelockV8.sol
+>>>>>>> main
 
 </details>
 
@@ -95,7 +165,7 @@ Fix Borrow Cap 0 Logic
 
 ### VAI Controller
 
-**Scope**: `VAIController` contract, fixing how the seized amounts during a VAI liquidations are calculated, considering the original VAI debt plus the interests generated.
+**Scope**: `VAIController` contract, fixing how the seized amounts during a VAI liquidations are calculated, considering the original VAI debt plus the interests generated. Enabled in [VIP-299](https://app.venus.io/#/governance/proposal/299).
 
 - [Certik audit audit report (2024/04/26)](https://github.com/VenusProtocol/venus-protocol/blob/0000b6b7bb9eaf1d6827993c306b776c371d41b7/audits/107_vaiController_certik_20240426.pdf)
 - [Pessimistic audit audit report (2024/05/02)](https://github.com/VenusProtocol/venus-protocol/blob/c01162eac8a911cd3a45c3d55b91e418e5ec2e6a/audits/109_vaiController_pessimistic_20240502.pdf)
@@ -167,7 +237,6 @@ Fix Borrow Cap 0 Logic
     - contracts/Comptroller/Diamond/facets/MarketFacet.sol
 
 </details>
->>>>>>> main
 
 ### Oracle for wstETH
 

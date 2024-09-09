@@ -20,6 +20,12 @@
 * XVSProxyOFTDest: [`0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2`](https://opbnbscan.com/address/0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2)
 * XVS: [`0x3E2e61F1c075881F3fB8dd568043d8c221fd5c61`](https://opbnbscan.com/address/0x3E2e61F1c075881F3fB8dd568043d8c221fd5c61)
 
+### Arbitrum One
+
+* XVSBridgeAdmin: [`0xf5d81C6F7DAA3F97A6265C8441f92eFda22Ad784`](https://arbiscan.io/address/0xf5d81C6F7DAA3F97A6265C8441f92eFda22Ad784)
+* XVSProxyOFTDest: [`0x20cEa49B5F7a6DBD78cAE772CA5973eF360AA1e6`](https://arbiscan.io/address/0x20cEa49B5F7a6DBD78cAE772CA5973eF360AA1e6)
+* XVS: [`0xc1Eb7689147C81aC840d4FF0D298489fc7986d52`](https://arbiscan.io/address/0xc1Eb7689147C81aC840d4FF0D298489fc7986d52)
+
 ## Testnet chains
 
 ### BNB Chain
@@ -39,3 +45,9 @@
 * XVSBridgeAdmin: [`0x19252AFD0B2F539C400aEab7d460CBFbf74c17ff`](https://testnet.opbnbscan.com/address/0x19252AFD0B2F539C400aEab7d460CBFbf74c17ff)
 * XVSProxyOFTDest: [`0xA03205bC635A772E533E7BE36b5701E331a70ea3`](https://testnet.opbnbscan.com/address/0xA03205bC635A772E533E7BE36b5701E331a70ea3)
 * XVS: [`0xc2931B1fEa69b6D6dA65a50363A8D75d285e4da9`](https://testnet.opbnbscan.com/address/0xc2931B1fEa69b6D6dA65a50363A8D75d285e4da9)
+
+### Arbitrum Sepolia
+
+* XVSBridgeAdmin: [`0xc94578caCC89a29B044a0a1D54d20d48A645E5C8`](https://sepolia.arbiscan.io/address/0xc94578caCC89a29B044a0a1D54d20d48A645E5C8)
+* XVSProxyOFTDest: [`0xFdC5cEC63FD167DA46cF006585b30D03B104eFD4`](https://sepolia.arbiscan.io/address/0xFdC5cEC63FD167DA46cF006585b30D03B104eFD4)
+* XVS: [`0x877Dc896e7b13096D3827872e396927BbE704407`](https://sepolia.arbiscan.io/address/0x877Dc896e7b13096D3827872e396927BbE704407)
