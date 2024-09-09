@@ -234,12 +234,12 @@
 * Comptroller: [`0x52bAB1aF7Ff770551BD05b9FC2329a0Bf5E23F16`](https://arbiscan.io/address/0x52bAB1aF7Ff770551BD05b9FC2329a0Bf5E23F16)
 * NativeTokenGateway: [`0xD1e89806BAB8Cd7680DFc7425D1fA6d7D5F0C3FE`](https://arbiscan.io/address/0xD1e89806BAB8Cd7680DFc7425D1fA6d7D5F0C3FE)
 * Underlying tokens:
-  * WSTETH: [`0x5979D7b546E38E414F7E9822514be443A4800529`](https://arbiscan.io/address/0x5979D7b546E38E414F7E9822514be443A4800529)
-  * WEETH: [`0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe`](https://arbiscan.io/address/0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe)
+  * wstETH: [`0x5979D7b546E38E414F7E9822514be443A4800529`](https://arbiscan.io/address/0x5979D7b546E38E414F7E9822514be443A4800529)
+  * weETH: [`0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe`](https://arbiscan.io/address/0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe)
   * WETH: [`0x82af49447d8a07e3bd95bd0d56f35241523fbab1`](https://arbiscan.io/address/0x82af49447d8a07e3bd95bd0d56f35241523fbab1)
 * Markets:
-  * vWSTETH\_LiquidStakedETH: [`0x9df6B5132135f14719696bBAe3C54BAb272fDb16`](https://arbiscan.io/address/0x9df6B5132135f14719696bBAe3C54BAb272fDb16)
-  * vWEETH\_LiquidStakedETH: [`0x246a35E79a3a0618535A469aDaF5091cAA9f7E88`](https://arbiscan.io/address/0x246a35E79a3a0618535A469aDaF5091cAA9f7E88)
+  * vwstETH\_LiquidStakedETH: [`0x9df6B5132135f14719696bBAe3C54BAb272fDb16`](https://arbiscan.io/address/0x9df6B5132135f14719696bBAe3C54BAb272fDb16)
+  * vweETH\_LiquidStakedETH: [`0x246a35E79a3a0618535A469aDaF5091cAA9f7E88`](https://arbiscan.io/address/0x246a35E79a3a0618535A469aDaF5091cAA9f7E88)
   * vWETH\_LiquidStakedETH: [`0x39D6d13Ea59548637104E40e729E4aABE27FE106`](https://arbiscan.io/address/0x39D6d13Ea59548637104E40e729E4aABE27FE106)
 
 ## BNB Chain Testnet
@@ -422,10 +422,10 @@
 * Comptroller: [`0x3D04F926b2a165BBa17FBfccCCB61513634fa5e4`](https://sepolia.arbiscan.io/address/0x3D04F926b2a165BBa17FBfccCCB61513634fa5e4)
 * NativeTokenGateway: [`0x63cEE24b12648E36d708163587aC17a777096a47`](https://sepolia.arbiscan.io/address/0x63cEE24b12648E36d708163587aC17a777096a47)
 * Underlying tokens:
-  * WSTETH: [`0x4A9dc15aA6094eF2c7eb9d9390Ac1d71f9406fAE`](https://sepolia.arbiscan.io/address/0x4A9dc15aA6094eF2c7eb9d9390Ac1d71f9406fAE)
-  * WEETH: [`0x243141DBff86BbB0a082d790fdC21A6ff615Fa34`](https://sepolia.arbiscan.io/address/0x243141DBff86BbB0a082d790fdC21A6ff615Fa34)
+  * wstETH: [`0x4A9dc15aA6094eF2c7eb9d9390Ac1d71f9406fAE`](https://sepolia.arbiscan.io/address/0x4A9dc15aA6094eF2c7eb9d9390Ac1d71f9406fAE)
+  * weETH: [`0x243141DBff86BbB0a082d790fdC21A6ff615Fa34`](https://sepolia.arbiscan.io/address/0x243141DBff86BbB0a082d790fdC21A6ff615Fa34)
   * WETH: [`0x980B62Da83eFf3D4576C647993b0c1D7faf17c73`](https://sepolia.arbiscan.io/address/0x980B62Da83eFf3D4576C647993b0c1D7faf17c73)
 * Markets:
-  * vWSTETH\_LiquidStakedETH: [`0x253515E19e8b888a4CA5a0a3363B712402ce4046`](https://sepolia.arbiscan.io/address/0x253515E19e8b888a4CA5a0a3363B712402ce4046)
-  * vWEETH\_LiquidStakedETH: [`0x75f841b14305935D8D7E806f249D9FA52EF1550B`](https://sepolia.arbiscan.io/address/0x75f841b14305935D8D7E806f249D9FA52EF1550B)
+  * vwstETH\_LiquidStakedETH: [`0x253515E19e8b888a4CA5a0a3363B712402ce4046`](https://sepolia.arbiscan.io/address/0x253515E19e8b888a4CA5a0a3363B712402ce4046)
+  * vweETH\_LiquidStakedETH: [`0x75f841b14305935D8D7E806f249D9FA52EF1550B`](https://sepolia.arbiscan.io/address/0x75f841b14305935D8D7E806f249D9FA52EF1550B)
   * vWETH\_LiquidStakedETH: [`0xd7057250b439c0849377bB6C3263eb8f9cf49d98`](https://sepolia.arbiscan.io/address/0xd7057250b439c0849377bB6C3263eb8f9cf49d98)
