@@ -8,9 +8,39 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Unlist markets
+
+**Scope**: Changes in the [isolated pools](https://github.com/VenusProtocol/isolated-pools) and [core](https://github.com/VenusProtocol/venus-protocol) contracts to support unlisting markets. Fix in the core pool the behaviour of borrow caps set to zero. Enabled in [VIP-361](https://app-alt.venus.io/#/governance/proposal/361).
+
+- [Certik audit audit report (2024/04/09)](https://github.com/VenusProtocol/venus-protocol/blob/e4c4dfe1b78945ea87dca5b7e0c724b6bd317359/audits/099_unlistMarkets_certik_20240409.pdf)
+- [Fairyproof audit report (2024/03/28)](https://github.com/VenusProtocol/venus-protocol/blob/e4c4dfe1b78945ea87dca5b7e0c724b6bd317359/audits/102_unlistMarkets_fairyproof_20240328.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+Unlist markets
+
+- Pull request [#429](https://github.com/VenusProtocol/venus-protocol/pull/429) in the `venus-protocol` repo:
+    - Change: allow Governance the logical deletion of markets from the Comptroller contract
+        - contracts/Comptroller/Diamond/facets/MarketFacet.sol
+        - contracts/Comptroller/Diamond/facets/PolicyFacet.sol
+- Pull request [#349](https://github.com/VenusProtocol/isolated-pools/pull/349) in the `isolated-pools` repo:
+    - Change: allow Governance the logical deletion of markets from the Comptroller contract
+    - Files: contracts/Comptroller.sol
+
+Fix Borrow Cap 0 Logic
+
+- Pull request [#438](https://github.com/VenusProtocol/venus-protocol/pull/438) in the `venus-protocol` repo:
+    - Change: previously, a borrow cap of 0 meant no-caps. That is error-prone. With the new logic, a borrow cap of 0 won't allow new borrows
+        - contracts/Comptroller/ComptrollerStorage.sol
+        - contracts/Comptroller/Diamond/facets/PolicyFacet.sol
+        - contracts/Comptroller/Diamond/facets/SetterFacet.sol
+
+</details>
+
 ### Oracle for Ether.fi LRT tokens (weETHs and weETHk) on Ethereum
 
-**Scope**: specific oracle for the tokens [weETHs](https://etherscan.io/token/0x917ceE801a67f933F2e6b33fC0cD1ED2d5909D88) and [weETHk](https://etherscan.io/address/0x7223442cad8e9cA474fC40109ab981608F8c4273) on Ethereum, using an `Accountant` contract under the hood, provided by the [Ether.fi](https://www.ether.fi/) project.
+**Scope**: specific oracle for the tokens [weETHs](https://etherscan.io/token/0x917ceE801a67f933F2e6b33fC0cD1ED2d5909D88) and [weETHk](https://etherscan.io/address/0x7223442cad8e9cA474fC40109ab981608F8c4273) on Ethereum, using an `Accountant` contract under the hood, provided by the [Ether.fi](https://www.ether.fi/) project. Enabled in [VIP-355](https://app-alt.venus.io/#/governance/proposal/355).
 
 - [Certik audit audit report (2024/08/23)](https://github.com/VenusProtocol/oracle/blob/93a79c97e867f61652fc063abb5df323acc9bed4/audits/116_WeETHAccountantOracle_certik_20240823.pdf)
 
@@ -74,6 +104,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
     - contracts/Cross-chain/interfaces/IGovernananceBravoDelegate.sol
     - contracts/Cross-chain/interfaces/ITimelock.sol
     - contracts/Governance/TimelockV8.sol
+>>>>>>> main
 
 </details>
 
