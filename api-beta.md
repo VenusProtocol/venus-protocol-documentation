@@ -35,6 +35,12 @@ These steps describe the process of upgrading endpoints to new versions as they 
 4. Clients remove the `accept-version: next` header to avoid receiving unexpected changes.
 5. The endpoint is now ready to release another version.
 
+### Pool Endpoints
+
+{% swagger src=".gitbook/assets/swagger (1).json" path="/pools" method="get" %}
+[swagger (1).json](<.gitbook/assets/swagger (1).json>)
+{% endswagger %}
+
 ### Market Endpoints
 
 {% swagger src=".gitbook/assets/swagger.json" path="/markets/core-pool" method="get" fullWidth="true" %}
