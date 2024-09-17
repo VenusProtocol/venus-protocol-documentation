@@ -22,7 +22,11 @@ The Isolated Pools subgraphs provides endpoints for querying data related to Iso
 
 [Arbitrum Sepolia](https://testnet.thegraph.com/explorer/subgraphs/B8aNSdbdWUDUaUU9bDKadw6N436VGPmmkwYrznZ1ZSBW?view=Query&chain=arbitrum-sepolia)
 
+[zkSync](https://thegraph.com/explorer/subgraphs/GAGNaWNCDmWvjr217vjtQrh3uSkV2bjXPzJSfnGAuxfz?view=Query&chain=arbitrum-one)
+
 [zkSync Sepolia](https://testnet.thegraph.com/explorer/subgraphs/AmXdQK11e4QqyjqVdb1XGTjafg1neNngE5Cc6bGGKwEe?view=Query&chain=arbitrum-sepolia)
+
+[Optimism Sepolia](https://testnet.thegraph.com/explorer/subgraphs/H5UX78VJCcxuhsifQrmJ4vaVvChehF9abYoKD2a3qi6i?view=Query&chain=arbitrum-sepolia)
 
 ## Core Pool
 The Core Pool subgraph is responsible for indexing and aggregating events related to market and lending activities in the Core Pool
