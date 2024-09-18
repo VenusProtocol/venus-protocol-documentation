@@ -242,6 +242,26 @@
   * vweETH\_LiquidStakedETH: [`0x246a35E79a3a0618535A469aDaF5091cAA9f7E88`](https://arbiscan.io/address/0x246a35E79a3a0618535A469aDaF5091cAA9f7E88)
   * vWETH\_LiquidStakedETH: [`0x39D6d13Ea59548637104E40e729E4aABE27FE106`](https://arbiscan.io/address/0x39D6d13Ea59548637104E40e729E4aABE27FE106)
 
+## ZKsync Mainnet
+
+* PoolRegistry: [`0xFD96B926298034aed9bBe0Cca4b651E41eB87Bc4`](https://explorer.zksync.io/address/0xFD96B926298034aed9bBe0Cca4b651E41eB87Bc4)
+* PoolLens: [`0x69FC4232959131B4992597B739cEC97Ee898aA68`](https://explorer.zksync.io/address/0x69FC4232959131B4992597B739cEC97Ee898aA68)
+* DefaultProxyAdmin: [`0x8Ea1A989B036f7Ef21bb95CE4E7961522Ca00287`](https://explorer.zksync.io/address/0x8Ea1A989B036f7Ef21bb95CE4E7961522Ca00287)
+* Comptroller Beacon: [`0x0221415aF47FD261dD39B72018423dADe5d937c5`](https://explorer.zksync.io/address/0x0221415aF47FD261dD39B72018423dADe5d937c5)
+* VToken Beacon: [`0x53523537aa330640B80400EB8B309fF5896E7eb5`](https://explorer.zksync.io/address/0x53523537aa330640B80400EB8B309fF5896E7eb5)
+* ProtocolShareReserve: [`0xA1193e941BDf34E858f7F276221B4886EfdD040b`](https://explorer.zksync.io/address/0xA1193e941BDf34E858f7F276221B4886EfdD040b)
+
+### Core Pool
+
+* Comptroller: [`0xddE4D098D9995B659724ae6d5E3FB9681Ac941B1`](https://explorer.zksync.io/address/0xddE4D098D9995B659724ae6d5E3FB9681Ac941B1)
+* NativeTokenGateway: [`0xeEDE4e1BDaC489BD851970bE3952B729C4238A68`](https://explorer.zksync.io/address/0xeEDE4e1BDaC489BD851970bE3952B729C4238A68)
+* Markets:
+  * vWBTC\_Core: [`0xAF8fD83cFCbe963211FAaf1847F0F217F80B4719`](https://explorer.zksync.io/address/0xAF8fD83cFCbe963211FAaf1847F0F217F80B4719)
+  * vWETH\_Core: [`0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8`](https://explorer.zksync.io/address/0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8)
+  * vUSDT\_Core: [`0x69cDA960E3b20DFD480866fFfd377Ebe40bd0A46`](https://explorer.zksync.io/address/0x69cDA960E3b20DFD480866fFfd377Ebe40bd0A46)
+  * vUSDC_E\_Core: [`0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D`](https://explorer.zksync.io/address/0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D)
+  * vZK\_Core: [`0x697a70779C1A03Ba2BD28b7627a902BFf831b616`](https://explorer.zksync.io/address/0x697a70779C1A03Ba2BD28b7627a902BFf831b616)
+
 ## BNB Chain Testnet
 
 * PoolRegistry: [`0xC85491616Fa949E048F3aAc39fbf5b0703800667`](https://testnet.bscscan.com/address/0xC85491616Fa949E048F3aAc39fbf5b0703800667)
@@ -429,3 +449,24 @@
   * vwstETH\_LiquidStakedETH: [`0x253515E19e8b888a4CA5a0a3363B712402ce4046`](https://sepolia.arbiscan.io/address/0x253515E19e8b888a4CA5a0a3363B712402ce4046)
   * vweETH\_LiquidStakedETH: [`0x75f841b14305935D8D7E806f249D9FA52EF1550B`](https://sepolia.arbiscan.io/address/0x75f841b14305935D8D7E806f249D9FA52EF1550B)
   * vWETH\_LiquidStakedETH: [`0xd7057250b439c0849377bB6C3263eb8f9cf49d98`](https://sepolia.arbiscan.io/address/0xd7057250b439c0849377bB6C3263eb8f9cf49d98)
+
+
+## ZKsync Sepolia
+
+* PoolRegistry: [`0x1401404e6279BB8C06E5E3999eCA3e2008B46A76`](https://sepolia.explorer.zksync.io/address/0x1401404e6279BB8C06E5E3999eCA3e2008B46A76)
+* PoolLens: [`0x214Ed51c798EE53f0be79d810E9Fc91662FDE243`](https://sepolia.explorer.zksync.io/address/0x214Ed51c798EE53f0be79d810E9Fc91662FDE243)
+* DefaultProxyAdmin: [`0x18E44f588a4DcF2F7145d35A5C226e129040b6D3`](https://sepolia.explorer.zksync.io/address/0x18E44f588a4DcF2F7145d35A5C226e129040b6D3)
+* Comptroller Beacon: [`0xf8bD27B4a4df30F6c2961663212f2200A8e5D5F3`](https://sepolia.explorer.zksync.io/address/0xf8bD27B4a4df30F6c2961663212f2200A8e5D5F3)
+* VToken Beacon: [`0xA95B8eb3Be3CfFCf340A094574338010A4ffB2Ca`](https://sepolia.explorer.zksync.io/address/0xA95B8eb3Be3CfFCf340A094574338010A4ffB2Ca)
+* ProtocolShareReserve: [`0x5722B43BD91fAaDC4E7f384F4d6Fb32456Ec5ffB`](https://sepolia.explorer.zksync.io/address/0x5722B43BD91fAaDC4E7f384F4d6Fb32456Ec5ffB)
+
+### Core Pool
+
+* Comptroller: [`0xC527DE08E43aeFD759F7c0e6aE85433923064669`](https://sepolia.explorer.zksync.io/address/0xC527DE08E43aeFD759F7c0e6aE85433923064669)
+* NativeTokenGateway: [`0xC2bc5881f2c1ee08a1f0fee65Fbf2BB4C4DD81e9`](https://sepolia.explorer.zksync.io/address/0xC2bc5881f2c1ee08a1f0fee65Fbf2BB4C4DD81e9)
+* Markets:
+  * vWBTC\_Core: [`0x9c2379ed8ab06B44328487f61873C7c44BD6E87D`](https://sepolia.explorer.zksync.io/address/0x9c2379ed8ab06B44328487f61873C7c44BD6E87D)
+  * vWETH\_Core: [`0x31eb7305f9fE281027028D0ba0d7f57ddA836d49`](https://sepolia.explorer.zksync.io/address/0x31eb7305f9fE281027028D0ba0d7f57ddA836d49)
+  * vUSDT\_Core: [`0x7Bfd185eF8380a72027bF65bFEEAb0242b147778`](https://sepolia.explorer.zksync.io/address/0x7Bfd185eF8380a72027bF65bFEEAb0242b147778)
+  * vUSDC_E\_Core: [`0x58b0b248BB11DCAA9336bBf8a81914201fD49461`](https://sepolia.explorer.zksync.io/address/0x58b0b248BB11DCAA9336bBf8a81914201fD49461)
+  * vZK\_Core: [`0x92f4BD794303c0BD0791B350Be5531DB38414f47`](https://sepolia.explorer.zksync.io/address/0x92f4BD794303c0BD0791B350Be5531DB38414f47)

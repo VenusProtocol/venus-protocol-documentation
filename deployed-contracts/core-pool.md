@@ -186,3 +186,17 @@
 * XVS Vault Proxy: [`0x407507DC2809D3aa31D54EcA3BEde5C5c4C8A17F`](https://sepolia.arbiscan.io/address/0x407507dc2809d3aa31d54eca3bede5c5c4c8a17f)
 * Prime: [`0xadb04ac4942683bc41e27d18234c8dc884786e89`](https://sepolia.arbiscan.io/address/0xadb04ac4942683bc41e27d18234c8dc884786e89)
 * Prime Liquidity Provider: [`0xe82c2c10f55d3268126c29ec813dc6f086904694`](https://sepolia.arbiscan.io/address/0xe82c2c10f55d3268126c29ec813dc6f086904694)
+
+## ZKsync Mainnet
+
+* Venus Treasury: [`0xB2e9174e23382f7744CebF7e0Be54cA001D95599`](https://explorer.zksync.io/address/0xB2e9174e23382f7744CebF7e0Be54cA001D95599)
+* XVS Vault Proxy: [`0xbbB3C88192a5B0DB759229BeF49DcD1f168F326F`](https://explorer.zksync.io/address/0xbbB3C88192a5B0DB759229BeF49DcD1f168F326F)
+* Prime: [`0xdFe62Dcba3Ce0A827439390d7d45Af8baE599978`](https://explorer.zksync.io/address/0xdFe62Dcba3Ce0A827439390d7d45Af8baE599978)
+* Prime Liquidity Provider: [`0x0EDE6d7fB474614C5D3d5a16581628bb96CB5dff`](https://explorer.zksync.io/address/0x0EDE6d7fB474614C5D3d5a16581628bb96CB5dff)
+
+## ZKsync Sepolia
+
+* Venus Treasury: [`0x943eBE4460a12F551D60A68f510Ea10CD8d564BA`](https://sepolia.explorer.zksync.io/address/0x943eBE4460a12F551D60A68f510Ea10CD8d564BA)
+* XVS Vault Proxy: [`0x825f9EE3b2b1C159a5444A111A70607f3918564e`](https://sepolia.explorer.zksync.io/address/0x825f9EE3b2b1C159a5444A111A70607f3918564e)
+* Prime: [`0x72b85930F7f8D00ACe5EAD10a315C17b8954FBcF`](https://sepolia.explorer.zksync.io/address/0x72b85930F7f8D00ACe5EAD10a315C17b8954FBcF)
+* Prime Liquidity Provider: [`0x3407c349F80E4E9544c73ca1E9334CeEA7266517`](https://sepolia.explorer.zksync.io/address/0x3407c349F80E4E9544c73ca1E9334CeEA7266517)

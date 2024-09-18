@@ -145,4 +145,20 @@ Specific functions that can be invoked by the guardians
 * Fasttrack Timelock: [`0x14642991184F989F45505585Da52ca6A6a7dD4c8`](https://sepolia.arbiscan.io/address/0x14642991184F989F45505585Da52ca6A6a7dD4c8)
 * Critical Timelock: [`0x0b32Be083f7041608E023007e7802430396a2123`](https://sepolia.arbiscan.io/address/0x0b32Be083f7041608E023007e7802430396a2123)
 * Omnichain Governance Executor: [`0xcf3e6972a8e9c53D33b642a2592938944956f138`](https://sepolia.arbiscan.io/address/0xcf3e6972a8e9c53D33b642a2592938944956f138)
-* Omnichain Executor Owner Proxy : [`0xfCA70dd553b7dF6eB8F813CFEA6a9DD039448878`](https://sepolia.arbiscan.io/address/0xfCA70dd553b7dF6eB8F813CFEA6a9DD039448878)
+* Omnichain Executor Owner Proxy: [`0xfCA70dd553b7dF6eB8F813CFEA6a9DD039448878`](https://sepolia.arbiscan.io/address/0xfCA70dd553b7dF6eB8F813CFEA6a9DD039448878)
+
+## ZKsync Mainnet
+
+* Access Control Manager: [`0x526159A92A82afE5327d37Ef446b68FD9a5cA914`](https://explorer.zksync.io/address/0x526159A92A82afE5327d37Ef446b68FD9a5cA914)
+* Guardian: [`0x751Aa759cfBB6CE71A43b48e40e1cCcFC66Ba4aa`](https://explorer.zksync.io/address/0x751Aa759cfBB6CE71A43b48e40e1cCcFC66Ba4aa)
+
+## ZKsync Sepolia
+
+* Access Control Manager: [`0xD07f543d47c3a8997D6079958308e981AC14CD01`](https://sepolia.explorer.zksync.io/address/0xD07f543d47c3a8997D6079958308e981AC14CD01)
+* Guardian: [`0xa2f83de95E9F28eD443132C331B6a9C9B7a9F866`](https://sepolia.explorer.zksync.io/address/0xa2f83de95E9F28eD443132C331B6a9C9B7a9F866)
+* Normal Timelock: [`0x1730527a0f0930269313D77A317361b42971a67E`](https://sepolia.explorer.zksync.io/address/0x1730527a0f0930269313D77A317361b42971a67E)
+* Fasttrack Timelock: [`0xb055e028b27d53a455a6c040a6952e44E9E615c4`](https://sepolia.explorer.zksync.io/address/0xb055e028b27d53a455a6c040a6952e44E9E615c4)
+* Critical Timelock: [`0x0E6138bE0FA1915efC73670a20A10EFd720a6Cc8`](https://sepolia.explorer.zksync.io/address/0x0E6138bE0FA1915efC73670a20A10EFd720a6Cc8)
+* Omnichain Governance Executor: [`0x83F79CfbaEee738173c0dfd866796743F4E25C9e`](https://sepolia.explorer.zksync.io/address/0x83F79CfbaEee738173c0dfd866796743F4E25C9e)
+* Omnichain Executor Owner Proxy: [`0xa34607D58146FA02aF5f920f29C3D916acAb0bC5`](https://sepolia.explorer.zksync.io/address/0xa34607D58146FA02aF5f920f29C3D916acAb0bC5)
+
