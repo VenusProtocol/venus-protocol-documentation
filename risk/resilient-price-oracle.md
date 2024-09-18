@@ -177,16 +177,7 @@ The current list of correlated token oracles in Venus is:
 | Liquid Staked ETH | wstETH |  [wstETHOneJumpChainlinkOracle](https://arbiscan.io/address/0x748DeFdbaE5215cdF0C436c538804823b55D76bc) | - | - | |
 | Liquid Staked ETH | WETH | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
 
-#### Zksync Sepolia
-| Pool | Market | MAIN oracle | PIVOT oracle | FALLBACK oracle | Notes |
-|---|---|---|---|---|---|
-| Core | WBTC | [ChainlinkOracle](https://sepolia.explorer.zksync.io/address/0x0DFf10dCdb3526010Df01ECc42076C25C27F8323) | - | - | |
-| Core | WETH | [ChainlinkOracle](https://sepolia.explorer.zksync.io/address/0x0DFf10dCdb3526010Df01ECc42076C25C27F8323) | - | - | |
-| Core | USDC_E | [ChainlinkOracle](https://sepolia.explorer.zksync.io/address/0x0DFf10dCdb3526010Df01ECc42076C25C27F8323) | - | - | |
-| Core | USDT | [ChainlinkOracle](https://sepolia.explorer.zksync.io/address/0x0DFf10dCdb3526010Df01ECc42076C25C27F8323) | - | - | |
-| Core | ZK | [ChainlinkOracle](https://sepolia.explorer.zksync.io/address/0x0DFf10dCdb3526010Df01ECc42076C25C27F8323) | - | - | |
-
-#### Zksync Mainnet
+#### ZKsync Mainnet
 | Pool | Market | MAIN oracle | PIVOT oracle | FALLBACK oracle | Notes |
 |---|---|---|---|---|---|
 | Core | WBTC | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | - | - | |
