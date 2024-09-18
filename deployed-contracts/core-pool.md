@@ -197,3 +197,6 @@
 ## Zksync Mainnet
 
 * Venus Treasury: [`0xB2e9174e23382f7744CebF7e0Be54cA001D95599`](https://explorer.zksync.io/address/0xB2e9174e23382f7744CebF7e0Be54cA001D95599)
+* XVS Vault Proxy: [`0xbbB3C88192a5B0DB759229BeF49DcD1f168F326F`](https://explorer.zksync.io/address/0xbbB3C88192a5B0DB759229BeF49DcD1f168F326F)
+* Prime: [`0xdFe62Dcba3Ce0A827439390d7d45Af8baE599978`](https://explorer.zksync.io/address/0xdFe62Dcba3Ce0A827439390d7d45Af8baE599978)
+* Prime Liquidity Provider: [`0x0EDE6d7fB474614C5D3d5a16581628bb96CB5dff`](https://explorer.zksync.io/address/0x0EDE6d7fB474614C5D3d5a16581628bb96CB5dff)

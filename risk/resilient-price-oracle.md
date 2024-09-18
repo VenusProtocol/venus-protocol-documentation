@@ -180,6 +180,16 @@ The current list of correlated token oracles in Venus is:
 | Core | USDT | [ChainlinkOracle](https://sepolia.explorer.zksync.io/address/0x0DFf10dCdb3526010Df01ECc42076C25C27F8323) | - | - | |
 | Core | ZK | [ChainlinkOracle](https://sepolia.explorer.zksync.io/address/0x0DFf10dCdb3526010Df01ECc42076C25C27F8323) | - | - | |
 
+#### Zksync Mainnet
+| Pool | Market | MAIN oracle | PIVOT oracle | FALLBACK oracle | Notes |
+|---|---|---|---|---|---|
+| Core | WBTC | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | - | - | |
+| Core | WETH | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | - | - | |
+| Core | USDC_E | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | - | - | |
+| Core | USDT | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | - | - | |
+| Core | ZK | [RedStoneOracle](https://explorer.zksync.io/address/0xFa1e65e714CDfefDC9729130496AB5b5f3708fdA) | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5)
+| [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | Upper bound: 1.01. Lower bound: 0.99 |
+
 ### Further Reading
 
 For more detailed information, refer to the following resources:

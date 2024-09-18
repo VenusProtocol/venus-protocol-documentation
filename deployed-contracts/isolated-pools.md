@@ -420,4 +420,23 @@
   * vUSDT\_Core: [`0x7Bfd185eF8380a72027bF65bFEEAb0242b147778`](https://sepolia.explorer.zksync.io/address/0x7Bfd185eF8380a72027bF65bFEEAb0242b147778)
   * vUSDC_E\_Core: [`0x58b0b248BB11DCAA9336bBf8a81914201fD49461`](https://sepolia.explorer.zksync.io/address/0x58b0b248BB11DCAA9336bBf8a81914201fD49461)
   * vZK\_Core: [`0x92f4BD794303c0BD0791B350Be5531DB38414f47`](https://sepolia.explorer.zksync.io/address/0x92f4BD794303c0BD0791B350Be5531DB38414f47)
-  
+
+## Zksync Mainnet
+
+* PoolRegistry: [`0xFD96B926298034aed9bBe0Cca4b651E41eB87Bc4`](https://explorer.zksync.io/address/0xFD96B926298034aed9bBe0Cca4b651E41eB87Bc4)
+* PoolLens: [`0x69FC4232959131B4992597B739cEC97Ee898aA68`](https://explorer.zksync.io/address/0x69FC4232959131B4992597B739cEC97Ee898aA68)
+* DefaultProxyAdmin: [`0x8Ea1A989B036f7Ef21bb95CE4E7961522Ca00287`](https://explorer.zksync.io/address/0x8Ea1A989B036f7Ef21bb95CE4E7961522Ca00287)
+* Comptroller Beacon: [`0x0221415aF47FD261dD39B72018423dADe5d937c5`](https://explorer.zksync.io/address/0x0221415aF47FD261dD39B72018423dADe5d937c5)
+* VToken Beacon: [`0x53523537aa330640B80400EB8B309fF5896E7eb5`](https://explorer.zksync.io/address/0x53523537aa330640B80400EB8B309fF5896E7eb5)
+* ProtocolShareReserve: [`0xA1193e941BDf34E858f7F276221B4886EfdD040b`](https://explorer.zksync.io/address/0xA1193e941BDf34E858f7F276221B4886EfdD040b)
+
+### Core Pool
+
+* Comptroller: [`0xddE4D098D9995B659724ae6d5E3FB9681Ac941B1`](https://explorer.zksync.io/address/0xddE4D098D9995B659724ae6d5E3FB9681Ac941B1)
+* NativeTokenGateway: [`0xeEDE4e1BDaC489BD851970bE3952B729C4238A68`](https://explorer.zksync.io/address/0xeEDE4e1BDaC489BD851970bE3952B729C4238A68)
+* Markets:
+  * vWBTC\_Core: [`0xAF8fD83cFCbe963211FAaf1847F0F217F80B4719`](https://explorer.zksync.io/address/0xAF8fD83cFCbe963211FAaf1847F0F217F80B4719)
+  * vWETH\_Core: [`0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8`](https://explorer.zksync.io/address/0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8)
+  * vUSDT\_Core: [`0x69cDA960E3b20DFD480866fFfd377Ebe40bd0A46`](https://explorer.zksync.io/address/0x69cDA960E3b20DFD480866fFfd377Ebe40bd0A46)
+  * vUSDC_E\_Core: [`0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D`](https://explorer.zksync.io/address/0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D)
+  * vZK\_Core: [`0x697a70779C1A03Ba2BD28b7627a902BFf831b616`](https://explorer.zksync.io/address/0x697a70779C1A03Ba2BD28b7627a902BFf831b616)
