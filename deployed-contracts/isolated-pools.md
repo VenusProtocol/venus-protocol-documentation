@@ -110,6 +110,19 @@
   * vBabyDoge\_Meme: [`0x52eD99Cd0a56d60451dD4314058854bc0845bbB5`](https://bscscan.com/address/0x52eD99Cd0a56d60451dD4314058854bc0845bbB5)
   * vUSDT\_Meme: [`0x4a9613D06a241B76b81d3777FCe3DDd1F61D4Bd0`](https://bscscan.com/address/0x4a9613D06a241B76b81d3777FCe3DDd1F61D4Bd0)
 
+### Liquid Staked ETH Pool
+
+* Comptroller: [`0xBE609449Eb4D76AD8545f957bBE04b596E8fC529`](https://bscscan.com/address/0xBE609449Eb4D76AD8545f957bBE04b596E8fC529)
+* Swap router: [`0xfb4A3c6D25B4f66C103B4CD0C0D58D24D6b51dC1`](https://bscscan.com/address/0xfb4A3c6D25B4f66C103B4CD0C0D58D24D6b51dC1)
+* Underlying tokens:
+  * wstETH: [`0x26c5e01524d2E6280A48F2c50fF6De7e52E9611C`](https://bscscan.com/address/0x26c5e01524d2E6280A48F2c50fF6De7e52E9611C)
+  * weETH: [`0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A`](https://bscscan.com/address/0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A)
+  * ETH: [`0x2170Ed0880ac9A755fd29B2688956BD959F933F8`](https://bscscan.com/address/0x2170Ed0880ac9A755fd29B2688956BD959F933F8)
+* Markets:
+  * vwstETH\_LiquidStakedETH: [`0x94180a3948296530024Ef7d60f60B85cfe0422c8`](https://bscscan.com/address/0x94180a3948296530024Ef7d60f60B85cfe0422c8)
+  * vweETH\_LiquidStakedETH: [`0xc5b24f347254bD8cF8988913d1fd0F795274900F`](https://bscscan.com/address/0xc5b24f347254bD8cF8988913d1fd0F795274900F)
+  * vETH\_LiquidStakedETH: [`0xeCCACF760FEA7943C5b0285BD09F601505A29c05`](https://bscscan.com/address/0xeCCACF760FEA7943C5b0285BD09F601505A29c05)
+
 ## Ethereum
 
 * PoolRegistry: [`0x61CAff113CCaf05FFc6540302c37adcf077C5179`](https://etherscan.io/address/0x61CAff113CCaf05FFc6540302c37adcf077C5179)
@@ -343,6 +356,19 @@
 * Markets:
   * vBabyDoge\_Meme: [`0x73d2F6e0708599a4eA70F6A0c55A4C59196a101c`](https://testnet.bscscan.com/address/0x73d2F6e0708599a4eA70F6A0c55A4C59196a101c)
   * vUSDT\_Meme: [`0x3AF2bE7AbEF0f840b196D99d79F4B803a5dB14a1`](https://testnet.bscscan.com/address/0x3AF2bE7AbEF0f840b196D99d79F4B803a5dB14a1)
+
+### Liquid Staked ETH Pool
+
+* Comptroller: [`0xC7859B809Ed5A2e98659ab5427D5B69e706aE26b`](https://testnet.bscscan.com/address/0xC7859B809Ed5A2e98659ab5427D5B69e706aE26b)
+* Swap router: [`0x4A73EbD3dcA511CF3574768BD6184747342C23f2`](https://testnet.bscscan.com/address/0x4A73EbD3dcA511CF3574768BD6184747342C23f2)
+* Underlying tokens:
+  * wstETH: [`0x4349016259FCd8eE452f696b2a7beeE31667D129`](https://testnet.bscscan.com/address/0x4349016259FCd8eE452f696b2a7beeE31667D129)
+  * weETH: [`0x7df9372096c8ca2401f30B3dF931bEFF493f1FdC`](https://testnet.bscscan.com/address/0x7df9372096c8ca2401f30B3dF931bEFF493f1FdC)
+  * ETH: [`0x98f7A83361F7Ac8765CcEBAB1425da6b341958a7`](https://testnet.bscscan.com/address/0x98f7A83361F7Ac8765CcEBAB1425da6b341958a7)
+* Markets:
+  * vwstETH\_LiquidStakedETH: [`0x16eb5Ce6d186B49709dD588518CD545985096Ff5`](https://testnet.bscscan.com/address/0x16eb5Ce6d186B49709dD588518CD545985096Ff5)
+  * vweETH\_LiquidStakedETH: [`0x4BD7EfB423f06fa033404FBd0935A2097918084d`](https://testnet.bscscan.com/address/0x4BD7EfB423f06fa033404FBd0935A2097918084d)
+  * vETH\_LiquidStakedETH: [`0x46D49adF48172d2e79d813A3f4F27aB61724B01e`](https://testnet.bscscan.com/address/0x46D49adF48172d2e79d813A3f4F27aB61724B01e)
 
 ## Sepolia (Ethereum testnet)
 

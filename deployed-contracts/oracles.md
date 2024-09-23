@@ -14,6 +14,10 @@
 * stkBNB Oracle: [`0xdBAFD16c5eA8C29D1e94a5c26b31bFAC94331Ac6`](https://bscscan.com/address/0xdBAFD16c5eA8C29D1e94a5c26b31bFAC94331Ac6)
 * WBETH Oracle: [`0x739db790c656E54590957Ed4d6B94665bCcb3456`](https://bscscan.com/address/0x739db790c656E54590957Ed4d6B94665bCcb3456)
 * DefaultProxyAdmin: [`0x1BB765b741A5f3C2A338369DAb539385534E3343`](https://bscscan.com/address/0x1BB765b741A5f3C2A338369DAb539385534E3343)
+* OneJump Oracle wstETH/ETH/USD (having intermediate oracle Chainlink): [`0x3C9850633e8Cb5ac5c3Da833C947E7c91EED15C4`](https://bscscan.com/address/0x3C9850633e8Cb5ac5c3Da833C947E7c91EED15C4)
+* OneJump Oracle wstETH/ETH/USD (having intermediate oracle Redstone): [`0x90dd7ae1137cC072F7740Ee0b264f2351515B98A`](https://bscscan.com/address/0x90dd7ae1137cC072F7740Ee0b264f2351515B98A)
+* OneJump Oracle weETH/ETH/USD (having intermediate oracle Chainlink): [`0x3b3241698692906310A65ACA199701843404E175`](https://bscscan.com/address/0x3b3241698692906310A65ACA199701843404E175)
+* OneJump Oracle weETH/ETH/USD (having intermediate oracle Redstone): [`0xb661102c399630420A4B9fa0a5cF57161e5452F5`](https://bscscan.com/address/0xb661102c399630420A4B9fa0a5cF57161e5452F5)
 
 ## BNB Chain Testnet
 
@@ -29,6 +33,10 @@
 * stkBNB Oracle: [`0x78c1248c07c3724fe7D6FbD0e8D9859eF206B6d0`](https://testnet.bscscan.com/address/0x78c1248c07c3724fe7D6FbD0e8D9859eF206B6d0)
 * WBETH Oracle: [`0x80f80ad1d963673819752c234339901fa19fA7cb`](https://testnet.bscscan.com/address/0x80f80ad1d963673819752c234339901fa19fA7cb)
 * DefaultProxyAdmin:[`0xef480a5654b231ff7d80A0681F938f3Db71a6Ca6`](https://testnet.bscscan.com/address/0xef480a5654b231ff7d80A0681F938f3Db71a6Ca6)
+* OneJump Oracle wstETH/ETH/USD (having intermediate oracle Chainlink): [`0xB1bf3f668e0E047ab214c7373cf6B06De37c8152`](https://testnet.bscscan.com/address/0xB1bf3f668e0E047ab214c7373cf6B06De37c8152)
+* OneJump Oracle wstETH/ETH/USD (having intermediate oracle Redstone): [`0x35af302A0B4653f214240FCb2dFf059Fe42eC2CE`](https://testnet.bscscan.com/address/0x35af302A0B4653f214240FCb2dFf059Fe42eC2CE)
+* OneJump Oracle weETH/ETH/USD (having intermediate oracle Chainlink): [`0x8C8a70695DC952CA2e8CD4038907201FaBB8134E`](https://testnet.bscscan.com/address/0x8C8a70695DC952CA2e8CD4038907201FaBB8134E)
+* OneJump Oracle weETH/ETH/USD (having intermediate oracle Redstone): [`0xF1B65d1331DceEd40Da71CFc4f06d9754A3f3756`](https://testnet.bscscan.com/address/0xF1B65d1331DceEd40Da71CFc4f06d9754A3f3756)
 
 ## Ethereum mainnet
 
