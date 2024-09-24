@@ -203,16 +203,48 @@ In addition to the core functionality, the XVS Cross-chain Bridge includes addit
 
 - The contract introduces transaction limits for both sending and receiving transactions, based on a daily and single transaction basis. The limits are defined using `chainIdToMaxSingleTransactionLimit`, `chainIdToMaxDailyLimit`, `chainIdToMaxSingleReceiveTransactionLimit`, and `chainIdToMaxDailyReceiveLimit`.
 
-- Transaction Limits
+- Single Send Limit
 
-   | Transfer Path           | Single Send Limit | Single Receive Limit | Daily Send Limit | Daily Receive Limit |
-   |-------------------------|-------------------|----------------------|------------------|---------------------|
-   | BNB <--> Ethereum       | $100,000          | $102,000             | $1,000,000       | $1,020,000          |
-   | BNB <--> opBNB          | $10,000           | $10,200              | $50,000          | $51,000             |
-   | BNB <--> Arbitrum       | $20,000           | $20,400              | $100,000         | $102,000            |
-   | Ethereum <--> opBNB     | $10,000           | $10,200              | $50,000          | $51,000             |
-   | Arbitrum <--> Ethereum  | $20,000           | $20,400              | $100,000         | $102,000            |
-   | Arbitrum <--> opBNB     | $20,000           | $20,400              | $100,000         | $102,000            |
+   |          |   BNB     |   opBNB   |   Arbitrum   |   Ethereum   |   ZKsync  |
+   |----------|-----------|-----------|--------------|--------------|-----------|
+   | BNB      |     -     | $10,000   | $20,000      | $100,000     | $20,000   |
+   | opBNB    | $10,000   |    -      | $20,000      | $10,000      | $20,000   |
+   | Arbitrum | $20,000   | $20,000   |     -        | $20,000      | $20,000   |
+   | Ethereum | $100,000  | $10,000   | $20,000      |      -       | $20,000   |  
+   | ZKsync   | $20,000   | $20,000   | $20,000      | $20,000      |     -     |
+
+
+- Single Receive Limit 
+
+   |          |   BNB     |   opBNB   |   Arbitrum   |   Ethereum   |   ZKsync  |
+   |----------|-----------|-----------|--------------|--------------|-----------|
+   | BNB      |     -     | $10,200   | $20,400      | $102,000     | $20,400   |
+   | opBNB    | $10,200   |    -      | $20,400      | $10,200      | $20,400   |
+   | Arbitrum | $20,400   | $20,400   |     -        | $20,400      | $20,400   |
+   | Ethereum | $102,000  | $10,200   | $20,400      |      -       | $20,400   |  
+   | ZKsync   | $20,400   | $20,400   | $20,400      | $20,400      |     -     |
+
+   
+- Daily Send Limit
+
+   |          |    BNB     |   opBNB   |   Arbitrum   |   Ethereum   |   ZKsync  |
+   |----------|------------|-----------|--------------|--------------|-----------|
+   | BNB      |     -      | $50,000   | $100,000     | $1,000,000   | $100,000  |
+   | opBNB    | $50,000    |    -      | $100,000     | $50,000      | $100,000  |
+   | Arbitrum | $100,000   | $100,000  |     -        | $100,000     | $100,000  |
+   | Ethereum | $1,000,000 | $50,000   | $100,000     |      -       | $100,000  |  
+   | ZKsync   | $100,000   | $100,000  | $100,000     | $100,000     |     -     |
+
+
+-  Daily Receive Limit  
+
+   |          |    BNB     |   opBNB   |   Arbitrum   |   Ethereum   |   ZKsync  |
+   |----------|------------|-----------|--------------|--------------|-----------|
+   | BNB      |     -      | $51,000   | $102,000     | $1,020,000   | $102,000  |
+   | opBNB    | $51,000    |    -      | $102,000     | $51,000      | $102,000  |
+   | Arbitrum | $102,000   | $102,000  |     -        | $102,000     | $102,000  |
+   | Ethereum | $1,020,000 | $51,000   | $102,000     |      -       | $102,000  |  
+   | ZKsync   | $102,000   | $102,000  | $102,000     | $102,000     |     -     |
 
 
 ### 8.4. Pause and Unpause Mechanism
