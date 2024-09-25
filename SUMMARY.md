@@ -175,7 +175,9 @@
 
 ***
 
-* [API](api-beta.md)
+## Services
+* [API](services/api.md)
+* [Subgraphs](services/subgraphs.md)
 
 ## Links
 
