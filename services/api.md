@@ -37,62 +37,62 @@ These steps describe the process of upgrading endpoints to new versions as they 
 
 ### Pool Endpoints
 
-{% swagger src=".gitbook/assets/swagger (1).json" path="/pools" method="get" %}
-[swagger (1).json](<.gitbook/assets/swagger (1).json>)
+{% swagger src="../.gitbook/assets/swagger (1).json" path="/pools" method="get" %}
+[swagger (1).json](<../.gitbook/assets/swagger (1).json>)
 {% endswagger %}
 
 ### Market Endpoints
 
-{% swagger src=".gitbook/assets/swagger.json" path="/markets/core-pool" method="get" fullWidth="true" %}
-[swagger.json](.gitbook/assets/swagger.json)
+{% swagger src="../.gitbook/assets/swagger (1).json" path="/markets" method="get" %}
+[swagger (1).json](<../.gitbook/assets/swagger (1).json>)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger.json" path="/markets/history" method="get" fullWidth="true" %}
-[swagger.json](.gitbook/assets/swagger.json)
+{% swagger src="../.gitbook/assets/swagger.json" path="/markets/history" method="get" fullWidth="true" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger.json" path="/markets/daily-xvs" method="get" fullWidth="true" %}
-[swagger.json](.gitbook/assets/swagger.json)
+{% swagger src="../.gitbook/assets/swagger.json" path="/markets/daily-xvs" method="get" fullWidth="true" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger.json" path="/markets/{address}/cmc-total-supply" method="get" fullWidth="true" %}
-[swagger.json](.gitbook/assets/swagger.json)
+{% swagger src="../.gitbook/assets/swagger.json" path="/markets/{address}/cmc-total-supply" method="get" fullWidth="true" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger.json" path="/markets/{address}/cmc-circulating-supply" method="get" fullWidth="true" %}
-[swagger.json](.gitbook/assets/swagger.json)
+{% swagger src="../.gitbook/assets/swagger.json" path="/markets/{address}/cmc-circulating-supply" method="get" fullWidth="true" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
 ## Activity
 
-{% swagger src=".gitbook/assets/swagger.json" path="/activity/transactions" method="get" fullWidth="true" %}
-[swagger.json](.gitbook/assets/swagger.json)
+{% swagger src="../.gitbook/assets/swagger.json" path="/activity/transactions" method="get" fullWidth="true" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
 ### Governance Endpoints
 
-{% swagger src=".gitbook/assets/swagger.json" path="/governance/proposals" method="get" fullWidth="true" %}
-[swagger.json](.gitbook/assets/swagger.json)
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals" method="get" fullWidth="true" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger.json" path="/governance/proposals/:id" method="get" fullWidth="true" %}
-[swagger.json](.gitbook/assets/swagger.json)
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals/:id" method="get" fullWidth="true" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger.json" path="/governance/proposals/:proposalId/voteSummary" method="get" fullWidth="true" %}
-[swagger.json](.gitbook/assets/swagger.json)
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals/:proposalId/voteSummary" method="get" fullWidth="true" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger.json" path="/governance/proposals/votes" method="get" expanded="false" fullWidth="true" %}
-[swagger.json](.gitbook/assets/swagger.json)
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals/votes" method="get" expanded="false" fullWidth="true" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger.json" path="/governance/voters" method="get" fullWidth="true" %}
-[swagger.json](.gitbook/assets/swagger.json)
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/voters" method="get" fullWidth="true" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src=".gitbook/assets/swagger.json" path="/governance/voters/:address/summary" method="get" fullWidth="true" %}
-[swagger.json](.gitbook/assets/swagger.json)
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/voters/:address/summary" method="get" fullWidth="true" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
 #### Deprecated
