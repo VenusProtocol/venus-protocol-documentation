@@ -51,10 +51,6 @@ These steps describe the process of upgrading endpoints to new versions as they 
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src="../.gitbook/assets/swagger.json" path="/markets/daily-xvs" method="get" fullWidth="true" %}
-[swagger.json](../.gitbook/assets/swagger.json)
-{% endswagger %}
-
 {% swagger src="../.gitbook/assets/swagger.json" path="/markets/{address}/cmc-total-supply" method="get" fullWidth="true" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
