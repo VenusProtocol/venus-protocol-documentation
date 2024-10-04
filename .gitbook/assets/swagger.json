@@ -1025,33 +1025,6 @@
         }
       }
     },
-    "/markets/daily-xvs": {
-      "get": {
-        "description": "Daily rate for XVS rewards\n",
-        "responses": {
-          "200": {
-            "description": "Returns Daily rate for supply and borrow XVS rewards.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "number"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Malformed Query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MalformedRequest"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/markets/history": {
       "get": {
         "parameters": [
