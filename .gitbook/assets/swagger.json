@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Venus Protocol API",
-    "version": "1.8.0",
+    "version": "1.18.0-dev.2",
     "summary": "API to support the Venus Protocol with data indexed from on chain activity",
     "description": ""
   },
@@ -193,205 +193,6 @@
         }
       }
     },
-    "/api/proposals": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/proposalIds"
-          },
-          {
-            "$ref": "#/parameters/state"
-          },
-          {
-            "$ref": "#/parameters/order"
-          },
-          {
-            "$ref": "#/parameters/orderBy",
-            "default": "id",
-            "description": "Order by Proposal properties."
-          },
-          {
-            "$ref": "#/parameters/limit"
-          },
-          {
-            "$ref": "#/parameters/offset"
-          }
-        ],
-        "description": "Returns paginated array of proposals. It takes an optional array of proposal ids to filter by.",
-        "responses": {
-          "200": {
-            "description": "Returns an array of proposals.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "required": [
-                        "offset",
-                        "limit",
-                        "total",
-                        "result"
-                      ],
-                      "properties": {
-                        "offset": {
-                          "type": "number"
-                        },
-                        "limit": {
-                          "type": "number"
-                        },
-                        "total": {
-                          "type": "number"
-                        },
-                        "result": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/ProposalV1"
-                          }
-                        }
-                      }
-                    },
-                    "status": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/proposals/:id": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/proposalId"
-          }
-        ],
-        "description": "Returns details for a single proposal.",
-        "responses": {
-          "200": {
-            "description": "Returns a detailed proposal.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/ProposalV1"
-                    },
-                    "status": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/voters/:id": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/proposalId"
-          }
-        ],
-        "description": "Get voter details for a given proposal.",
-        "responses": {
-          "200": {
-            "description": "Pagination object with paginated voter activity and a summary of proposal votes.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "required": [
-                        "offset",
-                        "limit",
-                        "total",
-                        "result",
-                        "sumVotes"
-                      ],
-                      "properties": {
-                        "offset": {
-                          "type": "number"
-                        },
-                        "limit": {
-                          "type": "number"
-                        },
-                        "total": {
-                          "type": "number"
-                        },
-                        "result": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Voter"
-                          }
-                        },
-                        "sumVotes": {
-                          "$ref": "#/components/schemas/sumVotes"
-                        }
-                      }
-                    },
-                    "status": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/governance/proposals/:proposalId/voteSummary": {
       "get": {
         "parameters": [
@@ -425,149 +226,6 @@
                     },
                     "total": {
                       "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/voters/accounts": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/limit"
-          },
-          {
-            "$ref": "#/parameters/offset"
-          }
-        ],
-        "description": "Query voter accounts ordered by vote weight.",
-        "responses": {
-          "200": {
-            "description": "Returns an array of voter accounts ordered by vote weight",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "required": [
-                        "offset",
-                        "limit",
-                        "total",
-                        "result"
-                      ],
-                      "properties": {
-                        "offset": {
-                          "type": "number"
-                        },
-                        "limit": {
-                          "type": "number"
-                        },
-                        "total": {
-                          "type": "number"
-                        },
-                        "result": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/VoterAccounts"
-                          }
-                        }
-                      }
-                    },
-                    "status": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/voters/accounts/:address": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/address",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "description": "Retrieve a summary of an account's voter profile.",
-        "responses": {
-          "200": {
-            "description": "A summary of an account's voter profile including latest XVS transfers and governance transactions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "delegateCount": {
-                          "type": "number"
-                        },
-                        "votes": {
-                          "type": "string"
-                        },
-                        "balance": {
-                          "type": "string"
-                        },
-                        "delegates": {
-                          "type": "string"
-                        },
-                        "txs": {
-                          "type": "array",
-                          "items": {
-                            "oneOf": [
-                              {
-                                "$ref": "#/components/schemas/TransferLog"
-                              },
-                              {
-                                "$ref": "#/components/schemas/Voter"
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    },
-                    "status": {
-                      "type": "boolean"
                     }
                   }
                 }
@@ -625,96 +283,6 @@
                       "items": {
                         "$ref": "#/components/schemas/Transaction"
                       }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/voters/history/:address": {
-      "get": {
-        "parameters": [
-          {
-            "$ref": "#/parameters/address",
-            "in": "path",
-            "required": true
-          },
-          {
-            "$ref": "#/parameters/state"
-          },
-          {
-            "$ref": "#/parameters/order"
-          },
-          {
-            "$ref": "#/parameters/orderBy",
-            "default": "proposalId",
-            "description": "Proposal model properties to use when ordering proposals"
-          },
-          {
-            "$ref": "#/parameters/proposalIds"
-          },
-          {
-            "$ref": "#/parameters/offset"
-          },
-          {
-            "$ref": "#/parameters/limit"
-          }
-        ],
-        "description": "Returns an array of voter activity for a specified account.",
-        "responses": {
-          "200": {
-            "description": "Paginated response of an account's voter history.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "data"
-                  ],
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "offset": {
-                          "type": "number"
-                        },
-                        "limit": {
-                          "type": "number"
-                        },
-                        "total": {
-                          "type": "number"
-                        },
-                        "result": {
-                          "type": "array",
-                          "items": {
-                            "oneOf": [
-                              {
-                                "$ref": "#/components/schemas/TransferLog"
-                              },
-                              {
-                                "$ref": "#/components/schemas/Voter"
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    },
-                    "status": {
-                      "type": "boolean"
                     }
                   }
                 }
@@ -837,32 +405,27 @@
         }
       }
     },
-    "/api/governance/venus": {
+    "/markets/history": {
       "get": {
         "parameters": [
           {
-            "$ref": "#/parameters/asset",
-            "required": false
+            "$ref": "#/parameters/asset"
           }
         ],
-        "description": "Returns market data for listed markets, optionally filterable by asset address.\nFiltering by address will be deprecated and is not fully documented.\n",
+        "description": "Fetch an array of daily snapshots of supply and borrow totals and supply and borrow apy over the previous 365 days for a given asset.",
         "responses": {
           "200": {
-            "description": "Returns Market data for all listed markets.",
+            "description": "Returns historical data for the requested asset.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "required": [
-                    "status",
-                    "data"
+                    "result"
                   ],
                   "properties": {
-                    "data": {
-                      "$ref": "#/components/schemas/GetVenus"
-                    },
-                    "status": {
-                      "type": "boolean"
+                    "result": {
+                      "$ref": "#/components/schemas/MarketGraphData"
                     }
                   }
                 }
@@ -950,7 +513,129 @@
         }
       }
     },
-    "/markets/core-pool": {
+    "/markets/tvl": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/chainId"
+          }
+        ],
+        "description": "Returns the total value locked by all markets in the requested chains.",
+        "responses": {
+          "200": {
+            "description": "Returns the TVL data for the requested chains.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "result"
+                  ],
+                  "properties": {
+                    "result": {
+                      "suppliedSumCents": "string",
+                      "borrowedSumCents": "string",
+                      "liquiditySumCents": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/markets/etherfi-weeth-suppliers": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/blockNumber",
+            "in": "query"
+          },
+          {
+            "name": "addresses",
+            "description": "Filter by address",
+            "in": "query",
+            "type": "array"
+          }
+        ],
+        "description": "Return suppliers at block number",
+        "responses": {
+          "200": {
+            "description": "Return total suppliers at given block",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed Query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MalformedRequest"
+                }
+              }
+            }
+          },
+          "500": "#/components/responses/500ServerError"
+        }
+      }
+    },
+    "/markets/etherfi-weeths-suppliers": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/blockNumber",
+            "in": "query"
+          },
+          {
+            "name": "addresses",
+            "description": "Filter by address",
+            "in": "query",
+            "type": "array"
+          }
+        ],
+        "description": "Return suppliers at block number",
+        "responses": {
+          "200": {
+            "description": "Return total suppliers at given block",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed Query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MalformedRequest"
+                }
+              }
+            }
+          },
+          "500": "#/components/responses/500ServerError"
+        }
+      }
+    },
+    "/markets": {
       "get": {
         "parameters": [
           {
@@ -977,7 +662,7 @@
             "$ref": "#/parameters/underlyingSymbol"
           }
         ],
-        "description": "Returns market data for listed markets, optionally filterable by asset address.\n",
+        "description": "Returns market data for listed markets, optionally filterable by asset address, name, symbol, underlying address, underlying name or underlying symbol.\n",
         "responses": {
           "200": {
             "description": "Returns Market data for all listed markets.",
@@ -1025,27 +710,47 @@
         }
       }
     },
-    "/markets/history": {
+    "/pools": {
       "get": {
         "parameters": [
           {
-            "$ref": "#/parameters/asset"
+            "$ref": "#/parameters/versionNext"
+          },
+          {
+            "$ref": "#/parameters/asset",
+            "name": "address",
+            "required": false
           }
         ],
-        "description": "Fetch an array of daily snapshots of supply and borrow totals and supply and borrow apy over the previous 365 days for a given asset.",
+        "description": "Returns pool data for all listed pools, optionally filterable by the pool's comptroller address.\n",
         "responses": {
           "200": {
-            "description": "Returns historical data for the requested asset.",
+            "description": "Returns Pool data for all listed pools.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "required": [
+                    "limit",
+                    "page",
+                    "total",
                     "result"
                   ],
                   "properties": {
+                    "limit": {
+                      "type": "number"
+                    },
+                    "page": {
+                      "type": "number"
+                    },
+                    "total": {
+                      "type": "number"
+                    },
                     "result": {
-                      "$ref": "#/components/schemas/MarketGraphData"
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Pool"
+                      }
                     }
                   }
                 }
@@ -1053,11 +758,86 @@
             }
           },
           "400": {
-            "description": "Unexpected error",
+            "description": "Malformed Query",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/MalformedRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/markets/core-pool": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/parameters/versionNext"
+          },
+          {
+            "$ref": "#/parameters/asset",
+            "name": "address",
+            "required": false
+          },
+          {
+            "$ref": "#/parameters/symbol"
+          },
+          {
+            "$ref": "#/parameters/name"
+          },
+          {
+            "$ref": "#/parameters/underlyingAddress"
+          },
+          {
+            "$ref": "#/parameters/underlyingName"
+          },
+          {
+            "$ref": "#/parameters/underlyingSymbol"
+          }
+        ],
+        "description": "Returns the BSC Core pool market data for listed markets, optionally filterable by asset address, name, symbol, underlying address, underlying name or underlying symbol.\n",
+        "responses": {
+          "200": {
+            "description": "Returns Market data for all listed markets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "limit",
+                    "page",
+                    "total",
+                    "result"
+                  ],
+                  "properties": {
+                    "limit": {
+                      "type": "number"
+                    },
+                    "page": {
+                      "type": "number"
+                    },
+                    "total": {
+                      "type": "number"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Market"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed Query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MalformedRequest"
                 }
               }
             }
@@ -1315,7 +1095,7 @@
       "type": "string"
     },
     "proposalId": {
-      "name": "id",
+      "name": "proposalId",
       "description": "Proposal Id for fetching a detailed proposal",
       "in": "param",
       "required": true,
@@ -2030,7 +1810,7 @@
       "ProposalList": {
         "type": "object",
         "required": [
-          "id",
+          "proposalId",
           "description",
           "abstainedVotesMantissa",
           "againstVotesMantissa",
@@ -2059,7 +1839,7 @@
           "state"
         ],
         "properties": {
-          "id": {
+          "proposalId": {
             "type": "integer"
           },
           "description": {
@@ -2157,7 +1937,7 @@
       "ProposalDetail": {
         "type": "object",
         "required": [
-          "id",
+          "proposalId",
           "description",
           "abstainedVotesMantissa",
           "againstVotesMantissa",
@@ -2187,7 +1967,7 @@
           "proposalActions"
         ],
         "properties": {
-          "id": {
+          "proposalId": {
             "type": "integer"
           },
           "description": {
@@ -2382,7 +2162,6 @@
           "tokenAddress",
           "blockNumber",
           "timestamp",
-          "id",
           "logIndex"
         ],
         "properties": {
@@ -2418,9 +2197,6 @@
           "timestamp": {
             "type": "string"
           },
-          "id": {
-            "type": "integer"
-          },
           "logIndex": {
             "type": "integer"
           }
@@ -2430,10 +2206,7 @@
         "type": "object",
         "required": [
           "address",
-          "createdAt",
-          "id",
           "proposalsVoted",
-          "updatedAt",
           "voteWeight",
           "votes",
           "votes2"
@@ -2442,17 +2215,8 @@
           "address": {
             "type": "string"
           },
-          "createdAt": {
-            "type": "string"
-          },
-          "id": {
-            "type": "string"
-          },
           "proposalsVoted": {
             "type": "integer"
-          },
-          "updatedAt": {
-            "type": "string"
           },
           "voteWeight": {
             "type": "integer"
@@ -2468,24 +2232,16 @@
       "VoterAccount": {
         "type": "object",
         "required": [
-          "id",
           "address",
           "proposalsVoted",
-          "voteWeight",
           "votesMantissa",
           "stakedVotesMantissa"
         ],
         "properties": {
-          "id": {
-            "type": "string"
-          },
           "address": {
             "type": "string"
           },
           "proposalsVoted": {
-            "type": "integer"
-          },
-          "voteWeight": {
             "type": "integer"
           },
           "votesMantissa": {
@@ -2496,53 +2252,9 @@
           }
         }
       },
-      "TransferLog": {
-        "type": "object",
-        "required": [
-          "id",
-          "from",
-          "to",
-          "amount",
-          "blockNumber",
-          "blockTimestamp",
-          "transactionHash",
-          "transactionIndex",
-          "logIndex"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "from": {
-            "type": "string"
-          },
-          "to": {
-            "type": "string"
-          },
-          "amount": {
-            "type": "string"
-          },
-          "blockNumber": {
-            "type": "string"
-          },
-          "blockTimestamp": {
-            "type": "string"
-          },
-          "transactionHash": {
-            "type": "string"
-          },
-          "transactionIndex": {
-            "type": "string"
-          },
-          "logIndex": {
-            "type": "string"
-          }
-        }
-      },
       "Voter": {
         "type": "object",
         "required": [
-          "id",
           "address",
           "hasVoted",
           "support",
@@ -2552,9 +2264,6 @@
           "reason"
         ],
         "properties": {
-          "id": {
-            "type": "string"
-          },
           "address": {
             "type": "string"
           },
@@ -2604,7 +2313,6 @@
       "Vote": {
         "type": "object",
         "required": [
-          "id",
           "address",
           "support",
           "blockNumber",
@@ -2613,9 +2321,6 @@
           "reason"
         ],
         "properties": {
-          "id": {
-            "type": "string"
-          },
           "address": {
             "type": "string"
           },

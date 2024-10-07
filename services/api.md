@@ -37,14 +37,14 @@ These steps describe the process of upgrading endpoints to new versions as they 
 
 ### Pool Endpoints
 
-{% swagger src="../.gitbook/assets/swagger (1).json" path="/pools" method="get" %}
-[swagger (1).json](<../.gitbook/assets/swagger (1).json>)
+{% swagger src="../.gitbook/assets/swagger.json" path="/pools" method="get" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
 ### Market Endpoints
 
-{% swagger src="../.gitbook/assets/swagger (1).json" path="/markets" method="get" %}
-[swagger (1).json](<../.gitbook/assets/swagger (1).json>)
+{% swagger src="../.gitbook/assets/swagger.json" path="/markets" method="get" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
 {% swagger src="../.gitbook/assets/swagger.json" path="/markets/history" method="get" fullWidth="true" %}
