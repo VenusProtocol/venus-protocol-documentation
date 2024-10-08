@@ -8,6 +8,32 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### TwoKinksInterestRate
+
+**Scope**: Develop new interest rate model for the core pool ([here](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/InterestRateModels/TwoKinksInterestRateModel.sol)) and for the isolated pools ([here](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/TwoKinksInterestRateModel.sol)), supporting two different kinks and therefore three different slopes.
+
+- [Certik audit audit report (2024/07/31)](https://github.com/VenusProtocol/venus-protocol/blob/8be0034819eef313d6ffe216e5ba0f1152dbdcc0/audits/113_twoKinks_certik_20240731.pdf)
+- [Fairyproof audit report (2024/08/04)](https://github.com/VenusProtocol/venus-protocol/blob/8be0034819eef313d6ffe216e5ba0f1152dbdcc0/audits/114_twoKinks_fairyproof_20240804.pdf)
+- [Quanstamp audit report (2024/08/19)](https://github.com/VenusProtocol/venus-protocol/blob/8be0034819eef313d6ffe216e5ba0f1152dbdcc0/audits/115_twoKinks_quantstamp_20240819.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+Support for the Core pool
+
+- Pull Request [#494](https://github.com/VenusProtocol/venus-protocol/pull/494)
+- Files:
+    - contracts/InterestRateModels/InterestRateModelV8.sol
+    - contracts/InterestRateModels/TwoKinksInterestRateModel.sol
+
+Support for the Isolated pools
+
+- Pull Request [#417](https://github.com/VenusProtocol/isolated-pools/pull/417)
+- Files:
+    - contracts/TwoKinksInterestRateModel.sol
+
+</details>
+
 ### Unlist markets
 
 **Scope**: Changes in the [isolated pools](https://github.com/VenusProtocol/isolated-pools) and [core](https://github.com/VenusProtocol/venus-protocol) contracts to support unlisting markets. Fix in the core pool the behaviour of borrow caps set to zero. Enabled in [VIP-361](https://app-alt.venus.io/#/governance/proposal/361).
