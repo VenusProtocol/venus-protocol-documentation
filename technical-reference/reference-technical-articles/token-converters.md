@@ -20,8 +20,8 @@ The **Venus Protocol** generates income in various underlying tokens from intere
 |-------------------------|-------------------|----------------------|-------------------------|
 | RiskFundConverter       |     USDT          |     0%               |                      0% |
 | XVSVaultConverter       | 	XVS	          |     20%	             |                     20% |
-| USDTPrimeConverter      | 	USDT          | 	9%	             |                      0% |
-| USDCPrimeConverter      | 	USDC          | 	7%	             |                      0% |
+| USDTPrimeConverter      | 	USDT          | 	10%	             |                      0% |
+| USDCPrimeConverter      | 	USDC          | 	6%	             |                      0% |
 | BTCBPrimeConverter      | 	BTCB          | 	1%               |                      0% |
 | ETHPrimeConverter       | 	ETH	          |     3%               |                      0% |
 
