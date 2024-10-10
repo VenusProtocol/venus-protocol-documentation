@@ -125,3 +125,18 @@
 * RedStone Oracle:[`0x3af097f1Dcec172D5ECdD0D1eFA6B118FF15f152`](https://sepolia.explorer.zksync.io/address/0x3af097f1Dcec172D5ECdD0D1eFA6B118FF15f152)
 * Resilient Oracle:[`0x748853B3bE26c46b4562Fd314dfb82708F395bDf`](https://sepolia.explorer.zksync.io/address/0x748853B3bE26c46b4562Fd314dfb82708F395bDf)
 * DefaultProxyAdmin:[`0x18E44f588a4DcF2F7145d35A5C226e129040b6D3`](https://sepolia.explorer.zksync.io/address/0x18E44f588a4DcF2F7145d35A5C226e129040b6D3)
+
+## OP Mainnet
+
+* Bound Validator:[`0x37A04a1eF784448377a19F2b1b67cD40c09eA505`](https://optimistic.etherscan.io/address/0x37A04a1eF784448377a19F2b1b67cD40c09eA505)
+* SequencerChainlink Oracle:[`0x1076e5A60F1aC98e6f361813138275F1179BEb52`](https://optimistic.etherscan.io/address/0x1076e5A60F1aC98e6f361813138275F1179BEb52)
+* RedStone Oracle:[`0x7478e4656F6CCDCa147B6A7314fF68d0C144751a`](https://optimistic.etherscan.io/address/0x7478e4656F6CCDCa147B6A7314fF68d0C144751a)
+* Resilient Oracle:[`0x21FC48569bd3a6623281f55FC1F8B48B9386907b`](https://optimistic.etherscan.io/address/0x21FC48569bd3a6623281f55FC1F8B48B9386907b)
+* DefaultProxyAdmin:[`0xeaF9490cBEA6fF9bA1D23671C39a799CeD0DCED2`](https://optimistic.etherscan.io/address/0xeaF9490cBEA6fF9bA1D23671C39a799CeD0DCED2)
+
+## OP Sepolia
+
+* Bound Validator:[`0x482469F1DA6Ec736cacF6361Ec41621f811A6800`](https://sepolia-optimism.etherscan.io/address/0x482469F1DA6Ec736cacF6361Ec41621f811A6800)
+* Chainlink Oracle:[`0x493C3f543AEa37EefF17D823f27Cb1feAB9f3143`](https://sepolia-optimism.etherscan.io/address/0x493C3f543AEa37EefF17D823f27Cb1feAB9f3143)
+* Resilient Oracle:[`0x6c01ECa2B5C97F135406a3A5531445A7d977D28e`](https://sepolia-optimism.etherscan.io/address/0x6c01ECa2B5C97F135406a3A5531445A7d977D28e)
+* DefaultProxyAdmin:[`0xa9aaf2A1cCf2C3a87997942abaA740887cC89241`](https://sepolia-optimism.etherscan.io/address/0xa9aaf2A1cCf2C3a87997942abaA740887cC89241)
