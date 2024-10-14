@@ -162,12 +162,12 @@ Specific functions that can be invoked by the guardians
 * Omnichain Governance Executor: [`0x83F79CfbaEee738173c0dfd866796743F4E25C9e`](https://sepolia.explorer.zksync.io/address/0x83F79CfbaEee738173c0dfd866796743F4E25C9e)
 * Omnichain Executor Owner Proxy: [`0xa34607D58146FA02aF5f920f29C3D916acAb0bC5`](https://sepolia.explorer.zksync.io/address/0xa34607D58146FA02aF5f920f29C3D916acAb0bC5)
 
-## OP Mainnet
+## Optimism Mainnet
 
 * Access Control Manager: [`0xD71b1F33f6B0259683f11174EE4Ddc2bb9cE4eD6`](https://optimistic.etherscan.io/address/0xD71b1F33f6B0259683f11174EE4Ddc2bb9cE4eD6)
 * Guardian: [`0x2e94dd14E81999CdBF5deDE31938beD7308354b3`](https://optimistic.etherscan.io/address/0x2e94dd14E81999CdBF5deDE31938beD7308354b3)
 
-## OP Sepolia
+## Optimism Sepolia
 
 * Access Control Manager: [`0x1652E12C8ABE2f0D84466F0fc1fA4286491B3BC1`](https://sepolia-optimism.etherscan.io/address/0x1652E12C8ABE2f0D84466F0fc1fA4286491B3BC1)
 * Guardian: [`0xd57365EE4E850e881229e2F8Aa405822f289e78d`](https://sepolia-optimism.etherscan.io/address/0xd57365EE4E850e881229e2F8Aa405822f289e78d)

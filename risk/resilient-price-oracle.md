@@ -191,7 +191,7 @@ The current list of correlated token oracles in Venus is:
 | Core | USDT | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | - | - | |
 | Core | ZK | [RedStoneOracle](https://explorer.zksync.io/address/0xFa1e65e714CDfefDC9729130496AB5b5f3708fdA) | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | Upper bound: 1.01. Lower bound: 0.99 |
 
-#### OP Mainnet
+#### Optimism Mainnet
 
 | Pool | Market | MAIN oracle | PIVOT oracle | FALLBACK oracle | Notes |
 |---|---|---|---|---|---|

@@ -5,7 +5,7 @@ This documentation provides detailed instructions and explanations for using the
 * [Ethereum](https://ethereum.org)
 * [opBNB](https://opbnb.bnbchain.org)
 * [Arbitrum](https://arbitrum.io)
-* [OP Mainnet](https://app.optimism.io)
+* [Optimism](https://app.optimism.io)
 
 ## Supported Transfer Paths
 
