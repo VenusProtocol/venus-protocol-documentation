@@ -272,8 +272,34 @@
   * vWBTC\_Core: [`0xAF8fD83cFCbe963211FAaf1847F0F217F80B4719`](https://explorer.zksync.io/address/0xAF8fD83cFCbe963211FAaf1847F0F217F80B4719)
   * vWETH\_Core: [`0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8`](https://explorer.zksync.io/address/0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8)
   * vUSDT\_Core: [`0x69cDA960E3b20DFD480866fFfd377Ebe40bd0A46`](https://explorer.zksync.io/address/0x69cDA960E3b20DFD480866fFfd377Ebe40bd0A46)
-  * vUSDC_E\_Core: [`0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D`](https://explorer.zksync.io/address/0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D)
+  * vUSDC\_E\_Core: [`0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D`](https://explorer.zksync.io/address/0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D)
   * vZK\_Core: [`0x697a70779C1A03Ba2BD28b7627a902BFf831b616`](https://explorer.zksync.io/address/0x697a70779C1A03Ba2BD28b7627a902BFf831b616)
+
+## Optimism Mainnet
+
+* PoolRegistry: [`0x147780799840d541C1d7c998F0cbA996d11D62bb`](https://optimistic.etherscan.io/address/0x147780799840d541C1d7c998F0cbA996d11D62bb)
+* PoolLens: [`0x142160A2E699e33af337741f157D96aAd6bC72aA`](https://optimistic.etherscan.io/address/0x142160A2E699e33af337741f157D96aAd6bC72aA)
+* DefaultProxyAdmin: [`0xeaF9490cBEA6fF9bA1D23671C39a799CeD0DCED2`](https://optimistic.etherscan.io/address/0xeaF9490cBEA6fF9bA1D23671C39a799CeD0DCED2)
+* Comptroller Beacon: [`0x64f9306496ccF7b7369d02d68D6abcA2Edfb871d`](https://optimistic.etherscan.io/address/0x64f9306496ccF7b7369d02d68D6abcA2Edfb871d)
+* VToken Beacon: [`0xd550Bdfa9402e215De0BabCb99F7294BE0268367`](https://optimistic.etherscan.io/address/0xd550Bdfa9402e215De0BabCb99F7294BE0268367)
+* ProtocolShareReserve: [`0x735ed037cB0dAcf90B133370C33C08764f88140a`](https://optimistic.etherscan.io/address/0x735ed037cB0dAcf90B133370C33C08764f88140a)
+
+### Core Pool
+
+* Comptroller: [`0x5593FF68bE84C966821eEf5F0a988C285D5B7CeC`](https://optimistic.etherscan.io/address/0x5593FF68bE84C966821eEf5F0a988C285D5B7CeC)
+* NativeTokenGateway: [`0x5B1b7465cfDE450e267b562792b434277434413c`](https://optimistic.etherscan.io/address/0x5B1b7465cfDE450e267b562792b434277434413c)
+* Underlying tokens:
+  * WBTC: [`0x68f180fcCe6836688e9084f035309E29Bf0A2095`](https://optimistic.etherscan.io/address/0x68f180fcCe6836688e9084f035309E29Bf0A2095)
+  * WETH: [`0x4200000000000000000000000000000000000006`](https://optimistic.etherscan.io/address/0x4200000000000000000000000000000000000006)
+  * USDT: [`0x94b008aA00579c1307B0EF2c499aD98a8ce58e58`](https://optimistic.etherscan.io/address/0x94b008aA00579c1307B0EF2c499aD98a8ce58e58)
+  * USDC: [`0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85`](https://optimistic.etherscan.io/address/0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85)
+  * OP: [`0x4200000000000000000000000000000000000042`](https://optimistic.etherscan.io/address/0x4200000000000000000000000000000000000042)
+* Markets:
+  * vWBTC\_Core: [`0x9EfdCfC2373f81D3DF24647B1c46e15268884c46`](https://optimistic.etherscan.io/address/0x9EfdCfC2373f81D3DF24647B1c46e15268884c46)
+  * vWETH\_Core: [`0x66d5AE25731Ce99D46770745385e662C8e0B4025`](https://optimistic.etherscan.io/address/0x66d5AE25731Ce99D46770745385e662C8e0B4025)
+  * vUSDT\_Core: [`0x37ac9731B0B02df54975cd0c7240e0977a051721`](https://optimistic.etherscan.io/address/0x37ac9731B0B02df54975cd0c7240e0977a051721)
+  * vUSDC\_Core: [`0x1C9406ee95B7af55F005996947b19F91B6D55b15`](https://optimistic.etherscan.io/address/0x1C9406ee95B7af55F005996947b19F91B6D55b15)
+  * vOP\_Core: [`0x6b846E3418455804C1920fA4CC7a31A51C659A2D`](https://optimistic.etherscan.io/address/0x6b846E3418455804C1920fA4CC7a31A51C659A2D)
 
 ## BNB Chain Testnet
 
@@ -476,7 +502,6 @@
   * vweETH\_LiquidStakedETH: [`0x75f841b14305935D8D7E806f249D9FA52EF1550B`](https://sepolia.arbiscan.io/address/0x75f841b14305935D8D7E806f249D9FA52EF1550B)
   * vWETH\_LiquidStakedETH: [`0xd7057250b439c0849377bB6C3263eb8f9cf49d98`](https://sepolia.arbiscan.io/address/0xd7057250b439c0849377bB6C3263eb8f9cf49d98)
 
-
 ## ZKsync Sepolia
 
 * PoolRegistry: [`0x1401404e6279BB8C06E5E3999eCA3e2008B46A76`](https://sepolia.explorer.zksync.io/address/0x1401404e6279BB8C06E5E3999eCA3e2008B46A76)
@@ -494,5 +519,25 @@
   * vWBTC\_Core: [`0x9c2379ed8ab06B44328487f61873C7c44BD6E87D`](https://sepolia.explorer.zksync.io/address/0x9c2379ed8ab06B44328487f61873C7c44BD6E87D)
   * vWETH\_Core: [`0x31eb7305f9fE281027028D0ba0d7f57ddA836d49`](https://sepolia.explorer.zksync.io/address/0x31eb7305f9fE281027028D0ba0d7f57ddA836d49)
   * vUSDT\_Core: [`0x7Bfd185eF8380a72027bF65bFEEAb0242b147778`](https://sepolia.explorer.zksync.io/address/0x7Bfd185eF8380a72027bF65bFEEAb0242b147778)
-  * vUSDC_E\_Core: [`0x58b0b248BB11DCAA9336bBf8a81914201fD49461`](https://sepolia.explorer.zksync.io/address/0x58b0b248BB11DCAA9336bBf8a81914201fD49461)
+  * vUSDC\_E\_Core: [`0x58b0b248BB11DCAA9336bBf8a81914201fD49461`](https://sepolia.explorer.zksync.io/address/0x58b0b248BB11DCAA9336bBf8a81914201fD49461)
   * vZK\_Core: [`0x92f4BD794303c0BD0791B350Be5531DB38414f47`](https://sepolia.explorer.zksync.io/address/0x92f4BD794303c0BD0791B350Be5531DB38414f47)
+
+## Optimism Sepolia
+
+* PoolRegistry: [`0x6538C861C7A6997602311342657b9143dD9E8152`](https://sepolia-optimism.etherscan.io/address/0x6538C861C7A6997602311342657b9143dD9E8152)
+* PoolLens: [`0x1b977533bABE14D40E5D66ec65483300dD5f6B0A`](https://sepolia-optimism.etherscan.io/address/0x1b977533bABE14D40E5D66ec65483300dD5f6B0A)
+* DefaultProxyAdmin: [`0xa9aaf2A1cCf2C3a87997942abaA740887cC89241`](https://sepolia-optimism.etherscan.io/address/0xa9aaf2A1cCf2C3a87997942abaA740887cC89241)
+* Comptroller Beacon: [`0x38f5dF439ff02CCC45eA5837128E9328C3338A90`](https://sepolia-optimism.etherscan.io/address/0x38f5dF439ff02CCC45eA5837128E9328C3338A90)
+* VToken Beacon: [`0x77C3435DD7D40fA0435e8cCAD4051f2904471ca3`](https://sepolia-optimism.etherscan.io/address/0x77C3435DD7D40fA0435e8cCAD4051f2904471ca3)
+* ProtocolShareReserve: [`0x0F021c29283c47DF8237741dD5a0aA22952aFc88`](https://sepolia-optimism.etherscan.io/address/0x0F021c29283c47DF8237741dD5a0aA22952aFc88)
+
+### Core Pool
+
+* Comptroller: [`0x59d10988974223B042767aaBFb6D926863069535`](https://sepolia-optimism.etherscan.io/address/0x59d10988974223B042767aaBFb6D926863069535)
+* NativeTokenGateway: [`0x521f59b2670bcc70961FB2edD4F62c3f3B1E7f6b`](https://sepolia-optimism.etherscan.io/address/0x521f59b2670bcc70961FB2edD4F62c3f3B1E7f6b)
+* Markets:
+  * vWBTC\_Core: [`0x6149eFAd7671f496C900B3BeC16Ba31Aed60BE4b`](https://sepolia-optimism.etherscan.io/address/0x6149eFAd7671f496C900B3BeC16Ba31Aed60BE4b)
+  * vWETH\_Core: [`0x4E610626BeF901EEE22D558b2ed19e6f7B87cf51`](https://sepolia-optimism.etherscan.io/address/0x4E610626BeF901EEE22D558b2ed19e6f7B87cf51)
+  * vUSDT\_Core: [`0xC23D18536E7069f924B3717B2710CA6A09e53ea9`](https://sepolia-optimism.etherscan.io/address/0xC23D18536E7069f924B3717B2710CA6A09e53ea9)
+  * vUSDC\_Core: [`0x2419606690B08060ebFd7581e0a6Ae45f1915ee9`](https://sepolia-optimism.etherscan.io/address/0x2419606690B08060ebFd7581e0a6Ae45f1915ee9)
+  * vOP\_Core: [`0x49cceCdd0b399C1b13260452893A3A835bDad5DC`](https://sepolia-optimism.etherscan.io/address/0x49cceCdd0b399C1b13260452893A3A835bDad5DC)
