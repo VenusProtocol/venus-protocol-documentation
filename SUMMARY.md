@@ -44,17 +44,18 @@
 * [Governance](guides/governance/README.md)
   * [Submitting a VIP](guides/governance-guide/vip.md)
   * [Delegating & Voting](guides/governance-guide/delegating.md)
-* [Contributing](guides/contributing.md)
 * [Vaults](guides/vaults.md)
 * [Protocol Math](guides/protocol-math.md)
 * [XVS Bridge](guides/xvs-bridge.md)
 * [Borrowing VAI](guides/borrowing-vai.md)
+* [Gasless Transactions on zkSync](guides/gasless-transactions-zksync.md)
 
 ## Technical reference
 
 * [Contracts Overview](technical-reference/contracts-overview.md)
 * [Technical articles](technical-reference/reference-technical-articles/README.md)
   * [Automatic income allocation](technical-reference/reference-technical-articles/automatic-income-allocation.md)
+  * [Contributing](technical-reference/reference-technical-articles/contributing.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
   * [Multichain Governance](technical-reference/reference-technical-articles/multichain-governance.md)
   * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)
