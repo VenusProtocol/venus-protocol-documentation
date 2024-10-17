@@ -48,6 +48,7 @@
 * WBETH: [`0xa2e3356610840701bdf5611a53974510ae27e2e1`](https://bscscan.com/address/0xa2e3356610840701bdf5611a53974510ae27e2e1)
 * XRP: [`0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE`](https://bscscan.com/address/0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE)
 * XVS: [`0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63`](https://bscscan.com/address/0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63)
+* TWT: [`0x4B0F1812e5Df2A09796481Ff14017e6005508003`](https://bscscan.com/address/0x4B0F1812e5Df2A09796481Ff14017e6005508003)
 
 ### VTokens
 
@@ -81,6 +82,7 @@
 * vWBETH: [`0x6CFdEc747f37DAf3b87a35a1D9c8AD3063A1A8A0`](https://bscscan.com/address/0x6CFdEc747f37DAf3b87a35a1D9c8AD3063A1A8A0)
 * vXRP: [`0xB248a295732e0225acd3337607cc01068e3b9c10`](https://bscscan.com/address/0xB248a295732e0225acd3337607cc01068e3b9c10)
 * vXVS: [`0x151B1e2635A717bcDc836ECd6FbB62B674FE3E1D`](https://bscscan.com/address/0x151B1e2635A717bcDc836ECd6FbB62B674FE3E1D)
+* vTWT: [`0x4d41a36D04D97785bcEA57b057C412b278e6Edcc`](https://bscscan.com/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc)
 
 ## BNB Chain Testnet
 
@@ -123,6 +125,7 @@
 * WBETH: [`0xf9F98365566F4D55234f24b99caA1AfBE6428D44`](https://testnet.bscscan.com/address/0xf9F98365566F4D55234f24b99caA1AfBE6428D44)
 * XRP: [`0x3022A32fdAdB4f02281E8Fab33e0A6811237aab0`](https://testnet.bscscan.com/address/0x3022A32fdAdB4f02281E8Fab33e0A6811237aab0)
 * XVS: [`0xB9e0E753630434d7863528cc73CB7AC638a7c8ff`](https://testnet.bscscan.com/address/0xB9e0E753630434d7863528cc73CB7AC638a7c8ff)
+* XVS: [`0xb99c6b26fdf3678c6e2aff8466e3625a0e7182f8`](https://testnet.bscscan.com/address/0xb99c6b26fdf3678c6e2aff8466e3625a0e7182f8)
 
 ### VTokens
 
@@ -150,6 +153,7 @@
 * vWBETH: [`0x35566ED3AF9E537Be487C98b1811cDf95ad0C32b`](https://testnet.bscscan.com/address/0x35566ED3AF9E537Be487C98b1811cDf95ad0C32b)
 * vXRP: [`0x488aB2826a154da01CC4CC16A8C83d4720D3cA2C`](https://testnet.bscscan.com/address/0x488aB2826a154da01CC4CC16A8C83d4720D3cA2C)
 * vXVS: [`0x6d6F697e34145Bb95c54E77482d97cc261Dc237E`](https://testnet.bscscan.com/address/0x6d6F697e34145Bb95c54E77482d97cc261Dc237E)
+* vXVS: [`0x95DaED37fdD3F557b3A5cCEb7D50Be65b36721DF`](https://testnet.bscscan.com/address/0x95DaED37fdD3F557b3A5cCEb7D50Be65b36721DF)
 
 ## Ethereum mainnet
 
