@@ -125,7 +125,7 @@
 * WBETH: [`0xf9F98365566F4D55234f24b99caA1AfBE6428D44`](https://testnet.bscscan.com/address/0xf9F98365566F4D55234f24b99caA1AfBE6428D44)
 * XRP: [`0x3022A32fdAdB4f02281E8Fab33e0A6811237aab0`](https://testnet.bscscan.com/address/0x3022A32fdAdB4f02281E8Fab33e0A6811237aab0)
 * XVS: [`0xB9e0E753630434d7863528cc73CB7AC638a7c8ff`](https://testnet.bscscan.com/address/0xB9e0E753630434d7863528cc73CB7AC638a7c8ff)
-* XVS: [`0xb99c6b26fdf3678c6e2aff8466e3625a0e7182f8`](https://testnet.bscscan.com/address/0xb99c6b26fdf3678c6e2aff8466e3625a0e7182f8)
+* TWT: [`0xb99c6b26fdf3678c6e2aff8466e3625a0e7182f8`](https://testnet.bscscan.com/address/0xb99c6b26fdf3678c6e2aff8466e3625a0e7182f8)
 
 ### VTokens
 
@@ -153,7 +153,7 @@
 * vWBETH: [`0x35566ED3AF9E537Be487C98b1811cDf95ad0C32b`](https://testnet.bscscan.com/address/0x35566ED3AF9E537Be487C98b1811cDf95ad0C32b)
 * vXRP: [`0x488aB2826a154da01CC4CC16A8C83d4720D3cA2C`](https://testnet.bscscan.com/address/0x488aB2826a154da01CC4CC16A8C83d4720D3cA2C)
 * vXVS: [`0x6d6F697e34145Bb95c54E77482d97cc261Dc237E`](https://testnet.bscscan.com/address/0x6d6F697e34145Bb95c54E77482d97cc261Dc237E)
-* vXVS: [`0x95DaED37fdD3F557b3A5cCEb7D50Be65b36721DF`](https://testnet.bscscan.com/address/0x95DaED37fdD3F557b3A5cCEb7D50Be65b36721DF)
+* vTWT: [`0x95DaED37fdD3F557b3A5cCEb7D50Be65b36721DF`](https://testnet.bscscan.com/address/0x95DaED37fdD3F557b3A5cCEb7D50Be65b36721DF)
 
 ## Ethereum mainnet
 
