@@ -39,7 +39,7 @@ console.log('1 vBUSD can be redeemed for', oneVTokenInUnderlying, 'BUSD');
 
 As BNB lacks an underlying contract, you must set the 'underlyingDecimals' to 18 when dealing with vBNB.&#x20;
 
-To calculate the number of underlying tokens that can be redeemed using vTokens, you should divide the total amount of vTokens by the previously computed 'oneVTokenInUnderlying' value.
+To calculate the number of underlying tokens that can be redeemed using vTokens, you should multiply the total amount of vTokens by the previously computed 'oneVTokenInUnderlying' value.
 
 $$
 underlyingTokens = vTokenAmount \times oneVTokenInUnderlying
