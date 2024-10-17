@@ -37,9 +37,11 @@ These steps describe the process of upgrading endpoints to new versions as they 
 
 ### Pool Endpoints
 
-{% swagger src="../.gitbook/assets/swagger.json" path="/pools" method="get" %}
-[swagger.json](../.gitbook/assets/swagger.json)
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/pools" method="get" %}
+[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
+
+
 
 ### Market Endpoints
 
@@ -47,47 +49,47 @@ These steps describe the process of upgrading endpoints to new versions as they 
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src="../.gitbook/assets/swagger.json" path="/markets/history" method="get" fullWidth="true" %}
+{% swagger src="../.gitbook/assets/swagger.json" path="/markets/history" method="get" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src="../.gitbook/assets/swagger.json" path="/markets/{address}/cmc-total-supply" method="get" fullWidth="true" %}
+{% swagger src="../.gitbook/assets/swagger.json" path="/markets/{address}/cmc-total-supply" method="get" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src="../.gitbook/assets/swagger.json" path="/markets/{address}/cmc-circulating-supply" method="get" fullWidth="true" %}
+{% swagger src="../.gitbook/assets/swagger.json" path="/markets/{address}/cmc-circulating-supply" method="get" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
 ## Activity
 
-{% swagger src="../.gitbook/assets/swagger.json" path="/activity/transactions" method="get" fullWidth="true" %}
+{% swagger src="../.gitbook/assets/swagger.json" path="/activity/transactions" method="get" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
 ### Governance Endpoints
 
-{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals" method="get" fullWidth="true" %}
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals" method="get" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals/:id" method="get" fullWidth="true" %}
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals/:id" method="get" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals/:proposalId/voteSummary" method="get" fullWidth="true" %}
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals/:proposalId/voteSummary" method="get" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals/votes" method="get" expanded="false" fullWidth="true" %}
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals/votes" method="get" expanded="false" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src="../.gitbook/assets/swagger.json" path="/governance/voters" method="get" fullWidth="true" %}
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/voters" method="get" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
-{% swagger src="../.gitbook/assets/swagger.json" path="/governance/voters/:address/summary" method="get" fullWidth="true" %}
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/voters/:address/summary" method="get" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
