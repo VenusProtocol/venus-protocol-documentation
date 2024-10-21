@@ -73,11 +73,11 @@ These steps describe the process of upgrading endpoints to new versions as they 
 [swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals/:id" method="get" fullWidth="true" %}
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals/{proposalId}" method="get" fullWidth="true" %}
 [swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals/:proposalId/voteSummary" method="get" fullWidth="true" %}
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals/{proposalId}/voteSummary" method="get" fullWidth="true" %}
 [swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
 
@@ -89,8 +89,6 @@ These steps describe the process of upgrading endpoints to new versions as they 
 [swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/voters/:address/summary" method="get" fullWidth="true" %}
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/voters/{address}/summary" method="get" fullWidth="true" %}
 [swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
-
-#### Deprecated
