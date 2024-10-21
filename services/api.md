@@ -37,13 +37,53 @@ These steps describe the process of upgrading endpoints to new versions as they 
 
 ### Pool Endpoints
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/pools" method="get" %}
-[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
+{% swagger src="../.gitbook/assets/swagger.json" path="/pools" method="get" %}
+[swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
+
+
 
 
 
 ### Market Endpoints
 
+{% swagger src="../.gitbook/assets/swagger.json" path="/markets" method="get" %}
+[swagger.json](../.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src="../.gitbook/assets/swagger.json" path="/markets/history" method="get" %}
+[swagger.json](../.gitbook/assets/swagger.json)
+{% endswagger %}
+
+
+
 ### Governance Endpoints
+
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals/{proposalId}/voteSummary" method="get" %}
+[swagger.json](../.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/voters/{address}/summary" method="get" %}
+[swagger.json](../.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/voters/{address}/history" method="get" %}
+[swagger.json](../.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/voters" method="get" %}
+[swagger.json](../.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals" method="get" %}
+[swagger.json](../.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals/votes" method="get" %}
+[swagger.json](../.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals/{proposalId}" method="get" %}
+[swagger.json](../.gitbook/assets/swagger.json)
+{% endswagger %}
 
