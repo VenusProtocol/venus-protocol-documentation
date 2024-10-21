@@ -45,41 +45,5 @@ These steps describe the process of upgrading endpoints to new versions as they 
 
 ### Market Endpoints
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/markets" method="get" %}
-[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
-{% endswagger %}
-
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/markets/history" method="get" %}
-[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
-{% endswagger %}
-
-#### Governance Endpoints
-
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals" method="get" %}
-[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
-{% endswagger %}
-
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/voters/{address}/summary" method="get" %}
-[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
-{% endswagger %}
-
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals/{proposalId}/voteSummary" method="get" %}
-[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
-{% endswagger %}
-
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/voters/{address}/history" method="get" %}
-[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
-{% endswagger %}
-
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/voters" method="get" %}
-[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
-{% endswagger %}
-
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals/votes" method="get" %}
-[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
-{% endswagger %}
-
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals/{proposalId}" method="get" %}
-[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
-{% endswagger %}
+### Governance Endpoints
 
