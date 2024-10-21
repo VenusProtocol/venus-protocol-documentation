@@ -37,7 +37,7 @@ These steps describe the process of upgrading endpoints to new versions as they 
 
 ### Pool Endpoints
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/pools" method="get" fullWidth="true" %}
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/pools" method="get" %}
 [https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
 
@@ -45,36 +45,41 @@ These steps describe the process of upgrading endpoints to new versions as they 
 
 ### Market Endpoints
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/markets" method="get" fullWidth="true" %}
-[swagger.json](https://api.venus.io/docs/swagger.json)
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/markets" method="get" %}
+[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/markets/history" method="get" fullWidth="true" %}
-[swagger.json](https://api.venus.io/docs/swagger.json)
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/markets/history" method="get" %}
+[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
 
-### Governance Endpoints
+#### Governance Endpoints
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals" method="get" fullWidth="true" %}
-[swagger.json](https://api.venus.io/docs/swagger.json)
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals" method="get" %}
+[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals/{proposalId}" method="get" fullWidth="true" %}
-[swagger.json](https://api.venus.io/docs/swagger.json)
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/voters/{address}/summary" method="get" %}
+[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals/{proposalId}/voteSummary" method="get" fullWidth="true" %}
-[swagger.json](https://api.venus.io/docs/swagger.json)
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals/{proposalId}/voteSummary" method="get" %}
+[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals/votes" method="get" expanded="false" fullWidth="true" %}
-[swagger.json](https://api.venus.io/docs/swagger.json)
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/voters/{address}/history" method="get" %}
+[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/voters" method="get" fullWidth="true" %}
-[swagger.json](https://api.venus.io/docs/swagger.json)
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/voters" method="get" %}
+[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/voters/{address}/summary" method="get" fullWidth="true" %}
-[swagger.json](https://api.venus.io/docs/swagger.json)
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals/votes" method="get" %}
+[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
+
+{% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals/{proposalId}" method="get" %}
+[https://api.venus.io/docs/swagger.json](https://api.venus.io/docs/swagger.json)
+{% endswagger %}
+
