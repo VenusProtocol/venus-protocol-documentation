@@ -53,20 +53,6 @@ These steps describe the process of upgrading endpoints to new versions as they 
 [swagger.json](https://api.venus.io/docs/swagger.json)
 {% endswagger %}
 
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/markets/{address}/cmc-total-supply" method="get" fullWidth="true" %}
-[swagger.json](https://api.venus.io/docs/swagger.json)
-{% endswagger %}
-
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/markets/{address}/cmc-circulating-supply" method="get" fullWidth="true" %}
-[swagger.json](https://api.venus.io/docs/swagger.json)
-{% endswagger %}
-
-## Activity
-
-{% swagger src="https://api.venus.io/docs/swagger.json" path="/activity/transactions" method="get" fullWidth="true" %}
-[swagger.json](https://api.venus.io/docs/swagger.json)
-{% endswagger %}
-
 ### Governance Endpoints
 
 {% swagger src="https://api.venus.io/docs/swagger.json" path="/governance/proposals" method="get" fullWidth="true" %}
