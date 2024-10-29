@@ -8,9 +8,24 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### ACMCommandsAggregator
+
+**Scope**: `ACMCommandsAggregator` is a permissionless contract, to be deployed to the remote networks (every network except BNB Chain), to facilitate the configuration (grants and revokes) of permissions in the AccessControlManager of each network.
+
+- [Certik audit audit report (2024/10/07)](https://github.com/VenusProtocol/governance-contracts/blob/3a5a2740e86c9137ab17f4f3939c97b145a22803/audits/118_ACMCommandsAggregator_certik_20241007.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull Request [#90](https://github.com/VenusProtocol/governance-contracts/pull/90)
+- Files:
+    - contracts/Utils/ACMCommandsAggregator.sol
+
+</details>
+
 ### TwoKinksInterestRate
 
-**Scope**: Develop new interest rate model for the core pool ([here](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/InterestRateModels/TwoKinksInterestRateModel.sol)) and for the isolated pools ([here](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/TwoKinksInterestRateModel.sol)), supporting two different kinks and therefore three different slopes.
+**Scope**: Develop new interest rate model for the core pool ([here](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/InterestRateModels/TwoKinksInterestRateModel.sol)) and for the isolated pools ([here](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/TwoKinksInterestRateModel.sol)), supporting two different kinks and therefore three different slopes. Enabled in [VIP-385](https://app-alt.venus.io/#/governance/proposal/385).
 
 - [Certik audit audit report (2024/07/31)](https://github.com/VenusProtocol/venus-protocol/blob/8be0034819eef313d6ffe216e5ba0f1152dbdcc0/audits/113_twoKinks_certik_20240731.pdf)
 - [Fairyproof audit report (2024/08/04)](https://github.com/VenusProtocol/venus-protocol/blob/8be0034819eef313d6ffe216e5ba0f1152dbdcc0/audits/114_twoKinks_fairyproof_20240804.pdf)
