@@ -268,12 +268,20 @@
 
 * Comptroller: [`0xddE4D098D9995B659724ae6d5E3FB9681Ac941B1`](https://explorer.zksync.io/address/0xddE4D098D9995B659724ae6d5E3FB9681Ac941B1)
 * NativeTokenGateway: [`0xeEDE4e1BDaC489BD851970bE3952B729C4238A68`](https://explorer.zksync.io/address/0xeEDE4e1BDaC489BD851970bE3952B729C4238A68)
+* Underlying tokens:
+  * WBTC: [`0xBBeB516fb02a01611cBBE0453Fe3c580D7281011`](https://explorer.zksync.io/address/0xBBeB516fb02a01611cBBE0453Fe3c580D7281011)
+  * WETH: [`0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91`](https://explorer.zksync.io/address/0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91)
+  * USDT: [`0x493257fD37EDB34451f62EDf8D2a0C418852bA4C`](https://explorer.zksync.io/address/0x493257fD37EDB34451f62EDf8D2a0C418852bA4C)
+  * USDC\_E: [`0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4`](https://explorer.zksync.io/address/0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4)
+  * ZK: [`0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E`](https://explorer.zksync.io/address/0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E)
+  * USDC: [`0x1d17CBcF0D6D143135aE902365D2E5e2A16538D4`](https://explorer.zksync.io/address/0x1d17CBcF0D6D143135aE902365D2E5e2A16538D4)
 * Markets:
   * vWBTC\_Core: [`0xAF8fD83cFCbe963211FAaf1847F0F217F80B4719`](https://explorer.zksync.io/address/0xAF8fD83cFCbe963211FAaf1847F0F217F80B4719)
   * vWETH\_Core: [`0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8`](https://explorer.zksync.io/address/0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8)
   * vUSDT\_Core: [`0x69cDA960E3b20DFD480866fFfd377Ebe40bd0A46`](https://explorer.zksync.io/address/0x69cDA960E3b20DFD480866fFfd377Ebe40bd0A46)
   * vUSDC\_E\_Core: [`0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D`](https://explorer.zksync.io/address/0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D)
   * vZK\_Core: [`0x697a70779C1A03Ba2BD28b7627a902BFf831b616`](https://explorer.zksync.io/address/0x697a70779C1A03Ba2BD28b7627a902BFf831b616)
+  * vUSDC\_Core: [`0x84064c058F2EFea4AB648bB6Bd7e40f83fFDe39a`](https://explorer.zksync.io/address/0x84064c058F2EFea4AB648bB6Bd7e40f83fFDe39a)
 
 ## Optimism Mainnet
 
@@ -521,6 +529,7 @@
   * vUSDT\_Core: [`0x7Bfd185eF8380a72027bF65bFEEAb0242b147778`](https://sepolia.explorer.zksync.io/address/0x7Bfd185eF8380a72027bF65bFEEAb0242b147778)
   * vUSDC\_E\_Core: [`0x58b0b248BB11DCAA9336bBf8a81914201fD49461`](https://sepolia.explorer.zksync.io/address/0x58b0b248BB11DCAA9336bBf8a81914201fD49461)
   * vZK\_Core: [`0x92f4BD794303c0BD0791B350Be5531DB38414f47`](https://sepolia.explorer.zksync.io/address/0x92f4BD794303c0BD0791B350Be5531DB38414f47)
+  * vUSDC\_Core: [`0xA266EfCC7D1a8F1AAd093446E3C0115467ea8b9C`](https://sepolia.explorer.zksync.io/address/0xA266EfCC7D1a8F1AAd093446E3C0115467ea8b9C)
 
 ## Optimism Sepolia
 
