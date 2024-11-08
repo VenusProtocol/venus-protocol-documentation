@@ -139,6 +139,8 @@
 * Underlying tokens:
   * crvUSD: [`0xf939E0A03FB07F59A73314E73794Be0E57ac1b4E`](https://etherscan.io/address/0xf939E0A03FB07F59A73314E73794Be0E57ac1b4E)
   * DAI: [`0x6B175474E89094C44Da98b954EedeAC495271d0F`](https://etherscan.io/address/0x6B175474E89094C44Da98b954EedeAC495271d0F)
+  * eBTC: [`0x657e8C867D8B37dCC18fA4Caead9C45EB088C642`](https://etherscan.io/address/0x657e8C867D8B37dCC18fA4Caead9C45EB088C642)
+  * EIGEN: [`0xec53bF9167f50cDEB3Ae105f56099aaaB9061F83`](https://etherscan.io/address/0xec53bF9167f50cDEB3Ae105f56099aaaB9061F83)
   * FRAX: [`0x853d955aCEf822Db058eb8505911ED77F175b99e`](https://etherscan.io/address/0x853d955aCEf822Db058eb8505911ED77F175b99e)
   * sFRAX: [`0xA663B02CF0a4b149d2aD41910CB81e23e1c41c32`](https://etherscan.io/address/0xA663B02CF0a4b149d2aD41910CB81e23e1c41c32)
   * TUSD: [`0x0000000000085d4780B73119b644AE5ecd22b376`](https://etherscan.io/address/0x0000000000085d4780B73119b644AE5ecd22b376)
@@ -149,6 +151,8 @@
 * Markets:
   * vcrvUSD\_Core: [`0x672208C10aaAA2F9A6719F449C4C8227bc0BC202`](https://etherscan.io/address/0x672208C10aaAA2F9A6719F449C4C8227bc0BC202)
   * vDAI\_Core: [`0xd8AdD9B41D4E1cd64Edad8722AB0bA8D35536657`](https://etherscan.io/address/0xd8AdD9B41D4E1cd64Edad8722AB0bA8D35536657)
+  * veBTC\_Core: [`0x325cEB02fe1C2fF816A83a5770eA0E88e2faEcF2`](https://etherscan.io/address/0x325cEB02fe1C2fF816A83a5770eA0E88e2faEcF2)
+  * vEIGEN\_Core: [`0x256AdDBe0a387c98f487e44b85c29eb983413c5e`](https://etherscan.io/address/0x256AdDBe0a387c98f487e44b85c29eb983413c5e)
   * vFRAX\_Core: [`0x4fAfbDc4F2a9876Bd1764827b26fb8dc4FD1dB95`](https://etherscan.io/address/0x4fAfbDc4F2a9876Bd1764827b26fb8dc4FD1dB95)
   * vsFRAX\_Core: [`0x17142a05fe678e9584FA1d88EfAC1bF181bF7ABe`](https://etherscan.io/address/0x17142a05fe678e9584FA1d88EfAC1bF181bF7ABe)
   * vTUSD\_Core: [`0x13eB80FDBe5C5f4a7039728E258A6f05fb3B912b`](https://etherscan.io/address/0x13eB80FDBe5C5f4a7039728E258A6f05fb3B912b)
@@ -413,6 +417,8 @@
   * vcrvUSD\_Core: [`0xA09cFAd2e138fe6d8FF62df803892cbCb79ED082`](https://sepolia.etherscan.io/address/0xA09cFAd2e138fe6d8FF62df803892cbCb79ED082)
   * vCRV\_Core: [`0x121E3be152F283319310D807ed847E8b98319C1e`](https://sepolia.etherscan.io/address/0x121E3be152F283319310D807ed847E8b98319C1e)
   * vDAI\_Core: [`0xfe050f628bF5278aCfA1e7B13b59fF207e769235`](https://sepolia.etherscan.io/address/0xfe050f628bF5278aCfA1e7B13b59fF207e769235)
+  * veBTC\_Core: [`0x8E6241389e823111259413810b81a050bd45e5cE`](https://sepolia.etherscan.io/address/0x8E6241389e823111259413810b81a050bd45e5cE)
+  * vEIGEN\_Core: [`0x6DB4aDbA8F144a57a397b57183BF619e957040B1`](https://sepolia.etherscan.io/address/0x6DB4aDbA8F144a57a397b57183BF619e957040B1)
   * vTUSD\_Core: [`0xE23A1fC1545F1b072308c846a38447b23d322Ee2`](https://sepolia.etherscan.io/address/0xE23A1fC1545F1b072308c846a38447b23d322Ee2)
   * vUSDC\_Core: [`0xF87bceab8DD37489015B426bA931e08A4D787616`](https://sepolia.etherscan.io/address/0xF87bceab8DD37489015B426bA931e08A4D787616)
   * vUSDT\_Core: [`0x19252AFD0B2F539C400aEab7d460CBFbf74c17ff`](https://sepolia.etherscan.io/address/0x19252AFD0B2F539C400aEab7d460CBFbf74c17ff)
