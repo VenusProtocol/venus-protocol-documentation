@@ -1,8 +1,8 @@
-# Multichain Governance
+# Omnichain Governance
 
 ## System Overview
 
-The multichain governance system is designed to facilitate the execution of VIP across multiple blockchain networks, integrating with the Access Control Manager (ACM) and LayerZero communication protocol. It extends the [governance model proposed by LayerZero](https://github.com/LayerZero-Labs/omnichain-governance-executor/tree/main).
+Omnichain Governance is designed to facilitate the execution of VIP across multiple blockchain networks, integrating with the Access Control Manager (ACM) and LayerZero communication protocol. It extends the [governance model proposed by LayerZero](https://github.com/LayerZero-Labs/omnichain-governance-executor/tree/main).
 
 ### Key features
 
@@ -76,7 +76,7 @@ It's crucial to understand that the proposal ID for the remote execution on the 
 
 5. Receiving and Queuing on the Destination Network
 
-<figure><img src="../../.gitbook/assets/multichain_governance_vip_states.svg" alt="Multichain governance VIP states"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/omnichain_governance_vip_states.svg" alt="Omnichain Governance VIP states"><figcaption></figcaption></figure>
 
 * Upon successful reception by the destination network's executor contract (`OmnichainGovernanceExecutor`), the remote proposal enters a "Queued" state.
 * This queuing process applies additional eligibility checks specific to the receiving network, ensuring compliance with its governance rules and thresholds of commands limits.
@@ -109,7 +109,7 @@ It's crucial to understand that the proposal ID for the remote execution on the 
 
 ## Contracts overview
 
-<figure><img src="../../.gitbook/assets/multichain_governance_contracts.svg" alt="Multichain governance contracts"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/omnichain_governance_contracts.svg" alt="Omnichain Governance contracts"><figcaption></figcaption></figure>
 
 ### Contract 1: `BaseOmnichainControllerSrc`
 
