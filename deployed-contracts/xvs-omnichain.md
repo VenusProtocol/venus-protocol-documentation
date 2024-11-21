@@ -1,4 +1,4 @@
-# XVS Multichain - Deployed Contracts
+# XVS Omnichain - Deployed Contracts
 
 ## Mainnet chains
 

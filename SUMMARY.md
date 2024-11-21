@@ -57,8 +57,8 @@
   * [Automatic income allocation](technical-reference/reference-technical-articles/automatic-income-allocation.md)
   * [Contributing](technical-reference/reference-technical-articles/contributing.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
-  * [Multichain Governance](technical-reference/reference-technical-articles/multichain-governance.md)
   * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)
+  * [Omnichain Governance](technical-reference/reference-technical-articles/omnichain-governance.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
   * [Token Converters](technical-reference/reference-technical-articles/token-converters.md)
@@ -174,7 +174,7 @@
 * [Oracles](deployed-contracts/oracles.md)
 * [Core Pool](deployed-contracts/core-pool.md)
 * [Governance](deployed-contracts/governance.md)
-* [XVS Multichain](deployed-contracts/xvs-multichain.md)
+* [XVS Omnichain](deployed-contracts/xvs-omnichain.md)
 * [Token Converters](deployed-contracts/token-converters.md)
 
 ## Services
