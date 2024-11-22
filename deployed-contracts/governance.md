@@ -151,6 +151,11 @@ Specific functions that can be invoked by the guardians
 
 * Access Control Manager: [`0x526159A92A82afE5327d37Ef446b68FD9a5cA914`](https://explorer.zksync.io/address/0x526159A92A82afE5327d37Ef446b68FD9a5cA914)
 * Guardian: [`0x751Aa759cfBB6CE71A43b48e40e1cCcFC66Ba4aa`](https://explorer.zksync.io/address/0x751Aa759cfBB6CE71A43b48e40e1cCcFC66Ba4aa)
+* Normal Timelock: [`0x093565Bc20AA326F4209eBaF3a26089272627613`](https://explorer.zksync.io/address/0x093565Bc20AA326F4209eBaF3a26089272627613)
+* Fasttrack Timelock: [`0x32f71c95BC8F9d996f89c642f1a84d06B2484AE9`](https://explorer.zksync.io/address/0x32f71c95BC8F9d996f89c642f1a84d06B2484AE9)
+* Critical Timelock: [`0xbfbc79D4198963e4a66270F3EfB1fdA0F382E49c`](https://explorer.zksync.io/address/0xbfbc79D4198963e4a66270F3EfB1fdA0F382E49c)
+* Omnichain Governance Executor: [`0xA1b56f19CA5E5b15EF29d38238930Ce9f0235312`](https://explorer.zksync.io/address/0xA1b56f19CA5E5b15EF29d38238930Ce9f0235312)
+* Omnichain Executor Owner Proxy: [`0xdfaed3E5d9707629Ed5c225b4fB980c064286771`](https://explorer.zksync.io/address/0xdfaed3E5d9707629Ed5c225b4fB980c064286771)
 
 ## ZKsync Sepolia
 
