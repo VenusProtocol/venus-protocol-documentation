@@ -151,6 +151,11 @@ Specific functions that can be invoked by the guardians
 
 * Access Control Manager: [`0x526159A92A82afE5327d37Ef446b68FD9a5cA914`](https://explorer.zksync.io/address/0x526159A92A82afE5327d37Ef446b68FD9a5cA914)
 * Guardian: [`0x751Aa759cfBB6CE71A43b48e40e1cCcFC66Ba4aa`](https://explorer.zksync.io/address/0x751Aa759cfBB6CE71A43b48e40e1cCcFC66Ba4aa)
+* Normal Timelock: [`0x093565Bc20AA326F4209eBaF3a26089272627613`](https://explorer.zksync.io/address/0x093565Bc20AA326F4209eBaF3a26089272627613)
+* Fasttrack Timelock: [`0x32f71c95BC8F9d996f89c642f1a84d06B2484AE9`](https://explorer.zksync.io/address/0x32f71c95BC8F9d996f89c642f1a84d06B2484AE9)
+* Critical Timelock: [`0xbfbc79D4198963e4a66270F3EfB1fdA0F382E49c`](https://explorer.zksync.io/address/0xbfbc79D4198963e4a66270F3EfB1fdA0F382E49c)
+* Omnichain Governance Executor: [`0xA1b56f19CA5E5b15EF29d38238930Ce9f0235312`](https://explorer.zksync.io/address/0xA1b56f19CA5E5b15EF29d38238930Ce9f0235312)
+* Omnichain Executor Owner Proxy: [`0xdfaed3E5d9707629Ed5c225b4fB980c064286771`](https://explorer.zksync.io/address/0xdfaed3E5d9707629Ed5c225b4fB980c064286771)
 
 ## ZKsync Sepolia
 
@@ -166,8 +171,19 @@ Specific functions that can be invoked by the guardians
 
 * Access Control Manager: [`0xD71b1F33f6B0259683f11174EE4Ddc2bb9cE4eD6`](https://optimistic.etherscan.io/address/0xD71b1F33f6B0259683f11174EE4Ddc2bb9cE4eD6)
 * Guardian: [`0x2e94dd14E81999CdBF5deDE31938beD7308354b3`](https://optimistic.etherscan.io/address/0x2e94dd14E81999CdBF5deDE31938beD7308354b3)
+* Normal Timelock: [`0x0C6f1E6B4fDa846f63A0d5a8a73EB811E0e0C04b`](https://optimistic.etherscan.io/address/0x0C6f1E6B4fDa846f63A0d5a8a73EB811E0e0C04b)
+* Fasttrack Timelock: [`0x508bD9C31E8d6760De04c70fe6c2b24B3cDea7E7`](https://optimistic.etherscan.io/address/0x508bD9C31E8d6760De04c70fe6c2b24B3cDea7E7)
+* Critical Timelock: [`0xB82479bc345CAA7326D7d21306972033226fC185`](https://optimistic.etherscan.io/address/0xB82479bc345CAA7326D7d21306972033226fC185)
+* Omnichain Governance Executor: [`0x09b11b1CAdC08E239970A8993783f0f8EeC60ABf`](https://optimistic.etherscan.io/address/0x09b11b1CAdC08E239970A8993783f0f8EeC60ABf)
+* Omnichain Executor Owner Proxy: [`0xe6d9Eb3A07a1dc4496fc71417D7A7b9d5666BaA3`](https://optimistic.etherscan.io/address/0xe6d9Eb3A07a1dc4496fc71417D7A7b9d5666BaA3)
 
 ## Optimism Sepolia
 
 * Access Control Manager: [`0x1652E12C8ABE2f0D84466F0fc1fA4286491B3BC1`](https://sepolia-optimism.etherscan.io/address/0x1652E12C8ABE2f0D84466F0fc1fA4286491B3BC1)
-* Guardian: [`0xd57365EE4E850e881229e2F8Aa405822f289e78d`](https://sepolia-optimism.etherscan.io/address/0xd57365EE4E850e881229e2F8Aa405822f289e78d)
+* Guardian: [`0xd57365EE4E850e881229e2F8Aa405822f289e78d`](https://sepolia-optimism.etherscan.io/address/0xd57365EE4E850e881229e2F8Aa405822f289e78d
+)
+* Normal Timelock: [`0xdDe31d7eEEAD7Cf9790F833C4FF4c6e61404402a`](https://sepolia-optimism.etherscan.io/address/0xdDe31d7eEEAD7Cf9790F833C4FF4c6e61404402a)
+* Fasttrack Timelock: [`0xe0Fa35b6279dd802C382ae54c50C8B16deaC0885`](https://sepolia-optimism.etherscan.io/address/0xe0Fa35b6279dd802C382ae54c50C8B16deaC0885)
+* Critical Timelock: [`0x45d2263c6E0dbF84eBffB1Ee0b80aC740607990B`](https://sepolia-optimism.etherscan.io/address/0x45d2263c6E0dbF84eBffB1Ee0b80aC740607990B)
+* Omnichain Governance Executor: [`0xC7D6D33adcdBfccD416C3aAB1878360ea8b79ac6`](https://sepolia-optimism.etherscan.io/address/0xC7D6D33adcdBfccD416C3aAB1878360ea8b79ac6)
+* Omnichain Executor Owner Proxy: [`0xE92E31df479BC1031B866063F65CF71B6bAC4FC6`](https://sepolia-optimism.etherscan.io/address/0xE92E31df479BC1031B866063F65CF71B6bAC4FC6)
