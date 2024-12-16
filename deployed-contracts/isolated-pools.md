@@ -317,6 +317,28 @@
   * vWBTC\_Core: [`0x9EfdCfC2373f81D3DF24647B1c46e15268884c46`](https://optimistic.etherscan.io/address/0x9EfdCfC2373f81D3DF24647B1c46e15268884c46)
   * vWETH\_Core: [`0x66d5AE25731Ce99D46770745385e662C8e0B4025`](https://optimistic.etherscan.io/address/0x66d5AE25731Ce99D46770745385e662C8e0B4025)
 
+## Base Mainnet
+
+* PoolRegistry: [`0xeef902918DdeCD773D4B422aa1C6e1673EB9136F`](https://basescan.org/address/0xeef902918DdeCD773D4B422aa1C6e1673EB9136F)
+* PoolLens: [`0x89825677fb4845f5Fc0B227e387455ECa1200058`](https://basescan.org/address/0x89825677fb4845f5Fc0B227e387455ECa1200058)
+* DefaultProxyAdmin: [`0x7B06EF6b68648C61aFE0f715740fE3950B90746B`](https://basescan.org/address/0x7B06EF6b68648C61aFE0f715740fE3950B90746B)
+* Comptroller Beacon: [`0x1b6dE1C670db291bcbF793320a42dbBD858E67aC`](https://basescan.org/address/0x1b6dE1C670db291bcbF793320a42dbBD858E67aC)
+* VToken Beacon: [`0x87a6476510368c4Bfb70d04A3B0e5a881eC7f0d1`](https://basescan.org/address/0x87a6476510368c4Bfb70d04A3B0e5a881eC7f0d1)
+* ProtocolShareReserve: [`0x3565001d57c91062367C3792B74458e3c6eD910a`](https://basescan.org/address/0x3565001d57c91062367C3792B74458e3c6eD910a)
+
+### Core Pool
+
+* Comptroller: [`0x0C7973F9598AA62f9e03B94E92C967fD5437426C`](https://basescan.org/address/0x0C7973F9598AA62f9e03B94E92C967fD5437426C)
+* NativeTokenGateway: [`0x8e890ca3829c740895cdEACd4a3BE36ff9343643`](https://basescan.org/address/0x8e890ca3829c740895cdEACd4a3BE36ff9343643)
+* Underlying tokens:
+  * USDC: [`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`](https://basescan.org/address/0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913)
+  * cbBTC: [`0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf`](https://basescan.org/address/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf)
+  * WETH: [`0x4200000000000000000000000000000000000006`](https://basescan.org/address/0x4200000000000000000000000000000000000006)
+* Markets:
+  * vUSDC\_Core: [`0x3cb752d175740043Ec463673094e06ACDa2F9a2e`](https://basescan.org/address/0x3cb752d175740043Ec463673094e06ACDa2F9a2e)
+  * vcbBTC\_Core: [`0x7bBd1005bB24Ec84705b04e1f2DfcCad533b6D72`](https://basescan.org/address/0x7bBd1005bB24Ec84705b04e1f2DfcCad533b6D72)
+  * vWETH\_Core: [`0xEB8A79bD44cF4500943bf94a2b4434c95C008599`](https://basescan.org/address/0xEB8A79bD44cF4500943bf94a2b4434c95C008599)
+
 ## BNB Chain Testnet
 
 * PoolRegistry: [`0xC85491616Fa949E048F3aAc39fbf5b0703800667`](https://testnet.bscscan.com/address/0xC85491616Fa949E048F3aAc39fbf5b0703800667)
@@ -562,3 +584,25 @@
   * vUSDT\_Core: [`0xC23D18536E7069f924B3717B2710CA6A09e53ea9`](https://sepolia-optimism.etherscan.io/address/0xC23D18536E7069f924B3717B2710CA6A09e53ea9)
   * vWBTC\_Core: [`0x6149eFAd7671f496C900B3BeC16Ba31Aed60BE4b`](https://sepolia-optimism.etherscan.io/address/0x6149eFAd7671f496C900B3BeC16Ba31Aed60BE4b)
   * vWETH\_Core: [`0x4E610626BeF901EEE22D558b2ed19e6f7B87cf51`](https://sepolia-optimism.etherscan.io/address/0x4E610626BeF901EEE22D558b2ed19e6f7B87cf51)
+
+## Base Sepolia
+
+* PoolRegistry: [`0xCa330282BEeb07a81963336d0bf8f5f34317916c`](https://sepolia.basescan.org/address/0xCa330282BEeb07a81963336d0bf8f5f34317916c)
+* PoolLens: [`0x968E60E2Aaf7a99d1FB33825E7a58EdA7841C7a6`](https://sepolia.basescan.org/address/0x968E60E2Aaf7a99d1FB33825E7a58EdA7841C7a6)
+* DefaultProxyAdmin: [`0xB85dD19112c4BF1240FeD0f26E8D0b0576a82546`](https://sepolia.basescan.org/address/0xB85dD19112c4BF1240FeD0f26E8D0b0576a82546)
+* Comptroller Beacon: [`0x5c06f1FBCE587f64752c037cA83262F08d9Cb648`](https://sepolia.basescan.org/address/0x5c06f1FBCE587f64752c037cA83262F08d9Cb648)
+* VToken Beacon: [`0x72F924aeE730395576764422C277c964f558351D`](https://sepolia.basescan.org/address/0x72F924aeE730395576764422C277c964f558351D)
+* ProtocolShareReserve: [`0x4Ae3D77Ece08Ec3E5f5842B195f746bd3bCb8d73`](https://sepolia.basescan.org/address/0x4Ae3D77Ece08Ec3E5f5842B195f746bd3bCb8d73)
+
+### Core Pool
+
+* Comptroller: [`0x272795dd6c5355CF25765F36043F34014454Eb5b`](https://sepolia.basescan.org/address/0x272795dd6c5355CF25765F36043F34014454Eb5b)
+* NativeTokenGateway: [`0x3C13241910b56fF00C672E4A2c17E3758B925EC3`](https://sepolia.basescan.org/address/0x3C13241910b56fF00C672E4A2c17E3758B925EC3)
+* Underlying tokens:
+  * USDC: [`0xFa264c13d657180e65245a9C3ac8d08b9F5Fc54D`](https://sepolia.basescan.org/address/0xFa264c13d657180e65245a9C3ac8d08b9F5Fc54D)
+  * cbBTC: [`0x0948001047A07e38F685f9a11ea1ddB16B234af9`](https://sepolia.basescan.org/address/0x0948001047A07e38F685f9a11ea1ddB16B234af9)
+  * WETH: [`0x4200000000000000000000000000000000000006`](https://sepolia.basescan.org/address/0x4200000000000000000000000000000000000006)
+* Markets:
+  * vUSDC\_Core: [`0xA31D67c056Aadc2501535f2776bF1157904f810e`](https://sepolia.basescan.org/address/0xA31D67c056Aadc2501535f2776bF1157904f810e)
+  * vcbBTC\_Core: [`0x776f14D624aBdAfa912d6Cd0864976DdaF5Ca4a7`](https://sepolia.basescan.org/address/0x776f14D624aBdAfa912d6Cd0864976DdaF5Ca4a7)
+  * vWETH\_Core: [`0x436E5A07F58AAA86277e8b992bC3e596eC423d09`](https://sepolia.basescan.org/address/0x436E5A07F58AAA86277e8b992bC3e596eC423d09)

@@ -187,3 +187,23 @@ Specific functions that can be invoked by the guardians
 * Critical Timelock: [`0x45d2263c6E0dbF84eBffB1Ee0b80aC740607990B`](https://sepolia-optimism.etherscan.io/address/0x45d2263c6E0dbF84eBffB1Ee0b80aC740607990B)
 * Omnichain Governance Executor: [`0xC7D6D33adcdBfccD416C3aAB1878360ea8b79ac6`](https://sepolia-optimism.etherscan.io/address/0xC7D6D33adcdBfccD416C3aAB1878360ea8b79ac6)
 * Omnichain Executor Owner Proxy: [`0xE92E31df479BC1031B866063F65CF71B6bAC4FC6`](https://sepolia-optimism.etherscan.io/address/0xE92E31df479BC1031B866063F65CF71B6bAC4FC6)
+
+## Base Mainnet
+
+* Access Control Manager: [`0x9E6CeEfDC6183e4D0DF8092A9B90cDF659687daB`](https://basescan.org/address/0x9E6CeEfDC6183e4D0DF8092A9B90cDF659687daB)
+* Guardian: [`0x1803Cf1D3495b43cC628aa1d8638A981F8CD341C`](https://basescan.org/address/0x1803Cf1D3495b43cC628aa1d8638A981F8CD341C)
+* Normal Timelock: [`0x21c12f2946a1a66cBFf7eb997022a37167eCf517`](https://basescan.org/address/0x21c12f2946a1a66cBFf7eb997022a37167eCf517)
+* Fasttrack Timelock: [`0x209F73Ee2Fa9A72aF3Fa6aF1933A3B58ed3De5D7`](https://basescan.org/address/0x209F73Ee2Fa9A72aF3Fa6aF1933A3B58ed3De5D7)
+* Critical Timelock: [`0x47F65466392ff2aE825d7a170889F7b5b9D8e60D`](https://basescan.org/address/0x47F65466392ff2aE825d7a170889F7b5b9D8e60D)
+* Omnichain Governance Executor: [`0xE7C56EaA4b6eafCe787B3E1AB8BCa0BC6CBDDb9e`](https://basescan.org/address/0xE7C56EaA4b6eafCe787B3E1AB8BCa0BC6CBDDb9e)
+* Omnichain Executor Owner Proxy: [`0x8BA591f72a90fb379b9a82087b190d51b226F0a9`](https://basescan.org/address/0x8BA591f72a90fb379b9a82087b190d51b226F0a9)
+
+## Base Sepolia
+
+* Access Control Manager: [`0x724138223D8F76b519fdE715f60124E7Ce51e051`](https://sepolia.basescan.org/address/0x724138223D8F76b519fdE715f60124E7Ce51e051)
+* Guardian: [`0xdf3b635d2b535f906BB02abb22AED71346E36a00`](https://sepolia.basescan.org/address/0xdf3b635d2b535f906BB02abb22AED71346E36a00)
+* Normal Timelock: [`0xCc84f6122649eDc48f4a426814e6b6C6fF9bBe0a`](https://sepolia.basescan.org/address/0xCc84f6122649eDc48f4a426814e6b6C6fF9bBe0a)
+* Fasttrack Timelock: [`0x3dFA652D3aaDcb93F9EA7d160d674C441AaA8EE2`](https://sepolia.basescan.org/address/0x3dFA652D3aaDcb93F9EA7d160d674C441AaA8EE2)
+* Critical Timelock: [`0xbeDb7F2d0617292364bA4D73cf016c0f6BB5542E`](https://sepolia.basescan.org/address/0xbeDb7F2d0617292364bA4D73cf016c0f6BB5542E)
+* Omnichain Governance Executor: [`0xDD59be81B3B5BFa391bDA3a84c9f5233BfEF52a4`](https://sepolia.basescan.org/address/0xDD59be81B3B5BFa391bDA3a84c9f5233BfEF52a4)
+* Omnichain Executor Owner Proxy: [`0xe3fb08B8817a0c88d39A4DA4eFFD586D3326b73b`](https://sepolia.basescan.org/address/0xe3fb08B8817a0c88d39A4DA4eFFD586D3326b73b)
