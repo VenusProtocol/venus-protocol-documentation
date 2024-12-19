@@ -22,6 +22,8 @@ The Isolated Pools subgraphs provides endpoints for querying data related to Iso
 
 [Optimism](https://thegraph.com/explorer/subgraphs/6vdC1Qpr5kobLEJCdDVUsGK6yG6aFscaQKvNZt2SspSz?view=Query\&chain=arbitrum-one)
 
+[Base](https://thegraph.com/explorer/subgraphs/7VHvieXwv5SWSmVppmi4QkSCFVxiECgcFdng2er73Q97?view=Query&chain=arbitrum-one)
+
 ## Core Pool
 
 The Core Pool subgraph is responsible for indexing and aggregating events related to market and lending activities in the Core Pool
@@ -59,6 +61,8 @@ The Crosschain Governance subgraph indexes receiving of messages and execution o
 [zkSync](https://thegraph.com/explorer/subgraphs/FGFYdyEMfD3BrXJZFZtNdGdi7RwVahqzxvK1BtDdk8Kb?view=Query\&chain=arbitrum-one)
 
 [Optimism](https://thegraph.com/explorer/subgraphs/4WESjRqo3TcdL3eUCTbbT4h2dLFwn3sKVi4PdWJDC118?view=Query\&chain=arbitrum-one)
+
+[Base](https://thegraph.com/explorer/subgraphs/6BFBwvrTvuTo3CGDjWUEbXGMseYhwr1yv5htzmRUPFg3?view=Query&chain=arbitrum-one)
 
 ## Protocol Share Reserve
 
