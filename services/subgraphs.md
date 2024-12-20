@@ -62,7 +62,7 @@ The Crosschain Governance subgraph indexes receiving of messages and execution o
 
 [Optimism](https://thegraph.com/explorer/subgraphs/4WESjRqo3TcdL3eUCTbbT4h2dLFwn3sKVi4PdWJDC118?view=Query\&chain=arbitrum-one)
 
-[Base](https://thegraph.com/explorer/subgraphs/6BFBwvrTvuTo3CGDjWUEbXGMseYhwr1yv5htzmRUPFg3?view=Query&chain=arbitrum-one)
+[Base](https://thegraph.com/explorer/subgraphs/88XyqtD22FYVzENf3aJhRrtQx7yncfWF22ryMpFNMSNP?view=Query&chain=arbitrum-one)
 
 ## Protocol Share Reserve
 
