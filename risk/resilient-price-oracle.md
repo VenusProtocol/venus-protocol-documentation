@@ -155,6 +155,11 @@ The current list of correlated token oracles in Venus is:
 | Core | eBTC | [eBTCAccountantOracle](https://etherscan.io/address/0x077A11d634be3498b9af3EbD3d5D35A0fC3569d8) | - | - | |
 | Curve | crvUSD | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Curve | CRV | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
+| Ethena | PT-sUSDE-27MAR2025 | [PendleOracle-PT-sUSDe-27MAR2025](https://etherscan.io/address/0x17B49f36878c401C1fE4D7Bf6D9CeBAAFBf4edE2) | - | - | |
+| Ethena | PT-USDe-27MAR2025 | [PendleOracle-PT-USDe-27MAR2025](https://etherscan.io/address/0x721C02F98bE5ef916F6574E53700a25473742093) | - | - | |
+| Ethena | sUSDe | [sUSDe-ERC4626Oracle](https://etherscan.io/address/0x67841858BCCA8dF50B962d6A314722a6AEC0970e) | - | - | |
+| Ethena | USDC | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
+| Ethena | USDe | [RedStone](https://etherscan.io/address/0x0FC8001B2c9Ec90352A46093130e284de5889C86) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | Upper bound: 1.01. Lower bound: 0.99 |
 | Liquid Staked ETH | ezETH | [ezETHOneJumpRedstoneOracle](https://etherscan.io/address/0x8062dC1b38c0b2CF6188dF605B19cFF3c4dc9b29) | [ezETHOneJumpChainlinkOracle](https://etherscan.io/address/0xa87E10C6F6DAD7af6C17f82Ce2C00FA5C64d110c) | [ezETHOneJumpChainlinkOracle](https://etherscan.io/address/0xa87E10C6F6DAD7af6C17f82Ce2C00FA5C64d110c) | Upper bound: 1.01. Lower bound: 0.99 |
 | Liquid Staked ETH | PTweETH-26DEC2024 | [PendleOracle-PT-weETH-26DEC2024](https://etherscan.io/address/0xA1eA3cB0FeA73a6c53aB07CcC703Dc039D8EAFb4) | - | - | |
 | Liquid Staked ETH | pufETH | [pufETHOneJumpRedstoneOracle](https://etherscan.io/address/0xAaE18CEBDF55bbbbf5C70c334Ee81D918be728Bc) | - | - | |
