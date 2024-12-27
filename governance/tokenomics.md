@@ -8,7 +8,7 @@ The Venus Protocol tokenomics have been reevaluated to optimize income distribut
 
 The XVS Staking Vault is an integral component of the Venus ecosystem. It enables governance voting participation and is a prerequisite for Venus Prime eligibility. To incentivize XVS staking, additional rewards will be offered in the form of Base Rewards (previously referred to as Legacy Rewards).
 
-These rewards will be transferred every six months from the [XVS Distributor](https://bscscan.com/address/0xfd36e2c2a6789db23113685031d7f16329158384) to the [XVS Vault Store](https://www.bscscan.com/address/0x1e25cf968f12850003db17e0dba32108509c4359), where they will be emitted at a rate of 630 XVS per day.
+These rewards will be transferred every six months from the [XVS Distributor](https://bscscan.com/address/0xfd36e2c2a6789db23113685031d7f16329158384) to the [XVS Vault Store](https://www.bscscan.com/address/0x1e25cf968f12850003db17e0dba32108509c4359), where they will be emitted at a rate of 441 XVS per day.
 
 ### Revenue Distribution from Protocol Reserves
 
