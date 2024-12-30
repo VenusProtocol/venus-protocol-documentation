@@ -62,7 +62,7 @@
 * XVSVaultTreasury: [`0x309b71a417dA9CfA8aC47e6038000B1739d9A3A6`](https://sepolia.arbiscan.io/address/0x309b71a417dA9CfA8aC47e6038000B1739d9A3A6)
 * SingleTokenConverterBeacon: [`0xC77D0F75f1e4e3720DA1D2F5D809F439125a2Fd4`](https://sepolia.arbiscan.io/address/0xC77D0F75f1e4e3720DA1D2F5D809F439125a2Fd4)
 * USDTPrimeConverter: [`0xFC0ec257d3ec4D673cB4e2CD3827C202e75fd0be`](https://sepolia.arbiscan.io/address/0xFC0ec257d3ec4D673cB4e2CD3827C202e75fd0be)
-* USDCPrimeConverter: [`0x6553C9f9E131191d4fECb6F0E73bE13E229065C6`](https://sepolia.arbiscan.io/address/0x6553C9f9E131191d4fECb6F0E73bE13E229065C6)
+* USDCPrimeConverter: [`0xE88ed530597bc8D50e8CfC0EecAAFf6A93248C74`](https://sepolia.arbiscan.io/address/0xE88ed530597bc8D50e8CfC0EecAAFf6A93248C74)
 * WBTCPrimeConverter: [`0x3089F46caf6611806caA39Ffaf672097156b893a`](https://sepolia.arbiscan.io/address/0x3089F46caf6611806caA39Ffaf672097156b893a)
 * WETHPrimeConverter: [`0x0d1e90c1F86CD1c1dF514B493c5985B3FD9CD6C8`](https://sepolia.arbiscan.io/address/0x0d1e90c1F86CD1c1dF514B493c5985B3FD9CD6C8)
 * XVSVaultConverter: [`0x99942a033454Cef6Ffb2843886C8b2E658E7D5fd`](https://sepolia.arbiscan.io/address/0x99942a033454Cef6Ffb2843886C8b2E658E7D5fd)
