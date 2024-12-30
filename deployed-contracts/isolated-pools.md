@@ -198,6 +198,20 @@
   * vWETH\_LiquidStakedETH: [`0xc82780Db1257C788F262FBbDA960B3706Dfdcaf2`](https://etherscan.io/address/0xc82780Db1257C788F262FBbDA960B3706Dfdcaf2)
   * vwstETH\_LiquidStakedETH: [`0x4a240F0ee138697726C8a3E43eFE6Ac3593432CB`](https://etherscan.io/address/0x4a240F0ee138697726C8a3E43eFE6Ac3593432CB)
 
+### Pool Ethena
+
+* Comptroller: [`0x562d2b6FF1dbf5f63E233662416782318cC081E4`](https://etherscan.io/address/0x562d2b6FF1dbf5f63E233662416782318cC081E4)
+* Underlying tokens:
+  * PT-sUSDE-27MAR2025 [`0xE00bd3Df25fb187d6ABBB620b3dfd19839947b81`](https://etherscan.io/address/0xE00bd3Df25fb187d6ABBB620b3dfd19839947b81)
+  * PT-USDe-27MAR2025[`0x8A47b431A7D947c6a3ED6E42d501803615a97EAa`](https://etherscan.io/address/0x8A47b431A7D947c6a3ED6E42d501803615a97EAa)
+  * sUSDe: [`0x9D39A5DE30e57443BfF2A8307A4256c8797A3497`](https://etherscan.io/address/0x9D39A5DE30e57443BfF2A8307A4256c8797A3497)
+  * USDC [`0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48`](https://etherscan.io/address/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48)
+* Markets:
+  * vPT-sUSDE-27MAR2025\_Ethena: [`0xCca202a95E8096315E3F19E46e19E1b326634889`](https://etherscan.io/address/0xCca202a95E8096315E3F19E46e19E1b326634889)
+  * vPT-USDe-27MAR2025\_Ethena: [`0x62D9E2010Cff87Bae05B91d5E04605ef864ABc3B`](https://etherscan.io/address/0x62D9E2010Cff87Bae05B91d5E04605ef864ABc3B)
+  * vsUSDe\_Ethena: [`0x0792b9c60C728C1D2Fd6665b3D7A08762a9b28e0`](https://etherscan.io/address/0x0792b9c60C728C1D2Fd6665b3D7A08762a9b28e0)
+  * vUSDC\_Ethena: [`0xa8e7f9473635a5CB79646f14356a9Fc394CA111A`](https://etherscan.io/address/0xa8e7f9473635a5CB79646f14356a9Fc394CA111A)
+
 ## opBNB Chain Mainnet
 
 * PoolRegistry: [`0x345a030Ad22e2317ac52811AC41C1A63cfa13aEe`](https://opbnbscan.com/address/0x345a030Ad22e2317ac52811AC41C1A63cfa13aEe)
@@ -491,6 +505,15 @@
   * vcrvUSD\_Stablecoins: [`0x9C5e7a3B4db931F07A6534f9e44100DDDc78c408`](https://sepolia.etherscan.io/address/0x9C5e7a3B4db931F07A6534f9e44100DDDc78c408)
   * vUSDC\_Stablecoins: [`0xD5f83FCbb4a62779D0B37b9E603CD19Ad84884F0`](https://sepolia.etherscan.io/address/0xD5f83FCbb4a62779D0B37b9E603CD19Ad84884F0)
   * vUSDT\_Stablecoins: [`0x93dff2053D4B08823d8B39F1dCdf8497f15200f4`](https://sepolia.etherscan.io/address/0x93dff2053D4B08823d8B39F1dCdf8497f15200f4)
+
+### Pool Ethena
+
+* Comptroller: [`0x05Cdc6c3dceA796971Db0d9edDbC7C56f2176D1c`](https://sepolia.etherscan.io/address/0x05Cdc6c3dceA796971Db0d9edDbC7C56f2176D1c)
+* Markets:
+  * vPT-sUSDE-27MAR2025\_Ethena: [`0x6c87587b1813eAf5571318E2139048b04eAaFf97`](https://sepolia.etherscan.io/address/0x6c87587b1813eAf5571318E2139048b04eAaFf97)
+  * vPT-USDe-27MAR2025\_Ethena: [`0xf2C00a9C3314f7997721253c49276c8531a30803`](https://sepolia.etherscan.io/address/0xf2C00a9C3314f7997721253c49276c8531a30803)
+  * vsUSDe\_Ethena: [`0x643a2BE96e7675Ca34bcceCB33F4f0fECA1ba9fC`](https://sepolia.etherscan.io/address/0x643a2BE96e7675Ca34bcceCB33F4f0fECA1ba9fC)
+  * vUSDC\_Ethena: [`0x466fe60aE3d8520e49D67e3483626786Ba0E6416`](https://sepolia.etherscan.io/address/0x466fe60aE3d8520e49D67e3483626786Ba0E6416)
 
 ## opBNB Chain Testnet
 

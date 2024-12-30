@@ -35,13 +35,13 @@
 ### Optimism Mainnet
 
 * XVSBridgeAdmin: [`0x3c307DF1Bf3198a2417d9CA86806B307D147Ddf7`](https://optimistic.etherscan.io/address/0x3c307DF1Bf3198a2417d9CA86806B307D147Ddf7)
-* XVSProxyOFTDest: [0xbBe46bAec851355c3FC4856914c47eB6Cea0B8B4\`](https://optimistic.etherscan.io/address/0xbBe46bAec851355c3FC4856914c47eB6Cea0B8B4)
+* XVSProxyOFTDest: [`0xbBe46bAec851355c3FC4856914c47eB6Cea0B8B4`](https://optimistic.etherscan.io/address/0xbBe46bAec851355c3FC4856914c47eB6Cea0B8B4)
 * XVS: [`0x4a971e87ad1F61f7f3081645f52a99277AE917cF`](https://optimistic.etherscan.io/address/0x4a971e87ad1F61f7f3081645f52a99277AE917cF)
 
 ### Base Mainnet
 
 * XVSBridgeAdmin: [`0x6303FEcee7161bF959d65df4Afb9e1ba5701f78e`](https://basescan.org/address/0x6303FEcee7161bF959d65df4Afb9e1ba5701f78e)
-* XVSProxyOFTDest: [0x3dD92fB51a5d381Ae78E023dfB5DD1D45D2426Cd\`](https://basescan.org/address/0x3dD92fB51a5d381Ae78E023dfB5DD1D45D2426Cd)
+* XVSProxyOFTDest: [`0x3dD92fB51a5d381Ae78E023dfB5DD1D45D2426Cd`](https://basescan.org/address/0x3dD92fB51a5d381Ae78E023dfB5DD1D45D2426Cd)
 * XVS: [`0xebB7873213c8d1d9913D8eA39Aa12d74cB107995`](https://basescan.org/address/0xebB7873213c8d1d9913D8eA39Aa12d74cB107995)
 
 ## Testnet chains
@@ -85,5 +85,5 @@
 ### Base Sepolia
 
 * XVSBridgeAdmin: [`0xE431E82d8fFfd81E7c082BeC7Fe2C306f5c988aD`](https://sepolia.basescan.org/address/0xE431E82d8fFfd81E7c082BeC7Fe2C306f5c988aD)
-* XVSProxyOFTDest: [0xE431E82d8fFfd81E7c082BeC7Fe2C306f5c988aD\`](https://sepolia.basescan.org/address/0xE431E82d8fFfd81E7c082BeC7Fe2C306f5c988aD)
+* XVSProxyOFTDest: [`0xD5Cd1fD17B724a391C1bce55Eb9d88E3205eED60`](https://sepolia.basescan.org/address/0xD5Cd1fD17B724a391C1bce55Eb9d88E3205eED60)
 * XVS: [`0xE657EDb5579B82135a274E85187927C42E38C021`](https://sepolia.basescan.org/address/0xE657EDb5579B82135a274E85187927C42E38C021)
