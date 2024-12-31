@@ -6,7 +6,6 @@
 * Bound Validator:[`0x6E332fF0bB52475304494E4AE5063c1051c7d735`](https://bscscan.com/address/0x6E332fF0bB52475304494E4AE5063c1051c7d735)
 * Chainlink Oracle:[`0x1B2103441A0A108daD8848D8F5d790e4D402921F`](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F)
 * RedStone Oracle:[`0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a`](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a)
-* Pyth Oracle:[`0xb893E38162f55fb80B18Aa44da76FaDf8E9B2262`](https://bscscan.com/address/0xb893E38162f55fb80B18Aa44da76FaDf8E9B2262)
 * Resilient Oracle:[`0x6592b5DE802159F3E74B2486b091D11a8256ab8A`](https://bscscan.com/address/0x6592b5DE802159F3E74B2486b091D11a8256ab8A)
 * ankrBNB Oracle: [`0xb0FCf0d45C15235D4ebC30d3c01d7d0D72Fd44AB`](https://bscscan.com/address/0xb0FCf0d45C15235D4ebC30d3c01d7d0D72Fd44AB)
 * BNBx Oracle: [`0x94f30dC18D12C210E5ae32752B1033afdd89D5DB`](https://bscscan.com/address/0x94f30dC18D12C210E5ae32752B1033afdd89D5DB)
@@ -18,6 +17,8 @@
 * OneJump Oracle wstETH/ETH/USD (having intermediate oracle Redstone): [`0x90dd7ae1137cC072F7740Ee0b264f2351515B98A`](https://bscscan.com/address/0x90dd7ae1137cC072F7740Ee0b264f2351515B98A)
 * OneJump Oracle weETH/ETH/USD (having intermediate oracle Chainlink): [`0x3b3241698692906310A65ACA199701843404E175`](https://bscscan.com/address/0x3b3241698692906310A65ACA199701843404E175)
 * OneJump Oracle weETH/ETH/USD (having intermediate oracle Redstone): [`0xb661102c399630420A4B9fa0a5cF57161e5452F5`](https://bscscan.com/address/0xb661102c399630420A4B9fa0a5cF57161e5452F5)
+* OneJump Oracle SolvBTC.BBN/BTC/USD (having intermediate oracle Redstone): [`0x98B9bC5a1e7E439ebEB0BEdB7e9f6b24fEc1E8B4`](https://bscscan.com/address/0x98B9bC5a1e7E439ebEB0BEdB7e9f6b24fEc1E8B4)
+* PendleOracle PT-SolvBTC.BBN-27MAR2025 Oracle: [`0xE11965a3513F537d91D73d9976FBe8c0969Bb252`](https://bscscan.com/address/0xE11965a3513F537d91D73d9976FBe8c0969Bb252)
 
 ## BNB Chain Testnet
 
@@ -25,7 +26,6 @@
 * Bound Validator:[`0x2842140e4Ad3a92e9af30e27e290300dd785076d`](https://testnet.bscscan.com/address/0x2842140e4Ad3a92e9af30e27e290300dd785076d)
 * Chainlink Oracle:[`0xCeA29f1266e880A1482c06eD656cD08C148BaA32`](https://testnet.bscscan.com/address/0xCeA29f1266e880A1482c06eD656cD08C148BaA32)
 * RedStone Oracle:[`0x0Af51d1504ac5B711A9EAFe2fAC11A51d32029Ad`](https://testnet.bscscan.com/address/0x0Af51d1504ac5B711A9EAFe2fAC11A51d32029Ad)
-* Pyth Oracle:[`0x94E1534c14e0736BB24decA625f2F5364B198E0C`](https://testnet.bscscan.com/address/0x94E1534c14e0736BB24decA625f2F5364B198E0C)
 * Resilient Oracle:[`0x3cD69251D04A28d887Ac14cbe2E14c52F3D57823`](https://testnet.bscscan.com/address/0x3cD69251D04A28d887Ac14cbe2E14c52F3D57823)
 * ankrBNB Oracle: [`0x00ea3D7Abe2f04004Ce71f9ef5C04F5f8Dce2f55`](https://testnet.bscscan.com/address/0x00ea3D7Abe2f04004Ce71f9ef5C04F5f8Dce2f55)
 * BNBx Oracle: [`0x24f6E7f40E3d8782E0c50d749625b6412437Af18`](https://testnet.bscscan.com/address/0x24f6E7f40E3d8782E0c50d749625b6412437Af18)
@@ -37,6 +37,8 @@
 * OneJump Oracle wstETH/ETH/USD (having intermediate oracle Redstone): [`0x35af302A0B4653f214240FCb2dFf059Fe42eC2CE`](https://testnet.bscscan.com/address/0x35af302A0B4653f214240FCb2dFf059Fe42eC2CE)
 * OneJump Oracle weETH/ETH/USD (having intermediate oracle Chainlink): [`0x8C8a70695DC952CA2e8CD4038907201FaBB8134E`](https://testnet.bscscan.com/address/0x8C8a70695DC952CA2e8CD4038907201FaBB8134E)
 * OneJump Oracle weETH/ETH/USD (having intermediate oracle Redstone): [`0xF1B65d1331DceEd40Da71CFc4f06d9754A3f3756`](https://testnet.bscscan.com/address/0xF1B65d1331DceEd40Da71CFc4f06d9754A3f3756)
+* OneJump Oracle SolvBTC.BBN/BTC/USD (having intermediate oracle Redstone): [`0x9767348B2e36E649A42b1DEA975D2474F72C6B96`](https://testnet.bscscan.com/address/0x9767348B2e36E649A42b1DEA975D2474F72C6B96)
+* PendleOracle PT-SolvBTC.BBN-27MAR2025 Oracle: [`0x31B78f0Ef6A87cF0E812197226306954a65907d5`](https://testnet.bscscan.com/address/0x31B78f0Ef6A87cF0E812197226306954a65907d5)
 
 ## Ethereum mainnet
 

@@ -123,6 +123,17 @@
   * vweETH\_LiquidStakedETH: [`0xc5b24f347254bD8cF8988913d1fd0F795274900F`](https://bscscan.com/address/0xc5b24f347254bD8cF8988913d1fd0F795274900F)
   * vwstETH\_LiquidStakedETH: [`0x94180a3948296530024Ef7d60f60B85cfe0422c8`](https://bscscan.com/address/0x94180a3948296530024Ef7d60f60B85cfe0422c8)
 
+### Pool BTC
+
+* Comptroller: [`0x9DF11376Cf28867E2B0741348044780FbB7cb1d6`](https://bscscan.com/address/0x9DF11376Cf28867E2B0741348044780FbB7cb1d6)
+* Swap router: [`0x70D06f42a463f0f398eCBc6abfDFbbd726626346`](https://bscscan.com/address/0x70D06f42a463f0f398eCBc6abfDFbbd726626346)
+* Underlying tokens:
+  * BTCB: [`0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c`](https://bscscan.com/address/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c)
+  * PT-SolvBTC-27MAR2025.BBN: [`0x541b5eeac7d4434c8f87e2d32019d67611179606`](https://bscscan.com/address/0x541b5eeac7d4434c8f87e2d32019d67611179606)
+* Markets:
+  * vBTCB\_BTC: [`0x8F2AE20b25c327714248C95dFD3b02815cC82302`](https://bscscan.com/address/0x8F2AE20b25c327714248C95dFD3b02815cC82302)
+  * vPT-SolvBTC.BBN-27MAR2025\_BTC: [`0x02243F036897E3bE1cce1E540FA362fd58749149`](https://bscscan.com/address/0x02243F036897E3bE1cce1E540FA362fd58749149)
+
 ## Ethereum
 
 * PoolRegistry: [`0x61CAff113CCaf05FFc6540302c37adcf077C5179`](https://etherscan.io/address/0x61CAff113CCaf05FFc6540302c37adcf077C5179)
@@ -447,6 +458,17 @@
   * vETH\_LiquidStakedETH: [`0x46D49adF48172d2e79d813A3f4F27aB61724B01e`](https://testnet.bscscan.com/address/0x46D49adF48172d2e79d813A3f4F27aB61724B01e)
   * vweETH\_LiquidStakedETH: [`0x4BD7EfB423f06fa033404FBd0935A2097918084d`](https://testnet.bscscan.com/address/0x4BD7EfB423f06fa033404FBd0935A2097918084d)
   * vwstETH\_LiquidStakedETH: [`0x16eb5Ce6d186B49709dD588518CD545985096Ff5`](https://testnet.bscscan.com/address/0x16eb5Ce6d186B49709dD588518CD545985096Ff5)
+
+### Pool BTC
+
+* Comptroller: [`0xfE87008bf29DeCACC09a75FaAc2d128367D46e7a`](https://testnet.bscscan.com/address/0xfE87008bf29DeCACC09a75FaAc2d128367D46e7a)
+* Swap router: [`0x98C108285E389A5a12EdDa585b70b30C786AFb86`](https://testnet.bscscan.com/address/0x98C108285E389A5a12EdDa585b70b30C786AFb86)
+* Underlying tokens:
+  * BTCB: [`0xA808e341e8e723DC6BA0Bb5204Bafc2330d7B8e4`](https://testnet.bscscan.com/address/0xA808e341e8e723DC6BA0Bb5204Bafc2330d7B8e4)
+  * PT-SolvBTC-27MAR2025.BBN: [`0x964Ea3dC70Ee5b35Ea881cf8416B7a5F50E13f56`](https://testnet.bscscan.com/address/0x964Ea3dC70Ee5b35Ea881cf8416B7a5F50E13f56)
+* Markets:
+  * vBTCB\_BTC: [`0x138500e8502f32f004F79507143E4FaaCA03E26d`](https://testnet.bscscan.com/address/0x138500e8502f32f004F79507143E4FaaCA03E26d)
+  * vPT-SolvBTC.BBN-27MAR2025\_BTC: [`0xf3bF150A7D3d42E8C712e2461102593Dc50266Bb`](https://testnet.bscscan.com/address/0xf3bF150A7D3d42E8C712e2461102593Dc50266Bb)
 
 ## Sepolia (Ethereum testnet)
 

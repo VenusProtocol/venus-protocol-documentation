@@ -8,6 +8,22 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### PendleOracle upgrade
+
+**Scope**: Upgrade the current implementation of the PendleOracle contract to add support for for Pendle's `getPtToSyRate()` . This allows the ability to add yield tokens as a base, as an alternative to using the underlying asset directly.
+
+- [Certik audit audit report (2024/12/26)](https://github.com/VenusProtocol/oracle/blob/de3c5a9ad4f7259870864dac1b6837e8908d799e/audits/119_pendleOracleUpdate_certik_20241226.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull Request [#240](https://github.com/VenusProtocol/oracle/pull/240)
+- Files:
+    - contracts/oracles/PendleOracle.sol
+    - contracts/interfaces/IPendlePtOracle.sol
+
+</details>
+
 ### ACMCommandsAggregator
 
 **Scope**: `ACMCommandsAggregator` is a permissionless contract, to be deployed to the remote networks (every network except BNB Chain), to facilitate the configuration (grants and revokes) of permissions in the AccessControlManager of each network.
