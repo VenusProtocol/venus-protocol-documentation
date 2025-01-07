@@ -1,11 +1,13 @@
 # XVS Cross-Chain Bridge Documentation
 
 This documentation provides detailed instructions and explanations for using the XVS Cross-Chain Bridge. The bridge allows users to transfer tokens between different blockchain networks, including the [BNB chain](https://www.bnbchain.org) and multiple destination chains. The supported networks are as follows:
+* [Arbitrum](https://arbitrum.io)
+* [Base](https://www.base.org/)
 * [BNB](https://www.bnbchain.org)
 * [Ethereum](https://ethereum.org)
 * [opBNB](https://opbnb.bnbchain.org)
-* [Arbitrum](https://arbitrum.io)
 * [Optimism](https://app.optimism.io)
+* [ZKsync](https://zksync.io/)
 
 ## Supported Transfer Paths
 
@@ -206,24 +208,28 @@ In addition to the core functionality, the XVS Cross-chain Bridge includes addit
 
 - Single Send Limit (source network in the first column, destination network in the first row)
 
-   |          |   BNB     |   opBNB   |   Arbitrum   |   Ethereum   |   ZKsync  |
-   |----------|-----------|-----------|--------------|--------------|-----------|
-   | BNB      |     -     | $10,000   | $20,000      | $100,000     | $20,000   |
-   | opBNB    | $10,000   |    -      | $20,000      | $10,000      | $20,000   |
-   | Arbitrum | $20,000   | $20,000   |     -        | $20,000      | $20,000   |
-   | Ethereum | $100,000  | $10,000   | $20,000      |      -       | $20,000   |  
-   | ZKsync   | $20,000   | $20,000   | $20,000      | $20,000      |     -     |
+   |          |   BNB     |   opBNB   |   Arbitrum   |   Ethereum   |   ZKsync  | Optimism  |    Base   |
+   |----------|-----------|-----------|--------------|--------------|-----------|-----------|-----------|
+   | BNB      |     -     | $10,000   | $20,000      | $100,000     | $20,000   | $20,000   | $20,000   |
+   | opBNB    | $10,000   |    -      | $20,000      | $10,000      | $20,000   | $20,000   | $20,000   |
+   | Arbitrum | $20,000   | $20,000   |     -        | $20,000      | $20,000   | $20,000   | $20,000   |
+   | Ethereum | $100,000  | $10,000   | $20,000      |      -       | $20,000   | $20,000   | $20,000   |  
+   | ZKsync   | $20,000   | $20,000   | $20,000      | $20,000      |     -     | $20,000   | $20,000   |
+   | Optimism | $20,000   | $20,000   | $20,000      | $20,000      | $20,000   |    -      | $20,000   |
+   | Base     | $20,000   | $20,000   | $20,000      | $20,000      | $20,000   | $20,000   |    -      |
 
    
 - Daily Send Limit (source network in the first column, destination network in the first row)
 
-   |          |    BNB     |   opBNB   |   Arbitrum   |   Ethereum   |   ZKsync  |
-   |----------|------------|-----------|--------------|--------------|-----------|
-   | BNB      |     -      | $50,000   | $100,000     | $1,000,000   | $100,000  |
-   | opBNB    | $50,000    |    -      | $100,000     | $50,000      | $100,000  |
-   | Arbitrum | $100,000   | $100,000  |     -        | $100,000     | $100,000  |
-   | Ethereum | $1,000,000 | $50,000   | $100,000     |      -       | $100,000  |  
-   | ZKsync   | $100,000   | $100,000  | $100,000     | $100,000     |     -     |
+   |          |    BNB     |   opBNB   |   Arbitrum   |   Ethereum   |   ZKsync  | Optimism  |    Base   |
+   |----------|------------|-----------|--------------|--------------|-----------|-----------|-----------|
+   | BNB      |     -      | $50,000   | $100,000     | $1,000,000   | $100,000  | $100,000  | $100,000  |
+   | opBNB    | $50,000    |    -      | $100,000     | $50,000      | $100,000  | $100,000  | $100,000  |
+   | Arbitrum | $100,000   | $100,000  |     -        | $100,000     | $100,000  | $100,000  | $100,000  |
+   | Ethereum | $1,000,000 | $50,000   | $100,000     |      -       | $100,000  | $100,000  | $100,000  |
+   | ZKsync   | $100,000   | $100,000  | $100,000     | $100,000     |     -     | $100,000  | $100,000  |
+   | Optimism | $100,000   | $100,000  | $100,000     | $100,000     | $100,000  |     -     | $100,000  |
+   | Base     | $100,000   | $100,000  | $100,000     | $100,000     | $100,000  | $100,000  |     -     |
 
 
 - Single Receive Limit = Single Send Limit + 2%
