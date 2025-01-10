@@ -222,3 +222,18 @@
 * XVS Vault Proxy: [`0x4d344e48F02234E82D7D1dB84d0A4A18Aa43Dacc`](https://sepolia-optimism.etherscan.io/address/0x4d344e48F02234E82D7D1dB84d0A4A18Aa43Dacc)
 * Prime: [`0x54dEb59698c628be5EEd5AD41Fd825Eb3Be89704`](https://sepolia-optimism.etherscan.io/address/0x54dEb59698c628be5EEd5AD41Fd825Eb3Be89704)
 * Prime Liquidity Provider: [`0xE3EC955b94D197a8e4081844F3f25F81047A9AF5`](https://sepolia-optimism.etherscan.io/address/0xE3EC955b94D197a8e4081844F3f25F81047A9AF5)
+
+
+## Base Mainnet
+
+* Venus Treasury: [`0xbefD8d06f403222dd5E8e37D2ba93320A97939D1`](https://basescan.org/address/0xbefD8d06f403222dd5E8e37D2ba93320A97939D1)
+* XVS Vault Proxy: [`0x708B54F2C3f3606ea48a8d94dab88D9Ab22D7fCd`](https://basescan.org/address/0x708B54F2C3f3606ea48a8d94dab88D9Ab22D7fCd)
+* Prime: [`0xD2e84244f1e9Fca03Ff024af35b8f9612D5d7a30`](https://basescan.org/address/0xD2e84244f1e9Fca03Ff024af35b8f9612D5d7a30)
+* Prime Liquidity Provider: [`0xcB293EB385dEFF2CdeDa4E7060974BB90ee0B208`](https://basescan.org/address/0xcB293EB385dEFF2CdeDa4E7060974BB90ee0B208)
+
+## Base Sepolia
+
+* Venus Treasury: [`0x07e880DaA6572829cE8ABaaf0f5323A4eFC417A6`](https://sepolia.basescan.org/address/0x07e880DaA6572829cE8ABaaf0f5323A4eFC417A6)
+* XVS Vault Proxy: [`0x9b5D0aDfCEcC8ed422d714EcbcE2FFA436e269B8`](https://sepolia.basescan.org/address/0x9b5D0aDfCEcC8ed422d714EcbcE2FFA436e269B8)
+* Prime: [`0x15A1AC7fA14C5900Ba93853375d66b6bB6A83B50`](https://sepolia.basescan.org/address/0x15A1AC7fA14C5900Ba93853375d66b6bB6A83B50)
+* Prime Liquidity Provider: [`0xb5BA66311C5f9A5C9d3CeE0183F5426DD694dE37`](https://sepolia.basescan.org/address/0xb5BA66311C5f9A5C9d3CeE0183F5426DD694dE37)
