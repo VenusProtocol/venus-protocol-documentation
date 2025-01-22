@@ -125,6 +125,7 @@
 * RedStone Oracle:[`0xFa1e65e714CDfefDC9729130496AB5b5f3708fdA`](https://explorer.zksync.io/address/0xFa1e65e714CDfefDC9729130496AB5b5f3708fdA)
 * Resilient Oracle:[`0xDe564a4C887d5ad315a19a96DC81991c98b12182`](https://explorer.zksync.io/address/0xDe564a4C887d5ad315a19a96DC81991c98b12182)
 * DefaultProxyAdmin:[`0x8Ea1A989B036f7Ef21bb95CE4E7961522Ca00287`](https://explorer.zksync.io/address/0x8Ea1A989B036f7Ef21bb95CE4E7961522Ca00287)
+* wUSDM ERC4626 Oracle:[`0x7Fb95a0B7b933A9F3Fe3Ead4b69B0267BD8Fe55F`](https://explorer.zksync.io/address/0x7Fb95a0B7b933A9F3Fe3Ead4b69B0267BD8Fe55F)
 
 ## ZKsync Sepolia
 
@@ -133,6 +134,7 @@
 * RedStone Oracle:[`0x3af097f1Dcec172D5ECdD0D1eFA6B118FF15f152`](https://sepolia.explorer.zksync.io/address/0x3af097f1Dcec172D5ECdD0D1eFA6B118FF15f152)
 * Resilient Oracle:[`0x748853B3bE26c46b4562Fd314dfb82708F395bDf`](https://sepolia.explorer.zksync.io/address/0x748853B3bE26c46b4562Fd314dfb82708F395bDf)
 * DefaultProxyAdmin:[`0x18E44f588a4DcF2F7145d35A5C226e129040b6D3`](https://sepolia.explorer.zksync.io/address/0x18E44f588a4DcF2F7145d35A5C226e129040b6D3)
+* wUSDM ERC4626 Oracle:[`0xf1dD9549556F3fae6d8bf4F3283b1D9d2bfb996B`](https://sepolia.explorer.zksync.io/address/0xf1dD9549556F3fae6d8bf4F3283b1D9d2bfb996B)
 
 ## Optimism Mainnet
 
