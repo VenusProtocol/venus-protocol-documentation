@@ -307,6 +307,7 @@
   * USDT: [`0x493257fD37EDB34451f62EDf8D2a0C418852bA4C`](https://explorer.zksync.io/address/0x493257fD37EDB34451f62EDf8D2a0C418852bA4C)
   * WBTC: [`0xBBeB516fb02a01611cBBE0453Fe3c580D7281011`](https://explorer.zksync.io/address/0xBBeB516fb02a01611cBBE0453Fe3c580D7281011)
   * WETH: [`0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91`](https://explorer.zksync.io/address/0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91)
+  * wUSDM: [`0xA900cbE7739c96D2B153a273953620A701d5442b`](https://explorer.zksync.io/address/0xA900cbE7739c96D2B153a273953620A701d5442b)
   * ZK: [`0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E`](https://explorer.zksync.io/address/0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E)
 * Markets:
   * vUSDC\_Core: [`0x84064c058F2EFea4AB648bB6Bd7e40f83fFDe39a`](https://explorer.zksync.io/address/0x84064c058F2EFea4AB648bB6Bd7e40f83fFDe39a)
@@ -314,6 +315,7 @@
   * vUSDT\_Core: [`0x69cDA960E3b20DFD480866fFfd377Ebe40bd0A46`](https://explorer.zksync.io/address/0x69cDA960E3b20DFD480866fFfd377Ebe40bd0A46)
   * vWBTC\_Core: [`0xAF8fD83cFCbe963211FAaf1847F0F217F80B4719`](https://explorer.zksync.io/address/0xAF8fD83cFCbe963211FAaf1847F0F217F80B4719)
   * vWETH\_Core: [`0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8`](https://explorer.zksync.io/address/0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8)
+  * vwUSDM\_Core: [`0x183dE3C349fCf546aAe925E1c7F364EA6FB4033c`](https://explorer.zksync.io/address/0x183dE3C349fCf546aAe925E1c7F364EA6FB4033c)
   * vZK\_Core: [`0x697a70779C1A03Ba2BD28b7627a902BFf831b616`](https://explorer.zksync.io/address/0x697a70779C1A03Ba2BD28b7627a902BFf831b616)
 
 ## Optimism Mainnet
@@ -608,6 +610,7 @@
   * vUSDT\_Core: [`0x7Bfd185eF8380a72027bF65bFEEAb0242b147778`](https://sepolia.explorer.zksync.io/address/0x7Bfd185eF8380a72027bF65bFEEAb0242b147778)
   * vWBTC\_Core: [`0x9c2379ed8ab06B44328487f61873C7c44BD6E87D`](https://sepolia.explorer.zksync.io/address/0x9c2379ed8ab06B44328487f61873C7c44BD6E87D)
   * vWETH\_Core: [`0x31eb7305f9fE281027028D0ba0d7f57ddA836d49`](https://sepolia.explorer.zksync.io/address/0x31eb7305f9fE281027028D0ba0d7f57ddA836d49)
+  * vwUSDM\_Core: [`0x63abcB1f579dB71b4b8A1E182adbA2F131b75681`](https://sepolia.explorer.zksync.io/address/0x63abcB1f579dB71b4b8A1E182adbA2F131b75681)
   * vZK\_Core: [`0x92f4BD794303c0BD0791B350Be5531DB38414f47`](https://sepolia.explorer.zksync.io/address/0x92f4BD794303c0BD0791B350Be5531DB38414f47)
 
 ## Optimism Sepolia
