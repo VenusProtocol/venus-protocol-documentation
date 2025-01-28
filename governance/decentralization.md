@@ -24,9 +24,9 @@ Each VIP type has its unique proposal threshold, timelock, and voting periods, r
 
 The initial voting and delay periods for these types are as follows:
 
-* Normal VIP: 24 hours voting + 48 hours delay
-* Fast-track VIP: 24 hours voting + 6 hours delay
-* Critical VIP: 6 hours voting + 1 hour delay
+* Normal VIP: 24 hour voting period + 48 hour delay (+ 48 hour delay to execute commands on networks other than BNB Chain)
+* Fast-track VIP: 24 hour voting period + 6 hour delay (+ 6 hour delay to execute commands on networks other than BNB Chain)
+* Critical VIP: 6 hour voting period + 1 hour delay (+ 1 hour delay to execute commands on networks other than  BNB Chain)
 
 **Role-based Access Control**
 
