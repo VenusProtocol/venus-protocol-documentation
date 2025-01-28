@@ -190,6 +190,8 @@ The current list of correlated token oracles in Venus is:
 | Core | WETH | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
 | Core | USDC | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
 | Core | USDT | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
+| Core | gmWETH-USDC | [SequencerChainlinkOracle](https://arbiscan.io/address/0xfB3264D1129824933a52374c2C1696F4470D041e) | - | - | |
+| Core | gmBTC-USDC | [SequencerChainlinkOracle](https://arbiscan.io/address/0x395D5c5D552Df670dc4B2B1cef0c4EABfFba492f) | - | - | |
 | Core | ARB | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
 | Liquid Staked ETH | weETH |  [weETHOneJumpChainlinkOracle](https://arbiscan.io/address/0x09eA4825a5e2FB2CB9a44F317c22e7D65053ea9d) | - | - | |
 | Liquid Staked ETH | wstETH |  [wstETHOneJumpChainlinkOracle](https://arbiscan.io/address/0x748DeFdbaE5215cdF0C436c538804823b55D76bc) | - | - | |

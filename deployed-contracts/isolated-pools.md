@@ -264,12 +264,16 @@
 * NativeTokenGateway: [`0xc8e51418cadc001157506b306C6d0b878f1ff755`](https://arbiscan.io/address/0xc8e51418cadc001157506b306C6d0b878f1ff755)
 * Underlying tokens:
   * ARB: [`0x912ce59144191c1204e64559fe8253a0e49e6548`](https://arbiscan.io/address/0x912ce59144191c1204e64559fe8253a0e49e6548)
+  * GM (gmBTC-USDC): [`0x47c031236e19d024b42f8AE6780E44A573170703`](https://arbiscan.io/address/0x47c031236e19d024b42f8AE6780E44A573170703)
+  * GM (gmWETH-USDC): [`0x70d95587d40A2caf56bd97485aB3Eec10Bee6336`](https://arbiscan.io/address/0x70d95587d40A2caf56bd97485aB3Eec10Bee6336)
   * USDC: [`0xaf88d065e77c8cc2239327c5edb3a432268e5831`](https://arbiscan.io/address/0xaf88d065e77c8cc2239327c5edb3a432268e5831)
   * USDT: [`0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9`](https://arbiscan.io/address/0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9)
   * WBTC: [`0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f`](https://arbiscan.io/address/0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f)
   * WETH: [`0x82af49447d8a07e3bd95bd0d56f35241523fbab1`](https://arbiscan.io/address/0x82af49447d8a07e3bd95bd0d56f35241523fbab1)
 * Markets:
   * vARB\_Core: [`0xAeB0FEd69354f34831fe1D16475D9A83ddaCaDA6`](https://arbiscan.io/address/0xAeB0FEd69354f34831fe1D16475D9A83ddaCaDA6)
+  * vgmBTC-USDC\_Core: [`0x4f3a73f318C5EA67A86eaaCE24309F29f89900dF`](https://arbiscan.io/address/0x4f3a73f318C5EA67A86eaaCE24309F29f89900dF)
+  * vgmWETH-USDC\_Core: [`0x9bb8cEc9C0d46F53b4f2173BB2A0221F66c353cC`](https://arbiscan.io/address/0x9bb8cEc9C0d46F53b4f2173BB2A0221F66c353cC)
   * vUSDC\_Core: [`0x7D8609f8da70fF9027E9bc5229Af4F6727662707`](https://arbiscan.io/address/0x7D8609f8da70fF9027E9bc5229Af4F6727662707)
   * vUSDT\_Core: [`0xB9F9117d4200dC296F9AcD1e8bE1937df834a2fD`](https://arbiscan.io/address/0xB9F9117d4200dC296F9AcD1e8bE1937df834a2fD)
   * vWBTC\_Core: [`0xaDa57840B372D4c28623E87FC175dE8490792811`](https://arbiscan.io/address/0xaDa57840B372D4c28623E87FC175dE8490792811)
@@ -573,6 +577,8 @@
 * NativeTokenGateway: [`0x196b19C2037863409C65CbF63592ae2a3CD2Dc2C`](https://sepolia.arbiscan.io/address/0x196b19C2037863409C65CbF63592ae2a3CD2Dc2C)
 * Markets:
   * vARB\_Core: [`0x292Ec2b45C549Bc2c6B31937dBd511beaAEabea8`](https://sepolia.arbiscan.io/address/0x292Ec2b45C549Bc2c6B31937dBd511beaAEabea8)
+  * vgmBTC-USDC\_Core: [`0x6089B1F477e13459C4d1D1f767c974e5A72a541F`](https://sepolia.arbiscan.io/address/0x6089B1F477e13459C4d1D1f767c974e5A72a541F)
+  * vgmWETH-USDC\_Core: [`0x4A80b19Cd8BbBd14c425fB17F8E06c6B60801d63`](https://sepolia.arbiscan.io/address/0x4A80b19Cd8BbBd14c425fB17F8E06c6B60801d63)
   * vUSDC\_Core: [`0xd9d1e754464eFc7493B177d2c7be04816E089b4C`](https://sepolia.arbiscan.io/address/0xd9d1e754464eFc7493B177d2c7be04816E089b4C)
   * vUSDT\_Core: [`0xdEFbf0F9Ab6CdDd0a1FdDC894b358D0c0a39B052`](https://sepolia.arbiscan.io/address/0xdEFbf0F9Ab6CdDd0a1FdDC894b358D0c0a39B052)
   * vWBTC\_Core: [`0x49FB90A5815904649C44B87001a160C1301D6a2C`](https://sepolia.arbiscan.io/address/0x49FB90A5815904649C44B87001a160C1301D6a2C)
