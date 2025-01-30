@@ -361,10 +361,12 @@
   * USDC: [`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`](https://basescan.org/address/0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913)
   * cbBTC: [`0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf`](https://basescan.org/address/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf)
   * WETH: [`0x4200000000000000000000000000000000000006`](https://basescan.org/address/0x4200000000000000000000000000000000000006)
+  * wsuperOETHb: [`0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6`](https://basescan.org/address/0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6)
 * Markets:
   * vUSDC\_Core: [`0x3cb752d175740043Ec463673094e06ACDa2F9a2e`](https://basescan.org/address/0x3cb752d175740043Ec463673094e06ACDa2F9a2e)
   * vcbBTC\_Core: [`0x7bBd1005bB24Ec84705b04e1f2DfcCad533b6D72`](https://basescan.org/address/0x7bBd1005bB24Ec84705b04e1f2DfcCad533b6D72)
   * vWETH\_Core: [`0xEB8A79bD44cF4500943bf94a2b4434c95C008599`](https://basescan.org/address/0xEB8A79bD44cF4500943bf94a2b4434c95C008599)
+  * vwsuperOETHb\_Core: [`0x75201D81B3B0b9D17b179118837Be37f64fc4930`](https://basescan.org/address/0x75201D81B3B0b9D17b179118837Be37f64fc4930)
 
 ## BNB Chain Testnet
 
@@ -650,7 +652,9 @@
   * USDC: [`0xFa264c13d657180e65245a9C3ac8d08b9F5Fc54D`](https://sepolia.basescan.org/address/0xFa264c13d657180e65245a9C3ac8d08b9F5Fc54D)
   * cbBTC: [`0x0948001047A07e38F685f9a11ea1ddB16B234af9`](https://sepolia.basescan.org/address/0x0948001047A07e38F685f9a11ea1ddB16B234af9)
   * WETH: [`0x4200000000000000000000000000000000000006`](https://sepolia.basescan.org/address/0x4200000000000000000000000000000000000006)
+  * wsuperOETHb: [`0x02B1136d9E223333E0083aeAB76bC441f230a033`](https://sepolia.basescan.org/address/0x02B1136d9E223333E0083aeAB76bC441f230a033)
 * Markets:
   * vUSDC\_Core: [`0xA31D67c056Aadc2501535f2776bF1157904f810e`](https://sepolia.basescan.org/address/0xA31D67c056Aadc2501535f2776bF1157904f810e)
   * vcbBTC\_Core: [`0x776f14D624aBdAfa912d6Cd0864976DdaF5Ca4a7`](https://sepolia.basescan.org/address/0x776f14D624aBdAfa912d6Cd0864976DdaF5Ca4a7)
   * vWETH\_Core: [`0x436E5A07F58AAA86277e8b992bC3e596eC423d09`](https://sepolia.basescan.org/address/0x436E5A07F58AAA86277e8b992bC3e596eC423d09)
+  * vwsuperOETHb\_Core: [`0xF9d609ba31724E199ccaacaD3e3e7ED8462C20C5`](https://sepolia.basescan.org/address/0xF9d609ba31724E199ccaacaD3e3e7ED8462C20C5)

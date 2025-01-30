@@ -158,6 +158,7 @@
 * RedStone Oracle:[`0xd101Bf51937A6718F402dA944CbfdcD12bB6a6eb`](https://basescan.org/address/0xd101Bf51937A6718F402dA944CbfdcD12bB6a6eb)
 * Resilient Oracle:[`0xcBBf58bD5bAdE357b634419B70b215D5E9d6FbeD`](https://basescan.org/address/0xcBBf58bD5bAdE357b634419B70b215D5E9d6FbeD)
 * DefaultProxyAdmin:[`0x7B06EF6b68648C61aFE0f715740fE3950B90746B`](https://basescan.org/address/0x7B06EF6b68648C61aFE0f715740fE3950B90746B)
+* wsuperOETHb ERC4626 Oracle:[`0x2ad7dFf3380A0b75dC0bB1f3B38C105AB5B6D818`](https://basescan.org/address/0x2ad7dFf3380A0b75dC0bB1f3B38C105AB5B6D818)
 
 ## Base Sepolia
 
@@ -165,3 +166,4 @@
 * Chainlink Oracle:[`0x801aB33A69AD867500fbCda7b3dB66C73151494b`](https://sepolia.basescan.org/address/0x801aB33A69AD867500fbCda7b3dB66C73151494b)
 * RedStone Oracle:[`0x8267FE3f75E0A37ee34e113E767F9C9727206838`](https://sepolia.basescan.org/address/0x8267FE3f75E0A37ee34e113E767F9C9727206838)
 * Resilient Oracle:[`0xC34871C982cf0Bc6e7aCa2c2670Bc319bDA1C744`](https://sepolia.basescan.org/address/0xC34871C982cf0Bc6e7aCa2c2670Bc319bDA1C744)
+* wsuperOETHb ERC4626 Oracle:[`0x72050243b23a7f0f74D37e1B85Df9D6486D1a331`](https://sepolia.basescan.org/address/0x72050243b23a7f0f74D37e1B85Df9D6486D1a331)
