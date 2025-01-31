@@ -227,6 +227,7 @@ The current list of correlated token oracles in Venus is:
 | Core | cbBTC | [ChainlinkOracle](https://basescan.org/address/0x6F2eA73597955DB37d7C06e1319F0dC7C7455dEb) | - | - | |
 | Core | WETH | [ChainlinkOracle](https://basescan.org/address/0x6F2eA73597955DB37d7C06e1319F0dC7C7455dEb) | - | - | |
 | Core | USDC | [ChainlinkOracle](https://basescan.org/address/0x6F2eA73597955DB37d7C06e1319F0dC7C7455dEb) | - | - | |
+| Core | wsuperOETHb | [wsuperOETHb-ERC4626Oracle](https://basescan.org/address/0x2ad7dFf3380A0b75dC0bB1f3B38C105AB5B6D818) | - | - | |
 
 ### Further Reading
 
