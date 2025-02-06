@@ -148,6 +148,7 @@
 * Comptroller: [`0x687a01ecF6d3907658f7A7c714749fAC32336D1B`](https://etherscan.io/address/0x687a01ecF6d3907658f7A7c714749fAC32336D1B)
 * NativeTokenGateway: [`0x044dd75b9E043ACFD2d6EB56b6BB814df2a9c809`](https://etherscan.io/address/0x044dd75b9E043ACFD2d6EB56b6BB814df2a9c809)
 * Underlying tokens:
+  * BAL: [`0xba100000625a3754423978a60c9317c58a424e3D`](https://etherscan.io/address/0xba100000625a3754423978a60c9317c58a424e3D)
   * crvUSD: [`0xf939E0A03FB07F59A73314E73794Be0E57ac1b4E`](https://etherscan.io/address/0xf939E0A03FB07F59A73314E73794Be0E57ac1b4E)
   * DAI: [`0x6B175474E89094C44Da98b954EedeAC495271d0F`](https://etherscan.io/address/0x6B175474E89094C44Da98b954EedeAC495271d0F)
   * eBTC: [`0x657e8C867D8B37dCC18fA4Caead9C45EB088C642`](https://etherscan.io/address/0x657e8C867D8B37dCC18fA4Caead9C45EB088C642)
@@ -164,6 +165,7 @@
   * WETH: [`0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2`](https://etherscan.io/address/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2)
   
 * Markets:
+  * vBAL\_Core: [`0x0Ec5488e4F8f319213a14cab188E01fB8517Faa8`](https://etherscan.io/address/0x0Ec5488e4F8f319213a14cab188E01fB8517Faa8)
   * vcrvUSD\_Core: [`0x672208C10aaAA2F9A6719F449C4C8227bc0BC202`](https://etherscan.io/address/0x672208C10aaAA2F9A6719F449C4C8227bc0BC202)
   * vDAI\_Core: [`0xd8AdD9B41D4E1cd64Edad8722AB0bA8D35536657`](https://etherscan.io/address/0xd8AdD9B41D4E1cd64Edad8722AB0bA8D35536657)
   * veBTC\_Core: [`0x325cEB02fe1C2fF816A83a5770eA0E88e2faEcF2`](https://etherscan.io/address/0x325cEB02fe1C2fF816A83a5770eA0E88e2faEcF2)
@@ -497,6 +499,7 @@
 * Comptroller: [`0x7Aa39ab4BcA897F403425C9C6FDbd0f882Be0D70`](https://sepolia.etherscan.io/address/0x7Aa39ab4BcA897F403425C9C6FDbd0f882Be0D70)
 * NativeTokenGateway: [`0xb8fD67f215117FADeF06447Af31590309750529D`](https://sepolia.etherscan.io/address/0xb8fD67f215117FADeF06447Af31590309750529D)
 * Markets:
+  * vBAL\_Core: [`0xD4B82B7B7CdedB029e0E58AC1B6a04F6616BEd40`](https://sepolia.etherscan.io/address/0xD4B82B7B7CdedB029e0E58AC1B6a04F6616BEd40)
   * vCRV\_Core: [`0x121E3be152F283319310D807ed847E8b98319C1e`](https://sepolia.etherscan.io/address/0x121E3be152F283319310D807ed847E8b98319C1e)
   * vcrvUSD\_Core: [`0xA09cFAd2e138fe6d8FF62df803892cbCb79ED082`](https://sepolia.etherscan.io/address/0xA09cFAd2e138fe6d8FF62df803892cbCb79ED082)
   * vDAI\_Core: [`0xfe050f628bF5278aCfA1e7B13b59fF207e769235`](https://sepolia.etherscan.io/address/0xfe050f628bF5278aCfA1e7B13b59fF207e769235)
