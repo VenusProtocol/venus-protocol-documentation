@@ -156,7 +156,7 @@ The current list of correlated token oracles in Venus is:
 | Core | EIGEN | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | sFRAX | [SFraxOracle](https://etherscan.io/address/0x27F811933cA276387554eAffD9860e513bA95AC3) | - | - | |
 | Core | eBTC | [eBTCAccountantOracle](https://etherscan.io/address/0x077A11d634be3498b9af3EbD3d5D35A0fC3569d8) | - | - | |
-| Core | USDS | [chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
+| Core | USDS | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | sUSDS | [sUSDS-ERC4646Oracle](https://etherscan.io/address/0xDC4861F5Ad18bD584Eab322cc6706e632E9D1c94) | - | - | |
 | Curve | crvUSD | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Curve | CRV | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
