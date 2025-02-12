@@ -177,3 +177,17 @@
 * RedStone Oracle:[`0x8267FE3f75E0A37ee34e113E767F9C9727206838`](https://sepolia.basescan.org/address/0x8267FE3f75E0A37ee34e113E767F9C9727206838)
 * Resilient Oracle:[`0xC34871C982cf0Bc6e7aCa2c2670Bc319bDA1C744`](https://sepolia.basescan.org/address/0xC34871C982cf0Bc6e7aCa2c2670Bc319bDA1C744)
 * wsuperOETHb ERC4626 Oracle:[`0x72050243b23a7f0f74D37e1B85Df9D6486D1a331`](https://sepolia.basescan.org/address/0x72050243b23a7f0f74D37e1B85Df9D6486D1a331)
+
+## Unichain Mainnet
+
+* Bound Validator:[`0xfdaA5dEEA7850997dA8A6E2F2Ab42E60F1011C19`](https://uniscan.xyz/address/0xfdaA5dEEA7850997dA8A6E2F2Ab42E60F1011C19)
+* DefaultProxyAdmin:[`0x78e9fff2ab8daAB8559070d897C399E5e1C5074c`](https://uniscan.xyz/address/0x78e9fff2ab8daAB8559070d897C399E5e1C5074c)
+* RedStone Oracle:[`0x4d41a36D04D97785bcEA57b057C412b278e6Edcc`](https://uniscan.xyz/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc)
+* Resilient Oracle:[`0x86D04d6FE928D888076851122dc6739551818f7E`](https://uniscan.xyz/address/0x86D04d6FE928D888076851122dc6739551818f7E)
+
+## Unichain Sepolia
+
+* Bound Validator:[`0x51C9F57Ffc0A4dD6d135aa3b856571F5A4e4C6CB`](https://sepolia.uniscan.xyz/address/0x51C9F57Ffc0A4dD6d135aa3b856571F5A4e4C6CB)
+* DefaultProxyAdmin:[`0x256735eFdfDf135bD6991854e0065909e57804aa`](https://sepolia.uniscan.xyz/address/0x256735eFdfDf135bD6991854e0065909e57804aa)
+* RedStone Oracle:[`0x8683D6902A669Ac479cfcCf2542724a133D4d872`](https://sepolia.uniscan.xyz/address/0x8683D6902A669Ac479cfcCf2542724a133D4d872)
+* Resilient Oracle:[`0xA469E718BDE2C9939bD29529A38184e97dF0A741`](https://sepolia.uniscan.xyz/address/0xA469E718BDE2C9939bD29529A38184e97dF0A741)

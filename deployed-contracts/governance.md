@@ -207,3 +207,13 @@ Specific functions that can be invoked by the guardians
 * Critical Timelock: [`0xbeDb7F2d0617292364bA4D73cf016c0f6BB5542E`](https://sepolia.basescan.org/address/0xbeDb7F2d0617292364bA4D73cf016c0f6BB5542E)
 * Omnichain Governance Executor: [`0xDD59be81B3B5BFa391bDA3a84c9f5233BfEF52a4`](https://sepolia.basescan.org/address/0xDD59be81B3B5BFa391bDA3a84c9f5233BfEF52a4)
 * Omnichain Executor Owner Proxy: [`0xe3fb08B8817a0c88d39A4DA4eFFD586D3326b73b`](https://sepolia.basescan.org/address/0xe3fb08B8817a0c88d39A4DA4eFFD586D3326b73b)
+
+## Unichain Mainnet
+
+* Access Control Manager: [`0x1f12014c497a9d905155eB9BfDD9FaC6885e61d0`](https://uniscan.xyz/address/0x1f12014c497a9d905155eB9BfDD9FaC6885e61d0)
+* Guardian: [`0x1803Cf1D3495b43cC628aa1d8638A981F8CD341C`](https://uniscan.xyz/address/0x1803Cf1D3495b43cC628aa1d8638A981F8CD341C)
+
+## Unichain Sepolia
+
+* Access Control Manager: [`0x854C064EA6b503A97980F481FA3B7279012fdeDd`](https://sepolia.uniscan.xyz/address/0x854C064EA6b503A97980F481FA3B7279012fdeDd)
+* Guardian: [`0x9831D3A641E8c7F082EEA75b8249c99be9D09a34`](https://sepolia.uniscan.xyz/address/0x9831D3A641E8c7F082EEA75b8249c99be9D09a34)

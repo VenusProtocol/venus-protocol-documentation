@@ -387,6 +387,26 @@
   * vWETH\_Core: [`0xEB8A79bD44cF4500943bf94a2b4434c95C008599`](https://basescan.org/address/0xEB8A79bD44cF4500943bf94a2b4434c95C008599)
   * vwsuperOETHb\_Core: [`0x75201D81B3B0b9D17b179118837Be37f64fc4930`](https://basescan.org/address/0x75201D81B3B0b9D17b179118837Be37f64fc4930)
 
+## Unichain Mainnet
+
+* PoolRegistry: [`0x0C52403E16BcB8007C1e54887E1dFC1eC9765D7C`](https://uniscan.xyz/address/0x0C52403E16BcB8007C1e54887E1dFC1eC9765D7C)
+* PoolLens: [`0xe192aeDBDBd235DBF33Ea1444f2B908Ea3E78419`](https://uniscan.xyz/address/0xe192aeDBDBd235DBF33Ea1444f2B908Ea3E78419)
+* DefaultProxyAdmin: [`0x78e9fff2ab8daAB8559070d897C399E5e1C5074c`](https://uniscan.xyz/address/0x78e9fff2ab8daAB8559070d897C399E5e1C5074c)
+* Comptroller Beacon: [`0xE57824ffF03fB19D7f93139A017a7E70f6F25166`](https://uniscan.xyz/address/0xE57824ffF03fB19D7f93139A017a7E70f6F25166)
+* VToken Beacon: [`0x42c1Efb9Dd9424c5ac8e6EcEa4eb03940c4a15Fc`](https://uniscan.xyz/address/0x42c1Efb9Dd9424c5ac8e6EcEa4eb03940c4a15Fc)
+* ProtocolShareReserve: [`0x0A93fBcd7B53CE6D335cAB6784927082AD75B242`](https://uniscan.xyz/address/0x0A93fBcd7B53CE6D335cAB6784927082AD75B242)
+
+### Core Pool
+
+* Comptroller: [`0xe22af1e6b78318e1Fe1053Edbd7209b8Fc62c4Fe`](https://uniscan.xyz/address/0xe22af1e6b78318e1Fe1053Edbd7209b8Fc62c4Fe)
+* NativeTokenGateway: [`0x4441aE3bCEd3210edbA35d0F7348C493E79F1C52`](https://uniscan.xyz/address/0x4441aE3bCEd3210edbA35d0F7348C493E79F1C52)
+* Underlying tokens:
+  * USDC: [`0x078D782b760474a361dDA0AF3839290b0EF57AD6`](https://uniscan.xyz/address/0x078D782b760474a361dDA0AF3839290b0EF57AD6)
+  * WETH: [`0x4200000000000000000000000000000000000006`](https://uniscan.xyz/address/0x4200000000000000000000000000000000000006)
+* Markets:
+  * vUSDC\_Core: [`0xB953f92B9f759d97d2F2Dec10A8A3cf75fcE3A95`](https://uniscan.xyz/address/0xB953f92B9f759d97d2F2Dec10A8A3cf75fcE3A95)
+  * vWETH\_Core: [`0xc219BC179C7cDb37eACB03f993f9fDc2495e3374`](https://uniscan.xyz/address/0xc219BC179C7cDb37eACB03f993f9fDc2495e3374)
+
 ## BNB Chain Testnet
 
 * PoolRegistry: [`0xC85491616Fa949E048F3aAc39fbf5b0703800667`](https://testnet.bscscan.com/address/0xC85491616Fa949E048F3aAc39fbf5b0703800667)
@@ -686,3 +706,27 @@
   * vcbBTC\_Core: [`0x776f14D624aBdAfa912d6Cd0864976DdaF5Ca4a7`](https://sepolia.basescan.org/address/0x776f14D624aBdAfa912d6Cd0864976DdaF5Ca4a7)
   * vWETH\_Core: [`0x436E5A07F58AAA86277e8b992bC3e596eC423d09`](https://sepolia.basescan.org/address/0x436E5A07F58AAA86277e8b992bC3e596eC423d09)
   * vwsuperOETHb\_Core: [`0xF9d609ba31724E199ccaacaD3e3e7ED8462C20C5`](https://sepolia.basescan.org/address/0xF9d609ba31724E199ccaacaD3e3e7ED8462C20C5)
+
+## Unichain Sepolia
+
+* PoolRegistry: [`0x9027cF782515F3184bbF7A6cD7a33052dc52E439`](https://sepolia.uniscan.xyz/address/0x9027cF782515F3184bbF7A6cD7a33052dc52E439)
+* PoolLens: [`0xE32DD86fc8cc7984E453703Ef04Fe822aF411f74`](https://sepolia.uniscan.xyz/address/0xE32DD86fc8cc7984E453703Ef04Fe822aF411f74)
+* DefaultProxyAdmin: [`0x256735eFdfDf135bD6991854e0065909e57804aa`](https://sepolia.uniscan.xyz/address/0x256735eFdfDf135bD6991854e0065909e57804aa)
+* Comptroller Beacon: [`0x1f5f89b3C53b0b07dc0E7EF80864842E41Df480a`](https://sepolia.uniscan.xyz/address/0x1f5f89b3C53b0b07dc0E7EF80864842E41Df480a)
+* VToken Beacon: [`0x123AC6429C00333D5b2E140e54d9037E154b27E4`](https://sepolia.uniscan.xyz/address/0x123AC6429C00333D5b2E140e54d9037E154b27E4)
+* ProtocolShareReserve: [`0xcCcFc9B37A5575ae270352CC85D55C3C52a646C0`](https://sepolia.uniscan.xyz/address/0xcCcFc9B37A5575ae270352CC85D55C3C52a646C0)
+
+### Core Pool
+
+* Comptroller: [`0xFeD3eAA668a6179c9E5E1A84e3A7d6883F06f7c1`](https://sepolia.uniscan.xyz/address/0xFeD3eAA668a6179c9E5E1A84e3A7d6883F06f7c1)
+* NativeTokenGateway: [`0x148C41b07A5c1f289CFB57C2F40d5EEF8ab30DB1`](https://sepolia.uniscan.xyz/address/0x148C41b07A5c1f289CFB57C2F40d5EEF8ab30DB1)
+* Underlying tokens:
+  * cbBTC: [`0x2979ef1676bb28192ac304173C717D7322b3b586`](https://sepolia.uniscan.xyz/address/0x2979ef1676bb28192ac304173C717D7322b3b586)
+  * USDC: [`0xf16d4774893eB578130a645d5c69E9c4d183F3A5`](https://sepolia.uniscan.xyz/address/0xf16d4774893eB578130a645d5c69E9c4d183F3A5)
+  * USDT: [`0x7bc1b67fde923fd3667Fde59684c6c354C8EbFdA`](https://sepolia.uniscan.xyz/address/0x7bc1b67fde923fd3667Fde59684c6c354C8EbFdA)
+  * WETH: [`0x4200000000000000000000000000000000000006`](https://sepolia.uniscan.xyz/address/0x4200000000000000000000000000000000000006)
+* Markets:
+  * vcbBTC\_Core: [`0x7d39496Ac9FdA5a336CB2A96FD5Eaa022Fd6Fb05`](https://sepolia.uniscan.xyz/address/0x7d39496Ac9FdA5a336CB2A96FD5Eaa022Fd6Fb05)
+  * vUSDC\_Core: [`0x0CA7edfcCF5dbf8AFdeAFB2D918409d439E3320A`](https://sepolia.uniscan.xyz/address/0x0CA7edfcCF5dbf8AFdeAFB2D918409d439E3320A)
+  * vUSDT\_Core: [`0x2d8814e1358D71B6B271295893F7409E3127CBBf`](https://sepolia.uniscan.xyz/address/0x2d8814e1358D71B6B271295893F7409E3127CBBf)
+  * vWETH\_Core: [`0x3dEAcBe87e4B6333140a46aBFD12215f4130B132`](https://sepolia.uniscan.xyz/address/0x3dEAcBe87e4B6333140a46aBFD12215f4130B132)

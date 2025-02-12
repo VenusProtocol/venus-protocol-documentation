@@ -24,6 +24,8 @@ The Isolated Pools subgraphs provides endpoints for querying data related to Iso
 
 [Base](https://thegraph.com/explorer/subgraphs/7VHvieXwv5SWSmVppmi4QkSCFVxiECgcFdng2er73Q97?view=Query&chain=arbitrum-one)
 
+[Unichain](https://thegraph.com/explorer/subgraphs/7N1UtVizkc1EbqNvHh8xfKbSanBtksnap1JxVdpogrMJ?view=Query&chain=arbitrum-one)
+
 ## Core Pool
 
 The Core Pool subgraph is responsible for indexing and aggregating events related to market and lending activities in the Core Pool
