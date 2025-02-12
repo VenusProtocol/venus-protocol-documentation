@@ -237,6 +237,13 @@ The current list of correlated token oracles in Venus is:
 | Core | USDC | [ChainlinkOracle](https://basescan.org/address/0x6F2eA73597955DB37d7C06e1319F0dC7C7455dEb) | - | - | |
 | Core | wsuperOETHb | [wsuperOETHb-ERC4626Oracle](https://basescan.org/address/0x2ad7dFf3380A0b75dC0bB1f3B38C105AB5B6D818) | - | - | |
 
+#### Unichain Mainnet
+
+| Pool | Market | MAIN oracle | PIVOT oracle | FALLBACK oracle | Notes |
+|---|---|---|---|---|---|
+| Core | WETH | [RedStone](https://basescan.org/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc) | - | - | |
+| Core | USDC | [RedStone](https://basescan.org/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc) | - | - | |
+
 ### Further Reading
 
 For more detailed information, refer to the following resources:

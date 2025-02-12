@@ -44,6 +44,12 @@
 * XVSProxyOFTDest: [`0x3dD92fB51a5d381Ae78E023dfB5DD1D45D2426Cd`](https://basescan.org/address/0x3dD92fB51a5d381Ae78E023dfB5DD1D45D2426Cd)
 * XVS: [`0xebB7873213c8d1d9913D8eA39Aa12d74cB107995`](https://basescan.org/address/0xebB7873213c8d1d9913D8eA39Aa12d74cB107995)
 
+### Unichain Mainnet
+
+* XVSBridgeAdmin: [`0x2EAaa880f97C9B63d37b39b0b316022d93d43604`](https://uniscan.xyz/address/0x2EAaa880f97C9B63d37b39b0b316022d93d43604)
+* XVSProxyOFTDest: [`0x9c95f8aa28fFEB7ECdC0c407B9F632419c5daAF8`](https://uniscan.xyz/address/0x9c95f8aa28fFEB7ECdC0c407B9F632419c5daAF8)
+* XVS: [`0x81908BBaad3f6fC74093540Ab2E9B749BB62aA0d`](https://uniscan.xyz/address/0x81908BBaad3f6fC74093540Ab2E9B749BB62aA0d)
+
 ## Testnet chains
 
 ### BNB Chain
@@ -87,3 +93,9 @@
 * XVSBridgeAdmin: [`0xE431E82d8fFfd81E7c082BeC7Fe2C306f5c988aD`](https://sepolia.basescan.org/address/0xE431E82d8fFfd81E7c082BeC7Fe2C306f5c988aD)
 * XVSProxyOFTDest: [`0xD5Cd1fD17B724a391C1bce55Eb9d88E3205eED60`](https://sepolia.basescan.org/address/0xD5Cd1fD17B724a391C1bce55Eb9d88E3205eED60)
 * XVS: [`0xE657EDb5579B82135a274E85187927C42E38C021`](https://sepolia.basescan.org/address/0xE657EDb5579B82135a274E85187927C42E38C021)
+
+### Unichain Sepolia
+
+* XVSBridgeAdmin: [`0xc570c62bbECCd0a63408de95d9418ad7b89Ff63F`](https://sepolia.uniscan.xyz/address/0xc570c62bbECCd0a63408de95d9418ad7b89Ff63F)
+* XVSProxyOFTDest: [`0xCAF833318a6663bb23aa7f218e597c2F7970b4D2`](https://sepolia.uniscan.xyz/address/0xCAF833318a6663bb23aa7f218e597c2F7970b4D2)
+* XVS: [`0xC0e51E865bc9Fed0a32Cc0B2A65449567Bc5c741`](https://sepolia.uniscan.xyz/address/0xC0e51E865bc9Fed0a32Cc0B2A65449567Bc5c741)
