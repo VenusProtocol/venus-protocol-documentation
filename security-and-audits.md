@@ -8,11 +8,28 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+
+
+### ERC4626 Oracle
+
+**Scope**: Correlated oracle to get the price of [ERC4626](https://eips.ethereum.org/EIPS/eip-4626) tokens, taking into account first the onchain conversion rate of the ERC4626 token with its underlying token.
+
+- [Certik audit report (2025/02/06)](https://github.com/VenusProtocol/oracle/blob/b6d581ddac010a8a80ba4c6fe819c756568c4a92/audits/123_erc4626Oracle_certik_20250206.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull Request [#253](https://github.com/VenusProtocol/oracle/pull/253)
+- Files:
+    - contracts/oracles/ERC4626Oracle.sol
+
+</details>
+
 ### PendleOracle upgrade
 
 **Scope**: Upgrade the current implementation of the PendleOracle contract to add support for for Pendle's `getPtToSyRate()` . This allows the ability to add yield tokens as a base, as an alternative to using the underlying asset directly.
 
-- [Certik audit audit report (2024/12/26)](https://github.com/VenusProtocol/oracle/blob/de3c5a9ad4f7259870864dac1b6837e8908d799e/audits/119_pendleOracleUpdate_certik_20241226.pdf)
+- [Certik audit report (2024/12/26)](https://github.com/VenusProtocol/oracle/blob/de3c5a9ad4f7259870864dac1b6837e8908d799e/audits/119_pendleOracleUpdate_certik_20241226.pdf)
 
 <details>
 <summary>Detailed scope</summary>
@@ -28,7 +45,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 **Scope**: `ACMCommandsAggregator` is a permissionless contract, to be deployed to the remote networks (every network except BNB Chain), to facilitate the configuration (grants and revokes) of permissions in the AccessControlManager of each network.
 
-- [Certik audit audit report (2024/10/07)](https://github.com/VenusProtocol/governance-contracts/blob/3a5a2740e86c9137ab17f4f3939c97b145a22803/audits/118_ACMCommandsAggregator_certik_20241007.pdf)
+- [Certik audit report (2024/10/07)](https://github.com/VenusProtocol/governance-contracts/blob/3a5a2740e86c9137ab17f4f3939c97b145a22803/audits/118_ACMCommandsAggregator_certik_20241007.pdf)
 
 <details>
 <summary>Detailed scope</summary>
@@ -43,7 +60,7 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 **Scope**: Develop new interest rate model for the core pool ([here](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/InterestRateModels/TwoKinksInterestRateModel.sol)) and for the isolated pools ([here](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/TwoKinksInterestRateModel.sol)), supporting two different kinks and therefore three different slopes. Enabled in [VIP-385](https://app-alt.venus.io/#/governance/proposal/385).
 
-- [Certik audit audit report (2024/07/31)](https://github.com/VenusProtocol/venus-protocol/blob/8be0034819eef313d6ffe216e5ba0f1152dbdcc0/audits/113_twoKinks_certik_20240731.pdf)
+- [Certik audit report (2024/07/31)](https://github.com/VenusProtocol/venus-protocol/blob/8be0034819eef313d6ffe216e5ba0f1152dbdcc0/audits/113_twoKinks_certik_20240731.pdf)
 - [Fairyproof audit report (2024/08/04)](https://github.com/VenusProtocol/venus-protocol/blob/8be0034819eef313d6ffe216e5ba0f1152dbdcc0/audits/114_twoKinks_fairyproof_20240804.pdf)
 - [Quanstamp audit report (2024/08/19)](https://github.com/VenusProtocol/venus-protocol/blob/8be0034819eef313d6ffe216e5ba0f1152dbdcc0/audits/115_twoKinks_quantstamp_20240819.pdf)
 
@@ -69,7 +86,7 @@ Support for the Isolated pools
 
 **Scope**: Changes in the [isolated pools](https://github.com/VenusProtocol/isolated-pools) and [core](https://github.com/VenusProtocol/venus-protocol) contracts to support unlisting markets. Fix in the core pool the behaviour of borrow caps set to zero. Enabled in [VIP-361](https://app-alt.venus.io/#/governance/proposal/361).
 
-- [Certik audit audit report (2024/04/09)](https://github.com/VenusProtocol/venus-protocol/blob/e4c4dfe1b78945ea87dca5b7e0c724b6bd317359/audits/099_unlistMarkets_certik_20240409.pdf)
+- [Certik audit report (2024/04/09)](https://github.com/VenusProtocol/venus-protocol/blob/e4c4dfe1b78945ea87dca5b7e0c724b6bd317359/audits/099_unlistMarkets_certik_20240409.pdf)
 - [Fairyproof audit report (2024/03/28)](https://github.com/VenusProtocol/venus-protocol/blob/e4c4dfe1b78945ea87dca5b7e0c724b6bd317359/audits/102_unlistMarkets_fairyproof_20240328.pdf)
 
 <details>
@@ -99,7 +116,7 @@ Fix Borrow Cap 0 Logic
 
 **Scope**: specific oracle for the tokens [weETHs](https://etherscan.io/token/0x917ceE801a67f933F2e6b33fC0cD1ED2d5909D88) and [weETHk](https://etherscan.io/address/0x7223442cad8e9cA474fC40109ab981608F8c4273) on Ethereum, using an `Accountant` contract under the hood, provided by the [Ether.fi](https://www.ether.fi/) project. Enabled in [VIP-355](https://app-alt.venus.io/#/governance/proposal/355).
 
-- [Certik audit audit report (2024/08/23)](https://github.com/VenusProtocol/oracle/blob/93a79c97e867f61652fc063abb5df323acc9bed4/audits/116_WeETHAccountantOracle_certik_20240823.pdf)
+- [Certik audit report (2024/08/23)](https://github.com/VenusProtocol/oracle/blob/93a79c97e867f61652fc063abb5df323acc9bed4/audits/116_WeETHAccountantOracle_certik_20240823.pdf)
 
 <details>
 <summary>Detailed scope</summary>
@@ -114,7 +131,7 @@ Fix Borrow Cap 0 Logic
 
 **Scope**: Update of the VBNBAdmin contract to integrate the AccessControlManager within the `setInterestRateModel` function. This will allow to authorize more timelocks (not only the Normal timelock) to execute this function, so Fast-track and Critical VIP's will be able to update the interest rate model on the VBNB market. Enabled in [VIP-343](https://app-alt.venus.io/#/governance/proposal/343).
 
-- [Certik audit audit report (2024/07/17)](https://github.com/VenusProtocol/venus-protocol/blob/5e4563ab0f2f98a04659e065b6c49acebf00df3b/audits/112_VBNBAdmin_certik_20240717.pdf)
+- [Certik audit report (2024/07/17)](https://github.com/VenusProtocol/venus-protocol/blob/5e4563ab0f2f98a04659e065b6c49acebf00df3b/audits/112_VBNBAdmin_certik_20240717.pdf)
 
 <details>
 <summary>Detailed scope</summary>
@@ -129,8 +146,8 @@ Fix Borrow Cap 0 Logic
 
 **Scope**: specific oracle for the token [sfrxETH](https://etherscan.io/token/0xac3e018457b222d93114458476f3e3416abbe38f) on Ethereum, using the `SfrxEthFraxOracle` oracle under the hood, provided by the [FRAX project](https://docs.frax.finance/frax-oracle/advanced-concepts#frax-oracles). Enabled in [VIP-329](https://app.venus.io/#/governance/proposal/329).
 
-- [Certik audit audit report (2024/05/17)](https://github.com/VenusProtocol/oracle/blob/0b221a7bb7d8e04fd8b013806facb93bcb4038b9/audits/110_sfrxETHOracle_certik_20240517.pdf)
-- [Quantstamp audit audit report (2024/05/20)](https://github.com/VenusProtocol/oracle/blob/0b221a7bb7d8e04fd8b013806facb93bcb4038b9/audits/111_sfrxETHOracle_quantstamp_20240530.pdf)
+- [Certik audit report (2024/05/17)](https://github.com/VenusProtocol/oracle/blob/0b221a7bb7d8e04fd8b013806facb93bcb4038b9/audits/110_sfrxETHOracle_certik_20240517.pdf)
+- [Quantstamp audit report (2024/05/20)](https://github.com/VenusProtocol/oracle/blob/0b221a7bb7d8e04fd8b013806facb93bcb4038b9/audits/111_sfrxETHOracle_quantstamp_20240530.pdf)
 
 <details>
 <summary>Detailed scope</summary>
@@ -169,8 +186,8 @@ Fix Borrow Cap 0 Logic
 
 **Scope**: Changes in the [isolated pools](https://github.com/VenusProtocol/isolated-pools), [core](https://github.com/VenusProtocol/venus-protocol) and [oracle](https://github.com/VenusProtocol/oracle) contracts to support blockchains where the block rate is not constant (i.e. Arbitrum). Add to the Core pool the feature to seize XVS rewards via VIP.
 
-- [Certik audit audit report (2024/01/17)](https://github.com/VenusProtocol/isolated-pools/blob/aa1f7ae61b07839231ec16e9c4143905785d7aae/audits/088_timeBased_certik_20240117.pdf)
-- [Quantstamp audit audit report (2024/03/19)](https://github.com/VenusProtocol/isolated-pools/blob/470416836922656783eab52ded54744489e8c345/audits/089_timeBased_quantstamp_20240319.pdf)
+- [Certik audit report (2024/01/17)](https://github.com/VenusProtocol/isolated-pools/blob/aa1f7ae61b07839231ec16e9c4143905785d7aae/audits/088_timeBased_certik_20240117.pdf)
+- [Quantstamp audit report (2024/03/19)](https://github.com/VenusProtocol/isolated-pools/blob/470416836922656783eab52ded54744489e8c345/audits/089_timeBased_quantstamp_20240319.pdf)
 - [Fairyproof audit report (2024/03/04)](https://github.com/VenusProtocol/isolated-pools/blob/aa1f7ae61b07839231ec16e9c4143905785d7aae/audits/094_timeBased_fairyproof_20240304.pdf)
 
 <details>
@@ -224,9 +241,9 @@ Fix Borrow Cap 0 Logic
 
 **Scope**: `VAIController` contract, fixing how the seized amounts during a VAI liquidations are calculated, considering the original VAI debt plus the interests generated. Enabled in [VIP-299](https://app.venus.io/#/governance/proposal/299).
 
-- [Certik audit audit report (2024/04/26)](https://github.com/VenusProtocol/venus-protocol/blob/0000b6b7bb9eaf1d6827993c306b776c371d41b7/audits/107_vaiController_certik_20240426.pdf)
-- [Pessimistic audit audit report (2024/05/02)](https://github.com/VenusProtocol/venus-protocol/blob/c01162eac8a911cd3a45c3d55b91e418e5ec2e6a/audits/109_vaiController_pessimistic_20240502.pdf)
-- [Fairyproof audit audit report (2024/04/18)](https://github.com/VenusProtocol/venus-protocol/blob/0000b6b7bb9eaf1d6827993c306b776c371d41b7/audits/108_vaiController_fairyproof_20240418.pdf)
+- [Certik audit report (2024/04/26)](https://github.com/VenusProtocol/venus-protocol/blob/0000b6b7bb9eaf1d6827993c306b776c371d41b7/audits/107_vaiController_certik_20240426.pdf)
+- [Pessimistic audit report (2024/05/02)](https://github.com/VenusProtocol/venus-protocol/blob/c01162eac8a911cd3a45c3d55b91e418e5ec2e6a/audits/109_vaiController_pessimistic_20240502.pdf)
+- [Fairyproof audit report (2024/04/18)](https://github.com/VenusProtocol/venus-protocol/blob/0000b6b7bb9eaf1d6827993c306b776c371d41b7/audits/108_vaiController_fairyproof_20240418.pdf)
 
 <details>
 <summary>Detailed scope</summary>
@@ -240,15 +257,15 @@ Fix Borrow Cap 0 Logic
 
 **Scope**: enable XVS transfers between networks different to the BNB Chain, for example, between Ethereum mainnet and opBNB mainnet. [Detailed scope](https://github.com/VenusProtocol/vips/pull/255). Enabled in [VIP-292](https://app.venus.io/#/governance/proposal/292).
 
-- [Certik audit audit report (2024/04/19)](https://github.com/VenusProtocol/token-bridge/blob/7e13d370fbb8e9fcd6c8e0fde5943e44e0b64bfa/audits/104_mesh_architecture_certik_20240419.pdf)
+- [Certik audit report (2024/04/19)](https://github.com/VenusProtocol/token-bridge/blob/7e13d370fbb8e9fcd6c8e0fde5943e44e0b64bfa/audits/104_mesh_architecture_certik_20240419.pdf)
 
 ### Correlated token oracles
 
 **Scope**: set of oracles for tokens whose price is highly correlated with the price of another token. This definition includes Liquid Staked Tokens (like [wsETH](https://etherscan.io/token/0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0), [weETH](https://etherscan.io/token/0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee), [WBETH](https://bscscan.com/address/0xa2e3356610840701bdf5611a53974510ae27e2e1), [ankrBNB](https://bscscan.com/address/0x52F24a5e03aee338Da5fd9Df68D2b6FAe1178827), [BNBx](https://bscscan.com/address/0x1bdd3Cf7F79cfB8EdbB955f20ad99211551BA275), [slisBNB](https://bscscan.com/address/0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B), [stkBNB](https://bscscan.com/address/0xc2E9d07F66A89c44062459A47a0D2Dc038E4fb16)), [ERC-4226 tokens](https://eips.ethereum.org/EIPS/eip-4626) (like [sFRAX](https://etherscan.io/token/0xa663b02cf0a4b149d2ad41910cb81e23e1c41c32), [sfrxETH](https://etherscan.io/token/0xac3e018457b222d93114458476f3e3416abbe38f)) and any token covertible to other token onchain (like the [Pendle](https://www.pendle.finance) PT tokens). `WeETHOracle` enabled in [VIP-290](https://app.venus.io/#/governance/proposal/290?chainId=56). `AnkrBNBOracle`, `BNBxOracle`, `SlisBNBOracle` and `StkBNBOracle` enabled in [VIP-293](https://app.venus.io/#/governance/proposal/293?chainId=56).
 
-- [Certik audit audit report (2024/04/12)](https://github.com/VenusProtocol/oracle/blob/5cd52976a4c4d24e11ab34ca3aa5f99837eef593/audits/098_correlated_token_oracles_certik_20240412.pdf)
-- [Quantstamp audit audit report (2024/04/12)](https://github.com/VenusProtocol/oracle/blob/5cd52976a4c4d24e11ab34ca3aa5f99837eef593/audits/100_correlated_token_oracles_quantstamp_20240412.pdf)
-- [Fairyproof audit audit report (2024/03/28)](https://github.com/VenusProtocol/oracle/blob/5cd52976a4c4d24e11ab34ca3aa5f99837eef593/audits/101_correlated_token_oracles_fairyproof_20240328.pdf)
+- [Certik audit report (2024/04/12)](https://github.com/VenusProtocol/oracle/blob/5cd52976a4c4d24e11ab34ca3aa5f99837eef593/audits/098_correlated_token_oracles_certik_20240412.pdf)
+- [Quantstamp audit report (2024/04/12)](https://github.com/VenusProtocol/oracle/blob/5cd52976a4c4d24e11ab34ca3aa5f99837eef593/audits/100_correlated_token_oracles_quantstamp_20240412.pdf)
+- [Fairyproof audit report (2024/03/28)](https://github.com/VenusProtocol/oracle/blob/5cd52976a4c4d24e11ab34ca3aa5f99837eef593/audits/101_correlated_token_oracles_fairyproof_20240328.pdf)
 
 <details>
 <summary>Detailed scope</summary>
@@ -273,9 +290,9 @@ Fix Borrow Cap 0 Logic
 
 **Scope**: [NativeTokenGateway contract](https://github.com/VenusProtocol/isolated-pools//blob/develop/contracts/Gateway/NativeTokenGateway.sol), that facilitates the interaction (borrow, supply, repay and redeem) with markets where the underlying token is a wrapped version of the native token (for example WETH on Ethereum, or BNB on BNB chain). Enabled in [VIP-276](https://app.venus.io/#/governance/proposal/276).
 
-- [Certik audit audit report (2024/02/26)](https://github.com/VenusProtocol/isolated-pools/blob/652459fed7269dab84628f70c44d8fa56b34203e/audits/092_nativeTokenGateway_certik_20240226.pdf)
-- [Pessimistic audit audit report (2024/02/29)](https://github.com/VenusProtocol/isolated-pools/blob/652459fed7269dab84628f70c44d8fa56b34203e/audits/095_nativeTokenGateway_pessimistic_20240229.pdf)
-- [Quantstamp audit audit report (2024/03/01)](https://github.com/VenusProtocol/isolated-pools/blob/0ec94f4636e51d68197fe6918df096864acd0a23/audits/096_nativeTokenGateway_quantstamp_20240301.pdf)
+- [Certik audit report (2024/02/26)](https://github.com/VenusProtocol/isolated-pools/blob/652459fed7269dab84628f70c44d8fa56b34203e/audits/092_nativeTokenGateway_certik_20240226.pdf)
+- [Pessimistic audit report (2024/02/29)](https://github.com/VenusProtocol/isolated-pools/blob/652459fed7269dab84628f70c44d8fa56b34203e/audits/095_nativeTokenGateway_pessimistic_20240229.pdf)
+- [Quantstamp audit report (2024/03/01)](https://github.com/VenusProtocol/isolated-pools/blob/0ec94f4636e51d68197fe6918df096864acd0a23/audits/096_nativeTokenGateway_quantstamp_20240301.pdf)
 
 <details>
 <summary>Detailed scope</summary>
@@ -299,8 +316,8 @@ Fix Borrow Cap 0 Logic
 
 **Scope**: [Oracle for wstETH](https://github.com/VenusProtocol/oracle/blob/develop/contracts/oracles/WstETHOracle.sol), using the exchange rate `wstETH/stETH` from the `stETH` contract on Ethereum, assuming 1:1 for the conversion rate `stETH:ETH`, and converting `ETH` to `USD` using the Resilient Oracles.
 
-- [Certik audit audit report (2024/01/26)](https://github.com/VenusProtocol/oracle/blob/e99feb67f4677168632f5bedd70034fba8dc55db/audits/090_wstETHOracle_certik_20240126.pdf)
-- [Quantstamp audit audit report (2024/02/20)](https://github.com/VenusProtocol/oracle/blob/f34d3114267929bbba26743f0a8591c1b016fb94/audits/093_wstETHOracle_quantstamp_20240220.pdf)
+- [Certik audit report (2024/01/26)](https://github.com/VenusProtocol/oracle/blob/e99feb67f4677168632f5bedd70034fba8dc55db/audits/090_wstETHOracle_certik_20240126.pdf)
+- [Quantstamp audit report (2024/02/20)](https://github.com/VenusProtocol/oracle/blob/f34d3114267929bbba26743f0a8591c1b016fb94/audits/093_wstETHOracle_quantstamp_20240220.pdf)
 
 <details>
 <summary>Detailed scope</summary>
@@ -316,7 +333,7 @@ Fix Borrow Cap 0 Logic
 
 - Token converters
     - [OpenZeppelin audit report (2023/10/10)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/066_tokenConverter_openzeppelin_20231010.pdf)
-    - [Certik audit audit report (2023/11/07)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/074_tokenConverter_certik_20231107.pdf)
+    - [Certik audit report (2023/11/07)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/074_tokenConverter_certik_20231107.pdf)
     - [Peckshield audit report (2023/09/27)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/068_tokenConverter_peckshield_20230927.pdf)
     - [Fairyproof audit report (2023/08/28)](https://github.com/VenusProtocol/protocol-reserve/blob/f31dc8bb433f1cff6c2124d27742004d82b24c32/audits/067_tokenConverter_fairyproof_20230828.pdf)
 - Private conversions (optimization to avoid the payment of incentives to third parties when the conversion can be completed internally)
@@ -412,11 +429,11 @@ Fix Borrow Cap 0 Logic
 Enabled in [VIP-201](https://app.venus.io/#/governance/proposal/201), [VIP-202](https://app.venus.io/#/governance/proposal/202), [VIP-203](https://app.venus.io/#/governance/proposal/203), [VIP-206](https://app.venus.io/#/governance/proposal/206) and [VIP-210](https://app.venus.io/#/governance/proposal/210). Updated in [VIP-225](https://app.venus.io/#/governance/proposal/225).
 
 - [OpenZeppelin audit report (2023/10/03)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/065_prime_openzeppelin_20231003.pdf)
-- [Certik audit audit report (2023/11/13)](https://github.com/VenusProtocol/venus-protocol/blob/2425501070d28c36a73861d9cf6970f641403735/audits/060_prime_certik_20231113.pdf)
+- [Certik audit report (2023/11/13)](https://github.com/VenusProtocol/venus-protocol/blob/2425501070d28c36a73861d9cf6970f641403735/audits/060_prime_certik_20231113.pdf)
 - [Peckshield audit report (2023/08/26)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/055_prime_peckshield_20230826.pdf)
 - [Fairyproof audit report (2023/09/10)](https://github.com/VenusProtocol/venus-protocol/blob/e02832bb2716bc0a178d910f6698877bf1b191e1/audits/056_prime_fairyproof_20230910.pdf)
 - [Code4rena contest (2023/09/28)](https://code4rena.com/contests/2023-09-venus-prime)
-- [Certik audit audit report (2023/12/19) - Venus Prime update](https://github.com/VenusProtocol/venus-protocol/blob/9afe804f18cd02318626aea46686522542aa5e4d/audits/087_prime_certik_20231219.pdf)
+- [Certik audit report (2023/12/19) - Venus Prime update](https://github.com/VenusProtocol/venus-protocol/blob/9afe804f18cd02318626aea46686522542aa5e4d/audits/087_prime_certik_20231219.pdf)
   - Allow mint VAI only to Prime holder
   - Support for Isolated pools
   - Support for networks without a constant block rate (for example, Arbitrum)
@@ -466,7 +483,7 @@ Enabled in [VIP-201](https://app.venus.io/#/governance/proposal/201), [VIP-202](
 **Scope**: Changes in the VToken contracts of the Core and IL pools (including the VBNB market), to send automatically the interest reserves to the new ProtocolShareReserve contract, where configured rules will distribute the income following the tokenomics of the project. Enabled in [VIP-189](https://app.venus.io/#/governance/proposal/189), [VIP-192](https://app.venus.io/#/governance/proposal/192), [VIP-193](https://app.venus.io/#/governance/proposal/193) and [VIP-194](https://app.venus.io/#/governance/proposal/194).
 
 - [Quantstamp audit report (2023/09/13)](https://github.com/VenusProtocol/venus-protocol/blob/9ef8901dfef84a11338751881fd10a2d36c576ad/audits/058_automatic_income_allocation_quantstamp_20230913.pdf)
-- [Certik audit audit report (2023/09/12)](https://github.com/VenusProtocol/venus-protocol/blob/90f913fd345c24c60efa613ab5ab7e633b7aa07a/audits/059_automatic_income_allocation_certik_20230912.pdf)
+- [Certik audit report (2023/09/12)](https://github.com/VenusProtocol/venus-protocol/blob/90f913fd345c24c60efa613ab5ab7e633b7aa07a/audits/059_automatic_income_allocation_certik_20230912.pdf)
 - [Peckshield audit report (2023/08/12)](https://github.com/VenusProtocol/venus-protocol/blob/90f913fd345c24c60efa613ab5ab7e633b7aa07a/audits/054_automatic_income_allocation_peckshield_20230812.pdf)
 - [Fairyproof audit report (2023/08/03)](https://github.com/VenusProtocol/venus-protocol/blob/90f913fd345c24c60efa613ab5ab7e633b7aa07a/audits/050_automatic_income_allocation_fairyproof_20230803.pdf)
 
@@ -508,9 +525,9 @@ Enabled in [VIP-201](https://app.venus.io/#/governance/proposal/201), [VIP-202](
 
 - [Fairyproof audit report (2023/06/25)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/040_diamondComptroller_fairyproof_20230625.pdf)
 - [Peckshield audit report (2023/07/28)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/042_diamondComptroller_peckshield_20230718.pdf)
-- [Certik audit audit report (2023/08/03)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/044_diamondComptroller_certik_20230803.pdf)
+- [Certik audit report (2023/08/03)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/044_diamondComptroller_certik_20230803.pdf)
 - [OpenZeppelin audit report (2023/08/17)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/049_diamondComptroller_openzeppelin_20230817.pdf)
-- [Quantstamp audit audit report (2023/09/20)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/047_diamondComptroller_quantstamp_20230919.pdf)
+- [Quantstamp audit report (2023/09/20)](https://github.com/VenusProtocol/venus-protocol/blob/8553387f2277be152883b4ee22211b77a8cbe5f6/audits/047_diamondComptroller_quantstamp_20230919.pdf)
 
 <details>
 <summary>Detailed scope</summary>

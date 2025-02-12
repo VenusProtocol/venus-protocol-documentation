@@ -63,6 +63,10 @@
 * sUSDS ERC4626 Oracle:[`0xDC4861F5Ad18bD584Eab322cc6706e632E9D1c94`](https://etherscan.io/address/0xDC4861F5Ad18bD584Eab322cc6706e632E9D1c94)
 * Resilient Oracle:[`0xd2ce3fb018805ef92b8C5976cb31F84b4E295F94`](https://etherscan.io/address/0xd2ce3fb018805ef92b8C5976cb31F84b4E295F94)
 * DefaultProxyAdmin:[`0x567e4cc5e085d09f66f836fa8279f38b4e5866b9`](https://etherscan.io/address/0x567e4cc5e085d09f66f836fa8279f38b4e5866b9)
+* yvUSDC-1 ERC4626 Oracle:[`0x49C6858B3ce4F3829b716fD3FafCa6Cb4Ccb7843`](https://etherscan.io/address/0x49C6858B3ce4F3829b716fD3FafCa6Cb4Ccb7843)
+* yvUSDT-1 ERC4626 Oracle:[`0xE113AE8D80Fb6dfB3221e0A396e297Aa42813d0A`](https://etherscan.io/address/0xE113AE8D80Fb6dfB3221e0A396e297Aa42813d0A)
+* yvUSDS-1 ERC4626 Oracle:[`0x50f97063b4097D4e81C4DD9c3278258A04DF15aA`](https://etherscan.io/address/0x50f97063b4097D4e81C4DD9c3278258A04DF15aA)
+* yvWETH-1 ERC4626 Oracle:[`0x641817dE6c0E4f763C393AaD182E6C946e1a2e2b`](https://etherscan.io/address/0x641817dE6c0E4f763C393AaD182E6C946e1a2e2b)
 
 ## Sepolia (Ethereum testnet)
 
@@ -85,6 +89,10 @@
 * sUSDS ERC4626 Oracle:[`0x386C41A4Ff2e4da2C5CC6B1A13fD34A98B48C51d`](https://sepolia.etherscan.io/address/0x386C41A4Ff2e4da2C5CC6B1A13fD34A98B48C51d)
 * Resilient Oracle:[`0x8000eca36201dddf5805Aa4BeFD73d1EB4D23264`](https://sepolia.etherscan.io/address/0x8000eca36201dddf5805Aa4BeFD73d1EB4D23264)
 * DefaultProxyAdmin:[`0x01435866babd91311b1355cf3af488cca36db68e`](https://sepolia.etherscan.io/address/0x01435866babd91311b1355cf3af488cca36db68e)
+* yvUSDC-1 ERC4626 Oracle:[`0xd680aA82d58D5cc5385A4a3ACdEbE93D84D65a00`](https://sepolia.etherscan.io/address/0xd680aA82d58D5cc5385A4a3ACdEbE93D84D65a00)
+* yvUSDT-1 ERC4626 Oracle:[`0x930F0fC7321eB35Ff93556C264EA076d3Aaf1692`](https://sepolia.etherscan.io/address/0x930F0fC7321eB35Ff93556C264EA076d3Aaf1692)
+* yvUSDS-1 ERC4626 Oracle:[`0x5a93e425e42470b9bB609862abf2A38E7041250E`](https://sepolia.etherscan.io/address/0x5a93e425e42470b9bB609862abf2A38E7041250E)
+* yvWETH-1 ERC4626 Oracle:[`0x5eAE3fd56b39f1e5D497b4a5f0442E560FA6F13B`](https://sepolia.etherscan.io/address/0x5eAE3fd56b39f1e5D497b4a5f0442E560FA6F13B)
 
 ## opBNB mainnet
 
