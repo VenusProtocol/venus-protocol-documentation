@@ -244,3 +244,17 @@
 * XVS Vault Proxy: [`0x9b5D0aDfCEcC8ed422d714EcbcE2FFA436e269B8`](https://sepolia.basescan.org/address/0x9b5D0aDfCEcC8ed422d714EcbcE2FFA436e269B8)
 * Prime: [`0x15A1AC7fA14C5900Ba93853375d66b6bB6A83B50`](https://sepolia.basescan.org/address/0x15A1AC7fA14C5900Ba93853375d66b6bB6A83B50)
 * Prime Liquidity Provider: [`0xb5BA66311C5f9A5C9d3CeE0183F5426DD694dE37`](https://sepolia.basescan.org/address/0xb5BA66311C5f9A5C9d3CeE0183F5426DD694dE37)
+
+## Unichain Mainnet
+
+* Venus Treasury: [`0x958F4C84d3ad523Fa9936Dc465A123C7AD43D69B`](https://uniscan.xyz/address/0x958F4C84d3ad523Fa9936Dc465A123C7AD43D69B)
+* XVS Vault Proxy: [`0x5ECa0FBBc5e7bf49dbFb1953a92784F8e4248eF6`](https://uniscan.xyz/address/0x5ECa0FBBc5e7bf49dbFb1953a92784F8e4248eF6)
+* Prime: [`0x600aFf613d40D87C8Fe90Cb2e78e8e6667c0C872`](https://uniscan.xyz/address/0x600aFf613d40D87C8Fe90Cb2e78e8e6667c0C872)
+* Prime Liquidity Provider: [`0x045a45603E1b073F444fe3Be7d5C7e0a5035afB7`](https://uniscan.xyz/address/0x045a45603E1b073F444fe3Be7d5C7e0a5035afB7)
+
+## Unichain Sepolia
+
+* Venus Treasury: [`0x0C7CB62F2194cD701bcE8FD8067b43A3Bb76428e`](https://sepolia.uniscan.xyz/address/0x0C7CB62F2194cD701bcE8FD8067b43A3Bb76428e)
+* XVS Vault Proxy: [`0x3a33d235E23B6B54004E25FF8E622228df16717a`](https://sepolia.uniscan.xyz/address/0x3a33d235E23B6B54004E25FF8E622228df16717a)
+* Prime: [`0x59b95BF96D6D5FA1adf1Bfd20848A9b25814317A`](https://sepolia.uniscan.xyz/address/0x59b95BF96D6D5FA1adf1Bfd20848A9b25814317A)
+* Prime Liquidity Provider: [`0xDA4dcFBdC06A9947100a757Ee0eeDe88debaD586`](https://sepolia.uniscan.xyz/address/0xDA4dcFBdC06A9947100a757Ee0eeDe88debaD586)
