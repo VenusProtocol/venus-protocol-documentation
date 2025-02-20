@@ -330,6 +330,7 @@
   * WETH: [`0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91`](https://explorer.zksync.io/address/0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91)
   * wUSDM: [`0xA900cbE7739c96D2B153a273953620A701d5442b`](https://explorer.zksync.io/address/0xA900cbE7739c96D2B153a273953620A701d5442b)
   * ZK: [`0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E`](https://explorer.zksync.io/address/0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E)
+  * zkETH: [`0xb72207E1FB50f341415999732A20B6D25d8127aa`](https://explorer.zksync.io/address/0xb72207E1FB50f341415999732A20B6D25d8127aa)
 * Markets:
   * vUSDC\_Core: [`0x84064c058F2EFea4AB648bB6Bd7e40f83fFDe39a`](https://explorer.zksync.io/address/0x84064c058F2EFea4AB648bB6Bd7e40f83fFDe39a)
   * vUSDC\_E\_Core: [`0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D`](https://explorer.zksync.io/address/0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D)
@@ -338,6 +339,7 @@
   * vWETH\_Core: [`0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8`](https://explorer.zksync.io/address/0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8)
   * vwUSDM\_Core: [`0x183dE3C349fCf546aAe925E1c7F364EA6FB4033c`](https://explorer.zksync.io/address/0x183dE3C349fCf546aAe925E1c7F364EA6FB4033c)
   * vZK\_Core: [`0x697a70779C1A03Ba2BD28b7627a902BFf831b616`](https://explorer.zksync.io/address/0x697a70779C1A03Ba2BD28b7627a902BFf831b616)
+  * vzkETH\_Core: [`0xCEb7Da150d16aCE58F090754feF2775C23C8b631`](https://explorer.zksync.io/address/0xCEb7Da150d16aCE58F090754feF2775C23C8b631)
 
 ## Optimism Mainnet
 
@@ -665,6 +667,7 @@
   * vWETH\_Core: [`0x31eb7305f9fE281027028D0ba0d7f57ddA836d49`](https://sepolia.explorer.zksync.io/address/0x31eb7305f9fE281027028D0ba0d7f57ddA836d49)
   * vwUSDM\_Core: [`0x63abcB1f579dB71b4b8A1E182adbA2F131b75681`](https://sepolia.explorer.zksync.io/address/0x63abcB1f579dB71b4b8A1E182adbA2F131b75681)
   * vZK\_Core: [`0x92f4BD794303c0BD0791B350Be5531DB38414f47`](https://sepolia.explorer.zksync.io/address/0x92f4BD794303c0BD0791B350Be5531DB38414f47)
+  * vzkETH\_Core: [`0xac01abfbe100b56Fc414C346B175599E5f582912`](https://sepolia.explorer.zksync.io/address/0xac01abfbe100b56Fc414C346B175599E5f582912)
 
 ## Optimism Sepolia
 

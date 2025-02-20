@@ -217,6 +217,7 @@ The current list of correlated token oracles in Venus is:
 | Core | USDT | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | - | - | |
 | Core | ZK | [RedStoneOracle](https://explorer.zksync.io/address/0xFa1e65e714CDfefDC9729130496AB5b5f3708fdA) | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | wUSDM | [wUSDM-ERC4626Oracle](https://explorer.zksync.io/address/0x7Fb95a0B7b933A9F3Fe3Ead4b69B0267BD8Fe55F) | - | - | |
+| Core | zkETH | [`ZkETHOracle`](https://explorer.zksync.io/address/0x540aA1683E5E5592E0444499bDA41f6DF8de2Dd8) | - | - | Assume 1:1 for WETH:rzkETH |
 
 #### Optimism Mainnet
 
