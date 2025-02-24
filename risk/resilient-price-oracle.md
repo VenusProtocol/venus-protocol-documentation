@@ -241,8 +241,9 @@ The current list of correlated token oracles in Venus is:
 
 | Pool | Market | MAIN oracle | PIVOT oracle | FALLBACK oracle | Notes |
 |---|---|---|---|---|---|
-| Core | WETH | [RedStone](https://basescan.org/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc) | - | - | |
-| Core | USDC | [RedStone](https://basescan.org/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc) | - | - | |
+| Core | WETH | [RedStone](https://uniscan.xyz/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc) | - | - | |
+| Core | USDC | [RedStone](https://uniscan.xyz/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc) | - | - | |
+| Core | UNI | [RedStone](https://uniscan.xyz/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc) | - | - | |
 
 ### Further Reading
 
