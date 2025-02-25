@@ -241,7 +241,6 @@
   * yvUSDT-1: [`0x310B7Ea7475A0B449Cfd73bE81522F1B88eFAFaa`](https://etherscan.io/address/0x310B7Ea7475A0B449Cfd73bE81522F1B88eFAFaa)
   * yvUSDS-1: [`0x182863131F9a4630fF9E27830d945B1413e347E8`](https://etherscan.io/address/0x182863131F9a4630fF9E27830d945B1413e347E8)
   * yvWETH-1: [`0xc56413869c6CDf96496f2b1eF801fEDBdFA7dDB0`](https://etherscan.io/address/0xc56413869c6CDf96496f2b1eF801fEDBdFA7dDB0)
-  
 * Markets:
   * vBAL\_Core: [`0x0Ec5488e4F8f319213a14cab188E01fB8517Faa8`](https://etherscan.io/address/0x0Ec5488e4F8f319213a14cab188E01fB8517Faa8)
   * vcrvUSD\_Core: [`0x672208C10aaAA2F9A6719F449C4C8227bc0BC202`](https://etherscan.io/address/0x672208C10aaAA2F9A6719F449C4C8227bc0BC202)
@@ -398,6 +397,7 @@
   * USDT: [`0x493257fD37EDB34451f62EDf8D2a0C418852bA4C`](https://explorer.zksync.io/address/0x493257fD37EDB34451f62EDf8D2a0C418852bA4C)
   * WBTC: [`0xBBeB516fb02a01611cBBE0453Fe3c580D7281011`](https://explorer.zksync.io/address/0xBBeB516fb02a01611cBBE0453Fe3c580D7281011)
   * WETH: [`0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91`](https://explorer.zksync.io/address/0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91)
+  * wstETH: [`0x703b52F2b28fEbcB60E1372858AF5b18849FE867`](https://explorer.zksync.io/address/0x703b52F2b28fEbcB60E1372858AF5b18849FE867)
   * wUSDM: [`0xA900cbE7739c96D2B153a273953620A701d5442b`](https://explorer.zksync.io/address/0xA900cbE7739c96D2B153a273953620A701d5442b)
   * ZK: [`0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E`](https://explorer.zksync.io/address/0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E)
 * Markets:
@@ -406,6 +406,7 @@
   * vUSDT\_Core: [`0x69cDA960E3b20DFD480866fFfd377Ebe40bd0A46`](https://explorer.zksync.io/address/0x69cDA960E3b20DFD480866fFfd377Ebe40bd0A46)
   * vWBTC\_Core: [`0xAF8fD83cFCbe963211FAaf1847F0F217F80B4719`](https://explorer.zksync.io/address/0xAF8fD83cFCbe963211FAaf1847F0F217F80B4719)
   * vWETH\_Core: [`0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8`](https://explorer.zksync.io/address/0x1Fa916C27c7C2c4602124A14C77Dbb40a5FF1BE8)
+  * vwstETH\_Core: [`0x03CAd66259f7F34EE075f8B62D133563D249eDa4`](https://explorer.zksync.io/address/0x03CAd66259f7F34EE075f8B62D133563D249eDa4)
   * vwUSDM\_Core: [`0x183dE3C349fCf546aAe925E1c7F364EA6FB4033c`](https://explorer.zksync.io/address/0x183dE3C349fCf546aAe925E1c7F364EA6FB4033c)
   * vZK\_Core: [`0x697a70779C1A03Ba2BD28b7627a902BFf831b616`](https://explorer.zksync.io/address/0x697a70779C1A03Ba2BD28b7627a902BFf831b616)
 
@@ -450,11 +451,13 @@
   * USDC: [`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`](https://basescan.org/address/0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913)
   * cbBTC: [`0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf`](https://basescan.org/address/0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf)
   * WETH: [`0x4200000000000000000000000000000000000006`](https://basescan.org/address/0x4200000000000000000000000000000000000006)
+  * wstETH: [`0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452`](https://basescan.org/address/0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452)
   * wsuperOETHb: [`0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6`](https://basescan.org/address/0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6)
 * Markets:
   * vUSDC\_Core: [`0x3cb752d175740043Ec463673094e06ACDa2F9a2e`](https://basescan.org/address/0x3cb752d175740043Ec463673094e06ACDa2F9a2e)
   * vcbBTC\_Core: [`0x7bBd1005bB24Ec84705b04e1f2DfcCad533b6D72`](https://basescan.org/address/0x7bBd1005bB24Ec84705b04e1f2DfcCad533b6D72)
   * vWETH\_Core: [`0xEB8A79bD44cF4500943bf94a2b4434c95C008599`](https://basescan.org/address/0xEB8A79bD44cF4500943bf94a2b4434c95C008599)
+  * vwstETH\_Core: [`0x133d3BCD77158D125B75A17Cb517fFD4B4BE64C5`](https://basescan.org/address/0x133d3BCD77158D125B75A17Cb517fFD4B4BE64C5)
   * vwsuperOETHb\_Core: [`0x75201D81B3B0b9D17b179118837Be37f64fc4930`](https://basescan.org/address/0x75201D81B3B0b9D17b179118837Be37f64fc4930)
 
 ## Unichain Mainnet
@@ -787,6 +790,7 @@
   * vUSDT\_Core: [`0x7Bfd185eF8380a72027bF65bFEEAb0242b147778`](https://sepolia.explorer.zksync.io/address/0x7Bfd185eF8380a72027bF65bFEEAb0242b147778)
   * vWBTC\_Core: [`0x9c2379ed8ab06B44328487f61873C7c44BD6E87D`](https://sepolia.explorer.zksync.io/address/0x9c2379ed8ab06B44328487f61873C7c44BD6E87D)
   * vWETH\_Core: [`0x31eb7305f9fE281027028D0ba0d7f57ddA836d49`](https://sepolia.explorer.zksync.io/address/0x31eb7305f9fE281027028D0ba0d7f57ddA836d49)
+  * vwstETH\_Core: [`0x853ed4e6ab3a6747d71Bb79eDbc0A64FF87D31BF`](https://sepolia.explorer.zksync.io/address/0x853ed4e6ab3a6747d71Bb79eDbc0A64FF87D31BF)
   * vwUSDM\_Core: [`0x63abcB1f579dB71b4b8A1E182adbA2F131b75681`](https://sepolia.explorer.zksync.io/address/0x63abcB1f579dB71b4b8A1E182adbA2F131b75681)
   * vZK\_Core: [`0x92f4BD794303c0BD0791B350Be5531DB38414f47`](https://sepolia.explorer.zksync.io/address/0x92f4BD794303c0BD0791B350Be5531DB38414f47)
 
@@ -830,6 +834,7 @@
   * vUSDC\_Core: [`0xA31D67c056Aadc2501535f2776bF1157904f810e`](https://sepolia.basescan.org/address/0xA31D67c056Aadc2501535f2776bF1157904f810e)
   * vcbBTC\_Core: [`0x776f14D624aBdAfa912d6Cd0864976DdaF5Ca4a7`](https://sepolia.basescan.org/address/0x776f14D624aBdAfa912d6Cd0864976DdaF5Ca4a7)
   * vWETH\_Core: [`0x436E5A07F58AAA86277e8b992bC3e596eC423d09`](https://sepolia.basescan.org/address/0x436E5A07F58AAA86277e8b992bC3e596eC423d09)
+  * vwstETH\_Core: [`0x40A30E1B01e0CF3eE3F22f769b0E437160550eEa`](https://sepolia.basescan.org/address/0x40A30E1B01e0CF3eE3F22f769b0E437160550eEa)
   * vwsuperOETHb\_Core: [`0xF9d609ba31724E199ccaacaD3e3e7ED8462C20C5`](https://sepolia.basescan.org/address/0xF9d609ba31724E199ccaacaD3e3e7ED8462C20C5)
 
 ## Unichain Sepolia
