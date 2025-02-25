@@ -136,6 +136,7 @@
 * Resilient Oracle:[`0xDe564a4C887d5ad315a19a96DC81991c98b12182`](https://explorer.zksync.io/address/0xDe564a4C887d5ad315a19a96DC81991c98b12182)
 * DefaultProxyAdmin:[`0x8Ea1A989B036f7Ef21bb95CE4E7961522Ca00287`](https://explorer.zksync.io/address/0x8Ea1A989B036f7Ef21bb95CE4E7961522Ca00287)
 * wUSDM ERC4626 Oracle:[`0x7Fb95a0B7b933A9F3Fe3Ead4b69B0267BD8Fe55F`](https://explorer.zksync.io/address/0x7Fb95a0B7b933A9F3Fe3Ead4b69B0267BD8Fe55F)
+* OneJump Oracle wstETH/ETH/USD (having intermediate oracle Chainlink): [`0xd2b4352A3C1C452D9D4D11B4F19e28476128798f`](https://explorer.zksync.io/address/0xd2b4352A3C1C452D9D4D11B4F19e28476128798f)
 
 ## ZKsync Sepolia
 
@@ -145,6 +146,7 @@
 * Resilient Oracle:[`0x748853B3bE26c46b4562Fd314dfb82708F395bDf`](https://sepolia.explorer.zksync.io/address/0x748853B3bE26c46b4562Fd314dfb82708F395bDf)
 * DefaultProxyAdmin:[`0x18E44f588a4DcF2F7145d35A5C226e129040b6D3`](https://sepolia.explorer.zksync.io/address/0x18E44f588a4DcF2F7145d35A5C226e129040b6D3)
 * wUSDM ERC4626 Oracle:[`0xf1dD9549556F3fae6d8bf4F3283b1D9d2bfb996B`](https://sepolia.explorer.zksync.io/address/0xf1dD9549556F3fae6d8bf4F3283b1D9d2bfb996B)
+* OneJump Oracle wstETH/ETH/USD (having intermediate oracle Chainlink): [`0x832AafFeeD5EC923489744CE37fB35f4F533284e`](https://sepolia.explorer.zksync.io/address/0x832AafFeeD5EC923489744CE37fB35f4F533284e)
 
 ## Optimism Mainnet
 
@@ -169,6 +171,7 @@
 * Resilient Oracle:[`0xcBBf58bD5bAdE357b634419B70b215D5E9d6FbeD`](https://basescan.org/address/0xcBBf58bD5bAdE357b634419B70b215D5E9d6FbeD)
 * DefaultProxyAdmin:[`0x7B06EF6b68648C61aFE0f715740fE3950B90746B`](https://basescan.org/address/0x7B06EF6b68648C61aFE0f715740fE3950B90746B)
 * wsuperOETHb ERC4626 Oracle:[`0x2ad7dFf3380A0b75dC0bB1f3B38C105AB5B6D818`](https://basescan.org/address/0x2ad7dFf3380A0b75dC0bB1f3B38C105AB5B6D818)
+* OneJump Oracle wstETH/ETH/USD (having intermediate oracle Chainlink): [`0x007e6Bd6993892b39210a7116506D6eA417B7565`](https:///basescan.org/address/0x007e6Bd6993892b39210a7116506D6eA417B7565)
 
 ## Base Sepolia
 
@@ -177,6 +180,7 @@
 * RedStone Oracle:[`0x8267FE3f75E0A37ee34e113E767F9C9727206838`](https://sepolia.basescan.org/address/0x8267FE3f75E0A37ee34e113E767F9C9727206838)
 * Resilient Oracle:[`0xC34871C982cf0Bc6e7aCa2c2670Bc319bDA1C744`](https://sepolia.basescan.org/address/0xC34871C982cf0Bc6e7aCa2c2670Bc319bDA1C744)
 * wsuperOETHb ERC4626 Oracle:[`0x72050243b23a7f0f74D37e1B85Df9D6486D1a331`](https://sepolia.basescan.org/address/0x72050243b23a7f0f74D37e1B85Df9D6486D1a331)
+* OneJump Oracle wstETH/ETH/USD (having intermediate oracle Chainlink): [`0x71e7AAcb01C5764A56DB92aa31aA473e839d964F`](https://sepolia.basescan.org/address/0x71e7AAcb01C5764A56DB92aa31aA473e839d964F)
 
 ## Unichain Mainnet
 
