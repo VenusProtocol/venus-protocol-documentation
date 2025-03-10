@@ -8,7 +8,20 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### zkETH Oracle
 
+**Scope**: Correlated oracle to get the price of [zkETH](https://explorer.zksync.io/address/0xb72207E1FB50f341415999732A20B6D25d8127aa) token on ZKsync, taking into account first the onchain conversion rate `zkETH` to `rzkETH`.
+
+- [Certik audit report (2025/02/25)](https://github.com/VenusProtocol/oracle/blob/3b5aec61acb7d2c659c70e8fce7501cb49ea74cd/audits/124_oracles_certik_20250225.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull Request [#269](https://github.com/VenusProtocol/oracle/pull/269)
+- Files:
+    - contracts/oracles/ZkETHOracle.sol
+
+</details>
 
 ### ERC4626 Oracle
 
