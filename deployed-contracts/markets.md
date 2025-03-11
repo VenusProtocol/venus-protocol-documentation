@@ -400,6 +400,7 @@
   * wstETH: [`0x703b52F2b28fEbcB60E1372858AF5b18849FE867`](https://explorer.zksync.io/address/0x703b52F2b28fEbcB60E1372858AF5b18849FE867)
   * wUSDM: [`0xA900cbE7739c96D2B153a273953620A701d5442b`](https://explorer.zksync.io/address/0xA900cbE7739c96D2B153a273953620A701d5442b)
   * ZK: [`0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E`](https://explorer.zksync.io/address/0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E)
+  * wstETH: [`0x703b52F2b28fEbcB60E1372858AF5b18849FE867`](https://explorer.zksync.io/address/0x703b52F2b28fEbcB60E1372858AF5b18849FE867)
 * Markets:
   * vUSDC\_Core: [`0x84064c058F2EFea4AB648bB6Bd7e40f83fFDe39a`](https://explorer.zksync.io/address/0x84064c058F2EFea4AB648bB6Bd7e40f83fFDe39a)
   * vUSDC\_E\_Core: [`0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D`](https://explorer.zksync.io/address/0x1aF23bD57c62A99C59aD48236553D0Dd11e49D2D)
@@ -409,6 +410,7 @@
   * vwstETH\_Core: [`0x03CAd66259f7F34EE075f8B62D133563D249eDa4`](https://explorer.zksync.io/address/0x03CAd66259f7F34EE075f8B62D133563D249eDa4)
   * vwUSDM\_Core: [`0x183dE3C349fCf546aAe925E1c7F364EA6FB4033c`](https://explorer.zksync.io/address/0x183dE3C349fCf546aAe925E1c7F364EA6FB4033c)
   * vZK\_Core: [`0x697a70779C1A03Ba2BD28b7627a902BFf831b616`](https://explorer.zksync.io/address/0x697a70779C1A03Ba2BD28b7627a902BFf831b616)
+  * vwstETH\_Core: [`0x03CAd66259f7F34EE075f8B62D133563D249eDa4`](https://explorer.zksync.io/address/0x03CAd66259f7F34EE075f8B62D133563D249eDa4)
 
 ## Optimism Mainnet
 
@@ -453,12 +455,14 @@
   * WETH: [`0x4200000000000000000000000000000000000006`](https://basescan.org/address/0x4200000000000000000000000000000000000006)
   * wstETH: [`0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452`](https://basescan.org/address/0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452)
   * wsuperOETHb: [`0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6`](https://basescan.org/address/0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6)
+  * wstETH: [`0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452`](https://basescan.org/address/0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452)
 * Markets:
   * vUSDC\_Core: [`0x3cb752d175740043Ec463673094e06ACDa2F9a2e`](https://basescan.org/address/0x3cb752d175740043Ec463673094e06ACDa2F9a2e)
   * vcbBTC\_Core: [`0x7bBd1005bB24Ec84705b04e1f2DfcCad533b6D72`](https://basescan.org/address/0x7bBd1005bB24Ec84705b04e1f2DfcCad533b6D72)
   * vWETH\_Core: [`0xEB8A79bD44cF4500943bf94a2b4434c95C008599`](https://basescan.org/address/0xEB8A79bD44cF4500943bf94a2b4434c95C008599)
   * vwstETH\_Core: [`0x133d3BCD77158D125B75A17Cb517fFD4B4BE64C5`](https://basescan.org/address/0x133d3BCD77158D125B75A17Cb517fFD4B4BE64C5)
   * vwsuperOETHb\_Core: [`0x75201D81B3B0b9D17b179118837Be37f64fc4930`](https://basescan.org/address/0x75201D81B3B0b9D17b179118837Be37f64fc4930)
+  * vwstETH\_Core: [`0x133d3BCD77158D125B75A17Cb517fFD4B4BE64C5`](https://basescan.org/address/0x133d3BCD77158D125B75A17Cb517fFD4B4BE64C5)
 
 ## Unichain Mainnet
 
@@ -793,6 +797,7 @@
   * vwstETH\_Core: [`0x853ed4e6ab3a6747d71Bb79eDbc0A64FF87D31BF`](https://sepolia.explorer.zksync.io/address/0x853ed4e6ab3a6747d71Bb79eDbc0A64FF87D31BF)
   * vwUSDM\_Core: [`0x63abcB1f579dB71b4b8A1E182adbA2F131b75681`](https://sepolia.explorer.zksync.io/address/0x63abcB1f579dB71b4b8A1E182adbA2F131b75681)
   * vZK\_Core: [`0x92f4BD794303c0BD0791B350Be5531DB38414f47`](https://sepolia.explorer.zksync.io/address/0x92f4BD794303c0BD0791B350Be5531DB38414f47)
+  * vwstETH\_Core: [`0x853ed4e6ab3a6747d71Bb79eDbc0A64FF87D31BF`](https://sepolia.explorer.zksync.io/address/0x853ed4e6ab3a6747d71Bb79eDbc0A64FF87D31BF)
 
 ## Optimism Sepolia
 
@@ -836,6 +841,7 @@
   * vWETH\_Core: [`0x436E5A07F58AAA86277e8b992bC3e596eC423d09`](https://sepolia.basescan.org/address/0x436E5A07F58AAA86277e8b992bC3e596eC423d09)
   * vwstETH\_Core: [`0x40A30E1B01e0CF3eE3F22f769b0E437160550eEa`](https://sepolia.basescan.org/address/0x40A30E1B01e0CF3eE3F22f769b0E437160550eEa)
   * vwsuperOETHb\_Core: [`0xF9d609ba31724E199ccaacaD3e3e7ED8462C20C5`](https://sepolia.basescan.org/address/0xF9d609ba31724E199ccaacaD3e3e7ED8462C20C5)
+  * vwstETH\_Core: [`0x40A30E1B01e0CF3eE3F22f769b0E437160550eEa`](https://sepolia.basescan.org/address/0x40A30E1B01e0CF3eE3F22f769b0E437160550eEa)
 
 ## Unichain Sepolia
 
