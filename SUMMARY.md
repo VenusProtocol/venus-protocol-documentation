@@ -175,9 +175,9 @@
 
 ## Deployed Contracts
 
-* [Isolated Pool](deployed-contracts/isolated-pools.md)
+* [Markets](deployed-contracts/markets.md)
+* [Funds](deployed-contracts/funds.md)
 * [Oracles](deployed-contracts/oracles.md)
-* [Core Pool](deployed-contracts/core-pool.md)
 * [Governance](deployed-contracts/governance.md)
 * [XVS Omnichain](deployed-contracts/xvs-omnichain.md)
 * [Token Converters](deployed-contracts/token-converters.md)
