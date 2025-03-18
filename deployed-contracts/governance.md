@@ -212,8 +212,18 @@ Specific functions that can be invoked by the guardians
 
 * Access Control Manager: [`0x1f12014c497a9d905155eB9BfDD9FaC6885e61d0`](https://uniscan.xyz/address/0x1f12014c497a9d905155eB9BfDD9FaC6885e61d0)
 * Guardian: [`0x1803Cf1D3495b43cC628aa1d8638A981F8CD341C`](https://uniscan.xyz/address/0x1803Cf1D3495b43cC628aa1d8638A981F8CD341C)
+* Normal Timelock: [`0x918532A78d22419Da4091930d472bDdf532BE89a`](https://uniscan.xyz/address/0x918532A78d22419Da4091930d472bDdf532BE89a)
+* Fasttrack Timelock: [`0x4121995b87f9EE8bA0a89e87470255e2E0fe48c7`](https://uniscan.xyz/address/0x4121995b87f9EE8bA0a89e87470255e2E0fe48c7)
+* Critical Timelock: [`0x1b05eCb489842786776a9A10e91AAb56e2CFe15e`](https://uniscan.xyz/address/0x1b05eCb489842786776a9A10e91AAb56e2CFe15e)
+* Omnichain Governance Executor: [`0x3E281461efb3D53EC20DB207674373Ed8Ef3BbA9`](https://uniscan.xyz/address/0x3E281461efb3D53EC20DB207674373Ed8Ef3BbA9)
+* Omnichain Executor Owner Proxy: [`0x6E78a0d96257F8F2615d72F3ee48cb6fb2c970bd`](https://uniscan.xyz/address/0x6E78a0d96257F8F2615d72F3ee48cb6fb2c970bd)
 
 ## Unichain Sepolia
 
 * Access Control Manager: [`0x854C064EA6b503A97980F481FA3B7279012fdeDd`](https://sepolia.uniscan.xyz/address/0x854C064EA6b503A97980F481FA3B7279012fdeDd)
 * Guardian: [`0x9831D3A641E8c7F082EEA75b8249c99be9D09a34`](https://sepolia.uniscan.xyz/address/0x9831D3A641E8c7F082EEA75b8249c99be9D09a34)
+* Normal Timelock: [`0x5e20F5A2e23463D39287185DF84607DF7068F314`](https://sepolia.uniscan.xyz/address/0x5e20F5A2e23463D39287185DF84607DF7068F314)
+* Fasttrack Timelock: [`0x668cDb1A414006D0a26e9e13881D4Cd30B8b2a4A`](https://sepolia.uniscan.xyz/address/0x668cDb1A414006D0a26e9e13881D4Cd30B8b2a4A)
+* Critical Timelock: [`0x86C093266e824FA4345484a7B9109e9567923DA6`](https://sepolia.uniscan.xyz/address/0x86C093266e824FA4345484a7B9109e9567923DA6)
+* Omnichain Governance Executor: [`0x4FD69A0821e35104Fc86B8B7fF09026956B45947`](https://sepolia.uniscan.xyz/address/0x4FD69A0821e35104Fc86B8B7fF09026956B45947)
+* Omnichain Executor Owner Proxy: [`0xD755873C16Eaeb26993D283292d3F6C605D9BC26`](https://sepolia.uniscan.xyz/address/0xD755873C16Eaeb26993D283292d3F6C605D9BC26)
