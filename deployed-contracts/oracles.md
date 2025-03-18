@@ -19,6 +19,7 @@
 * OneJump Oracle weETH/ETH/USD (having intermediate oracle Redstone): [`0xb661102c399630420A4B9fa0a5cF57161e5452F5`](https://bscscan.com/address/0xb661102c399630420A4B9fa0a5cF57161e5452F5)
 * OneJump Oracle SolvBTC.BBN/BTC/USD (having intermediate oracle Redstone): [`0x98B9bC5a1e7E439ebEB0BEdB7e9f6b24fEc1E8B4`](https://bscscan.com/address/0x98B9bC5a1e7E439ebEB0BEdB7e9f6b24fEc1E8B4)
 * PendleOracle PT-SolvBTC.BBN-27MAR2025 Oracle: [`0xE11965a3513F537d91D73d9976FBe8c0969Bb252`](https://bscscan.com/address/0xE11965a3513F537d91D73d9976FBe8c0969Bb252)
+* PendleOracle PT-clisBNB-25APR2025 Oracle: [`0xEa7a92D12196A325C76ED26DBd36629d7EC46459`](https://bscscan.com/address/0xEa7a92D12196A325C76ED26DBd36629d7EC46459)
 
 ## BNB Chain Testnet
 
@@ -39,6 +40,7 @@
 * OneJump Oracle weETH/ETH/USD (having intermediate oracle Redstone): [`0xF1B65d1331DceEd40Da71CFc4f06d9754A3f3756`](https://testnet.bscscan.com/address/0xF1B65d1331DceEd40Da71CFc4f06d9754A3f3756)
 * OneJump Oracle SolvBTC.BBN/BTC/USD (having intermediate oracle Redstone): [`0x9767348B2e36E649A42b1DEA975D2474F72C6B96`](https://testnet.bscscan.com/address/0x9767348B2e36E649A42b1DEA975D2474F72C6B96)
 * PendleOracle PT-SolvBTC.BBN-27MAR2025 Oracle: [`0x31B78f0Ef6A87cF0E812197226306954a65907d5`](https://testnet.bscscan.com/address/0x31B78f0Ef6A87cF0E812197226306954a65907d5)
+* PendleOracle PT-clisBNB-25APR2025 Oracle: [`0xeF663663e802Ff4510aDE14975820FFB5d2EE9E8`](https://testnet.bscscan.com/address/0xeF663663e802Ff4510aDE14975820FFB5d2EE9E8)
 
 ## Ethereum mainnet
 
