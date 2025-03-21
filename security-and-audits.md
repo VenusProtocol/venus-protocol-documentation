@@ -8,6 +8,21 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### asBNB Oracle
+
+**Scope**: Correlated oracle to get the price of [asBNB](https://bscscan.com/address/0x77734e70b6E88b4d82fE632a168EDf6e700912b6) token on BNB Chain, taking into account first the onchain conversion rate `asBNB` to [`slisBNB`](https://bscscan.com/address/0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B).
+
+- [Certik audit report (2025/03/20)](https://github.com/VenusProtocol/oracle/blob/e33dd9b60a29d3e69df554136383a6477fa904c5/audits/128_AsBNBOracle_certik_20250320.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull Request [#275](https://github.com/VenusProtocol/oracle/pull/275)
+- Files:
+    - contracts/oracles/AsBNBOracle.sol
+
+</details>
+
 ### zkETH Oracle
 
 **Scope**: Correlated oracle to get the price of [zkETH](https://explorer.zksync.io/address/0xb72207E1FB50f341415999732A20B6D25d8127aa) token on ZKsync, taking into account first the onchain conversion rate `zkETH` to `rzkETH`.
