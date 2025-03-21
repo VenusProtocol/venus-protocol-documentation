@@ -141,12 +141,14 @@
 * NativeTokenGateway:[`0x24896601A4bf1b6a27E51Cb3eff750Bd9FE00d08`](https://bscscan.com/address/0x24896601A4bf1b6a27E51Cb3eff750Bd9FE00d08)
 * Underlying tokens:
   * ankrBNB: [`0x52F24a5e03aee338Da5fd9Df68D2b6FAe1178827`](https://bscscan.com/address/0x52F24a5e03aee338Da5fd9Df68D2b6FAe1178827)
+  * asBNB: [`0x77734e70b6E88b4d82fE632a168EDf6e700912b6`](https://bscscan.com/address/0x77734e70b6E88b4d82fE632a168EDf6e700912b6)
   * BNBx: [`0x1bdd3Cf7F79cfB8EdbB955f20ad99211551BA275`](https://bscscan.com/address/0x1bdd3Cf7F79cfB8EdbB955f20ad99211551BA275)
   * slisBNB: [`0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B`](https://bscscan.com/address/0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B)
   * stkBNB: [`0xc2E9d07F66A89c44062459A47a0D2Dc038E4fb16`](https://bscscan.com/address/0xc2E9d07F66A89c44062459A47a0D2Dc038E4fb16)
   * WBNB: [`0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c`](https://bscscan.com/address/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c)
 * Markets:
   * vankrBNB\_LiquidStakedBNB: [`0xBfe25459BA784e70E2D7a718Be99a1f3521cA17f`](https://bscscan.com/address/0xBfe25459BA784e70E2D7a718Be99a1f3521cA17f)
+  * vasBNB\_LiquidStakedBNB: [`0x4A50a0a1c832190362e1491D5bB464b1bc2Bd288`](https://bscscan.com/address/0x4A50a0a1c832190362e1491D5bB464b1bc2Bd288)
   * vBNBx\_LiquidStakedBNB: [`0x5E21bF67a6af41c74C1773E4b473ca5ce8fd3791`](https://bscscan.com/address/0x5E21bF67a6af41c74C1773E4b473ca5ce8fd3791)
   * vslisBNB\_LiquidStakedBNB: [`0xd3CC9d8f3689B83c91b7B59cAB4946B063EB894A`](https://bscscan.com/address/0xd3CC9d8f3689B83c91b7B59cAB4946B063EB894A)
   * vstkBNB\_LiquidStakedBNB: [`0xcc5D9e502574cda17215E70bC0B4546663785227`](https://bscscan.com/address/0xcc5D9e502574cda17215E70bC0B4546663785227)
@@ -597,6 +599,7 @@
 * NativeTokenGateway: [`0xCf4C75398DaD73f16c762026144a1496f6869CD1`](https://testnet.bscscan.com/address/0xCf4C75398DaD73f16c762026144a1496f6869CD1)
 * Markets:
   * vankrBNB\_LiquidStakedBNB: [`0x57a664Dd7f1dE19545fEE9c86C949e3BF43d6D47`](https://testnet.bscscan.com/address/0x57a664Dd7f1dE19545fEE9c86C949e3BF43d6D47)
+  * vasBNB\_LiquidStakedBNB: [`0xc9D979AA6F3bE732A53a27188D74e929FD107187`](https://testnet.bscscan.com/address/0xc9D979AA6F3bE732A53a27188D74e929FD107187)
   * vBNBx\_LiquidStakedBNB: [`0x644A149853E5507AdF3e682218b8AC86cdD62951`](https://testnet.bscscan.com/address/0x644A149853E5507AdF3e682218b8AC86cdD62951)
   * vslisBNB\_LiquidStakedBNB: [`0xeffE7874C345aE877c1D893cd5160DDD359b24dA`](https://testnet.bscscan.com/address/0xeffE7874C345aE877c1D893cd5160DDD359b24dA)
   * vstkBNB\_LiquidStakedBNB: [`0x75aa42c832a8911B77219DbeBABBB40040d16987`](https://testnet.bscscan.com/address/0x75aa42c832a8911B77219DbeBABBB40040d16987)
