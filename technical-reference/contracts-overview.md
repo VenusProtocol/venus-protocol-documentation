@@ -126,15 +126,11 @@ Revenue earned by the protocol is kept in the [VTreasury](https://github.com/Ven
 
 [**XVS**](../tokens/xvs.md)
 
-XVS is an important token in the Venus ecosystem because it powers Venus governance. The [XVS](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/XVS/XVS.sol) token contract defines a lockable BEP20 token with additional methods that enable voting and vote delegation. To vote, a user must first lock their XVS in the vault. The [XVSVesting](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/XVS/XVSVesting.sol) controlled XVS emissions when converting VRT to XVS. The time period to convert VRT to XVS has expired.
+XVS is an important token in the Venus ecosystem because it powers Venus governance. The [XVS](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/XVS/XVS.sol) token contract defines a lockable BEP20 token with additional methods that enable voting and vote delegation. To vote, a user must first lock their XVS in the vault.
 
 [**VAI**](../tokens/vai.md)
 
 [VAI](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/VAI/VAI.sol) is the Venus stable coin that can be minted against collateral. Users who mint VAI are charged a fee based on the outstanding supply and price of VAI to keep its value pegged at $1. The [VAIController](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/Tokens/VAI/VAIController.sol) controls the amount of VAI a user is allowed to mint which is determined by the collateral a user has provided and their liquidity.
-
-**VRT**
-
-The Venus Rewards Token (VRT) is composed two contracts - the token contract and the converter contract. The [VRT](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/VRT/VRT.sol) token contract defines a lockable BEP20 token, which allows the token to be staked in order to earn additional VRT tokens. The [VRTConverter](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/VRT/VRTConverter.sol) allows VRT to be converted to XVS.
 
 [**vTokens**](reference-core-pool/vtoken.md)
 
@@ -149,10 +145,6 @@ XVS can be locked in the [XVSVault](https://github.com/VenusProtocol/venus-proto
 **VAI Vault**
 
 VAI staked in the [VAIVault](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Vault/VAIVault.sol) earn XVS. Staking rewards are accumulated daily.
-
-**VRT Vault**
-
-The [VRTVault](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/VRTVault/VRTVault.sol) allows users to stake VRT and earn VRT daily. Rewards are accrued daily similar to the other vaults.
 
 #### Misc Contracts
 
