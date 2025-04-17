@@ -27,3 +27,12 @@ The following configuration needs to be defined when configuring the capped orac
 * Snapshot Gap: Used to define the inflation of the exchange rate at each snapshot. 
 
 Note that all the above variables values can be updated using the governance process after the deployment with the initial values. 
+
+## Example
+
+Let’s walk through an example to understand how the capped oracle functions. Suppose we want to retrieve the exchange rate between wstETH and stETH.
+
+- **Annual Growth Rate:** Assume an annual growth rate of 2.9%, based on Lido’s estimated APY. Internally, this will be converted into a per-second growth rate.
+- **Snapshot Interval:** The snapshot can be updated once per month to refresh the reference exchange rate.
+- **Initial Snapshot:** We fetch the current exchange rate and timestamp from the onchain wstETH vault. For instance, the current exchange rate is `1.200101369591475639` and the timestamp is `1744895950`.
+- **Snapshot Gap:** A gap can be added to slightly inflate the capped exchange rate—for example, by 5% over the snapshot value. Since snapshots are updated monthly, we can calculate the expected monthly growth from the annual rate and adjust accordingly. With a 2.9% annual growth rate and an initial exchange rate of 1.2, this might translate to an additional buffer of around `0.0001`.
