@@ -11,7 +11,7 @@ At a high level, the capped oracle determines the maximum allowable exchange rat
 
 Typically, the current maximum exchange rate at a given block is calculated by taking a historical exchange rate from a past block and applying a predefined per-second growth rate up to the current block timestamp. However, since the exchange rate may not grow consistently over time, the historical reference rate is periodically updated to ensure a more accurate and reliable maximum exchange rate. 
 
-<figure><img src="../../.gitbook/assets/capped-oracle.png" alt="Capped Oracle"><figcaption>Capped Oracle</figcaption></figure>
+<figure><img src="../../.gitbook/assets/capped-oracle.png" alt="Capped Oracle"><figcaption></figcaption></figure>
 
 The historical reference rate is periodically refreshed through a process called snapshotting. During this process, the new reference rate is set to the lower of the current onchain exchange rate or the maximum rate derived from the previous reference rate, helping maintain a more accurate and robust cap. Before querying an asset’s price from the capped oracle, the consumer should trigger the snapshotting process—if the configured interval has elapsed, a new snapshot will be taken.
 
