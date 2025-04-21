@@ -1,4 +1,3 @@
-
 # Capped Oracles
 
 Some assets, such as Liquid Staking Tokens (LSTs), are closely tied to an underlying asset, often featuring an added growth component.
@@ -11,9 +10,9 @@ At a high level, the capped oracle determines the maximum allowable exchange rat
 
 Typically, the current maximum exchange rate at a given block is calculated by taking a historical exchange rate from a past block and applying a predefined per-second growth rate up to the current block timestamp. However, since the exchange rate may not grow consistently over time, the historical reference rate is periodically updated to ensure a more accurate and reliable maximum exchange rate. 
 
-<figure><img src="../../.gitbook/assets/capped-oracle.png" alt="Capped Oracle"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/capped-oracle.svg" alt="Capped Oracle main elements"><figcaption></figcaption></figure>
 
-The historical reference rate is periodically refreshed through a process called snapshotting. During this process, the new reference rate is set to the lower of the current onchain exchange rate or the maximum rate derived from the previous reference rate, helping maintain a more accurate and robust cap. Before querying an asset’s price from the capped oracle, the consumer should trigger the snapshotting process—if the configured interval has elapsed, a new snapshot will be taken.
+The historical reference rate is periodically refreshed through a process called snapshotting. During this process, the new reference rate is set to the lower of the current onchain exchange rate or the maximum rate derived from the previous reference rate, helping maintain a more accurate and robust cap. Before querying an asset’s price from the capped oracle, the consumer should trigger the snapshotting process. If the configured interval has elapsed, a new snapshot will be taken.
 
 The capped exchange rate between intervals is constrained by a per-second growth limit. However, since the actual exchange rate may exceed this cap, we inflate the snapshotted exchange rate by a predefined buffer to avoid imposing a hard limit.
 
@@ -32,7 +31,13 @@ Note that all the above variables values can be updated using the governance pro
 
 Let’s walk through an example to understand how the capped oracle functions. Suppose we want to retrieve the exchange rate between wstETH and stETH.
 
-- **Annual Growth Rate:** Assume an annual growth rate of 2.9%, based on Lido’s estimated APY. Internally, this will be converted into a per-second growth rate.
+- **Annual Growth Rate:** Assume an annual growth rate of 2.9%, based on Lido’s estimated APY. Taking into account Lido compounding period is daily, the estimated APY would be 2.9423% (compounding should be considered when the caps are defined). So, the associated capped oracle could be configured with a maximum annual growth rate of 5%. Internally, this will be converted into a per-second growth rate.
 - **Snapshot Interval:** The snapshot can be updated once per month to refresh the reference exchange rate.
-- **Initial Snapshot:** We fetch the current exchange rate and timestamp from the onchain wstETH vault. For instance, the current exchange rate is `1.200101369591475639` and the timestamp is `1744895950`.
-- **Snapshot Gap:** A gap can be added to slightly inflate the capped exchange rate—for example, by 5% over the snapshot value. Since snapshots are updated monthly, we can calculate the expected monthly growth from the annual rate and adjust accordingly. With a 2.9% annual growth rate and an initial exchange rate of 1.2, this might translate to an additional buffer of around `0.0001`.
+- **Initial Snapshot:** We fetch the current exchange rate and timestamp from the onchain wstETH contract. For instance, the current exchange rate is `1.200101369591475639` and the timestamp is `1744895950`. We apply a buffer on top of the current exchange rate: for example 1% of the maximum annual growth rate, that is `1% * 5% = 0.05%`. So, the initial snapshot value would be `1.200101369591475639 * 1.0005 = 1.20070142027627137681`. This way, the capped oracle won't cap spikes on the wstETH exchange rate just after the initialization.
+- **Snapshot Gap:** The same concept of the buffer applied to calculate the initial snapshot in the previous step, but to be considered every time the snapshot is automatically updated. This cap could be set to `1.200101369591475639 * 0.0005 = 0.0006`, and reviewed periodically.
+
+Given this initial setup:
+
+- after 15 days, the maximum exchange rate allowed will be `1.20070142027627137681 * (1 + (0.05 * 15 / 365)) = 1.20316860954764085647`
+- after 1 month, the snapshot will be automatically updated. Assuming the exchange rate at that time is `1.20300161856832627043`, after applying the snapshot gap, the new maximum exchange rate will be `1.20360161856832627043` (`1.20300161856832627043 + 0.0006`)
+- after 15 days, the maximum exchange rate allowed will be `1.20360161856832627043 * (1 + (0.05 * 15 / 365)) = 1.20607476713814428156`
