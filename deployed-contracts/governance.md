@@ -2,7 +2,6 @@
 
 ## BNB Chain Mainnet
 
-* Governor Bravo Delegate: [`0x360ac19648efc29d2b7b70bac227c35e909272fd`](https://bscscan.com/address/0x360ac19648efc29d2b7b70bac227c35e909272fd)
 * Governor Bravo Delegator: [`0x2d56dc077072b53571b8252008c60e945108c75a`](https://bscscan.com/address/0x2d56dc077072b53571b8252008c60e945108c75a)
 * Access Control Manager: [`0x4788629abc6cfca10f9f969efdeaa1cf70c23555`](https://bscscan.com/address/0x4788629abc6cfca10f9f969efdeaa1cf70c23555)
 * Normal Timelock: [`0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396`](https://bscscan.com/address/0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396)
@@ -14,72 +13,8 @@
   * Guardian 3: [`0x3a3284dC0FaFfb0b5F0d074c4C704D14326C98cF`](https://bscscan.com/address/0x3a3284dC0FaFfb0b5F0d074c4C704D14326C98cF) - oracles
 * Omnichain Proposal Sender: [`0x36a69dE601381be7b0DcAc5D5dD058825505F8f6`](https://bscscan.com/address/0x36a69dE601381be7b0DcAc5D5dD058825505F8f6)
 
-<!---
-Specific functions that can be invoked by the guardians
-
-<details>
-<summary>Guardian 1</summary>
-
-* Core pool Comptroller
-  * `_setCollateralFactor`
-  * `_setMarketBorrowCaps`
-  * `_setMarketSupplyCaps`
-
-* Isolated pools Comptrollers
-  * `setCollateralFactor`
-  * `setMarketBorrowCaps`
-  * `setMarketSupplyCaps`
-
-</details>
-
-<details>
-<summary>Guardian 2</summary>
-
-* Core pool Comptroller
-  * `_setProtocolPaused`
-  * `_setActionsPaused`
-
-* Isolated pools Comptrollers
-  * `setActionsPaused`
-
-* Shortfall
-  * `pauseAuctions`
-  * `resumeAuctions`
-
-* PegStability
-  * `pause`
-  * `resume`
-
-* PrimeLiquidityProvider
-  * `pauseFundsTransfer`
-  * `resumeFundsTransfer`
-
-* XVSBridgeAdmin
-  * `pause`
-  * `unpause`
-
-</details>
-
-<details>
-<summary>Guardian 3</summary>
-
-* ResilientOracle
-  * `pause`
-  * `unpause`
-  * `setTokenConfig`
-
-* ChainlinkOracle
-  * `setDirectPrice`
-  * `setTokenConfig`
-
-* PythOracle
-  * `setTokenConfig`
-</details>
--->
-
 ## BNB Chain Testnet
 
-* Governor Bravo Delegate: [`0x4baf88aba7f86f6540728bef454b224c5d2215e7`](https://testnet.bscscan.com/address/0x4baf88aba7f86f6540728bef454b224c5d2215e7)
 * Governor Bravo Delegator: [`0x5573422a1a59385c247ec3a66b93b7c08ec2f8f2`](https://testnet.bscscan.com/address/0x5573422a1a59385c247ec3a66b93b7c08ec2f8f2)
 * Access Control Manager: [`0x45f8a08F534f34A97187626E05d4b6648Eeaa9AA`](https://testnet.bscscan.com/address/0x45f8a08F534f34A97187626E05d4b6648Eeaa9AA)
 * Normal Timelock: [`0xce10739590001705F7FF231611ba4A48B2820327`](https://testnet.bscscan.com/address/0xce10739590001705F7FF231611ba4A48B2820327)
