@@ -3,7 +3,7 @@
 ## BNB Chain Mainnet
 
 * PoolRegistry: [`0x9F7b01A536aFA00EF10310A162877fd792cD0666`](https://bscscan.com/address/0x9F7b01A536aFA00EF10310A162877fd792cD0666)
-* PoolLens: [`0x0461c613433d42C06831C8e60Bf0C86FC9495072`](https://bscscan.com/address/0x0461c613433d42C06831C8e60Bf0C86FC9495072)
+* PoolLens: [`0xA179d2f1Fd53D15Bc790bE91d5fF4a0108E29621`](https://bscscan.com/address/0xA179d2f1Fd53D15Bc790bE91d5fF4a0108E29621)
 * DefaultProxyAdmin: [`0x6beb6D2695B67FEb73ad4f172E8E2975497187e4`](https://bscscan.com/address/0x6beb6D2695B67FEb73ad4f172E8E2975497187e4)
 * Comptroller Beacon: [`0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2`](https://bscscan.com/address/0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2)
 * VToken Beacon: [`0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4`](https://bscscan.com/address/0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4)
@@ -497,7 +497,7 @@
 ## BNB Chain Testnet
 
 * PoolRegistry: [`0xC85491616Fa949E048F3aAc39fbf5b0703800667`](https://testnet.bscscan.com/address/0xC85491616Fa949E048F3aAc39fbf5b0703800667)
-* PoolLens: [`0x613d859Bf6CB3557179dC03B8F844E0c48FE9C07`](https://testnet.bscscan.com/address/0x613d859Bf6CB3557179dC03B8F844E0c48FE9C07)
+* PoolLens: [`0x166C45bCCE54166Ecf9bCDF8d2EC562014A06048`](https://testnet.bscscan.com/address/0x166C45bCCE54166Ecf9bCDF8d2EC562014A06048)
 * DefaultProxyAdmin: [`0x7877ffd62649b6a1557b55d4c20fcbab17344c91`](https://testnet.bscscan.com/address/0x7877ffd62649b6a1557b55d4c20fcbab17344c91)
 * Comptroller Beacon: [`0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74`](https://testnet.bscscan.com/address/0xdDDD7725C073105fB2AbfCbdeC16708fC4c24B74)
 * VToken Beacon: [`0xBF85A90673E61956f8c79b9150BAB7893b791bDd`](https://testnet.bscscan.com/address/0xBF85A90673E61956f8c79b9150BAB7893b791bDd)
