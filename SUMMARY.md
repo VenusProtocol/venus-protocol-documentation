@@ -63,6 +63,7 @@
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
   * [Token Converters](technical-reference/reference-technical-articles/token-converters.md)
   * [Two Kinks Interest Rate Curve](technical-reference/reference-technical-articles/two-kinks-interest-rate-curve.md)
+  * [VenusERC4626 Vaults](technical-reference/reference-technical-articles/venus-erc-4626.md)
   * [XVS Bridge](technical-reference/reference-technical-articles/xvs-bridge.md)
 * [Core Pool](technical-reference/reference-core-pool/README.md)
   * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
