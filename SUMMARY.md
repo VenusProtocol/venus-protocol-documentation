@@ -55,6 +55,7 @@
 * [Contracts Overview](technical-reference/contracts-overview.md)
 * [Technical articles](technical-reference/reference-technical-articles/README.md)
   * [Automatic income allocation](technical-reference/reference-technical-articles/automatic-income-allocation.md)
+  * [Capped Oracles](technical-reference/reference-technical-articles/capped-oracles.md)
   * [Contributing](technical-reference/reference-technical-articles/contributing.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
   * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)
