@@ -200,6 +200,8 @@
 * DefaultProxyAdmin:[`0x78e9fff2ab8daAB8559070d897C399E5e1C5074c`](https://uniscan.xyz/address/0x78e9fff2ab8daAB8559070d897C399E5e1C5074c)
 * RedStone Oracle:[`0x4d41a36D04D97785bcEA57b057C412b278e6Edcc`](https://uniscan.xyz/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc)
 * Resilient Oracle:[`0x86D04d6FE928D888076851122dc6739551818f7E`](https://uniscan.xyz/address/0x86D04d6FE928D888076851122dc6739551818f7E)
+* weETHOneJumpOracle (having intermediate oracle RedStone): [`0xF9ECA470E2458Fe2B6FcAe660bEd1e2C0FB87E01`](https://uniscan.xyz/address/0xF9ECA470E2458Fe2B6FcAe660bEd1e2C0FB87E01)
+* wstETHOneJumpOracle (having intermediate oracle RedStone): [`0x3938D6414c261C6F450f1bD059DF9af2BBfb603D`](https://uniscan.xyz/address/0x3938D6414c261C6F450f1bD059DF9af2BBfb603D)
 
 ## Unichain Sepolia
 
@@ -207,3 +209,5 @@
 * DefaultProxyAdmin:[`0x256735eFdfDf135bD6991854e0065909e57804aa`](https://sepolia.uniscan.xyz/address/0x256735eFdfDf135bD6991854e0065909e57804aa)
 * RedStone Oracle:[`0x8683D6902A669Ac479cfcCf2542724a133D4d872`](https://sepolia.uniscan.xyz/address/0x8683D6902A669Ac479cfcCf2542724a133D4d872)
 * Resilient Oracle:[`0xA469E718BDE2C9939bD29529A38184e97dF0A741`](https://sepolia.uniscan.xyz/address/0xA469E718BDE2C9939bD29529A38184e97dF0A741)
+* weETHOneJumpOracle (having intermediate oracle RedStone): [`0xa980158116316d0759C56D7E812D7D8cEf18B425`](https://sepolia.uniscan.xyz/address/0xa980158116316d0759C56D7E812D7D8cEf18B425)
+* wstETHOneJumpOracle (having intermediate oracle RedStone): [`0x555bD5dc1dCf87EEcC39778C3ba9DDCc40dF05c0`](https://sepolia.uniscan.xyz/address/0x555bD5dc1dCf87EEcC39778C3ba9DDCc40dF05c0)
