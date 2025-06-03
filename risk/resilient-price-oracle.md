@@ -163,31 +163,31 @@ The current list of correlated token oracles in Venus is:
 | Core | FRAX | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | LBTC | [LBTCOneJumpRedStoneOracle](https://etherscan.io/address/0x3c8C488d65F2AFDe15F285eAAF4B153C4d35A944) | - | - | |
 | Core | EIGEN | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Core | sFRAX | [SFraxOracle](https://etherscan.io/address/0x27F811933cA276387554eAffD9860e513bA95AC3) | - | - | |
+| Core | sFRAX | [SFraxOracle](https://etherscan.io/address/0x1aDCE75BB3164bBf6060a4f44262df5414473110) | - | - | |
 | Core | eBTC | [eBTCAccountantOracle](https://etherscan.io/address/0x077A11d634be3498b9af3EbD3d5D35A0fC3569d8) | - | - | |
 | Core | USDS | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Core | sUSDS | [sUSDS-ERC4646Oracle](https://etherscan.io/address/0xDC4861F5Ad18bD584Eab322cc6706e632E9D1c94) | - | - | |
+| Core | sUSDS | [sUSDS-ERC4646Oracle](https://etherscan.io/address/0xEC3865a8a5DCb8C507781DA17A38b754E3d01C50) | - | - | |
 | Core | BAL | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Core | yvUSDC-1 | [yvUSDC-1-ERC4646Oracle](https://etherscan.io/address/0x49C6858B3ce4F3829b716fD3FafCa6Cb4Ccb7843) | - | - | |
-| Core | yvUSDS-1 | [yvUSDS-1-ERC4646Oracle](https://etherscan.io/address/0x50f97063b4097D4e81C4DD9c3278258A04DF15aA) | - | - | |
-| Core | yvUSDT-1 | [yvUSDT-1-ERC4646Oracle](https://etherscan.io/address/0xE113AE8D80Fb6dfB3221e0A396e297Aa42813d0A) | - | - | |
-| Core | yvWETH-1 | [yvWETH-1-ERC4646Oracle](https://etherscan.io/address/0x641817dE6c0E4f763C393AaD182E6C946e1a2e2b) | - | - | |
+| Core | yvUSDC-1 | [yvUSDC-1-ERC4646Oracle](https://etherscan.io/address/0xA938eFfc4f68262E17eAcfAFD41Ee68b0F8874D1) | - | - | |
+| Core | yvUSDS-1 | [yvUSDS-1-ERC4646Oracle](https://etherscan.io/address/0xE6eB6A0321CA8c18A3e4C31E36954467f72670EF) | - | - | |
+| Core | yvUSDT-1 | [yvUSDT-1-ERC4646Oracle](https://etherscan.io/address/0xbC0289BFbF3F14af0829f10640a7B7E539910723) | - | - | |
+| Core | yvWETH-1 | [yvWETH-1-ERC4646Oracle](https://etherscan.io/address/0x38b3643c1b5160591073cc4121Bd91A456F14Acd) | - | - | |
 | Curve | crvUSD | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Curve | CRV | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Ethena | PT-sUSDE-27MAR2025 | [PendleOracle-PT-sUSDe-27MAR2025](https://etherscan.io/address/0x17B49f36878c401C1fE4D7Bf6D9CeBAAFBf4edE2) | - | - | |
-| Ethena | PT-USDe-27MAR2025 | [PendleOracle-PT-USDe-27MAR2025](https://etherscan.io/address/0x721C02F98bE5ef916F6574E53700a25473742093) | - | - | |
-| Ethena | sUSDe | [sUSDe-ERC4626Oracle](https://etherscan.io/address/0x67841858BCCA8dF50B962d6A314722a6AEC0970e) | - | - | |
+| Ethena | PT-sUSDE-27MAR2025 | [PendleOracle-PT-sUSDe-27MAR2025](https://etherscan.io/address/0x51B83bbbdCa078b2497C41c9f54616D1aDBEF86F) | - | - | |
+| Ethena | PT-USDe-27MAR2025 | [PendleOracle-PT-USDe-27MAR2025](https://etherscan.io/address/0x4CD93DcD2E11835D06a45F7eF9F7225C249Bb6Db) | - | - | |
+| Ethena | sUSDe | [sUSDe-ERC4626Oracle](https://etherscan.io/address/0xaE847E81ff6dD2bdFB1fD563ccB4f848c74D2B70) | - | - | |
 | Ethena | USDC | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Ethena | USDe | [RedStone](https://etherscan.io/address/0x0FC8001B2c9Ec90352A46093130e284de5889C86) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | Upper bound: 1.01. Lower bound: 0.99 |
-| Liquid Staked ETH | ezETH | [ezETHOneJumpRedstoneOracle](https://etherscan.io/address/0x8062dC1b38c0b2CF6188dF605B19cFF3c4dc9b29) | [ezETHOneJumpChainlinkOracle](https://etherscan.io/address/0xa87E10C6F6DAD7af6C17f82Ce2C00FA5C64d110c) | [ezETHOneJumpChainlinkOracle](https://etherscan.io/address/0xa87E10C6F6DAD7af6C17f82Ce2C00FA5C64d110c) | Upper bound: 1.01. Lower bound: 0.99 |
-| Liquid Staked ETH | PTweETH-26DEC2024 | [PendleOracle-PT-weETH-26DEC2024](https://etherscan.io/address/0xA1eA3cB0FeA73a6c53aB07CcC703Dc039D8EAFb4) | - | - | |
+| Liquid Staked ETH | ezETH | [ezETHOneJumpRedstoneOracle](https://etherscan.io/address/0xA6efeF98D9C4E9FF8193f80FbABF92AD92D50500) | [ezETHOneJumpChainlinkOracle](https://etherscan.io/address/0x84FAe9909Fa1F259CB23Fa14FCdd1a35A0FE7EB8) | [ezETHOneJumpChainlinkOracle](https://etherscan.io/address/0x84FAe9909Fa1F259CB23Fa14FCdd1a35A0FE7EB8) | Upper bound: 1.01. Lower bound: 0.99 |
+| Liquid Staked ETH | PTweETH-26DEC2024 | [PendleOracle-PT-weETH-26DEC2024](https://etherscan.io/address/0xB89C0F93442C269271cB4e9Acd10E81D3fC237Ba) | - | - | |
 | Liquid Staked ETH | pufETH | [pufETHOneJumpRedstoneOracle](https://etherscan.io/address/0xAaE18CEBDF55bbbbf5C70c334Ee81D918be728Bc) | - | - | |
-| Liquid Staked ETH | rsETH | [rsETHOneJumpRedstoneOracle](https://etherscan.io/address/0xf689AD140BDb9425fB83ba6f55866447244b5a23) | [rsETHOneJumpChainlinkOracle](https://etherscan.io/address/0xD63011ddAc93a6f8348bf7E6Aeb3E30Ad7B46Df8) | [rsETHOneJumpChainlinkOracle](https://etherscan.io/address/0xD63011ddAc93a6f8348bf7E6Aeb3E30Ad7B46Df8) | Upper bound: 1.01. Lower bound: 0.99 |
+| Liquid Staked ETH | rsETH | [rsETHOneJumpRedstoneOracle](https://etherscan.io/address/0x6AC694f2D118a35e1984AE590B916108F4f9337F) | [rsETHOneJumpChainlinkOracle](https://etherscan.io/address/0xc68A156b08C5C5C2e9c27B32A09977F3FA50FFE0) | [rsETHOneJumpChainlinkOracle](https://etherscan.io/address/0xc68A156b08C5C5C2e9c27B32A09977F3FA50FFE0) | Upper bound: 1.01. Lower bound: 0.99 |
 | Liquid Staked ETH | sfrxETH | [SFrxETHOracle](https://etherscan.io/address/0x5E06A5f48692E4Fff376fDfCA9E4C0183AAADCD1) | - | - | |
 | Liquid Staked ETH | WETH | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Liquid Staked ETH | wstETH | [WstETHOracle\_Equivalence](https://etherscan.io/address/0xd8B43165a6cdA057DBd3Fcd4745E88FC475398c5) | - | - | Assume 1:1 for ETH:stETH |
-| Liquid Staked ETH | weETH | [WeETHOracle\_Equivalence](https://etherscan.io/address/0xEa687c54321Db5b20CA544f38f08E429a4bfCBc8) | - | - | Assume 1:1 for ETH:eETH |
-| Liquid Staked ETH | weETHs | [WeETHAccountantOracle](https://etherscan.io/address/0x132f91AA7afc590D591f168A780bB21B4c29f577) | - | - | |
+| Liquid Staked ETH | weETH | [WeETHOracle\_Equivalence](https://etherscan.io/address/0xaB663D4a701229DFF407Eb4B45007921029072e9) | - | - | Assume 1:1 for ETH:eETH |
+| Liquid Staked ETH | weETHs | [WeETHAccountantOracle](https://etherscan.io/address/0x47F7A7f3486b08A019E0c10Af969ADC4B6E415Cd) | - | - | |
 
 #### opBNB mainnet
 
@@ -210,8 +210,8 @@ The current list of correlated token oracles in Venus is:
 | Core | gmWETH-USDC | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
 | Core | gmBTC-USDC | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
 | Core | ARB | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
-| Liquid Staked ETH | weETH |  [weETHOneJumpChainlinkOracle](https://arbiscan.io/address/0x09eA4825a5e2FB2CB9a44F317c22e7D65053ea9d) | - | - | |
-| Liquid Staked ETH | wstETH |  [wstETHOneJumpChainlinkOracle](https://arbiscan.io/address/0x748DeFdbaE5215cdF0C436c538804823b55D76bc) | - | - | |
+| Liquid Staked ETH | weETH |  [weETHOneJumpChainlinkOracle](https://arbiscan.io/address/0x0afD33490fBcF537ede00F9Cc4607230bBf65774) | - | - | |
+| Liquid Staked ETH | wstETH |  [wstETHOneJumpChainlinkOracle](https://arbiscan.io/address/0x17a5596DF05c7bfB2280D5B9cCcDAf711e957Ed4) | - | - | |
 | Liquid Staked ETH | WETH | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
 
 #### ZKsync Mainnet
@@ -224,9 +224,9 @@ The current list of correlated token oracles in Venus is:
 | Core | USDC\_E | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | - | - | |
 | Core | USDT | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | - | - | |
 | Core | ZK | [RedStoneOracle](https://explorer.zksync.io/address/0xFa1e65e714CDfefDC9729130496AB5b5f3708fdA) | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | [ChainlinkOracle](https://explorer.zksync.io/address/0x4FC29E1d3fFFbDfbf822F09d20A5BE97e59F66E5) | Upper bound: 1.01. Lower bound: 0.99 |
-| Core | wstETH | [wstETHOneJumpChainlinkOracle](https://explorer.zksync.io/address/0xd2b4352A3C1C452D9D4D11B4F19e28476128798f) | - | - | |
-| Core | wUSDM | [wUSDM-ERC4626Oracle](https://explorer.zksync.io/address/0x7Fb95a0B7b933A9F3Fe3Ead4b69B0267BD8Fe55F) | - | - | |
-| Core | zkETH | [ZkETHOracle](https://explorer.zksync.io/address/0x540aA1683E5E5592E0444499bDA41f6DF8de2Dd8) | - | - | Assume 1:1 for WETH:rzkETH |
+| Core | wstETH | [wstETHOneJumpChainlinkOracle](https://explorer.zksync.io/address/0x2DAaeb94E19145BA7633cAB2C38c76fD8c493198) | - | - | |
+| Core | wUSDM | [wUSDM-ERC4626Oracle](https://explorer.zksync.io/address/0x22cE94e302c8C80a6C2dCfa9Da6c5286e9f28692) | - | - | |
+| Core | zkETH | [ZkETHOracle](https://explorer.zksync.io/address/0x407dE1229BCBD2Ec876d063F3F93c4D8a38bd81a) | - | - | Assume 1:1 for WETH:rzkETH |
 
 #### Optimism Mainnet
 
@@ -245,8 +245,8 @@ The current list of correlated token oracles in Venus is:
 | Core | cbBTC | [ChainlinkOracle](https://basescan.org/address/0x6F2eA73597955DB37d7C06e1319F0dC7C7455dEb) | - | - | |
 | Core | WETH | [ChainlinkOracle](https://basescan.org/address/0x6F2eA73597955DB37d7C06e1319F0dC7C7455dEb) | - | - | |
 | Core | USDC | [ChainlinkOracle](https://basescan.org/address/0x6F2eA73597955DB37d7C06e1319F0dC7C7455dEb) | - | - | |
-| Core | wsuperOETHb | [wsuperOETHb-ERC4626Oracle](https://basescan.org/address/0x2ad7dFf3380A0b75dC0bB1f3B38C105AB5B6D818) | - | - | |
-| Core | wstETH | [wstETHOneJumpChainlinkOracle](https://basescan.org/address/0x007e6Bd6993892b39210a7116506D6eA417B7565) | - | - | |
+| Core | wsuperOETHb | [wsuperOETHb-ERC4626Oracle](https://basescan.org/address/0xcd1d2C99642165440c2CC023AFa2092b487f033e) | - | - | |
+| Core | wstETH | [wstETHOneJumpChainlinkOracle](https://basescan.org/address/0xDDD4F0836c8016E11fC6741A4886E97B3c3d20C1) | - | - | |
 
 #### Unichain Mainnet
 
