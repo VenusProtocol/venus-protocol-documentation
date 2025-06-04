@@ -185,6 +185,7 @@
 * [Governance](deployed-contracts/governance.md)
 * [XVS Omnichain](deployed-contracts/xvs-omnichain.md)
 * [Token Converters](deployed-contracts/token-converters.md)
+* [VenusERC4626](deployed-contracts/venus-erc4626.md)
 
 ## Services
 
