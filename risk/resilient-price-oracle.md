@@ -161,7 +161,7 @@ The current list of correlated token oracles in Venus is:
 | Core | WBTC | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | WETH | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | FRAX | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Core | LBTC | [LBTCOneJumpRedStoneOracle](https://etherscan.io/address/0x3c8C488d65F2AFDe15F285eAAF4B153C4d35A944) | - | - | |
+| Core | LBTC | [LBTCOneJumpRedStoneOracle](https://etherscan.io/address/0x54B033D102db7DD734E0Ad649463E90fFA78D853) | - | - | |
 | Core | EIGEN | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | sFRAX | [SFraxOracle](https://etherscan.io/address/0x1aDCE75BB3164bBf6060a4f44262df5414473110) | - | - | |
 | Core | eBTC | [eBTCAccountantOracle](https://etherscan.io/address/0x04d6096A6F089047C7af6E4644D18fB766B8d4cE) | - | - | |
