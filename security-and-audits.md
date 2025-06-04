@@ -697,3 +697,23 @@ These contracts were in the scope of the audits done before the launch of Isolat
 **Scope**: Delegate Borrowing in Venus. Upgrade of BUSD, USDC, USDT, BTCB and ETH markets, to reduce the risks on Venus that resulted from the September 2022 BNB Bridge incident. Executed on [VIP-99](https://app.venus.io/governance/proposal/99).
 
 * [Peckshield audit report - 2023/02/27](https://github.com/VenusProtocol/venus-protocol/blob/develop/audits/009_vtoken_peckshield_20230227.pdf)
+
+### VenusERC4626 Vaults
+
+**Scope**: VenusERC4626 Vaults
+
+* [Certik audit report](https://github.com/VenusProtocol/isolated-pools/blob/1faa46139aaec06e0eb2e48341bff22cd6c38c6c/audits/129_erc4626_certik_20250514.pdf)
+* [FairyProof audit report](https://github.com/VenusProtocol/isolated-pools/blob/1faa46139aaec06e0eb2e48341bff22cd6c38c6c/audits/130_erc4626_fairyproof_20250414.pdf)
+* [FairyProof audit report](https://github.com/VenusProtocol/isolated-pools/blob/1faa46139aaec06e0eb2e48341bff22cd6c38c6c/audits/131_erc4626_pessimistic_20250502.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#497](https://github.com/VenusProtocol/isolated-pools/pull/497) in the `isolated-pools` repo.
+  - contracts/ERC4626/VenusERC4626.sol
+  - contracts/ERC4626/VenusERC4626Factory.sol
+  - contracts/ERC4626/Interfaces/IComptroller.sol
+  - contracts/ERC4626/Interfaces/IProtocolShareReserve.sol
+  - contracts/ERC4626/Interfaces/IRewardsDistributor.sol
+
+</details>
