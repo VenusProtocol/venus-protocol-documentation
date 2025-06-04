@@ -2,7 +2,7 @@
 
 ### Overview
 
-`VenusERC4626` is an upgradeable ERC4626-compliant vault that wraps a Venus vToken, enabling standard ERC4626 vault interactions with the Venus Protocol. It manages deposits, withdrawals, minting, redeeming, and reward distribution, with additional access control and loop limit protections.
+`VenusERC4626` is an upgradeable, ERC4626-compliant vault that wraps a Venus vToken, enabling standard ERC4626 vault interactions with the Venus Protocol. It manages deposits, withdrawals, minting, redeeming, and reward distribution, with additional access control and loop limit protections.
 
 # Solidity API
 
@@ -15,10 +15,10 @@
    The Venus vToken associated with this ERC4626 vault.
 
 - **`comptroller`** (`IComptroller`, public):  
-   The Venus Comptroller contract, responsible for market operations.
+   The Venus Comptroller contract responsible for market operations.
 
 - **`rewardRecipient`** (`address`, public):  
-   The recipient of rewards distributed by the Venus Protocol.
+   The address that receives rewards distributed by the Venus Protocol.
 
 ---
 
@@ -34,7 +34,7 @@
    Emitted when the reward recipient address is updated.
 
   - `oldRecipient`: The previous reward recipient address.
-  - `newRecipient`: The new reward recipient.
+  - `newRecipient`: The new reward recipient address.
 
 - **`SweepToken(address indexed token, address indexed receiver, uint256 amount)`**  
    Emitted when tokens are swept from the contract.
@@ -52,10 +52,10 @@
   - `errorCode`: The error code returned by Venus.
 
 - **`ERC4626__DepositMoreThanMax()`**  
-   Thrown when a deposit exceeds the maximum allowed limit.
+   Thrown when a deposit exceeds the maximum allowed.
 
 - **`ERC4626__MintMoreThanMax()`**  
-   Thrown when a mint operation exceeds the maximum allowed limit.
+   Thrown when a mint operation exceeds the maximum allowed.
 
 - **`ERC4626__WithdrawMoreThanMax()`**  
    Thrown when a withdrawal exceeds the maximum available assets.
@@ -70,7 +70,7 @@
 ### Constructor
 
 - **@custom:oz-upgrades-unsafe-allow constructor**  
-  Disables initializers for upgradeable contract pattern.
+  Disables initializers for the upgradeable contract pattern.
 
 ---
 
@@ -78,7 +78,7 @@
 
 ### initialize
 
-Initializes the VenusERC4626 vault with the associated VToken address.
+Initializes the VenusERC4626 vault with the associated vToken address.
 
 ```solidity
 function initialize(address vToken_) public initializer
@@ -88,11 +88,11 @@ function initialize(address vToken_) public initializer
 
 | Name     | Type    | Description                                                                 |
 | -------- | ------- | --------------------------------------------------------------------------- |
-| vToken\_ | address | The VToken associated with the vault, representing the yield-bearing asset. |
+| vToken\_ | address | The vToken associated with the vault, representing the yield-bearing asset. |
 
 #### Notes
 
-- Only the VToken address is set in this function.
+- Only the vToken address is set in this function.
 - `initialize2` must be called to complete the configuration.
 
 ---
@@ -111,8 +111,8 @@ function initialize2(address accessControlManager_, address rewardRecipient_, ui
 | ---------------------- | ------- | ----------------------------------------------------------------------- |
 | accessControlManager\_ | address | The address of the access control manager contract.                     |
 | rewardRecipient\_      | address | The initial recipient of rewards.                                       |
-| loopsLimit\_           | uint256 | The maximum number of loops for certain operations, enhancing security. |
-| vaultOwner\_           | address | The owner of the vault.              |
+| loopsLimit\_           | uint256 | The maximum number of loops for certain operations to enhance security. |
+| vaultOwner\_           | address | The address of the vault owner.              |
 
 #### Notes
 
@@ -141,7 +141,7 @@ function setMaxLoopsLimit(uint256 loopsLimit) external
 
 #### Access
 
-- Controlled by Access Control Manager (ACM).
+- Controlled by the Access Control Manager (ACM).
 
 ---
 
@@ -165,13 +165,13 @@ function setRewardRecipient(address newRecipient) external
 
 #### Access
 
-- Controlled by ACM.
+- Controlled by the ACM.
 
 ---
 
 ### sweepToken
 
-Sweeps the specified token from the contract and sends it to the owner.
+Sweeps the specified token from the contract and sends it to the contract owner.
 
 ```solidity
 function sweepToken(IERC20Upgradeable token) external onlyOwner
@@ -189,13 +189,13 @@ function sweepToken(IERC20Upgradeable token) external onlyOwner
 
 #### Access
 
-- Only owner.
+- Only the owner.
 
 ---
 
 ### claimRewards
 
-Claims rewards from all reward distributors associated with the VToken and transfers them to the reward recipient.
+Claims rewards from all reward distributors associated with the vToken and transfers them to the reward recipient.
 
 ```solidity
 function claimRewards() external
@@ -323,7 +323,7 @@ function redeem(uint256 shares, address receiver, address owner) public override
 
 ### totalAssets
 
-Returns the total amount of assets managed by the vault, including both deposited assets and any accrued rewards.
+Returns the total amount of assets managed by the vault, including both deposited assets and accrued rewards.
 
 ```solidity
 function totalAssets() public view virtual override returns (uint256)
@@ -343,7 +343,7 @@ function totalAssets() public view virtual override returns (uint256)
 
 ### maxDeposit
 
-Returns the maximum deposit allowed based on Venus supply caps.
+Returns the maximum deposit allowed, based on Venus supply caps.
 
 ```solidity
 function maxDeposit(address account) public view virtual override returns (uint256)
@@ -363,7 +363,7 @@ function maxDeposit(address account) public view virtual override returns (uint2
 
 #### Notes
 
-- Returns 0 if minting is paused or the supply cap is reached.
+- Returns 0 if minting is paused or the supply cap has been reached.
 
 ---
 
@@ -395,7 +395,7 @@ function maxMint(address account) public view virtual override returns (uint256)
 
 ### maxWithdraw
 
-Returns the maximum amount that can be withdrawn.
+Returns the maximum amount of assets that can be withdrawn.
 
 ```solidity
 function maxWithdraw(address receiver) public view virtual override returns (uint256)
@@ -415,7 +415,7 @@ function maxWithdraw(address receiver) public view virtual override returns (uin
 
 #### Notes
 
-- Limited by the available cash in the vault.
+- This value is limited by the available cash in the vault.
 
 ---
 

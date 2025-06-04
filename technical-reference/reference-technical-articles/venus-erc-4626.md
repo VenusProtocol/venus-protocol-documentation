@@ -2,26 +2,26 @@
 
 ## Overview
 
-Venus Protocol likes to introduce **native ERC-4626 vaults**, bringing standardized, composable yield vaults to the Venus ecosystem. This integration represents a significant advancement in making Venus's yield-bearing markets more accessible and composable within the broader DeFi ecosystem.
+Venus Protocol introduces **native ERC-4626 vaults**, bringing standardized, composable yield vaults to the Venus ecosystem. This integration represents a significant advancement in making Venus's yield-bearing markets more accessible and composable within the broader DeFi ecosystem.
 
 ### Key Benefits:
 
 - **Full ERC-4626 Compliance** – Interoperable with DeFi primitives (DAOs, aggregators, etc.)
 - **Native Venus Yield Integration** – Auto-compounding via vTokens
-- **Gas-Optimized Architecture** – Beacon proxy pattern for efficient deployments, to keep all vaults implementation contract the same.
+- **Gas-Optimized Architecture** – Beacon proxy pattern for efficient deployments, so all vaults share the same implementation contract.
 - **Secure & Upgradeable** – Governance-controlled upgrades and reward management
 
 ## Understanding ERC-4626
 
 ERC-4626 is a tokenized vault standard designed to unify how yield-bearing assets are deposited, managed, and withdrawn in DeFi protocols. It builds on the ERC-20 token standard and introduces a consistent interface for vaults that accept a specific asset (like USDC) and issue shares representing ownership in the vault.
 
-The primary goal of ERC-4626 is **standardization**—allowing developers to integrate with vaults without needing to understand their internal mechanics. Functions like deposit, withdraw, mint, and redeem follow predictable behaviors across all compliant contracts.
+The primary goal of ERC-4626 is **standardization**—allowing developers to integrate with vaults without needing to understand their internal mechanics. Functions like deposit, withdraw, mint, and redeem, follow predictable behaviors across all compliant contracts.
 
-In essence, ERC-4626 makes it easier for users to earn yield on their assets, and for protocols to plug into vaults in a reliable, composable way—enhancing both usability and interoperability across the DeFi ecosystem.
+In essence, ERC-4626 makes it easier for users to earn yield on their assets and for protocols to plug into vaults in a reliable, composable way—enhancing both usability and interoperability across the DeFi ecosystem.
 
 #### Reference: https://eips.ethereum.org/EIPS/eip-4626
 
-## The implementation of the Venus4626 vaults consists of two core smart contracts:
+## The implementation of the Venus ERC-4626 vaults consists of two core smart contracts:
 
 #### **1\. VenusERC4626Factory.sol - The factory contract for deploying standardized vaults**
 
@@ -31,9 +31,9 @@ In essence, ERC-4626 makes it easier for users to earn yield on their assets, an
 
 #### **2\. VenusERC4626.sol - The vault logic implementing ERC-4626 functionality**
 
-- ERC-4626-compliant mint, deposit, redeem and withdraw functions
-- Integrates with Venus’s **vToken** interest accrual
-- Handles reward distribution (XVS, etc.)
+- ERC-4626-compliant mint, deposit, redeem, and withdraw functions
+- Integrates with Venus **vToken** interest accrual
+- Handles reward distribution (e.g., XVS)
 
 ## Architecture
 
@@ -60,15 +60,15 @@ contract VenusERC4626Factory is AccessControlledV8, MaxLoopsLimitHelper {
 
 ### **Beacon Proxy System**
 
-- **UpgradeableBeacon**: Stores the current implementation address
-- **BeaconProxy**: Proxy delegates to beacon implementation
-- **CREATE2**: Deterministic deployment with fixed salt for beacon proxies
+- **UpgradeableBeacon**: Stores the current implementation address.
+- **BeaconProxy**: Proxy delegates to beacon implementation.
+- **CREATE2**: Deterministic deployment with fixed salt for beacon proxies.
 
 #### Benefits:
 
-- Single implementation contract shared by all vaults
-- Gas-efficient deployments
-- Centralized upgrade capability
+- Single implementation contract shared by all vaults.
+- Gas-efficient deployments.
+- Centralized upgrade capability.
 
 ### **PoolRegistry Integration**
 
@@ -84,17 +84,17 @@ function createERC4626(address vToken) external {
 
 This ensures:
 
-- Only legitimate Venus vTokens can create vaults
-- Proper asset/vToken pairing
-- Compliance with Venus's risk parameters
+- Only legitimate Venus vTokens can create vaults.
+- Proper asset/vToken pairing.
+- Compliance with Venus's risk parameters.
 
 ### Key Features
 
-- **Deterministic Deployment**: Uses a constant salt to enable deterministic address generation for ERC-4626 vaults(Proxies).
+- **Deterministic Deployment**: Uses a constant salt to enable deterministic address generation for ERC-4626 vault proxies.
 - **Upgradeable Architecture**: Utilizes a beacon proxy pattern to support upgradeability of all deployed vaults via a single beacon.
 - **Vault Tracking**: Maintains a mapping `createdVaults` of vTokens to their corresponding deployed ERC-4626 vaults.
-- **Reward Routing**: Allows configuration of a centralized reward recipient for all vaults, supporting liquidity mining incentives.
-- **Permissioned Admin**: Restricted administrative operations (e.g., setting reward recipient, max loops) via Access Control Manager (ACM).
+- **Reward Routing**: Allows configuration of a centralized reward recipient for all vaults and supports liquidity mining incentives.
+- **Permissioned Admin**: Restricts administrative operations (e.g., setting reward recipient, max loops) via Access Control Manager (ACM).
 
 ### Events
 
@@ -167,11 +167,11 @@ contract VenusERC4626 is
 - **vToken Wrapping**: Provides tokenized access to underlying vTokens with proportional interest accrual.
 - **Dual-Stage Initialization**: Separates base contract setup and access/reward configuration for modular deployment.
 - **Reward Claiming**: Allows vaults to claim accrued rewards and direct them to a predefined recipient.
-- **Failsafes and Admin Tools**: Includes recovery mechanisms like `sweepToken` and loop control for security and operational safety.
+- **Failsafes and Admin Tools**: Includes recovery mechanisms, such as `sweepToken`, and loop control for security and operational safety.
 
 ### Key Inherited Functionality:
 
-- **ERC4626Upgradeable**: Used Openzeppelin's 4626 contract as base implementation of the ERC-4626 standard.
+- **ERC4626Upgradeable**: Uses OpenZeppelin's 4626 contract as the base implementation of the ERC-4626 standard.
 - **AccessControlledV8**: Venus role-based access control system.
 - **ReentrancyGuardUpgradeable**: Protection against reentrancy attacks.
 - **MaxLoopsLimitHelper**: Prevents gas exhaustion in loops.
@@ -210,7 +210,7 @@ contract VenusERC4626 is
 
 #### Admin Functions
 
-- **`sweepToken(IERC20Upgradeable token)`**: Allows the owner to recover any ERC-20 tokens mistakenly sent to the vault.
+- **`sweepToken(IERC20Upgradeable token)`**: Allows the owner to recover any ERC-20 tokens that were mistakenly sent to the vault.
 - **`setMaxLoopsLimit(uint256 loopsLimit)`**: Configures the maximum loop iterations (ACM-restricted).
 
 ### Error Codes
@@ -243,22 +243,22 @@ function deposit(uint256 assets, address receiver)
 }
 ```
 
-1.  Validates input parameters
-2.  Calculates shares to mint
-3.  Transfers assets from user
-4.  Mints vTokens via Venus Protocol
-5.  Issues vault shares to receiver
+1.  Validates input parameters.
+2.  Calculates shares to mint.
+3.  Transfers assets from the user.
+4.  Mints vTokens via Venus Protocol.
+5.  Issues vault shares to the receiver.
 
 #### Example
 
-**Scenario**: Alice deposits 100 USDC
+**Scenario**: Alice deposits 100 USDC.
 
 <figure><img src="../../.gitbook/assets/erc4626-deposit.png" alt="Flow of funds related to Prime"><figcaption></figcaption></figure>
 
 #### Result:
 
-- Alice gets 100 vault shares
-- Vault holds 100 vUSDC (earning yield)
+- Alice gets 100 vault shares.
+- Vault holds 100 vUSDC (earning yield).
 
 ### **Withdrawal Flow**
 
@@ -282,40 +282,40 @@ function withdraw(uint256 assets, address receiver, address owner)
 }
 ```
 
-1.  Validates input parameters
-2.  Calculates shares to burn
-3.  Redeems underlying assets from Venus
-4.  Transfers assets to receiver
-5.  Burns vault shares
+1.  Validates input parameters.
+2.  Calculates shares to burn.
+3.  Redeems underlying assets from Venus.
+4.  Transfers assets to the receiver.
+5.  Burns vault shares.
 
 #### Example
 
-#### Scenario: Alice withdraws 50 USDC (after interest accrual)
+**Scenario**: Alice withdraws 50 USDC (after interest accrual).
 
 <figure><img src="../../.gitbook/assets/erc4626-withdraw.png" alt="Flow of funds related to Prime"><figcaption></figcaption></figure>
 
 #### Result
 
-Alice receives 50 USDC
+Alice receives 50 USDC.
 
-- Vault burns shares adjusted for interest (e.g., 48.54 shares at 1.03 exchange rate)
+- Vault burns shares adjusted for interest (e.g., 48.54 shares at a 1.03 exchange rate).
 
 ### **Security Features**
 
 1.  **Reentrancy Protection**:
 
-    - All state-changing functions use **nonReentrant** modifier
-    - Critical Venus operations (mint/redeem) are atomic
+    - All state-changing functions use the **nonReentrant** modifier.
+    - Critical Venus operations (mint/redeem) are atomic.
 
 2.  **Input Validation**:
 
-    - Zero-address checks via **ensureNonzeroAddress**
-    - Zero-amount validation for all operations
-    - Explicit error codes for Venus operations
+    - Zero-address checks are performed via **ensureNonzeroAddress**.
+    - Zero-amount validation for all operations.
+    - Explicit error codes for Venus operations.
 
 3.  **Access Control**:
 
-    - Sensitive functions protected by Venus's ACM
-    - Reward recipient can only be changed by authorized accounts
+    - Sensitive functions are protected by Venus's ACM.
+    - The reward recipient can only be changed by authorized accounts.
 
 ---

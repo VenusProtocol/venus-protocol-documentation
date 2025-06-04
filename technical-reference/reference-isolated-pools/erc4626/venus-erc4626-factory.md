@@ -2,7 +2,7 @@
 
 ### Overview
 
-`VenusERC4626Factory` is a factory contract for deploying upgradeable VenusERC4626 vaults as BeaconProxy instances. It manages the deployment, registry, and configuration of vaults, and controls access to sensitive operations via AccessControlManager (ACM).
+`VenusERC4626Factory` is a factory contract for deploying upgradeable VenusERC4626 vaults as BeaconProxy instances. It manages the deployment, registry, and configuration of vaults, and controls access to sensitive operations via the AccessControlManager (ACM).
 
 # Solidity API
 
@@ -18,17 +18,17 @@
    The Pool Registry contract.
 
 - **`rewardRecipient`** (`address`, public):  
-   The address that will receive the liquidity mining rewards.
+   The address that receives the liquidity mining rewards.
 
 - **`createdVaults`** (`mapping(address vToken => ERC4626Upgradeable vault)`, public):  
-   Map of vaults created by this factory.
+   Mapping of vaults created by this factory.
 
 ---
 
 ### Events
 
 - **`CreateERC4626(VTokenInterface indexed vToken, ERC4626Upgradeable indexed vault)`**  
-   Emitted when a new ERC4626 vault has been created.
+   Emitted when a new ERC4626 vault is created.
 
   - `vToken`: The vToken used by the vault.
   - `vault`: The vault that was created.
@@ -43,17 +43,17 @@
 ### Errors
 
 - **`VenusERC4626Factory__InvalidVToken()`**  
-   Thrown when the provided vToken is not registered in PoolRegistry.
+   Thrown when the provided vToken is not registered in the PoolRegistry.
 
 - **`VenusERC4626Factory__ERC4626AlreadyExists()`**  
-   Thrown when a VenusERC4626 vault already exists for the provided vToken.
+   Thrown when a VenusERC4626 vault already exists for the specified vToken.
 
 ---
 
-#### constructor
+#### Constructor
 
 **@custom:oz-upgrades-unsafe-allow constructor**  
-Disables initializers for upgradeable contract pattern.
+Disables initializers for the upgradeable contract pattern.
 
 ---
 
@@ -61,7 +61,7 @@ Disables initializers for upgradeable contract pattern.
 
 ### initialize
 
-Initializes the VenusERC4626Factory contract with required configuration parameters.
+Initializes the VenusERC4626Factory contract with the required configuration parameters.
 
 ```solidity
 function initialize(
@@ -79,20 +79,20 @@ function initialize(
 | -------------------------- | ------- | --------------------------------------------------------- |
 | accessControlManager       | address | Address of the Access Control Manager (ACM) contract.     |
 | poolRegistryAddress        | address | Address of the Pool Registry contract.                    |
-| rewardRecipientAddress     | address | Address that will receive liquidity mining rewards.       |
+| rewardRecipientAddress     | address | Address that receives liquidity mining rewards.           |
 | venusERC4626Implementation | address | Address of the VenusERC4626 implementation contract.      |
 | loopsLimitNumber           | uint256 | The maximum number of loops for the MaxLoopsLimit helper. |
 
 #### Notes
 
 - Can only be called once.
-- Disables initializers for upgradeable contract pattern.
+- Disables initializers for the upgradeable contract pattern.
 
 ---
 
 ### setRewardRecipient
 
-Sets a new reward recipient address.
+Sets the reward recipient address.
 
 ```solidity
 function setRewardRecipient(address newRecipient) external
@@ -106,15 +106,15 @@ function setRewardRecipient(address newRecipient) external
 
 #### Notes
 
-- Controlled by ACM.
-- Throws `ZeroAddressNotAllowed` if the new recipient address is zero.
-- Emits `RewardRecipientUpdated` event on update.
+- Controlled by the ACM.
+- Reverts with `ZeroAddressNotAllowed` if the new recipient address is zero.
+- Emits the `RewardRecipientUpdated` event on update.
 
 ---
 
 ### setMaxLoopsLimit
 
-Sets a new maximum loops limit for internal operations.
+Sets the maximum loops limit for internal operations.
 
 ```solidity
 function setMaxLoopsLimit(uint256 loopsLimit) external
@@ -128,8 +128,8 @@ function setMaxLoopsLimit(uint256 loopsLimit) external
 
 #### Notes
 
-- Controlled by ACM.
-- Emits `MaxLoopsLimitUpdated` event on success.
+- Controlled by the ACM.
+- Emits the `MaxLoopsLimitUpdated` event on success.
 
 ---
 
@@ -155,16 +155,16 @@ function createERC4626(address vToken) external returns (ERC4626Upgradeable vaul
 
 #### Notes
 
-- Throws `ZeroAddressNotAllowed` if the vToken address is zero.
-- Throws `VenusERC4626Factory__InvalidVToken` if the vToken is not valid.
-- Throws `VenusERC4626Factory__ERC4626AlreadyExists` if the vault already exists.
-- Emits `CreateERC4626` event on successful creation.
+- Reverts with `ZeroAddressNotAllowed` if the vToken address is zero.
+- Reverts with `VenusERC4626Factory__InvalidVToken` if the vToken is not valid.
+- Reverts with `VenusERC4626Factory__ERC4626AlreadyExists` if the vault already exists.
+- Emits the `CreateERC4626` event on successful creation.
 
 ---
 
 ### computeVaultAddress
 
-Computes the deterministic address of the vault for a given vToken.
+Computes the deterministic address of the vault for a specified vToken.
 
 ```solidity
 function computeVaultAddress(address vToken) public view returns (address)
