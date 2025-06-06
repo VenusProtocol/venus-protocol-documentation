@@ -64,6 +64,7 @@
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
   * [Token Converters](technical-reference/reference-technical-articles/token-converters.md)
   * [Two Kinks Interest Rate Curve](technical-reference/reference-technical-articles/two-kinks-interest-rate-curve.md)
+  * [VenusERC4626 Vaults](technical-reference/reference-technical-articles/venus-erc-4626.md)
   * [XVS Bridge](technical-reference/reference-technical-articles/xvs-bridge.md)
 * [Core Pool](technical-reference/reference-core-pool/README.md)
   * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
@@ -104,6 +105,9 @@
   * [Comptroller](technical-reference/reference-isolated-pools/comptroller/README.md)
     * [Comptroller](technical-reference/reference-isolated-pools/comptroller/comptroller.md)
     * [ComptrollerStorage](technical-reference/reference-isolated-pools/comptroller/comptroller-storage.md)
+  * [VenusERC4626](technical-reference/reference-isolated-pools/erc4626/README.md)
+    * [VenusERC4626](technical-reference/reference-isolated-pools/erc4626/venus-erc4626.md)
+    * [VenusERC4626Factory](technical-reference/reference-isolated-pools/erc4626/venus-erc4626-factory.md)
   * [VToken](technical-reference/reference-isolated-pools/vtoken/README.md)
     * [VToken](technical-reference/reference-isolated-pools/vtoken/vtoken.md)
     * [VTokenInterfaces](technical-reference/reference-isolated-pools/vtoken/vtoken-interfaces.md)
@@ -182,6 +186,7 @@
 * [Governance](deployed-contracts/governance.md)
 * [XVS Omnichain](deployed-contracts/xvs-omnichain.md)
 * [Token Converters](deployed-contracts/token-converters.md)
+* [VenusERC4626](deployed-contracts/venus-erc4626.md)
 
 ## Services
 
