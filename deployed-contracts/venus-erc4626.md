@@ -30,12 +30,12 @@
 * VenusERC4626Factory: [`0xC6C8249a0B44973673f3Af673e530B85038a0480`](https://sepolia.arbiscan.io/address/0xC6C8249a0B44973673f3Af673e530B85038a0480)
 * VenusERC4626Implementation: [`0x3442ACDbCc927cC401236C69a14ca909fC5B14ba`](https://sepolia.arbiscan.io/address/0x3442ACDbCc927cC401236C69a14ca909fC5B14ba)
 
-## zkSync Mainnet
+## ZKSync Mainnet
 
 * VenusERC4626Factory: [`0xDC59Dd76Dd7A64d743C764a9aa8C96Ff2Ea8BAc3`](https://explorer.zksync.io/address/0xDC59Dd76Dd7A64d743C764a9aa8C96Ff2Ea8BAc3)
 * VenusERC4626Implementation: [`0xBd86974B3a7348AC153aEFEe5Dc5111246a99c11`](https://explorer.zksync.io/address/0xBd86974B3a7348AC153aEFEe5Dc5111246a99c11)
 
-## zkSync Sepolia
+## ZKSync Sepolia
 
 * VenusERC4626Factory: [`0xa30dcc21B8393A4031cD6364829CDfE2b6D7B283`](https://sepolia.explorer.zksync.io/address/0xa30dcc21B8393A4031cD6364829CDfE2b6D7B283)
 * VenusERC4626Implementation: [`0x97ab473c81C5E654B71690e3B4225180C687E3eB`](https://sepolia.explorer.zksync.io/address/0x97ab473c81C5E654B71690e3B4225180C687E3eB)

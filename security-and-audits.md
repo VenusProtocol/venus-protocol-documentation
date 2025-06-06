@@ -703,8 +703,8 @@ These contracts were in the scope of the audits done before the launch of Isolat
 **Scope**: VenusERC4626 Vaults
 
 * [Certik audit report](https://github.com/VenusProtocol/isolated-pools/blob/1faa46139aaec06e0eb2e48341bff22cd6c38c6c/audits/129_erc4626_certik_20250514.pdf)
-* [FairyProof audit report](https://github.com/VenusProtocol/isolated-pools/blob/1faa46139aaec06e0eb2e48341bff22cd6c38c6c/audits/130_erc4626_fairyproof_20250414.pdf)
 * [Pessimistic audit report](https://github.com/VenusProtocol/isolated-pools/blob/1faa46139aaec06e0eb2e48341bff22cd6c38c6c/audits/131_erc4626_pessimistic_20250502.pdf)
+* [FairyProof audit report](https://github.com/VenusProtocol/isolated-pools/blob/1faa46139aaec06e0eb2e48341bff22cd6c38c6c/audits/130_erc4626_fairyproof_20250414.pdf)
 
 <details>
 <summary>Detailed scope</summary>

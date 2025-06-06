@@ -192,9 +192,12 @@ contract VenusERC4626 is
 
 #### Core ERC-4626 Functions
 
-- **`deposit(uint256 assets, address receiver)`**: Deposits assets and mints shares to the receiver.
-- **`mint(uint256 shares, address receiver)`**: Mints exact shares by depositing required assets.
-- **`withdraw(uint256 assets, address receiver, address owner)`**: Withdraws exact assets and burns shares from the owner.
+- **`deposit(uint256 assets, address receiver)`**: Deposits assets and mints shares to the receiver. 
+    - Note - It can mint slightly fewer shares than requested, because vToken.mint rounds down.
+- **`mint(uint256 shares, address receiver)`**: Mints exact shares by depositing required assets. 
+    - Note - It can mint slightly fewer shares than requested, because vToken.mint rounds down. 
+- **`withdraw(uint256 assets, address receiver, address owner)`**: Withdraws exact assets and burns shares from the owner. 
+    - Note - Receiver can receive slightly more assets than requested, because VToken.redeemUnderlying rounds up
 - **`redeem(uint256 shares, address receiver, address owner)`**: Redeems exact shares and transfers assets to the receiver.
 - **`totalAssets()`**: Returns the total underlying assets held by the vault.
 
