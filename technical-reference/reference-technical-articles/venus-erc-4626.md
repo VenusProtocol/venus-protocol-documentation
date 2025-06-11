@@ -37,7 +37,7 @@ In essence, ERC-4626 makes it easier for users to earn yield on their assets and
 
 ## Architecture
 
-<figure><img src="../../.gitbook/assets/erc-4626-flow-diagram.png" alt="Flow of funds related to Prime"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/erc4626-flow-diagram.svg" alt="Flow of funds related to ERC4626 wrappers"><figcaption></figcaption></figure>
 
 ## **VenusERC4626Factory.sol: The Vault Factory**
 
@@ -256,7 +256,7 @@ function deposit(uint256 assets, address receiver)
 
 **Scenario**: Alice deposits 100 USDC.
 
-<figure><img src="../../.gitbook/assets/erc4626-deposit.png" alt="Flow of funds related to Prime"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/erc4626-deposit.svg" alt="Flow of funds related to ERC4626 wrapper"><figcaption></figcaption></figure>
 
 #### Result:
 
@@ -295,7 +295,7 @@ function withdraw(uint256 assets, address receiver, address owner)
 
 **Scenario**: Alice withdraws 50 USDC (after interest accrual).
 
-<figure><img src="../../.gitbook/assets/erc4626-withdraw.png" alt="Flow of funds related to Prime"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/erc4626-withdraw.svg" alt="Flow of funds related to ERC4626 wrappers"><figcaption></figcaption></figure>
 
 #### Result
 
