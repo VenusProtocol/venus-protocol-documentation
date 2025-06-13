@@ -1,7 +1,7 @@
 # Token converters
 
 {% hint style="info" %}
-Only available on BNB chain and Ethereum
+Only available on BNB chain, Ethereum and Arbitrum
 {% endhint %}
 
 {% hint style="info" %}
@@ -18,12 +18,13 @@ The **Venus Protocol** generates income in various underlying tokens from intere
 
 | Converter               | Accepts           | Interest Reserves (%)| Liquidation Income (%)  |
 |-------------------------|-------------------|----------------------|-------------------------|
-| RiskFundConverter       |     USDT          |     0%               |                      0% |
-| XVSVaultConverter       | 	XVS	          |     20%	             |                     20% |
-| USDTPrimeConverter      | 	USDT          | 	10%	             |                      0% |
-| USDCPrimeConverter      | 	USDC          | 	6%	             |                      0% |
-| BTCBPrimeConverter      | 	BTCB          | 	1%               |                      0% |
-| ETHPrimeConverter       | 	ETH	          |     3%               |                      0% |
+| RiskFundConverter       |   USDT            |     20%              |                     20% |
+| XVSVaultConverter       | 	XVS	            |     20%	             |                     20% |
+| USDTPrimeConverter      | 	USDT            |   	11%	             |                      0% |
+| USDCPrimeConverter      | 	USDC            |   	6%	             |                      0% |
+| BTCBPrimeConverter      | 	BTCB            |   	1%               |                      0% |
+| ETHPrimeConverter       | 	ETH	            |     2%               |                      0% |
+| WBNBBurnConverter       |   WBNB            |     25%              |                     25% |
 
 ### Ethereum Chain
 
@@ -31,10 +32,10 @@ The **Venus Protocol** generates income in various underlying tokens from intere
 |-------------------------|-------------------|----------------------|-------------------------|
 | RiskFundConverter       |     USDT          |     0%               |                      0% |
 | XVSVaultConverter       | 	XVS	          |     20%	             |                     20% |
-| USDTPrimeConverter      | 	USDT          | 	1.4%             |                      0% |
-| USDCPrimeConverter      | 	USDC          | 	1.4%             |                      0% |
-| WBTCPrimeConverter      | 	WBTC          | 	1.4%             |                      0% |
-| WETHPrimeConverter      | 	WETH	      |     15.8%            |                      0% |
+| USDTPrimeConverter      | 	USDT          | 	1.2%             |                      0% |
+| USDCPrimeConverter      | 	USDC          | 	1.2%             |                      0% |
+| WBTCPrimeConverter      | 	WBTC          | 	0.6%             |                      0% |
+| WETHPrimeConverter      | 	WETH	      |     17.0%            |                      0% |
 
 ### Arbitrum One
 

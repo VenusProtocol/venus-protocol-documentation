@@ -10,6 +10,7 @@
 * BTCBPrimeConverter: [`0xE8CeAa79f082768f99266dFd208d665d2Dd18f53`](https://bscscan.com/address/0xE8CeAa79f082768f99266dFd208d665d2Dd18f53)
 * ETHPrimeConverter: [`0xca430B8A97Ea918fF634162acb0b731445B8195E`](https://bscscan.com/address/0xca430B8A97Ea918fF634162acb0b731445B8195E)
 * XVSVaultConverter: [`0xd5b9AE835F4C59272032B3B954417179573331E0`](https://bscscan.com/address/0xd5b9AE835F4C59272032B3B954417179573331E0)
+* WBNBBurnConverter: [`0x9eF79830e626C8ccA7e46DCEd1F90e51E7cFCeBE`](https://bscscan.com/address/0x9eF79830e626C8ccA7e46DCEd1F90e51E7cFCeBE)
 * ConverterNetwork: [`0xF7Caad5CeB0209165f2dFE71c92aDe14d0F15995`](https://bscscan.com/address/0xF7Caad5CeB0209165f2dFE71c92aDe14d0F15995)
 
 ## Ethereum
@@ -44,6 +45,7 @@
 * BTCBPrimeConverter: [`0x989A1993C023a45DA141928921C0dE8fD123b7d1`](https://testnet.bscscan.com/address/0x989A1993C023a45DA141928921C0dE8fD123b7d1)
 * ETHPrimeConverter: [`0xf358650A007aa12ecC8dac08CF8929Be7f72A4D9`](https://testnet.bscscan.com/address/0xf358650A007aa12ecC8dac08CF8929Be7f72A4D9)
 * XVSVaultConverter: [`0x258f49254C758a0E37DAb148ADDAEA851F4b02a2`](https://testnet.bscscan.com/address/0x258f49254C758a0E37DAb148ADDAEA851F4b02a2)
+* WBNBBurnConverter: [`0x42DBA48e7cCeB030eC73AaAe29d4A3F0cD4facba`](https://testnet.bscscan.com/address/0x42DBA48e7cCeB030eC73AaAe29d4A3F0cD4facba)
 * ConverterNetwork: [`0xC8f2B705d5A2474B390f735A5aFb570e1ce0b2cf`](https://testnet.bscscan.com/address/0xC8f2B705d5A2474B390f735A5aFb570e1ce0b2cf)
 
 ## Sepolia
