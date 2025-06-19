@@ -22,8 +22,8 @@ The **Venus Protocol** generates income in various underlying tokens from intere
 | XVSVaultConverter       | 	XVS	            |     20%	             |                     20% |
 | USDTPrimeConverter      | 	USDT            |   	11%	             |                      0% |
 | USDCPrimeConverter      | 	USDC            |   	6%	             |                      0% |
-| BTCBPrimeConverter      | 	BTCB            |   	1%               |                      0% |
-| ETHPrimeConverter       | 	ETH	            |     2%               |                      0% |
+| WBNBPrimeConverter      | 	WBNB            |   	1%               |                      0% |
+| FDUSDPrimeConverter     | 	FDUSD	          |     2%               |                      0% |
 | WBNBBurnConverter       |   WBNB            |     25%              |                     25% |
 
 ### Ethereum Chain
