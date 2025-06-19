@@ -92,7 +92,7 @@ Every market in Venus (including Isolated Lending markets) contributes to the re
 
 <figure><img src="../../.gitbook/assets/prime_funds.svg" alt="Flow of funds related to Prime"><figcaption></figcaption></figure>
 
-Rewards will be distributed to Prime users only in USDT, USDC, WBNB and FDUSD tokens. Other tokens will have to be converted to the tokens used for rewarding users in Prime. This conversion should follow a configurable (via VIP) distribution table, that initially will be:
+Rewards will be distributed to Prime users only in configured list of tokens. For example, in BNB chain rewards will be distirbuted in USDT, USDC, WBNB and FDUSD tokens. Other tokens will have to be converted to the tokens used for rewarding users in Prime. This conversion should follow a configurable (via VIP) distribution. In BNB chain initially will be the below:
 
 | Prime market | Distribution |
 | --- | --- |
