@@ -1,7 +1,7 @@
 # Venus Prime
 
 {% hint style="info" %}
-Only available on BNB chain
+Only available on BNB and Ethereum chain
 {% endhint %}
 
 ## Overview
@@ -92,25 +92,25 @@ Every market in Venus (including Isolated Lending markets) contributes to the re
 
 <figure><img src="../../.gitbook/assets/prime_funds.svg" alt="Flow of funds related to Prime"><figcaption></figcaption></figure>
 
-Rewards will be distributed to Prime users only in USDT, USDC, BTC and ETH tokens. Other tokens will have to be converted to the tokens used for rewarding users in Prime. This conversion should follow a configurable (via VIP) distribution table, that initially will be:
+Rewards will be distributed to Prime users only in USDT, USDC, WBNB and FDUSD tokens. Other tokens will have to be converted to the tokens used for rewarding users in Prime. This conversion should follow a configurable (via VIP) distribution table, that initially will be:
 
 | Prime market | Distribution |
 | --- | --- |
 | USDT | 40% |
 | USDC | 30% |
-| ETH | 25% |
-| BTC | 5% |
+| WBNB | 25% |
+| FDUSD | 5% |
 
 For example:
 
 - The CAKE market generates 1,000 CAKE of total income
 - 10% of the CAKE total income should be allocated to Prime → 100 CAKE (following the protocol tokenomics)
-- We should convert 100 CAKE to USDC, USDT, BTC and ETH, because in Prime the rewards are defined in these tokens
+- We should convert 100 CAKE to USDC, USDT, WBNB and FDUSD, because in Prime the rewards are defined in these tokens
 - The conversion should follow the previous table:
     - 40 CAKE should be converted to USDT
     - 30 CAKE should be converted to USDC
-    - 25 CAKE should be converted to ETH
-    - 5 CAKE should be converted to BTC
+    - 25 CAKE should be converted to WBNB
+    - 5 CAKE should be converted to FDUSD
 
 Interest reserves (part of the protocol income) from Isolated Pools and the Core Pool markets are sent to the PSR ([Protocol Share Reserve](https://github.com/VenusProtocol/protocol-reserve/blob/main/contracts/ProtocolReserve/ProtocolShareReserve.sol)) contract. Based on the configuration, a percentage of income from all markers is reserved for Prime token holders. The interest reserves will be sent to the PSR periodically (currently every 24 hours, but this can be changed by the community via [VIP](https://app.venus.io/governance)).
 
