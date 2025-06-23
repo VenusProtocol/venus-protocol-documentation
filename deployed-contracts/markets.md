@@ -524,6 +524,7 @@
 * Underlying tokens:
   * AAVE: [`0x4B7268FC7C727B88c5Fc127D41b491BfAe63e144`](https://testnet.bscscan.com/address/0x4B7268FC7C727B88c5Fc127D41b491BfAe63e144)
   * ADA: [`0xcD34BC54106bd45A04Ed99EBcC2A6a3e70d7210F`](https://testnet.bscscan.com/address/0xcD34BC54106bd45A04Ed99EBcC2A6a3e70d7210F)
+  * asBNB: [`0xc625f060ad25f4A6c2d9eBF30C133dB61B7AF072`](https://testnet.bscscan.com/address/0xc625f060ad25f4A6c2d9eBF30C133dB61B7AF072)
   * BTCB: [`0xA808e341e8e723DC6BA0Bb5204Bafc2330d7B8e4`](https://testnet.bscscan.com/address/0xA808e341e8e723DC6BA0Bb5204Bafc2330d7B8e4)
   * BUSD: [`0x8301F2213c0eeD49a7E28Ae4c3e91722919B8B47`](https://testnet.bscscan.com/address/0x8301F2213c0eeD49a7E28Ae4c3e91722919B8B47)
   * CAKE: [`0xe8bd7cCC165FAEb9b81569B05424771B9A20cbEF`](https://testnet.bscscan.com/address/0xe8bd7cCC165FAEb9b81569B05424771B9A20cbEF)
@@ -559,6 +560,7 @@
 * Markets:
   * vAAVE: [`0x714db6c38A17883964B68a07d56cE331501d9eb6`](https://testnet.bscscan.com/address/0x714db6c38A17883964B68a07d56cE331501d9eb6)
   * vADA: [`0x37C28DE42bA3d22217995D146FC684B2326Ede64`](https://testnet.bscscan.com/address/0x37C28DE42bA3d22217995D146FC684B2326Ede64)
+  * vasBNB: [`0x73F506Aefd5e169D48Ea21A373B9B0a200E37585`](https://testnet.bscscan.com/address/0x73F506Aefd5e169D48Ea21A373B9B0a200E37585)
   * vBNB: [`0x2E7222e51c0f6e98610A1543Aa3836E092CDe62c`](https://testnet.bscscan.com/address/0x2E7222e51c0f6e98610A1543Aa3836E092CDe62c)
   * vBTC: [`0xb6e9322C49FD75a367Fcb17B0Fcd62C5070EbCBe`](https://testnet.bscscan.com/address/0xb6e9322C49FD75a367Fcb17B0Fcd62C5070EbCBe)
   * vBUSD: [`0x08e0A5575De71037aE36AbfAfb516595fE68e5e4`](https://testnet.bscscan.com/address/0x08e0A5575De71037aE36AbfAfb516595fE68e5e4)
