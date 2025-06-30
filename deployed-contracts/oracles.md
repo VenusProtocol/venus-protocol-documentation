@@ -88,7 +88,7 @@
 * Bound Validator:[`0x60c4Aa92eEb6884a76b309Dd8B3731ad514d6f9B`](https://sepolia.etherscan.io/address/0x60c4Aa92eEb6884a76b309Dd8B3731ad514d6f9B)
 * Chainlink Oracle:[`0x102F0b714E5d321187A4b6E5993358448f7261cE`](https://sepolia.etherscan.io/address/0x102F0b714E5d321187A4b6E5993358448f7261cE)
 * RedStone Oracle:[`0x4e6269Ef406B4CEE6e67BA5B5197c2FfD15099AE`](https://sepolia.etherscan.io/address/0x4e6269Ef406B4CEE6e67BA5B5197c2FfD15099AE)
-* wstETH Oracle:[`0x92E7F73B0d57902fDC453E8aef990EdEe827b0BF`](https://sepolia.etherscan.io/address/0x92E7F73B0d57902fDC453E8aef990EdEe827b0BF)
+* wstETH Oracle:[`0xA33f06dB4c0DD8E41BA3d2C8917a27e6B9200662`](https://sepolia.etherscan.io/address/0xA33f06dB4c0DD8E41BA3d2C8917a27e6B9200662)
 * weETH Oracle:[`0xf3ebD2A722c2039E6f66179Ad7F9f1462B14D8e0`](https://sepolia.etherscan.io/address/0xf3ebD2A722c2039E6f66179Ad7F9f1462B14D8e0)
 * weETHs Oracle:[`0x660c6d8C5FDDC4F47C749E0f7e03634513f23e0e`](https://sepolia.etherscan.io/address/0x660c6d8C5FDDC4F47C749E0f7e03634513f23e0e)
 * sFrax Oracle: [`0xac35DbBfACeDd301cB295DBeA57ddA7A032F0E41`](https://sepolia.etherscan.io/address/0xac35DbBfACeDd301cB295DBeA57ddA7A032F0E41)
