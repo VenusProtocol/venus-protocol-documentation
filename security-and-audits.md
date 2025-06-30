@@ -8,6 +8,29 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Venus ERC4626 Vaults
+
+**Scope**: [ERC-4626](https://ethereum.org/en/developers/docs/standards/tokens/erc-4626/) wrapper for Venus markets for isolated pools, enabling seamless integration with external DeFi protocols that follow the ERC-4626 standard.
+
+* [Certik audit report (2025/05/14)](https://github.com/VenusProtocol/isolated-pools/blob/1faa46139aaec06e0eb2e48341bff22cd6c38c6c/audits/129_erc4626_certik_20250514.pdf)
+* [Pessimistic audit report (2025/05/02)](https://github.com/VenusProtocol/isolated-pools/blob/1faa46139aaec06e0eb2e48341bff22cd6c38c6c/audits/131_erc4626_pessimistic_20250502.pdf)
+* [FairyProof audit report (2025/04/14)](https://github.com/VenusProtocol/isolated-pools/blob/1faa46139aaec06e0eb2e48341bff22cd6c38c6c/audits/130_erc4626_fairyproof_20250414.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#497](https://github.com/VenusProtocol/isolated-pools/pull/497) in the `isolated-pools` repository.
+  - contracts/ERC4626/VenusERC4626.sol
+  - contracts/ERC4626/VenusERC4626Factory.sol
+  - contracts/ERC4626/Interfaces/IComptroller.sol
+  - contracts/ERC4626/Interfaces/IProtocolShareReserve.sol
+  - contracts/ERC4626/Interfaces/IRewardsDistributor.sol
+
+- Pull request [#137](https://github.com/VenusProtocol/protocol-reserve/pull/137) in the `protocol-reserve` repository
+  - contracts/Interfaces/IProtocolShareReserve.sol
+
+</details>
+
 ### asBNB Oracle
 
 **Scope**: Correlated oracle to get the price of [asBNB](https://bscscan.com/address/0x77734e70b6E88b4d82fE632a168EDf6e700912b6) token on BNB Chain, taking into account first the onchain conversion rate `asBNB` to [`slisBNB`](https://bscscan.com/address/0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B).
