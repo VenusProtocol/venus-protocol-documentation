@@ -49,6 +49,7 @@
 * [XVS Bridge](guides/xvs-bridge.md)
 * [Borrowing VAI](guides/borrowing-vai.md)
 * [Gasless Transactions on zkSync](guides/gasless-transactions-zksync.md)
+* [Import Positions](guides/import-positions.md)
 
 ## Technical reference
 
