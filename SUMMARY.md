@@ -66,6 +66,7 @@
   * [Two Kinks Interest Rate Curve](technical-reference/reference-technical-articles/two-kinks-interest-rate-curve.md)
   * [VenusERC4626 Vaults](technical-reference/reference-technical-articles/venus-erc-4626.md)
   * [XVS Bridge](technical-reference/reference-technical-articles/xvs-bridge.md)
+  * [Import Positions](technical-reference/reference-technical-articles/import-positions.md)
 * [Core Pool](technical-reference/reference-core-pool/README.md)
   * [Comptroller](technical-reference/reference-core-pool/comptroller/README.md)
     * [ComptrollerLens](technical-reference/reference-core-pool/comptroller/comptroller-lens.md)
