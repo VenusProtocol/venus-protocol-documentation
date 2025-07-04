@@ -2,7 +2,7 @@
 
 ### Overview
 
-The Venus Protocol tokenomics have been reevaluated to optimize income distribution and cater to the protocol's present and future needs. [Version 4.0](https://snapshot.org/#/venus-xvs.eth/proposal/0x21c89f6b5d7c9e453b3bac64b23c1d81fe52ff4f23ba0b64674c34217c3f9245) of the Venus Protocol revenue distribution model addresses the need and optimizes the allocation between rewards and treasury reserves.
+The Venus Protocol tokenomics have been reevaluated to optimize income distribution and cater to the protocol's present and future needs. [Version 4.1](https://snapshot.box/#/s:venus-xvs.eth/proposal/0xb8f03ad2dd2988a6d2e89a1adbebc52c7a62b284ea493008752c71b7f00b3386) of the Venus Protocol revenue distribution model addresses the need and optimizes the allocation between rewards, treasury reserves, a risk fund and BNB burns.
 
 ### XVS Vault Base Rewards
 
