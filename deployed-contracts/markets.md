@@ -228,7 +228,7 @@
 ## Ethereum
 
 * PoolRegistry: [`0x61CAff113CCaf05FFc6540302c37adcf077C5179`](https://etherscan.io/address/0x61CAff113CCaf05FFc6540302c37adcf077C5179)
-* PoolLens: [`0x57bea400aE7E51855a2e1E1523475d9d2eB0742F`](https://etherscan.io/address/0x57bea400aE7E51855a2e1E1523475d9d2eB0742F)
+* PoolLens: [`0x277950603178BDD223eB53B9b7cF5D0053aa3473`](https://etherscan.io/address/0x277950603178BDD223eB53B9b7cF5D0053aa3473)
 * DefaultProxyAdmin: [`0x567e4cc5e085d09f66f836fa8279f38b4e5866b9`](https://etherscan.io/address/0x567e4cc5e085d09f66f836fa8279f38b4e5866b9)
 * Comptroller Beacon: [`0xAE2C3F21896c02510aA187BdA0791cDA77083708`](https://etherscan.io/address/0xAE2C3F21896c02510aA187BdA0791cDA77083708)
 * VToken Beacon: [`0xfc08aADC7a1A93857f6296C3fb78aBA1d286533a`](https://etherscan.io/address/0xfc08aADC7a1A93857f6296C3fb78aBA1d286533a)
@@ -698,7 +698,7 @@
 ## Sepolia (Ethereum testnet)
 
 * PoolRegistry: [`0x758f5715d817e02857Ba40889251201A5aE3E186`](https://sepolia.etherscan.io/address/0x758f5715d817e02857Ba40889251201A5aE3E186)
-* PoolLens: [`0xa78e0D276203290eB0Be7697104379e14c90698a`](https://sepolia.etherscan.io/address/0xa78e0D276203290eB0Be7697104379e14c90698a)
+* PoolLens: [`0x07C0Ce579fCf5641A3DF45663BCa58955d7a0a34`](https://sepolia.etherscan.io/address/0x07C0Ce579fCf5641A3DF45663BCa58955d7a0a34)
 * DefaultProxyAdmin: [`0xe98a3110929c6650c73031756288Ec518f65e846`](https://sepolia.etherscan.io/address/0xe98a3110929c6650c73031756288Ec518f65e846)
 * Comptroller Beacon: [`0x6cE54143a88CC22500D49D744fb6535D66a8294F`](https://sepolia.etherscan.io/address/0x6cE54143a88CC22500D49D744fb6535D66a8294F)
 * VToken Beacon: [`0x0463a7E5221EAE1990cEddB51A5821a68cdA6008`](https://sepolia.etherscan.io/address/0x0463a7E5221EAE1990cEddB51A5821a68cdA6008)
