@@ -365,3 +365,45 @@ function _setForcedLiquidationForUser(address borrower, address vTokenBorrowed, 
 
 - - -
 
+#### setWhiteListFlashLoanAccount
+
+```solidity
+function setWhiteListFlashLoanAccount(address account, bool _isWhiteListed) external 
+```
+**Explanation:**  
+Allows an admin or governance role to whitelist or revoke access for specific accounts to initiate flash loans.
+
+#### Parameters
+| Name        | Type    | Description                                 |
+|-------------|---------|---------------------------------------------|
+| account     | address | The account to whitelist or remove          |
+| _isWhiteListed | bool | True to whitelist, false to remove          |
+
+#### Return Values
+| Name | Type | Description |
+|------|------|-------------|
+| None |      |             |
+
+---
+
+#### setDelegateAuthorizationFlashloan
+
+```solidity
+function setDelegateAuthorizationFlashloan(address market, address delegate, bool approved) external 
+```
+
+#### Parameters
+| Name     | Type    | Description                                 |
+|----------|---------|---------------------------------------------|
+| market   | address | The market for which to set delegation      |
+| delegate | address | The delegate account                        |
+| approved | bool    | True to approve, false to revoke            |
+
+#### Return Values
+| Name | Type | Description |
+|------|------|-------------|
+| None |      |             |
+
+---
+
+

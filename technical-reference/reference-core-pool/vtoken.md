@@ -572,3 +572,90 @@ function borrowBalanceStored(address account) public view returns (uint256)
 | [0]  | uint256 | The calculated balance |
 
 ---
+
+### transferOutUnderlying
+
+```solidity
+function transferOutUnderlying(address receiver, uint256 amount)
+    external
+    returns (uint256);
+```
+
+#### Parameters
+| Name     | Type    |Description                                 |
+|----------|------------------------------------------------------|
+| receiver | address | The address toreceive the underlying asset |
+| amount   | uint256 | The amount of theunderlying asset to send  |
+
+#### Return Values
+| Name | Type    |Description                                 |
+|------|------------------------------------------------------|
+| [0]  | uint256 | The actual amounttransferred               |
+
+---
+
+### calculateFlashLoanFee
+
+```solidity
+function calculateFlashLoanFee(uint256 amount)
+    public
+    view
+    returns (uint256 protocolFee, uint256 supplierFee);
+```   
+#### Parameters
+| Name   | Type    | Description                          |
+|--------|---------|--------------------------------------|
+| amount | uint256 | The amount for which to calculate fee|
+
+#### Return Values
+| Name          | Type     | Description                                 |
+|---------------|----------|---------------------------------------------|
+| protocolFee   | uint256  | The protocol fee for the flash loan         |
+| supplierFee   | uint256  | The supplier fee for the flash loan         |
+
+---
+
+### _toggleFlashLoan
+
+```solidity
+function _toggleFlashLoan()
+    external
+    returns (uint256);
+```   
+
+#### Parameters
+| Name | Type | Description |
+|------|------|-------------|
+| None |      |             |
+
+#### Return Values
+| Name | Type    | Description                                 |
+|------|---------|---------------------------------------------|
+| [0]  | uint256 | Status code (e.g., success/failure)         |
+
+---
+
+### _setFlashLoanFeeMantissa
+
+```solidity
+function _setFlashLoanFeeMantissa(
+    uint256 protocolFeeMantissa_,
+    uint256 supplierFeeMantissa_
+)
+    external
+    returns (uint256);
+```
+
+#### Parameters
+| Name                  | Type    | Description                                 |
+|-----------------------|---------|---------------------------------------------|
+| protocolFeeMantissa_  | uint256 | New protocol fee mantissa                   |
+| supplierFeeMantissa_  | uint256 | New supplier fee mantissa                   |
+
+#### Return Values
+| Name | Type    | Description                                 |
+|------|---------|---------------------------------------------|
+| [0]  | uint256 | Status code (e.g., success/failure)         |
+
+---
+
