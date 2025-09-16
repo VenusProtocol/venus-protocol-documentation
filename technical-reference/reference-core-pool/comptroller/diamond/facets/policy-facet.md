@@ -27,7 +27,7 @@ function mintAllowed(address vToken, address minter, uint256 mintAmount) externa
 
 ### mintVerify
 
-Validates mint and reverts on rejection. May emit logs.
+Validates mint, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
 ```solidity
 function mintVerify(address vToken, address minter, uint256 actualMintAmount, uint256 mintTokens) external
@@ -67,10 +67,10 @@ function redeemAllowed(address vToken, address redeemer, uint256 redeemTokens) e
 
 ### redeemVerify
 
-Validates redeem and reverts on rejection. May emit log
+Validates redeem, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
 ```solidity
-function redeemVerify(address vToken, address redeemer, uint256 redeemAmount, uint256 redeemTokens) external pure
+function redeemVerify(address vToken, address redeemer, uint256 redeemAmount, uint256 redeemTokens) external
 ```
 
 #### Parameters
@@ -107,7 +107,7 @@ function borrowAllowed(address vToken, address borrower, uint256 borrowAmount) e
 
 ### borrowVerify
 
-Validates borrow and reverts on rejection. May emit log
+Validates borrow, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
 ```solidity
 function borrowVerify(address vToken, address borrower, uint256 borrowAmount) external
@@ -147,7 +147,7 @@ function repayBorrowAllowed(address vToken, address payer, address borrower, uin
 
 ### repayBorrowVerify
 
-Validates repayBorrow and reverts on rejection. May emit log
+Validates repayBorrow, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
 ```solidity
 function repayBorrowVerify(address vToken, address payer, address borrower, uint256 actualRepayAmount, uint256 borrowerIndex) external
@@ -185,7 +185,7 @@ function liquidateBorrowAllowed(address vTokenBorrowed, address vTokenCollateral
 
 ### liquidateBorrowVerify
 
-Validates liquidateBorrow and reverts on rejection. May emit logs.
+Validates liquidateBorrow, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
 ```solidity
 function liquidateBorrowVerify(address vTokenBorrowed, address vTokenCollateral, address liquidator, address borrower, uint256 actualRepayAmount, uint256 seizeTokens) external
@@ -224,7 +224,7 @@ function seizeAllowed(address vTokenCollateral, address vTokenBorrowed, address 
 
 ### seizeVerify
 
-Validates seize and reverts on rejection. May emit log
+Validates seize, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
 ```solidity
 function seizeVerify(address vTokenCollateral, address vTokenBorrowed, address liquidator, address borrower, uint256 seizeTokens) external
@@ -266,7 +266,7 @@ function transferAllowed(address vToken, address src, address dst, uint256 trans
 
 ### transferVerify
 
-Validates transfer and reverts on rejection. May emit log
+Validates transfer, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
 ```solidity
 function transferVerify(address vToken, address src, address dst, uint256 transferTokens) external
@@ -282,18 +282,45 @@ function transferVerify(address vToken, address src, address dst, uint256 transf
 
 - - -
 
+### getBorrowingPower
+
+Alias to getAccountLiquidity to support the Isolated Lending Comptroller Interface
+
+```solidity
+function getBorrowingPower(address account) external view returns (uint256, uint256, uint256)
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| account | address | The account get liquidity for |
+
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | uint256 | (possible error code (semi-opaque),                 account liquidity in excess of collateral requirements,          account shortfall below collateral requirements) |
+| [1] | uint256 |  |
+| [2] | uint256 |  |
+
+- - -
+
 ### getAccountLiquidity
 
-Determine the current account liquidity wrt collateral requirements
+Determine the current account liquidity wrt liquidation threshold requirements
 
 ```solidity
 function getAccountLiquidity(address account) external view returns (uint256, uint256, uint256)
 ```
 
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| account | address | The account get liquidity for |
+
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | (possible error code (semi-opaque), account liquidity in excess of collateral requirements,          account shortfall below collateral requirements) |
+| [0] | uint256 | (possible error code (semi-opaque),                 account liquidity in excess of liquidation threshold requirements,          account shortfall below liquidation threshold requirements) |
 | [1] | uint256 |  |
 | [2] | uint256 |  |
 
@@ -318,7 +345,7 @@ function getHypotheticalAccountLiquidity(address account, address vTokenModify, 
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | (possible error code (semi-opaque), hypothetical account liquidity in excess of collateral requirements,          hypothetical account shortfall below collateral requirements) |
+| [0] | uint256 | (possible error code (semi-opaque),                 hypothetical account liquidity in excess of collateral requirements,          hypothetical account shortfall below collateral requirements) |
 | [1] | uint256 |  |
 | [2] | uint256 |  |
 

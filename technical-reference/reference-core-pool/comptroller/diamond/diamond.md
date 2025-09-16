@@ -21,8 +21,8 @@ function _become(contract Unitroller unitroller) public
 
 #### Parameters
 
-| Name       | Type                | Description               |
-| ---------- | ------------------- | ------------------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | unitroller | contract Unitroller | Address of the unitroller |
 
 ---
@@ -37,9 +37,9 @@ function diamondCut(struct IDiamondCut.FacetCut[] diamondCut_) public
 
 #### Parameters
 
-| Name         | Type                          | Description                                                        |
-| ------------ | ----------------------------- | ------------------------------------------------------------------ |
-| diamondCut\_ | struct IDiamondCut.FacetCut[] | IDiamondCut contains facets address, action and function selectors |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| diamondCut\_ | struct IDiamondCut.FacetCut\[] | IDiamondCut contains facets address, action and function selectors |
 
 ---
 
@@ -53,15 +53,15 @@ function facetFunctionSelectors(address facet) external view returns (bytes4[])
 
 #### Parameters
 
-| Name  | Type    | Description          |
-| ----- | ------- | -------------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | facet | address | Address of the facet |
 
 #### Return Values
 
-| Name | Type     | Description                           |
-| ---- | -------- | ------------------------------------- |
-| [0]  | bytes4[] | selectors Array of function selectors |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | bytes4\[] | selectors Array of function selectors |
 
 ---
 
@@ -75,15 +75,15 @@ function facetPosition(address facet) external view returns (uint256)
 
 #### Parameters
 
-| Name  | Type    | Description          |
-| ----- | ------- | -------------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | facet | address | Address of the facet |
 
 #### Return Values
 
-| Name | Type    | Description           |
-| ---- | ------- | --------------------- |
-| [0]  | uint256 | Position of the facet |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | Position of the facet |
 
 ---
 
@@ -97,9 +97,9 @@ function facetAddresses() external view returns (address[])
 
 #### Return Values
 
-| Name | Type      | Description                             |
-| ---- | --------- | --------------------------------------- |
-| [0]  | address[] | facetAddresses Array of facet addresses |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | address\[] | facetAddresses Array of facet addresses |
 
 ---
 
@@ -113,15 +113,15 @@ function facetAddress(bytes4 functionSelector) external view returns (struct Com
 
 #### Parameters
 
-| Name             | Type   | Description       |
-| ---------------- | ------ | ----------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | functionSelector | bytes4 | function selector |
 
 #### Return Values
 
-| Name | Type                                                 | Description                                        |
-| ---- | ---------------------------------------------------- | -------------------------------------------------- |
-| [0]  | struct ComptrollerV13Storage.FacetAddressAndPosition | FacetAddressAndPosition facet address and position |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | struct ComptrollerV13Storage.FacetAddressAndPosition | FacetAddressAndPosition facet address and position |
 
 ---
 
@@ -135,8 +135,8 @@ function facets() external view returns (struct Diamond.Facet[])
 
 #### Return Values
 
-| Name | Type                   | Description             |
-| ---- | ---------------------- | ----------------------- |
-| [0]  | struct Diamond.Facet[] | facets\_ Array of Facet |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | struct Diamond.Facet\[] | facets\_ Array of Facet |
 
 ---
