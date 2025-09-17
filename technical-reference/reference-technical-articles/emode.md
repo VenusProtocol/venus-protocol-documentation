@@ -2,9 +2,9 @@
 
 ## Overview
 
-The **Venus Protocol BNB Core Pool** has been enhanced with **E-Mode (Efficiency Mode)**, a feature designed to give users greater **capital efficiency** when lending and borrowing. E-Mode introduces specialized categories of **correlated assets**—such as **stablecoins** or **ETH-based tokens**—each with their own customized **risk parameters**.
+The **Venus Protocol BNB Core Pool** has been enhanced with **E-Mode (Efficiency Mode)**, a feature designed to provide users with greater **capital efficiency** when lending and borrowing. E-Mode introduces specialized categories of **correlated assets**—such as **stablecoins** or **ETH-based tokens**—each with its own customized **risk parameters**.
 
-When a user activates an **E-Mode category**, their borrowing is restricted to assets within that category, but with **higher collateral factors (CF)** and **liquidation thresholds (LT)** compared to the default Core Pool. A **lower liquidation incentive (LI)** is also applied, reducing the penalty at liquidation and making borrowing within E-Mode more efficient.
+When a user activates an **E-Mode category**, their borrowing is restricted to assets within that category but with **higher collateral factors (CF)** and **liquidation thresholds (LT)** compared to the default Core Pool. A **lower liquidation incentive (LI)** is also applied, reducing the penalty at liquidation and making borrowing within E-Mode more efficient.
 
 This allows users to unlock **more borrowing power** while keeping **risk contained** within the category.
 
@@ -14,7 +14,7 @@ Unlike **isolated pools**, which fully segregate assets into separate environmen
 
 * **Increased Borrowing Power**: Higher CF and LT enable users to leverage more borrowing capacity in correlated asset categories.
 * **Reduced Liquidation Penalties**: Lower LI minimizes losses during volatile market conditions.
-* **Seamless Integration**: No asset transfers required; all operations remain in the Core Pool.
+* **Seamless Integration**: No asset transfers are required; all operations remain in the Core Pool.
 * **Risk Isolation**: Borrowing limits prevent cross-category exposure, reducing systemic risks.
 * **Governance Flexibility**: Pool parameters can be dynamically adjusted via Venus governance proposals.
 
@@ -41,7 +41,7 @@ The introduction of **E-Mode** in the Venus BNB Core Pool required significant e
 |--------|-------------|--------|
 | **Liquidation Threshold (LT) Support in Core Pool** | The Core Pool now supports **Liquidation Thresholds**, similar to isolated pools. LT allows borrowing limits (CF) and liquidation conditions (LT) to be defined separately, improving risk control. | Enables more precise liquidity calculations, separating borrow caps from liquidation triggers for better user safety. |
 | **Per-Market Liquidation Incentives (LI)** | The global LI has been replaced with **per-market LIs**, enabling governance to assign asset-specific liquidation rewards based on risk. | Liquidators receive tailored incentives, optimizing protocol security and efficiency for high-risk vs. low-risk assets. |
-| **Unified Pool-Market Mapping** | The existing `markets` mapping has been replaced with `_poolMarkets`, a flexible structure keyed by a new `PoolMarketId` type (`bytes32`), which uniquely identifies each pool-market pair, while maininging the backward compatibilty for existing markets getters | Supports multiple pools without storage conflicts, allowing pool-specific overrides while maintaining legacy access. |
+| **Unified Pool-Market Mapping** | The existing `markets` mapping has been replaced with `_poolMarkets`, a flexible structure keyed by a new `PoolMarketId` type (`bytes32`), which uniquely identifies each pool-market pair while maintaining backward compatibility for existing market getters. | Supports multiple pools without storage conflicts, allowing pool-specific overrides while maintaining legacy access. |
 
 These enhancements ensure E-Mode operates as a lightweight overlay on the Core Pool, minimizing gas costs and migration efforts.
 
@@ -423,3 +423,4 @@ Because E-Mode overrides Core parameters with pool-specific ones, the protocol p
   * `getEffectiveLiquidationIncentive(account, vToken)` → effective LI
 
 ---
+````
