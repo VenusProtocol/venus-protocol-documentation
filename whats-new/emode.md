@@ -1,17 +1,21 @@
 # E-Mode in Venus Protocol
 
+{% hint style="info" %}
+Not yet available. It will be only available on BNB Chain Core Pool.
+{% endhint %}
+
 ## Overview
 
-The Venus Protocol introduces **E-Mode (Efficiency Mode)** to the **BNB Core Pool**, a new feature designed to **boost capital efficiency** for correlated assets such as stablecoins or ETH-based tokens.
+The Venus Protocol introduces **E-Mode (Efficiency Mode)** to the **BNB Chain Core Pool**, a new feature designed to **boost capital efficiency** for correlated assets, such as stablecoins or ETH-based tokens. It also aims to **isolate the risk** in subcategories of markets while reusing liquidity from the Core Pool.
 
-E-Mode allows you to activate specialized **asset categories** within the Core Pool, each with **customized risk settings**. By selecting an E-Mode category, your eligible assets follow optimized parameters for **collateral factor (CF)** and **liquidation threshold (LT)**, which are **increased**, while the **liquidation incentive (LI) is decreased**, making borrowing more efficient and cost-effective while keeping risks contained.
+E-Mode allows users to activate specialized **asset categories** within the Core Pool, each with **customized risk settings**. By selecting an E-Mode category, your eligible assets follow optimized parameters for **collateral factor (CF)** and **liquidation threshold (LT)**, which are **increased**, while the **liquidation incentive (LI) is decreased**, making borrowing more efficient and cost-effective while keeping risks contained.
 
 ## What’s Changed
 
 To support E-Mode, the Core Pool itself has been **enhanced with new risk mechanics**:
 
 * **Liquidation Threshold (LT) Support** – Similar to isolated pools, LT is now used to determine liquidation conditions, separate from CF.
-* **Per-Market Liquidation Incentive (LI)** – LI is no longer global; each market has its own incentive, configurable by governance.
+* **Per-Market Liquidation Incentive (LI)** – LI is no longer global; each market has its own incentive, configurable by Governance.
 * **User-Specific Risk Factors** – Effective CF, LT, and LI now depend on the user’s selected E-Mode pool, giving each user a tailored borrowing and collateral profile.
 
 ## Architecture Overview
@@ -19,7 +23,7 @@ To support E-Mode, the Core Pool itself has been **enhanced with new risk mechan
 E-Mode operates as a **lightweight overlay on the Core Pool**, enabling per-user risk management without moving funds to separate pools.
 
 * **Core Pool (poolId = 0)**: The default pool for all users. Supports **per-market LIs** and **LT**, even for non-E-Mode users.
-* **E-Mode Pools (poolId > 0)**: Each pool defines a category of correlated assets (e.g., Stablecoin Pool, ETH Pool) with customized CF, LT, and LI for each asset in the pool. Users select a pool to activate its risk parameters.
+* **E-Mode Pools (poolId > 0)**: Each pool defines a category of assets (e.g., Stablecoin Pool, ETH Pool) with customized CF, LT, and LI for each asset in the pool. Users select a pool to activate its risk parameters.
 * **Pool-Market**: Markets are tracked per pool, allowing **pool-specific overrides** while preserving Core Pool compatibility.
 * **User Pool Tracking**: Each user is associated with exactly one pool at a time via `userPoolId`. Switching pools updates this mapping and triggers the relevant risk rules.
 

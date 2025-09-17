@@ -1,22 +1,26 @@
 # E-Mode Implementation in Venus BNB Core Pool
 
+{% hint style="info" %}
+Not yet available. It will be only available on BNB Chain Core Pool.
+{% endhint %}
+
 ## Overview
 
-The **Venus Protocol BNB Core Pool** has been enhanced with **E-Mode (Efficiency Mode)**, a feature designed to provide users with greater **capital efficiency** when lending and borrowing. E-Mode introduces specialized categories of **correlated assets**—such as **stablecoins** or **ETH-based tokens**—each with its own customized **risk parameters**.
+The **Venus Protocol Core Pool** on BNB Chain has been enhanced with **E-Mode (Efficiency Mode)**, a feature designed to provide users with greater **capital efficiency** when lending and borrowing. E-Mode introduces specialized **categories of assets**—such as correlated ones—each with its own customized **risk parameters**.
 
 When a user activates an **E-Mode category**, their borrowing is restricted to assets within that category but with **higher collateral factors (CF)** and **liquidation thresholds (LT)** compared to the default Core Pool. A **lower liquidation incentive (LI)** is also applied, reducing the penalty at liquidation and making borrowing within E-Mode more efficient.
 
 This allows users to unlock **more borrowing power** while keeping **risk contained** within the category.
 
-Unlike **isolated pools**, which fully segregate assets into separate environments, E-Mode keeps everything within the Core Pool. Users do not need to transfer assets to benefit from different risk profiles. Instead, they can simply activate an E-Mode category, gaining higher efficiency for correlated assets while maintaining their existing positions. This design balances capital optimization with contained risk management, making E-Mode a powerful extension of the Core Pool.
+Unlike **isolated pools**, which fully segregate assets into separate environments, E-Mode keeps everything within the Core Pool. Users do not need to transfer assets to benefit from different risk profiles. Instead, they can simply activate an E-Mode category, gaining higher efficiency while maintaining their existing positions. This design balances capital optimization with contained risk management, making E-Mode a powerful extension of the Core Pool.
 
 ### Key Benefits of E-Mode
 
-* **Increased Borrowing Power**: Higher CF and LT enable users to leverage more borrowing capacity in correlated asset categories.
+* **Increased Borrowing Power**: Higher CF and LT enable users to leverage more borrowing capacity in E-Mode categories.
 * **Reduced Liquidation Penalties**: Lower LI minimizes losses during volatile market conditions.
 * **Seamless Integration**: No asset transfers are required; all operations remain in the Core Pool.
 * **Risk Isolation**: Borrowing limits prevent cross-category exposure, reducing systemic risks.
-* **Governance Flexibility**: Pool parameters can be dynamically adjusted via Venus governance proposals.
+* **Governance Flexibility**: Pool parameters can be dynamically adjusted via Venus Governance proposals.
 
 ### Potential Risks and Considerations
 
@@ -35,12 +39,12 @@ All of this is achieved while maintaining **backward compatibility** with the Co
 
 ## Comptroller Changes for E-Mode in Core Pool
 
-The introduction of **E-Mode** in the Venus BNB Core Pool required significant enhancements to the `Comptroller` contract. These changes enable fine-grained risk management while preserving the existing Core Pool functionality. Below is a summary of the major updates:
+The introduction of **E-Mode** in the Venus Core Pool on BNB Chain required significant enhancements to the `Comptroller` contract. These changes enable fine-grained risk management while preserving the existing Core Pool functionality. Below is a summary of the major updates:
 
 | Change | Description | Impact |
 |--------|-------------|--------|
 | **Liquidation Threshold (LT) Support in Core Pool** | The Core Pool now supports **Liquidation Thresholds**, similar to isolated pools. LT allows borrowing limits (CF) and liquidation conditions (LT) to be defined separately, improving risk control. | Enables more precise liquidity calculations, separating borrow caps from liquidation triggers for better user safety. |
-| **Per-Market Liquidation Incentives (LI)** | The global LI has been replaced with **per-market LIs**, enabling governance to assign asset-specific liquidation rewards based on risk. | Liquidators receive tailored incentives, optimizing protocol security and efficiency for high-risk vs. low-risk assets. |
+| **Per-Market Liquidation Incentives (LI)** | The global LI has been replaced with **per-market LIs**, enabling Governance to assign asset-specific liquidation rewards based on risk. | Liquidators receive tailored incentives, optimizing protocol security and efficiency for high-risk vs. low-risk assets. |
 | **Unified Pool-Market Mapping** | The existing `markets` mapping has been replaced with `_poolMarkets`, a flexible structure keyed by a new `PoolMarketId` type (`bytes32`), which uniquely identifies each pool-market pair while maintaining backward compatibility for existing market getters. | Supports multiple pools without storage conflicts, allowing pool-specific overrides while maintaining legacy access. |
 
 These enhancements ensure E-Mode operates as a lightweight overlay on the Core Pool, minimizing gas costs and migration efforts.
@@ -92,7 +96,7 @@ struct Market {
 
 * **accountMembership**: Stored only in Core Pool entries, since borrows and collateral are tracked globally across all pools. In E-Mode entries, this mapping remains empty for structural consistency, reducing storage overhead.
 
-* `isBorrowAllowed`: A pool-level flag that governance can toggle, overriding global borrow caps for E-Mode restrictions.
+* `isBorrowAllowed`: A pool-level flag that Governance can toggle, overriding global borrow caps for E-Mode restrictions.
 
 ### 3. Pool Tracking
 
@@ -100,7 +104,7 @@ Pools are defined and managed via a dedicated mapping for metadata and asset lis
 
 ```solidity
 struct PoolData {
-    string label;      // e.g., "Stablecoin E-Mode"
+    string label;      // e.g., "Stablecoins"
     address[] vTokens; // Markets in this pool
 }
 
@@ -112,7 +116,7 @@ uint96 public lastPoolId;
 * `lastPoolId` tracks the latest assigned poolId (`0` is reserved for Core).
 * Pools hold metadata and a list of associated vTokens.
 
-**Governance Workflow**: New pools are created via `createPool(string calldata label)`, which assigns the next `poolId` and initializes the `PoolData`. This allows for easy expansion to new categories like "ETH Correlated" or "BNB Derivatives."
+**Governance Workflow**: New pools are created via `createPool(string calldata label)`, which assigns the next `poolId` and initializes the `PoolData`. This allows for easy expansion to new categories like "ETH Correlated" or "BNB Derivatives".
 
 ### 4. User Pool Selection
 
@@ -125,7 +129,7 @@ mapping(address => uint96) public userPoolId;
 * Defaults to **0 (Core Pool)**.
 * Switching updates `userPoolId` with proper validations.
 
-This ensures all collateral and borrowing operations are evaluated within the context of the user’s active pool. **Edge Case Handling**: If a user's pool is disabled by governance, their `userPoolId` is automatically reset to 0, triggering a fallback event.
+This ensures all collateral and borrowing operations are evaluated within the context of the user’s active pool. **Edge Case Handling**: If a user's pool is disabled by Governance, their `userPoolId` is automatically reset to 0, triggering a fallback event.
 
 ### 5. Pool Markets Configuration
 
@@ -157,8 +161,8 @@ function setCollateralFactor(VToken vToken, uint256 newCollateralFactorMantissa,
 
 Users can discover available E-Mode pools using:
 
-* **Venus Lens**: By calling the `getMarketsDataByPool` function to fetch pool data directly from the Comptroller. This returns supported E-Mode pools and their vTokens along with parameters such as CF, LT, LI, and borrow permissions.
-  *Note: `getMarketsDataByPool` does not return values for the Core Pool; it only returns data for other pools.*
+* **Venus Lens**: By calling the `getAllPoolsData` function to fetch pool data directly from the Comptroller. This returns supported E-Mode pools and their vTokens along with parameters such as CF, LT, LI, and borrow permissions.
+  *Note: `getAllPoolsData` does not return values for the Core Pool; it only returns data for other pools.*
 * **Venus App UI**: A user-friendly interface that displays the same information without requiring direct blockchain queries.
 
 ### 3. Validate Compatibility
@@ -195,25 +199,25 @@ Users can discover available E-Mode pools using:
 
 ### Borrowed Asset Not Allowed
 
-* Example: A user has borrowed BTC and tries to enter the Stablecoin Pool.
-* BTC is not part of that pool, so it is not listed as borrowable.
+* Example: A user has borrowed BTCB and tries to enter the Stablecoins Pool.
+* BTCB is not part of that pool, so it is not listed as borrowable.
 * Result: `enterPool` fails with `IncompatibleBorrowedAssets`.
-* Even if an asset is included in a pool, governance can set `isBorrowAllowed = false`. In this case, supplying the asset as collateral is fine, but new borrows of that asset are restricted.
+* Even if an asset is included in a pool, Governance can set `isBorrowAllowed = false`. In this case, supplying the asset as collateral is fine, but new borrows of that asset are restricted.
 
 ### Mixed Collateral
 
 * Users can provide collateral outside of the E-Mode pool’s listed assets.
 * These non-pool collaterals always use **Core Pool parameters** (normal CF, LT, LI).
 * Since Core Pool liquidation incentives (LI) are typically higher, liquidators may target these assets first during liquidation.
-* Example: In Stablecoin Pool, a user supplies USDC + SXP.
+* Example: In Stablecoins Pool, a user supplies USDC + UNI.
   * USDC → CF/LT/LI from E-Mode (e.g., LI = 5%)
-  * SXP → CF/LT/LI from Core Pool (e.g., LI = 10%)
-  * If liquidation occurs, SXP will likely be seized first because it gives the liquidator higher profit.
+  * UNI → CF/LT/LI from Core Pool (e.g., LI = 10%)
+  * If liquidation occurs, UNI will likely be seized first because it gives the liquidator higher profit.
 
 ### Switching Back to Core
 
 * Switching back is allowed only if the account remains healthy under Core Pool’s stricter parameters.
-* Example: In Stablecoin Pool, a user is safe with CF = 0.90. Switching back to Core Pool with CF = 0.60 may immediately create a shortfall → reverts with `LiquidityCheckFailed`.
+* Example: In Stablecoins Pool, a user is safe with CF = 0.90. Switching back to Core Pool with CF = 0.60 may immediately create a shortfall → reverts with `LiquidityCheckFailed`.
 * **Important scenario**:
   * If a user is close to liquidation in Core Pool, they may switch into an E-Mode pool (with higher CF/LT) to immediately improve their account health and avoid liquidation.
   * However, if they attempt to switch back to Core, the stricter parameters would again make them liquidatable, so the transaction reverts.
@@ -230,7 +234,7 @@ Governance has significant control over pool configurations, which can directly 
    * When borrow cap set to 0, no additional borrows are possible, but existing borrows are unaffected.
 
 2. **Market Removal from E-Mode:**
-   * If governance removes a market from an E-Mode pool, the market’s risk factors instantly revert to its Core Pool values.
+   * If Governance removes a market from an E-Mode pool, the market’s risk factors instantly revert to its Core Pool values.
    * This is effectively the same as updating CF, LT, or LI parameters via a VIP.
    * Users need to monitor VIP proposals to anticipate changes.
 
@@ -241,7 +245,7 @@ Governance has significant control over pool configurations, which can directly 
 **Rule of Risk Factor Selection:**
 
 * If a parameter (CF, LT, LI) is defined in the active E-Mode pool, that value is used.
-* If governance sets a value to `0` in the pool (e.g., CF = 0), the `0` applies — it does not fall back to Core.
+* If Governance sets a value to `0` in the pool (e.g., CF = 0), the `0` applies — it does not fall back to Core.
 * Fallback to Core Pool happens only in two cases:
   1. The pool is disabled.
   2. The asset is not included in the E-Mode pool.
@@ -256,7 +260,7 @@ To see how E-Mode changes borrowing power, liquidation, and borrow restrictions,
 |-------|--------------|--------------|--------------|-----------|-----------|-----------|------------------------|
 | **USDC** | 60% | 65% | 10% | 90% | 93% | 5% | Yes |
 | **DAI** | 60% | 65% | 10% | 90% | 93% | 5% | No |
-| **SXP** | 50% | 55% | 12% | N/A (Fallback to Core) | N/A | N/A | N/A |
+| **UNI** | 50% | 55% | 12% | N/A (Fallback to Core) | N/A | N/A | N/A |
 
 ### Step 1: Alex in Core Pool
 
@@ -276,9 +280,9 @@ $$
 
 * **Liquidity = $100, Shortfall = $0 → safe**
 
-### Step 2: Attempting to Enter Stablecoin E-Mode
+### Step 2: Attempting to Enter Stablecoins E-Mode
 
-Alex wants to switch to the Stablecoin Pool.
+Alex wants to switch to the Stablecoins Pool.
 
 * Borrowed DAI is **not allowed** in the target pool (`isBorrowAllowed = false`).
 * Comptroller checks fail → transaction **reverts** with `IncompatibleBorrowedAssets`.
@@ -347,12 +351,12 @@ To switch safely, Alex can either:
 
 ## Liquidator Considerations in E-Mode
 
-The introduction of **E-Mode in the BNB Core Pool** also changes how liquidators must evaluate accounts and select assets for liquidation. To remain effective and profitable, liquidators need to adapt to the updated mechanics and new getter functions.
+The introduction of **E-Mode in the Core Pool** on BNB Chain also changes how liquidators must evaluate accounts and select assets for liquidation. To remain effective and profitable, liquidators need to adapt to the updated mechanics and new getter functions.
 
 ### 1. Per-Market Liquidation Incentives (LI)
 
 * The Core Pool no longer uses a **global LI**.
-* Each market now has its own **per-market liquidation incentive**, configurable by governance.
+* Each market now has its own **per-market liquidation incentive**, configurable by Governance.
 * **Impact**: Liquidators must always query the market’s specific LI before deciding which collateral to seize, since incentives may differ significantly between assets.
 * **Strategy**: Prioritize assets with higher LI when selecting which collateral to liquidate for maximum profit.
 
@@ -400,9 +404,9 @@ Because E-Mode overrides Core parameters with pool-specific ones, the protocol p
 
 ---
 
-### TL;DR: E-Mode in Venus BNB Core Pool
+### TL;DR: E-Mode in Venus BNB Chain Core Pool
 
-**Efficiency Boost**: E-Mode lets you use **higher Collateral Factors (CF)** and **Liquidation Thresholds (LT)**, plus **lower Liquidation Incentives (LI)**, for similar assets (e.g., stablecoins).
+**Efficiency Boost**: E-Mode lets you use **higher Collateral Factors (CF)** and **Liquidation Thresholds (LT)**, plus **lower Liquidation Incentives (LI)**, for some categories of assets (e.g., stablecoins).
 
 **Borrow Limits**: You can only borrow from pool-approved assets (`isBorrowAllowed = true`). If you have borrows in non-approved assets, you can't enter; new borrows are blocked to keep risks isolated.
 
@@ -422,5 +426,3 @@ Because E-Mode overrides Core parameters with pool-specific ones, the protocol p
   * `getEffectiveLtvFactor(account, vToken, 1)` → effective LT
   * `getEffectiveLiquidationIncentive(account, vToken)` → effective LI
 
----
-````
