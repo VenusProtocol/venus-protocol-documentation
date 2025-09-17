@@ -8,6 +8,7 @@
 
 ## What's New?
 
+* [E-mode](whats-new/emode.md)
 * [Isolated Pools](whats-new/isolated-pools.md)
 * [Reward Distributor](whats-new/reward-distributor.md)
 * [Peg Stability Module](whats-new/psm.md)
@@ -59,6 +60,7 @@
   * [Capped Oracles](technical-reference/reference-technical-articles/capped-oracles.md)
   * [Contributing](technical-reference/reference-technical-articles/contributing.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
+  * [E-mode](technical-reference/reference-technical-articles/emode.md)
   * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)
   * [Omnichain Governance](technical-reference/reference-technical-articles/omnichain-governance.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
