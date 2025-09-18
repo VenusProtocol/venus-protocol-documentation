@@ -8,6 +8,23 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Native Token Gateway upgrade
+
+**Scope**: [NativeTokenGateway contract](https://github.com/VenusProtocol/venus-periphery/blob/95e157b5b498ab80fe2715ca5ecf64203f6727fb/contracts/Gateway/NativeTokenGateway.sol) upgrade, to make it compatible with the Core pool on BNB Chain.
+
+- [Certik audit report (2024/09/11)](https://github.com/VenusProtocol/venus-periphery/blob/95e157b5b498ab80fe2715ca5ecf64203f6727fb/audits/152_nativeTokenGateway_certik_20250911.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#8](https://github.com/VenusProtocol/venus-periphery/pull/8)
+    - contracts/Gateway/Interfaces/IVToken.sol
+    - contracts/Gateway/INativeTokenGateway.sol
+    - contracts/Gateway/Interfaces/IWrappedNative.sol
+    - contracts/Gateway/NativeTokenGateway.sol
+
+</details>
+
 ### Venus ERC4626 Vaults
 
 **Scope**: [ERC-4626](https://ethereum.org/en/developers/docs/standards/tokens/erc-4626/) wrapper for Venus markets for isolated pools, enabling seamless integration with external DeFi protocols that follow the ERC-4626 standard.
