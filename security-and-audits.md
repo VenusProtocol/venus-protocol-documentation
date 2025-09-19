@@ -8,9 +8,41 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### Risk Stewards V1 and Core Pool Comptroller Interface Compatibility with Isolated Pools
+
+**Scope**: Venus Risk Steward contracts, compatible with the Risk Oracle contracts from Chaos Labs. These stewards are authorized to perform risk parameter changes (initially, only increasing the supply and borrow caps) without requiring VIPs. Additionally, the interface of the Comptroller contract on BNB Chain is extended with the functions defined in the Comptroller contract for Isolated Pools, simplifying interactions with both Comptroller contracts. Enabled in [VIP-544](https://app.venus.io/#/governance/proposal/544?chainId=56).
+
+* [Certik audit report (2025/02/19)](https://github.com/VenusProtocol/governance-contracts/blob/210d1e54f0c9136a805977b41077567b0883a4e0/audits/120_risk_stewards_v1_certik_20250219.pdf)
+* [Quantstamp audit report (2025/02/13)](https://github.com/VenusProtocol/governance-contracts/blob/210d1e54f0c9136a805977b41077567b0883a4e0/audits/121_risk_stewards_v1_quantstamp_20250213.pdf)
+* [FairyProof audit report (2025/02/26)](https://github.com/VenusProtocol/governance-contracts/blob/210d1e54f0c9136a805977b41077567b0883a4e0/audits/122_risk_stewards_v1_fairyproof_20250226.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#115](https://github.com/VenusProtocol/governance-contracts/pull/115) in the `governance-contracts` repository:
+  - contracts/RiskSteward/RiskStewardReceiver.sol – entry point of the feature
+  - contracts/RiskSteward/MarketCapsRiskSteward.sol
+  - contracts/RiskSteward/IRiskSteward.sol
+  - contracts/RiskSteward/IRiskStewardReceiver.sol
+  - Interfaces with external contracts:
+    - contracts/interfaces/ICorePoolComptroller.sol
+    - contracts/interfaces/IIsolatedPoolsComptroller.sol
+    - contracts/interfaces/IRiskOracle.sol
+    - contracts/interfaces/IVToken.sol
+
+- Pull request [#548](https://github.com/VenusProtocol/venus-protocol/pull/548) in the `venus-protocol` repository:
+  - contracts/Comptroller/Diamond/facets/MarketFacet.sol
+  - contracts/Comptroller/Diamond/facets/PolicyFacet.sol
+  - contracts/Comptroller/Diamond/facets/SetterFacet.sol
+  - contracts/Comptroller/Diamond/interfaces/IMarketFacet.sol
+  - contracts/Comptroller/Diamond/interfaces/IPolicyFacet.sol
+  - contracts/Comptroller/Diamond/interfaces/ISetterFacet.sol
+
+</details>
+
 ### Native Token Gateway upgrade
 
-**Scope**: [NativeTokenGateway contract](https://github.com/VenusProtocol/venus-periphery/blob/95e157b5b498ab80fe2715ca5ecf64203f6727fb/contracts/Gateway/NativeTokenGateway.sol) upgrade, to make it compatible with the Core pool on BNB Chain.
+**Scope**: [NativeTokenGateway contract](https://github.com/VenusProtocol/venus-periphery/blob/95e157b5b498ab80fe2715ca5ecf64203f6727fb/contracts/Gateway/NativeTokenGateway.sol) upgrade, to make it compatible with the Core pool on BNB Chain. Enabled in [VIP-543](https://app.venus.io/#/governance/proposal/543?chainId=56)
 
 - [Certik audit report (2024/09/11)](https://github.com/VenusProtocol/venus-periphery/blob/95e157b5b498ab80fe2715ca5ecf64203f6727fb/audits/152_nativeTokenGateway_certik_20250911.pdf)
 
