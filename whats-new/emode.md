@@ -41,7 +41,7 @@ This architecture ensures **flexibility, backward compatibility, and gas efficie
 
 E-Mode introduces more precision and flexibility for liquidators in the Core Pool:
 
-* **Per-Market Liquidation Incentives** – Each market now has its own liquidation incentive. Liquidators need to consider these differences to maximize returns.
+* **Per-Market Liquidation Incentives** – liquidation incentives (LI) are now set on a per-market basis rather than being global. Before liquidating, liquidators should check the LI for each asset. If a user is in an E-Mode pool and uses collateral that isn’t enabled in that pool, the LI for that asset can be zero.
 * **Liquidation Thresholds (LT)** – LT now determines when accounts can be liquidated, replacing the older CF-based check for liquidations.
 * **User-Specific Risk Factors** – Effective CF, LT, and LI can vary per user depending on their E-Mode pool, making liquidation decisions more targeted and strategic.
 
@@ -58,10 +58,13 @@ This gives liquidators **smarter targeting, higher transparency, and better rewa
 3. **Check Your Borrows**  
    Borrowed assets must be approved in the selected pool. Repay any disallowed assets first.
 
-4. **Enter E-Mode**  
+4. **Check Core Pool Fallback**
+   Each E-Mode pool has a flag `allowCorePoolFallback` that determines whether assets not included in the E-Mode pool will use the Core Pool’s risk factors (i.e. CF, LT, LI). If fallback is not allowed, users must exit these markets (i.e., remove such assets as collateral) to ensure they aren’t unintentionally liquidated.
+
+5. **Enter E-Mode**  
    Eligible assets follow E-Mode risk settings, while non-pool assets continue using Core Pool parameters.
 
-5. **Enjoy Higher Efficiency**  
+6. **Enjoy Higher Efficiency**  
    Borrow and manage positions with optimized collateral and liquidation rules.
 
 For a **detailed technical explanation**, including implementation and user examples, check out the [full E-Mode technical article](../technical-reference/reference-technical-articles/emode.md).

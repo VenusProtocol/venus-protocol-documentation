@@ -27,7 +27,9 @@ Unlike **isolated pools**, which fully segregate assets into separate environmen
 * **Borrow Restrictions**: Users must ensure existing borrows align with the target pool's allowed assets.
 * **VAI Incompatibility**: Users with VAI debt cannot enter E-Mode, ensuring stablecoin-specific isolation.
 * **Parameter Changes**: Governance updates (e.g., lowering CF) can impact positions without notice.
-* **Fallback to Core**: Non-pool assets revert to stricter Core parameters, potentially altering liquidation priorities.
+* **Core Pool Fallback Behavior**: Controlled by a per-pool flag `allowCorePoolFallback` (defaults to `false`).
+  * If `true`: Assets not included in the E-Mode pool use Core Pool risk parameters (CF, LT, LI).
+  * If `false`: Assets not included in the E-Mode pool have no risk factors applied (effectively CF = 0 and LI = 0), so users are recommended to exit such markets before switching into that E-Mode pool.
 
 The implementation extends the **Comptroller contract** to support:
 
@@ -104,8 +106,9 @@ Pools are defined and managed via a dedicated mapping for metadata and asset lis
 
 ```solidity
 struct PoolData {
-    string label;      // e.g., "Stablecoins"
-    address[] vTokens; // Markets in this pool
+    string label;               // e.g., "Stablecoins"
+    address[] vTokens;          // Markets in this pool
+    bool allowCorePoolFallback; // If true, non-pool assets use Core Pool CF/LT/LI; if false, CF/LT/LI treated as 0
 }
 
 mapping(uint96 => PoolData) public pools;
@@ -114,9 +117,9 @@ uint96 public lastPoolId;
 ```
 
 * `lastPoolId` tracks the latest assigned poolId (`0` is reserved for Core).
-* Pools hold metadata and a list of associated vTokens.
+* Pools hold metadata, a list of associated vTokens, and the `allowCorePoolFallback` flag (default: `false`).
 
-**Governance Workflow**: New pools are created via `createPool(string calldata label)`, which assigns the next `poolId` and initializes the `PoolData`. This allows for easy expansion to new categories like "ETH Correlated" or "BNB Derivatives".
+**Governance Workflow**: New pools are created via `createPool(string calldata label)`, which assigns the next `poolId` and initializes the `PoolData` with `allowCorePoolFallback = false` by default. Governance can update this behavior via `setAllowCorePoolFallback(uint96 poolId, bool allowed)`. This allows for easy expansion to new pools like "ETH Correlated" or "BNB Derivatives" while choosing the desired fallback behavior.
 
 ### 4. User Pool Selection
 
@@ -138,6 +141,7 @@ Governance configures E-Mode via a suite of administrative functions:
 * **Add/Remove**: `addPoolMarkets` and `removePoolMarket` manage vTokens in non-Core pools.
 * **Borrow Control**: `setIsBorrowAllowed` toggles borrowing eligibility.
 * **Risk Parameters**: Setters for CF, LT, and LI support poolId for E-Mode and address-only for Core.
+* **Fallback Control**: `setAllowCorePoolFallback(uint96 poolId, bool allowed)` controls whether non-pool assets use Core Pool risk parameters.
 
 **Example Setters**:
 
@@ -162,7 +166,6 @@ function setCollateralFactor(VToken vToken, uint256 newCollateralFactorMantissa,
 Users can discover available E-Mode pools using:
 
 * **Venus Lens**: By calling the `getAllPoolsData` function to fetch pool data directly from the Comptroller. This returns supported E-Mode pools and their vTokens along with parameters such as CF, LT, LI, and borrow permissions.
-  *Note: `getAllPoolsData` does not return values for the Core Pool; it only returns data for other pools.*
 * **Venus App UI**: A user-friendly interface that displays the same information without requiring direct blockchain queries.
 
 ### 3. Validate Compatibility
@@ -189,7 +192,9 @@ Users can discover available E-Mode pools using:
 * **Borrowing**: Restricted to markets marked `isBorrowAllowed` in chosen pool.
 * **Collateral**:
   * Pool assets use **pool CF/LT/LI**.
-  * Non-pool assets fall back to **Core parameters** (lower CF, higher LI).
+  * Non-pool assets behavior depends on `allowCorePoolFallback`:
+    * If `true`: Non-pool assets use **Core parameters** (typically lower CF, higher LI).
+    * If `false` (default): Non-pool assets have no applicable risk factors in the selected E-Mode pool (effectively CF = 0 and LI = 0).
 * **Liquidation**:
   * Pool assets → more efficient (lower LI).
   * Non-pool assets → liquidators prefer them due to higher LI.
@@ -206,13 +211,21 @@ Users can discover available E-Mode pools using:
 
 ### Mixed Collateral
 
-* Users can provide collateral outside of the E-Mode pool’s listed assets.
-* These non-pool collaterals always use **Core Pool parameters** (normal CF, LT, LI).
-* Since Core Pool liquidation incentives (LI) are typically higher, liquidators may target these assets first during liquidation.
-* Example: In Stablecoins Pool, a user supplies USDC + UNI.
-  * USDC → CF/LT/LI from E-Mode (e.g., LI = 5%)
-  * UNI → CF/LT/LI from Core Pool (e.g., LI = 10%)
-  * If liquidation occurs, UNI will likely be seized first because it gives the liquidator higher profit.
+* Users can provide collateral outside of the E-Mode pool’s listed assets **if the pool’s `allowCorePoolFallback` flag is set to true**.
+
+* **If `allowCorePoolFallback = true`**:
+  Non-pool assets use **Core Pool parameters** (CF, LT, LI). Since Core Pool LI is typically higher, liquidators may target these assets first during liquidation.
+
+* **If `allowCorePoolFallback = false` (default)**:
+  Non-pool collateral **does not contribute to borrowing power**. CF, LT, and LI are treated as **0** in the E-Mode context. Users are strongly recommended to **exit these markets** before or immediately after switching to E-Mode to avoid unnecessary seizure risk for these assets during liquidations.
+
+**Example:** In the Stablecoins Pool, a user supplies **USDC + UNI**:
+
+* **USDC** → CF/LT/LI from E-Mode (e.g., LI = 5%).
+* **UNI** →
+
+  * If `allowCorePoolFallback = true`: CF/LT/LI from Core Pool (e.g., LI = 10%).
+  * If `allowCorePoolFallback = false`: CF/LT/LI = 0 → does not contribute to borrowing power.
 
 ### Switching Back to Core
 
@@ -237,8 +250,12 @@ Governance has significant control over pool configurations, which can directly 
    * If Governance removes a market from an E-Mode pool, the market’s risk factors instantly revert to its Core Pool values.
    * This is effectively the same as updating CF, LT, or LI parameters via a VIP.
    * Users need to monitor VIP proposals to anticipate changes.
+3. **Disabling Core Pool Fallback:**
+   * Governance can disable **Core Pool fallback** for a pool.
+   * Assets outside the E-Mode pool will no longer use Core Pool parameters, which can affect user health.
+   * Such changes are implemented **only after complete risk analysis** and with **advanced notice to users** so they can adjust their positions safely.
 
-3. **Disabling an E-Mode Pool:**
+4. **Disabling an E-Mode Pool:**
    * Governance can disable an entire E-Mode pool.
    * In that case, all users currently in the pool automatically fall back to Core Pool parameters.
 
@@ -246,9 +263,10 @@ Governance has significant control over pool configurations, which can directly 
 
 * If a parameter (CF, LT, LI) is defined in the active E-Mode pool, that value is used.
 * If Governance sets a value to `0` in the pool (e.g., CF = 0), the `0` applies — it does not fall back to Core.
-* Fallback to Core Pool happens only in two cases:
-  1. The pool is disabled.
-  2. The asset is not included in the E-Mode pool.
+* If the asset is not included in the E-Mode pool:
+  * If `allowCorePoolFallback = true`: Use the asset's Core Pool CF/LT/LI.
+  * If `allowCorePoolFallback = false`: Treat CF/LT/LI as 0 for that asset in E-Mode; users are recommended to exit such markets.
+* If the pool is disabled, users automatically fall back to Core Pool parameters.
 
 ## Effect on User on Switching Into E-Mode
 
@@ -413,12 +431,14 @@ Because E-Mode overrides Core parameters with pool-specific ones, the protocol p
 **How Risk Factors Are Chosen**:
 
 * **In E-Mode Pool**: Use the pool's CF/LT/LI values (even if set to 0).
-* **Fallback to Core Pool**: If the asset isn't in your pool or the pool is disabled.
-* **Mixed Assets**: Assets in the selected E-Mode pool benefit from higher CF and LT, while assets outside remain on normal Core Pool values. Compared to E-Mode assets, these non–E-Mode assets have lower risk factors and higher LI, making them more attractive for liquidators.
+* **If the asset isn't in your pool**:
+  * If `allowCorePoolFallback = true`: Use Core Pool values.
+  * If `allowCorePoolFallback = false` (default): Treat CF/LT/LI as 0; exit such markets.
+* **Pool Disabled**: Falls back to Core Pool parameters.
 
 **Liquidator Notes**:
 
-* Core Pool now uses **per-market LI** (no global incentive). Always fetch per-asset LI before liquidating.
+* Core Pool now uses **per-market LI** (no global incentive). Liquidators should always fetch the effective liquidation incentive for each user’s market, as markets associated with different E-Mode pools may have different LI values. Additionally, assets outside the E-Mode pool that do not contribute to borrowing power may have **LI = 0**, even if supplied as collateral.
 * **Liquidation Threshold (LT)** replaces CF as the trigger for liquidations—use `getAccountLiquidity` for checks.
 * Use new getters to fetch **effective parameters** considering pool overrides:
 
