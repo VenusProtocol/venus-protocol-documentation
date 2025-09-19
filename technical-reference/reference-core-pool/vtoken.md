@@ -1,4 +1,4 @@
-# Venus&#x27;s vToken Contract
+# Venus's vToken Contract
 
 Abstract base for vTokens
 
@@ -58,16 +58,16 @@ function transfer(address dst, uint256 amount) external returns (bool)
 
 #### Parameters
 
-| Name   | Type    | Description                            |
-| ------ | ------- | -------------------------------------- |
-| dst    | address | The address of the destination account |
-| amount | uint256 | The number of tokens to transfer       |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| dst | address | The address of the destination account |
+| amount | uint256 | The number of tokens to transfer |
 
 #### Return Values
 
-| Name | Type | Description                           |
-| ---- | ---- | ------------------------------------- |
-| [0]  | bool | Whether or not the transfer succeeded |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | bool | Whether or not the transfer succeeded |
 
 ---
 
@@ -81,17 +81,17 @@ function transferFrom(address src, address dst, uint256 amount) external returns
 
 #### Parameters
 
-| Name   | Type    | Description                            |
-| ------ | ------- | -------------------------------------- |
-| src    | address | The address of the source account      |
-| dst    | address | The address of the destination account |
-| amount | uint256 | The number of tokens to transfer       |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| src | address | The address of the source account |
+| dst | address | The address of the destination account |
+| amount | uint256 | The number of tokens to transfer |
 
 #### Return Values
 
-| Name | Type | Description                           |
-| ---- | ---- | ------------------------------------- |
-| [0]  | bool | Whether or not the transfer succeeded |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | bool | Whether or not the transfer succeeded |
 
 ---
 
@@ -105,16 +105,16 @@ function approve(address spender, uint256 amount) external returns (bool)
 
 #### Parameters
 
-| Name    | Type    | Description                                                |
-| ------- | ------- | ---------------------------------------------------------- |
-| spender | address | The address of the account which may transfer tokens       |
-| amount  | uint256 | The number of tokens that are approved (-1 means infinite) |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| spender | address | The address of the account which may transfer tokens |
+| amount | uint256 | The number of tokens that are approved (type(uint256).max means infinite) |
 
 #### Return Values
 
-| Name | Type | Description                           |
-| ---- | ---- | ------------------------------------- |
-| [0]  | bool | Whether or not the approval succeeded |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | bool | Whether or not the approval succeeded |
 
 ---
 
@@ -128,15 +128,15 @@ function balanceOfUnderlying(address owner) external returns (uint256)
 
 #### Parameters
 
-| Name  | Type    | Description                         |
-| ----- | ------- | ----------------------------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | owner | address | The address of the account to query |
 
 #### Return Values
 
-| Name | Type    | Description                               |
-| ---- | ------- | ----------------------------------------- |
-| [0]  | uint256 | The amount of underlying owned by `owner` |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | The amount of underlying owned by `owner` |
 
 ---
 
@@ -150,9 +150,9 @@ function totalBorrowsCurrent() external returns (uint256)
 
 #### Return Values
 
-| Name | Type    | Description                     |
-| ---- | ------- | ------------------------------- |
-| [0]  | uint256 | The total borrows with interest |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | The total borrows with interest |
 
 ---
 
@@ -166,15 +166,15 @@ function borrowBalanceCurrent(address account) external returns (uint256)
 
 #### Parameters
 
-| Name    | Type    | Description                                                               |
-| ------- | ------- | ------------------------------------------------------------------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | account | address | The address whose balance should be calculated after updating borrowIndex |
 
 #### Return Values
 
-| Name | Type    | Description            |
-| ---- | ------- | ---------------------- |
-| [0]  | uint256 | The calculated balance |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | The calculated balance |
 
 ---
 
@@ -188,17 +188,17 @@ function seize(address liquidator, address borrower, uint256 seizeTokens) extern
 
 #### Parameters
 
-| Name        | Type    | Description                             |
-| ----------- | ------- | --------------------------------------- |
-| liquidator  | address | The account receiving seized collateral |
-| borrower    | address | The account having collateral seized    |
-| seizeTokens | uint256 | The number of vTokens to seize          |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| liquidator | address | The account receiving seized collateral |
+| borrower | address | The account having collateral seized |
+| seizeTokens | uint256 | The number of vTokens to seize |
 
 #### Return Values
 
-| Name | Type    | Description                                                                                      |
-| ---- | ------- | ------------------------------------------------------------------------------------------------ |
-| [0]  | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
 
 ---
 
@@ -212,15 +212,15 @@ function _setPendingAdmin(address payable newPendingAdmin) external returns (uin
 
 #### Parameters
 
-| Name            | Type            | Description        |
-| --------------- | --------------- | ------------------ |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | newPendingAdmin | address payable | New pending admin. |
 
 #### Return Values
 
-| Name | Type    | Description                                                                                      |
-| ---- | ------- | ------------------------------------------------------------------------------------------------ |
-| [0]  | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
 
 ---
 
@@ -234,9 +234,9 @@ function _acceptAdmin() external returns (uint256)
 
 #### Return Values
 
-| Name | Type    | Description                                                                                      |
-| ---- | ------- | ------------------------------------------------------------------------------------------------ |
-| [0]  | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
 
 ---
 
@@ -250,9 +250,9 @@ function _setReserveFactor(uint256 newReserveFactorMantissa_) external returns (
 
 #### Return Values
 
-| Name | Type    | Description                                                                                      |
-| ---- | ------- | ------------------------------------------------------------------------------------------------ |
-| [0]  | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
 
 ---
 
@@ -266,15 +266,15 @@ function setAccessControlManager(address newAccessControlManagerAddress) externa
 
 #### Parameters
 
-| Name                           | Type    | Description                        |
-| ------------------------------ | ------- | ---------------------------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | newAccessControlManagerAddress | address | New address for the access control |
 
 #### Return Values
 
-| Name | Type    | Description                           |
-| ---- | ------- | ------------------------------------- |
-| [0]  | uint256 | uint 0=success, otherwise will revert |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | uint 0=success, otherwise will revert |
 
 ---
 
@@ -283,20 +283,20 @@ function setAccessControlManager(address newAccessControlManagerAddress) externa
 Accrues interest and reduces reserves by transferring to protocol share reserve
 
 ```solidity
-function _reduceReserves(uint256 reduceAmount_) external returns (uint256)
+function _reduceReserves(uint256 reduceAmount_) external virtual returns (uint256)
 ```
 
 #### Parameters
 
-| Name           | Type    | Description                     |
-| -------------- | ------- | ------------------------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | reduceAmount\_ | uint256 | Amount of reduction to reserves |
 
 #### Return Values
 
-| Name | Type    | Description                                                                                      |
-| ---- | ------- | ------------------------------------------------------------------------------------------------ |
-| [0]  | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
 
 ---
 
@@ -310,16 +310,16 @@ function allowance(address owner, address spender) external view returns (uint25
 
 #### Parameters
 
-| Name    | Type    | Description                                                  |
-| ------- | ------- | ------------------------------------------------------------ |
-| owner   | address | The address of the account which owns the tokens to be spent |
-| spender | address | The address of the account which may transfer tokens         |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| owner | address | The address of the account which owns the tokens to be spent |
+| spender | address | The address of the account which may transfer tokens |
 
 #### Return Values
 
-| Name | Type    | Description                                                  |
-| ---- | ------- | ------------------------------------------------------------ |
-| [0]  | uint256 | The number of tokens allowed to be spent (-1 means infinite) |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | The number of tokens allowed to be spent (type(uint256).max means infinite) |
 
 ---
 
@@ -333,15 +333,15 @@ function balanceOf(address owner) external view returns (uint256)
 
 #### Parameters
 
-| Name  | Type    | Description                         |
-| ----- | ------- | ----------------------------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | owner | address | The address of the account to query |
 
 #### Return Values
 
-| Name | Type    | Description                           |
-| ---- | ------- | ------------------------------------- |
-| [0]  | uint256 | The number of tokens owned by `owner` |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | The number of tokens owned by `owner` |
 
 ---
 
@@ -355,18 +355,18 @@ function getAccountSnapshot(address account) external view returns (uint256, uin
 
 #### Parameters
 
-| Name    | Type    | Description                        |
-| ------- | ------- | ---------------------------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | account | address | Address of the account to snapshot |
 
 #### Return Values
 
-| Name | Type    | Description                                                             |
-| ---- | ------- | ----------------------------------------------------------------------- |
-| [0]  | uint256 | (possible error, token balance, borrow balance, exchange rate mantissa) |
-| [1]  | uint256 |                                                                         |
-| [2]  | uint256 |                                                                         |
-| [3]  | uint256 |                                                                         |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | (possible error, token balance, borrow balance, exchange rate mantissa) |
+| \[1] | uint256 |  |
+| \[2] | uint256 |  |
+| \[3] | uint256 |  |
 
 ---
 
@@ -380,9 +380,9 @@ function supplyRatePerBlock() external view returns (uint256)
 
 #### Return Values
 
-| Name | Type    | Description                                        |
-| ---- | ------- | -------------------------------------------------- |
-| [0]  | uint256 | The supply interest rate per block, scaled by 1e18 |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | The supply interest rate per block, scaled by 1e18 |
 
 ---
 
@@ -396,9 +396,9 @@ function borrowRatePerBlock() external view returns (uint256)
 
 #### Return Values
 
-| Name | Type    | Description                                        |
-| ---- | ------- | -------------------------------------------------- |
-| [0]  | uint256 | The borrow interest rate per block, scaled by 1e18 |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | The borrow interest rate per block, scaled by 1e18 |
 
 ---
 
@@ -412,9 +412,9 @@ function getCash() external view returns (uint256)
 
 #### Return Values
 
-| Name | Type    | Description                                             |
-| ---- | ------- | ------------------------------------------------------- |
-| [0]  | uint256 | The quantity of underlying asset owned by this contract |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | The quantity of underlying asset owned by this contract |
 
 ---
 
@@ -423,13 +423,13 @@ function getCash() external view returns (uint256)
 Governance function to set new threshold of block difference after which funds will be sent to the protocol share reserve
 
 ```solidity
-function setReduceReservesBlockDelta(uint256 newReduceReservesBlockDelta_) external returns (uint256)
+function setReduceReservesBlockDelta(uint256 newReduceReservesBlockDelta_) external
 ```
 
 #### Parameters
 
-| Name                          | Type    | Description            |
-| ----------------------------- | ------- | ---------------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | newReduceReservesBlockDelta\_ | uint256 | block difference value |
 
 ---
@@ -439,13 +439,13 @@ function setReduceReservesBlockDelta(uint256 newReduceReservesBlockDelta_) exter
 Sets protocol share reserve contract address
 
 ```solidity
-function setProtocolShareReserve(address payable protcolShareReserve_) external returns (uint256)
+function setProtocolShareReserve(address payable protcolShareReserve_) external
 ```
 
 #### Parameters
 
-| Name                  | Type            | Description                                    |
-| --------------------- | --------------- | ---------------------------------------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | protcolShareReserve\_ | address payable | The address of protocol share reserve contract |
 
 ---
@@ -455,19 +455,19 @@ function setProtocolShareReserve(address payable protcolShareReserve_) external 
 Initialize the money market
 
 ```solidity
-function initialize(contract ComptrollerInterface comptroller_, contract InterestRateModel interestRateModel_, uint256 initialExchangeRateMantissa_, string name_, string symbol_, uint8 decimals_) public
+function initialize(contract ComptrollerInterface comptroller_, contract InterestRateModelV8 interestRateModel_, uint256 initialExchangeRateMantissa_, string name_, string symbol_, uint8 decimals_) public
 ```
 
 #### Parameters
 
-| Name                          | Type                          | Description                               |
-| ----------------------------- | ----------------------------- | ----------------------------------------- |
-| comptroller\_                 | contract ComptrollerInterface | The address of the Comptroller            |
-| interestRateModel\_           | contract InterestRateModel    | The address of the interest rate model    |
-| initialExchangeRateMantissa\_ | uint256                       | The initial exchange rate, scaled by 1e18 |
-| name\_                        | string                        | EIP-20 name of this token                 |
-| symbol\_                      | string                        | EIP-20 symbol of this token               |
-| decimals\_                    | uint8                         | EIP-20 decimal precision of this token    |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| comptroller\_ | contract ComptrollerInterface | The address of the Comptroller |
+| interestRateModel\_ | contract InterestRateModelV8 | The address of the interest rate model |
+| initialExchangeRateMantissa\_ | uint256 | The initial exchange rate, scaled by 1e18 |
+| name\_ | string | EIP-20 name of this token |
+| symbol\_ | string | EIP-20 symbol of this token |
+| decimals\_ | uint8 | EIP-20 decimal precision of this token |
 
 ---
 
@@ -481,9 +481,9 @@ function exchangeRateCurrent() public returns (uint256)
 
 #### Return Values
 
-| Name | Type    | Description                             |
-| ---- | ------- | --------------------------------------- |
-| [0]  | uint256 | Calculated exchange rate scaled by 1e18 |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | Calculated exchange rate scaled by 1e18 |
 
 ---
 
@@ -492,7 +492,7 @@ function exchangeRateCurrent() public returns (uint256)
 Applies accrued interest to total borrows and reserves
 
 ```solidity
-function accrueInterest() public returns (uint256)
+function accrueInterest() public virtual returns (uint256)
 ```
 
 ---
@@ -507,9 +507,9 @@ function _setComptroller(contract ComptrollerInterface newComptroller) public re
 
 #### Return Values
 
-| Name | Type    | Description                                                                                      |
-| ---- | ------- | ------------------------------------------------------------------------------------------------ |
-| [0]  | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
 
 ---
 
@@ -518,20 +518,20 @@ function _setComptroller(contract ComptrollerInterface newComptroller) public re
 Accrues interest and updates the interest rate model using \_setInterestRateModelFresh
 
 ```solidity
-function _setInterestRateModel(contract InterestRateModel newInterestRateModel_) public returns (uint256)
+function _setInterestRateModel(contract InterestRateModelV8 newInterestRateModel_) public returns (uint256)
 ```
 
 #### Parameters
 
-| Name                   | Type                       | Description                        |
-| ---------------------- | -------------------------- | ---------------------------------- |
-| newInterestRateModel\_ | contract InterestRateModel | The new interest rate model to use |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| newInterestRateModel\_ | contract InterestRateModelV8 | The new interest rate model to use |
 
 #### Return Values
 
-| Name | Type    | Description                                                                                      |
-| ---- | ------- | ------------------------------------------------------------------------------------------------ |
-| [0]  | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | uint Returns 0 on success, otherwise returns a failure code (see ErrorReporter.sol for details). |
 
 ---
 
@@ -545,9 +545,9 @@ function exchangeRateStored() public view returns (uint256)
 
 #### Return Values
 
-| Name | Type    | Description                             |
-| ---- | ------- | --------------------------------------- |
-| [0]  | uint256 | Calculated exchange rate scaled by 1e18 |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | Calculated exchange rate scaled by 1e18 |
 
 ---
 
@@ -561,14 +561,14 @@ function borrowBalanceStored(address account) public view returns (uint256)
 
 #### Parameters
 
-| Name    | Type    | Description                                    |
-| ------- | ------- | ---------------------------------------------- |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
 | account | address | The address whose balance should be calculated |
 
 #### Return Values
 
-| Name | Type    | Description            |
-| ---- | ------- | ---------------------- |
-| [0]  | uint256 | The calculated balance |
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | The calculated balance |
 
 ---
