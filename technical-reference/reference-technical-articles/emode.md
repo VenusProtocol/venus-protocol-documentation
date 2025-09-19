@@ -6,20 +6,20 @@ Not yet available. It will be only available on BNB Chain Core Pool.
 
 ## Overview
 
-The **Venus Protocol Core Pool** on BNB Chain has been enhanced with **E-Mode (Efficiency Mode)**, a feature designed to provide users with greater **capital efficiency** when lending and borrowing. E-Mode introduces specialized **categories of assets**—such as correlated ones—each with its own customized **risk parameters**.
+The **Venus Protocol Core Pool** on BNB Chain has been enhanced with **E-Mode (Efficiency Mode)**, a feature designed to provide users with greater **capital efficiency** when lending and borrowing. E-Mode introduces specialized **pools of assets**—such as correlated ones—each with its own customized **risk parameters**.
 
-When a user activates an **E-Mode category**, their borrowing is restricted to assets within that category but with **higher collateral factors (CF)** and **liquidation thresholds (LT)** compared to the default Core Pool. A **lower liquidation incentive (LI)** is also applied, reducing the penalty at liquidation and making borrowing within E-Mode more efficient.
+When a user activates an **E-Mode pool**, their borrowing is restricted to assets within that pool but with **higher collateral factors (CF)** and **liquidation thresholds (LT)** compared to the default Core Pool. A **lower liquidation incentive (LI)** is also applied, reducing the penalty at liquidation and making borrowing within E-Mode more efficient.
 
-This allows users to unlock **more borrowing power** while keeping **risk contained** within the category.
+This allows users to unlock **more borrowing power** while keeping **risk contained** within the pool.
 
-Unlike **isolated pools**, which fully segregate assets into separate environments, E-Mode keeps everything within the Core Pool. Users do not need to transfer assets to benefit from different risk profiles. Instead, they can simply activate an E-Mode category, gaining higher efficiency while maintaining their existing positions. This design balances capital optimization with contained risk management, making E-Mode a powerful extension of the Core Pool.
+Unlike **isolated pools**, which fully segregate assets into separate environments, E-Mode keeps everything within the Core Pool. Users do not need to transfer assets to benefit from different risk profiles. Instead, they can simply activate an E-Mode pool, gaining higher efficiency while maintaining their existing positions. This design balances capital optimization with contained risk management, making E-Mode a powerful extension of the Core Pool.
 
 ### Key Benefits of E-Mode
 
-* **Increased Borrowing Power**: Higher CF and LT enable users to leverage more borrowing capacity in E-Mode categories.
+* **Increased Borrowing Power**: Higher CF and LT enable users to leverage more borrowing capacity in E-Mode pools.
 * **Reduced Liquidation Penalties**: Lower LI minimizes losses during volatile market conditions.
 * **Seamless Integration**: No asset transfers are required; all operations remain in the Core Pool.
-* **Risk Isolation**: Borrowing limits prevent cross-category exposure, reducing systemic risks.
+* **Risk Isolation**: Borrowing limits prevent cross-pool exposure, reducing systemic risks.
 * **Governance Flexibility**: Pool parameters can be dynamically adjusted via Venus Governance proposals.
 
 ### Potential Risks and Considerations
@@ -34,8 +34,8 @@ Unlike **isolated pools**, which fully segregate assets into separate environmen
 The implementation extends the **Comptroller contract** to support:
 
 * Pool-specific risk configurations.
-* User-driven category selection.
-* Refined, category-based risk management.
+* User-driven pool selection.
+* Refined, pool-based risk management.
 
 All of this is achieved while maintaining **backward compatibility** with the Core Pool’s legacy operations.
 
