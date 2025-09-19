@@ -96,7 +96,7 @@ struct Market {
 }
 ```
 
-* **accountMembership**: Stored only in Core Pool entries, since borrows and collateral are tracked globally across all pools. In E-Mode entries, this mapping remains empty for structural consistency, reducing storage overhead.
+* `accountMembership`: Stored only in Core Pool entries, since borrows and collateral are tracked globally across all pools. In E-Mode entries, this mapping remains empty for structural consistency, reducing storage overhead.
 
 * `isBorrowAllowed`: A pool-level flag that Governance can toggle, overriding global borrow caps for E-Mode restrictions.
 
@@ -424,7 +424,7 @@ Because E-Mode overrides Core parameters with pool-specific ones, the protocol p
 
 ### TL;DR: E-Mode in Venus BNB Chain Core Pool
 
-**Efficiency Boost**: E-Mode lets you use **higher Collateral Factors (CF)** and **Liquidation Thresholds (LT)**, plus **lower Liquidation Incentives (LI)**, for some categories of assets (e.g., stablecoins).
+**Efficiency Boost**: E-Mode lets you use **higher Collateral Factors (CF)** and **Liquidation Thresholds (LT)**, plus **lower Liquidation Incentives (LI)**, for some set of assets (e.g., stablecoins).
 
 **Borrow Limits**: You can only borrow from pool-approved assets (`isBorrowAllowed = true`). If you have borrows in non-approved assets, you can't enter; new borrows are blocked to keep risks isolated.
 
