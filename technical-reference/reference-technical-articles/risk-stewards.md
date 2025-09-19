@@ -1,4 +1,4 @@
-# Risk Steward
+# Risk Stewards
 
 ## Overview
 
@@ -218,7 +218,7 @@ Once the steward call completes:
 
 ---
 
-<figure><img src="../../.gitbook/assets/riskSteward.png" alt="riskSteward"><figcaption>riskSteward</figcaption></figure>
+<figure><img src="../../.gitbook/assets/riskStewards.svg" alt="Risk Stewards"><figcaption>Risk Stewards</figcaption></figure>
 
 ## Limitations
 

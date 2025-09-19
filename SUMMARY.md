@@ -28,6 +28,7 @@
 * [Interest Rate Model](risk/interest-rate-model.md)
 * [Risk Fund and Shortfall Handling](risk/risk-fund-and-shortfall-handling.md)
 * [Risk Management](risk/risk-management.md)
+* [Risk Oracles and Risk Stewards](risk/risk-oracle-and-risk-stewards.md)
 
 ## Tokens
 
@@ -62,6 +63,7 @@
   * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)
   * [Omnichain Governance](technical-reference/reference-technical-articles/omnichain-governance.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
+  * [Risk Stewards](technical-reference/reference-technical-articles/risk-stewards.md)
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
   * [Token Converters](technical-reference/reference-technical-articles/token-converters.md)
   * [Two Kinks Interest Rate Curve](technical-reference/reference-technical-articles/two-kinks-interest-rate-curve.md)
@@ -166,6 +168,8 @@
   * [OmnichainProposalSender](technical-reference/reference-governance/omnichain-proposal-sender.md) 
   * [OmnichainGovernanceExecutor](technical-reference/reference-governance/omnichain-governance-executor.md) 
   * [OmnichainExecutorOwner](technical-reference/reference-governance/omnichain-executor-owner.md) 
+  * [RiskStewardReceiver](technical-reference/reference-governance/risk-steward-receiver.md) 
+  * [MarketCapsRiskSteward](technical-reference/reference-governance/market-caps-risk-steward.md) 
 * [Token Converter](technical-reference/reference-token-converter/README.md)
   * [AbstractTokenConverter](technical-reference/reference-token-converter/AbstractTokenConverter.md)
   * [RiskFundConverter](technical-reference/reference-token-converter/RiskFundConverter.md)
