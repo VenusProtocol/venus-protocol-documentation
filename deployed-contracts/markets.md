@@ -523,7 +523,8 @@
 ### Core Pool
 
 * Comptroller: [`0x94d1820b2D1c7c7452A163983Dc888CEC546b77D`](https://testnet.bscscan.com/address/0x94d1820b2D1c7c7452A163983Dc888CEC546b77D)
-* Venus Lens: [`0x068b437aCD9F4668f77Aa24e2B715a41D4a9a599`](https://testnet.bscscan.com/address/0x068b437aCD9F4668f77Aa24e2B715a41D4a9a599)
+* Comptroller Lens: [`0xACbc75C2D0438722c75D9BD20844b5aFda4155ea`](https://testnet.bscscan.com/address/0xACbc75C2D0438722c75D9BD20844b5aFda4155ea)
+* Venus Lens: [`0x70C38167d0cFDb2EE3be4564FC38ccE27B5C2D31`](https://testnet.bscscan.com/address/0x70C38167d0cFDb2EE3be4564FC38ccE27B5C2D31)
 * SwapRouter: [`0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0`](https://testnet.bscscan.com/address/0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0)
 * Underlying tokens:
   * AAVE: [`0x4B7268FC7C727B88c5Fc127D41b491BfAe63e144`](https://testnet.bscscan.com/address/0x4B7268FC7C727B88c5Fc127D41b491BfAe63e144)
