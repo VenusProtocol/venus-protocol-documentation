@@ -27,6 +27,8 @@ E-Mode operates as a **lightweight overlay on the Core Pool**, enabling per-user
 * **Pool-Market**: Markets are tracked per pool, allowing **pool-specific overrides** while preserving Core Pool compatibility.
 * **User Pool Tracking**: Each user is associated with exactly one pool at a time via `userPoolId`. Switching pools updates this mapping and triggers the relevant risk rules.
 
+<figure><img src="../.gitbook/assets/emode-groups.svg" alt=""><figcaption><p><em>Example of E-Mode pools - assets highlighted in red are not available for borrowing in the pool</em></p></figcaption></figure>
+
 This architecture ensures **flexibility, backward compatibility, and gas efficiency**, while giving users **higher borrowing efficiency and better risk isolation**.
 
 ## Impact on Users
