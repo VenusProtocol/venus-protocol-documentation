@@ -26,18 +26,11 @@ Unlike **isolated pools**, which fully segregate assets into separate environmen
 
 * **Borrow Restrictions**: Users must ensure existing borrows align with the target pool's allowed assets.
 * **VAI Incompatibility**: Users with VAI debt cannot enter E-Mode, ensuring stablecoin-specific isolation.
-* **Parameter Changes**: Governance updates (e.g., lowering CF) can impact positions without notice.
+* **Parameter Changes**: Governance updates (e.g., lowering CF) can impact the user positions.
 * **Core Pool Fallback Behavior**: Controlled by a per-pool flag `allowCorePoolFallback` (defaults to `false`).
   * If `true`: Assets not included in the E-Mode pool use Core Pool risk parameters (CF, LT, LI).
   * If `false`: Assets not included in the E-Mode pool have no risk factors applied (effectively CF = 0 and LI = 0), so users are recommended to exit such markets before switching into that E-Mode pool.
 
-The implementation extends the **Comptroller contract** to support:
-
-* Pool-specific risk configurations.
-* User-driven pool selection.
-* Refined, pool-based risk management.
-
-All of this is achieved while maintaining **backward compatibility** with the Core Pool’s legacy operations.
 
 ## Comptroller Changes for E-Mode in Core Pool
 
@@ -49,7 +42,13 @@ The introduction of **E-Mode** in the Venus Core Pool on BNB Chain required sign
 | **Per-Market Liquidation Incentives (LI)** | The global LI has been replaced with **per-market LIs**, enabling Governance to assign asset-specific liquidation rewards based on risk. | Liquidators receive tailored incentives, optimizing protocol security and efficiency for high-risk vs. low-risk assets. |
 | **Unified Pool-Market Mapping** | The existing `markets` mapping has been replaced with `_poolMarkets`, a flexible structure keyed by a new `PoolMarketId` type (`bytes32`), which uniquely identifies each pool-market pair while maintaining backward compatibility for existing market getters. | Supports multiple pools without storage conflicts, allowing pool-specific overrides while maintaining legacy access. |
 
-These enhancements ensure E-Mode operates as a lightweight overlay on the Core Pool, minimizing gas costs and migration efforts.
+The implementation extends the **Comptroller contract** to support:
+
+* Pool-specific risk configurations.
+* User-driven pool selection.
+* Refined, pool-based risk management.
+
+All of this is achieved while maintaining **backward compatibility** with the Core Pool’s legacy operations.
 
 ## Implementation Details
 
@@ -213,10 +212,10 @@ Users can discover available E-Mode pools using:
 
 * Users can provide collateral outside of the E-Mode pool’s listed assets **if the pool’s `allowCorePoolFallback` flag is set to true**.
 
-* **If `allowCorePoolFallback = true`**:
+* If `allowCorePoolFallback = true`:
   Non-pool assets use **Core Pool parameters** (CF, LT, LI). Since Core Pool LI is typically higher, liquidators may target these assets first during liquidation.
 
-* **If `allowCorePoolFallback = false` (default)**:
+* If `allowCorePoolFallback = false` (default):
   Non-pool collateral **does not contribute to borrowing power**. CF, LT, and LI are treated as **0** in the E-Mode context. Users are strongly recommended to **exit these markets** before or immediately after switching to E-Mode to avoid unnecessary seizure risk for these assets during liquidations.
 
 **Example:** In the Stablecoins Pool, a user supplies **USDC + UNI**:
@@ -256,8 +255,9 @@ Governance has significant control over pool configurations, which can directly 
    * Such changes are implemented **only after complete risk analysis** and with **advanced notice to users** so they can adjust their positions safely.
 
 4. **Disabling an E-Mode Pool:**
-   * Governance can disable an entire E-Mode pool.
-   * In that case, all users currently in the pool automatically fall back to Core Pool parameters.
+   * Governance can disable an entire E-Mode pool by setting the `isActive` flag to `false`.
+   * When this happens, all users in the disabled pool automatically fall back to Core Pool parameters.
+   * Users who remain in a disabled E-Mode pool cannot initiate new borrows and are encouraged to either return to the Core Pool or switch to another active E-Mode pool.
 
 **Rule of Risk Factor Selection:**
 

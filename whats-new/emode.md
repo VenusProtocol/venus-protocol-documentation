@@ -62,7 +62,7 @@ This gives liquidators **smarter targeting, higher transparency, and better rewa
    Each E-Mode pool has a flag `allowCorePoolFallback` that determines whether assets not included in the E-Mode pool will use the Core Pool’s risk factors (i.e. CF, LT, LI). If fallback is not allowed, users must exit these markets (i.e., remove such assets as collateral) to ensure they aren’t unintentionally liquidated.
 
 5. **Enter E-Mode**  
-   Eligible assets follow E-Mode risk settings, while non-pool assets continue using Core Pool parameters.
+   Eligible assets follow E-Mode risk settings, while the behavior of assets not included in the E-Mode pool depends on the `allowCorePoolFallback` flag.
 
 6. **Enjoy Higher Efficiency**  
    Borrow and manage positions with optimized collateral and liquidation rules.
