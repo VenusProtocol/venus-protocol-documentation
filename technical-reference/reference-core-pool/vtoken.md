@@ -573,46 +573,52 @@ function borrowBalanceStored(address account) public view returns (uint256)
 
 ---
 
-### transferOutUnderlying
+### transferOutUnderlyingFlashLoan
 
-Transfers the underlying tokens to a specified address, exclusively called by the Comptroller and primarily used for flash loans.
+Transfers the underlying asset to the specified address for flash loan operations.
 
 ```solidity
-function transferOutUnderlying(address payable to, uint256 amount)
-    external;
+function transferOutUnderlyingFlashLoan(address payable to, uint256 amount) external
 ```
+
+Can only be called by the Comptroller contract. This function performs the actual transfer of the underlying asset and tracks the flash loan amount. If the `to` address is not the protocol share reserve, the flashLoanAmount is incremented by the amount transferred out.
 
 #### Parameters
 
-| Name     | Type    |Description                                 |
-|----------|------------------------------------------------------|
-| to | address payable | The address to receive the underlying assets |
-| amount   | uint256 | The amount of the underlying assets to transfer  |
-
-#### Return Values
-
-| Name | Type    |Description                                 |
-|------|------------------------------------------------------|
-| [0]  | uint256 | The cash balance of the vToken after the transfer |
+| Name   | Type            | Description                                        |
+|--------|-----------------|---------------------------------------------------|
+| to     | address payable | The address to which the underlying asset is transferred |
+| amount | uint256         | The amount of the underlying asset to transfer     |
 
 ---
 
-### transferInUnderlyingAndVerify
+### transferInUnderlyingFlashLoan
 
-Transfers underlying tokens from a specified address and verifies repayment. Called exclusively by the Comptroller.
+Transfers the underlying asset from the specified address for flash loan repayment.
 
 ```solidity
-function transferINUnderlyingAndVerify(address payable from, uint256 amountRepayed)
-    external
-    returns (uint256);
+function transferInUnderlyingFlashLoan(
+    address payable from,
+    uint256 amountRepaid,
+    uint256 protocolFee
+) external returns (uint256)
 ```
+
+Can only be called by the Comptroller contract. This function performs the actual transfer of the underlying asset for flash loan repayment and handles protocol fee distribution to the protocol share reserve.
 
 #### Parameters
 
-| Name     | Type    |Description                                 |
-|----------|------------------------------------------------------|
-| from | address payable | The address from which underlying assets are transferred |
-| amountRepayed   | uint256 | The amount of the underlying assets to transfer  |
+| Name         | Type            | Description                                           |
+|--------------|-----------------|-------------------------------------------------------|
+| from         | address payable | The address from which the underlying asset is transferred |
+| amountRepaid | uint256         | The amount of the underlying asset to transfer        |
+| protocolFee  | uint256         | The protocol fee amount to be transferred to the protocol share reserve |
+
+#### Return Values
+
+| Name | Type    | Description                           |
+|------|---------|---------------------------------------|
+| [0]  | uint256 | The actual amount transferred in      |
 
 ---
 
@@ -673,20 +679,18 @@ function calculateFlashLoanFee(uint256 amount)
 
 ---
 
-### toggleFlashLoan
+### setFlashLoanEnabled
 
-Enables or disables flash loan functionality for the market. Governance-restricted.
+Sets flash loan status for the market. Governance-restricted.
 
 ```solidity
-function toggleFlashLoan()
-    external
-    returns (uint256);
+function setFlashLoanEnabled(bool enabled) external returns (uint256)
 ```   
 
 #### Parameters
-| Name | Type | Description |
-|------|------|-------------|
-| None |      |             |
+| Name    | Type | Description                               |
+|---------|------|-------------------------------------------|
+| enabled | bool | True to enable flash loans, false to disable |
 
 #### Return Values
 | Name | Type    | Description                                 |

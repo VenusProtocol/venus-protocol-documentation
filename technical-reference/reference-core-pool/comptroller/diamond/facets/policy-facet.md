@@ -341,38 +341,5 @@ function _setVenusSpeeds(contract VToken[] vTokens, uint256[] supplySpeeds, uint
 
 - - -
 
-### executeFlashLoan
-
-The executeFlashLoan function facilitates a flash loan, an uncollateralized loan where assets that are borrowed must be repaid within the same transaction, enabling DeFi strategies like arbitrage and liquidations. The repayment is enforced by a safety mechanism:
-
-- A user must repay the loan plus fees in full.
-- If a user with existing Venus collateral fails to fully repay, the unpaid amount is seamlessly converted into a borrow position secured by their supplied assets.
-- For a user with no collateral in Venus, the transaction will revert if not repaid in full, as there are no assets to secure the resulting debt.
-
-```solidity
-function executeFlashLoan(
-    address payable initiator,
-    address payable receiver,
-    VToken[] memory vTokens,
-    uint256[] memory underlyingAmounts,
-    bytes memory param
-) external 
-```
-
-#### Parameters
-| Name              | Type                |Description                                                      |
-|-------------------|---------------------------------------------------------------------------------------|
-| initiator         | address payable     | The address initiating the flashloan                            |
-| receiver          | address payable     | The contract receiving the assets                                |
-| vTokens           | VToken[] calldata   | Array of vToken markets to borrow from                           |
-| underlyingAmounts | uint256[] calldata  | Amounts of each asset to borrow                                  |
-| param             | bytes calldata      | Arbitrary data for custom logic                                  |
-
-#### Return Values
-| Name | Type | Description |
-|------|------|-------------|
-| None |      |             |
-
----
 
 

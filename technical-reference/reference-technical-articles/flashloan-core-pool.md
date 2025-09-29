@@ -57,7 +57,7 @@ This innovative approach makes Venus flash loans both more powerful and more acc
 
 ## Core Smart Contracts
 
-### **1. PolicyFacet.sol – FlashLoan Execution & Validation**
+### **1. FlashLoanFacet.sol – FlashLoan Execution & Validation**
 
 Handles core flash loan operations including:
 
@@ -158,17 +158,19 @@ Manages the underlying asset transfers, flash loan fee calculations, and creatio
 
 #### Key Functions
 
-**1.`transferOutUnderlying`**
+**1.`transferOutUnderlyingFlashLoan`**
 
 ```solidity
-function transferOutUnderlying(address receiver, uint256 amount) external returns (uint256);
+function transferOutUnderlyingFlashLoan(address payable to, uint256 amount) external;
 ```
 
 **Explanation:**
-This function is the work horse for moving assets. When `PolicyFacet.sol` calls this during a flash loan, it performs two main actions:
+This function is the work horse for moving assets during flash loan operations. When `PolicyFacet.sol` calls this during a flash loan, it performs several critical actions:
 
-1.  **Balance Check** : It ensures the vToken contract holds at least the requested `amount` of the underlying asset (e.g., the actual BUSD in the contract).
-2.  **Asset Transfer** : It performs the low-level `transfer` call to send the underlying asset to the `receiver` address. It returns the actual amount transferred, which should equal the requested amount unless there's a miscalculation or a fee-on-transfer mechanism (which most underlying assets in Venus do not have).
+1.  **Authorization Check**: Ensures only the Comptroller contract can call this function.
+2.  **Flash Loan State Management**: Sets the flashLoanAmount to track the active loan and prevents concurrent flash loans.
+3.  **Asset Transfer**: Performs the low-level transfer of the underlying asset to the receiver address.
+4.  **Event Emission**: Emits TransferOutUnderlyingFlashLoan event for tracking.
 
 ---
 
@@ -181,25 +183,40 @@ function calculateFlashLoanFee(uint256 amount) public view returns (uint256, uin
 **Explanation:**
 This function computes the cost of a flash loan by calculating the **total fee** and the **protocol's share**. It uses fixed-point arithmetic to ensure precision in fee calculations, which is critical for maintaining protocol economics and ensuring accurate revenue distribution between suppliers and the protocol.
 
-1.  **Total Fee Calculation** :
-
-- Multiplies the loan amount by the global **flashLoanFeeMantissa** (a scaled value, e.g., 0.09% represented as 9e14).
-
-2.  **Protocol Fee Allocation** : -
-
-- Calculates the protocol's portion by multiplying the totalFee by **flashLoanProtocolShareMantissa** (a scaled value representing the protocol's percentage share).
-- The remainder of the total fee (totalFee - protocolFee) is allocated to the suppliers.
+1.  **Total Fee Calculation** : Multiplies the loan amount by the global **flashLoanFeeMantissa** (a scaled value, e.g., 0.09% represented as 9e14).
+2.  **Protocol Fee Allocation** : Calculates the protocol's portion by multiplying the totalFee by **flashLoanProtocolShare** (a scaled value representing the protocol's percentage share).
 
 ---
 
-**3. `toggleFlashLoan`**
+**3. `transferInUnderlyingFlashLoan`**
 
 ```solidity
-function toggleFlashLoan() external returns (uint256);
+function transferInUnderlyingFlashLoan(
+    address payable from,
+    uint256 amountRepaid,
+    uint256 protocolFee
+) external returns (uint256);
+```
+
+**Explanation:**
+This function handles the repayment phase of flash loans. When called by the Comptroller, it performs several critical operations:
+
+1.  **Authorization Check**: Ensures only the Comptroller contract can call this function.
+2.  **Asset Collection**: Transfers the repaid amount from the receiver contract to the vToken.
+3.  **Protocol Fee Distribution**: Automatically transfers the protocol fee portion to the Protocol Share Reserve.
+4.  **State Management**: Resets the flashLoanAmount to 0, allowing new flash loans.
+5.  **Event Emission**: Emits TransferInUnderlyingFlashLoan event for tracking.
+
+---
+
+**3. `setFlashLoanEnabled`**
+
+```solidity
+function setFlashLoanEnabled(bool enabled) external returns (uint256);
 ```
 
 **Explanation:**  
-An emergency or administrative function that allows the protocol admin to instantly enable or disable flash loan functionality for a specific vToken market. This would be used in a scenario where a vulnerability is suspected in a particular asset's market or in the flash loan mechanism itself. Toggling it off would halt all flash loan activity for that market while the issue is investigated.
+An administrative function that allows governance to explicitly enable or disable flash loan functionality for a specific vToken market. Unlike a toggle function, this takes a boolean parameter to set the exact desired state, preventing accidental state changes. This would be used to disable flash loans if a vulnerability is suspected in a particular asset's market or to enable them after security verification.
 
 ---
 
@@ -208,7 +225,7 @@ An emergency or administrative function that allows the protocol admin to instan
 ```solidity
 function setFlashLoanFeeMantissa(
     uint256 flashLoanFeeMantissa_,
-    uint256 flashLoanProtocolShareMantissa_
+    uint256 flashLoanProtocolShare_
 )
     external
     returns (uint256);
@@ -217,8 +234,8 @@ function setFlashLoanFeeMantissa(
 **Explanation:**
 This governance-controlled function updates the core economic parameters for flash loans. It allows the protocol to adjust both the total fee charged for flash loans and how that fee is distributed between the protocol treasury and liquidity suppliers. These parameters directly impact the protocol's revenue generation and the attractiveness of providing liquidity.
 
-1.  **flashLoanFeeMantissa\_** : This is the fee paid to the liquidity providers who have supplied assets to this vToken market. It serves as an incentive for users to provide liquidity.
-2.  **flashLoanProtocolShareMantissa\_** : This is percentage being paid to the Protocol Share Reserve of the protocol, works as the revenue for the protocol.
+1.  **flashLoanFeeMantissa\_** : This is the total fee rate charged for flash loans (scaled by 1e18).
+2.  **flashLoanProtocolShare\_** : This is the percentage of the total fee allocated to the Protocol Share Reserve (scaled by 1e18).
 
 ---
 
@@ -317,22 +334,27 @@ For Both Standards, Receiver Contracts Must:
 
 ## Key Events
 
-- **`TransferOutUnderlying`** - Emitted on successful transfer of amount to receiver.
-- **`FlashLoanExecuted`** – Emitted after a flash loan is executed.
+- **`TransferOutUnderlyingFlashLoan`** - Emitted on successful transfer of amount to receiver during flash loan initiation.
+- **`TransferInUnderlyingFlashLoan`** - Emitted on successful transfer of repayment amount from receiver to vToken.
+- **`FlashLoanExecuted`** – Emitted after a flash loan is executed successfully.
+- **`FlashLoanStatusChanged`** – Emitted when flash loan status is changed for a market.
 - **`IsAccountFlashLoanWhitelisted`** – Emitted when trying to set whitelist flashloan account.
 
 ---
 
 ## Key Errors
 
-- **`FlashLoanNotEnabled`** - Emitted if flash loan is not enabled for the asset.
+- **`FlashLoanNotEnabled`** - Thrown if flash loan is not enabled for the asset.
 - **`InvalidAmount`** - Thrown when the requested flash loan amount is zero.
 - **`SenderNotAuthorizedForFlashLoan`** - Thrown when the sender is not authorized to use flash loan.
 - **`NoAssetsRequested`** - Thrown if no assets are requested for the flash loan.
 - **`InvalidFlashLoanParams`** - Thrown if the flash loan params are invalid.
 - **`ExecuteFlashLoanFailed`** - Thrown when executeOperation on the receiver contract fails.
-- **`InsufficientRepayment`** - Thrown if the repayment (amount + fee) is insufficient after the operation.
+- **`NotEnoughRepayment`** - Thrown if the repayment amount is less than the required total fee.
 - **`FailedToCreateDebtPosition`** - Thrown when failing to create a debt position.
+- **`InvalidComptroller`** - Thrown if the caller is not the Comptroller contract.
+- **`FlashLoanAlreadyActive`** - Thrown if a flash loan is already in progress.
+- **`NotAnApprovedDelegate`** - Thrown when the sender is not an approved delegate for the onBehalf address.
 
 ---
 
