@@ -12,8 +12,8 @@ Prices and exchange rates are adjusted according to the unique decimal scaling o
 
 For further details, please refer to the respective token contract addresses.
 
-{% content-ref url="../deployed-contracts/core-pool.md" %}
-[core-pool.md](../deployed-contracts/core-pool.md)
+{% content-ref url="../deployed-contracts/markets.md" %}
+[core-pool.md](../deployed-contracts/markets.md)
 {% endcontent-ref %}
 
 ### Interpreting Exchange Rates
@@ -63,7 +63,7 @@ The Annual Percentage Yield (APY) for either supplying or borrowing in each mark
 Rate = vToken.supplyRatePerBlock(); // Integer
 Rate = 37893566
 BNB Mantissa = 1 * 10 ^ 18 (BNB has 18 decimal places)
-Blocks Per Day = 20 * 60 * 24 (based on 20 blocks occurring every minute on BNB Chain)
+Blocks Per Day = 80 * 60 * 24 (based on 80 blocks occurring every minute on BNB Chain)
 Days Per Year = 365
 
 APY = (((Rate / BNB Mantissa) * Blocks Per Day) + 1) ^ (Days Per Year - 1) * 100
@@ -73,7 +73,7 @@ Here is an example of calculating the supply and borrow APY with Web3.js JavaScr
 
 ```javascript
 const ethMantissa = 1e18;
-const blocksPerDay = 20 * 60 * 24;
+const blocksPerDay = 80 * 60 * 24;
 const daysPerYear = 365;
 
 const vToken = new web3.eth.Contract(vBnbAbi, vBnbAddress);
