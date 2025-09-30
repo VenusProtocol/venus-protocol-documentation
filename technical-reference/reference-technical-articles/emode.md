@@ -1,7 +1,7 @@
 # E-Mode Implementation in Venus BNB Core Pool
 
 {% hint style="info" %}
-Not yet available. It will be only available on BNB Chain Core Pool.
+Only available on BNB Chain Core Pool.
 {% endhint %}
 
 ## Overview
