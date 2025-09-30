@@ -8,6 +8,41 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 ## Audits
 
+### E-Mode
+
+**Scope**: E-Mode support in the Core pool on BNB Chain.
+
+* [Certik audit report (2025/09/19)](https://github.com/VenusProtocol/venus-protocol/blob/73fa9f21c321f9e1821a7b187aeca46033ca5484/audits/149_emode_certik_20250919.pdf)
+* [Quantstamp audit report (2025/09/03)](https://github.com/VenusProtocol/venus-protocol/blob/73fa9f21c321f9e1821a7b187aeca46033ca5484/audits/150_emode_quantstamp_20250903.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#614](https://github.com/VenusProtocol/venus-protocol/pull/614) in the `venus-protocol` repository:
+  - contracts/Comptroller/Diamond/facets/FacetBase.sol
+  - contracts/Comptroller/Diamond/facets/MarketFacet.sol
+  - contracts/Comptroller/Diamond/facets/PolicyFacet.sol
+  - contracts/Comptroller/Diamond/facets/RewardFacet.sol
+  - contracts/Comptroller/Diamond/facets/SetterFacet.sol
+  - contracts/Comptroller/Diamond/interfaces/IFacetBase.sol
+  - contracts/Comptroller/Diamond/interfaces/IMarketFacet.sol
+  - contracts/Comptroller/Diamond/interfaces/ISetterFacet.sol
+  - contracts/Comptroller/Diamond/Diamond.sol
+  - contracts/Comptroller/ComptrollerInterface.sol
+  - contracts/Comptroller/ComptrollerLensInterface.sol
+  - contracts/Comptroller/ComptrollerStorage.sol
+  - contracts/Comptroller/Types/PoolMarketId.sol
+  - contracts/InterfacesV8.sol
+  - contracts/Lens/ComptrollerLens.sol
+  - contracts/Lens/VenusLens.sol
+  - contracts/Liquidator/Liquidator.sol
+  - contracts/Tokens/VAI/VAIController.sol
+  - contracts/Tokens/VTokens/VToken.sol
+  - contracts/Utils/ErrorReporter.sol
+
+</details>
+
+
 ### Risk Stewards V1 and Core Pool Comptroller Interface Compatibility with Isolated Pools
 
 **Scope**: Venus Risk Steward contracts, compatible with the Risk Oracle contracts from Chaos Labs. These stewards are authorized to perform risk parameter changes (initially, only increasing the supply and borrow caps) without requiring VIPs. Additionally, the interface of the Comptroller contract on BNB Chain is extended with the functions defined in the Comptroller contract for Isolated Pools, simplifying interactions with both Comptroller contracts. Enabled in [VIP-544](https://app.venus.io/#/governance/proposal/544?chainId=56).

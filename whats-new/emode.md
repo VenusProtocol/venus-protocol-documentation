@@ -1,7 +1,7 @@
 # E-Mode in Venus Protocol
 
 {% hint style="info" %}
-Not yet available. It will be only available on BNB Chain Core Pool.
+Only available on BNB Chain Core Pool.
 {% endhint %}
 
 ## Overview
@@ -26,6 +26,8 @@ E-Mode operates as a **lightweight overlay on the Core Pool**, enabling per-user
 * **E-Mode Pools (poolId > 0)**: Each pool defines a set of assets (e.g., Stablecoin Pool, ETH Pool) with customized CF, LT, and LI for each asset in the pool. Users select a pool to activate its risk parameters.
 * **Pool-Market**: Markets are tracked per pool, allowing **pool-specific overrides** while preserving Core Pool compatibility.
 * **User Pool Tracking**: Each user is associated with exactly one pool at a time via `userPoolId`. Switching pools updates this mapping and triggers the relevant risk rules.
+
+<figure><img src="../.gitbook/assets/emode-groups.svg" alt=""><figcaption><p><em>Example of E-Mode pools - assets highlighted in red are not available for borrowing in the pool</em></p></figcaption></figure>
 
 This architecture ensures **flexibility, backward compatibility, and gas efficiency**, while giving users **higher borrowing efficiency and better risk isolation**.
 
@@ -60,7 +62,7 @@ This gives liquidators **smarter targeting, higher transparency, and better rewa
    Each E-Mode pool has a flag `allowCorePoolFallback` that determines whether assets not included in the E-Mode pool will use the Core Pool’s risk factors (i.e. CF, LT, LI). If fallback is not allowed, users must exit these markets (i.e., remove such assets as collateral) to ensure they aren’t unintentionally liquidated.
 
 5. **Enter E-Mode**  
-   Eligible assets follow E-Mode risk settings, while non-pool assets continue using Core Pool parameters.
+   Eligible assets follow E-Mode risk settings, while the behavior of assets not included in the E-Mode pool depends on the `allowCorePoolFallback` flag.
 
 6. **Enjoy Higher Efficiency**  
    Borrow and manage positions with optimized collateral and liquidation rules.

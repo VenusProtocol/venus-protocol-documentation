@@ -11,7 +11,8 @@
 ### Core Pool
 
 * Comptroller: [`0xfD36E2c2a6789Db23113685031d7F16329158384`](https://bscscan.com/address/0xfD36E2c2a6789Db23113685031d7F16329158384)
-* Venus Lens: [`0xe4C455cBf870A86399043B8A36A669FfA1583e95`](https://bscscan.com/address/0xe4C455cBf870A86399043B8A36A669FfA1583e95)
+* Comptroller Lens: [`0xd701C1fDAE34f9Cf242a4de19a2e7288f924EA1C`](https://bscscan.com/address/0xd701C1fDAE34f9Cf242a4de19a2e7288f924EA1C)
+* Venus Lens: [`0xf15A9c5aaDc327B383945D5821C7aC08Cdac7430`](https://bscscan.com/address/0xf15A9c5aaDc327B383945D5821C7aC08Cdac7430)
 * SwapRouter: [`0x8938E6dA30b59c1E27d5f70a94688A89F7c815a4`](https://bscscan.com/address/0x8938E6dA30b59c1E27d5f70a94688A89F7c815a4)
 * Underlying tokens:
   * AAVE: [`0xfb6115445Bff7b52FeB98650C87f44907E58f802`](https://bscscan.com/address/0xfb6115445Bff7b52FeB98650C87f44907E58f802)
@@ -520,7 +521,7 @@
 
 * Comptroller: [`0x94d1820b2D1c7c7452A163983Dc888CEC546b77D`](https://testnet.bscscan.com/address/0x94d1820b2D1c7c7452A163983Dc888CEC546b77D)
 * Comptroller Lens: [`0xACbc75C2D0438722c75D9BD20844b5aFda4155ea`](https://testnet.bscscan.com/address/0xACbc75C2D0438722c75D9BD20844b5aFda4155ea)
-* Venus Lens: [`0x70C38167d0cFDb2EE3be4564FC38ccE27B5C2D31`](https://testnet.bscscan.com/address/0x70C38167d0cFDb2EE3be4564FC38ccE27B5C2D31)
+* Venus Lens: [`0x01c4Ef2dD3327eee5F8dd29D825aDe730f225680`](https://testnet.bscscan.com/address/0x01c4Ef2dD3327eee5F8dd29D825aDe730f225680)
 * SwapRouter: [`0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0`](https://testnet.bscscan.com/address/0x83edf1deE1B730b7e8e13C00ba76027D63a51ac0)
 * Underlying tokens:
   * AAVE: [`0x4B7268FC7C727B88c5Fc127D41b491BfAe63e144`](https://testnet.bscscan.com/address/0x4B7268FC7C727B88c5Fc127D41b491BfAe63e144)
