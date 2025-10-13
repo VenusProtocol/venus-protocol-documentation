@@ -83,7 +83,7 @@ To protect the value of VAI and consider the USD value of the paired stablecoin,
 
 * Input: The user wishes to receive 1 USDT.
 * Calculation: The conversion rate to consider is max(1, 0.9) => 1 USDT = $1 = 1 VAI.
-* The user needs to send (1 USDT \* 1 $/USDT) 1 VAI + fees.
+* The user needs to send 1 VAI (1 USDT \* 1 $/USDT) + fees.
 * Assuming feeOut = 10%, 0.10 VAI will be sent to the treasury, and 1 VAI will be burnt, resulting in a total of 1.1 VAI provided by the user.
 * The fee is calculated considering the "principal" VAI amount that we are to burn (1 VAI = $1).
 {% endhint %}
@@ -95,8 +95,8 @@ To protect the value of VAI and consider the USD value of the paired stablecoin,
 
 * Input: The user desires to receive 10 USDT.
 * Calculation: The conversion rate to consider is max(1, 1.1) => 1 USDT = $1.1 = 1.1 VAI.
-* The user needs to send (10 USDT \* 1.1 $/USDT) 11 VAI + fees.
-* Assuming feeOut = 10%, 1.1 VAI will be sent to the treasury, and 10 VAI will be burnt, resulting in a total of 11.1 VAI provided by the user.
+* The user needs to send 11 VAI (10 USDT \* 1.1 $/USDT) + fees.
+* Assuming feeOut = 10%, 1.1 VAI will be sent to the treasury, and 10 VAI will be burnt, resulting in a total of 12.1 VAI provided by the user.
 * The fee is calculated considering the "principal" VAI amount that we are to burn (11 VAI = $11).
 {% endhint %}
 
@@ -109,7 +109,7 @@ To protect the value of VAI and consider the USD value of the paired stablecoin,
 
 * Input: The user wishes to send 10 USDT to the PSM.
 * Calculation: The conversion rate to consider is min(1, 0.9) => 10 USDT = $9 = 9 VAI.
-* The user will receive 10 USDT \* 0.9 = 9 VAI (- fees).
+* The user will receive 9 VAI (10 USDT \* 0.9) - fees.
 * Assuming feeIn = 10%, 0.9 VAI will be sent to the treasury, and 8.1 VAI will be sent to the user.
 * The fee is calculated considering the "principal" VAI amount (9 VAI = $9).
 {% endhint %}
@@ -122,7 +122,7 @@ To protect the value of VAI and consider the USD value of the paired stablecoin,
 * 1 USDT = $1.1 (conversion rate according to our oracles)
 * Input: The user wishes to send 10 USDT to the PSM.
 * Calculation: The conversion rate to consider is min(1, 1.1) => 10 USDT = $10 = 10 VAI.
-* The user will receive 10 USDT \* 1.0 = 10 VAI (- fees).
+* The user will receive 10 VAI (10 USDT \* 1.0) - fees.
 * Assuming feeIn = 10%, 1 VAI will be sent to the treasury, and 9 VAI will be sent to the user.
 * The fee is calculated considering the "principal" VAI amount (10 VAI = $10).
 {% endhint %}
