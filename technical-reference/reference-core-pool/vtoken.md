@@ -581,7 +581,7 @@ Transfers the underlying asset to the specified address for flash loan operation
 function transferOutUnderlyingFlashLoan(address payable to, uint256 amount) external
 ```
 
-Can only be called by the Comptroller contract. This function performs the actual transfer of the underlying asset and tracks the flash loan amount. If the `to` address is not the protocol share reserve, the flashLoanAmount is incremented by the amount transferred out.
+Can only be called by the Comptroller contract. This function performs the actual transfer of the underlying asset and tracks the flash loan amount.
 
 #### Parameters
 
@@ -599,7 +599,8 @@ Transfers the underlying asset from the specified address for flash loan repayme
 ```solidity
 function transferInUnderlyingFlashLoan(
     address payable from,
-    uint256 amountRepaid,
+    uint256 repaymentAmount,
+    uint256 totalFee,
     uint256 protocolFee
 ) external returns (uint256)
 ```
@@ -608,49 +609,18 @@ Can only be called by the Comptroller contract. This function performs the actua
 
 #### Parameters
 
-| Name         | Type            | Description                                           |
-|--------------|-----------------|-------------------------------------------------------|
-| from         | address payable | The address from which the underlying asset is transferred |
-| amountRepaid | uint256         | The amount of the underlying asset to transfer        |
-| protocolFee  | uint256         | The protocol fee amount to be transferred to the protocol share reserve |
+| Name             | Type            | Description                                           |
+|------------------|-----------------|-------------------------------------------------------|
+| from             | address payable | The address from which the underlying asset is transferred |
+| repaymentAmount  | uint256         | The amount of the underlying asset to transfer        |
+| totalFee         | uint256         | The total fee amount for the flash loan               |
+| protocolFee      | uint256         | The protocol fee amount to be transferred to the protocol share reserve |
 
 #### Return Values
 
 | Name | Type    | Description                           |
 |------|---------|---------------------------------------|
 | [0]  | uint256 | The actual amount transferred in      |
-
----
-
-### executeFlashLoan
-
-Executes a flash loan operation, providing uncollateralized assets to a receiver contract that must be repaid within the same transaction. The receiver contract must implement the required interface to handle the borrowed funds and return the principal plus applicable fees.
-
-```solidity
-function executeFlashLoan(
-    address initiator,
-    address payable receiver,
-    uint256 amount,  
-    bytes calldata param
-)
-    external
-    returns (uint256);
-```
-
-#### Parameters
-
-| Name      | Type            | Description                                                                 |
-|-----------|-----------------|-----------------------------------------------------------------------------|
-| initiator | address         | The address initiating the flash loan operation                             |
-| receiver  | address payable | The contract address receiving the flash loan assets                        |
-| amount    | uint256         | The amount of underlying assets to be loaned                                |
-| param     | bytes calldata  | Arbitrary data passed to the receiver contract for custom flash loan logic  |
-
-#### Return Values
-
-| Name | Type    | Description                                 |
-|------|---------|---------------------------------------------|
-| [0]  | uint256 | Status code (e.g., success/failure)         |
 
 ---
 
@@ -675,7 +645,7 @@ function calculateFlashLoanFee(uint256 amount)
 | Name          | Type     | Description                                 |
 |---------------|----------|---------------------------------------------|
 | [0] | uint256  | The total fee for the flash loan |
-| [1] | uint256  | The portion of the fee allocated to the protocol |
+| [1] | uint256  | The portion of the total fees that goes to the protocol share reserve |
 
 ---
 

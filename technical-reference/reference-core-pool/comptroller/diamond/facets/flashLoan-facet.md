@@ -17,12 +17,12 @@ function executeFlashLoan(
 ) external
 ```
 
-Transfers the specified assets to the receiver contract and handles repayment. Supports both full repayment and partial repayment modes where unpaid amounts become ongoing debt positions.
+Transfers the specified assets to the receiver contract and handles repayment. Supports both full repayment and partial repayment where unpaid amounts become ongoing debt positions.
 
 #### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| onBehalf | address payable | The address of the user whose debt position will be used for the flashLoan |
+| onBehalf | address payable | The address of the user whose debt position will be created in case of partial repayment |
 | receiver | address payable | The address of the contract that will receive the flashLoan amount and execute the operation |
 | vTokens | VToken[] | The addresses of the vToken assets to be loaned |
 | underlyingAmounts | uint256[] | The amounts of each underlying assets to be loaned |
