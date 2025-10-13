@@ -2,7 +2,10 @@
 
 ## Overview
 
-Venus Protocol has natively integrated a sophisticated **flash loan** mechanism directly into its Core Pool, enabling users to borrow assets without collateral, provided the loan is repaid within the **same transaction**. This feature unlocks powerful DeFi strategies including **arbitrage, self-liquidation,** and **portfolio rebalancing**, while maintaining the protocol's security and capital efficiency.
+Venus Protocol has natively integra- **Authorization**: Validates that the sender address is pre-authorized **(authorizedFlashLoan\[msg.sender\])** to execute flash loans.
+- **Delegation Check**: If the sender is not the onBehalf address, verifies delegation approval **(approvedDelegates\[onBehalf\]\[msg.sender\])**.
+- **Market Validation**: Ensures all requested vTokens are listed markets in the core pool.
+- **Address Validation**: Ensures the receiver contract is a non-zero address.d a sophisticated **flash loan** mechanism directly into its Core Pool, enabling users to borrow assets without collateral, provided the loan is repaid within the **same transaction**. This feature unlocks powerful DeFi strategies including **arbitrage, self-liquidation,** and **portfolio rebalancing**, while maintaining the protocol's security and capital efficiency.
 
 The system is designed for seamless integration with existing Venus markets, offering a **trustless** and composable foundation for advanced financial operations.
 
@@ -70,12 +73,12 @@ Handles core flash loan operations including:
 
 ```solidity
 function executeFlashLoan(
-    address payable initiator,
+    address payable onBehalf,
     address payable receiver,
     VToken[] memory vTokens,
     uint256[] memory underlyingAmounts,
     bytes memory param
-) external {
+) external nonReentrant {
     // Validation, asset transfer, fee calculation, repayment logic...
 }
 ```
@@ -193,19 +196,21 @@ This function computes the cost of a flash loan by calculating the **total fee**
 ```solidity
 function transferInUnderlyingFlashLoan(
     address payable from,
-    uint256 amountRepaid,
+    uint256 repaymentAmount,
+    uint256 totalFee,
     uint256 protocolFee
 ) external returns (uint256);
 ```
 
 **Explanation:**
-This function handles the repayment phase of flash loans. When called by the Comptroller, it performs several critical operations:
+This function handles the repayment phase of flash loans with enhanced parameter validation. When called by the Comptroller, it performs several critical operations:
 
 1.  **Authorization Check**: Ensures only the Comptroller contract can call this function.
-2.  **Asset Collection**: Transfers the repaid amount from the receiver contract to the vToken.
-3.  **Protocol Fee Distribution**: Automatically transfers the protocol fee portion to the Protocol Share Reserve.
-4.  **State Management**: Resets the flashLoanAmount to 0, allowing new flash loans.
-5.  **Event Emission**: Emits TransferInUnderlyingFlashLoan event for tracking.
+2.  **Asset Collection**: Transfers the repayment amount from the receiver contract to the vToken.
+3.  **Repayment Validation**: Validates that the actual transferred amount meets the minimum fee requirement.
+4.  **Protocol Fee Distribution**: Automatically transfers the protocol fee portion to the Protocol Share Reserve.
+5.  **State Management**: Resets the flashLoanAmount to 0, completing the flash loan cycle.
+6.  **Event Emission**: Emits TransferInUnderlyingFlashLoan event with detailed repayment information.
 
 ---
 
@@ -239,6 +244,17 @@ This governance-controlled function updates the core economic parameters for fla
 
 ---
 
+**5. `getCash`**
+
+```solidity
+function getCash() external view override returns (uint);
+```
+
+**Explanation:**
+This function provides cash balance reporting with modified behavior during active flash loan operations. During normal operations, it returns the actual underlying token balance held by the vToken contract. However, during active flash loans (`flashLoanAmount > 0`), it returns the reduced cash balance reflecting funds temporarily transferred out. The protocol internally uses `_getCashPriorWithFlashLoan()` which returns `getCashPrior() + flashLoanAmount` to calculate total available liquidity including active flash loans. This design ensures accurate accounting while maintaining protocol stability through consistent interest rate and exchange rate calculations.
+
+---
+
 ### **4. Flash Loan Receiver Standards**
 
 There are two standardized interfaces for contracts wishing to receive and handle flash loans from Venus Protocol:
@@ -251,26 +267,28 @@ There are two standardized interfaces for contracts wishing to receive and handl
 
 ```solidity
     function executeOperation(
-        VToken[] calldata assets,
+        VToken[] calldata vTokens,
         uint256[] calldata amounts,
         uint256[] calldata premiums,
         address initiator,
+        address onBehalf,
         bytes calldata param
-    ) external returns (bool, uint256[] memory);
+    ) external returns (bool success, uint256[] memory repayAmounts);
 ```
 
 **Key Parameters:**
 
-- **assets**: Array of VToken addresses borrowed
+- **vTokens**: Array of VToken addresses borrowed
 - **amounts**: Corresponding amounts for each asset
 - **premiums**: Fee amounts for each asset
 - **initiator**: Address that initiated the flash loan
+- **onBehalf**: Address whose debt position will be used for any unpaid balance
 - **param**: Custom encoded data for strategy execution
 
 **Return Value:**
 
-- **bool**: Success status (must return true for transaction to complete)
-- **uint256[]**: Array of actual repayment amounts for partial repayment scenarios
+- **success**: Success status (must return true for transaction to complete)
+- **repayAmounts**: Array of actual repayment amounts for each asset
 
 **Base Contract: FlashLoanReceiverBase**
 
@@ -280,51 +298,16 @@ There are two standardized interfaces for contracts wishing to receive and handl
 
 **Use Cases:** Cross-protocol arbitrage, multi-asset liquidations, complex portfolio rebalancing.
 
-#### **2\. IFlashLoanSimpleReceiver - Single Asset Standard**
-
-**Purpose:** For simpler strategies requiring only a single asset flash loan.
-
-**Interface: IFlashLoanSimpleReceiver**
-
-```solidity
-    function executeOperation(
-        address asset,
-        uint256 amount,
-        uint256 premium,
-        address initiator,
-        bytes calldata param
-    ) external returns (bool)
-```
-
-**Key Parameters:**
-
-- **asset**: Single VToken address borrowed
-- **amount**: Amount of the asset
-- **premium**: Fee amount
-- **initiator**: Address that initiated the flash loan
-- **param**: Custom encoded data for strategy execution
-
-**Return Value:**
-
-- **bool**: Success status (must return true for transaction completion)
-
-**Base Contract: FlashLoanSimpleReceiverBase**
-
-- Provides immutable VToken reference
-- Inherited by single-asset receiver contracts
-- Simplified implementation structure
-
-**Use Cases:** Single-asset arbitrage, simple liquidations, debt refinancing
-
 ### **Core Requirements for Both Standards**
 
 For Both Standards, Receiver Contracts Must:
 
 1.  **Receive Assets**: Acknowledge and handle the received flash-loaned assets.
 2.  **Execute Strategy**: Perform intended operations (arbitrage, liquidation, etc.)
-3.  **Ensure Repayment**: Ensure sufficient funds are available and approved for pull-based repayment:
-    - For full repayment: Approve vToken for amount + premium
-    - For partial repayment: Return actual repayment amounts array
+3.  **Ensure Repayment**: Ensure sufficient funds are available and approved for repayment:
+    - Must approve at least the fee amount to each vToken contract
+    - Return actual repayment amounts in the repayAmounts array
+    - For partial repayment: unpaid balance becomes debt against onBehalf address
 4.  **Return Success**: Return true to signal successful operation.
 5.  **Handle Reversion**: If operation fails, return false or revert to unwind the entire transaction.
 
@@ -355,6 +338,8 @@ For Both Standards, Receiver Contracts Must:
 - **`InvalidComptroller`** - Thrown if the caller is not the Comptroller contract.
 - **`FlashLoanAlreadyActive`** - Thrown if a flash loan is already in progress.
 - **`NotAnApprovedDelegate`** - Thrown when the sender is not an approved delegate for the onBehalf address.
+- **`MarketNotListed`** - Thrown when trying to flash loan from a market that is not listed in the core pool.
+- **`InsufficientRepayment`** - Thrown when the actual transferred amount is less than the required total fee.
 
 ---
 
