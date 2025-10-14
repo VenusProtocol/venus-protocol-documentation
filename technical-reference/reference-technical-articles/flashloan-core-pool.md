@@ -2,7 +2,7 @@
 
 ## Overview
 
-Venus Protocol has natively integra- **Authorization**: Validates that the sender address is pre-authorized **(authorizedFlashLoan\[msg.sender\])** to execute flash loans.
+Venus Protocol has natively integrated a sophisticated **flash loan** mechanism directly into its Core Pool, enabling users to borrow assets without collateral, provided the loan is repaid within the **same transaction**. This feature unlocks powerful DeFi strategies including **arbitrage, self-liquidation,** and **portfolio rebalancing**, while maintaining the protocol's security and capital efficiency.
 - **Delegation Check**: If the sender is not the onBehalf address, verifies delegation approval **(approvedDelegates\[onBehalf\]\[msg.sender\])**.
 - **Market Validation**: Ensures all requested vTokens are listed markets in the core pool.
 - **Address Validation**: Ensures the receiver contract is a non-zero address.d a sophisticated **flash loan** mechanism directly into its Core Pool, enabling users to borrow assets without collateral, provided the loan is repaid within the **same transaction**. This feature unlocks powerful DeFi strategies including **arbitrage, self-liquidation,** and **portfolio rebalancing**, while maintaining the protocol's security and capital efficiency.
@@ -343,7 +343,7 @@ For Both Standards, Receiver Contracts Must:
 
 ---
 
-## Example FlashLoan Flow: Alice's Arbitrage\*\*
+## Example FlashLoan Flow: Alice's Arbitrage
 
 **User:** Alice (has 10 ETH collateral on Venus)
 
