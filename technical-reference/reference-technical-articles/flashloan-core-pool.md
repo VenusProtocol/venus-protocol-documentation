@@ -3,9 +3,6 @@
 ## Overview
 
 Venus Protocol has natively integrated a sophisticated **flash loan** mechanism directly into its Core Pool, enabling users to borrow assets without collateral, provided the loan is repaid within the **same transaction**. This feature unlocks powerful DeFi strategies including **arbitrage, self-liquidation,** and **portfolio rebalancing**, while maintaining the protocol's security and capital efficiency.
-- **Delegation Check**: If the sender is not the onBehalf address, verifies delegation approval **(approvedDelegates\[onBehalf\]\[msg.sender\])**.
-- **Market Validation**: Ensures all requested vTokens are listed markets in the core pool.
-- **Address Validation**: Ensures the receiver contract is a non-zero address.d a sophisticated **flash loan** mechanism directly into its Core Pool, enabling users to borrow assets without collateral, provided the loan is repaid within the **same transaction**. This feature unlocks powerful DeFi strategies including **arbitrage, self-liquidation,** and **portfolio rebalancing**, while maintaining the protocol's security and capital efficiency.
 
 The system is designed for seamless integration with existing Venus markets, offering a **trustless** and composable foundation for advanced financial operations.
 
@@ -33,14 +30,14 @@ A flash loan is an uncollateralized loan that must be initiated and repaid withi
 
 ### The Venus Innovation: Flexible Repayment & Debt Conversion
 
-Venus Protocol significantly enhances the basic flash loan model by introducing a **dual-mode repayment system**, adding a crucial layer of flexibility and user safety.
+Venus Protocol significantly enhances the basic flash loan model by introducing a **partial repayment system**, adding a crucial layer of flexibility and user safety.
 
 **1\. Instant Full Repayment (Classic Model):**
 The borrower repays the entire principal plus the accrued fee within the transaction. This is the standard flash loan model used for strategies like arbitrage and liquidation, where the profit is guaranteed to cover the cost.
 
 **2\. Partial Repayment & Automatic Debt Conversion (Venus Model):**
-This is a unique fail-safe mechanism. If a borrower cannot fully repay the flash loan but has existing supplied collateral on Venus, the protocol does not force a revert. Instead, the unpaid shortfall is automatically converted into a standard borrow position against the user's existing collateral. This prevents immediate liquidation from a failed flash loan and allows for more complex, multi-block strategy planning.
-**Crucially, for users with no collateral, full repayment remains mandatory.** Any shortfall will cause the transaction to revert, protecting the protocol from unsecured debt.
+This is a unique fail-safe mechanism. The user must repay at least the flash loan fee; otherwise, the transaction will revert. However, if a borrower repays the fee but cannot fully repay the principal and has existing supplied collateral on Venus, the protocol does not force a full revert. Instead, the unpaid principal shortfall is automatically converted into a standard borrow position against the user's existing collateral. This prevents immediate liquidation from a failed flash loan and allows for more complex, multi-block strategy planning.
+**Crucially, for users with no collateral, full repayment of both principal and fee remains mandatory.** Any shortfall will cause the transaction to revert, protecting the protocol from unsecured debt.
 
 ### Example: A Practical Use Case
 
@@ -52,7 +49,10 @@ Let's imagine a user, Alice, who has supplied 10 ETH as collateral on Venus.
 4.  **Outcome B (Partial Success - Venus's Advantage):**
     - Her strategy only partially works. By the end of the transaction, she has only generated 80,000 USDC, leaving a shortfall of 20,000 USDC plus the fee.
     - **On another protocol,** her transaction would revert, she'd lose her gas fees, and potentially miss her profit opportunity.
-    - **On Venus,** because she has 10 ETH as collateral, the protocol **does not revert**. Instead, it automatically converts the 20,000 USDC shortfall into a standard borrow position against her 10 ETH. Her flash loan is settled, and she now has a regular debt to manage over time, potentially still allowing her to profit from the 80,000 USDC she successfully generated.
+    - **On Venus,** because she has 10 ETH as collateral and she has repaid the flashLoan fee amount, the protocol **does not revert**. Instead, it automatically converts the 20,000 USDC shortfall into a standard borrow position against her 10 ETH. Her flash loan is settled, and she now has a regular debt to manage over time, potentially still allowing her to profit from the 80,000 USDC she successfully generated.
+5. **Outcome C (Failure):**
+    - **Her strategy fails completely.** She is only able to repay 50 USDC of the 90 USDC fee, leaving both a fee shortfall and the full principal unpaid.
+    - In this scenario, the transaction will revert. The protocol's safety mechanism triggers because the user must repay at least the full flash loan fee, regardless of their collateral position. This protects the protocol from accumulating bad debt.
 
 This innovative approach makes Venus flash loans both more powerful and more accessible, enabling a wider range of financial strategies while maintaining robust protocol security.
 
@@ -84,7 +84,7 @@ function executeFlashLoan(
 ```
 
 **Explanation:**
-This function serves as the main entry point for initiating multi-asset flash loans. It orchestrates the complete flash loan lifecycle through a phased approach: validating request parameters, transferring multiple assets, executing the user's custom logic via a callback, and enforcing repayment with fee distribution. The entire operation is atomic; if any condition fails (e.g., insufficient repayment or unauthorized access), the transaction reverts, ensuring protocol safety.
+This function serves as the main entry point for initiating both single or multi-asset flash loans. It orchestrates the complete flash loan lifecycle through a phased approach: validating request parameters, transferring multiple assets, executing the user's custom logic via a callback, and enforcing repayment with fee distribution. The entire operation is atomic; if any condition fails (e.g., insufficient repayment or unauthorized access), the transaction reverts, ensuring protocol safety.
 
 ### Step-by-Step Workflow:
 
@@ -92,31 +92,34 @@ This function serves as the main entry point for initiating multi-asset flash lo
 
 - **Array Integrity**: Ensures the vTokens and underlyingAmounts arrays are non-empty and of identical length to prevent parameter mismatches.
 - **Asset Checks**: For each vToken, verifies that:
+  - The vToken is listed.
   - Flash loans are enabled for the asset **(isFlashLoanEnabled())**.
   - The requested loan amount is non-zero.
-- **Authorization**: Validates that the initiator address is pre-authorized **(authorizedFlashLoan\[initiator\])** to execute flash loans.
+- **Authorization**: 
+    - **Initiator Authorization:** Validates that the initiating contract (msg.sender) is pre-authorized (authorizedFlashLoan[msg.sender]) by the protocol to execute flash loans. This ensures only whitelisted, secure contracts can perform these operations.
+    - **Delegate Authorization:** If the flash loan is executed on behalf of another user (onBehalf), it additionally validates that the initiator is an approved delegate (approvedDelegates[onBehalf][msg.sender]) for that specific user. This enables delegated trading strategies while maintaining security.
 - **Address Validation**: Ensures the receiver contract is a non-zero address.
 
 #### 2. **Phased Execution**
 
 The core logic is delegated to an internal function that structures the process into three distinct phases:
 
-##### **Phase 1: Pre-Transfer Setup & Asset Disbursement**
+#### **Phase 1: Pre-Transfer Setup & Asset Disbursement**
 
 - **Fee Calculation**: Computes the total fee and protocol fee for each asset using the vToken's fee parameters.
 - **Asset Transfer**: Calls transferOutUnderlying on each vToken contract to disburse the underlying assets to the receiver contract.
 - **Balance Snapshot**: Records the cash balance of each vToken market after transfer for subsequent repayment verification.
 
-##### **Phase 2: User Logic Execution**
+#### **Phase 2: User Logic Execution**
 
-- **Callback Invocation**: Calls executeOperation on the receiver contract, passing the loan details (assets, amounts, fees) and the param data. This is where the user's custom strategy (e.g., arbitrage, liquidation) is executed.
+- **Callback Invocation**: Calls executeOperation on the receiver contract, passing the loan details (assets, amounts, fees, initiator, onBehalf) and the param data. This is where the user's custom strategy (e.g., arbitrage, liquidation) is executed.
 - **Approval Tracking**: Returns an array (tokensApproved) indicating whether the receiver approved each asset for repayment transfer.
 
-##### **Phase 3: Repayment Handling & Settlement**
+#### **Phase 3: Repayment Handling & Settlement**
 
 - **Repayment Processing**: For each asset, handles repayment based on the receiver's approval and the amount transferred back:
   - **Full Repayment**: If the receiver approved and transferred the full amount (principal + fees), the loan is settled.
-  - **Debt Conversion**: If the receiver did not approve or only partially repaid, the shortfall is converted into a standard borrow position for the initiator (requires existing collateral).
+  - **Debt Conversion**: If the receiver did not approve or only partially repaid(atleast the fees), the shortfall is converted into a standard borrow position for the onBehalf (requires existing collateral).
 - **Fee Distribution**: Routes the protocol's share of fees to the Protocol Share Reserve (PSR) and credits supplier fees to the respective vToken markets.
 - **Balance Verification**: Ensures the final vToken balances reflect the correct repayment amounts, reverting if discrepancies are detected.
 
@@ -164,14 +167,14 @@ Manages the underlying asset transfers, flash loan fee calculations, and creatio
 **1.`transferOutUnderlyingFlashLoan`**
 
 ```solidity
-function transferOutUnderlyingFlashLoan(address payable to, uint256 amount) external;
+function transferOutUnderlyingFlashLoan(address payable to, uint256 amount) external nonReentrant;
 ```
 
 **Explanation:**
-This function is the work horse for moving assets during flash loan operations. When `PolicyFacet.sol` calls this during a flash loan, it performs several critical actions:
+This function is the work horse for moving assets during flash loan operations. When `FlashLoanFacet.sol` calls this during a flash loan, it performs several critical actions:
 
 1.  **Authorization Check**: Ensures only the Comptroller contract can call this function.
-2.  **Flash Loan State Management**: Sets the flashLoanAmount to track the active loan and prevents concurrent flash loans.
+2.  **Flash Loan State Management**: Sets the flashLoanAmount to track the active flashloan and prevents concurrent flash loans.
 3.  **Asset Transfer**: Performs the low-level transfer of the underlying asset to the receiver address.
 4.  **Event Emission**: Emits TransferOutUnderlyingFlashLoan event for tracking.
 
@@ -199,7 +202,7 @@ function transferInUnderlyingFlashLoan(
     uint256 repaymentAmount,
     uint256 totalFee,
     uint256 protocolFee
-) external returns (uint256);
+) external nonReentrant returns (uint256);
 ```
 
 **Explanation:**
@@ -210,7 +213,7 @@ This function handles the repayment phase of flash loans with enhanced parameter
 3.  **Repayment Validation**: Validates that the actual transferred amount meets the minimum fee requirement.
 4.  **Protocol Fee Distribution**: Automatically transfers the protocol fee portion to the Protocol Share Reserve.
 5.  **State Management**: Resets the flashLoanAmount to 0, completing the flash loan cycle.
-6.  **Event Emission**: Emits TransferInUnderlyingFlashLoan event with detailed repayment information.
+6.  **Event Emission**: Emits `TransferInUnderlyingFlashLoan` event with detailed repayment information.
 
 ---
 
@@ -231,9 +234,7 @@ An administrative function that allows governance to explicitly enable or disabl
 function setFlashLoanFeeMantissa(
     uint256 flashLoanFeeMantissa_,
     uint256 flashLoanProtocolShare_
-)
-    external
-    returns (uint256);
+) external returns (uint256);
 ```
 
 **Explanation:**
@@ -251,13 +252,15 @@ function getCash() external view override returns (uint);
 ```
 
 **Explanation:**
-This function provides cash balance reporting with modified behavior during active flash loan operations. During normal operations, it returns the actual underlying token balance held by the vToken contract. However, during active flash loans (`flashLoanAmount > 0`), it returns the reduced cash balance reflecting funds temporarily transferred out. The protocol internally uses `_getCashPriorWithFlashLoan()` which returns `getCashPrior() + flashLoanAmount` to calculate total available liquidity including active flash loans. This design ensures accurate accounting while maintaining protocol stability through consistent interest rate and exchange rate calculations.
+This function provides cash balance reporting with modified behavior during active flash loan operations. During normal operations, it returns the actual underlying token balance held by the vToken contract. However, during active flash loans (`flashLoanAmount > 0`), it returns the reduced cash balance reflecting funds temporarily transferred out. 
+
+The protocol now internally uses `_getCashPriorWithFlashLoan()` which returns `getCashPrior() + flashLoanAmount` to calculate total available liquidity including active flash loans. This design ensures accurate accounting while maintaining protocol stability through consistent interest rate and exchange rate calculations.
 
 ---
 
 ### **4. Flash Loan Receiver Standards**
 
-There are two standardized interfaces for contracts wishing to receive and handle flash loans from Venus Protocol:
+There is a standardized interface for contracts wishing to receive and handle flash loans from Venus Protocol:
 
 #### **1\. IFlashLoanReceiver - Multi-Asset Standard**
 
@@ -298,9 +301,9 @@ There are two standardized interfaces for contracts wishing to receive and handl
 
 **Use Cases:** Cross-protocol arbitrage, multi-asset liquidations, complex portfolio rebalancing.
 
-### **Core Requirements for Both Standards**
+### **Core Requirements for the Standard**
 
-For Both Standards, Receiver Contracts Must:
+Receiver Contracts Must:
 
 1.  **Receive Assets**: Acknowledge and handle the received flash-loaned assets.
 2.  **Execute Strategy**: Perform intended operations (arbitrage, liquidation, etc.)
@@ -374,12 +377,25 @@ For Both Standards, Receiver Contracts Must:
     - **Converts shortfall** into a borrow position against Alice's 10 ETH collateral
 5.  **Result:** Transaction does not revert. Alice now owes 590 USDC to Venus.
 
+### **3\. Fee Not Paid (Critical Failure → Transaction Reverts)**
+
+1. **Request:** Alice's ArbitrageContract calls executeFlashLoan() requesting 100,000 USDC.
+2. **Transfer:** Venus sends 100,000 USDC + calculates fee (90 USDC)
+3. **Execution:**
+    - Arbitrage fails completely → only gets 50 USDC
+    - **Approves insufficient amount** of 50 USDC (less than the 90 USDC fee)
+4. **Validation Failure:**
+    - Venus attempts to pull funds but detects fee shortfall
+    - Protocol requires at minimum the full flash loan fee to be repaid
+5 **Result:** Transaction reverts completely. No debt conversion occurs. Alice loses gas fees but protocol remains secure.
+
 ### **Key Mechanism**
 
-- **Full Repayment:** Strategy must profit enough to cover principal + fees
-- **Partial Repayment:** Unique Venus feature. Requires existing collateral
-- **No Collateral?** Full repayment mandatory; otherwise transaction reverts
-- **Auto-Conversion:** Shortfall automatically becomes secured debt, preventing liquidation
+- **Full Repayment:** Strategy must profit enough to cover principal + fees.
+- **Partial Repayment:** Unique Venus feature. Requires existing collateral and atleast fees repayment.
+- **Fee Not Paid:** Transaction always reverts - critical safety mechanism.
+- **No Collateral?** Full repayment mandatory; otherwise transaction reverts.
+- **Auto-Conversion:** Shortfall automatically becomes secured debt, preventing liquidation.
 
 ---
 
