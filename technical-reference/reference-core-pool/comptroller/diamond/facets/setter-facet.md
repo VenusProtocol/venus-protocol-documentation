@@ -593,6 +593,28 @@ function _setForcedLiquidationForUser(address borrower, address vTokenBorrowed, 
 
 ---
 
+### setWhiteListFlashLoanAccount
+
+```solidity
+function setWhiteListFlashLoanAccount(address account, bool _isWhiteListed) external 
+```
+**Explanation:**  
+This function grants or revokes an account's permission to use the protocol's flash loan feature, enforcing access control and address validation.
+
+#### Parameters
+| Name        | Type    | Description                                 |
+|-------------|---------|---------------------------------------------|
+| account     | address | The account to whitelist or remove          |
+| _isWhiteListed | bool | True to whitelist, false to remove          |
+
+#### Return Values
+| Name | Type | Description |
+|------|------|-------------|
+| None |      |             |
+
+---
+
+
 ### \_setXVSToken
 
 Set the address of the XVS token

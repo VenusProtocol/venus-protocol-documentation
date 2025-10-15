@@ -572,3 +572,126 @@ function borrowBalanceStored(address account) public view returns (uint256)
 | \[0] | uint256 | The calculated balance |
 
 ---
+
+### transferOutUnderlyingFlashLoan
+
+Transfers the underlying asset to the specified address for flash loan operations.
+
+```solidity
+function transferOutUnderlyingFlashLoan(address payable to, uint256 amount) external
+```
+
+Can only be called by the Comptroller contract. This function performs the actual transfer of the underlying asset and tracks the flash loan amount.
+
+#### Parameters
+
+| Name   | Type            | Description                                        |
+|--------|-----------------|---------------------------------------------------|
+| to     | address payable | The address to which the underlying asset is transferred |
+| amount | uint256         | The amount of the underlying asset to transfer     |
+
+---
+
+### transferInUnderlyingFlashLoan
+
+Transfers the underlying asset from the specified address for flash loan repayment.
+
+```solidity
+function transferInUnderlyingFlashLoan(
+    address payable from,
+    uint256 repaymentAmount,
+    uint256 totalFee,
+    uint256 protocolFee
+) external returns (uint256)
+```
+
+Can only be called by the Comptroller contract. This function performs the actual transfer of the underlying asset for flash loan repayment and handles protocol fee distribution to the protocol share reserve.
+
+#### Parameters
+
+| Name             | Type            | Description                                           |
+|------------------|-----------------|-------------------------------------------------------|
+| from             | address payable | The address from which the underlying asset is transferred |
+| repaymentAmount  | uint256         | The amount of the underlying asset to transfer        |
+| totalFee         | uint256         | The total fee amount for the flash loan               |
+| protocolFee      | uint256         | The protocol fee amount to be transferred to the protocol share reserve |
+
+#### Return Values
+
+| Name | Type    | Description                           |
+|------|---------|---------------------------------------|
+| [0]  | uint256 | The actual amount transferred in      |
+
+---
+
+### calculateFlashLoanFee
+
+Calculates the total fee and protocol fee for a flash loan amount. Reverts if flash loans are disabled.
+
+```solidity
+function calculateFlashLoanFee(uint256 amount)
+    public
+    view
+    returns (uint256, uint256);
+```   
+#### Parameters
+
+| Name   | Type    | Description                          |
+|--------|---------|--------------------------------------|
+| amount | uint256 | The amount of the flash loan |
+
+#### Return Values
+
+| Name          | Type     | Description                                 |
+|---------------|----------|---------------------------------------------|
+| [0] | uint256  | The total fee for the flash loan |
+| [1] | uint256  | The portion of the total fees that goes to the protocol share reserve |
+
+---
+
+### setFlashLoanEnabled
+
+Sets flash loan status for the market. Governance-restricted.
+
+```solidity
+function setFlashLoanEnabled(bool enabled) external returns (uint256)
+```   
+
+#### Parameters
+| Name    | Type | Description                               |
+|---------|------|-------------------------------------------|
+| enabled | bool | True to enable flash loans, false to disable |
+
+#### Return Values
+| Name | Type    | Description                                 |
+|------|---------|---------------------------------------------|
+| [0]  | uint256 | Status code (e.g., success/failure)         |
+
+---
+
+### setFlashLoanFeeMantissa
+
+Updates the flash loan fee parameters. Governance-restricted.
+
+```solidity
+function setFlashLoanFeeMantissa(
+    uint256 flashLoanFeeMantissa_,
+    uint256 flashLoanProtocolShare_
+)
+    external
+    returns (uint256);
+```
+
+#### Parameters
+| Name                  | Type    | Description                                 |
+|-----------------------|---------|---------------------------------------------|
+| flashLoanFeeMantissa_  | uint256 | New flash loan fee (scaled by 1e18) |
+| flashLoanProtocolShare_  | uint256 | New protocol fee share (scaled by 1e18) |
+
+#### Return Values
+| Name | Type    | Description                                 |
+|------|---------|---------------------------------------------|
+| [0]  | uint256 | Status code (e.g., success/failure)         |
+
+---
+
