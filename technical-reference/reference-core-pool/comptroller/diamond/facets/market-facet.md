@@ -194,6 +194,33 @@ function enterMarkets(address[] vTokens) external returns (uint256[])
 
 ---
 
+### enterMarketBehalf
+
+Add assets to be included in account liquidity calculation
+
+```solidity
+function enterMarketBehalf(address onBehalf, address vToken) external returns (uint256)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| onBehalf | address | The address of the account entering the market |
+| vToken | address | The address of the vToken market to enable for the account |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | uint256 indicating the result (0 = success, non-zero = failure) |
+
+#### ❌ Errors
+
+* NotAnApprovedDelegate thrown if `msg.sender` is not the account itself or an approved delegate
+
+---
+
 ### unlistMarket
 
 Unlists the given vToken market from the Core Pool (`poolId = 0`) by setting `isListed` to false
@@ -486,7 +513,7 @@ function getLiquidationIncentive(address vToken) external view returns (uint256)
 
 ### getEffectiveLtvFactor
 
-Returns the effective loan-to-value factor (collateral factor or liquidation threshold) for a given account and market.
+Get the effective loan-to-value factor (collateral factor or liquidation threshold) for a given account and market.
 
 ```solidity
 function getEffectiveLtvFactor(address account, address vToken, enum WeightFunction weightingStrategy) external view returns (uint256)
@@ -510,7 +537,7 @@ function getEffectiveLtvFactor(address account, address vToken, enum WeightFunct
 
 ### getEffectiveLiquidationIncentive
 
-Get the Effective liquidation Incentive for a given account and market
+Get the Effective Liquidation Incentive for a given account and market
 
 ```solidity
 function getEffectiveLiquidationIncentive(address account, address vToken) external view returns (uint256)
