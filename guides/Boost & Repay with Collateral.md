@@ -111,7 +111,9 @@ Leverage is a double-edged sword — Boost makes it easy to wield, but the respo
 
 # **How Venus Calculates Your Maximum Boost (With Example)**
 
-Venus automatically determines the highest safe leverage so your health factor stays above 1 after using Boost.
+Venus automatically determines the highest safe leverage so your health factor is above 1 after using Boost.
+
+Note: Upon execution, the user's health factor will be greater than 1, which avoids immediate liquidation. Thereafter, the user must continue monitoring their health factor, as the protocol is not responsible for any subsequent liquidations that may occur.
 
 ## **Internal Formula**
 
