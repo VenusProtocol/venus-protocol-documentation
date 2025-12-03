@@ -14,7 +14,7 @@ The Boost tab enables users to open a leveraged position by fully utilizing thei
 * The interface displays the maximum “available to boost” amount, which is derived from the user’s remaining borrowing power.  
 * When a Boost is executed, the protocol uses a flash loan to temporarily borrow a larger amount, swaps it into the chosen collateral asset, and supplies it — all in a single transaction.  
 * This results in a leveraged position consisting of a larger supplied (collateral) amount and a corresponding borrowed amount.  
-* Safety mechanisms ensure the resulting health factor stays safely above 1, preventing immediate liquidation.
+* Upon execution, the user's health factor will be greater than 1, which avoids immediate liquidation. Thereafter, the user must continue monitoring their health factor, as the protocol is not responsible for any subsequent liquidations that may occur.
 
 **Key benefit**
 
