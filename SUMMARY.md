@@ -8,6 +8,7 @@
 
 ## What's New?
 
+* [Leveraged Positions](whats-new/leveraged-positions.md)
 * [E-Mode](whats-new/emode.md)
 * [Isolated Pools](whats-new/isolated-pools.md)
 * [Reward Distributor](whats-new/reward-distributor.md)
@@ -53,6 +54,7 @@
 * [Gasless Transactions on zkSync](guides/gasless-transactions-zksync.md)
 * [Import Positions](guides/import-positions.md)
 * [Enable E-mode](guides/enable-e-mode.md)
+* [Boost and Repay with Collateral](guides/leveraged-positions.md)
 
 ## Technical reference
 
