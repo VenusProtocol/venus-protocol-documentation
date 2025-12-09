@@ -7,6 +7,7 @@ Venus Protocol contracts are divided in these repositories:
 * [venus-protocol](https://github.com/VenusProtocol/venus-protocol): The core protocol is located in this repo. It contains logic central to lending and borrowing of the core pool.
 * [governance-contracts](https://github.com/VenusProtocol/governance-contracts): The contracts used for proposing, voting and executing changes are kept in the \`governance-contracts repo.
 * [token-bridge](https://github.com/VenusProtocol/token-bridge): The contracts use to bridge XVS to different networks.
+* [venus-periphery](https://github.com/VenusProtocol/venus-periphery): Auxiliary contracts for advanced DeFi operations including leverage strategies and token swaps.
 
 ## Isolated Pools Contracts
 
@@ -177,3 +178,15 @@ The core logic for governance proposals is in the [GovernorBraveDelegate](https:
 To enhance security of the protocol, Venus Protocol uses the [AccessControlManager](https://github.com/VenusProtocol/governance-contracts/blob/main/contracts/Governance/AccessControlManager.sol) to grant accounts access to call specific functions on contracts. This contract is responsible for granting and revoking those permissions. It also provides a getter to check if an address is allowed to call a specific function.
 
 **Timelock** Once a proposal has succeeded its execution is managed by the [Timelock](https://github.com/VenusProtocol/governance-contracts/blob/main/contracts/Governance/Timelock.sol) contract. The Timelock can place the proposal in a queue for execution and execute the proposal. It also enables canceling the proposal.
+
+## Periphery Contracts
+
+Periphery contracts extend core protocol functionality with auxiliary features for advanced DeFi operations.
+
+[**LeverageStrategiesManager**](reference-periphery/leverage-strategies-manager.md)
+
+The [LeverageStrategiesManager](https://github.com/VenusProtocol/venus-periphery/blob/main/contracts/LeverageManager/LeverageStrategiesManager.sol) enables users to enter and exit leveraged positions atomically using flash loans. It consolidates multiple operations (borrow, swap, supply) into single transactions.
+
+[**SwapHelper**](reference-periphery/swap-helper.md)
+
+The [SwapHelper](https://github.com/VenusProtocol/venus-periphery/blob/main/contracts/SwapHelper/SwapHelper.sol) provides a secure multicall interface for token swaps with backend signature verification. It enables authorized interactions with external DEX protocols.
