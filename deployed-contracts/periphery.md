@@ -2,5 +2,5 @@
 
 ## BNB Chain Mainnet
 
-- SwapHelper: [`0xe1a3b4189F56Cf38747BE79348b8664Ef18cCFd1`](https://bscscan.com/address/0xe1a3b4189F56Cf38747BE79348b8664Ef18cCFd1)
-- LeverageStrategiesManager: [`0x51438311922e88AEDF0B111944dD601DCB3c4BF9`](https://bscscan.com/address/0x51438311922e88AEDF0B111944dD601DCB3c4BF9)
+- SwapHelper: [`0xD79be25aEe798Aa34A9Ba1230003d7499be29A24`](https://bscscan.com/address/0xD79be25aEe798Aa34A9Ba1230003d7499be29A24)
+- LeverageStrategiesManager: [`0x03F079E809185a669Ca188676D0ADb09cbAd6dC1`](https://bscscan.com/address/0x03F079E809185a669Ca188676D0ADb09cbAd6dC1)

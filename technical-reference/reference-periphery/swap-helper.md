@@ -64,7 +64,7 @@ The contract is designed to be called by the LeverageStrategiesManager during fl
 
 ```solidity
 bytes32 internal constant MULTICALL_TYPEHASH =
-    keccak256("Multicall(bytes[] calls,uint256 deadline,bytes32 salt)");
+    keccak256("Multicall(address caller,bytes[] calls,uint256 deadline,bytes32 salt)");
 ```
 
 # Solidity API
@@ -98,7 +98,7 @@ function multicall(
 3. Verify signature is provided
 4. Check salt has not been used
 5. Mark salt as used
-6. Recover signer from EIP-712 digest and verify against `backendSigner`
+6. Recover signer from EIP-712 digest (including caller address) and verify against `backendSigner`
 7. Execute each call atomically
 8. Emit `MulticallExecuted` event
 
@@ -269,6 +269,7 @@ function setBackendSigner(address newSigner) external onlyOwner
 
 All multicall operations require a valid EIP-712 signature from the `backendSigner`. The signature covers:
 
+- The caller address (prevents cross-address replay)
 - The encoded calls array
 - The deadline timestamp
 - A unique salt
@@ -276,6 +277,7 @@ All multicall operations require a valid EIP-712 signature from the `backendSign
 This prevents:
 
 - Unauthorized swap execution
+- Cross-address signature replay attacks
 - Replay attacks (via salt tracking)
 - Stale quote execution (via deadline)
 
@@ -341,6 +343,22 @@ interface ISwapHelper {
 }
 ```
 
+#### Signature Generation
+
+When generating signatures for the `multicall` function, the backend must include the caller address in the EIP-712 digest:
+
+```solidity
+bytes32 digest = keccak256(abi.encode(
+    MULTICALL_TYPEHASH,
+    callerAddress,        // Address that will call multicall
+    keccak256(abi.encodePacked(callHashes)),
+    deadline,
+    salt
+));
+```
+
+This ensures signatures are specific to the address calling `multicall` and cannot be replayed from a different address.
+
 ### Swap API Request
 
 When integrating with the Venus Swap API, include:
@@ -352,8 +370,9 @@ When integrating with the Venus Swap API, include:
 | `amountIn`  | Exact input amount                |
 | `recipient` | LeverageStrategiesManager address |
 | `deadline`  | Unix timestamp for expiry         |
+| `caller`    | Address that will call multicall  |
 
-The API returns encoded `multicall` parameters with the backend signature.
+The API returns encoded `multicall` parameters with the backend signature that includes the caller address.
 
 ## Audits
 
