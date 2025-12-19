@@ -20,9 +20,3 @@ The Venus periphery consists of specialized smart contracts designed to streamli
 ## Deployment
 
 Periphery contracts are currently deployed on BNB Chain Mainnet. See [Deployed Contracts](../../deployed-contracts/periphery.md) for addresses and deployment information.
-
-## Integration
-
-For users looking to leverage their positions or perform advanced trading strategies, start with the [Leverage Positions Guide](../../guides/leverage-positions.md).
-
-Developers integrating with periphery contracts should review the detailed API documentation in the individual contract pages.
