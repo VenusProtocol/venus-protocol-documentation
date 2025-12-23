@@ -189,6 +189,9 @@
   * [XVSBridgeAdmin](technical-reference/reference-xvs-bridge/XVSBridgeAdmin.md)
   * [XVS](technical-reference/reference-xvs-bridge/XVS.md)
   * [TokenController](technical-reference/reference-xvs-bridge/TokenController.md)
+* [Periphery](technical-reference/reference-periphery/README.md)
+  * [LeverageStrategiesManager](technical-reference/reference-periphery/leverage-strategies-manager.md)
+  * [SwapHelper](technical-reference/reference-periphery/swap-helper.md)
 
 ## Deployed Contracts
 
@@ -199,6 +202,7 @@
 * [XVS Omnichain](deployed-contracts/xvs-omnichain.md)
 * [Token Converters](deployed-contracts/token-converters.md)
 * [VenusERC4626](deployed-contracts/venus-erc4626.md)
+* [Periphery](deployed-contracts/periphery.md)
 
 ## Services
 
