@@ -53,11 +53,15 @@
 ## opBNB Chain Mainnet
 
 * Venus Treasury: [`0xDDc9017F3073aa53a4A8535163b0bf7311F72C52`](https://opbnbscan.com/address/0xDDc9017F3073aa53a4A8535163b0bf7311F72C52)
+* XVS Vault Proxy: [`0x7dc969122450749A8B0777c0e324522d67737988`](https://opbnbscan.com/address/0x7dc969122450749A8B0777c0e324522d67737988)
+* XVS Store: [`0xc3279442a5aCaCF0A2EcB015d1cDDBb3E0f3F775`](https://opbnbscan.com/address/0xc3279442a5aCaCF0A2EcB015d1cDDBb3E0f3F775)
 * ProtocolShareReserve: [`0xA2EDD515B75aBD009161B15909C19959484B0C1e`](https://opbnbscan.com/address/0xA2EDD515B75aBD009161B15909C19959484B0C1e)
 
 ## opBNB Chain Testnet
 
 * Venus Treasury: [`0x3370915301E8a6A6baAe6f461af703e2498409F3`](https://testnet.opbnbscan.com/address/0x3370915301E8a6A6baAe6f461af703e2498409F3)
+* XVS Vault Proxy: [`0xB14A0e72C5C202139F78963C9e89252c1ad16f01`](https://testnet.opbnbscan.com/address/0xB14A0e72C5C202139F78963C9e89252c1ad16f01)
+* XVS Store: [`0x06473fB3f7bF11e2E8EfEcC95aC55ABEFCb2e0A0`](https://testnet.opbnbscan.com/address/0x06473fB3f7bF11e2E8EfEcC95aC55ABEFCb2e0A0)
 * ProtocolShareReserve: [`0xc355dEb1A9289f8C58CFAa076EEdBf51F3A8Da7F`](https://testnet.opbnbscan.com/address/0xc355dEb1A9289f8C58CFAa076EEdBf51F3A8Da7F)
 
 ## Arbitrum One
