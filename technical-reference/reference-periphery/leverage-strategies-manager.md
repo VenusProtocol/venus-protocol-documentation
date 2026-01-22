@@ -450,7 +450,7 @@ After every operation, any residual token balances are transferred back to the u
 
 ## Deployment
 
-See [Deployed Contracts](../deployed-contracts/periphery.md) for current addresses.
+See [Deployed Contracts](../../deployed-contracts/periphery.md) for current addresses.
 
 ## Integration
 
