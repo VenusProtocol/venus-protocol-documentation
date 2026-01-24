@@ -10,3 +10,7 @@ When a user chooses to enable an asset Isolated E-mode group
 
 This mechanism safeguards the protocol by restricting the total debt against higher-risk assets, thereby minimizing potential systemic impact.
 
+
+<img width="592" height="254" alt="image" src="https://github.com/user-attachments/assets/c1fccc4b-8754-47cb-bf13-5798452470e3" />
+
+
