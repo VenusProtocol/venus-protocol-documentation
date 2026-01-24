@@ -1,30 +1,34 @@
-# Overview
-
-**Overview**
-
-Isolated E-Mode enables the safe addition of new or highly volatile assets to the protocol, preventing any potential risks from spreading system-wide. Assets listed in this mode can serve as collateral exclusively for borrowing a predefined set of assets—usually stablecoins—subject to a fixed debt ceiling. This approach effectively isolates risk while broadening the range of supported assets.
-
-When a user chooses to enable an asset Isolated E-mode group  
-
-* Only specifically permitted assets can be borrowed.  
-* Borrowing is capped through a conservative supply cap.  
-* No additional assets can be used as a collateral.
-
-This mechanism safeguards the protocol by restricting the total debt against higher-risk assets, thereby minimizing potential systemic impact.
-
-# Inroduction
+# Inroduction to Isolated E-mode
 
 **Introduction**
 
-**Isolated E-Mode** in the Venus Protocol is a safeguard mechanism designed to securely onboard high-volatility or newly listed assets—such as RWAs—by limiting their exposure to other assets within the protocol. Assets classified as **“Isolated Collateral Assets”** can only be used to borrow specific assets, such as BNB and stablecoins, as determined through our risk management framework and Venus Protocol Governance. This structure effectively mitigates the risks associated with such assets. Within the Venus Protocol user interface, assets restricted to supply in Isolation E-Mode are clearly marked with the label **“Isolated.”**
+**Isolated E-Mode** in the Venus Protocol is a safeguard mechanism designed to securely onboard high-volatility or newly listed assets—such as RWAs—by limiting their exposure to other assets within the protocol. Assets classified as **“Isolated Collateral Assets”** can only be used to borrow specific assets, such as BNB and stablecoins, as determined through our risk management framework and Venus Protocol Governance. This structure effectively mitigates the risks associated with such assets. Within the Venus Protocol user interface, assets restricted to supply in Isolated E-Mode are clearly marked with the label **“Isolated.”**
 
 # E-mode vs Isolated E-mode
 
 **What are the key differences between E-mode and Isolated E-mode?** 
 
 E-Mode refers to Efficiency Mode. It enables users to maximize the potential of their collateral, allowing them to pursue various yield strategies on Venus by offering a higher Loan-to-Value (LTV) ratio for correlated assets within the same E-Mode group.
+<p align="center">
+  <img
+    width="591"
+    height="322"
+    alt="image"
+    src="https://github.com/user-attachments/assets/940cb81f-9ae3-4315-ad7e-927470fb567e"
+  />
+</p>
 
-Assets in the isolation E-mode group feature more conservative parameters and supply caps than standard core pool assets. However, users can still utilize them as collateral without exposing the protocol to widespread risk.
+
+Assets in the Isolated E-mode group feature more conservative parameters and supply caps than standard core pool assets. However, users can still utilize them as collateral without exposing the protocol to widespread risk.
+<p align="center">
+  <img
+    width="587"
+    height="273"
+    alt="image"
+    src="https://github.com/user-attachments/assets/70fdf0c8-1171-4c93-b2bc-a19510ff5184"
+  />
+</p>
+
 
 # Supplying an Isolated Asset
 
