@@ -192,6 +192,7 @@
 * [Periphery](technical-reference/reference-periphery/README.md)
   * [LeverageStrategiesManager](technical-reference/reference-periphery/leverage-strategies-manager.md)
   * [SwapHelper](technical-reference/reference-periphery/swap-helper.md)
+  * [SwapRouter](technical-reference/reference-periphery/swap-router.md)
 
 ## Deployed Contracts
 
