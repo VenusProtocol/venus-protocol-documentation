@@ -15,6 +15,30 @@ The system consists of four contracts:
 | `UniswapOracle`      | Fetches prices from Uniswap V3 pools                       |
 | `PancakeSwapOracle`  | Fetches prices from PancakeSwap V3 pools                   |
 
+### Economic Rationale
+
+The deviation response logic is designed to counter specific attack vectors that arise when oracle prices diverge from real market prices.
+
+**When DEX Price > Oracle Price (borrow attack):**
+
+1. Attacker deposits an asset (e.g., BNB) as collateral
+2. Borrows the mispriced token at its undervalued oracle price
+3. Sells the borrowed token on DEX at the inflated spot price
+4. Repeats until protocol liquidity is drained
+
+**Action:** Pause borrowing for the affected asset.
+
+**When DEX Price < Oracle Price (collateral attack):**
+
+1. Attacker deposits the mispriced token as collateral, valued at the higher oracle price
+2. Borrows other assets up to the loan-to-value limit
+3. Sells or hedges the collateral token at the lower DEX price
+4. Walks away with profit if the protocol later realigns, leaving bad debt
+
+**Action:** Set collateral factor to 0 and pause supply for the affected asset.
+
+Pauses trigger only for large price deviations (e.g., 15%-50%), not for minor discrepancies (1%-10%), to avoid unnecessary interruptions from normal pool volatility. Small deviations are not economically viable for attackers.
+
 ### Deviation Response Logic
 
 When a deviation is detected, the response depends on the direction:
@@ -24,6 +48,12 @@ When a deviation is detected, the response depends on the direction:
 | Sentinel price > Oracle price       | Pause borrowing                           | Prevents borrowing against inflated collateral   |
 | Sentinel price < Oracle price       | Set collateral factor to 0, pause supply  | Protects against supplying deflated collateral   |
 | No deviation (prices within bounds) | Unpause all actions, restore CF           | Resume normal operations                         |
+
+### Off-Chain Monitoring
+
+An off-chain monitoring service continuously compares the ResilientOracle price with on-chain swap prices from PancakeSwap and Uniswap. When the deviation exceeds a configured threshold, the monitor calls `handleDeviation` via a trusted keeper address to pause the affected market actions.
+
+Once the DEX pools return to equilibrium and the price discrepancy resolves, the monitor calls `handleDeviation` again, which automatically unpauses and resumes normal operations. The on-chain contract includes its own price validation checks to protect against false pauses caused by compromised or faulty off-chain monitors.
 
 ## Architecture
 
