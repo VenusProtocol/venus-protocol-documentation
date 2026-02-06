@@ -176,7 +176,8 @@
   * [OmnichainGovernanceExecutor](technical-reference/reference-governance/omnichain-governance-executor.md) 
   * [OmnichainExecutorOwner](technical-reference/reference-governance/omnichain-executor-owner.md) 
   * [RiskStewardReceiver](technical-reference/reference-governance/risk-steward-receiver.md) 
-  * [MarketCapsRiskSteward](technical-reference/reference-governance/market-caps-risk-steward.md) 
+  * [MarketCapsRiskSteward](technical-reference/reference-governance/market-caps-risk-steward.md)
+  * [DeviationSentinel](technical-reference/reference-periphery/deviation-sentinel.md)
 * [Token Converter](technical-reference/reference-token-converter/README.md)
   * [AbstractTokenConverter](technical-reference/reference-token-converter/AbstractTokenConverter.md)
   * [RiskFundConverter](technical-reference/reference-token-converter/RiskFundConverter.md)
@@ -192,6 +193,7 @@
 * [Periphery](technical-reference/reference-periphery/README.md)
   * [LeverageStrategiesManager](technical-reference/reference-periphery/leverage-strategies-manager.md)
   * [SwapHelper](technical-reference/reference-periphery/swap-helper.md)
+  * [DeviationSentinel](technical-reference/reference-periphery/deviation-sentinel.md)
 
 ## Deployed Contracts
 
