@@ -23,7 +23,7 @@ The deviation response logic is designed to counter specific attack vectors that
 
 1. Attacker deposits an asset (e.g., BNB) as collateral
 2. Borrows the mispriced token at its undervalued oracle price
-3. Sells the borrowed token on DEX at the inflated spot price
+3. Sells the borrowed token on DEX at the higher DEX price
 4. Repeats until protocol liquidity is drained
 
 **Action:** Pause borrowing for the affected asset.
@@ -45,8 +45,8 @@ When a deviation is detected, the response depends on the direction:
 
 | Condition                           | Action                                    | Rationale                                        |
 | ----------------------------------- | ----------------------------------------- | ------------------------------------------------ |
-| Sentinel price > Oracle price       | Pause borrowing                           | Prevents borrowing against inflated collateral   |
-| Sentinel price < Oracle price       | Set collateral factor to 0, pause supply  | Protects against supplying deflated collateral   |
+| Sentinel price > Oracle price       | Pause borrowing                           | Prevents borrowing out undervalued assets        |
+| Sentinel price < Oracle price       | Set collateral factor to 0, pause supply  | Prevents supplying overvalued assets as collateral |
 | No deviation (prices within bounds) | Unpause all actions, restore CF           | Resume normal operations                         |
 
 ### Off-Chain Monitoring
@@ -58,38 +58,37 @@ Once the DEX pools return to equilibrium and the price discrepancy resolves, the
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                     Venus Core Protocol                          │
-│  ┌───────────────┐  ┌──────────┐  ┌───────────────────────────┐│
-│  │  Comptrollers  │  │  vTokens │  │    ResilientOracle        ││
-│  │ (Core + IL)    │  │          │  │    (Reference Prices)     ││
-│  └──────┬─────────┘  └────┬─────┘  └────────────┬─────────────┘│
-└─────────┼──────────────────┼────────────────────┼──────────────┘
-          │                  │                    │
-          │                  │                    │
-┌─────────┼──────────────────┼────────────────────┼──────────────┐
-│         ▼                  ▼                    ▼              │
-│  ┌─────────────────────────────────────────────────────────┐  │
-│  │               DeviationSentinel                         │  │
-│  │  - Compares ResilientOracle vs SentinelOracle prices    │  │
-│  │  - Pauses/unpauses market actions on deviation          │  │
-│  │  - Adjusts collateral factors                           │  │
-│  └──────────────────────────┬──────────────────────────────┘  │
-│                             │                                  │
-│                             ▼                                  │
-│  ┌─────────────────────────────────────────────────────────┐  │
-│  │                  SentinelOracle                          │  │
-│  │  - Routes price requests to DEX oracles                 │  │
-│  │  - Supports direct price overrides                      │  │
-│  └──────────┬──────────────────────────┬───────────────────┘  │
-│             │                          │                       │
-│             ▼                          ▼                       │
-│  ┌────────────────────┐    ┌────────────────────────┐         │
-│  │   UniswapOracle    │    │  PancakeSwapOracle      │         │
-│  │  (Uniswap V3 TWAP) │    │  (PancakeSwap V3 TWAP) │         │
-│  └────────────────────┘    └────────────────────────┘         │
-│                      Venus Periphery                           │
-└────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                     Venus Core Protocol                      │
+│  ┌──────────────┐   ┌──────────┐  ┌───────────────────────┐  │
+│  │ Comptrollers │   │  vTokens │  │    ResilientOracle    │  │
+│  │  (Core + IL) │   │          │  │  (Reference Prices)   │  │
+│  └──────┬───────┘   └────┬─────┘  └──────────┬────────────┘  │
+└─────────┼────────────────┼───────────────────┼───────────────┘
+          │                │                   │
+┌─────────┼────────────────┼───────────────────┼───────────────┐
+│         ▼                ▼                   ▼               │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │              DeviationSentinel                         │  │
+│  │  - Compares ResilientOracle vs SentinelOracle prices   │  │
+│  │  - Pauses/unpauses market actions on deviation         │  │
+│  │  - Adjusts collateral factors                          │  │
+│  └──────────────────────────┬─────────────────────────────┘  │
+│                             │                                │
+│                             ▼                                │
+│  ┌────────────────────────────────────────────────────────┐  │
+│  │                SentinelOracle                          │  │
+│  │  - Routes price requests to DEX oracles                │  │
+│  │  - Supports direct price overrides                     │  │
+│  └──────────┬────────────────────────┬────────────────────┘  │
+│             │                        │                       │
+│             ▼                        ▼                       │
+│  ┌──────────────────────┐  ┌──────────────────────────┐      │
+│  │    UniswapOracle     │  │   PancakeSwapOracle      │      │
+│  │ (Uniswap V3 Price)   │  │ (PancakeSwap V3 Price)   │      │
+│  └──────────────────────┘  └──────────────────────────┘      │
+│                     Venus Periphery                          │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ## Inheritance
@@ -97,7 +96,6 @@ Once the DEX pools return to equilibrium and the price discrepancy resolves, the
 ### DeviationSentinel
 
 - `AccessControlledV8` - Governance-controlled access
-- `ReentrancyGuardUpgradeable` - Reentrancy protection
 
 ### SentinelOracle
 
@@ -253,7 +251,7 @@ function checkPriceDeviation(
 deviationPercent = (|oraclePrice - sentinelPrice| / oraclePrice) * 100
 ```
 
-If either price is 0, the function returns `MAX_DEVIATION` (100%).
+If either price is 0, the function sets `hasDeviation` to true and `deviationPercent` to `type(uint256).max`.
 
 ---
 
@@ -489,6 +487,7 @@ function getPrice(address asset) external view returns (uint256)
 #### Errors
 
 - `TokenNotConfigured` if no pool is configured for the token
+- `InvalidPool` if the configured pool does not contain the token
 
 ---
 
@@ -514,7 +513,6 @@ function setPoolConfig(address token, address pool) external
 #### Errors
 
 - `ZeroAddress` if either address is zero
-- `InvalidPool` if the pool does not contain the token
 
 #### Events
 
@@ -580,10 +578,6 @@ function setPoolConfig(address token, address pool) external
 - **Governance Functions**: All configuration functions (`setTokenConfig`, `setTrustedKeeper`, `resetMarketState`, etc.) are restricted via `AccessControlManager`
 - **Keeper Functions**: `handleDeviation` is restricted to trusted keepers via the `onlyKeeper` modifier
 - **Direct Price Overrides**: The `setDirectPrice` function on `SentinelOracle` is governance-controlled to prevent price manipulation
-
-### Reentrancy Protection
-
-The `DeviationSentinel` contract uses OpenZeppelin's `ReentrancyGuardUpgradeable` to protect against reentrancy during state modifications.
 
 ### Collateral Factor Restoration Safety
 
