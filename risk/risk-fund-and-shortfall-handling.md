@@ -20,7 +20,7 @@ When a borrower's shortfall (total borrowed amount converted to USD is greater t
 
 `Shortfall` is an auction contract designed to auction off the `convertibleBaseAsset` accumulated in `RiskFund`. The `convertibleBaseAsset` is auctioned in exchange for users paying off the pool's bad debt. An auction can be started by anyone once a pool's bad debt has reached a minimum value (see `Shortfall.minimumPoolBadDebt()`). This value is set and can be changed by the authorized accounts. If the pool’s bad debt exceeds the risk fund plus a 10% incentive, then the auction winner is determined by who will pay off the largest percentage of the pool's bad debt. The auction winner repays the bid percentage of the bad debt in exchange for the entire risk fund. Otherwise, if the risk fund covers the pool's bad debt plus the 10% incentive, then the auction winner is determined by who will take the smallest percentage of the risk fund in exchange for paying off all the pool's bad debt.
 
-The main configurable (via VIP) parameters in the `Shortfall` contract , and their initial values, are:
+The main configurable (via VIP) parameters in the `Shortfall` contract, and their initial values, are:
 
 * `minimumPoolBadDebt` - Minimum USD bad debt in the pool to allow the initiation of an auction. Initial value set to 1,000 USD
 * `waitForFirstBidder` - Blocks to wait for first bidder. Initial value sets to 100 blocks
