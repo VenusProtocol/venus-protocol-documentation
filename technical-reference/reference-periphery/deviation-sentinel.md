@@ -57,39 +57,7 @@ Once the DEX pools return to equilibrium and the price discrepancy resolves, the
 
 ## Architecture
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│                     Venus Core Protocol                      │
-│  ┌──────────────┐   ┌──────────┐  ┌───────────────────────┐  │
-│  │ Comptrollers │   │  vTokens │  │    ResilientOracle    │  │
-│  │  (Core + IL) │   │          │  │  (Reference Prices)   │  │
-│  └──────┬───────┘   └────┬─────┘  └──────────┬────────────┘  │
-└─────────┼────────────────┼───────────────────┼───────────────┘
-          │                │                   │
-┌─────────┼────────────────┼───────────────────┼───────────────┐
-│         ▼                ▼                   ▼               │
-│  ┌────────────────────────────────────────────────────────┐  │
-│  │              DeviationSentinel                         │  │
-│  │  - Compares ResilientOracle vs SentinelOracle prices   │  │
-│  │  - Pauses/unpauses market actions on deviation         │  │
-│  │  - Adjusts collateral factors                          │  │
-│  └──────────────────────────┬─────────────────────────────┘  │
-│                             │                                │
-│                             ▼                                │
-│  ┌────────────────────────────────────────────────────────┐  │
-│  │                SentinelOracle                          │  │
-│  │  - Routes price requests to DEX oracles                │  │
-│  │  - Supports direct price overrides                     │  │
-│  └──────────┬────────────────────────┬────────────────────┘  │
-│             │                        │                       │
-│             ▼                        ▼                       │
-│  ┌──────────────────────┐  ┌──────────────────────────┐      │
-│  │    UniswapOracle     │  │   PancakeSwapOracle      │      │
-│  │ (Uniswap V3 Price)   │  │ (PancakeSwap V3 Price)   │      │
-│  └──────────────────────┘  └──────────────────────────┘      │
-│                     Venus Periphery                          │
-└──────────────────────────────────────────────────────────────┘
-```
+<figure><img src="../../.gitbook/assets/emergency_brake.png" alt="DeviationSentinel Architecture"><figcaption></figcaption></figure>
 
 ## Inheritance
 
