@@ -1,4 +1,4 @@
-# Inroduction to Isolated E-mode
+# Introduction to Isolated E-mode
 
 **Introduction**
 
@@ -6,7 +6,7 @@
 
 # E-mode vs Isolation Mode
 
-**What are the key differences between E-mode and Isolated asset?** 
+**What are the key differences between E-mode and Isolated asset?**
 
 E-Mode refers to Efficiency Mode. It enables users to maximize the potential of their collateral, allowing them to pursue various yield strategies on Venus by offering a higher Loan-to-Value (LTV) ratio for correlated assets within the same E-Mode group.
 <p align="center">
@@ -18,7 +18,6 @@ E-Mode refers to Efficiency Mode. It enables users to maximize the potential of 
   />
 </p>
 
-
 Assets in the Isolation Mode feature more conservative parameters and supply caps than standard core pool assets. However, users can still utilize them as collateral without exposing the protocol to widespread risk.
 <p align="center">
   <img
@@ -28,7 +27,6 @@ Assets in the Isolation Mode feature more conservative parameters and supply cap
     src="https://github.com/user-attachments/assets/70fdf0c8-1171-4c93-b2bc-a19510ff5184"
   />
 </p>
-
 
 # Supplying an Isolated Asset
 
@@ -57,4 +55,3 @@ Isolated assets listed on Venus offer significant upside potential for both asse
 **Exiting Isolation Mode**
 
 If users choose to exit the Isolation Mode group, they must first repay all outstanding debt linked to the Isolated group. Once the debt is fully settled, they may disable the Isolated asset, enabling them to return to the standard mode.
-
