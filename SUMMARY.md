@@ -9,7 +9,8 @@
 ## What's New?
 
 * [Leveraged Positions](whats-new/leveraged-positions.md)
-* [E-Mode](whats-new/emode.md)
+* [E-Mode](whats-new/e-mode.md)
+* [Isolated E-Mode](whats-new/isolated-e-mode.md)
 * [Isolated Pools](whats-new/isolated-pools.md)
 * [Reward Distributor](whats-new/reward-distributor.md)
 * [Peg Stability Module](whats-new/psm.md)
@@ -54,6 +55,7 @@
 * [Gasless Transactions on zkSync](guides/gasless-transactions-zksync.md)
 * [Import Positions](guides/import-positions.md)
 * [Enable E-mode](guides/enable-e-mode.md)
+* [Isolated E-mode](guides/isolated-e-mode.md)
 * [Boost and Repay with Collateral](guides/leveraged-positions.md)
 
 ## Technical reference
@@ -64,7 +66,7 @@
   * [Capped Oracles](technical-reference/reference-technical-articles/capped-oracles.md)
   * [Contributing](technical-reference/reference-technical-articles/contributing.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
-  * [E-Mode](technical-reference/reference-technical-articles/emode.md)
+  * [E-Mode](technical-reference/reference-technical-articles/e-mode.md)
   * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)
   * [Omnichain Governance](technical-reference/reference-technical-articles/omnichain-governance.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
