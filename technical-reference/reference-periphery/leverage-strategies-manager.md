@@ -49,34 +49,7 @@ This delegation allows the contract to:
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     Venus Core Protocol                      │
-│  ┌───────────┐  ┌──────────┐  ┌────────────────────────────┐│
-│  │Comptroller│  │  vTokens │  │    Flash Loan Module       ││
-│  └─────┬─────┘  └────┬─────┘  └─────────────┬──────────────┘│
-└────────┼─────────────┼──────────────────────┼───────────────┘
-         │             │                      │
-         │             │                      │
-┌────────┼─────────────┼──────────────────────┼───────────────┐
-│        ▼             ▼                      ▼               │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │            LeverageStrategiesManager                    ││
-│  │  - Enters/exits leveraged positions                     ││
-│  │  - Orchestrates flash loans and swaps                   ││
-│  │  - Validates account safety                             ││
-│  └──────────────────────────┬──────────────────────────────┘│
-│                             │                               │
-│                             ▼                               │
-│  ┌─────────────────────────────────────────────────────────┐│
-│  │                    SwapHelper                           ││
-│  │  - Executes authorized swaps                            ││
-│  │  - Verifies backend signatures                          ││
-│  │  - Interacts with DEX protocols                         ││
-│  └─────────────────────────────────────────────────────────┘│
-│                     Venus Periphery                          │
-└─────────────────────────────────────────────────────────────┘
-```
+<figure><img src="../../.gitbook/assets/leverage_position.png" alt="LeverageStrategiesManager Architecture"><figcaption></figcaption></figure>
 
 ## Transient Storage (EIP-1153)
 

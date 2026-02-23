@@ -27,6 +27,8 @@
 * PendleOracle PT-sUSDe-26JUN2025 Oracle: [`0xC407403fa78Bce509821D776b6Be7f91cC04474f`](https://bscscan.com/address/0xC407403fa78Bce509821D776b6Be7f91cC04474f)
 * PendleOracle PT-USDe-30OCT2025 Oracle: [`0xAa5138e86c078fd2859a929173B3870b5003EC30`](https://bscscan.com/address/0xAa5138e86c078fd2859a929173B3870b5003EC30)
 * USDT Chainlink Oracle: [`0x22Dc2BAEa32E95AB07C2F5B8F63336CbF61aB6b8`](https://bscscan.com/address/0x22Dc2BAEa32E95AB07C2F5B8F63336CbF61aB6b8)
+* PendleOracle PT-clisBNB-25JUN2026 Oracle: [`0x0FfFBb55d51cD46cD10C7dc865Dc73BD76201310`](https://bscscan.com/address/0x0FfFBb55d51cD46cD10C7dc865Dc73BD76201310)
+* PendleOracle PT-clisBNB-25JUN2026-Reference-PtToAsset Oracle: [`0xc94866f155FEA46C398385665B08B813D20DF802`](https://bscscan.com/address/0xc94866f155FEA46C398385665B08B813D20DF802)
 
 ## BNB Chain Testnet
 
@@ -54,6 +56,7 @@
 * PendleOracle PT-sUSDe-26JUN2025 Oracle: [`0x85201328baa52061E6648d9b4c285529411Cd33B`](https://testnet.bscscan.com/address/0x85201328baa52061E6648d9b4c285529411Cd33B)
 * PendleOracle PT-USDe-30OCT2025 Oracle: [`0x9d223177a0Ea5505EbF3665f950093091f04739b`](https://testnet.bscscan.com/address/0x9d223177a0Ea5505EbF3665f950093091f04739b)
 * USDT Chainlink Oracle: [`0x188b608544Fa32D313DE3BBB0480a238c0906e2a`](https://testnet.bscscan.com/address/0x188b608544Fa32D313DE3BBB0480a238c0906e2a)
+* PendleOracle PT-clisBNB-25JUN2026 Oracle: [`0x86EB1cE03e825CFD4516F385d7b90DE72B90BF69`](https://testnet.bscscan.com/address/0x86EB1cE03e825CFD4516F385d7b90DE72B90BF69)
 
 ## Ethereum mainnet
 

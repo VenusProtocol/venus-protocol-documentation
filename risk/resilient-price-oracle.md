@@ -114,6 +114,7 @@ The current list of correlated token oracles in Venus is:
 | Core | xSolvBTC | [xSolvBTCOneJumpRedstoneOracle](https://bscscan.com/address/0xf5534f78Df9b610B19A63956d498d00CFaD8B9D3) | - | - | |
 | Core | XVS | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | U | [USDTChainlink (USDT feed, capped)](https://bscscan.com/address/0x22Dc2BAEa32E95AB07C2F5B8F63336CbF61aB6b8) | [Chainlink (USD1 feed)](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | Upper bound: 1.01. Lower bound: 0.99 |
+| Core | PT-clisBNB-25JUN2026 | [PendleOracle-PT-clisBNB-25JUN2026](https://bscscan.com/address/0x0FfFBb55d51cD46cD10C7dc865Dc73BD76201310) | - | - | |
 | Stablecoins | lisUSD | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
 | Stablecoins | USDD | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
 | Stablecoins | USDT | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | Upper bound: 1.01. Lower bound: 0.99 |
