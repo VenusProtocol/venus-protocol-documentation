@@ -15,7 +15,7 @@ The Token Converter works on four key principles:
 
 Venus Protocol will offer discounts to incentivize these conversions. This incentive will create arbitrage opportunities in the market, and external agents can potentially gain from these opportunities.
 
-### Rational
+### Rationale
 
 Before the Token Converter, token conversions were not as seamless and efficient. Venus Protocol needed a system that could constantly convert the received income into specific tokens, with no room for errors or delays.
 

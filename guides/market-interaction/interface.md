@@ -40,7 +40,7 @@ The Swap interface enables you to swap one cryptocurrency for another within the
 
 ### History
 
-In the History interface, you can review transaction history and track your previous activities on the  Protocol.
+In the History interface, you can review transaction history and track your previous activities on the Protocol.
 
 <figure><img src="../../.gitbook/assets/Screenshot 2023-08-02 at 9.38.32 AM (1).png" alt=""><figcaption></figcaption></figure>
 
