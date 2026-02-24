@@ -115,41 +115,6 @@ The current list of correlated token oracles in Venus is:
 | Core | XVS | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | U | [USDTChainlink (USDT feed, capped)](https://bscscan.com/address/0x22Dc2BAEa32E95AB07C2F5B8F63336CbF61aB6b8) | [Chainlink (USD1 feed)](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | PT-clisBNB-25JUN2026 | [PendleOracle-PT-clisBNB-25JUN2026](https://bscscan.com/address/0x0FfFBb55d51cD46cD10C7dc865Dc73BD76201310) | - | - | |
-| Stablecoins | lisUSD | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
-| Stablecoins | USDD | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
-| Stablecoins | USDT | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | Upper bound: 1.01. Lower bound: 0.99 |
-| Stablecoins | EURA | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
-| DeFi | BSW | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | |
-| DeFi | ALPACA | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | |
-| DeFi | USDT | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | Upper bound: 1.01. Lower bound: 0.99 |
-| DeFi | USDD | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
-| DeFi | ANKR | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
-| DeFi | ankrBNB | [AnkrBNBOracle](https://bscscan.com/address/0x4512e9579734f7B8730f0a05Cd0D92DC33EB2675) | - | - | |
-| DeFi | TWT | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
-| DeFi | PLANET | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
-| GameFi | RACA | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
-| GameFi | FLOKI | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
-| GameFi | USDD | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
-| GameFi | USDT | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | Upper bound: 1.01. Lower bound: 0.99 |
-| Liquid Staked BNB | ankrBNB | [AnkrBNBOracle](https://bscscan.com/address/0x4512e9579734f7B8730f0a05Cd0D92DC33EB2675) | - | |
-| Liquid Staked BNB | asBNB | [AsBNBOracle](https://bscscan.com/address/0x652B90D1d45a7cD5BE82c5Fb61a4A00bA126dde5) | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - |Upper bound: 1.05. Lower bound: 0.95|
-| Liquid Staked BNB | BNBx | [BNBxOracle](https://bscscan.com/address/0xC2E2b6f9CdE2BFA5Ba5fda2Dd113CAcD781bdb31) | - | - | |
-| Liquid Staked BNB | PT-clisBNB-24APR2025 | [PendleOracle-PT-clisBNB-25APR2025](https://bscscan.com/address/0xEa7a92D12196A325C76ED26DBd36629d7EC46459) | - | |
-| Liquid Staked BNB | stkBNB | [StkBNBOracle](https://bscscan.com/address/0xdBAFD16c5eA8C29D1e94a5c26b31bFAC94331Ac6) | - | |
-| Liquid Staked BNB | slisBNB | [SlisBNBOracle](https://bscscan.com/address/0xDDE6446E66c786afF4cd3D183a908bCDa57DF9c1) | - | - | |
-| Liquid Staked BNB | WBNB | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | |
-| Meme | BabyDoge | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
-| Meme | USDT | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | Upper bound: 1.01. Lower bound: 0.99 |
-| Tron | BTT | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
-| Tron | TRX | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | |
-| Tron | WIN | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | |
-| Tron | USDD | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | - | |
-| Tron | USDT | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | Upper bound: 1.01. Lower bound: 0.99 |
-| Liquid Staked ETH | ETH | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | Upper bound: 1.01. Lower bound: 0.99 |
-| Liquid Staked ETH | weETH | [weETHOneJumpRedstoneOracle](https://bscscan.com/address/0xb661102c399630420A4B9fa0a5cF57161e5452F5) | [weETHOneJumpChainlinkOracle](https://bscscan.com/address/0x3b3241698692906310A65ACA199701843404E175) | [weETHOneJumpChainlinkOracle](https://bscscan.com/address/0x3b3241698692906310A65ACA199701843404E175) | Upper bound: 1.01. Lower bound: 0.99 |
-| Liquid Staked ETH | wstETH | [wstETHOneJumpChainlinkOracle](https://bscscan.com/address/0x3C9850633e8Cb5ac5c3Da833C947E7c91EED15C4) | [wstETHOneJumpRedstoneOracle](https://bscscan.com/address/0x90dd7ae1137cC072F7740Ee0b264f2351515B98A) | [wstETHOneJumpRedstoneOracle](https://bscscan.com/address/0x90dd7ae1137cC072F7740Ee0b264f2351515B98A) | Upper bound: 1.01. Lower bound: 0.99 |
-| BTC | BTCB | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | Upper bound: 1.01. Lower bound: 0.99 |
-| BTC | PT-SolvBTC.BBN-27MAR2025 | [PendleOracle-PT-SolvBTC.BBN-27MAR2025](https://bscscan.com/address/0xE11965a3513F537d91D73d9976FBe8c0969Bb252) | - | - | |
 
 #### Ethereum
 
@@ -177,22 +142,6 @@ The current list of correlated token oracles in Venus is:
 | Core | sUSDe | [sUSDe-ERC4626Oracle](https://etherscan.io/address/0xaE847E81ff6dD2bdFB1fD563ccB4f848c74D2B70) | - | - | |
 | Core | USDe | [RedStone](https://etherscan.io/address/0x0FC8001B2c9Ec90352A46093130e284de5889C86) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | tBTC | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Curve | crvUSD | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Curve | CRV | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Ethena | PT-sUSDE-27MAR2025 | [PendleOracle-PT-sUSDe-27MAR2025](https://etherscan.io/address/0x51B83bbbdCa078b2497C41c9f54616D1aDBEF86F) | - | - | |
-| Ethena | PT-USDe-27MAR2025 | [PendleOracle-PT-USDe-27MAR2025](https://etherscan.io/address/0x4CD93DcD2E11835D06a45F7eF9F7225C249Bb6Db) | - | - | |
-| Ethena | sUSDe | [sUSDe-ERC4626Oracle](https://etherscan.io/address/0xaE847E81ff6dD2bdFB1fD563ccB4f848c74D2B70) | - | - | |
-| Ethena | USDC | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Ethena | USDe | [RedStone](https://etherscan.io/address/0x0FC8001B2c9Ec90352A46093130e284de5889C86) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | Upper bound: 1.01. Lower bound: 0.99 |
-| Liquid Staked ETH | ezETH | [ezETHOneJumpRedstoneOracle](https://etherscan.io/address/0xA6efeF98D9C4E9FF8193f80FbABF92AD92D50500) | [ezETHOneJumpChainlinkOracle](https://etherscan.io/address/0x84FAe9909Fa1F259CB23Fa14FCdd1a35A0FE7EB8) | [ezETHOneJumpChainlinkOracle](https://etherscan.io/address/0x84FAe9909Fa1F259CB23Fa14FCdd1a35A0FE7EB8) | Upper bound: 1.01. Lower bound: 0.99 |
-| Liquid Staked ETH | PTweETH-26DEC2024 | [PendleOracle-PT-weETH-26DEC2024](https://etherscan.io/address/0xB89C0F93442C269271cB4e9Acd10E81D3fC237Ba) | - | - | |
-| Liquid Staked ETH | pufETH | [pufETHOneJumpRedstoneOracle](https://etherscan.io/address/0xAaE18CEBDF55bbbbf5C70c334Ee81D918be728Bc) | - | - | |
-| Liquid Staked ETH | rsETH | [rsETHOneJumpRedstoneOracle](https://etherscan.io/address/0x6AC694f2D118a35e1984AE590B916108F4f9337F) | [rsETHOneJumpChainlinkOracle](https://etherscan.io/address/0xc68A156b08C5C5C2e9c27B32A09977F3FA50FFE0) | [rsETHOneJumpChainlinkOracle](https://etherscan.io/address/0xc68A156b08C5C5C2e9c27B32A09977F3FA50FFE0) | Upper bound: 1.01. Lower bound: 0.99 |
-| Liquid Staked ETH | sfrxETH | [SFrxETHOracle](https://etherscan.io/address/0x5E06A5f48692E4Fff376fDfCA9E4C0183AAADCD1) | - | - | |
-| Liquid Staked ETH | WETH | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Liquid Staked ETH | wstETH | [WstETHOracle\_Equivalence](https://etherscan.io/address/0x6b51Ee3aF70b350AaADc05f418502b330c5Aad7c) | - | - | Assume 1:1 for ETH:stETH |
-| Liquid Staked ETH | weETH | [WeETHOracle\_Equivalence](https://etherscan.io/address/0xaB663D4a701229DFF407Eb4B45007921029072e9) | - | - | Assume 1:1 for ETH:eETH |
-| Liquid Staked ETH | weETHs | [WeETHAccountantOracle](https://etherscan.io/address/0x47F7A7f3486b08A019E0c10Af969ADC4B6E415Cd) | - | - | |
 
 #### opBNB mainnet
 
@@ -215,9 +164,6 @@ The current list of correlated token oracles in Venus is:
 | Core | gmWETH-USDC | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
 | Core | gmBTC-USDC | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
 | Core | ARB | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
-| Liquid Staked ETH | weETH |  [weETHOneJumpChainlinkOracle](https://arbiscan.io/address/0x0afD33490fBcF537ede00F9Cc4607230bBf65774) | - | - | |
-| Liquid Staked ETH | wstETH |  [wstETHOneJumpChainlinkOracle](https://arbiscan.io/address/0x17a5596DF05c7bfB2280D5B9cCcDAf711e957Ed4) | - | - | |
-| Liquid Staked ETH | WETH | [SequencerChainlinkOracle](https://arbiscan.io/address/0x9cd9fcc7e3deda360de7c080590aad377ac9f113) | - | - | |
 
 #### ZKsync Mainnet
 
