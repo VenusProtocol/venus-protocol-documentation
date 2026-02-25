@@ -333,7 +333,7 @@ function updateDelegate(address delegate, bool approved) external
 
 ### enterPool
 
-Allows a user to switch to a new pool (e.g., e-mode ).
+Allows a user to switch to a new pool (e.g., e-mode).
 
 ```solidity
 function enterPool(uint96 poolId) external

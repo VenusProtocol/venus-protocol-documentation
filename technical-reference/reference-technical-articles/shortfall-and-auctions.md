@@ -74,7 +74,7 @@ Scenario when bad debt is less than total risk fund balance
     * **Auction Start Block**: This is the block number when the auction was started. You can find this using: `auctions[comptrollerAddress].startBidBps` state variable.
     * **Bid BPS**: In this example, the bid bps is 100% which indicates 100% of 48.40% (i.e., 242,000 USDT).
     * Placing a bid triggers `BidPlaced` event which can be monitored.
-* **User B Places Bid**: Now user B sees an opportunity and decides to place a bid. They have to place a bid lower than 100% bid bps to succeed in placing a bid. Image user B places a bid for 95% (i.e., risk fund seize amount is `242000 - (100-95)% = 229900` ) to outperform User A’s bid.
+* **User B Places Bid**: Now user B sees an opportunity and decides to place a bid. They have to place a bid lower than 100% bid bps to succeed in placing a bid. Imagine user B places a bid for 95% (i.e., risk fund seize amount is `242000 - (100-95)% = 229900`) to outperform User A’s bid.
   * **Refund**: User A will immediately receive back the BTC they sent to the `Shortfall` contract as part of the first bid.
 * **User A Places Improved Bid**: Now user A sees that User B places a better bid. Then User A can wish to complete with a better bid again. Suppose user A places a new bid for 94%.
 * **User A Closed Auction**: After placing a bid, User A waits for 100 blocks and sees there are no new bids that outperform their bid then they can close the auction and win it.

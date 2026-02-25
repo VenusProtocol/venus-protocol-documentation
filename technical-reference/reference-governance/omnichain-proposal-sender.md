@@ -1,6 +1,6 @@
 # OmnichainProposalSender
 
-OmnichainProposalSender contract builds upon the functionality of its parent contract , BaseOmnichainControllerSrc
+OmnichainProposalSender contract builds upon the functionality of its parent contract, BaseOmnichainControllerSrc
 It sends a proposal's data to remote chains for execution after the proposal passes on the main chain
 when used with GovernorBravo, the owner of this contract must be set to the Timelock contract
 
@@ -116,7 +116,7 @@ function execute(uint16 remoteChainId_, bytes payload_, bytes adapterParams_, ad
 #### 📅 Events
 
 - Emits ExecuteRemoteProposal with remote chain id, proposal ID and payload on success
-- Emits StorePayload with last stored payload proposal ID ,remote chain id , payload, adapter params , values and reason for failure
+- Emits StorePayload with last stored payload proposal ID, remote chain id, payload, adapter params, values and reason for failure
 
 #### ⛔️ Access Requirements
 
