@@ -2,7 +2,7 @@
 
 ### Overview
 
-The Venus Protocol tokenomics have been reevaluated to optimize income distribution and cater to the protocol's present and future needs. [Version 4.1](https://snapshot.box/#/s:venus-xvs.eth/proposal/0xb8f03ad2dd2988a6d2e89a1adbebc52c7a62b284ea493008752c71b7f00b3386) of the Venus Protocol revenue distribution model addresses the need and optimizes the allocation between rewards, treasury reserves, a risk fund and BNB burns.
+The Venus Protocol tokenomics have been reevaluated to optimize income distribution and cater to the protocol's present and future needs. The current revenue distribution model optimizes the allocation between rewards, treasury reserves, and a risk fund. Following the cessation of the BNB Burn program ([VIP-585](https://app.venus.io/#/governance/proposal/585)), the previous 25% BNB Burn allocation has been redistributed to the Treasury.
 
 ### XVS Vault Base Rewards
 
@@ -12,25 +12,25 @@ These rewards will be transferred every six months from the [XVS Distributor](ht
 
 ### Revenue Distribution from Protocol Reserves
 
-Protocol reserves are mainly composed of accumulated borrow fees. The model for revenue allocation from these reserves divides income into three main segments:
+Protocol reserves are mainly composed of accumulated borrow fees. The model for revenue allocation from these reserves divides income into four segments:
 
-* **Treasury Reserve (15%)**: The treasury reserve is used to fund community-driven initiatives and essential protocol expenses for its ongoing operations.
+* **Treasury Reserve (40%)**: The treasury reserve is used to fund community-driven initiatives and essential protocol expenses for its ongoing operations.
 * **XVS Vault Rewards (20%)**: This allocation is designated for the buyback of XVS, which is then distributed via vault rewards.
 * **Venus Prime Token Program (20%)**: Used to boost select market APYs with organic rewards for users that qualify.
 * **Risk Fund (20%)**: This fund is established to address potential shortfalls in the protocol, particularly in situations of ineffective or delayed liquidations.
-* **BNB Burn (25%)**: See community proposal [BNB Chain <> Venus BNB Burn Proposal](https://community.venus.io/t/bnb-chain-venus-bnb-burn-proposal/5142).
 
 ### Allocation for Additional Revenue Streams
 
 Other revenue streams include liquidation penalties and potential income generated from future product releases. The revenue distribution for these streams is as follows:
 
-* **Treasury Reserves (35%)**
+* **Treasury Reserves (60%)**
 * **XVS Vault Rewards (20%)**
 * **Risk Fund (20%)**
-* **BNB Burn (25%)**
-
-The methodology behind these adjustments includes an assessment of the existing tokenomics, past changes, their impact on the ecosystem, and analysis of market dynamics and trends.
 
 This dual allocation model accounts for the diverse revenue sources within the Venus Protocol ecosystem, ensuring robust and responsive financial management. As the protocol evolves and introduces new products, these models may further be adjusted to optimally serve the Venus community.
+
+### Chain Eligibility
+
+Revenue distribution to XVS Vault Rewards and Venus Prime is subject to a chain eligibility threshold: a chain must generate at least $50,000 in average monthly revenue over a rolling 6-month period to qualify. Chains that do not meet this threshold send 100% of their revenue to the Treasury.
 
 <figure><img src="../.gitbook/assets/tokenomics.svg" alt=""><figcaption></figcaption></figure>
