@@ -2,7 +2,7 @@
 
 ### Overview
 
-The Venus Protocol tokenomics have been reevaluated to optimize income distribution and cater to the protocol's present and future needs. The current revenue distribution model optimizes the allocation between rewards, treasury reserves, and a risk fund. Following the cessation of the BNB Burn program ([VIP-585](https://app.venus.io/#/governance/proposal/585)), the previous 25% BNB Burn allocation has been redistributed to the Treasury.
+The Venus Protocol tokenomics have been reevaluated to optimize income distribution and cater to the protocol's present and future needs. [Version 4.1](https://snapshot.box/#/s:venus-xvs.eth/proposal/0xb8f03ad2dd2988a6d2e89a1adbebc52c7a62b284ea493008752c71b7f00b3386) of the Venus Protocol revenue distribution model optimizes the allocation between rewards, treasury reserves, and a risk fund. Following the cessation of the BNB Burn program ([VIP-585](https://app.venus.io/#/governance/proposal/585)), the previous 25% BNB Burn allocation has been redistributed to the Treasury.
 
 ### XVS Vault Base Rewards
 
