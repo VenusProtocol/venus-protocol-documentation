@@ -1,1 +1,2381 @@
-{"openapi":"3.0.0","info":{"title":"Venus Protocol API","version":"1.27.0-dev.2","description":"API to support the Venus Protocol with data indexed from on chain activity"},"paths":{"/governance/proposals/{proposalId}/voteSummary":{"get":{"parameters":[{"name":"proposalId","description":"Proposal Id for fetching a detailed proposal","in":"path","required":true,"schema":{"type":"integer"}}],"description":"Get vote summary for a given proposal, includes sums of for, against, abstain and total votes.","tags":["governance"],"responses":{"200":{"description":"Proposal vote summary","content":{"application/json":{"schema":{"type":"object","required":["for","against","abstain","total"],"properties":{"for":{"type":"string"},"against":{"type":"string"},"abstain":{"type":"string"},"total":{"type":"string"}}}}}},"400":{"description":"Unexpected error","content":{"application/json":{"schema":{"type":"object","required":["message","status"],"properties":{"message":{"type":"string"},"status":{"type":"boolean"}}}}}}}}},"/governance/voters/{address}/summary":{"get":{"parameters":[{"name":"address","description":"Account address","in":"path","required":true,"schema":{"type":"string"}}],"description":"Retrieve a summary of an account's voter profile.","tags":["governance"],"responses":{"200":{"description":"A summary of an account's voter profile including latest governance transactions.","content":{"application/json":{"schema":{"type":"object","properties":{"delegateCount":{"type":"number"},"votes":{"type":"string"},"balance":{"type":"string"},"delegates":{"type":"string"},"txs":{"type":"array","items":{"type":"object","required":["category","event","transactionHash","from","to","tokenAddress","blockNumber","timestamp","logIndex"],"properties":{"category":{"type":"string","enum":["vtoken","vai","vote"]},"event":{"type":"string"},"transactionHash":{"type":"string"},"from":{"type":"string"},"to":{"type":"string"},"tokenAddress":{"type":"string"},"amountMantissa":{"type":"integer"},"blockNumber":{"type":"integer"},"timestamp":{"type":"string"},"logIndex":{"type":"integer"}}}}}}}}},"400":{"description":"Unexpected error","content":{"application/json":{"schema":{"type":"object","required":["message","status"],"properties":{"message":{"type":"string"},"status":{"type":"boolean"}}}}}}}}},"/governance/voters/{address}/history":{"get":{"parameters":[{"name":"address","description":"Account address","in":"path","required":true,"schema":{"type":"string"}}],"description":"Retrieve the history of proposals a given account has voted on","tags":["governance"],"responses":{"200":{"description":"Array of proposals in which the given account has voted","content":{"application/json":{"schema":{"type":"object","properties":{"page":{"type":"number"},"limit":{"type":"number"},"total":{"type":"number"},"result":{"type":"array","items":{"type":"object","required":["proposalId","description","abstainedVotesMantissa","againstVotesMantissa","cancelBlock","cancelTimestamp","cancelTxHash","createdBlock","createdTimestamp","createdTxHash","endBlock","endTimestamp","eta","executedBlock","executedTimestamp","executedTxHash","forVotesMantissa","governorName","proposer","queuedBlock","queuedTimestamp","queuedTxHash","startBlock","startTimestamp","state"],"properties":{"proposalId":{"type":"integer"},"description":{"type":"string"},"createdBlock":{"type":"integer"},"createdTxHash":{"type":"string"},"createdTimestamp":{"type":"integer"},"startBlock":{"type":"integer"},"startTimestamp":{"type":"integer"},"cancelBlock":{"type":"integer","nullable":true},"cancelTxHash":{"type":"string","nullable":true},"cancelTimestamp":{"type":"integer","nullable":true},"endBlock":{"type":"integer"},"endTimestamp":{"type":"integer"},"queuedBlock":{"type":"integer","nullable":true},"queuedTxHash":{"type":"string","nullable":true},"queuedTimestamp":{"type":"integer","nullable":true},"executedBlock":{"type":"integer","nullable":true},"executedTxHash":{"type":"string","nullable":true},"executedTimestamp":{"type":"integer","nullable":true},"proposer":{"type":"string"},"eta":{"type":"integer"},"forVotes":{"type":"string"},"againstVotes":{"type":"string"},"canceled":{"type":"boolean"},"executed":{"type":"boolean"},"state":{"type":"integer"},"voterCount":{"type":"integer"},"abstainedVotes":{"type":"string"},"governorName":{"type":"string"},"proposalType":{"type":"integer"}}}}}}}}},"400":{"description":"Unexpected error","content":{"application/json":{"schema":{"type":"object","required":["message","status"],"properties":{"message":{"type":"string"},"status":{"type":"boolean"}}}}}}}}},"/governance/voters":{"get":{"parameters":[{"name":"limit","description":"Limit used for pagination","in":"query","required":false,"schema":{"type":"integer","default":20}},{"name":"page","description":"Page number to fetch","in":"query","required":false,"schema":{"default":0,"type":"integer"}}],"description":"Query voter accounts ordered by votes.","tags":["governance"],"responses":{"200":{"description":"Returns an array of voter accounts ordered by votes","content":{"application/json":{"schema":{"type":"object","properties":{"offset":{"type":"number"},"limit":{"type":"number"},"total":{"type":"number"},"result":{"type":"array","items":{"type":"object","required":["address","proposalsVoted","votesMantissa","stakedVotesMantissa"],"properties":{"address":{"type":"string"},"proposalsVoted":{"type":"integer"},"votesMantissa":{"type":"string"},"stakedVotesMantissa":{"type":"string","nullable":true}}}}}}}}},"400":{"description":"Unexpected error","content":{"application/json":{"schema":{"type":"object","required":["message","status"],"properties":{"message":{"type":"string"},"status":{"type":"boolean"}}}}}}}}},"/markets/history":{"get":{"parameters":[{"name":"asset","description":"Filter by vToken address","in":"query","required":false,"schema":{"type":"string"}},{"name":"chainId","description":"Blockchain Id used to filter results to a specific chain","in":"path","required":false,"schema":{"type":"integer"}},{"name":"period","in":"query","required":false,"schema":{"default":"year","type":"string","enum":["year","month","halfyear"]}}],"description":"Fetch an array of daily snapshots of supply and borrow totals and supply and borrow apy over the previous 365 days for a given asset.","tags":["markets"],"responses":{"200":{"description":"Returns historical data for the requested asset.","content":{"application/json":{"schema":{"type":"object","required":["result"],"properties":{"result":{"type":"object","required":["asset","data","updatedAt"],"properties":{"asset":{"type":"string"},"updateAt":{"type":"string"},"data":{"type":"array","items":{"type":"object","required":["blockNumber","blockTimestamp","supplyApy","borrowApy","totalSupplyUsd","totalBorrowUsd"],"properties":{"blockNumber":{"type":"integer"},"blockTimestamp":{"type":"integer"},"supplyApy":{"type":"string"},"borrowApy":{"type":"string"},"totalSupplyUsd":{"type":"string"},"totalBorrowUsd":{"type":"string"}}}}}}}}}}},"400":{"description":"Unexpected error","content":{"application/json":{"schema":{"type":"object","required":["message","status"],"properties":{"message":{"type":"string"},"status":{"type":"boolean"}}}}}}}}},"/markets/tvl":{"get":{"parameters":[{"name":"chainId","description":"Blockchain Id used to filter results to a specific chain","in":"path","required":false,"schema":{"type":"integer"}}],"description":"Returns the total value locked by all markets in the requested chains.","tags":["markets"],"responses":{"200":{"description":"Returns the TVL data for the requested chains.","content":{"application/json":{"schema":{"type":"object","properties":{"suppliedSumCents":{"type":"string"},"borrowedSumCents":{"type":"string"},"liquiditySumCents":{"type":"string"},"marketCount":{"type":"integer"},"poolCount":{"type":"integer"},"chainCount":{"type":"integer"}}}}}},"400":{"description":"Unexpected error","content":{"application/json":{"schema":{"type":"object","required":["message","status"],"properties":{"message":{"type":"string"},"status":{"type":"boolean"}}}}}}}}},"/markets":{"get":{"parameters":[{"name":"chainId","description":"Blockchain Id used to filter results to a specific chain","in":"path","required":false,"schema":{"type":"integer"}},{"name":"address","description":"Filter by vToken address","in":"query","required":false,"schema":{"type":"string"}},{"name":"symbol","description":"Filter by asset symbol","in":"query","required":false,"schema":{"type":"string"}},{"name":"name","description":"Filter by asset name","in":"query","required":false,"schema":{"type":"string"}},{"name":"underlyingAddress","description":"Filter by underlying address","in":"query","required":false,"schema":{"type":"string"}},{"name":"underlyingName","description":"Filter by underlying name","in":"query","required":false,"schema":{"type":"string"}},{"name":"underlyingSymbol","description":"Filter by underlying symbol","in":"query","required":false,"schema":{"type":"string"}},{"name":"order","description":"Array of columns to order results. Default sort is descending. If '+' is prepended to a column it will be sorted ascending.","in":"query","required":false,"schema":{"type":"string"}},{"name":"limit","description":"Limit used for pagination","in":"query","required":false,"schema":{"type":"integer","default":20}},{"name":"page","description":"Page number to fetch","in":"query","required":false,"schema":{"default":0,"type":"integer"}}],"description":"Returns market data for listed markets, optionally filterable by asset address, name, symbol, underlying address, underlying name or underlying symbol.\n","tags":["markets"],"responses":{"200":{"description":"Returns Market data for all listed markets.","content":{"application/json":{"schema":{"type":"object","required":["limit","page","total","result"],"properties":{"limit":{"type":"number"},"page":{"type":"number"},"total":{"type":"number"},"result":{"type":"array","items":{"type":"object","required":["address","symbol","name","underlyingAddress","underlyingName","underlyingSymbol","underlyingDecimal","borrowerDailyXvsMantissa","supplierDailyXvsMantissa","xvsBorrowIndex","xvsSupplyIndex","borrowRatePerBlock","supplyRatePerBlock","exchangeRateMantissa","underlyingPriceMantissa","totalBorrowsMantissa","totalSupplyMantissa","cashMantissa","totalReservesMantissa","reserveFactorMantissa","collateralFactorMantissa","borrowApy","supplyApy","borrowXvsApy","supplyXvsApy","borrowXvsApr","supplyXvsApr","liquidityCents","tokenPriceCents","supplyCapsMantissa","borrowCapsMantissa","borrowerCount","supplierCount"],"properties":{"address":{"type":"string"},"symbol":{"type":"string"},"name":{"type":"string"},"underlyingAddress":{"type":"string","nullable":true},"underlyingName":{"type":"string"},"underlyingSymbol":{"type":"string"},"underlyingDecimal":{"type":"integer"},"borrowerDailyXvsMantissa":{"type":"string"},"supplierDailyXvsMantissa":{"type":"string"},"venusBorrowIndex":{"type":"string"},"venusSupplyIndex":{"type":"string"},"borrowRatePerBlock":{"type":"string"},"supplyRatePerBlock":{"type":"string"},"exchangeRateMantissa":{"type":"string"},"underlyingPriceMantissa":{"type":"string"},"totalBorrowsMantissa":{"type":"string"},"totalSupplyMantissa":{"type":"string"},"cashMantissa":{"type":"string"},"totalReservesMantissa":{"type":"string"},"reserveFactorMantissa":{"type":"string"},"collateralFactorMantissa":{"type":"string"},"borrowApy":{"type":"string"},"supplyApy":{"type":"string"},"borrowXvsApy":{"type":"string"},"supplyXvsApy":{"type":"string"},"borrowXvsApr":{"type":"string"},"supplyXvsApr":{"type":"string"},"liquidityCents":{"type":"string"},"tokenPriceCents":{"type":"string"},"supplyCapsMantissa":{"type":"string","nullable":true},"borrowCapsMantissa":{"type":"string"},"borrowerCount":{"type":"integer"},"supplierCount":{"type":"integer"}}}}}}}}},"400":{"description":"Malformed Query","content":{"application/json":{"schema":{"type":"object","required":["error"],"properties":{"error":{"type":"string"}}}}}}}}},"/pools":{"get":{"parameters":[{"name":"address","description":"Pool address","in":"query","required":false,"schema":{"type":"string"}},{"name":"name","description":"Filter by pool name","in":"query","required":false,"schema":{"type":"string"}},{"name":"address","description":"Price Oracle address","in":"query","required":false,"schema":{"type":"string"}},{"name":"chainId","description":"Blockchain Id used to filter results to a specific chain","in":"path","required":false,"schema":{"type":"integer"}},{"name":"order","description":"Array of columns to order results. Default sort is descending. If '+' is prepended to a column it will be sorted ascending.","in":"query","required":false,"schema":{"type":"string"}},{"name":"limit","description":"Limit used for pagination","in":"query","required":false,"schema":{"type":"integer","default":20}},{"name":"page","description":"Page number to fetch","in":"query","required":false,"schema":{"default":0,"type":"integer"}}],"description":"Returns pool data for all listed pools, optionally filterable by the pool's comptroller address.\n","tags":["markets"],"responses":{"200":{"description":"Returns Pool data for all listed pools.","content":{"application/json":{"schema":{"type":"object","required":["limit","page","total","result"],"properties":{"limit":{"type":"number"},"page":{"type":"number"},"total":{"type":"number"},"result":{"type":"array","items":{"type":"object","required":["chainId","address","name","description","priceOracleAddress","closeFactorMantissa","liquidationIncentiveMantissa","minLiquidatableCollateralMantissa"],"properties":{"chainId":{"type":"string"},"address":{"type":"string"},"name":{"type":"string"},"description":{"type":"string","nullable":true},"priceOracleAddress":{"type":"string"},"closeFactorMantissa":{"type":"string","nullable":true},"liquidationIncentiveMantissa":{"type":"string","nullable":true},"minLiquidatableCollateralMantissa":{"type":"string","nullable":true}}}}}}}}},"400":{"description":"Malformed Query","content":{"application/json":{"schema":{"type":"object","required":["error"],"properties":{"error":{"type":"string"}}}}}}}}},"/governance/proposals":{"get":{"parameters":[{"name":"proposalId","description":"Filter by proposal ID","in":"query","schema":{"type":"integer"}},{"name":"state","description":"Filter by proposal state","in":"query","required":false,"schema":{"type":"string","enum":[0,1,2,3,4,5,6,7]}},{"name":"order","description":"Array of columns to order results. Default sort is descending. If '+' is prepended to a column it will be sorted ascending.","in":"query","required":false,"schema":{"type":"string"}},{"name":"limit","description":"Limit used for pagination","in":"query","required":false,"schema":{"type":"integer","default":20}},{"name":"page","description":"Page number to fetch","in":"query","required":false,"schema":{"default":0,"type":"integer"}}],"description":"Returns paginated array of proposals.","tags":["governance"],"responses":{"200":{"description":"Returns an array of proposals.","content":{"application/json":{"schema":{"type":"object","properties":{"offset":{"type":"number"},"limit":{"type":"number"},"total":{"type":"number"},"result":{"type":"array","items":{"type":"object","required":["proposalId","description","abstainedVotesMantissa","againstVotesMantissa","cancelBlock","cancelTimestamp","cancelTxHash","createdBlock","createdTimestamp","createdTxHash","endBlock","endTimestamp","eta","executedBlock","executedTimestamp","executedTxHash","forVotesMantissa","governorName","proposer","queuedBlock","queuedTimestamp","queuedTxHash","startBlock","startTimestamp","state"],"properties":{"proposalId":{"type":"integer"},"description":{"type":"string"},"createdBlock":{"type":"integer"},"createdTxHash":{"type":"string"},"createdTimestamp":{"type":"integer"},"startBlock":{"type":"integer"},"startTimestamp":{"type":"integer"},"cancelBlock":{"type":"integer","nullable":true},"cancelTxHash":{"type":"string","nullable":true},"cancelTimestamp":{"type":"integer","nullable":true},"endBlock":{"type":"integer"},"endTimestamp":{"type":"integer"},"queuedBlock":{"type":"integer","nullable":true},"queuedTxHash":{"type":"string","nullable":true},"queuedTimestamp":{"type":"integer","nullable":true},"executedBlock":{"type":"integer","nullable":true},"executedTxHash":{"type":"string","nullable":true},"executedTimestamp":{"type":"integer","nullable":true},"proposer":{"type":"string"},"eta":{"type":"integer"},"forVotes":{"type":"string"},"againstVotes":{"type":"string"},"canceled":{"type":"boolean"},"executed":{"type":"boolean"},"state":{"type":"integer"},"voterCount":{"type":"integer"},"abstainedVotes":{"type":"string"},"governorName":{"type":"string"},"proposalType":{"type":"integer"}}}}}}}}},"400":{"description":"Unexpected error","content":{"application/json":{"schema":{"type":"object","required":["message","status"],"properties":{"message":{"type":"string"},"status":{"type":"boolean"}}}}}}}}},"/governance/proposals/votes":{"get":{"parameters":[{"name":"proposalId","description":"Filter by proposal ID","in":"query","schema":{"type":"integer"}},{"name":"address","description":"Account address","in":"query","required":false,"schema":{"type":"string"}},{"name":"order","description":"Array of columns to order results. Default sort is descending. If '+' is prepended to a column it will be sorted ascending.","in":"query","required":false,"schema":{"type":"string"}},{"name":"limit","description":"Limit used for pagination","in":"query","required":false,"schema":{"type":"integer","default":20}},{"name":"page","description":"Page number to fetch","in":"query","required":false,"schema":{"default":0,"type":"integer"}}],"description":"Get voter details for a given proposal.","tags":["governance"],"responses":{"200":{"description":"Pagination object with paginated voter activity and a summary of proposal votes.","content":{"application/json":{"schema":{"type":"object","properties":{"offset":{"type":"number"},"limit":{"type":"number"},"total":{"type":"number"},"result":{"type":"array","items":{"type":"object","required":["address","support","blockNumber","blockTimestamp","votesMantissa","reason"],"properties":{"address":{"type":"string"},"support":{"type":"integer"},"blockNumber":{"type":"integer"},"blockTimestamp":{"type":"integer"},"votesMantissa":{"type":"string"},"reason":{"type":"string","nullable":true}}}}}}}}},"400":{"description":"Unexpected error","content":{"application/json":{"schema":{"type":"object","required":["message","status"],"properties":{"message":{"type":"string"},"status":{"type":"boolean"}}}}}}}}},"/governance/proposals/{proposalId}":{"get":{"parameters":[{"name":"proposalId","description":"Proposal Id for fetching a detailed proposal","in":"path","required":true,"schema":{"type":"integer"}}],"description":"Returns paginated array of proposals. It takes an optional array of proposal ids to filter by.","tags":["governance"],"responses":{"200":{"description":"Returns an array of proposals.","content":{"application/json":{"schema":{"type":"object","required":["proposalId","description","abstainedVotesMantissa","againstVotesMantissa","cancelBlock","cancelTimestamp","cancelTxHash","createdBlock","createdTimestamp","createdTxHash","endBlock","endTimestamp","eta","executedBlock","executedTimestamp","executedTxHash","forVotesMantissa","governorName","proposer","queuedBlock","queuedTimestamp","queuedTxHash","startBlock","startTimestamp","state","proposalActions"],"properties":{"proposalId":{"type":"integer"},"description":{"type":"string"},"createdBlock":{"type":"integer"},"createdTxHash":{"type":"string"},"createdTimestamp":{"type":"integer"},"startBlock":{"type":"integer"},"startTimestamp":{"type":"integer"},"cancelBlock":{"type":"integer","nullable":true},"cancelTxHash":{"type":"string","nullable":true},"cancelTimestamp":{"type":"integer","nullable":true},"endBlock":{"type":"integer"},"endTimestamp":{"type":"integer"},"queuedBlock":{"type":"integer","nullable":true},"queuedTxHash":{"type":"string","nullable":true},"queuedTimestamp":{"type":"integer","nullable":true},"executedBlock":{"type":"integer","nullable":true},"executedTxHash":{"type":"string","nullable":true},"executedTimestamp":{"type":"integer","nullable":true},"proposer":{"type":"string"},"eta":{"type":"integer"},"forVotes":{"type":"string"},"againstVotes":{"type":"string"},"canceled":{"type":"boolean"},"executed":{"type":"boolean"},"state":{"type":"integer"},"voterCount":{"type":"integer"},"abstainedVotes":{"type":"string"},"governorName":{"type":"string"},"proposalType":{"type":"integer"},"proposalActions":{"type":"array","items":{"type":"object","required":["proposalId","actionIndex","target","value","signature","calldata"],"properties":{"proposalId":{"type":"integer"},"actionIndex":{"type":"integer"},"target":{"type":"string"},"value":{"type":"string"},"signature":{"type":"string"},"calldata":{"type":"string"}}}}}}}}},"400":{"description":"Unexpected error","content":{"application/json":{"schema":{"type":"object","required":["message","status"],"properties":{"message":{"type":"string"},"status":{"type":"boolean"}}}}}}}}}}}
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Venus Protocol API",
+    "version": "1.73.0",
+    "description": "API to support the Venus Protocol with data indexed from on chain activity"
+  },
+  "paths": {
+    "/governance/proposals/{proposalId}/voteSummary": {
+      "get": {
+        "parameters": [
+          {
+            "name": "proposalId",
+            "description": "Proposal Id for fetching a detailed proposal",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "description": "Get vote summary for a given proposal, includes sums of for, against, abstain and total votes.",
+        "tags": ["governance"],
+        "responses": {
+          "200": {
+            "description": "Proposal vote summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["for", "against", "abstain", "total"],
+                  "properties": {
+                    "for": {
+                      "type": "string"
+                    },
+                    "against": {
+                      "type": "string"
+                    },
+                    "abstain": {
+                      "type": "string"
+                    },
+                    "total": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["message", "status"],
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/governance/voters/{address}/summary": {
+      "get": {
+        "parameters": [
+          {
+            "name": "address",
+            "description": "Account address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Retrieve a summary of an account's voter profile.",
+        "tags": ["governance"],
+        "responses": {
+          "200": {
+            "description": "A summary of an account's voter profile including latest governance transactions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "delegateCount": {
+                      "type": "number"
+                    },
+                    "votes": {
+                      "type": "string"
+                    },
+                    "balance": {
+                      "type": "string"
+                    },
+                    "delegates": {
+                      "type": "string"
+                    },
+                    "txs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "category",
+                          "event",
+                          "transactionHash",
+                          "from",
+                          "to",
+                          "tokenAddress",
+                          "blockNumber",
+                          "timestamp",
+                          "logIndex"
+                        ],
+                        "properties": {
+                          "category": {
+                            "type": "string",
+                            "enum": ["vtoken", "vai", "vote"]
+                          },
+                          "event": {
+                            "type": "string"
+                          },
+                          "transactionHash": {
+                            "type": "string"
+                          },
+                          "from": {
+                            "type": "string"
+                          },
+                          "to": {
+                            "type": "string"
+                          },
+                          "tokenAddress": {
+                            "type": "string"
+                          },
+                          "amountMantissa": {
+                            "type": "integer"
+                          },
+                          "blockNumber": {
+                            "type": "integer"
+                          },
+                          "timestamp": {
+                            "type": "string"
+                          },
+                          "logIndex": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["message", "status"],
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/governance/voters/{address}/history": {
+      "get": {
+        "parameters": [
+          {
+            "name": "address",
+            "description": "Account address",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Retrieve the history of proposals a given account has voted on",
+        "tags": ["governance"],
+        "responses": {
+          "200": {
+            "description": "Array of proposals in which the given account has voted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "number"
+                    },
+                    "limit": {
+                      "type": "number"
+                    },
+                    "total": {
+                      "type": "number"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "proposalId",
+                          "description",
+                          "abstainedVotesMantissa",
+                          "againstVotesMantissa",
+                          "cancelBlock",
+                          "cancelTimestamp",
+                          "cancelTxHash",
+                          "createdBlock",
+                          "createdTimestamp",
+                          "createdTxHash",
+                          "endBlock",
+                          "endTimestamp",
+                          "eta",
+                          "executedBlock",
+                          "executedTimestamp",
+                          "executedTxHash",
+                          "forVotesMantissa",
+                          "governorName",
+                          "proposer",
+                          "queuedBlock",
+                          "queuedTimestamp",
+                          "queuedTxHash",
+                          "startBlock",
+                          "startTimestamp",
+                          "state"
+                        ],
+                        "properties": {
+                          "proposalId": {
+                            "type": "integer"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "createdBlock": {
+                            "type": "integer"
+                          },
+                          "createdTxHash": {
+                            "type": "string"
+                          },
+                          "createdTimestamp": {
+                            "type": "integer"
+                          },
+                          "startBlock": {
+                            "type": "integer"
+                          },
+                          "startTimestamp": {
+                            "type": "integer"
+                          },
+                          "cancelBlock": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "cancelTxHash": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "cancelTimestamp": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "endBlock": {
+                            "type": "integer"
+                          },
+                          "endTimestamp": {
+                            "type": "integer"
+                          },
+                          "queuedBlock": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "queuedTxHash": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "queuedTimestamp": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "executedBlock": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "executedTxHash": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "executedTimestamp": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "proposer": {
+                            "type": "string"
+                          },
+                          "eta": {
+                            "type": "integer"
+                          },
+                          "forVotes": {
+                            "type": "string"
+                          },
+                          "againstVotes": {
+                            "type": "string"
+                          },
+                          "canceled": {
+                            "type": "boolean"
+                          },
+                          "executed": {
+                            "type": "boolean"
+                          },
+                          "state": {
+                            "type": "integer"
+                          },
+                          "voterCount": {
+                            "type": "integer"
+                          },
+                          "abstainedVotes": {
+                            "type": "string"
+                          },
+                          "governorName": {
+                            "type": "string"
+                          },
+                          "proposalType": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["message", "status"],
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/governance/voters": {
+      "get": {
+        "parameters": [
+          {
+            "name": "limit",
+            "description": "Limit used for pagination",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "page",
+            "description": "Page number to fetch",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "type": "integer"
+            }
+          }
+        ],
+        "description": "Query voter accounts ordered by votes.",
+        "tags": ["governance"],
+        "responses": {
+          "200": {
+            "description": "Returns an array of voter accounts ordered by votes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "offset": {
+                      "type": "number"
+                    },
+                    "limit": {
+                      "type": "number"
+                    },
+                    "total": {
+                      "type": "number"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "address",
+                          "proposalsVoted",
+                          "votesMantissa",
+                          "stakedVotesMantissa"
+                        ],
+                        "properties": {
+                          "address": {
+                            "type": "string"
+                          },
+                          "proposalsVoted": {
+                            "type": "integer"
+                          },
+                          "votesMantissa": {
+                            "type": "string"
+                          },
+                          "stakedVotesMantissa": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["message", "status"],
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/markets/history": {
+      "get": {
+        "parameters": [
+          {
+            "name": "asset",
+            "in": "query",
+            "required": true,
+            "description": "vToken address to fetch history for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chainId",
+            "in": "query",
+            "required": true,
+            "description": "Chain ID of the network to query history for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "year",
+              "type": "string",
+              "enum": ["year", "month", "halfyear"]
+            }
+          }
+        ],
+        "description": "Fetch an array of daily snapshots of supply and borrow totals and supply and borrow apy over the previous 365 days for a given asset.",
+        "tags": ["markets"],
+        "responses": {
+          "200": {
+            "description": "Returns historical data for the requested asset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["result"],
+                  "properties": {
+                    "result": {
+                      "type": "object",
+                      "required": ["asset", "data", "updatedAt"],
+                      "properties": {
+                        "asset": {
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "blockNumber",
+                              "blockTimestamp",
+                              "supplyApy",
+                              "borrowApy",
+                              "totalSupplyUsd",
+                              "totalBorrowUsd"
+                            ],
+                            "properties": {
+                              "blockNumber": {
+                                "type": "integer"
+                              },
+                              "blockTimestamp": {
+                                "type": "integer"
+                              },
+                              "supplyApy": {
+                                "type": "string"
+                              },
+                              "borrowApy": {
+                                "type": "string"
+                              },
+                              "totalSupplyUsd": {
+                                "type": "string"
+                              },
+                              "totalBorrowUsd": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["message", "status"],
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/markets/tvl": {
+      "get": {
+        "parameters": [
+          {
+            "name": "chainId",
+            "in": "query",
+            "required": false,
+            "description": "Comma-separated list of chain IDs to filter results. If omitted, all chains are included.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Returns the total value locked by all markets in the requested chains.",
+        "tags": ["markets"],
+        "responses": {
+          "200": {
+            "description": "Returns the TVL data for the requested chains.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "suppliedSumCents": {
+                      "type": "string"
+                    },
+                    "borrowedSumCents": {
+                      "type": "string"
+                    },
+                    "liquiditySumCents": {
+                      "type": "string"
+                    },
+                    "marketCount": {
+                      "type": "integer"
+                    },
+                    "poolCount": {
+                      "type": "integer"
+                    },
+                    "chainCount": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["message", "status"],
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/markets": {
+      "get": {
+        "parameters": [
+          {
+            "name": "accept-version",
+            "in": "header",
+            "required": false,
+            "description": "Selects the API version. `stable` (default) requires `chainId` and returns a top-level `tokens` array. `next` supports cross-chain queries and embeds token data inside each market as `underlyingTokenMetadata`.",
+            "schema": {
+              "type": "string",
+              "enum": ["stable", "next"]
+            }
+          },
+          {
+            "name": "chainId",
+            "in": "query",
+            "required": false,
+            "description": "[stable] **Required.** [next] Optional. Blockchain chain ID to filter results.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "address",
+            "description": "[both] Filter by vToken address.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "symbol",
+            "description": "[both] Filter by asset symbol.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "description": "[both] Filter by asset name.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "underlyingAddress",
+            "description": "[both] Filter by underlying token address.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "underlyingName",
+            "description": "[both] Filter by underlying token name.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "underlyingSymbol",
+            "description": "[both] Filter by underlying token symbol.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "description": "[both] Columns to sort by. Default is descending. Prepend `+` for ascending (e.g. `+underlyingName`).",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "[both] Maximum number of results to return.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "page",
+            "description": "[both] Page number for pagination.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "accountAddress",
+            "in": "query",
+            "required": false,
+            "description": "[next only] Account address to embed personalised Prime APY boosts into each market.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Returns market data for listed markets, optionally filterable by asset address, name, symbol, underlying address, underlying name or underlying symbol.\n\n**Versioning** (controlled via `accept-version` header):\n- `stable` (default): `chainId` is **required**. Response includes a top-level `tokens` array of `TokenMetadata` objects. Markets include `rewardsDistributors` and `pointsDistributions`.\n- `next`: `chainId` is optional for cross-chain queries. Token metadata is embedded inside each market as `underlyingTokenMetadata` with nested `tokenPrices`. Supports `accountAddress` for Prime APY data. No top-level `tokens` field.",
+        "tags": ["markets"],
+        "responses": {
+          "200": {
+            "description": "Returns Market data for all listed markets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/MarketsStableResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/MarketsNextResponse"
+                    }
+                  ]
+                },
+                "examples": {
+                  "stable": {
+                    "summary": "accept-version: stable \u2014 paginated markets + top-level tokens array",
+                    "value": {
+                      "limit": 20,
+                      "page": 0,
+                      "total": 1,
+                      "result": [
+                        {
+                          "address": "0xA07c5b74C9B40447a954e1466938b865b6BBea36",
+                          "chainId": "56",
+                          "poolComptrollerAddress": "0xfD36E2c2a6789Db23113685031d7F16329158384",
+                          "symbol": "vBNB",
+                          "name": "Venus BNB",
+                          "underlyingAddress": null,
+                          "underlyingSymbol": "BNB",
+                          "underlyingDecimal": 18,
+                          "borrowApy": "2.45",
+                          "supplyApy": "1.23",
+                          "borrowApyDecimal": "0.0245",
+                          "supplyApyDecimal": "0.0123",
+                          "totalBorrowApyDecimal": "0.0245",
+                          "totalSupplyApyDecimal": "0.0123",
+                          "liquidityCents": "100000000",
+                          "tokenPriceCents": "30000",
+                          "isListed": true,
+                          "rewardsDistributors": [],
+                          "pointsDistributions": []
+                        }
+                      ],
+                      "tokens": [
+                        {
+                          "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+                          "chainId": "56",
+                          "symbol": "WBNB",
+                          "decimals": 18,
+                          "tokenPrices": [
+                            {
+                              "id": "56-0xbb4c...-oracle-0x...",
+                              "tokenAddress": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+                              "chainId": "56",
+                              "priceSource": "oracle",
+                              "priceMantissa": "30000000000000000000000",
+                              "isPriceInvalid": false,
+                              "hasErrorFetchingPrice": false
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "next": {
+                    "summary": "accept-version: next \u2014 token metadata embedded in each market, no top-level tokens",
+                    "value": {
+                      "limit": 20,
+                      "page": 0,
+                      "total": 1,
+                      "result": [
+                        {
+                          "address": "0xA07c5b74C9B40447a954e1466938b865b6BBea36",
+                          "chainId": "56",
+                          "poolComptrollerAddress": "0xfD36E2c2a6789Db23113685031d7F16329158384",
+                          "symbol": "vBNB",
+                          "name": "Venus BNB",
+                          "underlyingAddress": null,
+                          "underlyingSymbol": "BNB",
+                          "underlyingDecimal": 18,
+                          "borrowApy": "2.45",
+                          "supplyApy": "1.23",
+                          "borrowApyDecimal": "0.0245",
+                          "supplyApyDecimal": "0.0123",
+                          "totalBorrowApyDecimal": "0.0245",
+                          "totalSupplyApyDecimal": "0.0123",
+                          "liquidityCents": "100000000",
+                          "tokenPriceCents": "30000",
+                          "isListed": true,
+                          "rewardsDistributors": [],
+                          "pointsDistributions": [],
+                          "underlyingTokenMetadata": [
+                            {
+                              "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+                              "chainId": "56",
+                              "symbol": "WBNB",
+                              "decimals": 18,
+                              "tokenPrices": [
+                                {
+                                  "id": "56-0xbb4c...-oracle-0x...",
+                                  "tokenAddress": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+                                  "chainId": "56",
+                                  "priceSource": "oracle",
+                                  "priceMantissa": "30000000000000000000000",
+                                  "isPriceInvalid": false,
+                                  "hasErrorFetchingPrice": false
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed Query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["error"],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pools": {
+      "get": {
+        "parameters": [
+          {
+            "name": "accept-version",
+            "in": "header",
+            "required": false,
+            "description": "Selects the API version. `stable` (default) requires `chainId` and returns a paginated list with embedded markets and a top-level `tokens` array. `next` supports multi-chain queries and returns pools grouped by chainId with markets in a separate paginated block.",
+            "schema": {
+              "type": "string",
+              "enum": ["stable", "next"]
+            }
+          },
+          {
+            "name": "address",
+            "description": "[both] Filter by pool comptroller address.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "description": "[both] Filter by pool name.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "priceOracleAddress",
+            "description": "[both] Filter by price oracle address.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chainId",
+            "in": "query",
+            "required": false,
+            "description": "[stable] **Required.** [next] Optional; accepts a JSON array string for multi-chain queries (e.g. `[\"56\",\"1\"]`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "description": "[both] Columns to sort by. Default is descending. Prepend `+` for ascending (e.g. `+name`).",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "[both] Maximum number of results to return.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "page",
+            "description": "[both] Page number for pagination.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "type": "integer"
+            }
+          }
+        ],
+        "description": "Returns pool data for all listed pools, optionally filterable by the pool's comptroller address.\n\n**Versioning** (controlled via `accept-version` header):\n- `stable` (default): `chainId` is **required**. Returns a paginated list of pools with embedded markets (filtered to `isListed: true`) and a top-level `tokens` array of `TokenMetadata`.\n- `next`: `chainId` is optional; accepts a JSON array string for multi-chain queries (e.g. `[\"56\",\"1\"]`). Returns pools grouped by chainId alongside a separately paginated markets list with `underlyingTokenMetadata` embedded in each market. No top-level `tokens` field.",
+        "tags": ["pools"],
+        "responses": {
+          "200": {
+            "description": "Returns Pool data for all listed pools.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PoolsStableResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PoolsNextResponse"
+                    }
+                  ]
+                },
+                "examples": {
+                  "stable": {
+                    "summary": "accept-version: stable \u2014 paginated pools with embedded markets + top-level tokens array",
+                    "value": {
+                      "limit": 20,
+                      "page": 0,
+                      "total": 1,
+                      "result": [
+                        {
+                          "address": "0xfD36E2c2a6789Db23113685031d7F16329158384",
+                          "chainId": "56",
+                          "name": "Venus",
+                          "priceOracleAddress": "0x6592b5DE802159F3E74B2486b091C11a8c9eA9e6",
+                          "closeFactorMantissa": "500000000000000000",
+                          "liquidationIncentiveMantissa": "1100000000000000000",
+                          "minLiquidatableCollateralMantissa": "100000000000000000000",
+                          "markets": [
+                            {
+                              "address": "0xA07c5b74C9B40447a954e1466938b865b6BBea36",
+                              "chainId": "56",
+                              "symbol": "vBNB",
+                              "name": "Venus BNB",
+                              "isListed": true,
+                              "supplyRatePerBlock": "1234567890",
+                              "borrowRatePerBlock": "9876543210",
+                              "rewardsDistributors": [],
+                              "pointsDistributions": []
+                            }
+                          ]
+                        }
+                      ],
+                      "tokens": [
+                        {
+                          "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+                          "chainId": "56",
+                          "symbol": "WBNB",
+                          "decimals": 18,
+                          "tokenPrices": [
+                            {
+                              "id": "56-0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c-oracle-0x0000000000000000000000000000000000000001",
+                              "tokenAddress": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+                              "chainId": "56",
+                              "priceSource": "oracle",
+                              "priceMantissa": "30000000000000000000000",
+                              "isPriceInvalid": false,
+                              "hasErrorFetchingPrice": false
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "next": {
+                    "summary": "accept-version: next \u2014 pools grouped by chainId, markets paginated separately",
+                    "value": {
+                      "pools": {
+                        "56": [
+                          {
+                            "address": "0xfD36E2c2a6789Db23113685031d7F16329158384",
+                            "chainId": "56",
+                            "name": "Venus",
+                            "priceOracleAddress": "0x6592b5DE802159F3E74B2486b091C11a8c9eA9e6",
+                            "closeFactorMantissa": "500000000000000000",
+                            "liquidationIncentiveMantissa": "1100000000000000000",
+                            "minLiquidatableCollateralMantissa": "100000000000000000000"
+                          }
+                        ]
+                      },
+                      "markets": {
+                        "limit": 20,
+                        "page": 0,
+                        "total": 1,
+                        "result": [
+                          {
+                            "address": "0xA07c5b74C9B40447a954e1466938b865b6BBea36",
+                            "chainId": "56",
+                            "symbol": "vBNB",
+                            "name": "Venus BNB",
+                            "isListed": true,
+                            "supplyRatePerBlock": "1234567890",
+                            "borrowRatePerBlock": "9876543210",
+                            "underlyingTokenMetadata": [
+                              {
+                                "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+                                "chainId": "56",
+                                "symbol": "WBNB",
+                                "decimals": 18,
+                                "tokenPrices": [
+                                  {
+                                    "id": "56-0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c-oracle-0x0000000000000000000000000000000000000001",
+                                    "tokenAddress": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+                                    "chainId": "56",
+                                    "priceSource": "oracle",
+                                    "priceMantissa": "30000000000000000000000",
+                                    "isPriceInvalid": false,
+                                    "hasErrorFetchingPrice": false
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed Query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["error"],
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/governance/proposals": {
+      "get": {
+        "parameters": [
+          {
+            "name": "proposalId",
+            "description": "Filter by proposal ID",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "state",
+            "description": "Filter by proposal state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [0, 1, 2, 3, 4, 5, 6, 7]
+            }
+          },
+          {
+            "name": "order",
+            "description": "Array of columns to order results. Default sort is descending. If '+' is prepended to a column it will be sorted ascending.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "Limit used for pagination",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "page",
+            "description": "Page number to fetch",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "type": "integer"
+            }
+          }
+        ],
+        "description": "Returns paginated array of proposals.",
+        "tags": ["governance"],
+        "responses": {
+          "200": {
+            "description": "Returns an array of proposals.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "offset": {
+                      "type": "number"
+                    },
+                    "limit": {
+                      "type": "number"
+                    },
+                    "total": {
+                      "type": "number"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "proposalId",
+                          "description",
+                          "abstainedVotesMantissa",
+                          "againstVotesMantissa",
+                          "cancelBlock",
+                          "cancelTimestamp",
+                          "cancelTxHash",
+                          "createdBlock",
+                          "createdTimestamp",
+                          "createdTxHash",
+                          "endBlock",
+                          "endTimestamp",
+                          "eta",
+                          "executedBlock",
+                          "executedTimestamp",
+                          "executedTxHash",
+                          "forVotesMantissa",
+                          "governorName",
+                          "proposer",
+                          "queuedBlock",
+                          "queuedTimestamp",
+                          "queuedTxHash",
+                          "startBlock",
+                          "startTimestamp",
+                          "state"
+                        ],
+                        "properties": {
+                          "proposalId": {
+                            "type": "integer"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "createdBlock": {
+                            "type": "integer"
+                          },
+                          "createdTxHash": {
+                            "type": "string"
+                          },
+                          "createdTimestamp": {
+                            "type": "integer"
+                          },
+                          "startBlock": {
+                            "type": "integer"
+                          },
+                          "startTimestamp": {
+                            "type": "integer"
+                          },
+                          "cancelBlock": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "cancelTxHash": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "cancelTimestamp": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "endBlock": {
+                            "type": "integer"
+                          },
+                          "endTimestamp": {
+                            "type": "integer"
+                          },
+                          "queuedBlock": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "queuedTxHash": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "queuedTimestamp": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "executedBlock": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "executedTxHash": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "executedTimestamp": {
+                            "type": "integer",
+                            "nullable": true
+                          },
+                          "proposer": {
+                            "type": "string"
+                          },
+                          "eta": {
+                            "type": "integer"
+                          },
+                          "forVotes": {
+                            "type": "string"
+                          },
+                          "againstVotes": {
+                            "type": "string"
+                          },
+                          "canceled": {
+                            "type": "boolean"
+                          },
+                          "executed": {
+                            "type": "boolean"
+                          },
+                          "state": {
+                            "type": "integer"
+                          },
+                          "voterCount": {
+                            "type": "integer"
+                          },
+                          "abstainedVotes": {
+                            "type": "string"
+                          },
+                          "governorName": {
+                            "type": "string"
+                          },
+                          "proposalType": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["message", "status"],
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/governance/proposals/votes": {
+      "get": {
+        "parameters": [
+          {
+            "name": "proposalId",
+            "description": "Filter by proposal ID",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "address",
+            "description": "Account address",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "description": "Array of columns to order results. Default sort is descending. If '+' is prepended to a column it will be sorted ascending.",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "Limit used for pagination",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "page",
+            "description": "Page number to fetch",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "type": "integer"
+            }
+          }
+        ],
+        "description": "Get voter details for a given proposal.",
+        "tags": ["governance"],
+        "responses": {
+          "200": {
+            "description": "Pagination object with paginated voter activity and a summary of proposal votes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "offset": {
+                      "type": "number"
+                    },
+                    "limit": {
+                      "type": "number"
+                    },
+                    "total": {
+                      "type": "number"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "address",
+                          "support",
+                          "blockNumber",
+                          "blockTimestamp",
+                          "votesMantissa",
+                          "reason"
+                        ],
+                        "properties": {
+                          "address": {
+                            "type": "string"
+                          },
+                          "support": {
+                            "type": "integer"
+                          },
+                          "blockNumber": {
+                            "type": "integer"
+                          },
+                          "blockTimestamp": {
+                            "type": "integer"
+                          },
+                          "votesMantissa": {
+                            "type": "string"
+                          },
+                          "reason": {
+                            "type": "string",
+                            "nullable": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["message", "status"],
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/governance/proposals/{proposalId}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "proposalId",
+            "description": "Proposal Id for fetching a detailed proposal",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "description": "Returns paginated array of proposals. It takes an optional array of proposal ids to filter by.",
+        "tags": ["governance"],
+        "responses": {
+          "200": {
+            "description": "Returns an array of proposals.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "proposalId",
+                    "description",
+                    "abstainedVotesMantissa",
+                    "againstVotesMantissa",
+                    "cancelBlock",
+                    "cancelTimestamp",
+                    "cancelTxHash",
+                    "createdBlock",
+                    "createdTimestamp",
+                    "createdTxHash",
+                    "endBlock",
+                    "endTimestamp",
+                    "eta",
+                    "executedBlock",
+                    "executedTimestamp",
+                    "executedTxHash",
+                    "forVotesMantissa",
+                    "governorName",
+                    "proposer",
+                    "queuedBlock",
+                    "queuedTimestamp",
+                    "queuedTxHash",
+                    "startBlock",
+                    "startTimestamp",
+                    "state",
+                    "proposalActions"
+                  ],
+                  "properties": {
+                    "proposalId": {
+                      "type": "integer"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "createdBlock": {
+                      "type": "integer"
+                    },
+                    "createdTxHash": {
+                      "type": "string"
+                    },
+                    "createdTimestamp": {
+                      "type": "integer"
+                    },
+                    "startBlock": {
+                      "type": "integer"
+                    },
+                    "startTimestamp": {
+                      "type": "integer"
+                    },
+                    "cancelBlock": {
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "cancelTxHash": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "cancelTimestamp": {
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "endBlock": {
+                      "type": "integer"
+                    },
+                    "endTimestamp": {
+                      "type": "integer"
+                    },
+                    "queuedBlock": {
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "queuedTxHash": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "queuedTimestamp": {
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "executedBlock": {
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "executedTxHash": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "executedTimestamp": {
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "proposer": {
+                      "type": "string"
+                    },
+                    "eta": {
+                      "type": "integer"
+                    },
+                    "forVotes": {
+                      "type": "string"
+                    },
+                    "againstVotes": {
+                      "type": "string"
+                    },
+                    "canceled": {
+                      "type": "boolean"
+                    },
+                    "executed": {
+                      "type": "boolean"
+                    },
+                    "state": {
+                      "type": "integer"
+                    },
+                    "voterCount": {
+                      "type": "integer"
+                    },
+                    "abstainedVotes": {
+                      "type": "string"
+                    },
+                    "governorName": {
+                      "type": "string"
+                    },
+                    "proposalType": {
+                      "type": "integer"
+                    },
+                    "proposalActions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "proposalId",
+                          "actionIndex",
+                          "target",
+                          "value",
+                          "signature",
+                          "calldata"
+                        ],
+                        "properties": {
+                          "proposalId": {
+                            "type": "integer"
+                          },
+                          "actionIndex": {
+                            "type": "integer"
+                          },
+                          "target": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "string"
+                          },
+                          "signature": {
+                            "type": "string"
+                          },
+                          "calldata": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["message", "status"],
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TokenPrice": {
+        "type": "object",
+        "required": ["id", "tokenAddress", "chainId", "priceSource"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tokenAddress": {
+            "type": "string"
+          },
+          "tokenWrappedAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "priceMantissa": {
+            "type": "string",
+            "nullable": true
+          },
+          "chainId": {
+            "type": "string"
+          },
+          "priceSource": {
+            "type": "string",
+            "enum": ["oracle", "coingecko", "merkl"]
+          },
+          "priceOracleAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "mainOracleAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "mainOracleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "isPriceInvalid": {
+            "type": "boolean"
+          },
+          "hasErrorFetchingPrice": {
+            "type": "boolean"
+          }
+        }
+      },
+      "TokenMetadata": {
+        "type": "object",
+        "required": ["address", "chainId", "decimals"],
+        "properties": {
+          "address": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "symbol": {
+            "type": "string",
+            "nullable": true
+          },
+          "chainId": {
+            "type": "string"
+          },
+          "decimals": {
+            "type": "integer"
+          },
+          "maturityDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "tokenPrices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TokenPrice"
+            }
+          }
+        }
+      },
+      "RewardsDistributor": {
+        "type": "object",
+        "required": [
+          "id",
+          "rewardTokenAddress",
+          "marketAddress",
+          "chainId",
+          "lastRewardingSupplyBlockOrTimestamp",
+          "lastRewardingBorrowBlockOrTimestamp",
+          "supplySpeed",
+          "borrowSpeed",
+          "rewardsDistributorContractAddress",
+          "rewardType",
+          "isActive"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "rewardTokenAddress": {
+            "type": "string"
+          },
+          "marketAddress": {
+            "type": "string"
+          },
+          "chainId": {
+            "type": "string"
+          },
+          "lastRewardingSupplyBlockOrTimestamp": {
+            "type": "string"
+          },
+          "lastRewardingBorrowBlockOrTimestamp": {
+            "type": "string"
+          },
+          "supplySpeed": {
+            "type": "string"
+          },
+          "borrowSpeed": {
+            "type": "string"
+          },
+          "priceMantissa": {
+            "type": "string"
+          },
+          "rewardsDistributorContractAddress": {
+            "type": "string"
+          },
+          "rewardType": {
+            "type": "string",
+            "enum": [
+              "venus",
+              "merkl",
+              "intrinsic",
+              "off-chain",
+              "yield-to-maturity"
+            ]
+          },
+          "rewardDetails": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "merklCampaignId": {
+                "type": "string"
+              },
+              "apr": {
+                "type": "string"
+              },
+              "apy": {
+                "type": "string"
+              }
+            }
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PointsDistribution": {
+        "type": "object",
+        "required": [
+          "id",
+          "pointsProgram",
+          "marketAddress",
+          "chainId",
+          "action",
+          "title"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "pointsProgram": {
+            "type": "string",
+            "enum": ["ethena", "etherfi", "kelp", "solv", "aster"]
+          },
+          "marketAddress": {
+            "type": "string"
+          },
+          "chainId": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string",
+            "enum": ["supply", "borrow"]
+          },
+          "title": {
+            "type": "string"
+          },
+          "incentive": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "extraInfoUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "EModeSetting": {
+        "type": "object",
+        "required": [
+          "id",
+          "chainId",
+          "marketAddress",
+          "poolId",
+          "collateralFactorMantissa",
+          "liquidationThresholdMantissa",
+          "liquidationIncentiveMantissa",
+          "canBeCollateral",
+          "isBorrowable"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "chainId": {
+            "type": "string"
+          },
+          "marketAddress": {
+            "type": "string"
+          },
+          "poolId": {
+            "type": "integer"
+          },
+          "collateralFactorMantissa": {
+            "type": "string"
+          },
+          "liquidationThresholdMantissa": {
+            "type": "string"
+          },
+          "liquidationIncentiveMantissa": {
+            "type": "string"
+          },
+          "canBeCollateral": {
+            "type": "boolean"
+          },
+          "isBorrowable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "EModeGroup": {
+        "type": "object",
+        "required": [
+          "id",
+          "comptrollerAddress",
+          "chainId",
+          "label",
+          "poolId",
+          "isActive",
+          "allowCorePoolFallback"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "comptrollerAddress": {
+            "type": "string"
+          },
+          "chainId": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "poolId": {
+            "type": "integer"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "allowCorePoolFallback": {
+            "type": "boolean"
+          },
+          "eModeSettings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EModeSetting"
+            }
+          }
+        }
+      },
+      "MarketsStableResponse": {
+        "description": "Response when using accept-version: stable. chainId is required. Returns a top-level tokens array alongside the paginated market list.",
+        "type": "object",
+        "required": ["limit", "page", "total", "result", "tokens"],
+        "properties": {
+          "limit": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          },
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Market"
+            }
+          },
+          "tokens": {
+            "description": "Token metadata (with prices) for every underlying and reward token referenced in result. Not present in the next version \u2014 token metadata is embedded inside each market as underlyingTokenMetadata instead.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TokenMetadata"
+            }
+          }
+        }
+      },
+      "MarketsNextResponse": {
+        "description": "Response when using accept-version: next. chainId is optional. Token metadata is embedded inside each market as underlyingTokenMetadata. Supports accountAddress for Prime APY data.",
+        "type": "object",
+        "required": ["limit", "page", "total", "result"],
+        "properties": {
+          "limit": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          },
+          "result": {
+            "description": "Markets with underlyingTokenMetadata (and tokenPrices) embedded in each item. No separate tokens field.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Market"
+            }
+          }
+        }
+      },
+      "PoolsStableResponse": {
+        "description": "Response when using accept-version: stable. chainId is required. Pools include embedded markets. A top-level tokens array carries all token metadata.",
+        "type": "object",
+        "required": ["limit", "page", "total", "result", "tokens"],
+        "properties": {
+          "limit": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          },
+          "result": {
+            "description": "Pools with embedded markets (isListed only) and eModeGroups.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Pool"
+            }
+          },
+          "tokens": {
+            "description": "Token metadata (with prices) for every underlying and reward token referenced in result. Not present in the next version \u2014 token metadata is embedded inside each market as underlyingTokenMetadata instead.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TokenMetadata"
+            }
+          }
+        }
+      },
+      "PoolsNextResponse": {
+        "description": "Response when using accept-version: next. chainId is optional and accepts a JSON array string for multi-chain queries (e.g. `[\"56\",\"1\"]`). Pools are grouped by chainId. Markets are returned separately with underlyingTokenMetadata embedded.",
+        "type": "object",
+        "required": ["pools", "markets"],
+        "properties": {
+          "pools": {
+            "description": "All matching pools keyed by chainId. Each pool includes eModeGroups but not markets (markets are in the separate markets field).",
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Pool"
+              }
+            }
+          },
+          "markets": {
+            "description": "Paginated market list across all requested chains. Each market has underlyingTokenMetadata embedded.",
+            "type": "object",
+            "required": ["limit", "page", "total", "result"],
+            "properties": {
+              "limit": {
+                "type": "number"
+              },
+              "page": {
+                "type": "number"
+              },
+              "total": {
+                "type": "number"
+              },
+              "result": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Market"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Market": {
+        "type": "object",
+        "required": ["address", "chainId", "poolComptrollerAddress"],
+        "properties": {
+          "address": {
+            "type": "string"
+          },
+          "chainId": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "underlyingAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "underlyingName": {
+            "type": "string"
+          },
+          "underlyingSymbol": {
+            "type": "string"
+          },
+          "underlyingDecimal": {
+            "type": "integer"
+          },
+          "borrowerDailyXvsMantissa": {
+            "type": "string",
+            "nullable": true
+          },
+          "supplierDailyXvsMantissa": {
+            "type": "string",
+            "nullable": true
+          },
+          "xvsBorrowIndex": {
+            "type": "string",
+            "nullable": true
+          },
+          "xvsSupplyIndex": {
+            "type": "string",
+            "nullable": true
+          },
+          "borrowRatePerBlock": {
+            "type": "string"
+          },
+          "supplyRatePerBlock": {
+            "type": "string"
+          },
+          "exchangeRateMantissa": {
+            "type": "string"
+          },
+          "underlyingPriceMantissa": {
+            "type": "string"
+          },
+          "totalBorrowsMantissa": {
+            "type": "string"
+          },
+          "totalSupplyMantissa": {
+            "type": "string"
+          },
+          "cashMantissa": {
+            "type": "string"
+          },
+          "totalReservesMantissa": {
+            "type": "string"
+          },
+          "reserveFactorMantissa": {
+            "type": "string"
+          },
+          "collateralFactorMantissa": {
+            "type": "string"
+          },
+          "liquidationThresholdMantissa": {
+            "type": "string"
+          },
+          "liquidationIncentiveMantissa": {
+            "type": "string"
+          },
+          "isBorrowable": {
+            "type": "boolean"
+          },
+          "canBeCollateral": {
+            "type": "boolean"
+          },
+          "borrowApy": {
+            "type": "string"
+          },
+          "supplyApy": {
+            "type": "string"
+          },
+          "borrowApyDecimal": {
+            "type": "string",
+            "nullable": true
+          },
+          "supplyApyDecimal": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalBorrowApyDecimal": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalSupplyApyDecimal": {
+            "type": "string",
+            "nullable": true
+          },
+          "borrowXvsApy": {
+            "type": "string",
+            "nullable": true
+          },
+          "supplyXvsApy": {
+            "type": "string",
+            "nullable": true
+          },
+          "borrowXvsApr": {
+            "type": "string",
+            "nullable": true
+          },
+          "supplyXvsApr": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalSupplyUnderlyingCents": {
+            "type": "integer"
+          },
+          "totalBorrowCents": {
+            "type": "integer"
+          },
+          "liquidityCents": {
+            "type": "string"
+          },
+          "tokenPriceCents": {
+            "type": "string"
+          },
+          "totalDistributedMantissa": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastCalculatedXvsAccruedBlockNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "supplyCapsMantissa": {
+            "type": "string",
+            "nullable": true
+          },
+          "borrowCapsMantissa": {
+            "type": "string"
+          },
+          "borrowerCount": {
+            "type": "integer"
+          },
+          "supplierCount": {
+            "type": "integer"
+          },
+          "estimatedPrimeBorrowApyBoost": {
+            "type": "string",
+            "nullable": true
+          },
+          "estimatedPrimeSupplyApyBoost": {
+            "type": "string",
+            "nullable": true
+          },
+          "pausedActionsBitmap": {
+            "type": "integer"
+          },
+          "isListed": {
+            "type": "boolean"
+          },
+          "poolComptrollerAddress": {
+            "type": "string"
+          },
+          "badDebtMantissa": {
+            "type": "string"
+          },
+          "isPriceInvalid": {
+            "type": "boolean"
+          },
+          "rewardsDistributors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RewardsDistributor"
+            }
+          },
+          "pointsDistributions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PointsDistribution"
+            }
+          },
+          "eModeSettings": {
+            "description": "E-mode settings for this market. Present in the stable /pools response only.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EModeSetting"
+            }
+          },
+          "underlyingTokenMetadata": {
+            "description": "Embedded token metadata with price data. Present in the next version response only.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TokenMetadata"
+            }
+          }
+        }
+      },
+      "Pool": {
+        "type": "object",
+        "required": ["chainId", "address", "name", "priceOracleAddress"],
+        "properties": {
+          "chainId": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "priceOracleAddress": {
+            "type": "string"
+          },
+          "closeFactorMantissa": {
+            "type": "string",
+            "nullable": true
+          },
+          "liquidationIncentiveMantissa": {
+            "type": "string",
+            "nullable": true
+          },
+          "minLiquidatableCollateralMantissa": {
+            "type": "string",
+            "nullable": true
+          },
+          "markets": {
+            "description": "Embedded markets. Present in the stable /pools response only.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Market"
+            }
+          },
+          "eModeGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EModeGroup"
+            }
+          }
+        }
+      }
+    }
+  }
+}
