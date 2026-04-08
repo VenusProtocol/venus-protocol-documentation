@@ -4,7 +4,7 @@ description: The Venus Protocol API providing access to indexed protocol data.
 
 # API
 
-Venus Protocol API provides two groups of endpoints
+Venus Protocol API provides three groups of endpoints
 
 **Market Data -** Endpoints relating to lending markets
 
@@ -52,6 +52,10 @@ These steps describe the process of upgrading endpoints to new versions as they 
 {% endswagger %}
 
 {% swagger src="../.gitbook/assets/swagger.json" path="/markets/history" method="get" %}
+[swagger.json](../.gitbook/assets/swagger.json)
+{% endswagger %}
+
+{% swagger src="../.gitbook/assets/swagger.json" path="/markets/tvl" method="get" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
 
