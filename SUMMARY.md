@@ -197,6 +197,7 @@
   * [SwapHelper](technical-reference/reference-periphery/swap-helper.md)
   * [SwapRouter](technical-reference/reference-periphery/swap-router.md)
   * [DeviationSentinel](technical-reference/reference-periphery/deviation-sentinel.md)
+  * [EBrake](technical-reference/reference-periphery/ebrake.md)
 
 ## Deployed Contracts
 
