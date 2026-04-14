@@ -59,7 +59,7 @@ The on-chain contract includes its own price validation checks to protect agains
 
 ## Architecture
 
-<figure><img src="../../.gitbook/assets/emergency_brake.svg" alt="DeviationSentinel Architecture"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/emergency_brake.png" alt="DeviationSentinel Architecture"><figcaption></figcaption></figure>
 
 ## Inheritance
 
