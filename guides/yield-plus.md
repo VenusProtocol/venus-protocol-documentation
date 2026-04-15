@@ -121,11 +121,13 @@ Use this when you want to increase your relative exposure without changing your 
 
 Deposits additional DSA into your PositionAccount without opening a new trade. This increases your Available Capital and improves your Health Factor without changing your position size.
 
-Use this when your Health Factor is declining and you want to reduce liquidation risk.
+Use this when your Health Factor is declining and you want to reduce liquidation risk without unwinding any exposure. The deposited DSA earns supply APY immediately and increases the buffer between your current borrow value and the liquidation threshold.
 
 ### Reduce Position
 
-Closes a percentage of your position (from 1% to 100%) and settles PnL:
+Closes a percentage of your position (from 1% to 100%) and settles PnL.
+
+You can also use a small partial reduce (e.g. 5–20%) as a Health Factor management tool: closing part of the position repays a proportional slice of the short debt, which directly raises your Health Factor without requiring a full exit.
 
 - **With profit:** The excess long collateral (above what's needed to repay the debt fraction) is swapped back to DSA and added to your principal balance
 - **With loss:** The long collateral is swapped to repay as much of the debt fraction as possible, and remaining debt is covered by redeeming DSA collateral
@@ -197,8 +199,8 @@ Yield+ uses the same liquidation mechanism as Venus Core. If your Health Factor 
 
 To manage liquidation risk:
 - Monitor your Health Factor regularly and track the current ratio vs. your liquidation price
-- Supply more DSA collateral to improve your Health Factor when it gets low
-- Partially close your position to reduce exposure
+- **Supply more DSA principal** (via Supply Collateral) to improve your Health Factor without changing position size
+- **Partially reduce your position** (e.g. 5–20%) to repay a slice of short debt, which raises the Health Factor directly
 - Understand that leverage amplifies both gains and losses — a 2x leveraged position has twice the liquidation sensitivity
 
 ### Slippage

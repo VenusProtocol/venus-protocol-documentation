@@ -36,68 +36,13 @@ The Yield+ system consists of four contracts:
 | **LeverageStrategiesManager** | Pre-existing Venus periphery contract. Executes flash loans via the Comptroller and invokes the SwapHelper. |
 | **SwapHelper** | Pre-existing Venus periphery contract. Executes authorized on-chain swaps using signed multicall data. |
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                      Venus Core Pool                             │
-│  ┌───────────────┐  ┌──────────────┐  ┌───────────────────────┐ │
-│  │  Comptroller  │  │   vTokens    │  │   Flash Loan Module   │ │
-│  └───────┬───────┘  └──────┬───────┘  └───────────┬───────────┘ │
-└──────────┼─────────────────┼──────────────────────┼─────────────┘
-           │                 │                      │
-           │                 │            ┌─────────┘
-           │                 │   ┌────────┴──────────────────────┐
-           │                 │   │   LeverageStrategiesManager   │
-           │                 │   │   - Flash loan executor       │
-           │                 │   │   - enter / exitLeverage()    │
-           │                 │   └──────────────┬────────────────┘
-           │                 │                  │
-┌──────────┼─────────────────┼──────────────────┼─────────────────┐
-│          ▼                 ▼                  ▼                 │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │              RelativePositionManager                     │   │
-│  │  - Position lifecycle (activate → open → close → exit)   │   │
-│  │  - Capital utilization and withdrawal logic               │   │
-│  │  - Proportional close validation and execution            │   │
-│  └────────────────────────────┬──────────────────────────────┘   │
-│                               │                                   │
-│                               ▼                                   │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │           PositionAccount  (per user × pair)             │   │
-│  │  Deterministic deploy · Owns all funds                   │   │
-│  │  RPM-only access · User-gated calls                      │   │
-│  └──────────────────────────────────────────────────────────┘   │
-│                        Venus Periphery                            │
-└──────────────────────────────────────────────────────────────────┘
-```
+<figure><img src="../../.gitbook/assets/image-architecture.png" alt="Yield+ Architecture Overview"><figcaption></figcaption></figure>
 
 ### Position Isolation
 
 Every unique `(user, longVToken, shortVToken)` triple gets its own **PositionAccount** — a minimal EIP-1167 clone deployed with a deterministic CREATE2 salt. Collateral, debt, and Health Factor are entirely independent across accounts. A liquidation or loss on one PositionAccount cannot affect any other.
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                        Position Isolation                            │
-├──────────────────────────────────┬───────────────────────────────────┤
-│            User A                │            User B                 │
-├──────────────────────────────────┼───────────────────────────────────┤
-│                                  │                                   │
-│  ETH↑ / BNB↓                    │  ETH↑ / BNB↓                     │
-│  ┌──────────────────────────┐    │  ┌──────────────────────────────┐ │
-│  │  PositionAccount A1      │    │  │  PositionAccount B1          │ │
-│  │  Venus HF: 2.1           │    │  │  Venus HF: 1.8               │ │
-│  └──────────────────────────┘    │  └──────────────────────────────┘ │
-│                                  │                                   │
-│  BTC↑ / USDT↓                   │                                   │
-│  ┌──────────────────────────┐    │                                   │
-│  │  PositionAccount A2      │    │                                   │
-│  │  Venus HF: 3.4           │    │                                   │
-│  └──────────────────────────┘    │                                   │
-│                                  │                                   │
-├──────────────────────────────────┴───────────────────────────────────┤
-│  All PositionAccounts route through RelativePositionManager.         │
-│  No external caller can move funds directly out of a PositionAccount.│
-└──────────────────────────────────────────────────────────────────────┘
-```
+<figure><img src="../../.gitbook/assets/image-isolated.png" alt="Yield+ Position Isolation"><figcaption></figcaption></figure>
 
 | Layer | Mechanism |
 | --- | --- |
@@ -261,6 +206,8 @@ function closeWithProfit(
 ) external;
 ```
 
+**One-leg close (skip profit conversion):** The profit swap leg is optional. Pass `longAmountToRedeemForProfit = 0`, `minAmountOutProfit = 0`, and `swapDataProfit = "0x"` to skip it. The repay leg always executes. If there is outstanding short debt, `longAmountToRedeemForRepay` must be non-zero — passing zero while debt exists reverts with `MinAmountOutRepayBelowDebt`.
+
 ---
 
 #### closeWithLoss
@@ -287,13 +234,22 @@ function closeWithLoss(
 ) external;
 ```
 
+**One-leg close behavior:** Both legs are individually optional, enabling single-asset close paths:
+
+| Close path | How to invoke | When to use |
+| --- | --- | --- |
+| **Long only** | Set `dsaAmountToRedeemForSecondSwap = 0` | Leg 1 (long → short swap) fully covers the proportional debt; no DSA needs to be burned |
+| **DSA only** | Set `longAmountToRedeemForFirstSwap = 0` **and** `shortAmountToRepayForFirstSwap = 0` | Long collateral has been partially or fully seized by a liquidator; only DSA principal remains to repay debt |
+
+**Restriction:** If `longAmountToRedeemForFirstSwap = 0` but `shortAmountToRepayForFirstSwap != 0`, the call reverts with `InvalidLongAmountToRedeem`. Skipping the long leg while claiming a non-zero repay from it would illegitimately reduce the second-leg repay obligation without any actual collateral being redeemed.
+
 ---
 
 #### supplyPrincipal
 
 Deposits additional DSA collateral into the PositionAccount without opening a new leveraged trade. Transfers DSA from the caller, calls `vToken.mintBehalf` to supply it on the PositionAccount, and increments `suppliedPrincipalVTokens`.
 
-This increases Available Capital and improves the position's Health Factor. Allowed during partial pause — classified as a defensive operation.
+This is the primary **defensive Health Factor management** tool. Supplying more principal increases the DSA collateral backing the borrow, directly raising the Health Factor without any position unwind or swap. Users facing a declining Health Factor should call this before the position becomes liquidatable. Allowed during partial pause — classified as a defensive operation and never blocked during incidents.
 
 ```solidity
 function supplyPrincipal(address longVToken, address shortVToken, uint256 amount) external;
@@ -526,6 +482,8 @@ Used when the proportional long asset value is insufficient to cover the full pr
 - **Leg 1:** Redeem long collateral → swap to short → repay as much debt as possible
 - **Leg 2:** Redeem DSA collateral → swap to short (or use directly if DSA == short) → repay remaining debt
 
+Both legs are individually optional. Set `dsaAmountToRedeemForSecondSwap = 0` to use long collateral only (leg 1 fully covers debt). Set `longAmountToRedeemForFirstSwap = 0` and `shortAmountToRepayForFirstSwap = 0` together to use DSA only (leg 2 only) — this is the correct path when the long collateral has been partially or fully seized by a liquidator and only DSA principal remains.
+
 **Validation:**
 
 ```
@@ -538,8 +496,8 @@ assert shortDust ≤ expectedShort × proportionalCloseTolerance / 10000
 ```
 
 **Execution:**
-1. Leg 1: `positionAccount.exitLeverage(longVToken → shortVToken)` — redeems long collateral, swaps to short, repays debt
-2. Leg 2: `positionAccount.exitLeverage(dsaVToken → shortVToken)` — or `exitSingleAssetLeverage` when DSA == short
+1. Leg 1 (if `longAmountToRedeemForFirstSwap > 0`): `positionAccount.exitLeverage(longVToken → shortVToken)` — redeems long collateral, swaps to short, repays debt
+2. Leg 2 (if `dsaAmountToRedeemForSecondSwap > 0`): `positionAccount.exitLeverage(dsaVToken → shortVToken)` — or `exitSingleAssetLeverage` when DSA == short
 3. Update `suppliedPrincipalVTokens` -= DSA vTokens burned in leg 2
 4. Emit `PositionClosed`
 
@@ -547,7 +505,7 @@ assert shortDust ≤ expectedShort × proportionalCloseTolerance / 10000
 
 ### Stage 4: Principal Management
 
-**`supplyPrincipal()`** — deposit additional DSA without opening a new trade. Transfers DSA from the user, mints vTokens on the PositionAccount, increments `suppliedPrincipalVTokens`.
+**`supplyPrincipal()`** — deposit additional DSA without opening a new trade. Transfers DSA from the user, mints vTokens on the PositionAccount, increments `suppliedPrincipalVTokens`. This is the recommended action when the Health Factor is declining: adding DSA principal directly increases the collateral backing the borrow and raises HF without any position unwind. A small partial close (`closeWithProfit` or `closeWithLoss` with a low `closeFractionBps`) is the alternative: it repays a proportional slice of debt, which similarly raises HF but also reduces position size.
 
 **`withdrawPrincipal()`** — withdraw Available Capital back to the user's wallet. Validates that `amount <= withdrawableAmount` (from `getUtilizationInfo()`), redeems the corresponding DSA vTokens from the PositionAccount, and decrements `suppliedPrincipalVTokens`.
 

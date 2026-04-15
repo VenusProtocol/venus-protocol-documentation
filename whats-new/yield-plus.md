@@ -29,41 +29,7 @@ Yield+ introduces a set of new periphery contracts and capabilities alongside Ve
 
 Yield+ is built as a peripheral orchestration layer. No changes were made to the Venus Core Pool, Comptroller, or vToken contracts.
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                      Venus Core Pool                             │
-│  ┌───────────────┐     ┌────────────────────┐  ┌──────────────┐  │
-│  │  Comptroller  │────▶│  Flash Loan Facet  │  │   vTokens   │  │
-│  └───────────────┘     └────────────────────┘  └──────────────┘  │
-└──────────────────────────────────────────────────────────────────┘
-                                   │
-                                   ▼
-┌──────────────────────────────────────────────────────────────────┐
-│  ┌───────────────────────────────────────────────────────────┐   │
-│  │              LeverageStrategiesManager                    │   │
-│  │  - Flash loan executor                                    │   │
-│  │  - enter / exitLeverage()                                 │   │
-│  └───────────────────────────────────────────────────────────┘   │
-└──────────────────────────────────────────────────────────────────┘
-                                   │
-                                   ▼
-┌──────────────────────────────────────────────────────────────────┐
-│  ┌───────────────────────────────────────────────────────────┐   │
-│  │              RelativePositionManager                      │   │
-│  │  - Position lifecycle (activate → open → close → exit)    │   │
-│  │  - Capital utilization and withdrawal logic                │   │
-│  │  - Proportional close validation and execution             │   │
-│  └────────────────────────────┬──────────────────────────────┘   │
-│                               │                                   │
-│                               ▼                                   │
-│  ┌───────────────────────────────────────────────────────────┐   │
-│  │           PositionAccount  (per user × pair)              │   │
-│  │  Deterministic deploy · Owns all funds                    │   │
-│  │  RPM-only access · User-gated calls                       │   │
-│  └───────────────────────────────────────────────────────────┘   │
-│                        Venus Periphery                            │
-└──────────────────────────────────────────────────────────────────┘
-```
+<figure><img src="../.gitbook/assets/image-architecture.png" alt="Yield+ Architecture Overview"><figcaption></figcaption></figure>
 
 Each user gets a **dedicated PositionAccount** per trading pair, deployed as a minimal proxy clone. This account holds all funds, enters markets on the Comptroller, and delegates all position operations to the RelativePositionManager.
 
@@ -75,42 +41,7 @@ PositionAccounts are **deterministically deployed** using the owner's `msg.sende
 
 Every `(user, trading pair)` combination gets its own isolated PositionAccount. Collateral, debt, and Health Factor are entirely separate — a loss or liquidation on one position cannot affect another.
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                       Position Isolation                                           │
-├──────────────────────────────┬──────────────────────────────┬──────────────────────────────────────┤
-│           User A             │           User B             │             User C                   │
-├──────────────────────────────┼──────────────────────────────┼──────────────────────────────────────┤
-│                              │                              │                                      │
-│  ETH↑ / BNB↓                │  ETH↑ / BNB↓                │  ETH↑ / BNB↓                        │
-│  ┌────────────────────────┐  │  ┌────────────────────────┐  │  ┌────────────────────────────────┐  │
-│  │  PositionAccount A1   │  │  │  PositionAccount B1   │  │  │  PositionAccount C1            │  │
-│  │  Venus HF: 2.1        │  │  │  Venus HF: 1.8        │  │  │  Venus HF: 2.5                 │  │
-│  └────────────────────────┘  │  └────────────────────────┘  │  └────────────────────────────────┘  │
-│                              │                              │                                      │
-│  BTC↑ / USDT↓               │  SOL↑ / BTC↓                │  BTC↑ / USDT↓                       │
-│  ┌────────────────────────┐  │  ┌────────────────────────┐  │  ┌────────────────────────────────┐  │
-│  │  PositionAccount A2   │  │  │  PositionAccount B2   │  │  │  PositionAccount C2            │  │
-│  │  Venus HF: 3.4        │  │  │  Venus HF: 2.3        │  │  │  Venus HF: 1.9                 │  │
-│  └────────────────────────┘  │  └────────────────────────┘  │  └────────────────────────────────┘  │
-│                              │                              │                                      │
-│  SOL↑ / ETH↓                │                              │  SOL↑ / ETH↓                        │
-│  ┌────────────────────────┐  │                              │  ┌────────────────────────────────┐  │
-│  │  PositionAccount A3   │  │                              │  │  PositionAccount C3            │  │
-│  │  Venus HF: 2.8        │  │                              │  │  Venus HF: 2.8                 │  │
-│  └────────────────────────┘  │                              │  └────────────────────────────────┘  │
-│                              │                              │                                      │
-│                              │                              │  BNB↑ / USDC↓                       │
-│                              │                              │  ┌────────────────────────────────┐  │
-│                              │                              │  │  PositionAccount C4            │  │
-│                              │                              │  │  Venus HF: 3.1                 │  │
-│                              │                              │  └────────────────────────────────┘  │
-│                              │                              │                                      │
-├──────────────────────────────┴──────────────────────────────┴──────────────────────────────────────┤
-│  All PositionAccounts route through RelativePositionManager.                                       │
-│  No external caller can move funds directly out of a PositionAccount.                              │
-└────────────────────────────────────────────────────────────────────────────────────────────────────┘
-```
+<figure><img src="../.gitbook/assets/image-isolated.png" alt="Yield+ Position Isolation"><figcaption></figcaption></figure>
 
 ## Key Concepts
 
