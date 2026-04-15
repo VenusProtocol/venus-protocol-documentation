@@ -1,19 +1,20 @@
 # DeviationSentinel
 
-The DeviationSentinel is a Venus periphery contract that monitors price deviations between the ResilientOracle and a DEX-based SentinelOracle. When deviations exceed configured thresholds, it automatically pauses market actions and adjusts collateral factors to protect the protocol from price manipulation or oracle failures.
+The DeviationSentinel is a Venus periphery contract that monitors price deviations between the ResilientOracle and a DEX-based SentinelOracle. When deviations exceed configured thresholds, it routes emergency actions through the [EBrake](ebrake.md) contract to pause market actions and zero collateral factors, protecting the protocol from price manipulation or oracle failures.
 
 ## Overview
 
 Price oracle reliability is critical for lending protocols. A compromised or malfunctioning oracle can lead to undercollateralized borrows or improper liquidations. The DeviationSentinel mitigates this risk by continuously comparing prices from two independent sources and taking protective action when they diverge beyond acceptable limits.
 
-The system consists of four contracts:
+The system consists of five contracts:
 
-| Contract             | Description                                                |
-| -------------------- | ---------------------------------------------------------- |
-| `DeviationSentinel`  | Core controller that detects deviations and pauses markets |
-| `SentinelOracle`     | Aggregator oracle routing to DEX oracles or direct prices  |
-| `UniswapOracle`      | Fetches prices from Uniswap V3 pools                       |
-| `PancakeSwapOracle`  | Fetches prices from PancakeSwap V3 pools                   |
+| Contract             | Description                                                               |
+| -------------------- | ------------------------------------------------------------------------- |
+| `DeviationSentinel`  | Detects price deviations and routes emergency actions through EBrake      |
+| `EBrake`             | Executes emergency actions (pauses, CF decrease) on the Comptroller       |
+| `SentinelOracle`     | Aggregator oracle routing to DEX oracles or direct prices                 |
+| `UniswapOracle`      | Fetches prices from Uniswap V3 pools                                      |
+| `PancakeSwapOracle`  | Fetches prices from PancakeSwap V3 pools                                  |
 
 ### Economic Rationale
 
@@ -43,17 +44,18 @@ Pauses trigger only for large price deviations (e.g., 15%-50%), not for minor di
 
 When a deviation is detected, the response depends on the direction:
 
-| Condition                           | Action                                    | Rationale                                        |
-| ----------------------------------- | ----------------------------------------- | ------------------------------------------------ |
-| Sentinel price > Oracle price       | Pause borrowing                           | Prevents borrowing out undervalued assets        |
-| Sentinel price < Oracle price       | Set collateral factor to 0, pause supply  | Prevents supplying overvalued assets as collateral |
-| No deviation (prices within bounds) | Unpause all actions, restore CF           | Resume normal operations                         |
+| Condition                     | Action                                    | Rationale                                          |
+| ----------------------------- | ----------------------------------------- | -------------------------------------------------- |
+| Sentinel price > Oracle price  | Pause borrowing via EBrake                         | Prevents borrowing out undervalued assets          |
+| Sentinel price ≤ Oracle price  | Zero collateral factor and pause supply via EBrake | Prevents supplying overvalued assets as collateral |
+
+DeviationSentinel can only tighten restrictions. Recovery (unpausing, restoring collateral factors) is handled exclusively via a governance VIP, which calls the corresponding EBrake snapshot reset functions after restoring Comptroller parameters.
 
 ### Off-Chain Monitoring
 
-An off-chain monitoring service continuously compares the ResilientOracle price with on-chain swap prices from PancakeSwap and Uniswap. When the deviation exceeds a configured threshold, the monitor calls `handleDeviation` via a trusted keeper address to pause the affected market actions.
+An off-chain monitoring service continuously compares the ResilientOracle price with on-chain swap prices from PancakeSwap and Uniswap. When the deviation exceeds a configured threshold, the monitor calls `handleDeviation` via a trusted keeper address, which routes the emergency action through EBrake to pause the affected market.
 
-Once the DEX pools return to equilibrium and the price discrepancy resolves, the monitor calls `handleDeviation` again, which automatically unpauses and resumes normal operations. The on-chain contract includes its own price validation checks to protect against false pauses caused by compromised or faulty off-chain monitors.
+The on-chain contract includes its own price validation checks to protect against false pauses caused by compromised or faulty off-chain monitors. Once the incident is resolved, a governance VIP restores all parameters on the Comptroller and calls the EBrake snapshot reset functions to prepare for future incidents.
 
 ## Architecture
 
@@ -79,19 +81,18 @@ Once the DEX pools return to equilibrium and the price discrepancy resolves, the
 
 #### Immutable
 
-| Variable               | Type                      | Description                                      |
-| ---------------------- | ------------------------- | ------------------------------------------------ |
-| `CORE_POOL_COMPTROLLER`| `ICorePoolComptroller`    | Core pool comptroller reference                  |
-| `RESILIENT_ORACLE`     | `ResilientOracleInterface`| Primary oracle for reference prices              |
-| `SENTINEL_ORACLE`      | `OracleInterface`         | DEX-based oracle for comparison prices           |
+| Variable           | Type                       | Description                                                         |
+| ------------------ | -------------------------- | ------------------------------------------------------------------- |
+| `EBRAKE`           | `IEBrake`                  | EBrake contract through which all emergency actions are executed    |
+| `RESILIENT_ORACLE` | `ResilientOracleInterface` | Primary oracle for reference prices                                 |
+| `SENTINEL_ORACLE`  | `OracleInterface`          | DEX-based oracle for comparison prices                              |
 
 #### Mutable
 
-| Variable         | Type                                   | Description                                          |
-| ---------------- | -------------------------------------- | ---------------------------------------------------- |
-| `tokenConfigs`   | `mapping(address => DeviationConfig)`  | Deviation threshold and enabled status per token     |
-| `trustedKeepers` | `mapping(address => bool)`             | Addresses authorized to call `handleDeviation`       |
-| `marketStates`   | `mapping(address => MarketState)`      | Tracks pause states and original collateral factors  |
+| Variable         | Type                                  | Description                                      |
+| ---------------- | ------------------------------------- | ------------------------------------------------ |
+| `tokenConfigs`   | `mapping(address => DeviationConfig)` | Deviation threshold and enabled status per token |
+| `trustedKeepers` | `mapping(address => bool)`            | Addresses authorized to call `handleDeviation`   |
 
 #### Constants
 
@@ -124,14 +125,12 @@ struct DeviationConfig {
 }
 ```
 
-### MarketState
+### DeviationAction
 
 ```solidity
-struct MarketState {
-    bool borrowPaused;                     // Whether borrow was paused by sentinel
-    bool cfModifiedAndSupplyPaused;        // Whether CF was zeroed and supply paused
-    mapping(uint96 => uint256) poolCFs;    // Original collateral factors by pool ID
-    mapping(uint96 => uint256) poolLTs;    // Original liquidation thresholds by pool ID
+enum DeviationAction {
+    BorrowPaused,            // Triggered when sentinel price > oracle price
+    SupplyPausedAndCFZeroed  // Triggered when sentinel price <= oracle price
 }
 ```
 
@@ -165,11 +164,13 @@ function handleDeviation(IVToken market) external
 
 1. Retrieves the underlying token and its deviation config
 2. Calls `checkPriceDeviation` to compare oracle prices
-3. If deviation detected:
-   - If sentinel price > oracle price: pauses borrowing
-   - If sentinel price < oracle price: sets collateral factor to 0 and pauses supply
-4. If no deviation: unpauses all actions and restores original collateral factors
-5. Early returns if the required action has already been taken
+3. Returns early if no deviation is detected (prices within configured threshold)
+4. If deviation detected:
+   - If sentinel price > oracle price: calls `EBRAKE.pauseBorrow(market)`
+   - If sentinel price ≤ oracle price: calls `EBRAKE.decreaseCF(market, 0)` then `EBRAKE.pauseSupply(market)`
+5. Emits `DeviationHandled` with the prices and the action taken
+
+Idempotency is handled by EBrake — duplicate calls for an already-paused market are no-ops on the EBrake side.
 
 #### Access Requirements
 
@@ -244,6 +245,7 @@ function setTokenConfig(address token, DeviationConfig calldata config) external
 
 #### Errors
 
+- `ZeroAddress` if `token` is the zero address
 - `ZeroDeviation` if `config.deviation` is 0
 - `ExceedsMaxDeviation` if `config.deviation` exceeds 100
 
@@ -274,6 +276,7 @@ function setTokenMonitoringEnabled(address token, bool enabled) external
 
 #### Errors
 
+- `ZeroAddress` if `token` is the zero address
 - `MarketNotConfigured` if token has no existing config
 
 #### Events
@@ -313,25 +316,7 @@ function setTrustedKeeper(address keeper, bool isTrusted) external
 
 ### resetMarketState
 
-Clears all sentinel-tracked state for a market. Must be called before VIPs (Venus Improvement Proposals) that modify collateral factors or pause states to prevent the sentinel from overriding governance changes.
-
-```solidity
-function resetMarketState(IVToken market) external
-```
-
-#### Parameters
-
-| Name   | Type    | Description                 |
-| ------ | ------- | --------------------------- |
-| market | IVToken | The vToken market to reset  |
-
-#### Access Requirements
-
-- Governance only
-
-#### Events
-
-- `MarketStateReset` emitted on success
+> **Removed.** This function no longer exists. Pre-incident state snapshots (CF, caps) are now tracked by EBrake. Use EBrake's `resetCFSnapshot`, `resetBorrowCapSnapshot`, and `resetSupplyCapSnapshot` functions in recovery VIPs instead.
 
 ---
 
@@ -514,17 +499,14 @@ function setPoolConfig(address token, address pool) external
 
 ### DeviationSentinel Events
 
-| Event                          | Parameters                                                            | Description                                    |
-| ------------------------------ | --------------------------------------------------------------------- | ---------------------------------------------- |
-| `TokenConfigUpdated`           | token, config                                                         | Deviation config set for a token               |
-| `TokenMonitoringStatusChanged` | token, enabled                                                        | Monitoring toggled for a token                 |
-| `TrustedKeeperUpdated`         | keeper, isTrusted                                                     | Keeper added or removed                        |
-| `MarketStateReset`             | market                                                                | Market sentinel state cleared                  |
-| `BorrowPaused`                 | market                                                                | Borrowing paused due to deviation              |
-| `BorrowUnpaused`               | market                                                                | Borrowing resumed after deviation resolved     |
-| `SupplyPaused`                 | market                                                                | Supply paused due to deviation                 |
-| `SupplyUnpaused`               | market                                                                | Supply resumed after deviation resolved        |
-| `CollateralFactorUpdated`      | market, poolId, oldCF, newCF                                          | Collateral factor modified by sentinel         |
+| Event                          | Parameters                                        | Description                                               |
+| ------------------------------ | ------------------------------------------------- | --------------------------------------------------------- |
+| `TokenConfigUpdated`           | token, config                                     | Deviation config set for a token                          |
+| `TokenMonitoringStatusChanged` | token, enabled                                    | Monitoring toggled for a token                            |
+| `TrustedKeeperUpdated`         | keeper, isTrusted                                 | Keeper added or removed                                   |
+| `DeviationHandled`             | market, oraclePrice, sentinelPrice, action        | Deviation detected and acted on; `action` is a `DeviationAction` enum value |
+
+Pause and collateral factor events are now emitted by EBrake (`ActionPaused`, `CollateralFactorDecreased`) rather than by DeviationSentinel directly.
 
 ### SentinelOracle Events
 
@@ -543,24 +525,23 @@ function setPoolConfig(address token, address pool) external
 
 ### Access Control
 
-- **Governance Functions**: All configuration functions (`setTokenConfig`, `setTrustedKeeper`, `resetMarketState`, etc.) are restricted via `AccessControlManager`
+- **Governance Functions**: All configuration functions (`setTokenConfig`, `setTrustedKeeper`, `setTokenMonitoringEnabled`) are restricted via `AccessControlManager`
 - **Keeper Functions**: `handleDeviation` is restricted to trusted keepers via the `onlyKeeper` modifier
 - **Direct Price Overrides**: The `setDirectPrice` function on `SentinelOracle` is governance-controlled to prevent price manipulation
 
-### Collateral Factor Restoration Safety
+### Separation of Detection and Execution
 
-When restoring collateral factors after a deviation resolves, the contract performs safety checks to avoid overriding changes made by governance (VIPs):
+DeviationSentinel contains only detection logic. All Comptroller interactions (pausing, CF changes) are executed by EBrake. This means:
 
-- Skips restoration if the original liquidation threshold is 0 (uninitialized)
-- Skips restoration if a new collateral factor was set externally while the sentinel had it zeroed
-- `resetMarketState` must be called before any VIP that modifies collateral factors or pause states
+- A compromised keeper can only trigger EBrake actions, not call the Comptroller directly
+- EBrake enforces its own "tighten only" invariant independently — the sentinel cannot unpause or restore CF even if its logic were modified
+- Pre-incident state snapshots (original CF, borrow caps, supply caps) are tracked by EBrake, not DeviationSentinel
 
-### Pool Handling
+### Recovery
 
-The contract handles both core pool and isolated pool comptrollers:
-
-- **Core Pool**: Iterates through all emode groups (`corePoolId` to `lastPoolId`) to set/restore collateral factors
-- **Isolated Pools**: Single operation at pool index 0
+Recovery from a sentinel-triggered freeze requires a governance VIP that:
+1. Restores Comptroller parameters (unpause actions, restore CF)
+2. Calls the appropriate EBrake snapshot reset functions (`resetCFSnapshot`, `resetBorrowCapSnapshot`, `resetSupplyCapSnapshot`) to clear the stored snapshots
 
 ## Deployment
 
