@@ -88,11 +88,13 @@ Once open, your position generates yield automatically:
 
 You can monitor Health Factor, PnL, entry price, and liquidation price at any time. Available management actions include increasing the position, supplying additional collateral, proportionally reducing the position, withdrawing unused collateral, or fully closing and deactivating.
 
-### Step 3 — Close
+### Step 3 — Reduce and Exit
 
-Closing is proportional — you specify what fraction of the position to close (1% to 100%) in a single transaction. Profits are automatically converted into DSA collateral. Losses are covered by your existing DSA collateral.
+Reducing is proportional — you specify what fraction of the position to close (1% to 100%) in a single transaction. Profits are automatically converted into DSA collateral. Losses are covered by your existing DSA collateral.
 
-After a full close, the position account remains active for re-entry. Use **Deactivate** (Exit Market) to fully withdraw and shut down the position account.
+After a full reduce(100% reduce), the position account remains active for re-entry. Use **Deactivate** (Exit Market) to fully withdraw and shut down the position account.
+
+We also provide a one-click Exit function that completes both "reduce 100%" and "Exit Market" in a single transaction.
 
 ## Impact on Existing Users
 

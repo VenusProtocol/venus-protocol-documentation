@@ -25,9 +25,9 @@ Browse the available trading pairs. Each pair shows:
 
 - The current relative price between the long and short asset
 - Available liquidity on both the long (supply) and short (borrow) side
-- Supply APY, borrow APY, and net APY
+- Supply APY, and borrow APY
 
-Pick the pair that matches your market view. For example, if you believe WBNB will outperform ETH, select the WBNB/ETH pair (WBNB = long, ETH = short).
+Pick the pair that matches your market view. For example, if you believe WBNB will outperform ETH, select the WBNB/ETH pair (WBNB = long, ETH = short). You can also go purely long or short on a single asset by pairing it with a stablecoin.
 
 {% hint style="info" %}
 The long asset must have a Collateral Factor (CF) > 0 in the Venus Core Pool.
@@ -58,7 +58,7 @@ Select your desired leverage multiplier and set the short amount to borrow. The 
 
 **Before submitting:**
 
-- Review the estimated Health Factor, entry price (short/long ratio), liquidation price, and Net APY
+- Review the estimated Assets amount changes, Health Factor, entry price (short/long ratio), liquidation price, and Net APY
 - Approve the DSA token spend on the RelativePositionManager
 
 <figure><img src="../.gitbook/assets/yield-plus-initialize-confirm.png" alt="Confirm transaction"><figcaption></figcaption></figure>
@@ -91,13 +91,15 @@ Once open, track your position from the dashboard:
 | **Long Supply** | Current supplied balance of the long asset |
 | **Short Borrow** | Current outstanding borrow of the short asset |
 | **Health Factor** | How close to liquidation your position is. HF > 1 is safe; HF < 1 triggers liquidation |
-| **Entry Price** | The short/long ratio at the time of opening |
+| **Entry Price (EP)** | The short/long ratio at the time of opening |
 | **Liquidation Price** | The short/long ratio at which liquidation would occur |
 | **Net APY** | DSA APY + Supply APY − Borrow APY |
 | **Available Capital** | Deposited collateral minus capital currently locked by open positions |
+| ** Collateral** | Collateral allocated as DSA for this position |
 
 {% hint style="warning" %}
 Each position has its own independent Health Factor. If you hold multiple positions, monitor each one individually.
+The liquidation price may fluctuate as the prices of both legs and the DSA change; always **monitor your Health Factor** closely to avoid unexpected liquidation.
 {% endhint %}
 
 ---
@@ -113,9 +115,8 @@ Adds to your existing position using available collateral or additional DSA prin
 Use this when you want to increase your relative exposure without changing your DSA, leverage, or position account.
 
 **How it works:**
-- Optionally deposit additional DSA principal first
-- The system borrows more of the short asset and swaps it into more long collateral
-- Your effective position size increases; your leverage ratio stays the same
+- Based on the current available DSA collateral, the system borrows more of the short asset and swaps it into additional long collateral.
+- Your leverage ratio stays the same, capital utilization will increase
 
 ### Supply Collateral
 
@@ -143,6 +144,8 @@ A position remains visible even after a full reduce. This lets you re-enter the 
 Removes Available Capital from your PositionAccount back to your wallet.
 
 Only the portion of collateral not locked by an open position can be withdrawn. The withdrawable amount decreases as your position size increases and increases as you reduce or add collateral.
+
+Withdrawing collateral reduces your Health Factor. Always ensure it remains above 1.0 after any withdrawal to avoid liquidation.
 
 ---
 
@@ -198,7 +201,7 @@ PnL% = (0.45 / 0.50 − 1) × 2 = **−20%**
 Yield+ uses the same liquidation mechanism as Venus Core. If your Health Factor falls below 1, a third-party liquidator can repay part of your borrow and seize a portion of your collateral.
 
 To manage liquidation risk:
-- Monitor your Health Factor regularly and track the current ratio vs. your liquidation price
+- **Monitor your Health Factor regularly** and track the current ratio vs. your liquidation price
 - **Supply more DSA principal** (via Supply Collateral) to improve your Health Factor without changing position size
 - **Partially reduce your position** (e.g. 5–20%) to repay a slice of short debt, which raises the Health Factor directly
 - Understand that leverage amplifies both gains and losses — a 2x leveraged position has twice the liquidation sensitivity
@@ -242,7 +245,7 @@ Available Capital = your total deposited collateral minus the amount currently l
 Each pair has one PositionAccount per wallet. Within that account, you can increase or decrease your position size, but it is managed as a single position.
 
 **What fees do I pay?**
-You pay standard Venus Protocol borrowing interest on the short leg. On-chain swaps during open and close incur normal DEX trading fees and slippage. There are no additional platform fees specific to Yield+.
+You pay standard Venus Protocol borrowing interest on the short leg. On-chain swaps during open and close incur normal DEX trading fees and slippage. Currently, there are no additional platform fees specific to Yield+.
 
 **What is the difference between "Reduce Position" and "Close Market"?**
 - **Reduce Position** closes your long/short trade and settles PnL, but leaves your collateral in the PositionAccount. You can re-enter the same market immediately.
