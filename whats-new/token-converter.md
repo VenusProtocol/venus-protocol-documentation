@@ -2,29 +2,137 @@
 
 ### Overview
 
-Protocol revenues, sourced from reserve interests and liquidations, are processed through the [Automatic Income Allocation](automatic-income-allocation.md) module. Once allocated, these underlying tokens are subsequently sent to various Token Converters, each transforming the received income into specific tokens, automating and optimizing this conversion process.
+Token Converter Phase 2 replaces the original community-driven Token Converter system with a single, lightweight contract class — `TokenBuyback` — deployed as one instance per (destination, base asset) pair. Conversions are now executed by an ACM-authorized finance-team cron job using DEX aggregators at market rate, eliminating the dependency on external community participation entirely.
 
-### Key Aspects of the Token Converter
+Protocol revenues, sourced from reserve interests and liquidations, are processed through the [Automatic Income Allocation](automatic-income-allocation.md) module. Once allocated, these underlying tokens are sent to the appropriate `TokenBuyback` instances, which swap them on a defined schedule and forward the output to the configured destination.
 
-The Token Converter works on four key principles:
+### Problem with the Original System
 
-1. **Distributed and Autonomous**: No centralized management or human interactions needed, ensuring a secure and seamless conversion process.
-2. **Efficient**: The system is designed to maximize the amount of specific tokens we receive while protecting against potential risks like sandwich attacks.
-3. **Streaming**: The conversions occur continually, without waiting for scheduled intervals.
-4. **Transparent**: All conversions are publicly recorded in the blockchain, reinforcing our commitment to transparency.
+The original Token Converter relied on external community members to manually trigger token swaps. In practice:
 
-Venus Protocol will offer discounts to incentivize these conversions. This incentive will create arbitrage opportunities in the market, and external agents can potentially gain from these opportunities.
+- Tokens sat idle for hours or days waiting for someone to act
+- When conversions did happen, the protocol paid up to 50% above market price as an incentive to attract participants
+- The system spanned 5 contracts (~2,000+ lines of Solidity), making it expensive to audit and slow to iterate on
+- No guaranteed conversion cadence — protocol income accumulation was unpredictable
 
-### Rationale
+### Solution: TokenBuyback
 
-Before the Token Converter, token conversions were not as seamless and efficient. Venus Protocol needed a system that could constantly convert the received income into specific tokens, with no room for errors or delays.
+A single upgradeable contract (`TokenBuyback`) is deployed as a Transparent Proxy per (destination, base asset) pair. Each instance:
 
-The Token Converter streamlines the conversion process by allowing key elements in the Venus Protocol, such as the XVSVaultConverter and RiskFundConverter, to autonomously offer token conversions. This solution follows the rules of distributed and autonomous systems, removing the need for human intervention.
+- Passively accumulates any token sent by `ProtocolShareReserve` (PSR)
+- Swaps on demand via `executeBuyback`, which is ACM-restricted to the finance-team cron job
+- Forwards the `BASE_ASSET` directly to its `DESTINATION` after each swap
 
-Moreover, the introduction of incentives through discounts encourages external agents to take part in the conversion process, thus creating a win-win situation for all. This is in line with the vision of decentralization, where processes are not only transparent but also rewarding for participants.
+No oracle. No community. No premium. Conversions happen on a defined schedule at market rate using off-chain-built DEX calldata.
 
-### Architecture
+### Key Design Decisions
 
-<figure><img src="../.gitbook/assets/token-converters.svg" alt=""><figcaption></figcaption></figure>
+| Aspect | Detail |
+|---|---|
+| `DESTINATION` & `BASE_ASSET` | Constructor immutables — changing either requires a new deployment |
+| Swap routing | Off-chain (cron builds DEX calldata); router must be on the on-chain allowlist |
+| `updateAssetsState` caller | Pinned to `PROTOCOL_SHARE_RESERVE` immutable — prevents spoofed `AssetsReceived` events |
+| Pool attribution | No per-pool accounting on-chain; `comptroller` is echoed in events for off-chain attribution |
+| Upgradeability | Transparent Proxy — upgradeable without migrating accumulated funds |
 
-_The dashed lines represent transactions initiated by external agents (VIP’s, scripts, arbitrage bots, etc.), and the solid lines represent transfers of funds._
+### Contract Architecture
+
+`PSR` requires no contract changes — `TokenBuyback` implements `IIncomeDestination`, the same interface used by the original converters. The migration is a governance VIP that rewires PSR's `distributionTargets` rows to point to the new instances.
+
+### Key Functions
+
+**`updateAssetsState(address comptroller, address asset)`**
+
+Called by PSR after transferring tokens. Records the balance delta and emits `AssetsReceived` for off-chain tracking. Only callable by `PROTOCOL_SHARE_RESERVE`.
+
+**`executeBuyback(address tokenIn, uint256 amountIn, uint256 minAmountOut, uint256 deadline, address router, bytes calldata routerCalldata, address comptroller)`**
+
+ACM-restricted. Swaps `amountIn` of `tokenIn` to `BASE_ASSET` via the specified router (must be allowlisted). Validates slippage against `minAmountOut`. Forwards the output directly to `DESTINATION`. Emits `BuybackExecuted`.
+
+**`forwardBaseAsset(address comptroller, uint256 amount)`**
+
+ACM-restricted. Forwards accumulated `BASE_ASSET` to `DESTINATION` without a swap. Used when `BASE_ASSET` itself is deposited and no conversion is needed.
+
+**`setAllowedRouter(address router, bool allowed)`**
+
+Governance-only. Adds or removes a DEX router from the allowlist.
+
+**`sweepToken(address token, address to, uint256 amount)`**
+
+Governance-only. Emergency token recovery from the contract.
+
+### Events
+
+| Event | When emitted |
+|---|---|
+| `AssetsReceived(comptroller, asset, amount)` | PSR deposits tokens |
+| `BuybackExecuted(tokenIn, amountIn, amountOut, router, comptroller)` | Successful DEX swap |
+| `BaseAssetForwarded(comptroller, amount)` | `BASE_ASSET` forwarded without swap |
+| `RouterAllowlisted(router, allowed)` | Router added/removed from allowlist |
+| `SweepToken(token, to, amount)` | Emergency token sweep |
+
+### BSC: Before & After
+
+**Before (8 contracts)**
+
+| Contract | Destination |
+|---|---|
+| `RiskFundConverter` | `RiskFundV2` |
+| `USDTPrimeConverter` | `PrimeLiquidityProvider` |
+| `USDCPrimeConverter` | `PrimeLiquidityProvider` |
+| `BTCBPrimeConverter` | `PrimeLiquidityProvider` |
+| `ETHPrimeConverter` | `PrimeLiquidityProvider` |
+| `XVSVaultConverter` | `XVSVaultTreasury` |
+| `WBNBBurnConverter` | Retired (burns) |
+| `ConverterNetwork` | Retired (registry) |
+
+**After (10 TokenBuyback instances)**
+
+| Instance | Base Asset | Destination |
+|---|---|---|
+| `UTreasuryBuyback` | U | `VTreasury` |
+| `BTCBTreasuryBuyback` | BTCB | `VTreasury` |
+| `ETHTreasuryBuyback` | ETH | `VTreasury` |
+| `USDTTreasuryBuyback` | USDT | `VTreasury` |
+| `USDCTreasuryBuyback` | USDC | `VTreasury` |
+| `XVSTreasuryBuyback` | XVS | `VTreasury` |
+| `USDTPrimeBuyback` | USDT | `PrimeLiquidityProvider` |
+| `UPrimeBuyback` | U | `PrimeLiquidityProvider` |
+| `RiskFundBuyback` | USDT | `RiskFundV2` |
+| `XVSBuyback` | XVS | `XVSVaultTreasury` |
+
+`WBNBBurnConverter` and `ConverterNetwork` are retired. The 6 `TreasuryBuyback` instances are new — treasury previously accepted arbitrary tokens without conversion.
+
+### RiskFundV2 Changes
+
+`RiskFundV2` is upgraded as part of this migration:
+
+- `poolAssetsFunds` mapping removed — per-pool accounting deprecated (isolated pools wound down; core pool does not auction via Shortfall)
+- `preSweepToken` simplified — plain balance check replaces the `getPools()` proportional loop
+- `transferReserveForAuction` draws against contract balance; `comptroller` retained only for ABI parity and event attribution
+- `getPoolsBaseAssetReserves` returns 0 for ABI parity with `Shortfall.sol`
+
+### Migration
+
+A single VIP per chain handles the full migration:
+
+- **Pre-VIP** — Guardian pauses all existing converters; finance team snapshots balances and validates new contracts on testnet
+- **VIP**:
+  1. Grant ACM permissions to all 10 buyback instances
+  2. Drain old converters into new instances (routed per target `BASE_ASSET`)
+  3. Replace PSR `distributionTargets` with 10 new rows summing to `MAX_PERCENT` (10000) per schema
+  4. Revoke old ACM permissions
+  5. Configure DEX router allowlist on each buyback instance
+- **Post-VIP** — Finance team monitors first buyback calls manually before handing off to automated cron
+
+Old converter proxies remain deployed but empty and un-permissioned.
+
+### Impact Summary
+
+| Metric | Before | After |
+|---|---|---|
+| Solidity lines | ~2,160 across 5 contracts | ~170, single contract class |
+| Deployed instances (BSC) | 8 | 10 (all `TokenBuyback`) |
+| Conversion trigger | External community (voluntary) | Finance cron (scheduled) |
+| Pricing | Oracle + up to 50% premium | DEX market rate |
+| Community dependency | Required | None |
