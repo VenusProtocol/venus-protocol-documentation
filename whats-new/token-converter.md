@@ -12,7 +12,7 @@ The original Token Converter relied on external community members to manually tr
 
 - Tokens sat idle for hours or days waiting for someone to act
 - When conversions did happen, the protocol paid up to 50% above market price as an incentive to attract participants
-- The system spanned 5 contracts (~2,000+ lines of Solidity), making it expensive to audit and slow to iterate on
+- The system spanned 5 contract classes across 8 deployed instances (~2,000+ lines of Solidity), making it expensive to audit and slow to iterate on
 - No guaranteed conversion cadence — protocol income accumulation was unpredictable
 
 ### Solution: TokenBuyback
@@ -51,7 +51,7 @@ ACM-restricted. Swaps `amountIn` of `tokenIn` to `BASE_ASSET` via the specified 
 
 **`forwardBaseAsset(address comptroller, uint256 amount)`**
 
-ACM-restricted. Forwards accumulated `BASE_ASSET` to `DESTINATION` without a swap. Used when `BASE_ASSET` itself is deposited and no conversion is needed.
+ACM-restricted. Forwards a caller-specified `amount` of accumulated `BASE_ASSET` to `DESTINATION` without a swap. The `amount` parameter lets the operator partition multi-pool `BASE_ASSET` inflows so each portion is attributed separately via `BaseAssetForwarded` events.
 
 **`setAllowedRouter(address router, bool allowed)`**
 
@@ -83,7 +83,7 @@ Governance-only. Emergency token recovery from the contract.
 | `BTCBPrimeConverter` | `PrimeLiquidityProvider` |
 | `ETHPrimeConverter` | `PrimeLiquidityProvider` |
 | `XVSVaultConverter` | `XVSVaultTreasury` |
-| `WBNBBurnConverter` | Retired (burns) |
+| `WBNBBurnConverter` | Retired (was burn path) |
 | `ConverterNetwork` | Retired (registry) |
 
 **After (10 TokenBuyback instances)**
@@ -131,7 +131,7 @@ Old converter proxies remain deployed but empty and un-permissioned.
 
 | Metric | Before | After |
 |---|---|---|
-| Solidity lines | ~2,160 across 5 contracts | ~170, single contract class |
+| Solidity lines | ~2,160 across 5 contracts | ~275 lines, single contract class |
 | Deployed instances (BSC) | 8 | 10 (all `TokenBuyback`) |
 | Conversion trigger | External community (voluntary) | Finance cron (scheduled) |
 | Pricing | Oracle + up to 50% premium | DEX market rate |
