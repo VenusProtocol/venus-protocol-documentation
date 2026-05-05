@@ -1,4 +1,4 @@
-# Venus Yield+
+# Venus Trade
 
 {% hint style="info" %}
 Available on BNB Chain Core Pool.
@@ -6,19 +6,19 @@ Available on BNB Chain Core Pool.
 
 ## Overview
 
-**Venus Yield+** is a relative performance trading product built on top of Venus Protocol's existing lending and borrowing infrastructure. It allows users to express a view that one asset will outperform another — packaged into a single, easy-to-manage position.
+**Venus Trade** is a relative performance trading product built on top of Venus Protocol's existing lending and borrowing infrastructure. It allows users to express a view that one asset will outperform another — packaged into a single, easy-to-manage position.
 
-Instead of manually managing separate lending and borrowing positions across multiple markets, Yield+ combines everything into **one unified action** with automated execution, proportional closing, and built-in yield generation.
+Instead of manually managing separate lending and borrowing positions across multiple markets, Trade combines everything into **one unified action** with automated execution, proportional closing, and built-in yield generation.
 
-This is not directional trading. Yield+ positions profit (or lose) based on the **relative price movement between two assets**, regardless of whether the overall market is going up or down.
+This is not directional trading. Trade positions profit (or lose) based on the **relative price movement between two assets**, regardless of whether the overall market is going up or down.
 
 ## What's New
 
-Yield+ introduces a set of new periphery contracts and capabilities alongside Venus's existing lending infrastructure:
+Trade introduces a set of new periphery contracts and capabilities alongside Venus's existing lending infrastructure:
 
 | Component | Description |
 | --- | --- |
-| **RelativePositionManager** | The main orchestration contract that manages the full lifecycle of Yield+ positions — from activation and opening to proportional closing and deactivation |
+| **RelativePositionManager** | The main orchestration contract that manages the full lifecycle of Trade positions — from activation and opening to proportional closing and deactivation |
 | **PositionAccount** | A dedicated smart contract account deployed per user per trading pair. All collateral, borrow positions, and yield accrual live here, fully isolated from other positions |
 | **Paired Positions** | Long and short legs treated as a single unit with combined PnL, health, and lifecycle management |
 | **Default Settlement Asset (DSA)** | A designated stablecoin (USDT or USDC) that users must supply as the initial collateral backing the position. All borrows of the short asset are secured against this DSA collateral, and all realized profits and losses are settled in DSA |
@@ -27,9 +27,9 @@ Yield+ introduces a set of new periphery contracts and capabilities alongside Ve
 
 ## Architecture Overview
 
-Yield+ is built as a peripheral orchestration layer. No changes were made to the Venus Core Pool, Comptroller, or vToken contracts.
+Trade is built as a peripheral orchestration layer. No changes were made to the Venus Core Pool, Comptroller, or vToken contracts.
 
-<figure><img src="../.gitbook/assets/image-architecture.png" alt="Yield+ Architecture Overview"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/trade-architecture.png" alt="Trade Architecture Overview"><figcaption></figcaption></figure>
 
 Each user gets a **dedicated PositionAccount** per trading pair, deployed as a minimal proxy clone. This account holds all funds, enters markets on the Comptroller, and delegates all position operations to the RelativePositionManager.
 
@@ -41,18 +41,18 @@ PositionAccounts are **deterministically deployed** using the owner's `msg.sende
 
 Every `(user, trading pair)` combination gets its own isolated PositionAccount. Collateral, debt, and Health Factor are entirely separate — a loss or liquidation on one position cannot affect another.
 
-<figure><img src="../.gitbook/assets/image-isolated.png" alt="Yield+ Position Isolation"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/trade-isolated.png" alt="Trade Position Isolation"><figcaption></figcaption></figure>
 
 ## Key Concepts
 
 ### Long Leg and Short Leg
 
-A Yield+ position always consists of two legs:
+A Trade position always consists of two legs:
 
 - **Long Leg** — the asset you believe will outperform. The system supplies this asset into Venus to earn lending yield.
 - **Short Leg** — the asset you believe will underperform. The system borrows this asset from Venus.
 
-You never manage these legs separately. Yield+ treats them as a single position.
+You never manage these legs separately. Trade treats them as a single position.
 
 ### Default Settlement Asset (DSA)
 
@@ -60,7 +60,7 @@ When activating a position, you choose a **Default Settlement Asset** — either
 
 ### Leverage
 
-Yield+ supports leveraged positions, amplifying your exposure to relative price movements. The maximum available leverage is determined by the collateral factors of the assets involved. Leverage is fixed at activation and cannot be changed while a position is open.
+Trade supports leveraged positions, amplifying your exposure to relative price movements. The maximum available leverage is determined by the collateral factors of the assets involved. Leverage is fixed at activation and cannot be changed while a position is open.
 
 ### Capital Utilization
 
@@ -92,16 +92,16 @@ You can monitor Health Factor, PnL, entry price, and liquidation price at any ti
 
 Reducing is proportional — you specify what fraction of the position to close (1% to 100%) in a single transaction. Profits are automatically converted into DSA collateral. Losses are covered by your existing DSA collateral.
 
-After a full reduce(100% reduce), the position account remains active for re-entry. Use **Deactivate** (Exit Market) to fully withdraw and shut down the position account.
+After a full reduce (100% reduce), the position account remains active for re-entry. Use **Deactivate** (Exit Market) to fully withdraw and shut down the position account.
 
 We also provide a one-click Exit function that completes both "reduce 100%" and "Exit Market" in a single transaction.
 
 ## Impact on Existing Users
 
-Yield+ is an entirely new feature built as a peripheral contract layer. **No changes were made** to the Venus Core Pool, vToken markets, interest rate models, Comptroller, oracles, or any existing protocol infrastructure. Existing users are not affected.
+Trade is an entirely new feature built as a peripheral contract layer. **No changes were made** to the Venus Core Pool, vToken markets, interest rate models, Comptroller, oracles, or any existing protocol infrastructure. Existing users are not affected.
 
 ## Security
 
 The RelativePositionManager and PositionAccount contracts were independently audited before deployment. Reports are available in the [Security & Audits](../security-and-audits.md) section.
 
-For a full technical breakdown of the implementation, see the [Yield+ Technical Article](../technical-reference/reference-technical-articles/yield-plus.md).
+For a full technical breakdown of the implementation, see the [Trade Technical Article](../technical-reference/reference-technical-articles/trade.md).

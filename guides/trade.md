@@ -1,12 +1,12 @@
-# Venus Yield+ Guide
+# Venus Trade Guide
 
-Venus Yield+ lets you express a view that one asset will outperform another, without needing to predict absolute price direction. This guide walks through the full lifecycle of a Yield+ position — from opening to closing — and explains all available management actions along the way.
+Venus Trade lets you express a view that one asset will outperform another, without needing to predict absolute price direction. This guide walks through the full lifecycle of a Trade position — from opening to closing — and explains all available management actions along the way.
 
 ---
 
-## What Is a Yield+ Position?
+## What Is a Trade Position?
 
-A Yield+ position is made up of two legs that are managed as a single unit:
+A Trade position is made up of two legs that are managed as a single unit:
 
 - **Long Leg** — an asset you believe will outperform, supplied into Venus to earn lending yield
 - **Short Leg** — an asset you believe will underperform, borrowed from Venus
@@ -19,7 +19,7 @@ All profits and losses are settled in your chosen stablecoin (**DSA** — Defaul
 
 ## Step 1: Choose a Trading Pair
 
-<figure><img src="../.gitbook/assets/yield-plus-choose-trading-pair.png" alt="Yield+ trading pairs overview"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/trade-choose-trading-pair.png" alt="Trading pairs overview"><figcaption></figcaption></figure>
 
 Browse the available trading pairs. Each pair shows:
 
@@ -38,7 +38,7 @@ The short asset must be available for borrowing in the Venus Core Pool.
 
 ## Step 2: Initialize Your Position
 
-<figure><img src="../.gitbook/assets/yield-plus-initialize-position.png" alt="Initialize position form"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/trade-initialize-position.png" alt="Initialize position form"><figcaption></figcaption></figure>
 
 This step activates a new position account for the selected pair and opens your first trade in one atomic transaction.
 
@@ -54,14 +54,14 @@ This step activates a new position account for the selected pair and opens your 
 
 Select your desired leverage multiplier and set the short amount to borrow. The UI displays the maximum leverage available based on the collateral factors of the selected assets.
 
-<figure><img src="../.gitbook/assets/yield-plus-initialize-preview.png" alt="Selecting leverage and short amount"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/trade-initialize-preview.png" alt="Selecting leverage and short amount"><figcaption></figcaption></figure>
 
 **Before submitting:**
 
 - Review the estimated Assets amount changes, Health Factor, entry price (short/long ratio), liquidation price, and Net APY
 - Approve the DSA token spend on the RelativePositionManager
 
-<figure><img src="../.gitbook/assets/yield-plus-initialize-confirm.png" alt="Confirm transaction"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/trade-initialize-confirm.png" alt="Confirm transaction"><figcaption></figcaption></figure>
 
 **What happens on-chain:**
 
@@ -80,7 +80,7 @@ Leverage and DSA cannot be changed while a position is open. To adjust either, y
 
 ## Step 3: Monitor Your Position
 
-<figure><img src="../.gitbook/assets/yield-plus-monitor-position.png" alt="Position monitoring dashboard"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/trade-monitor-position.png" alt="Position monitoring dashboard"><figcaption></figcaption></figure>
 
 Once open, track your position from the dashboard:
 
@@ -163,7 +163,7 @@ After deactivation, you can re-initialize at any time — with a different DSA, 
 
 ## Understanding PnL
 
-Yield+ PnL is based on the **relative price movement** between your two assets, amplified by leverage.
+Trade PnL is based on the **relative price movement** between your two assets, amplified by leverage.
 
 ### Formula
 
@@ -198,7 +198,7 @@ PnL% = (0.45 / 0.50 − 1) × 2 = **−20%**
 
 ### Liquidation Risk
 
-Yield+ uses the same liquidation mechanism as Venus Core. If your Health Factor falls below 1, a third-party liquidator can repay part of your borrow and seize a portion of your collateral.
+Trade uses the same liquidation mechanism as Venus Core. If your Health Factor falls below 1, a third-party liquidator can repay part of your borrow and seize a portion of your collateral.
 
 To manage liquidation risk:
 - **Monitor your Health Factor regularly** and track the current ratio vs. your liquidation price
@@ -220,7 +220,7 @@ You pay borrow interest on the short leg continuously. If the borrow rate rises 
 
 ### Smart Contract Risk
 
-Yield+ is built on top of Venus's audited lending and borrowing infrastructure. No changes were made to core contracts, risk parameters, or liquidation engines. The new RelativePositionManager and PositionAccount contracts have been independently audited. Audit reports are available in the [Security & Audits](../security-and-audits.md) section.
+Trade is built on top of Venus's audited lending and borrowing infrastructure. No changes were made to core contracts, risk parameters, or liquidation engines. The new RelativePositionManager and PositionAccount contracts have been independently audited. Audit reports are available in the [Security & Audits](../security-and-audits.md) section.
 
 ---
 
@@ -245,7 +245,7 @@ Available Capital = your total deposited collateral minus the amount currently l
 Each pair has one PositionAccount per wallet. Within that account, you can increase or decrease your position size, but it is managed as a single position.
 
 **What fees do I pay?**
-You pay standard Venus Protocol borrowing interest on the short leg. On-chain swaps during open and close incur normal DEX trading fees and slippage. Currently, there are no additional platform fees specific to Yield+.
+You pay standard Venus Protocol borrowing interest on the short leg. On-chain swaps during open and close incur normal DEX trading fees and slippage. Currently, there are no additional platform fees specific to Trade.
 
 **What is the difference between "Reduce Position" and "Close Market"?**
 - **Reduce Position** closes your long/short trade and settles PnL, but leaves your collateral in the PositionAccount. You can re-enter the same market immediately.

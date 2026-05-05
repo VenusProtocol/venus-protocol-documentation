@@ -8,7 +8,7 @@
 
 ## What's New?
 
-* [Yield+](whats-new/yield-plus.md)
+* [Trade](whats-new/trade.md)
 * [Leveraged Positions](whats-new/leveraged-positions.md)
 * [E-Mode](whats-new/e-mode.md)
 * [Isolated E-Mode](whats-new/isolated-e-mode.md)
@@ -58,7 +58,7 @@
 * [Enable E-mode](guides/enable-e-mode.md)
 * [Isolated E-mode](guides/isolated-e-mode.md)
 * [Boost and Repay with Collateral](guides/leveraged-positions.md)
-* [Yield+](guides/yield-plus.md)
+* [Trade](guides/trade.md)
 
 ## Technical reference
 
@@ -69,7 +69,7 @@
   * [Contributing](technical-reference/reference-technical-articles/contributing.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
   * [E-Mode](technical-reference/reference-technical-articles/e-mode.md)
-  * [Yield+](technical-reference/reference-technical-articles/yield-plus.md)
+  * [Trade](technical-reference/reference-technical-articles/trade.md)
   * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)
   * [Omnichain Governance](technical-reference/reference-technical-articles/omnichain-governance.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)

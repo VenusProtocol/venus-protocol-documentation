@@ -1,4 +1,4 @@
-# Venus Yield+: Technical Reference
+# Venus Trade: Technical Reference
 
 {% hint style="info" %}
 Available on BNB Chain Core Pool.
@@ -6,15 +6,15 @@ Available on BNB Chain Core Pool.
 
 ## Overview
 
-**Venus Yield+** is a relative performance trading system built as a peripheral orchestration layer on top of Venus Protocol's existing lending and borrowing infrastructure. It allows users to express a view that one asset will outperform another — packaged into a single, easy-to-manage position with automated execution, proportional closing, and built-in yield generation.
+**Venus Trade** is a relative performance trading system built as a peripheral orchestration layer on top of Venus Protocol's existing lending and borrowing infrastructure. It allows users to express a view that one asset will outperform another — packaged into a single, easy-to-manage position with automated execution, proportional closing, and built-in yield generation.
 
-Users deposit a stablecoin collateral (the **Default Settlement Asset**, or DSA), select a long and short vToken pair, and Yield+ handles all leveraged execution — flash loans, swaps, supply, and borrow — atomically in a single transaction.
+Users deposit a stablecoin collateral (the **Default Settlement Asset**, or DSA), select a long and short vToken pair, and Trade handles all leveraged execution — flash loans, swaps, supply, and borrow — atomically in a single transaction.
 
-This is not directional trading. Yield+ positions profit (or lose) based on the **relative price movement between two assets**, regardless of whether the overall market is going up or down. While held, positions also generate yield: supply APY on the long asset, DSA APY on collateral, minus borrow APY on the short asset.
+This is not directional trading. Trade positions profit (or lose) based on the **relative price movement between two assets**, regardless of whether the overall market is going up or down. While held, positions also generate yield: supply APY on the long asset, DSA APY on collateral, minus borrow APY on the short asset.
 
 | Component | Description |
 | --- | --- |
-| **RelativePositionManager** | The main orchestration contract that manages the full lifecycle of Yield+ positions — from activation and opening to proportional closing and deactivation |
+| **RelativePositionManager** | The main orchestration contract that manages the full lifecycle of Trade positions — from activation and opening to proportional closing and deactivation |
 | **PositionAccount** | A dedicated smart contract account deployed per user per trading pair. All collateral, borrow positions, and yield accrual live here, fully isolated from other positions |
 | **Paired Positions** | Long and short legs treated as a single unit with combined PnL, health, and lifecycle management |
 | **Default Settlement Asset (DSA)** | A designated stablecoin (USDT or USDC) used as collateral and as the currency for all PnL settlement |
@@ -27,7 +27,7 @@ No changes were made to the Venus Core Pool, Comptroller, vToken contracts, inte
 
 ## Architecture
 
-The Yield+ system consists of four contracts:
+The Trade system consists of four contracts:
 
 | Contract | Role |
 | --- | --- |
@@ -36,13 +36,13 @@ The Yield+ system consists of four contracts:
 | **LeverageStrategiesManager** | Pre-existing Venus periphery contract. Executes flash loans via the Comptroller and invokes the SwapHelper. |
 | **SwapHelper** | Pre-existing Venus periphery contract. Executes authorized on-chain swaps using signed multicall data. |
 
-<figure><img src="../../.gitbook/assets/image-architecture.png" alt="Yield+ Architecture Overview"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/trade-architecture.png" alt="Trade Architecture Overview"><figcaption></figcaption></figure>
 
 ### Position Isolation
 
 Every unique `(user, longVToken, shortVToken)` triple gets its own **PositionAccount** — a minimal EIP-1167 clone deployed with a deterministic CREATE2 salt. Collateral, debt, and Health Factor are entirely independent across accounts. A liquidation or loss on one PositionAccount cannot affect any other.
 
-<figure><img src="../../.gitbook/assets/image-isolated.png" alt="Yield+ Position Isolation"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/trade-isolated.png" alt="Trade Position Isolation"><figcaption></figcaption></figure>
 
 | Layer | Mechanism |
 | --- | --- |
@@ -58,7 +58,7 @@ Every unique `(user, longVToken, shortVToken)` triple gets its own **PositionAcc
 
 ### Long Leg and Short Leg
 
-A Yield+ position always consists of two legs:
+A Trade position always consists of two legs:
 
 - **Long Leg** — the asset expected to outperform. Supplied into Venus to earn supply APY.
 - **Short Leg** — the asset expected to underperform. Borrowed from Venus, creating an interest cost.
@@ -90,7 +90,7 @@ Capital utilization measures how much of the deposited DSA principal is "locked"
 
 ### Yield Generation
 
-Yield+ positions generate yield while held:
+Trade positions generate yield while held:
 
 | Component | Description |
 | --- | --- |
@@ -107,7 +107,7 @@ All yield accrues automatically and is reflected in position balances in real ti
 
 ### 1. RelativePositionManager
 
-The primary external interface for all Yield+ operations. All user-facing calls pass through this contract, which enforces lifecycle rules, validates parameters, computes capital utilization, and delegates execution to the PositionAccount.
+The primary external interface for all Trade operations. All user-facing calls pass through this contract, which enforces lifecycle rules, validates parameters, computes capital utilization, and delegates execution to the PositionAccount.
 
 **Inheritance:**
 - `AccessControlledV8` — governance-gated admin functions via AccessControlManager
@@ -639,7 +639,7 @@ shortDust ≤ expectedShort × tolerance / 10000
 
 ## Flash Loan Integration
 
-Yield+ uses the existing `LeverageStrategiesManager` for all flash loan execution. The PositionAccount calls into the LeverageStrategiesManager which uses the Venus Comptroller's flash loan module.
+Trade uses the existing `LeverageStrategiesManager` for all flash loan execution. The PositionAccount calls into the LeverageStrategiesManager which uses the Venus Comptroller's flash loan module.
 
 ### Opening a Position (`enterLeverage`)
 
@@ -699,7 +699,7 @@ LeverageStrategiesManager:
 
 ## Liquidation
 
-Yield+ positions are subject to the standard Venus liquidation mechanism. The PositionAccount is a regular address from the Comptroller's perspective — it enters markets, borrows, and supplies like any other account.
+Trade positions are subject to the standard Venus liquidation mechanism. The PositionAccount is a regular address from the Comptroller's perspective — it enters markets, borrows, and supplies like any other account.
 
 When the Health Factor drops below 1 (i.e., the borrow value exceeds the liquidation threshold-weighted collateral value), third-party liquidators can call `liquidateBorrow` on the appropriate vToken. This repays part of the debt and seizes a portion of the supplied collateral at a discount.
 

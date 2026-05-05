@@ -6,6 +6,7 @@ Venus Protocol periphery contracts extend core protocol functionality with auxil
 
 The Venus periphery consists of specialized smart contracts designed to streamline complex DeFi operations:
 
+- **[RelativePositionManager](relative-position-manager.md)** - Orchestrate the full lifecycle of Venus Trade positions, from activation and opening to proportional closing and deactivation
 - **[LeverageStrategiesManager](leverage-strategies-manager.md)** - Enter and exit leveraged positions atomically using flash loans
 - **[SwapHelper](swap-helper.md)** - Execute backend-authorized token swaps with signature verification
 

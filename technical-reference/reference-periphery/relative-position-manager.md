@@ -1,8 +1,8 @@
-# Yield+
+# Trade
 
-[Venus Yield+](../reference-technical-articles/yield-plus.md) is a relative performance trading product built on Venus Protocol's lending infrastructure. It allows users to express a view that one asset will outperform another, packaged into a single managed position with automated execution, proportional closing, and built-in yield generation.
+[Venus Trade](../reference-technical-articles/trade.md) is a relative performance trading product built on Venus Protocol's lending infrastructure. It allows users to express a view that one asset will outperform another, packaged into a single managed position with automated execution, proportional closing, and built-in yield generation.
 
-For architecture details and implementation walkthrough, see the [Yield+ Technical Article](../reference-technical-articles/yield-plus.md).
+For architecture details and implementation walkthrough, see the [Trade Technical Article](../reference-technical-articles/trade.md).
 
 # Solidity API
 
