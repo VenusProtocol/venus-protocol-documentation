@@ -28,6 +28,10 @@ In implementing the Resilient Price Oracle, several safety measures have been ad
 
 <figure><img src="../.gitbook/assets/17b75928-d6a2-4207-9a0b-89d1d41690d4.png" alt=""><figcaption></figcaption></figure>
 
+### Protection Mode
+
+For low-liquidity collateral assets, the Resilient Oracle's spot price is wrapped by the [DeviationBoundedOracle](../technical-reference/reference-oracle/deviation-bounded-oracle.md) on the borrow-power path. When the spot deviates beyond a per-asset threshold from the recent rolling window, [Protection Mode](protection-mode.md) activates and the Comptroller switches to bounded prices — `min(spot, windowMin)` for collateral and `max(spot, windowMax)` for debt — until conditions normalize. Liquidations continue to use the Resilient Oracle's spot price directly.
+
 ### Correlated Token Oracles
 
 For correlated tokens, like Liquid Staked Tokens (LST), best practice suggests oracles quote first smart contracts to get the exchange rate between the correlated assets, and then multiply that by the USD market price of the second token to complete the calculation.
