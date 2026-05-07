@@ -22,8 +22,10 @@ A single upgradeable contract (`TokenBuyback`) is deployed as a Transparent Prox
 - Passively accumulates any token sent by `ProtocolShareReserve` (PSR)
 - Swaps on demand via `executeBuyback`, which is ACM-restricted to the finance-team cron job
 - Forwards the `BASE_ASSET` directly to its `DESTINATION` after each swap
+- Enforces a rolling 24h USD cap on per-token consumption (`executeBuyback` reverts past the cap) to bound blast radius if the operator key is compromised
+- Uses `ResilientOracle` to USD-price `tokenIn` and `BASE_ASSET` for the cap and for an event-only abnormal-slippage signal
 
-No oracle. No community. No premium. Conversions happen on a defined schedule at market rate using off-chain-built DEX calldata.
+No community. No premium. Conversions happen on a defined schedule at market rate using off-chain-built DEX calldata. Oracle is used only for safety rails (cap + slippage signal), not for swap pricing.
 
 ### Key Design Decisions
 
@@ -34,6 +36,9 @@ No oracle. No community. No premium. Conversions happen on a defined schedule at
 | `updateAssetsState` caller | Pinned to `PROTOCOL_SHARE_RESERVE` immutable — prevents spoofed `AssetsReceived` events |
 | Pool attribution | No per-pool accounting on-chain; `comptroller` is echoed in events for off-chain attribution |
 | Upgradeability | Transparent Proxy — upgradeable without migrating accumulated funds |
+| Daily USD cap | Rolling 24h leaky bucket (`dailyCapUsd`); linear decay rate `dailyCapUsd / 24h`; `executeBuyback` reverts with `DailyCapExceeded` past the cap. Default `$30,000`. |
+| Abnormal slippage detection | Event-only — `executeBuyback` emits `AbnormalSlippage` when `usdIn − usdOut > slippageEventUsd` (default `$500`). Does not revert. |
+| Oracle dependency | `RESILIENT_ORACLE` constructor immutable — used only to USD-price the cap and the slippage signal, not for swap pricing |
 
 ### Contract Architecture
 
@@ -43,11 +48,11 @@ No oracle. No community. No premium. Conversions happen on a defined schedule at
 
 **`updateAssetsState(address comptroller, address asset)`**
 
-Called by PSR after transferring tokens. Records the balance delta and emits `AssetsReceived` for off-chain tracking. Only callable by `PROTOCOL_SHARE_RESERVE`.
+Called by PSR after transferring tokens. Records the balance delta and emits `AssetsReceived` for off-chain tracking. Only callable by `PROTOCOL_SHARE_RESERVE`. `AssetsReceived` is only emitted when the balance delta is non-zero. The reported amount is the observed `balanceOf(this)` delta against the previous watermark — tokens transferred directly to the contract outside the PSR flow are merged into the next event under whatever comptroller PSR is processing at the time.
 
 **`executeBuyback(address tokenIn, uint256 amountIn, uint256 minAmountOut, uint256 deadline, address router, bytes calldata routerCalldata, address comptroller)`**
 
-ACM-restricted. Swaps `amountIn` of `tokenIn` to `BASE_ASSET` via the specified router (must be allowlisted). Validates slippage against `minAmountOut`. Forwards the output directly to `DESTINATION`. Emits `BuybackExecuted`.
+ACM-restricted. Swaps `amountIn` of `tokenIn` to `BASE_ASSET` via the specified router (must be allowlisted). Validates slippage against `minAmountOut`. Forwards the output directly to `DESTINATION`. Emits `BuybackExecuted`. The reported `amountIn` in `BuybackExecuted` is the actual on-chain `tokenIn` delta consumed by the router (`balanceBefore − balanceAfter`), not the caller-supplied `amountIn` parameter, so the event is honest about what the router actually pulled. After the swap settles, the call enforces the rolling 24h USD cap on `tokenIn` consumption (reverts with `DailyCapExceeded` if exceeded) and emits `AbnormalSlippage` if `usdIn − usdOut` exceeds `slippageEventUsd`.
 
 **`forwardBaseAsset(address comptroller, uint256 amount)`**
 
@@ -57,9 +62,17 @@ ACM-restricted. Forwards a caller-specified `amount` of accumulated `BASE_ASSET`
 
 Governance-only. Adds or removes a DEX router from the allowlist.
 
+**`setDailyCapUsd(uint256 newCap)`**
+
+ACM-restricted. Updates the rolling 24h USD cap on `tokenIn` consumption (1e18-scaled). Emits `DailyCapUpdated`.
+
+**`setSlippageEventUsd(uint256 newThreshold)`**
+
+ACM-restricted. Updates the absolute USD threshold above which `AbnormalSlippage` fires (1e18-scaled). Emits `SlippageEventUsdUpdated`.
+
 **`sweepToken(address token, address to, uint256 amount)`**
 
-Governance-only. Emergency token recovery from the contract.
+Governance-only. Emergency token recovery from the contract. Also the canonical recovery path for tokens transferred directly to the contract outside the PSR flow.
 
 ### Events
 
@@ -70,6 +83,9 @@ Governance-only. Emergency token recovery from the contract.
 | `BaseAssetForwarded(comptroller, amount)` | `BASE_ASSET` forwarded without swap |
 | `RouterAllowlisted(router, allowed)` | Router added/removed from allowlist |
 | `SweepToken(token, to, amount)` | Emergency token sweep |
+| `AbnormalSlippage(tokenIn, actualAmountIn, amountOut, usdIn, usdOut)` | Swap returned less USD value than input by more than `slippageEventUsd` |
+| `DailyCapUpdated(oldCap, newCap)` | `setDailyCapUsd` succeeds |
+| `SlippageEventUsdUpdated(oldThreshold, newThreshold)` | `setSlippageEventUsd` succeeds |
 
 ### BSC: Before & After
 
@@ -131,7 +147,7 @@ Old converter proxies remain deployed but empty and un-permissioned.
 
 | Metric | Before | After |
 |---|---|---|
-| Solidity lines | ~2,160 across 5 contracts | ~275 lines, single contract class |
+| Solidity lines | ~2,160 across 5 contracts | ~425 lines, single contract class |
 | Deployed instances (BSC) | 8 | 10 (all `TokenBuyback`) |
 | Conversion trigger | External community (voluntary) | Finance cron (scheduled) |
 | Pricing | Oracle + up to 50% premium | DEX market rate |
