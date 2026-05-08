@@ -6,45 +6,7 @@ For function-level signatures, structs, events, and errors see the [DeviationBou
 
 ## Pricing stack
 
-```
-                              +----------------------------+
-                              |     Comptroller / Lens     |
-                              +-------------+--------------+
-                                            |
-                                            | weightingStrategy
-                +---------------------------+----------------------------+
-                |                                                        |
-       USE_COLLATERAL_FACTOR                                    USE_LIQUIDATION_THRESHOLD
-       (borrow / redeem / supply)                               (liquidate-borrow / seize)
-                |                                                        |
-                |  (1) updateProtectionState   [non-view, warms cache]   |
-                |  (2) getBoundedPricesView    [view, reads cache]       |
-                v                                                        v
-   +-------------------------------+                +----------------------------------+
-   |    DeviationBoundedOracle     |                |         ResilientOracle          |
-   |  + EIP-1153 transient cache   | --getPrice-->  |      (validated spot price)      |
-   |                               | <--- spot ---  +----------------+-----------------+
-   |  whitelisted + protection on: |                                 |
-   |    returns bounded prices     |                                 v
-   |                               |                  [Chainlink] [RedStone] [Binance / ...]
-   |  otherwise:                   |
-   |    returns spot               |
-   |    (window / trigger may      |
-   |     still update for          |
-   |     whitelisted markets)      |
-   +---------------^---------------+
-                   |
-                   |  updateMinPrice / updateMaxPrice / exitProtectionMode
-                   |  (or batched via syncPriceBoundsAndProtections)
-                   |
-            +------+-------+
-            |    Keeper    |
-            +--------------+
-
-  Other off-chain side channels into the DBO:
-    Monitor     :  observes events, gates keeper exits on real recovery
-    Governance  :  setTokenConfig, threshold / cooldown / whitelist updates
-```
+<figure><img src="../../.gitbook/assets/deviation-bounded-oracle-pricing-stack.png" alt="DeviationBoundedOracle pricing stack architecture diagram"><figcaption><p>DeviationBoundedOracle pricing stack</p></figcaption></figure>
 
 - The **ResilientOracle** fetches and cross-validates spot from the configured sources, exactly as today. The DBO does not replace this — it wraps it. The borrow-power path on the Comptroller never queries the ResilientOracle itself; the DBO is the only oracle the Comptroller talks to on that path.
 - The **DeviationBoundedOracle (DBO)** is the single entry point for every borrow-power read on every market. On each call it fetches spot from the ResilientOracle, then returns one of three outcomes:
