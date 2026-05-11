@@ -9,7 +9,7 @@ The risk it mitigates is well-known on lending protocols. An attacker can pump t
 Protection Mode prevents this by introducing a per-asset rolling spot-price window. When the current spot deviates beyond a configured threshold from that window, the asset's borrow-power calculation switches to a conservative dual-price scheme:
 
 * **Collateral value** is computed at `min(spot, windowMin)` — caps borrow power at the recent window low so a pumped asset cannot be over-borrowed against.
-* **Debt value** is computed at `max(spot, windowMax)` — floors outstanding debt at the recent window high so a crashed borrow asset cannot be repaid cheaply.
+* **Debt value** is computed at `max(spot, windowMax)` — floors the valuation of debt at the recent window high so a crashed borrow asset cannot be over-borrowed at the manipulated low price.
 * **Liquidations continue to use spot price** — eligibility and seize-amount calculations stay on real-time prices so liquidator incentives stay correct and underwater positions are still caught immediately.
 * **Only new actions are constrained** — existing positions keep their health factor evaluated at spot, so activation does not endanger any open position; the bounded prices apply only to new borrows and additional collateral movements.
 
