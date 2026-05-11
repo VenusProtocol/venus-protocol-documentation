@@ -38,7 +38,7 @@ No community. No premium. Conversions happen on a defined schedule at market rat
 | Upgradeability | Transparent Proxy — upgradeable without migrating accumulated funds |
 | Daily USD cap | Rolling 24h leaky bucket (`dailyCapUsd`); linear decay rate `dailyCapUsd / 24h`; `executeBuyback` reverts with `DailyCapExceeded` past the cap. Default `$30,000`. |
 | Abnormal slippage detection | Event-only — `executeBuyback` emits `AbnormalSlippage` when `usdIn − usdOut > slippageEventUsd` (default `$500`). Does not revert. |
-| Oracle dependency | `RESILIENT_ORACLE` constructor immutable — used only to USD-price the cap and the slippage signal, not for swap pricing |
+| Oracle dependency | `RESILIENT_ORACLE` constructor immutable — used only to USD-price the cap and the slippage signal, not for swap pricing. `executeBuyback` calls `updateAssetPrice(tokenIn)` and `updateAssetPrice(BASE_ASSET)` before reading prices, so the cap and slippage check use a freshly pushed oracle snapshot rather than a stale value. |
 
 ### Contract Architecture
 
@@ -52,7 +52,7 @@ Called by PSR after transferring tokens. Records the balance delta and emits `As
 
 **`executeBuyback(address tokenIn, uint256 amountIn, uint256 minAmountOut, uint256 deadline, address router, bytes calldata routerCalldata, address comptroller)`**
 
-ACM-restricted. Swaps `amountIn` of `tokenIn` to `BASE_ASSET` via the specified router (must be allowlisted). Validates slippage against `minAmountOut`. Forwards the output directly to `DESTINATION`. Emits `BuybackExecuted`. The reported `amountIn` in `BuybackExecuted` is the actual on-chain `tokenIn` delta consumed by the router (`balanceBefore − balanceAfter`), not the caller-supplied `amountIn` parameter, so the event is honest about what the router actually pulled. After the swap settles, the call enforces the rolling 24h USD cap on `tokenIn` consumption (reverts with `DailyCapExceeded` if exceeded) and emits `AbnormalSlippage` if `usdIn − usdOut` exceeds `slippageEventUsd`.
+ACM-restricted. Swaps `amountIn` of `tokenIn` to `BASE_ASSET` via the specified router (must be allowlisted). Validates slippage against `minAmountOut`. Forwards the output directly to `DESTINATION`. Emits `BuybackExecuted`. The reported `amountIn` in `BuybackExecuted` is the actual on-chain `tokenIn` delta consumed by the router (`balanceBefore − balanceAfter`), not the caller-supplied `amountIn` parameter, so the event is honest about what the router actually pulled. After the swap settles, the call pushes a fresh oracle price for both `tokenIn` and `BASE_ASSET` (`updateAssetPrice`), then enforces the rolling 24h USD cap on `tokenIn` consumption (reverts with `DailyCapExceeded` if exceeded) and emits `AbnormalSlippage` if `usdIn − usdOut` exceeds `slippageEventUsd`.
 
 **`forwardBaseAsset(address comptroller, uint256 amount)`**
 
@@ -64,11 +64,11 @@ Governance-only. Adds or removes a DEX router from the allowlist.
 
 **`setDailyCapUsd(uint256 newCap)`**
 
-ACM-restricted. Updates the rolling 24h USD cap on `tokenIn` consumption (1e18-scaled). Emits `DailyCapUpdated`.
+ACM-restricted. Updates the rolling 24h USD cap on `tokenIn` consumption (1e18-scaled). Reverts with `ZeroValueNotAllowed` if `newCap` is zero (the cap cannot be used to fully disable buybacks — use ACM revocation for that). Emits `DailyCapUpdated`.
 
 **`setSlippageEventUsd(uint256 newThreshold)`**
 
-ACM-restricted. Updates the absolute USD threshold above which `AbnormalSlippage` fires (1e18-scaled). Emits `SlippageEventUsdUpdated`.
+ACM-restricted. Updates the absolute USD threshold above which `AbnormalSlippage` fires (1e18-scaled). Reverts with `ZeroValueNotAllowed` if `newThreshold` is zero. Emits `SlippageEventUsdUpdated`.
 
 **`sweepToken(address token, address to, uint256 amount)`**
 
@@ -102,20 +102,20 @@ Governance-only. Emergency token recovery from the contract. Also the canonical 
 | `WBNBBurnConverter` | Retired (was burn path) |
 | `ConverterNetwork` | Retired (registry) |
 
-**After (10 TokenBuyback instances)**
+**After (10 TokenBuyback instances, deployed on BSC mainnet)**
 
-| Instance | Base Asset | Destination |
-|---|---|---|
-| `UTreasuryBuyback` | U | `VTreasury` |
-| `BTCBTreasuryBuyback` | BTCB | `VTreasury` |
-| `ETHTreasuryBuyback` | ETH | `VTreasury` |
-| `USDTTreasuryBuyback` | USDT | `VTreasury` |
-| `USDCTreasuryBuyback` | USDC | `VTreasury` |
-| `XVSTreasuryBuyback` | XVS | `VTreasury` |
-| `USDTPrimeBuyback` | USDT | `PrimeLiquidityProvider` |
-| `UPrimeBuyback` | U | `PrimeLiquidityProvider` |
-| `RiskFundBuyback` | USDT | `RiskFundV2` |
-| `XVSBuyback` | XVS | `XVSVaultTreasury` |
+| Instance | Base Asset | Destination | Proxy address |
+|---|---|---|---|
+| `UTreasuryBuyback` | U | `VTreasury` | [`0xef7cb42a7EBD4b011905D20Fc8038a603c3f22E4`](https://bscscan.com/address/0xef7cb42a7EBD4b011905D20Fc8038a603c3f22E4) |
+| `BTCBTreasuryBuyback` | BTCB | `VTreasury` | [`0x69739FF52e90BC93dCaEd5a2431072b5082d326D`](https://bscscan.com/address/0x69739FF52e90BC93dCaEd5a2431072b5082d326D) |
+| `ETHTreasuryBuyback` | ETH | `VTreasury` | [`0x9e0543F9E09fb5b8a58F73d11967DC894dbD40a7`](https://bscscan.com/address/0x9e0543F9E09fb5b8a58F73d11967DC894dbD40a7) |
+| `USDTTreasuryBuyback` | USDT | `VTreasury` | [`0xBF858c95D778022b48E6Ad343D3d644017fb0ca7`](https://bscscan.com/address/0xBF858c95D778022b48E6Ad343D3d644017fb0ca7) |
+| `USDCTreasuryBuyback` | USDC | `VTreasury` | [`0xFB5FA544dBf39983198BDD01e2c26E3AB597e22A`](https://bscscan.com/address/0xFB5FA544dBf39983198BDD01e2c26E3AB597e22A) |
+| `XVSTreasuryBuyback` | XVS | `VTreasury` | [`0x01D0f07D389692D386EB8D09Da3bbCa5C83be551`](https://bscscan.com/address/0x01D0f07D389692D386EB8D09Da3bbCa5C83be551) |
+| `USDTPrimeBuyback` | USDT | `PrimeLiquidityProvider` | [`0x0191Bb3CD28A96691F5EC5066ad42A0373ae11C6`](https://bscscan.com/address/0x0191Bb3CD28A96691F5EC5066ad42A0373ae11C6) |
+| `UPrimeBuyback` | U | `PrimeLiquidityProvider` | [`0xFd50bd4107705929df73Ac683BD505232BA9E9dB`](https://bscscan.com/address/0xFd50bd4107705929df73Ac683BD505232BA9E9dB) |
+| `RiskFundBuyback` | USDT | `RiskFundV2` | [`0xfffB20c23650B27126815994f3F07eF6B46aea60`](https://bscscan.com/address/0xfffB20c23650B27126815994f3F07eF6B46aea60) |
+| `XVSBuyback` | XVS | `XVSVaultTreasury` | [`0xBaAc819aE93b29fA6512a095CA00255a4F05b027`](https://bscscan.com/address/0xBaAc819aE93b29fA6512a095CA00255a4F05b027) |
 
 `WBNBBurnConverter` and `ConverterNetwork` are retired. The 6 `TreasuryBuyback` instances are new — treasury previously accepted arbitrary tokens without conversion.
 
@@ -130,18 +130,9 @@ Governance-only. Emergency token recovery from the contract. Also the canonical 
 
 ### Migration
 
-A single VIP per chain handles the full migration:
+BSC mainnet migration executed via [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56) ([vips PR #700](https://github.com/VenusProtocol/vips/pull/700)).
 
-- **Pre-VIP** — Guardian pauses all existing converters; finance team snapshots balances and validates new contracts on testnet
-- **VIP**:
-  1. Grant ACM permissions to all 10 buyback instances
-  2. Drain old converters into new instances (routed per target `BASE_ASSET`)
-  3. Replace PSR `distributionTargets` with 10 new rows summing to `MAX_PERCENT` (10000) per schema
-  4. Revoke old ACM permissions
-  5. Configure DEX router allowlist on each buyback instance
-- **Post-VIP** — Finance team monitors first buyback calls manually before handing off to automated cron
-
-Old converter proxies remain deployed but empty and un-permissioned.
+Old converter proxies remain deployed but are no longer operational — conversions are paused on them, balances drained, and ACM permissions revoked.
 
 ### Impact Summary
 
