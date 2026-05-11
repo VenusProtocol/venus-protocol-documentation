@@ -4,17 +4,6 @@ Storage layout for the `RiskFundV2` contract.
 
 # Solidity API
 
-### poolAssetsFunds
-
-Available asset's fund per pool in RiskFund
-Comptroller(pool) -> Asset -> amount
-
-```solidity
-mapping(address => mapping(address => uint256)) poolAssetsFunds
-```
-
-- - -
-
 ### maxLoopsLimit
 
 Limit for the loops to avoid the DOS
@@ -42,16 +31,6 @@ Address of shortfall contract
 
 ```solidity
 address shortfall
-```
-
-- - -
-
-### riskFundConverter
-
-Risk fund converter address
-
-```solidity
-address riskFundConverter
 ```
 
 - - -

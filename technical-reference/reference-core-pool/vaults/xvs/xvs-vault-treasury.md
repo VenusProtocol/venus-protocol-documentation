@@ -1,6 +1,6 @@
 # XVSVaultTreasury
 
-This contract stores `XVS` received from XVSVaultConverter and funds XVSVault
+This contract stores `XVS` received from `XVSBuyback` and funds `XVSVault`.
 
 # Solidity API
 

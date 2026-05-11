@@ -1,7 +1,7 @@
 # Token Buyback
 
 {% hint style="info" %}
-Available on BNB Chain. See the [TokenBuyback overview](../../whats-new/token-converter.md) for migration context and the [deployed-contracts page](../../deployed-contracts/token-converters.md#bnb-chain-mainnet) for proxy addresses.
+See the [TokenBuyback overview](../../whats-new/token-converter.md) for migration context and the [deployed-contracts page](../../deployed-contracts/token-converters.md) for proxy addresses. Live on BNB Chain via [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56);
 {% endhint %}
 
 ## Overview
@@ -14,7 +14,7 @@ Swaps are initiated by an ACM-authorized finance-team cron, not by external comm
 
 ## Architecture
 
-<figure><img src="../../.gitbook/assets/token_buyback_funds.svg" alt="TokenBuyback architecture and PSR distribution flow"><figcaption>PSR distribution across the 10 TokenBuyback instances and their destinations (percentages: PSR schema 0 — interest reserves)</figcaption></figure>
+<figure><img src="../../.gitbook/assets/token_buyback_funds.svg" alt="TokenBuyback architecture and PSR distribution flow"><figcaption>PSR distribution across TokenBuyback instances and their destinations (example: BNB Chain — 10 instances; percentages from PSR schema 0 — interest reserves)</figcaption></figure>
 
 Per-instance state:
 
@@ -135,14 +135,14 @@ Governance-only. Emergency token recovery. Also the canonical recovery path for 
 
 ## Destinations
 
-The `(DESTINATION, BASE_ASSET)` pair is fixed per instance. On BNB Chain the live destinations are:
+The `(DESTINATION, BASE_ASSET)` pair is fixed per instance. Common destinations across deployments:
 
 * **`VTreasury`** — accumulates protocol-revenue tokens (U, BTCB, ETH, USDT, USDC, XVS) bought back from non-Prime, non-RiskFund income.
 * **`PrimeLiquidityProvider`** — accumulates Prime rewards in USDT and U; later distributed to Prime users according to per-token speeds configured via VIP. See [Prime tokens](prime.md).
 * **`RiskFundV2`** — accumulates USDT used by [Shortfall auctions](shortfall-and-auctions.md). Per-pool accounting was removed alongside the migration; `RiskFundV2` now draws against its raw balance.
 * **`XVSVaultTreasury`** — accumulates XVS that funds `XVSVault` rewards via VIP.
 
-See [deployed contracts](../../deployed-contracts/token-converters.md#bnb-chain-mainnet) for the 10 active proxy addresses and their `(base asset, destination)` mapping.
+See [deployed contracts](../../deployed-contracts/token-converters.md) for per-chain proxy addresses and their `(base asset, destination)` mapping.
 
 ## Operator Notes
 

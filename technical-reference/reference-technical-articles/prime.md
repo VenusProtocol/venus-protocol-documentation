@@ -114,15 +114,15 @@ For example:
 
 Interest reserves (part of the protocol income) from Isolated Pools and the Core Pool markets are sent to the PSR ([Protocol Share Reserve](https://github.com/VenusProtocol/protocol-reserve/blob/main/contracts/ProtocolReserve/ProtocolShareReserve.sol)) contract. Based on the configuration, a percentage of income from all markers is reserved for Prime token holders. The interest reserves will be sent to the PSR periodically (currently every 6 hours, but this can be changed by the community via [VIP](https://app.venus.io/governance)).
 
-The PSR has a function `releaseFunds` that needs to be invoked to release the funds to the destination contracts. We have [SingleTokenConverter](https://github.com/VenusProtocol/protocol-reserve/blob/main/contracts/TokenConverter/SingleTokenConverter.sol) contracts which receive income from the PSR and convert them to Prime supported reward tokens. 
+The PSR has a function `releaseFunds` that needs to be invoked to release the funds to the destination contracts. [TokenBuyback](../../whats-new/token-converter.md) instances (e.g. `USDTPrimeBuyback`, `UPrimeBuyback`) receive income from the PSR, swap it into Prime reward tokens at DEX market rate via an ACM-authorized finance-team cron, and forward the output to `PrimeLiquidityProvider`.
 
-Each `SingleTokenConverter` sends funds to `PrimeLiquidityProvider` contract which releases the funds to `Prime` contract. Distribution speeds for each of the reward token is configured in the `PrimeLiquidityProvider` contract and based on those speeds `Prime` distributes rewards. 
+`PrimeLiquidityProvider` then releases the funds to the `Prime` contract according to distribution speeds configured per reward token.
 
 If a user tries to claim their rewards and the `Prime` contract doesn’t have enough funds, then we trigger the release of funds from `PrimeLiquidityProvider` to `Prime` contract in the same transaction i.e., in the `claimInterest` function.
 
-The following diagram shows the integration of the `SingleTokenConverter` contracts with the Prime contracts:
+The following diagram shows the integration of the `TokenBuyback` contracts with the Prime contracts:
 
-<figure><img src="../../.gitbook/assets/prime_token_converter.svg" alt="Integration of the SingleTokenConverter contracts with the Prime contracts"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/prime_token_buyback.svg" alt="Integration of the Prime TokenBuyback contracts with the Prime contracts"><figcaption>PSR → Prime buybacks → PrimeLiquidityProvider → Prime → users</figcaption></figure>
 
 More information about income collection and distribution can be found [here](../../whats-new/automatic-income-allocation.md).
 
