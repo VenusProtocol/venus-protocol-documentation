@@ -51,7 +51,7 @@ Protection Mode is opt-in per asset. Governance enables it by calling `setTokenC
 * Sets the bounded-pricing whitelist flag from the `enableBoundedPricing` argument — when `true` the asset participates in the Comptroller's bounded borrow-power path; when `false` the asset is initialized but the DBO short-circuits to spot until governance flips the flag with `setAssetBoundedPricingEnabled`.
 * Sets the per-asset transient-cache flag from the `enableCaching` argument (configurable later via `setCachingEnabled`).
 
-VAI is rejected at config time and can never be whitelisted. Highly liquid assets (major stablecoins, blue-chip majors) are also intentionally not whitelisted: the manipulation surface there is not material, and the extra oracle writes and gas aren't worth it. Whitelisting can be toggled later with `setAssetBoundedPricingEnabled` (it cannot be turned off while protection is active).
+VAI is hard-rejected at config time and can never be whitelisted. For all other assets, whether Protection Mode is enabled is a governance decision driven by each asset's liquidity profile and manipulation surface; it can be toggled later with `setAssetBoundedPricingEnabled` (it cannot be turned off while protection is active).
 
 ### Where Protection Mode Applies
 
