@@ -8,6 +8,7 @@
 
 ## What's New?
 
+* [Trade](whats-new/trade.md)
 * [Leveraged Positions](whats-new/leveraged-positions.md)
 * [E-Mode](whats-new/e-mode.md)
 * [Isolated E-Mode](whats-new/isolated-e-mode.md)
@@ -28,6 +29,7 @@
 ## Risk
 
 * [Resilient Price Oracle](risk/resilient-price-oracle.md)
+* [Protection Mode](risk/protection-mode.md)
 * [Interest Rate Model](risk/interest-rate-model.md)
 * [Risk Fund and Shortfall Handling](risk/risk-fund-and-shortfall-handling.md)
 * [Risk Management](risk/risk-management.md)
@@ -57,6 +59,7 @@
 * [Enable E-mode](guides/enable-e-mode.md)
 * [Isolated E-mode](guides/isolated-e-mode.md)
 * [Boost and Repay with Collateral](guides/leveraged-positions.md)
+* [Trade](guides/trade.md)
 
 ## Technical reference
 
@@ -67,9 +70,11 @@
   * [Contributing](technical-reference/reference-technical-articles/contributing.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
   * [E-Mode](technical-reference/reference-technical-articles/e-mode.md)
+  * [Trade](technical-reference/reference-technical-articles/trade.md)
   * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)
   * [Omnichain Governance](technical-reference/reference-technical-articles/omnichain-governance.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
+  * [DeviationBoundedOracle](technical-reference/reference-technical-articles/deviation-bounded-oracle.md)
   * [FlashLoan](technical-reference/reference-technical-articles/flashloan-core-pool.md)
   * [Risk Stewards](technical-reference/reference-technical-articles/risk-stewards.md)
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
@@ -146,6 +151,7 @@
     * [ExponentialNoError](technical-reference/reference-isolated-pools/utility/exponential-no-error.md)
 * [Oracle](technical-reference/reference-oracle/README.md)
   * [ResilientOracle](technical-reference/reference-oracle/resilient-oracle.md)
+  * [DeviationBoundedOracle](technical-reference/reference-oracle/deviation-bounded-oracle.md)
   * [BoundValidator](technical-reference/reference-oracle/oracles/bound-validator.md)
   * [Sources](technical-reference/reference-oracle/oracles/README.md)
     * [ChainlinkOracle](technical-reference/reference-oracle/oracles/chainlink-oracle.md)
@@ -179,7 +185,6 @@
   * [OmnichainExecutorOwner](technical-reference/reference-governance/omnichain-executor-owner.md) 
   * [RiskStewardReceiver](technical-reference/reference-governance/risk-steward-receiver.md) 
   * [MarketCapsRiskSteward](technical-reference/reference-governance/market-caps-risk-steward.md)
-  * [DeviationSentinel](technical-reference/reference-periphery/deviation-sentinel.md)
 * [XVS Bridge](technical-reference/reference-xvs-bridge/README.md)
   * [BaseXVSProxyOFT](technical-reference/reference-xvs-bridge/BaseXVSProxyOFT.md)
   * [XVSProxyOFTSrc](technical-reference/reference-xvs-bridge/XVSProxyOFTSrc.md)
@@ -188,6 +193,7 @@
   * [XVS](technical-reference/reference-xvs-bridge/XVS.md)
   * [TokenController](technical-reference/reference-xvs-bridge/TokenController.md)
 * [Periphery](technical-reference/reference-periphery/README.md)
+  * [RelativePositionManager](technical-reference/reference-periphery/relative-position-manager.md)
   * [LeverageStrategiesManager](technical-reference/reference-periphery/leverage-strategies-manager.md)
   * [SwapHelper](technical-reference/reference-periphery/swap-helper.md)
   * [SwapRouter](technical-reference/reference-periphery/swap-router.md)

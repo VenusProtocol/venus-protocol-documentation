@@ -74,6 +74,10 @@ The [ProtocolShareReserve](https://github.com/VenusProtocol/protocol-reserve/blo
 
 Venus Protocol implements secondary, primary and pivot oracles to create a validation and fallback strategy that avoids creating a single point of a failure by relying on a single source for prices. The [ResilientOracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/ResilientOracle.sol) contract is responsible for fetching and validating prices for a given vToken and managing which oracles are used for a particular vToken.
 
+[**DeviationBoundedOracle**](reference-oracle/deviation-bounded-oracle.md)
+
+The [DeviationBoundedOracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/DeviationBoundedOracle.sol) wraps the ResilientOracle to provide manipulation-resistant pricing for whitelisted assets on the borrow-power path. It maintains a per-asset rolling spot-price window and, when the spot deviates beyond a configured threshold, switches collateral pricing to `min(spot, windowMin)` and debt pricing to `max(spot, windowMax)`. Liquidations continue to use the spot price from the ResilientOracle. See [Protection Mode](../risk/protection-mode.md) for the feature-level description.
+
 ### Oracles
 
 [**ChainlinkOracle**](reference-oracle/oracles/chainlink-oracle.md)
