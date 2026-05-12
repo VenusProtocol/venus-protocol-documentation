@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 560" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6F7C95"/>
+    </marker>
+    <style>
+      .bg { fill: #0F1A2A; }
+      .box { fill: #16243B; stroke: #2E5BBA; stroke-width: 1.5; rx: 6; ry: 6; }
+      .box-active { fill: #2E5BBA; stroke: #2E5BBA; stroke-width: 1.5; rx: 6; ry: 6; }
+      .label { fill: #FFFFFF; font-size: 15px; font-weight: 600; }
+      .label-sm { fill: #C8D3E5; font-size: 12px; }
+      .edge-label { fill: #C8D3E5; font-size: 12px; font-weight: 600; }
+      .edge { fill: none; stroke: #6F7C95; stroke-width: 1.4; }
+      .section { fill: #8AA3CC; font-size: 12px; font-weight: 700; letter-spacing: 1px; }
+      .note { fill: #A0B0C5; font-size: 12px; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="560"/>
+
+  <!-- Section headers -->
+  <text class="section" x="50" y="35">PROTOCOL INCOME</text>
+  <text class="section" x="350" y="35">PRIME BUYBACKS</text>
+  <text class="section" x="720" y="35">DISTRIBUTOR</text>
+  <text class="section" x="1060" y="35">REWARDS</text>
+
+  <!-- PSR (left) -->
+  <rect class="box-active" x="40" y="220" width="220" height="60"/>
+  <text class="label" x="150" y="250" text-anchor="middle">Protocol Share Reserve</text>
+  <text class="label-sm" x="150" y="268" text-anchor="middle">releaseFunds()</text>
+
+  <!-- 2 Prime Buybacks (center-left) -->
+  <rect class="box" x="350" y="140" width="240" height="70"/>
+  <text class="label" x="470" y="170" text-anchor="middle">USDTPrimeBuyback</text>
+  <text class="label-sm" x="470" y="190" text-anchor="middle">base: USDT</text>
+
+  <rect class="box" x="350" y="290" width="240" height="70"/>
+  <text class="label" x="470" y="320" text-anchor="middle">UPrimeBuyback</text>
+  <text class="label-sm" x="470" y="340" text-anchor="middle">base: U</text>
+
+  <!-- PSR → Buybacks edges -->
+  <path class="edge" d="M260,240 C310,240 310,175 350,175" marker-end="url(#arrow)"/>
+  <path class="edge" d="M260,260 C310,260 310,325 350,325" marker-end="url(#arrow)"/>
+  <text class="edge-label" x="280" y="195">prime share</text>
+  <text class="edge-label" x="280" y="315">prime share</text>
+
+  <!-- PrimeLiquidityProvider (center-right) -->
+  <rect class="box-active" x="710" y="220" width="240" height="70"/>
+  <text class="label" x="830" y="250" text-anchor="middle">PrimeLiquidityProvider</text>
+  <text class="label-sm" x="830" y="270" text-anchor="middle">per-token reward speeds</text>
+
+  <!-- Buybacks → PLP edges -->
+  <path class="edge" d="M590,175 C660,175 660,240 710,240" marker-end="url(#arrow)"/>
+  <path class="edge" d="M590,325 C660,325 660,270 710,270" marker-end="url(#arrow)"/>
+  <text class="edge-label" x="615" y="195">USDT</text>
+  <text class="edge-label" x="615" y="315">U</text>
+
+  <!-- Prime contract (right) -->
+  <rect class="box-active" x="1050" y="220" width="200" height="70"/>
+  <text class="label" x="1150" y="250" text-anchor="middle">Prime</text>
+  <text class="label-sm" x="1150" y="270" text-anchor="middle">accrue + claim</text>
+
+  <!-- PLP → Prime edge -->
+  <path class="edge" d="M950,255 L1050,255" marker-end="url(#arrow)"/>
+  <text class="edge-label" x="965" y="248">releaseFunds()</text>
+
+  <!-- User box / claim -->
+  <rect class="box" x="1090" y="400" width="160" height="50"/>
+  <text class="label" x="1170" y="430" text-anchor="middle">Prime user</text>
+
+  <!-- Prime ↔ user edges -->
+  <path class="edge" d="M1150,290 L1150,400" marker-end="url(#arrow)"/>
+  <text class="edge-label" x="1075" y="350" text-anchor="end">rewards</text>
+  <path class="edge" d="M1140,400 C1140,360 1090,330 1080,290" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <text class="edge-label" x="1010" y="380">claimInterest()</text>
+
+  <!-- Fallback flow note: claim triggers releaseFunds -->
+  <path class="edge" d="M1090,425 C900,425 900,300 950,275" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <text class="note" x="500" y="430">If Prime has insufficient funds at claim time, claimInterest() triggers PrimeLiquidityProvider.releaseFunds()</text>
+  <text class="note" x="500" y="450">in the same transaction.</text>
+
+  <!-- Caption -->
+  <text class="note" x="50" y="510">PSR distributes a configured percentage of protocol income to each Prime buyback. Buybacks swap inflows to their BASE_ASSET (USDT or U) via</text>
+  <text class="note" x="50" y="528">an ACM-authorized finance-team cron and forward output to PrimeLiquidityProvider, which releases funds to Prime per configured reward speeds.</text>
+</svg>

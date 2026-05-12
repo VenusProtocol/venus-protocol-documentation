@@ -2,8 +2,30 @@
 
 ## BNB Chain Mainnet
 
-* RiskFundConverter: [`0xA5622D276CcbB8d9BBE3D1ffd1BB11a0032E53F0`](https://bscscan.com/address/0xA5622D276CcbB8d9BBE3D1ffd1BB11a0032E53F0)
+Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the original community-driven Token Converters via [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56). The six timelock-owned legacy converters remain deployed for reference but are no longer operational — conversion is paused on each and balances have been drained into the corresponding new buyback. `WBNBBurnConverter` (Guardian-owned) is wound down via a separate multisig transaction; `ConverterNetwork` is unreferenced. Pre-existing ACM grants on the legacy converters are not explicitly revoked, but the paused state renders them inert.
+
+### Active destinations
+
 * XVSVaultTreasury: [`0x269ff7818DB317f60E386D2be0B259e1a324a40a`](https://bscscan.com/address/0x269ff7818DB317f60E386D2be0B259e1a324a40a)
+
+### TokenBuyback (Phase 2 — active)
+
+| Instance | Base Asset | Destination | Proxy address |
+|---|---|---|---|
+| `UTreasuryBuyback` | U | `VTreasury` | [`0xef7cb42a7EBD4b011905D20Fc8038a603c3f22E4`](https://bscscan.com/address/0xef7cb42a7EBD4b011905D20Fc8038a603c3f22E4) |
+| `BTCBTreasuryBuyback` | BTCB | `VTreasury` | [`0x69739FF52e90BC93dCaEd5a2431072b5082d326D`](https://bscscan.com/address/0x69739FF52e90BC93dCaEd5a2431072b5082d326D) |
+| `ETHTreasuryBuyback` | ETH | `VTreasury` | [`0x9e0543F9E09fb5b8a58F73d11967DC894dbD40a7`](https://bscscan.com/address/0x9e0543F9E09fb5b8a58F73d11967DC894dbD40a7) |
+| `USDTTreasuryBuyback` | USDT | `VTreasury` | [`0xBF858c95D778022b48E6Ad343D3d644017fb0ca7`](https://bscscan.com/address/0xBF858c95D778022b48E6Ad343D3d644017fb0ca7) |
+| `USDCTreasuryBuyback` | USDC | `VTreasury` | [`0xFB5FA544dBf39983198BDD01e2c26E3AB597e22A`](https://bscscan.com/address/0xFB5FA544dBf39983198BDD01e2c26E3AB597e22A) |
+| `XVSTreasuryBuyback` | XVS | `VTreasury` | [`0x01D0f07D389692D386EB8D09Da3bbCa5C83be551`](https://bscscan.com/address/0x01D0f07D389692D386EB8D09Da3bbCa5C83be551) |
+| `USDTPrimeBuyback` | USDT | `PrimeLiquidityProvider` | [`0x0191Bb3CD28A96691F5EC5066ad42A0373ae11C6`](https://bscscan.com/address/0x0191Bb3CD28A96691F5EC5066ad42A0373ae11C6) |
+| `UPrimeBuyback` | U | `PrimeLiquidityProvider` | [`0xFd50bd4107705929df73Ac683BD505232BA9E9dB`](https://bscscan.com/address/0xFd50bd4107705929df73Ac683BD505232BA9E9dB) |
+| `RiskFundBuyback` | USDT | `RiskFundV2` | [`0xfffB20c23650B27126815994f3F07eF6B46aea60`](https://bscscan.com/address/0xfffB20c23650B27126815994f3F07eF6B46aea60) |
+| `XVSBuyback` | XVS | `XVSVaultTreasury` | [`0xBaAc819aE93b29fA6512a095CA00255a4F05b027`](https://bscscan.com/address/0xBaAc819aE93b29fA6512a095CA00255a4F05b027) |
+
+### Retired converters (Phase 1 — non-operational post VIP-618)
+
+* RiskFundConverter: [`0xA5622D276CcbB8d9BBE3D1ffd1BB11a0032E53F0`](https://bscscan.com/address/0xA5622D276CcbB8d9BBE3D1ffd1BB11a0032E53F0)
 * SingleTokenConverterBeacon: [`0x4c9D57b05B245c40235D720A5f3A592f3DfF11ca`](https://bscscan.com/address/0x4c9D57b05B245c40235D720A5f3A592f3DfF11ca)
 * USDTPrimeConverter: [`0xD9f101AA67F3D72662609a2703387242452078C3`](https://bscscan.com/address/0xD9f101AA67F3D72662609a2703387242452078C3)
 * USDCPrimeConverter: [`0xa758c9C215B6c4198F0a0e3FA46395Fa15Db691b`](https://bscscan.com/address/0xa758c9C215B6c4198F0a0e3FA46395Fa15Db691b)

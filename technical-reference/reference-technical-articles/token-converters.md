@@ -1,265 +1,153 @@
-# Token converters
+# TokenBuyback Contract
 
 {% hint style="info" %}
-Only available on BNB chain, Ethereum and Arbitrum
-{% endhint %}
-
-{% hint style="info" %}
-The [Venus CLI](https://github.com/VenusProtocol/keeper-bots/blob/develop/packages/cli/README.md) supports making conversions using flash swaps on Pancake Swap to fund the conversion.
-
-The [Token Converter Bot](https://github.com/VenusProtocol/keeper-bots/blob/develop/packages/token-converter-bot/README.md) shows how to interact with the converters and can be used as a base to build advanced conversion strategies.
+See the [TokenBuyback overview](../../whats-new/token-converter.md) for migration context and the [deployed-contracts page](../../deployed-contracts/token-converters.md) for proxy addresses. Live on BNB Chain via [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56);
 {% endhint %}
 
 ## Overview
 
-The **Venus Protocol** generates income in various underlying tokens from interest and liquidation fees, that are then sent to the ProtocolShareReserve contract. The `ProtocolShareReserve` contract disburses these earnings to number of destinations. The distributions to the converter contracts are listed next.
+`TokenBuyback` is the contract that holds protocol income arriving from `ProtocolShareReserve` (PSR) and converts it into a configured `BASE_ASSET` via on-chain DEX swaps. Each instance is deployed as a Transparent Proxy bound to a `(DESTINATION, BASE_ASSET)` pair at construction time; both addresses are immutable, so retargeting either requires a new deployment.
 
-### BNB Chain
+Swaps are initiated by an ACM-authorized finance-team cron, not by external community members. The cron builds the router calldata off-chain using DEX aggregators and submits it to `executeBuyback`. The contract validates a minimum output, pulls the actual `tokenIn` delta consumed by the router, forwards the resulting `BASE_ASSET` directly to `DESTINATION`, and applies two on-chain safety rails (USD daily cap + abnormal-slippage event) using a `ResilientOracle` reference price.
 
-| Converter               | Accepts           | Interest Reserves (%)| Liquidation Income (%)  |
-|-------------------------|-------------------|----------------------|-------------------------|
-| RiskFundConverter       |   USDT            |     20%              |                     20% |
-| XVSVaultConverter       | 	XVS	            |     20%	             |                     20% |
-| USDTPrimeConverter      | 	USDT            |   	11%	             |                      0% |
-| USDCPrimeConverter      | 	USDC            |   	6%	             |                      0% |
-| BTCBPrimeConverter      | 	BTCB            |   	1%               |                      0% |
-| ETHPrimeConverter       | 	ETH	            |     2%               |                      0% |
-| WBNBBurnConverter       |   WBNB            |     25%              |                     25% |
+`TokenBuyback` implements `IIncomeDestination`, the same interface as the legacy converters, so PSR rewires to the new instances via a governance VIP without any PSR contract changes.
 
-### Ethereum Chain
+## Architecture
 
-| Converter               | Accepts           | Interest Reserves (%)| Liquidation Income (%)  |
-|-------------------------|-------------------|----------------------|-------------------------|
-| RiskFundConverter       |     USDT          |     0%               |                      0% |
-| XVSVaultConverter       | 	XVS	          |     20%	             |                     20% |
-| USDTPrimeConverter      | 	USDT          | 	1.2%             |                      0% |
-| USDCPrimeConverter      | 	USDC          | 	1.2%             |                      0% |
-| WBTCPrimeConverter      | 	WBTC          | 	0.6%             |                      0% |
-| WETHPrimeConverter      | 	WETH	      |     17.0%            |                      0% |
+<figure><img src="../../.gitbook/assets/token_buyback_funds.svg" alt="TokenBuyback architecture and PSR distribution flow"><figcaption>PSR distribution across TokenBuyback instances and their destinations (example: BNB Chain — 10 instances; percentages from PSR schema 0 — interest reserves)</figcaption></figure>
 
-### Arbitrum One
+Per-instance state:
 
-| Converter               | Accepts           | Interest Reserves (%)| Liquidation Income (%)  |
-|-------------------------|-------------------|----------------------|-------------------------|
-| XVSVaultConverter       | 	XVS	          |     20%	             |                     20% |
-| USDTPrimeConverter      | 	USDT          | 	5%             |                      0% |
-| USDCPrimeConverter      | 	USDC          | 	5%             |                      0% |
-| WBTCPrimeConverter      | 	WBTC          | 	3%             |                      0% |
-| WETHPrimeConverter      | 	WETH	      |     7%            |                      0% |
+| Slot | Purpose |
+|---|---|
+| `DESTINATION` (immutable) | Address that receives `BASE_ASSET` after each swap or forward |
+| `BASE_ASSET` (immutable) | Output token of every buyback — every swap converts into this |
+| `PROTOCOL_SHARE_RESERVE` (immutable) | Only address permitted to call `updateAssetsState` — prevents spoofed `AssetsReceived` events |
+| `RESILIENT_ORACLE` (immutable) | USD-pricing source for the daily cap and the abnormal-slippage signal — not used for swap pricing |
+| `allowedRouters` | On-chain allowlist of DEX routers (governance-managed) |
+| `assetsReserves[token]` | Balance watermark used to derive the inflow delta on each PSR call |
+| `dailyCapUsd` | Rolling 24h USD cap on `tokenIn` consumption (1e18-scaled) |
+| `slippageEventUsd` | Absolute USD threshold above which `AbnormalSlippage` fires (1e18-scaled) |
+| `usdConsumedInWindow`, `lastUpdate` | Leaky-bucket accumulator state for the daily cap |
 
-`XVSVaultConverter` and every Prime converter are instances of `SingleTokenConverter` contract.
+## Income Flow
 
-`RiskFundConverter` and `SingleTokenConverter` convert incoming earnings into specific tokens, with `RiskFundConverter` converting them into RiskFund's convertible base asset and `SingleTokenConverters` converting them into their `baseAsset`. Each time a conversion is completed, the resulting tokens are sent to their respective destination addresses.
+1. PSR transfers underlying tokens to `TokenBuyback` and calls `updateAssetsState(comptroller, asset)`.
+2. The contract reads `balanceOf(this)`, compares against the `assetsReserves[asset]` watermark, emits `AssetsReceived(comptroller, asset, delta)` when the delta is non-zero, and resyncs the watermark to the current balance.
+3. The cron monitors `AssetsReceived` events to know which token landed and from which pool.
+4. When the cron decides to convert, it calls `executeBuyback` with off-chain-built router calldata.
+5. `executeBuyback` swaps `tokenIn → BASE_ASSET` through the allowlisted router, validates `minAmountOut`, forwards the output to `DESTINATION`, pushes fresh oracle prices, enforces the daily cap, and emits `AbnormalSlippage` if the USD delta crosses the threshold.
+6. `BASE_ASSET` that lands without needing a swap (e.g. PSR delivers `BASE_ASSET` directly) is sent on via `forwardBaseAsset`, which partitions the balance by caller-supplied `amount` so each portion can be attributed to a different comptroller via separate events.
 
-The following diagram illustrates the flow of funds between contracts and its architecture:
+## Daily USD Cap (leaky bucket)
 
-<figure><img src="../../.gitbook/assets/token_converter_funds.svg" alt="Integration of Token Converters in the Venus Protocol"><figcaption>Integration of Token Converters in the Venus protocol</figcaption></figure>
+`executeBuyback` enforces a rolling 24h USD cap on `tokenIn` consumption. The accumulator decays linearly between calls:
 
-* The transfer of funds to and from the `ProtocolShareReserve` contract are initiated by external agents (permissionless).
-* The transfers of funds from the Token Converters to their destinations are performed on each conversion. The conversions are performed by external agents (permissionless).
-* The transfer of XVS from the `XVSVaultTreasury` to the `XVSVault` will be performed via VIP.
+```
+elapsed   = block.timestamp - lastUpdate
+decayed   = elapsed >= WINDOW ? 0 : usdConsumedInWindow * (WINDOW - elapsed) / WINDOW
+newUsage  = decayed + usdIn
+require(newUsage <= dailyCapUsd)
+usdConsumedInWindow = newUsage
+lastUpdate          = block.timestamp
+```
 
-`RiskFundConverter` and `SingleTokenConverters` possess the ability to "facilitate" token conversions for the income they receive, obtaining the desired tokens (base asset) by relying on oracle prices as reference points to accept conversions that external agents will carry out.
+Where `WINDOW = 24 hours` and `usdIn = actualAmountIn * priceIn / 1e18`. The accumulator `usdConsumedInWindow` is bounded by `dailyCapUsd` at every moment, which caps sustainable throughput at `dailyCapUsd / 24h` plus a one-time burst of up to `dailyCapUsd` (so worst-case cumulative consumption over any rolling 24h interval is up to ~2 × `dailyCapUsd`). Reverts with `DailyCapExceeded(attempted, cap)` past the cap.
 
-Venus encourages these conversions by providing incentives that create arbitrage opportunities in the market, with the expectation that external agents will seize these opportunities.
+Default: **$30,000** cap at deploy. Tunable via `setDailyCapUsd` (ACM-restricted, rejects zero).
 
-The diagram below illustrates the connection between income harvesting (the process by which Venus transfers income to the `ProtocolShareReserve`), distribution (application of the protocol's Tokenomics-defined rules), and conversion (acquiring the required base assets).
+## Abnormal Slippage Signal
 
-<figure><img src="../../.gitbook/assets/token_converters_sequence.svg" alt="Diagram showing the relationship among the harvesting, distribution, and converting of income"><figcaption>Relationship among the harvesting, distribution, and converting of income</figcaption></figure>
+After settling the swap, `executeBuyback` USD-prices both legs and emits `AbnormalSlippage(tokenIn, actualAmountIn, amountOut, usdIn, usdOut)` when `usdIn − usdOut > slippageEventUsd`. The event is informational only — it does not revert. Used by off-chain monitoring to flag swaps routed through hostile pools or stale-aggregator outputs.
 
-## Token Converters Destinations
+Default: **$500** absolute. Tunable via `setSlippageEventUsd` (ACM-restricted, rejects zero).
 
-* `RiskFund` already includes the integration with the `Shortfall` contract. The USDT received in the conversions will be [auctioned off in the Shortfall contract](shortfall-and-auctions.md).
-* `XVSVaultTreasury` accumulates the XVS received in the conversions. Those XVS will be sent to the `XVSVault` eventually via VIP, which will update also the APR in the `XVSVault`.
-* `PrimeLiquidityProvider` accumulates [the Prime funds](prime.md) and distributes them according to the speeds configured via VIP.
+The slippage check uses the same oracle snapshot as the cap, refreshed via `oracle.updateAssetPrice(tokenIn)` and `oracle.updateAssetPrice(BASE_ASSET)` immediately before the read.
 
-## `AbstractTokenConverter`
+## Functions
 
-`AbstractTokenConverter` contract provides required features to configure and convert desired assets. The `RiskFundConverter` and the `SingleTokenConverters` extend this abstract contract (that could also be extended by other contracts in the future because it provides these features agnostically).
+### `updateAssetsState(address comptroller, address asset)`
 
-### Configuration of conversions
+PSR-only. Records the balance delta against the `assetsReserves[asset]` watermark and emits `AssetsReceived(comptroller, asset, delta)` when non-zero. Restricted by the `PROTOCOL_SHARE_RESERVE` immutable. The reported amount is a balance delta, not an authenticated source-of-funds record — tokens transferred directly to the contract outside the PSR flow are merged into the next event under whichever comptroller PSR happens to be processing.
 
-There will be one configuration per pair `tokenAddressIn / tokenAddressOut`. Only authorized contracts (Governance) will be able to add or update these configurations. The configuration for a conversion includes:
+### `executeBuyback(tokenIn, amountIn, minAmountOut, deadline, router, routerCalldata, comptroller)`
 
-* `tokenAddressIn` and `tokenAddressOut`: address of the token accepted by the converter in the conversion, and the address of the token sent to the user/wallet from the converter in the conversion
-* `incentive`: percentage used to increase the amount finally sent to the user (see below).
-* `conversionAccess`:
-  * `NONE`: Conversion is disabled for the pair
-  * `ALL`: Conversion is enabled for private conversion and users
-  * `ONLY_FOR_CONVERTERS`: Conversion is enabled only for private conversion (see more about private conversions below)
-  * `ONLY_FOR_USERS`: Conversion is enabled only for users
+ACM-restricted. Performs the swap via the supplied router (must be on the allowlist) and forwards the output to `DESTINATION`.
 
-For example, in the `XVSVaultConverter` there would be a configuration entry with these values:
+Sequence:
+1. Validate `deadline`, `tokenIn != BASE_ASSET`, router allowlisted, `amountIn > 0` and within `balanceOf(this)`.
+2. Snapshot `tokenIn` and `BASE_ASSET` balances on this contract.
+3. `forceApprove(router, amountIn)`, `router.functionCall(routerCalldata)`, `forceApprove(router, 0)`.
+4. Compute `actualAmountIn = tokenInBefore - tokenInAfter` and `amountOut = baseAssetAfter - baseAssetBefore`.
+5. Revert with `SlippageExceeded` if `amountOut < minAmountOut`.
+6. Transfer `amountOut` of `BASE_ASSET` to `DESTINATION` and resync both watermarks.
+7. Push fresh oracle prices, enforce the daily USD cap, emit `AbnormalSlippage` if applicable.
+8. Emit `BuybackExecuted(tokenIn, actualAmountIn, amountOut, router, comptroller)`.
 
-* `tokenAdressIn`: XVS token address (the converter accepts XVS)
-* `tokenAddressOut`: BTCB token address (the converter offers BTCB)
-* `incentive`: 0 (initially there won't be any incentive)
-* `conversionAccess`: ALL (everyone can perform conversions of XVS for BTCB in the `XVSVaultConverter`)
+The reported `amountIn` in `BuybackExecuted` is the actual router consumption, not the caller-supplied parameter — the event reflects what the router actually pulled.
 
-### Incentives
+### `forwardBaseAsset(address comptroller, uint256 amount)`
 
-To incentivize conversions we allow an increase in the final amount sent out from the converter contract.
+ACM-restricted. Forwards a caller-specified `amount` of accumulated `BASE_ASSET` to `DESTINATION` without a swap. The `amount` parameter is exposed so the operator can partition multi-pool `BASE_ASSET` inflows and attribute each portion via a separate `BaseAssetForwarded(comptroller, amount)` event. No-op when `amount == 0`. Resyncs the `BASE_ASSET` watermark after the transfer.
 
-**Example:**
+### `setAllowedRouter(address router, bool allowed)`
 
-* Given:
-  * Conversion rate provided by the oracle: 1 XVS = 5 USDC
-  * Incentive: 10%
-* If the user sends 1 XVS to the contract, they will receive 5.5 USDC (5 USDC base + 0.5 USDC applying the incentive).
+Governance-only. Adds or removes a DEX router from the on-chain allowlist. Emits `RouterAllowlisted(router, allowed)`.
 
-The incentive is applied on the base out amount calculated using the conversion rate, which is based on oracle prices. Incentives will be defined using normal VIP’s, following the Governance mechanism. Each pair of tokens can have a different incentive value. Bigger incentives can be set for converting tokens with lower liquidity, for example.
+### `setDailyCapUsd(uint256 newCap)`
 
-### Interaction with the Token Converter contracts
+ACM-restricted. Updates the rolling 24h USD cap (1e18-scaled). Reverts with `ZeroValueNotAllowed` if `newCap` is zero — the cap is not a kill switch; revoke ACM permissions to fully disable buybacks. Emits `DailyCapUpdated(oldCap, newCap)`.
 
-#### Get Amount Out
+### `setSlippageEventUsd(uint256 newThreshold)`
 
-View function `getAmountOut(uint256 amountInMantissa, address tokenAddressIn, address tokenAddressOut) returns (uint256 amountConvertedMantissa, uint256 amountOutMantissa)`, to request the amount of `tokenAddressOut` tokens that a sender would receive providing `amountInMantissa` tokens of `tokenAddressIn`.
+ACM-restricted. Updates the absolute USD slippage-event threshold (1e18-scaled). Reverts with `ZeroValueNotAllowed` if `newThreshold` is zero. Emits `SlippageEventUsdUpdated(oldThreshold, newThreshold)`.
 
-Where:
+### `sweepToken(address token, address to, uint256 amount)`
 
-* Params:
-  * `amountInMantissa`: the amount of `tokenAddressIn` tokens the sender would provide to perform the conversion. It is defined in terms of the mantissa of `tokenAddressIn`
-  * `tokenAddressIn`: the address of the token provided by the sender to get tokens of `tokenAddressOut`
-  * `tokenAddressOut`: the address of the token to get after the conversion
-* Returned values:
-  * `amountConvertedMantissa`: the amount of `tokenAddressIn` that would ultimately be transferred from the sender to the contract. This will be the lesser of the converter's liquidity (available with `balanceOf(address token)`) or `amountConvertedMantissa`.
-  * `amountOutMantissa`: the amount of `tokenAddressOut` tokens that the sender would receive in that transaction if they provide `amountInMantissa` tokens of `tokenAddressIn`. It is defined in terms of the mantissa of `tokenAddressOut`.
+Governance-only. Emergency token recovery. Also the canonical recovery path for tokens transferred directly to the contract outside the PSR flow, since on-chain accounting cannot distinguish donations from authenticated inflows. Resyncs `assetsReserves[token]` to the post-transfer balance. Emits `SweepToken(token, to, amount)`.
 
-Internally, this function uses:
-
-* the oracle to calculate the conversion rate to apply
-* the configuration for the pair `tokenAddressIn / tokenAddressOut`, to apply the right discount
-
-There must be a `ConversionConfig` entry for the pair `tokenAddressIn / tokenAddressOut`. Otherwise, the transaction is reverted.
-
-The convert functions use this view to calculate how many tokens must be transferred.
-
-**Example:**
-
-* Given:
-  * There is a configuration entry for the pair `tokenAddressIn / tokenAddressOut`: XVS/USDC. That means, the contract accepts conversions where the sender sends XVS to the contract, and the contract sends USDC to the sender. This would be a possible configuration in the `XVSVaultConverter` contract.
-  * Current liquidity: 100 USDC
-  * Current conversion rate, given by the oracle: 1 XVS = 5 USDC
-  * Configured discount: 1%
-* Invocation 1: `getAmountOut(15 * 10^18, address(XVS), address(USDC))`
-  * It means: how many USDC would the sender receive if they would provide **15 XVS** to the contract
-  * Response:
-    * `amountConvertedMantissa`: $ 15 \* 10^{18} $
-      There is enough liquidity of USDC to use 100% of the provided amount
-    * `amountOutMantissa`: $(15 \* (5/1) \* 10^{18}) \* 1.01 = 75.75 \* 10^{18}$.
-      That is **75.75 USDC**.
-
-      Where:
-
-      * 15 is the input amount
-      * 1,01 is the application of the discount
-      * 5/1 is the conversion rate given by the oracles
-* Invocation 2: `getAmountOut(25 * 10^18, address(XVS), address(USDC))`
-  * How many USDC would the sender receive if they provided **25 XVS** to the contract?
-  * In this case, there isn’t enough liquidity to convert 100% of the input amount (25 XVS would be 126.25 USDC), so 100% of the liquidity will be the `amountOutMantissa`, and this function (`getAmountOut`) calculates the input amount needed to “cover” that amount (taking into account the discount).
-  * Response:
-    * `amountConvertedMantissa`: $((100 / 1,01) / 5) \* 10^{18}$ = 19.80$
-      Where:
-      * 100 is the liquidity of USDC in the contract
-      * 1,01 is the application of the discount
-      * 5 is the conversion rate given by the oracles
-      * 19.80 is the amount of XVS needed to review the available liquidity
-    * `amountOutMantissa`: 100 \* 10^18. That is **100 USDC**
-
-#### Get Amount In
-
-View function `getAmountIn(uint256 amountOutMantissa, address tokenAddressIn, address tokenAddressOut) returns (uint256 amountInMantissa, uint256 amountConvertedMantissa)`, to request the amount of `tokenAddressIn` tokens that a sender should send to the contract, to receive `amountOutMantissa` tokens of `tokenAddressOut`.
-
-Where:
-
-* Parameters:
-  * `amountOutMantissa`: the amount of `tokenAddressOut` tokens the sender would like to receive in the conversion. It is defined in terms of the mantissa of `tokenAddressOut`
-  * `tokenAddressIn`: the address of the token provided by the sender to get tokens of `tokenAddressOut`
-  * `tokenAddressOut`: the address of the token to get after the conversion
-* Returned values:
-  * `amountInMantissa`: the amount of `tokenAddressIn` tokens that the sender has to send to the contract to receive `amountConvertedMantissa` tokens of `tokenAddressOut`
-  * `amountConvertedMantissa`: the amount of `tokenAddressOut` tokens that would ultimately be transferred from the contract to the sender if the user sends `amountInMantissa` tokens of `tokenAddressIn` to the contract. This will be the lesser of the available liquidity or the requested amount to receive.
-
-**Example:**
-
-* Invocation 1: `getAmountIn(40 * 10^18, address(XVS), address(USDC))`
-  * Response:
-    * `amountInMantissa`: $8 \* 10^{18}$ (XVS)
-    * `amountConvertedMantissa`: $40 \* 10^{18}$ (USDC), equal to the `amountOutMantissa` param
-* Invocation 2: `getAmountIn(120 * 10^18, address(XVS), address(USDC))`
-  * Response:
-    * `amountInMantissa`: $20 \* 10^{18}$ (XVS)
-    * `amountConvertedMantissa`: $100 \* 10^{18}$ (USDC), different from the `amountOutMantissa` param because there is not enough liquidity
-
-#### Conversions Fixing the Amount In
-
-Function `convertExactTokens(uint256 amountInMantissa, uint256 amountOutMinMantissa, address tokenAddressIn, address tokenAddressOut, address to)`.
-
-Where:
-
-* `amountInMantissa`: the number of tokens (`tokensAddressIn`) the sender wants to convert
-  * It’s defined in the mantissa of the `tokenAddressIn`
-    **Example:**
-    -`amountOutMinMantissa`: the minimum amount of `tokenAddressOut` tokens the sender is willing to receive in the conversion. It’s defined in the mantissa of the `tokenAddressOut`.
-  * If the amount that would finally be transferred to `to` is less than `amountOutMinMantissa`, the transaction is reverted
-* `tokenAddressIn`: the address of the token provided by the sender to perform the conversion. For instance, in the `XVSVaultConverter` and in the `RiskFundConverter` there will be configurations to accept XVS and USDT token addresses respectively
-* `tokenAddressOut`: the address of the token the sender wants to receive with the execution of the conversion
-* `to`: the address where the tokens of `tokenAddressOut` should be sent
-
-The received tokens (`amountInMantissa`) are transferred, in the same transaction, to the `destination` address. The `destination` address is configured as a storage attribute in the `AbstractTokenConverter` contract.
-
-If the received amount is less than `amountInMantissa` or the transferred out amount is less than the expected one, the transaction is reverted because we don’t support tokens with fees on transferring in this function.
-
-There must be a `ConversionConfig` entry for the pair `tokenAddressIn / tokenAddressOut`. Otherwise, the transaction will be reverted.
-
-**What if there is not enough liquidity?**
-
-* The contract will send to `to` 100% of the available liquidity, and it will only transfer from the sender the needed amount to cover the conversion (that will be less than the `amountInMantissa`)
-  It must satisfy the constraint of sending more than `amountOutMinMantissa`
-* See the second invocation example in the section [Get amount out](https://www.notion.so/TD-26-Token-converters-59622320ee6945e2a8e0e6606af2f8b7?pvs=21)
-
-#### Conversions Fixing the Amount Out
-
-Function `convertForExactTokens(uint256 amountInMaxMantissa, uint256 amountOutMantissa, address tokenAddressIn, address tokenAddressOut, address to)`.
-
-Where:
-
-* `amountInMaxMantissa`: the maximum amount of `tokenAddressIn` tokens that the sender wants to convert. If the needed amount is greater than this param, the transaction is reverted
-* `amountOutMantissa`: the exact amount of `tokenAddressOut` tokens that the sender wants to receive in the conversion
-* `tokenAddressIn`: the address of the token that the sender is providing to complete the conversion
-* `tokenAddressOut`: the address of the token that the sender wants to receive in the conversion
-* `to`: the address where the tokens of `tokenAddressOut` should be sent
-
-The received tokens (`amountInMantissa`) are transferred, in the same transaction, to the `destination` address. The `destination` address is configured as a storage attribute in the `AbstractTokenConverter` contract.
-
-If the received or the transferred out amounts are less than the required amounts, the transaction is reverted, because we don’t support tokens with fees on transferring in this function.
-
-There must be a `ConversionConfig` entry for the pair `tokenAddressIn / tokenAddressOut`. Otherwise, the transaction will be reverted.
-
-This implementation of this function can use the `getAmountIn` function internally because the same liquidity check is needed. If the `amountConvertedMantissa` amount is less than the param `amountOutMantissa`, the transaction is reverted. This constraint is similar to checking that the liquidity of `tokenAddressOut` is less than `amountOutMantissa`.
-
-### Private Conversion
-
-Private Conversions aims to maximize the conversion of tokens received from the `ProtocolShareReserve` contract (to any converter) among existing converters in the same `ConverterNetwork` contract. This is done to preserve incentives and reduce the dependency on users to perform conversions. Converters will autonomously carry out Private Conversions whenever funds are received from `ProtocolShareReserve`. No incentives will be provided during this process.
-
-The following diagram illustrates the flow of private conversion.
-
-<figure><img src="../../.gitbook/assets/private_conversions_sequence.svg" alt="Sequence diagram for private conversions"><figcaption>Sequence diagram for private conversions</figcaption></figure>
-
-## RiskFundConverter
-
-The `RiskFundConverter` contract extends the `AbtractTokenConverter` contract. It maintains a distribution of assets per comptroller and assets. `ProtocolShareReserve` sends the RiskFund's share of income to this contract which will convert the assets and send them to the `RiskFund` contract.
-
-## SingleTokenConverter
-
-The `SingleTokenConverter` contract extends the `AbtractTokenConverter` contract. `ProtocolShareReserve` distributes the income share among various `SingleTokenConverter` contracts, such as the `USDTPrimeConverter` contract. This particular contract facilitates the conversion of assets to its base asset and subsequently sends them to their designated destination address.
-
-Users can convert tokens through these contracts(`RiskFundConverter` and `SingleTokenConverters`) and receive the converted tokens along with an incentive. A conversion config for the `tokenAddressIn / tokenAddressOut` pair is necessary for a successful conversion; otherwise, the conversion will revert.
-
-## XVSVaultTreasury
-
-One instance of `XVSVaultTreasury` is configured as the destination address in the `XVSVaultConverter`. This treasury is used to fund the `XVSVault`.
-
-## ConverterNetwork
-
-This contract contains the list of all the converters and will provide valid converters which can perform conversions. Converters will interact with this contract to get the list of other converters open for Private Conversions.
+## Events
+
+| Event | When emitted |
+|---|---|
+| `AssetsReceived(comptroller, asset, amount)` | PSR delivers tokens (non-zero delta) |
+| `BuybackExecuted(tokenIn, amountIn, amountOut, router, comptroller)` | Successful DEX swap; `amountIn` is the on-chain router consumption |
+| `BaseAssetForwarded(comptroller, amount)` | `BASE_ASSET` forwarded to `DESTINATION` without swap |
+| `RouterAllowlisted(router, allowed)` | Router added or removed from allowlist |
+| `SweepToken(token, to, amount)` | Emergency token sweep |
+| `AbnormalSlippage(tokenIn, actualAmountIn, amountOut, usdIn, usdOut)` | Swap returned less USD value than input by more than `slippageEventUsd` |
+| `DailyCapUpdated(oldCap, newCap)` | `setDailyCapUsd` succeeded |
+| `SlippageEventUsdUpdated(oldThreshold, newThreshold)` | `setSlippageEventUsd` succeeded |
+
+## Errors
+
+| Error | Cause |
+|---|---|
+| `UnauthorizedCaller(caller)` | `updateAssetsState` called by anyone other than `PROTOCOL_SHARE_RESERVE` |
+| `RouterNotAllowed(router)` | `executeBuyback` with a router not on the allowlist |
+| `InvalidTokenIn(tokenIn)` | `executeBuyback` with `tokenIn == BASE_ASSET` |
+| `InsufficientBalance(token, requested, available)` | `executeBuyback` or `forwardBaseAsset` requested more than the contract holds |
+| `SlippageExceeded(expected, actual)` | Swap output fell below `minAmountOut` |
+| `DeadlineExpired(deadline, blockTimestamp)` | `executeBuyback` after the supplied deadline |
+| `DailyCapExceeded(attempted, cap)` | `executeBuyback` would push cumulative USD usage past `dailyCapUsd` |
+| `ZeroAddressNotAllowed` | Constructor / `setAllowedRouter` / `sweepToken` with zero address |
+| `ZeroValueNotAllowed` | Setters or `sweepToken` invoked with zero |
+
+## Destinations
+
+The `(DESTINATION, BASE_ASSET)` pair is fixed per instance. Common destinations across deployments:
+
+* **`VTreasury`** — accumulates protocol-revenue tokens (U, BTCB, ETH, USDT, USDC, XVS) bought back from non-Prime, non-RiskFund income.
+* **`PrimeLiquidityProvider`** — accumulates Prime rewards in USDT and U; later distributed to Prime users according to per-token speeds configured via VIP. See [Prime tokens](prime.md).
+* **`RiskFundV2`** — accumulates USDT used by [Shortfall auctions](shortfall-and-auctions.md). Per-pool accounting was removed alongside the migration; `RiskFundV2` now draws against its raw balance.
+* **`XVSVaultTreasury`** — accumulates XVS that funds `XVSVault` rewards via VIP.
+
+See [deployed contracts](../../deployed-contracts/token-converters.md) for per-chain proxy addresses and their `(base asset, destination)` mapping.
+
+## Operator Notes
+
+* Conversions run on a defined schedule rather than on every inflow. The cron decides when to call `executeBuyback`; the contract has no internal trigger.
+* The oracle is consulted **only** for the cap and slippage signal — not for swap pricing. Swap economics are determined by the off-chain-built router calldata.
+* The daily cap bounds blast radius if the operator key is compromised. It is not intended to throttle normal operation.
+* Routers must be added to the allowlist by governance before the cron can route through them. Removing a router via `setAllowedRouter(router, false)` immediately blocks future swaps through it.
+* Donations to the contract (tokens sent directly, outside the PSR flow) are not distinguished from authenticated PSR inflows on-chain. Use `sweepToken` to recover them if needed.

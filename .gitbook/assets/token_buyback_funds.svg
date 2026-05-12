@@ -1,0 +1,199 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 880" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6F7C95"/>
+    </marker>
+    <style>
+      .bg { fill: #0F1A2A; }
+      .box { fill: #16243B; stroke: #2E5BBA; stroke-width: 1.5; rx: 6; ry: 6; }
+      .box-active { fill: #2E5BBA; stroke: #2E5BBA; stroke-width: 1.5; rx: 6; ry: 6; }
+      .box-psr { fill: #2E5BBA; stroke: #2E5BBA; stroke-width: 1.5; rx: 6; ry: 6; }
+      .label { fill: #FFFFFF; font-size: 14px; font-weight: 500; }
+      .label-sm { fill: #A0B0C5; font-size: 11px; }
+      .edge-label { fill: #C8D3E5; font-size: 12px; font-weight: 600; }
+      .pct { fill: #FFFFFF; font-size: 13px; font-weight: 700; }
+      .edge { fill: none; stroke: #6F7C95; stroke-width: 1.2; }
+      .section { fill: #8AA3CC; font-size: 12px; font-weight: 700; letter-spacing: 1px; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="2000" height="880"/>
+
+  <!-- Section labels -->
+  <text class="section" x="160" y="30">SOURCES (PSR INFLOWS)</text>
+  <text class="section" x="600" y="30">DISTRIBUTOR</text>
+  <text class="section" x="970" y="30">TOKENBUYBACK INSTANCES</text>
+  <text class="section" x="1450" y="30">DESTINATIONS</text>
+
+  <!-- Markets (left) -->
+  <g>
+    <rect class="box" x="80" y="60" width="220" height="50"/>
+    <text class="label" x="190" y="90" text-anchor="middle">BTC market</text>
+
+    <rect class="box" x="80" y="190" width="220" height="50"/>
+    <text class="label" x="190" y="220" text-anchor="middle">ETH market</text>
+
+    <rect class="box" x="80" y="320" width="220" height="50"/>
+    <text class="label" x="190" y="350" text-anchor="middle">USDC market</text>
+
+    <rect class="box" x="80" y="450" width="220" height="50"/>
+    <text class="label" x="190" y="480" text-anchor="middle">USDT market</text>
+
+    <rect class="box" x="80" y="580" width="220" height="50"/>
+    <text class="label" x="190" y="605" text-anchor="middle">Rest of core</text>
+    <text class="label" x="190" y="622" text-anchor="middle">pool markets</text>
+
+    <rect class="box" x="80" y="710" width="220" height="50"/>
+    <text class="label" x="190" y="740" text-anchor="middle">Rest of IL markets</text>
+  </g>
+
+  <!-- Edges market → PSR -->
+  <g>
+    <path class="edge" d="M300,85 C400,85 400,400 480,400" marker-end="url(#arrow)"/>
+    <path class="edge" d="M300,215 C400,215 400,400 480,400" marker-end="url(#arrow)"/>
+    <path class="edge" d="M300,345 C400,345 400,400 480,400" marker-end="url(#arrow)"/>
+    <path class="edge" d="M300,475 C400,475 400,400 480,400" marker-end="url(#arrow)"/>
+    <path class="edge" d="M300,605 C400,605 400,400 480,400" marker-end="url(#arrow)"/>
+    <path class="edge" d="M300,735 C400,735 400,400 480,400" marker-end="url(#arrow)"/>
+    <text class="edge-label" x="340" y="78">100% reserves</text>
+    <text class="edge-label" x="340" y="208">100% reserves</text>
+    <text class="edge-label" x="340" y="338">100% reserves</text>
+    <text class="edge-label" x="340" y="468">100% reserves</text>
+    <text class="edge-label" x="340" y="598">100% reserves</text>
+    <text class="edge-label" x="340" y="728">100% reserves</text>
+  </g>
+
+  <!-- PSR -->
+  <rect class="box-psr" x="480" y="375" width="240" height="50"/>
+  <text class="label" x="600" y="400" text-anchor="middle">Protocol Share Reserve</text>
+  <text class="label-sm" x="600" y="416" text-anchor="middle">(PSR)</text>
+
+  <!-- TokenBuyback instances (right of PSR) -->
+  <g>
+    <rect class="box" x="900" y="60" width="240" height="50"/>
+    <text class="label" x="1020" y="83" text-anchor="middle">UTreasuryBuyback</text>
+    <text class="label-sm" x="1020" y="100" text-anchor="middle">base: U</text>
+
+    <rect class="box" x="900" y="135" width="240" height="50"/>
+    <text class="label" x="1020" y="158" text-anchor="middle">BTCBTreasuryBuyback</text>
+    <text class="label-sm" x="1020" y="175" text-anchor="middle">base: BTCB</text>
+
+    <rect class="box" x="900" y="210" width="240" height="50"/>
+    <text class="label" x="1020" y="233" text-anchor="middle">ETHTreasuryBuyback</text>
+    <text class="label-sm" x="1020" y="250" text-anchor="middle">base: ETH</text>
+
+    <rect class="box" x="900" y="285" width="240" height="50"/>
+    <text class="label" x="1020" y="308" text-anchor="middle">USDTTreasuryBuyback</text>
+    <text class="label-sm" x="1020" y="325" text-anchor="middle">base: USDT</text>
+
+    <rect class="box" x="900" y="360" width="240" height="50"/>
+    <text class="label" x="1020" y="383" text-anchor="middle">USDCTreasuryBuyback</text>
+    <text class="label-sm" x="1020" y="400" text-anchor="middle">base: USDC</text>
+
+    <rect class="box" x="900" y="435" width="240" height="50"/>
+    <text class="label" x="1020" y="458" text-anchor="middle">XVSTreasuryBuyback</text>
+    <text class="label-sm" x="1020" y="475" text-anchor="middle">base: XVS</text>
+
+    <rect class="box" x="900" y="510" width="240" height="50"/>
+    <text class="label" x="1020" y="533" text-anchor="middle">USDTPrimeBuyback</text>
+    <text class="label-sm" x="1020" y="550" text-anchor="middle">base: USDT</text>
+
+    <rect class="box" x="900" y="585" width="240" height="50"/>
+    <text class="label" x="1020" y="608" text-anchor="middle">UPrimeBuyback</text>
+    <text class="label-sm" x="1020" y="625" text-anchor="middle">base: U</text>
+
+    <rect class="box" x="900" y="660" width="240" height="50"/>
+    <text class="label" x="1020" y="683" text-anchor="middle">RiskFundBuyback</text>
+    <text class="label-sm" x="1020" y="700" text-anchor="middle">base: USDT</text>
+
+    <rect class="box" x="900" y="735" width="240" height="50"/>
+    <text class="label" x="1020" y="758" text-anchor="middle">XVSBuyback</text>
+    <text class="label-sm" x="1020" y="775" text-anchor="middle">base: XVS</text>
+  </g>
+
+  <!-- Edges PSR → Buybacks (with schema-0 percentages) -->
+  <g>
+    <path class="edge" d="M720,400 C820,400 820,85 900,85" marker-end="url(#arrow)"/>
+    <path class="edge" d="M720,400 C820,400 820,160 900,160" marker-end="url(#arrow)"/>
+    <path class="edge" d="M720,400 C820,400 820,235 900,235" marker-end="url(#arrow)"/>
+    <path class="edge" d="M720,400 C820,400 820,310 900,310" marker-end="url(#arrow)"/>
+    <path class="edge" d="M720,400 L900,385" marker-end="url(#arrow)"/>
+    <path class="edge" d="M720,400 L900,460" marker-end="url(#arrow)"/>
+    <path class="edge" d="M720,400 C820,400 820,535 900,535" marker-end="url(#arrow)"/>
+    <path class="edge" d="M720,400 C820,400 820,610 900,610" marker-end="url(#arrow)"/>
+    <path class="edge" d="M720,400 C820,400 820,685 900,685" marker-end="url(#arrow)"/>
+    <path class="edge" d="M720,400 C820,400 820,760 900,760" marker-end="url(#arrow)"/>
+
+    <text class="pct" x="760" y="80">12%</text>
+    <text class="pct" x="760" y="155">6%</text>
+    <text class="pct" x="760" y="230">6%</text>
+    <text class="pct" x="760" y="305">6%</text>
+    <text class="pct" x="760" y="380">6%</text>
+    <text class="pct" x="760" y="455">4%</text>
+    <text class="pct" x="760" y="530">10%</text>
+    <text class="pct" x="760" y="605">10%</text>
+    <text class="pct" x="760" y="680">20%</text>
+    <text class="pct" x="760" y="755">20%</text>
+  </g>
+
+  <!-- Destinations (right) -->
+  <g>
+    <rect class="box-active" x="1410" y="245" width="240" height="60"/>
+    <text class="label" x="1530" y="270" text-anchor="middle">VTreasury</text>
+    <text class="label-sm" x="1530" y="290" text-anchor="middle" fill="#D6E0F0">6 base assets accumulate</text>
+
+    <rect class="box-active" x="1410" y="535" width="240" height="60"/>
+    <text class="label" x="1530" y="560" text-anchor="middle">PrimeLiquidityProvider</text>
+    <text class="label-sm" x="1530" y="580" text-anchor="middle" fill="#D6E0F0">Prime rewards (USDT + U)</text>
+
+    <rect class="box-active" x="1410" y="660" width="240" height="50"/>
+    <text class="label" x="1530" y="690" text-anchor="middle">RiskFundV2</text>
+
+    <rect class="box-active" x="1410" y="735" width="240" height="50"/>
+    <text class="label" x="1530" y="765" text-anchor="middle">XVSVaultTreasury</text>
+  </g>
+
+  <!-- XVSVault (far right) -->
+  <rect class="box" x="1760" y="735" width="200" height="50"/>
+  <text class="label" x="1860" y="765" text-anchor="middle">XVSVault</text>
+
+  <!-- Edges Buybacks → Destinations -->
+  <g>
+    <!-- 6 TreasuryBuybacks → VTreasury -->
+    <path class="edge" d="M1140,85 C1280,85 1280,275 1410,275" marker-end="url(#arrow)"/>
+    <path class="edge" d="M1140,160 C1280,160 1280,275 1410,275" marker-end="url(#arrow)"/>
+    <path class="edge" d="M1140,235 C1280,235 1280,275 1410,275" marker-end="url(#arrow)"/>
+    <path class="edge" d="M1140,310 C1280,310 1280,275 1410,275" marker-end="url(#arrow)"/>
+    <path class="edge" d="M1140,385 C1280,385 1280,275 1410,275" marker-end="url(#arrow)"/>
+    <path class="edge" d="M1140,460 C1280,460 1280,275 1410,275" marker-end="url(#arrow)"/>
+
+    <!-- 2 Prime → PLP -->
+    <path class="edge" d="M1140,535 C1280,535 1280,565 1410,565" marker-end="url(#arrow)"/>
+    <path class="edge" d="M1140,610 C1280,610 1280,565 1410,565" marker-end="url(#arrow)"/>
+
+    <!-- RiskFundBuyback → RiskFundV2 -->
+    <path class="edge" d="M1140,685 L1410,685" marker-end="url(#arrow)"/>
+
+    <!-- XVSBuyback → XVSVaultTreasury -->
+    <path class="edge" d="M1140,760 L1410,760" marker-end="url(#arrow)"/>
+
+    <!-- XVSVaultTreasury → XVSVault -->
+    <path class="edge" d="M1650,760 L1760,760" marker-end="url(#arrow)"/>
+    <text class="edge-label" x="1670" y="755">via VIP</text>
+
+    <!-- base-asset labels on buyback→destination edges -->
+    <text class="edge-label" x="1240" y="80">U</text>
+    <text class="edge-label" x="1240" y="155">BTCB</text>
+    <text class="edge-label" x="1240" y="230">ETH</text>
+    <text class="edge-label" x="1240" y="305">USDT</text>
+    <text class="edge-label" x="1240" y="380">USDC</text>
+    <text class="edge-label" x="1240" y="455">XVS</text>
+    <text class="edge-label" x="1240" y="530">USDT</text>
+    <text class="edge-label" x="1240" y="605">U</text>
+    <text class="edge-label" x="1240" y="680">USDT</text>
+    <text class="edge-label" x="1240" y="755">XVS</text>
+  </g>
+
+  <!-- Caption -->
+  <text class="label-sm" x="80" y="850">Percentages shown are PSR schema 0 (interest reserves). Schema 1 (liquidation income) uses a different split — see VIP-618 for both. Buybacks run on a cron schedule; the cron submits off-chain-built DEX router calldata to executeBuyback.</text>
+</svg>

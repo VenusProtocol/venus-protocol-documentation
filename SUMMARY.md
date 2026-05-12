@@ -16,9 +16,8 @@
 * [Reward Distributor](whats-new/reward-distributor.md)
 * [Peg Stability Module](whats-new/psm.md)
 * [Automatic Income Allocation](whats-new/automatic-income-allocation.md)
-* [Token Converter](whats-new/token-converter.md)
+* [TokenBuyback Contract](whats-new/token-converter.md)
 * [Venus Prime](whats-new/prime-yield.md)
-* [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
 
 ## Governance
 
@@ -78,7 +77,7 @@
   * [FlashLoan](technical-reference/reference-technical-articles/flashloan-core-pool.md)
   * [Risk Stewards](technical-reference/reference-technical-articles/risk-stewards.md)
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
-  * [Token Converters](technical-reference/reference-technical-articles/token-converters.md)
+  * [TokenBuyback Contract](technical-reference/reference-technical-articles/token-converters.md)
   * [Two Kinks Interest Rate Curve](technical-reference/reference-technical-articles/two-kinks-interest-rate-curve.md)
   * [VenusERC4626 Vaults](technical-reference/reference-technical-articles/venus-erc-4626.md)
   * [XVS Bridge](technical-reference/reference-technical-articles/xvs-bridge.md)
@@ -185,11 +184,6 @@
   * [OmnichainExecutorOwner](technical-reference/reference-governance/omnichain-executor-owner.md) 
   * [RiskStewardReceiver](technical-reference/reference-governance/risk-steward-receiver.md) 
   * [MarketCapsRiskSteward](technical-reference/reference-governance/market-caps-risk-steward.md)
-* [Token Converter](technical-reference/reference-token-converter/README.md)
-  * [AbstractTokenConverter](technical-reference/reference-token-converter/AbstractTokenConverter.md)
-  * [RiskFundConverter](technical-reference/reference-token-converter/RiskFundConverter.md)
-  * [SingleTokenConverter](technical-reference/reference-token-converter/SingleTokenConverter.md)
-  * [ConverterNetwork](technical-reference/reference-token-converter/ConverterNetwork.md)
 * [XVS Bridge](technical-reference/reference-xvs-bridge/README.md)
   * [BaseXVSProxyOFT](technical-reference/reference-xvs-bridge/BaseXVSProxyOFT.md)
   * [XVSProxyOFTSrc](technical-reference/reference-xvs-bridge/XVSProxyOFTSrc.md)
