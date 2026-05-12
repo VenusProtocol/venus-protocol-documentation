@@ -2,7 +2,7 @@
 
 ## BNB Chain Mainnet
 
-Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the original community-driven Token Converters via [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56). The old converter proxies remain deployed for reference but are no longer operational — conversions are paused, balances drained, and ACM permissions revoked.
+Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the original community-driven Token Converters via [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56). The six timelock-owned legacy converters remain deployed for reference but are no longer operational — conversion is paused on each and balances have been drained into the corresponding new buyback. `WBNBBurnConverter` (Guardian-owned) is wound down via a separate multisig transaction; `ConverterNetwork` is unreferenced. Pre-existing ACM grants on the legacy converters are not explicitly revoked, but the paused state renders them inert.
 
 ### Active destinations
 

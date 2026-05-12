@@ -73,7 +73,7 @@
   * [FlashLoan](technical-reference/reference-technical-articles/flashloan-core-pool.md)
   * [Risk Stewards](technical-reference/reference-technical-articles/risk-stewards.md)
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
-  * [Token Converters](technical-reference/reference-technical-articles/token-converters.md)
+  * [Token Buyback](technical-reference/reference-technical-articles/token-converters.md)
   * [Two Kinks Interest Rate Curve](technical-reference/reference-technical-articles/two-kinks-interest-rate-curve.md)
   * [VenusERC4626 Vaults](technical-reference/reference-technical-articles/venus-erc-4626.md)
   * [XVS Bridge](technical-reference/reference-technical-articles/xvs-bridge.md)

@@ -52,9 +52,9 @@ usdConsumedInWindow = newUsage
 lastUpdate          = block.timestamp
 ```
 
-Where `WINDOW = 24 hours` and `usdIn = actualAmountIn * priceIn / 1e18`. Any rolling 24h interval's cumulative consumption is bounded by `dailyCapUsd`. Reverts with `DailyCapExceeded(attempted, cap)` past the cap.
+Where `WINDOW = 24 hours` and `usdIn = actualAmountIn * priceIn / 1e18`. The accumulator `usdConsumedInWindow` is bounded by `dailyCapUsd` at every moment, which caps sustainable throughput at `dailyCapUsd / 24h` plus a one-time burst of up to `dailyCapUsd` (so worst-case cumulative consumption over any rolling 24h interval is up to ~2 × `dailyCapUsd`). Reverts with `DailyCapExceeded(attempted, cap)` past the cap.
 
-Default: **$30,000 / 24h** at deploy. Tunable via `setDailyCapUsd` (ACM-restricted, rejects zero).
+Default: **$30,000** cap at deploy. Tunable via `setDailyCapUsd` (ACM-restricted, rejects zero).
 
 ## Abnormal Slippage Signal
 

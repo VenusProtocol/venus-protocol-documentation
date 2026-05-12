@@ -132,7 +132,29 @@ Governance-only. Emergency token recovery from the contract. Also the canonical 
 
 BSC mainnet migration executed via [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56) ([vips PR #700](https://github.com/VenusProtocol/vips/pull/700)).
 
-Old converter proxies remain deployed but are no longer operational — conversions are paused on them, balances drained, and ACM permissions revoked.
+**Pre-VIP** (deploy-script setup):
+
+- 10 new `TokenBuyback` proxies deployed, each initialized with its `(DESTINATION, BASE_ASSET, PROTOCOL_SHARE_RESERVE, RESILIENT_ORACLE)` immutables and `pendingOwner = TokenBuybackMigrationHelper`
+- New `RiskFundV2` implementation deployed (see *RiskFundV2 Changes* above)
+- `TokenBuybackMigrationHelper` one-shot contract deployed
+
+**VIP** (atomic, single transaction via `helper.execute()`):
+
+1. Grant `DEFAULT_ADMIN_ROLE` on ACM to the helper
+2. Transfer ownership of the 6 timelock-owned legacy converters to the helper
+3. `helper.execute()` accepts all 16 ownerships, drains the 6 converters into their replacement buybacks, allowlists 9 DEX routers on every buyback, grants the cron operator `executeBuyback` + `forwardBaseAsset` permissions, pauses the legacy converters, rewires PSR's `distributionTargets` to the new buybacks, transfers all 16 ownerships back to `NormalTimelock`, revokes its own transient ACM permissions, and renounces `DEFAULT_ADMIN_ROLE`
+4. `NormalTimelock` accepts ownership of all 16 contracts
+5. Upgrade `RiskFundV2` to the new implementation
+6. `Shortfall.pauseAuctions()` (defense in depth)
+
+**Post-VIP**:
+
+- The 6 timelock-owned legacy converters (`RiskFundConverter`, `USDTPrimeConverter`, `USDCPrimeConverter`, `BTCBPrimeConverter`, `ETHPrimeConverter`, `XVSVaultConverter`) remain deployed but are paused and empty
+- `WBNBBurnConverter` is Guardian-owned and was not handed to the helper; its sub-dollar residual is drained in a separate multisig transaction, and its PSR distribution row was already removed by the helper
+- `ConverterNetwork` is unreferenced — no contract changes were needed to it
+- All 10 new buybacks are owned by `NormalTimelock` and ready to receive PSR distributions
+- The finance-team cron operator can now call `executeBuyback` and `forwardBaseAsset` on each buyback via its ACM permissions
+- Pre-existing ACM grants on legacy converter functions are not explicitly revoked; conversions are paused, which renders those permissions inert
 
 ### Impact Summary
 
