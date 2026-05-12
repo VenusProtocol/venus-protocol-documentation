@@ -18,7 +18,6 @@
 * [Automatic Income Allocation](whats-new/automatic-income-allocation.md)
 * [TokenBuyback Contract](whats-new/token-converter.md)
 * [Venus Prime](whats-new/prime-yield.md)
-* [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
 
 ## Governance
 

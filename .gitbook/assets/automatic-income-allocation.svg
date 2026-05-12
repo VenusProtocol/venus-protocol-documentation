@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 950" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2260 1135" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif">
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#A83AFF"/>
@@ -6,76 +6,76 @@
     <style>
       .box        { fill: #2A2D3E; stroke: #4B5563; stroke-width: 1.5; }
       .box-prim   { fill: #2D2756; stroke: #A83AFF; stroke-width: 2; }
-      .lbl        { fill: #F3F4F6; font-size: 22px; font-weight: 500; text-anchor: middle; dominant-baseline: middle; }
-      .lbl-bold   { fill: #FFFFFF; font-size: 26px; font-weight: 600; text-anchor: middle; dominant-baseline: middle; }
-      .ann        { fill: #9CA3AF; font-size: 18px; text-anchor: middle; dominant-baseline: middle; }
-      .flow       { stroke: #A83AFF; stroke-width: 2.5; fill: none; }
+      .lbl        { fill: #F3F4F6; font-size: 26px; font-weight: 500; text-anchor: middle; dominant-baseline: middle; }
+      .lbl-bold   { fill: #FFFFFF; font-size: 32px; font-weight: 600; text-anchor: middle; dominant-baseline: middle; }
+      .ann        { fill: #9CA3AF; font-size: 22px; text-anchor: middle; dominant-baseline: middle; }
+      .flow       { stroke: #A83AFF; stroke-width: 3; fill: none; }
     </style>
   </defs>
 
   <!-- Row 1: Sources + PSR -->
-  <rect class="box"      x="80"   y="60"  width="260" height="100" rx="8"/>
-  <text class="lbl"      x="210"  y="110">Core pool</text>
+  <rect class="box"      x="100"  y="90"  width="300" height="120" rx="10"/>
+  <text class="lbl"      x="250"  y="150">Core pool</text>
 
-  <rect class="box-prim" x="780"  y="40"  width="440" height="140" rx="10"/>
-  <text class="lbl-bold" x="1000" y="110">Protocol Share Reserve</text>
+  <rect class="box-prim" x="860"  y="70"  width="540" height="160" rx="12"/>
+  <text class="lbl-bold" x="1130" y="150">Protocol Share Reserve</text>
 
-  <rect class="box"      x="1660" y="60"  width="260" height="100" rx="8"/>
-  <text class="lbl"      x="1790" y="110">Isolated pools</text>
+  <rect class="box"      x="1860" y="90"  width="300" height="120" rx="10"/>
+  <text class="lbl"      x="2010" y="150">Isolated pools</text>
 
   <!-- Core pool <-> PSR arrows -->
-  <path class="flow" d="M 340 95  L 770 95"  marker-end="url(#arrow)"/>
-  <text class="ann"  x="555" y="82">Interest reserves</text>
-  <path class="flow" d="M 770 130 L 340 130" marker-end="url(#arrow)"/>
-  <text class="ann"  x="555" y="148">Liquidations</text>
+  <path class="flow" d="M 400 130 L 850 130" marker-end="url(#arrow)"/>
+  <text class="ann"  x="625" y="115">Interest reserves</text>
+  <path class="flow" d="M 850 170 L 400 170" marker-end="url(#arrow)"/>
+  <text class="ann"  x="625" y="190">Liquidations</text>
 
   <!-- PSR <-> Isolated pools arrows -->
-  <path class="flow" d="M 1660 95  L 1230 95"  marker-end="url(#arrow)"/>
-  <text class="ann"  x="1445" y="82">Interest reserves</text>
-  <path class="flow" d="M 1230 130 L 1660 130" marker-end="url(#arrow)"/>
-  <text class="ann"  x="1445" y="148">Liquidations</text>
+  <path class="flow" d="M 1860 130 L 1410 130" marker-end="url(#arrow)"/>
+  <text class="ann"  x="1635" y="115">Interest reserves</text>
+  <path class="flow" d="M 1410 170 L 1860 170" marker-end="url(#arrow)"/>
+  <text class="ann"  x="1635" y="190">Liquidations</text>
 
-  <!-- Row 2: 4 buyback boxes (centers at x = 286, 762, 1238, 1714) -->
-  <rect class="box" x="96"   y="370" width="380" height="120" rx="8"/>
-  <text class="lbl" x="286"  y="412">XVS buyback</text>
-  <text class="lbl" x="286"  y="448">contract</text>
+  <!-- Row 2: 4 buyback boxes (centers at 320, 860, 1400, 1940) -->
+  <rect class="box" x="100"  y="440" width="440" height="150" rx="10"/>
+  <text class="lbl" x="320"  y="495">XVS buyback</text>
+  <text class="lbl" x="320"  y="535">contract</text>
 
-  <rect class="box" x="572"  y="370" width="380" height="120" rx="8"/>
-  <text class="lbl" x="762"  y="412">Prime buyback</text>
-  <text class="lbl" x="762"  y="448">contracts</text>
+  <rect class="box" x="640"  y="440" width="440" height="150" rx="10"/>
+  <text class="lbl" x="860"  y="495">Prime buyback</text>
+  <text class="lbl" x="860"  y="535">contracts</text>
 
-  <rect class="box" x="1048" y="370" width="380" height="120" rx="8"/>
-  <text class="lbl" x="1238" y="412">Treasury buyback</text>
-  <text class="lbl" x="1238" y="448">contracts</text>
+  <rect class="box" x="1180" y="440" width="440" height="150" rx="10"/>
+  <text class="lbl" x="1400" y="495">Treasury buyback</text>
+  <text class="lbl" x="1400" y="535">contracts</text>
 
-  <rect class="box" x="1524" y="370" width="380" height="120" rx="8"/>
-  <text class="lbl" x="1714" y="412">Risk fund buyback</text>
-  <text class="lbl" x="1714" y="448">contract</text>
+  <rect class="box" x="1720" y="440" width="440" height="150" rx="10"/>
+  <text class="lbl" x="1940" y="495">Risk fund buyback</text>
+  <text class="lbl" x="1940" y="535">contract</text>
 
   <!-- PSR -> buyback fan-out -->
-  <path class="flow" d="M 1000 180 L 286  370" marker-end="url(#arrow)"/>
-  <path class="flow" d="M 1000 180 L 762  370" marker-end="url(#arrow)"/>
-  <path class="flow" d="M 1000 180 L 1238 370" marker-end="url(#arrow)"/>
-  <path class="flow" d="M 1000 180 L 1714 370" marker-end="url(#arrow)"/>
+  <path class="flow" d="M 1130 230 L 320  440" marker-end="url(#arrow)"/>
+  <path class="flow" d="M 1130 230 L 860  440" marker-end="url(#arrow)"/>
+  <path class="flow" d="M 1130 230 L 1400 440" marker-end="url(#arrow)"/>
+  <path class="flow" d="M 1130 230 L 1940 440" marker-end="url(#arrow)"/>
 
-  <!-- Row 3: XVS Vault Treasury + Risk Fund V2 (with explicit boxes) -->
-  <rect class="box" x="96"   y="600" width="380" height="80" rx="8"/>
-  <text class="lbl" x="286"  y="640">XVS Vault Treasury</text>
+  <!-- Row 3: XVS Vault Treasury + Risk Fund V2 -->
+  <rect class="box" x="100"  y="730" width="440" height="100" rx="10"/>
+  <text class="lbl" x="320"  y="780">XVS Vault Treasury</text>
 
-  <rect class="box" x="1524" y="600" width="380" height="80" rx="8"/>
-  <text class="lbl" x="1714" y="640">Risk Fund V2</text>
+  <rect class="box" x="1720" y="730" width="440" height="100" rx="10"/>
+  <text class="lbl" x="1940" y="780">Risk Fund V2</text>
 
-  <path class="flow" d="M 286  490 L 286  600" marker-end="url(#arrow)"/>
-  <path class="flow" d="M 1714 490 L 1714 600" marker-end="url(#arrow)"/>
+  <path class="flow" d="M 320  590 L 320  730" marker-end="url(#arrow)"/>
+  <path class="flow" d="M 1940 590 L 1940 730" marker-end="url(#arrow)"/>
 
   <!-- Text-only destination annotations for Prime + Treasury -->
-  <path class="flow" d="M 762  490 L 762  520" marker-end="url(#arrow)"/>
-  <text class="ann" x="762"  y="540">PrimeLiquidityProvider</text>
-  <path class="flow" d="M 1238 490 L 1238 520" marker-end="url(#arrow)"/>
-  <text class="ann" x="1238" y="540">VTreasury</text>
+  <path class="flow" d="M 860  590 L 860  640" marker-end="url(#arrow)"/>
+  <text class="ann" x="860"  y="665">PrimeLiquidityProvider</text>
+  <path class="flow" d="M 1400 590 L 1400 640" marker-end="url(#arrow)"/>
+  <text class="ann" x="1400" y="665">VTreasury</text>
 
   <!-- Row 4: XVS Vault -->
-  <rect class="box" x="96"   y="770" width="380" height="80" rx="8"/>
-  <text class="lbl" x="286"  y="810">XVS Vault</text>
-  <path class="flow" d="M 286 680 L 286 770" marker-end="url(#arrow)"/>
+  <rect class="box" x="100"  y="950" width="440" height="100" rx="10"/>
+  <text class="lbl" x="320"  y="1000">XVS Vault</text>
+  <path class="flow" d="M 320 830 L 320 950" marker-end="url(#arrow)"/>
 </svg>
