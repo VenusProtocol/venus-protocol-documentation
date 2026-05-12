@@ -15,7 +15,7 @@
 * [Reward Distributor](whats-new/reward-distributor.md)
 * [Peg Stability Module](whats-new/psm.md)
 * [Automatic Income Allocation](whats-new/automatic-income-allocation.md)
-* [Token Converter](whats-new/token-converter.md)
+* [TokenBuyback Contract](whats-new/token-converter.md)
 * [Venus Prime](whats-new/prime-yield.md)
 * [Stable Rate Borrowing](whats-new/stable-rate-borrowing.md)
 
@@ -73,7 +73,7 @@
   * [FlashLoan](technical-reference/reference-technical-articles/flashloan-core-pool.md)
   * [Risk Stewards](technical-reference/reference-technical-articles/risk-stewards.md)
   * [Shortfall and auctions](technical-reference/reference-technical-articles/shortfall-and-auctions.md)
-  * [Token Buyback](technical-reference/reference-technical-articles/token-converters.md)
+  * [TokenBuyback Contract](technical-reference/reference-technical-articles/token-converters.md)
   * [Two Kinks Interest Rate Curve](technical-reference/reference-technical-articles/two-kinks-interest-rate-curve.md)
   * [VenusERC4626 Vaults](technical-reference/reference-technical-articles/venus-erc-4626.md)
   * [XVS Bridge](technical-reference/reference-technical-articles/xvs-bridge.md)
