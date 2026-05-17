@@ -4,8 +4,6 @@
 
 Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the original community-driven Token Converters via [VIP-620](https://app.venus.io/#/governance/proposal/620?chainId=56) and [VIP-621](https://app.venus.io/#/governance/proposal/621?chainId=56). The migration was originally proposed as [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56), which became unexecutable when BSC's Osaka hardfork enforced a hard per-tx gas cap of 2^24 = 16,777,216 (the single-call `helper.execute()` required ~17.5M gas). VIP-620 + VIP-621 split the work across two transactions and use a redeployed set of buyback proxies. The six timelock-owned legacy converters remain deployed for reference but are no longer operational — conversion is paused on each and balances have been drained into the corresponding new buyback. `WBNBBurnConverter` (Guardian-owned) is wound down via a separate multisig transaction; `ConverterNetwork` is unreferenced. Pre-existing ACM grants on the legacy converters are not explicitly revoked, but the paused state renders them inert.
 
-* XVSVaultTreasury: [`0x269ff7818DB317f60E386D2be0B259e1a324a40a`](https://bscscan.com/address/0x269ff7818DB317f60E386D2be0B259e1a324a40a)
-
 ### TokenBuyback (Phase 2 — active)
 
 | Instance | Base Asset | Destination | Proxy address |
