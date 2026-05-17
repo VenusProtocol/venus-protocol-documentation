@@ -1,7 +1,7 @@
 # TokenBuyback Contract
 
 {% hint style="info" %}
-See the [TokenBuyback overview](../../whats-new/token-converter.md) for migration context and the [deployed-contracts page](../../deployed-contracts/token-converters.md) for proxy addresses. Live on BNB Chain via [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56);
+See the [TokenBuyback overview](../../whats-new/token-converter.md) for migration context and the [deployed-contracts page](../../deployed-contracts/token-converters.md) for proxy addresses. Live on BNB Chain via [VIP-620](https://app.venus.io/#/governance/proposal/620?chainId=56) and [VIP-621](https://app.venus.io/#/governance/proposal/621?chainId=56);
 {% endhint %}
 
 ## Overview
