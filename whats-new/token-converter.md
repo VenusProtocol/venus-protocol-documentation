@@ -106,16 +106,16 @@ Governance-only. Emergency token recovery from the contract. Also the canonical 
 
 | Instance | Base Asset | Destination | Proxy address |
 |---|---|---|---|
-| `UTreasuryBuyback` | U | `VTreasury` | [`0xef7cb42a7EBD4b011905D20Fc8038a603c3f22E4`](https://bscscan.com/address/0xef7cb42a7EBD4b011905D20Fc8038a603c3f22E4) |
-| `BTCBTreasuryBuyback` | BTCB | `VTreasury` | [`0x69739FF52e90BC93dCaEd5a2431072b5082d326D`](https://bscscan.com/address/0x69739FF52e90BC93dCaEd5a2431072b5082d326D) |
-| `ETHTreasuryBuyback` | ETH | `VTreasury` | [`0x9e0543F9E09fb5b8a58F73d11967DC894dbD40a7`](https://bscscan.com/address/0x9e0543F9E09fb5b8a58F73d11967DC894dbD40a7) |
-| `USDTTreasuryBuyback` | USDT | `VTreasury` | [`0xBF858c95D778022b48E6Ad343D3d644017fb0ca7`](https://bscscan.com/address/0xBF858c95D778022b48E6Ad343D3d644017fb0ca7) |
-| `USDCTreasuryBuyback` | USDC | `VTreasury` | [`0xFB5FA544dBf39983198BDD01e2c26E3AB597e22A`](https://bscscan.com/address/0xFB5FA544dBf39983198BDD01e2c26E3AB597e22A) |
-| `XVSTreasuryBuyback` | XVS | `VTreasury` | [`0x01D0f07D389692D386EB8D09Da3bbCa5C83be551`](https://bscscan.com/address/0x01D0f07D389692D386EB8D09Da3bbCa5C83be551) |
-| `USDTPrimeBuyback` | USDT | `PrimeLiquidityProvider` | [`0x0191Bb3CD28A96691F5EC5066ad42A0373ae11C6`](https://bscscan.com/address/0x0191Bb3CD28A96691F5EC5066ad42A0373ae11C6) |
-| `UPrimeBuyback` | U | `PrimeLiquidityProvider` | [`0xFd50bd4107705929df73Ac683BD505232BA9E9dB`](https://bscscan.com/address/0xFd50bd4107705929df73Ac683BD505232BA9E9dB) |
-| `RiskFundBuyback` | USDT | `RiskFundV2` | [`0xfffB20c23650B27126815994f3F07eF6B46aea60`](https://bscscan.com/address/0xfffB20c23650B27126815994f3F07eF6B46aea60) |
-| `XVSBuyback` | XVS | `XVSVaultTreasury` | [`0xBaAc819aE93b29fA6512a095CA00255a4F05b027`](https://bscscan.com/address/0xBaAc819aE93b29fA6512a095CA00255a4F05b027) |
+| `UTreasuryBuyback` | U | `VTreasury` | [`0xec63411423D03327De19135446dDdA3055D2feA8`](https://bscscan.com/address/0xec63411423D03327De19135446dDdA3055D2feA8) |
+| `BTCBTreasuryBuyback` | BTCB | `VTreasury` | [`0x1F306a0d929a7098a0A0b12248Ba97600AB79026`](https://bscscan.com/address/0x1F306a0d929a7098a0A0b12248Ba97600AB79026) |
+| `ETHTreasuryBuyback` | ETH | `VTreasury` | [`0x41954F0bf26959dF2e1B8302DEBf736B5b154B64`](https://bscscan.com/address/0x41954F0bf26959dF2e1B8302DEBf736B5b154B64) |
+| `USDTTreasuryBuyback` | USDT | `VTreasury` | [`0xB3dDf13E8B6b8dE10F5826087C202b80F1D1b490`](https://bscscan.com/address/0xB3dDf13E8B6b8dE10F5826087C202b80F1D1b490) |
+| `USDCTreasuryBuyback` | USDC | `VTreasury` | [`0xd7aC40f9bd9A1beb8E2d121b4446CF90417cf169`](https://bscscan.com/address/0xd7aC40f9bd9A1beb8E2d121b4446CF90417cf169) |
+| `XVSTreasuryBuyback` | XVS | `VTreasury` | [`0x6D2d239c16453062cF145A7a5128A6a60710d236`](https://bscscan.com/address/0x6D2d239c16453062cF145A7a5128A6a60710d236) |
+| `USDTPrimeBuyback` | USDT | `PrimeLiquidityProvider` | [`0xD721932C7CA41Eb5305867287010587a266346a8`](https://bscscan.com/address/0xD721932C7CA41Eb5305867287010587a266346a8) |
+| `UPrimeBuyback` | U | `PrimeLiquidityProvider` | [`0xBC9fFBfb799B2d189669D3816E2B7273c69041bd`](https://bscscan.com/address/0xBC9fFBfb799B2d189669D3816E2B7273c69041bd) |
+| `RiskFundBuyback` | USDT | `RiskFundV2` | [`0x0c71EFabD00329E839745ef23aB946d3ed24A805`](https://bscscan.com/address/0x0c71EFabD00329E839745ef23aB946d3ed24A805) |
+| `XVSBuyback` | XVS | `XVSVaultTreasury` | [`0x637E6246BBb0F9aBae9d764F5e1bB6347f028C12`](https://bscscan.com/address/0x637E6246BBb0F9aBae9d764F5e1bB6347f028C12) |
 
 `WBNBBurnConverter` and `ConverterNetwork` are retired. The 6 `TreasuryBuyback` instances are new — treasury previously accepted arbitrary tokens without conversion.
 
@@ -130,30 +130,37 @@ Governance-only. Emergency token recovery from the contract. Also the canonical 
 
 ### Migration
 
-BSC mainnet migration executed via [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56) ([vips PR #700](https://github.com/VenusProtocol/vips/pull/700)).
+BSC mainnet migration executed across two governance proposals — [VIP-620](https://app.venus.io/#/governance/proposal/620?chainId=56) and [VIP-621](https://app.venus.io/#/governance/proposal/621?chainId=56) ([vips PR #708](https://github.com/VenusProtocol/vips/pull/708)). The work was originally proposed as a single transaction in [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56), which became unexecutable when BSC's Osaka hardfork enforced a hard per-tx gas cap of 2^24 = 16,777,216: the single-call `helper.execute()` required ~17.5M gas, driven primarily by the converter drain (6 converters × 47 core-pool tokens) and the router allowlist (10 buybacks × 9 routers). Splitting the drain + router allowlist into a separate `execute2()` entrypoint drops both halves comfortably under the cap.
 
 **Pre-VIP** (deploy-script setup):
 
-- 10 new `TokenBuyback` proxies deployed, each initialized with its `(DESTINATION, BASE_ASSET, PROTOCOL_SHARE_RESERVE, RESILIENT_ORACLE)` immutables and `pendingOwner = TokenBuybackMigrationHelper`
+- 10 new `TokenBuyback` proxies redeployed (the proxies originally deployed for VIP-618 are abandoned), each initialized with its `(DESTINATION, BASE_ASSET, PROTOCOL_SHARE_RESERVE, RESILIENT_ORACLE)` immutables and `pendingOwner = TokenBuybackMigrationHelper`
 - New `RiskFundV2` implementation deployed (see *RiskFundV2 Changes* above)
-- `TokenBuybackMigrationHelper` one-shot contract deployed
+- `TokenBuybackMigrationHelper` redeployed with three one-shot entrypoints — `execute1()`, `executeSwap()` and `execute2()` — each gated to `NormalTimelock`
 
-**VIP** (atomic, single transaction via `helper.execute()`):
+**VIP-620 (Part 1)** — non-drain, non-allowlist phase plus the May 2026 Prime Rewards Allocation:
 
-1. Grant `DEFAULT_ADMIN_ROLE` on ACM to the helper
+1. Grant `DEFAULT_ADMIN_ROLE` on ACM to the helper (renounced inside `execute1()` so the helper retains no residual ACM privilege between the two VIPs)
 2. Transfer ownership of the 6 timelock-owned legacy converters to the helper
-3. `helper.execute()` accepts all 16 ownerships, drains the 6 converters into their replacement buybacks, allowlists 9 DEX routers on every buyback, grants the cron operator `executeBuyback` + `forwardBaseAsset` permissions, pauses the legacy converters, rewires PSR's `distributionTargets` to the new buybacks, transfers all 16 ownerships back to `NormalTimelock`, revokes its own transient ACM permissions, and renounces `DEFAULT_ADMIN_ROLE`
-4. `NormalTimelock` accepts ownership of all 16 contracts
-5. Upgrade `RiskFundV2` to the new implementation
-6. `Shortfall.pauseAuctions()` (defense in depth)
+3. `helper.execute1()` accepts all 16 ownerships, pauses every timelock-owned converter and `Shortfall` auctions, repoints PSR's `distributionTargets` to the new buybacks (18 rows added, 12 stale rows zeroed, in a sequence that respects PSR's `maxLoopsLimit` and the per-schema percentage invariant at every checkpoint), grants the cron operator persistent `executeBuyback` + `forwardBaseAsset` ACM permissions on every buyback, and renounces `DEFAULT_ADMIN_ROLE`. The helper retains ownership of all 16 contracts across the gap between the two VIPs but holds no ACM privileges.
+4. May 2026 Prime Rewards Allocation, driven directly from `NormalTimelock` (the helper only wraps the swap leg): `Prime.addMarket(coreComptroller, vU, ...)`, `PrimeLiquidityProvider.initializeTokens([U])`, `PrimeLiquidityProvider.setMaxTokensDistributionSpeed([U], [1e18])`, `PrimeLiquidityProvider.sweepToken(USDC, helper, 10_000e18)`, `helper.executeSwap()` (single soft-failing USDC → USDT → U multihop on PancakeSwap V3 with a 1% slippage floor; the deep USDT/U pool is required because the direct USDC/U pool is too thin), `PrimeLiquidityProvider.setTokensDistributionSpeed([USDT, U], [...])`.
+5. Upgrade `RiskFundV2` to the new implementation. Safe because `RiskFundConverter` was paused inside `execute1()`, so no in-flight `convertExactTokens` callback can reach the removed `updatePoolState` selector.
+
+**Between Part 1 and Part 2**: the 6 legacy converters are paused, PSR no longer routes revenue to them, and `Shortfall` auctions are paused — so converter balances are frozen and there is no economic surface from them while the helper still holds ownership.
+
+**VIP-621 (Part 2)** — router allowlist, converter drain, ownership handback:
+
+1. `helper.execute2()` allowlists 9 swap routers on every buyback (PancakeSwap V2 / V3 / Smart / Universal, Uniswap V2 SwapRouter02 / V3 SwapRouter02 / V4 / Universal, 1inch v5), drains every non-zero core-pool ERC20 balance off each timelock-owned converter into its replacement buyback, and transfers ownership of all 16 contracts (10 buybacks + 6 converters) back to `NormalTimelock`.
+2. `NormalTimelock` accepts ownership of all 16 contracts.
 
 **Post-VIP**:
 
 - The 6 timelock-owned legacy converters (`RiskFundConverter`, `USDTPrimeConverter`, `USDCPrimeConverter`, `BTCBPrimeConverter`, `ETHPrimeConverter`, `XVSVaultConverter`) remain deployed but are paused and empty
-- `WBNBBurnConverter` is Guardian-owned and was not handed to the helper; its sub-dollar residual is drained in a separate multisig transaction, and its PSR distribution row was already removed by the helper
+- `WBNBBurnConverter` is Guardian-owned and was not handed to the helper; its sub-dollar residual is drained in a separate multisig transaction, and its PSR distribution row was already removed inside `execute1()`
 - `ConverterNetwork` is unreferenced — no contract changes were needed to it
 - All 10 new buybacks are owned by `NormalTimelock` and ready to receive PSR distributions
 - The finance-team cron operator can now call `executeBuyback` and `forwardBaseAsset` on each buyback via its ACM permissions
+- The migration helper holds no privileges, no balances, and no ownership over any contract; all three entrypoints revert `AlreadyExecuted` on any subsequent call
 - Pre-existing ACM grants on legacy converter functions are not explicitly revoked; conversions are paused, which renders those permissions inert
 
 ### Impact Summary

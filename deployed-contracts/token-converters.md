@@ -2,28 +2,24 @@
 
 ## BNB Chain Mainnet
 
-Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the original community-driven Token Converters via [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56). The six timelock-owned legacy converters remain deployed for reference but are no longer operational — conversion is paused on each and balances have been drained into the corresponding new buyback. `WBNBBurnConverter` (Guardian-owned) is wound down via a separate multisig transaction; `ConverterNetwork` is unreferenced. Pre-existing ACM grants on the legacy converters are not explicitly revoked, but the paused state renders them inert.
-
-### Active destinations
-
-* XVSVaultTreasury: [`0x269ff7818DB317f60E386D2be0B259e1a324a40a`](https://bscscan.com/address/0x269ff7818DB317f60E386D2be0B259e1a324a40a)
+Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the original community-driven Token Converters via [VIP-620](https://app.venus.io/#/governance/proposal/620?chainId=56) and [VIP-621](https://app.venus.io/#/governance/proposal/621?chainId=56). The migration was originally proposed as [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56), which became unexecutable when BSC's Osaka hardfork enforced a hard per-tx gas cap of 2^24 = 16,777,216 (the single-call `helper.execute()` required ~17.5M gas). VIP-620 + VIP-621 split the work across two transactions and use a redeployed set of buyback proxies. The six timelock-owned legacy converters remain deployed for reference but are no longer operational — conversion is paused on each and balances have been drained into the corresponding new buyback. `WBNBBurnConverter` (Guardian-owned) is wound down via a separate multisig transaction; `ConverterNetwork` is unreferenced. Pre-existing ACM grants on the legacy converters are not explicitly revoked, but the paused state renders them inert.
 
 ### TokenBuyback (Phase 2 — active)
 
 | Instance | Base Asset | Destination | Proxy address |
 |---|---|---|---|
-| `UTreasuryBuyback` | U | `VTreasury` | [`0xef7cb42a7EBD4b011905D20Fc8038a603c3f22E4`](https://bscscan.com/address/0xef7cb42a7EBD4b011905D20Fc8038a603c3f22E4) |
-| `BTCBTreasuryBuyback` | BTCB | `VTreasury` | [`0x69739FF52e90BC93dCaEd5a2431072b5082d326D`](https://bscscan.com/address/0x69739FF52e90BC93dCaEd5a2431072b5082d326D) |
-| `ETHTreasuryBuyback` | ETH | `VTreasury` | [`0x9e0543F9E09fb5b8a58F73d11967DC894dbD40a7`](https://bscscan.com/address/0x9e0543F9E09fb5b8a58F73d11967DC894dbD40a7) |
-| `USDTTreasuryBuyback` | USDT | `VTreasury` | [`0xBF858c95D778022b48E6Ad343D3d644017fb0ca7`](https://bscscan.com/address/0xBF858c95D778022b48E6Ad343D3d644017fb0ca7) |
-| `USDCTreasuryBuyback` | USDC | `VTreasury` | [`0xFB5FA544dBf39983198BDD01e2c26E3AB597e22A`](https://bscscan.com/address/0xFB5FA544dBf39983198BDD01e2c26E3AB597e22A) |
-| `XVSTreasuryBuyback` | XVS | `VTreasury` | [`0x01D0f07D389692D386EB8D09Da3bbCa5C83be551`](https://bscscan.com/address/0x01D0f07D389692D386EB8D09Da3bbCa5C83be551) |
-| `USDTPrimeBuyback` | USDT | `PrimeLiquidityProvider` | [`0x0191Bb3CD28A96691F5EC5066ad42A0373ae11C6`](https://bscscan.com/address/0x0191Bb3CD28A96691F5EC5066ad42A0373ae11C6) |
-| `UPrimeBuyback` | U | `PrimeLiquidityProvider` | [`0xFd50bd4107705929df73Ac683BD505232BA9E9dB`](https://bscscan.com/address/0xFd50bd4107705929df73Ac683BD505232BA9E9dB) |
-| `RiskFundBuyback` | USDT | `RiskFundV2` | [`0xfffB20c23650B27126815994f3F07eF6B46aea60`](https://bscscan.com/address/0xfffB20c23650B27126815994f3F07eF6B46aea60) |
-| `XVSBuyback` | XVS | `XVSVaultTreasury` | [`0xBaAc819aE93b29fA6512a095CA00255a4F05b027`](https://bscscan.com/address/0xBaAc819aE93b29fA6512a095CA00255a4F05b027) |
+| `UTreasuryBuyback` | U | `VTreasury` | [`0xec63411423D03327De19135446dDdA3055D2feA8`](https://bscscan.com/address/0xec63411423D03327De19135446dDdA3055D2feA8) |
+| `BTCBTreasuryBuyback` | BTCB | `VTreasury` | [`0x1F306a0d929a7098a0A0b12248Ba97600AB79026`](https://bscscan.com/address/0x1F306a0d929a7098a0A0b12248Ba97600AB79026) |
+| `ETHTreasuryBuyback` | ETH | `VTreasury` | [`0x41954F0bf26959dF2e1B8302DEBf736B5b154B64`](https://bscscan.com/address/0x41954F0bf26959dF2e1B8302DEBf736B5b154B64) |
+| `USDTTreasuryBuyback` | USDT | `VTreasury` | [`0xB3dDf13E8B6b8dE10F5826087C202b80F1D1b490`](https://bscscan.com/address/0xB3dDf13E8B6b8dE10F5826087C202b80F1D1b490) |
+| `USDCTreasuryBuyback` | USDC | `VTreasury` | [`0xd7aC40f9bd9A1beb8E2d121b4446CF90417cf169`](https://bscscan.com/address/0xd7aC40f9bd9A1beb8E2d121b4446CF90417cf169) |
+| `XVSTreasuryBuyback` | XVS | `VTreasury` | [`0x6D2d239c16453062cF145A7a5128A6a60710d236`](https://bscscan.com/address/0x6D2d239c16453062cF145A7a5128A6a60710d236) |
+| `USDTPrimeBuyback` | USDT | `PrimeLiquidityProvider` | [`0xD721932C7CA41Eb5305867287010587a266346a8`](https://bscscan.com/address/0xD721932C7CA41Eb5305867287010587a266346a8) |
+| `UPrimeBuyback` | U | `PrimeLiquidityProvider` | [`0xBC9fFBfb799B2d189669D3816E2B7273c69041bd`](https://bscscan.com/address/0xBC9fFBfb799B2d189669D3816E2B7273c69041bd) |
+| `RiskFundBuyback` | USDT | `RiskFundV2` | [`0x0c71EFabD00329E839745ef23aB946d3ed24A805`](https://bscscan.com/address/0x0c71EFabD00329E839745ef23aB946d3ed24A805) |
+| `XVSBuyback` | XVS | `XVSVaultTreasury` | [`0x637E6246BBb0F9aBae9d764F5e1bB6347f028C12`](https://bscscan.com/address/0x637E6246BBb0F9aBae9d764F5e1bB6347f028C12) |
 
-### Retired converters (Phase 1 — non-operational post VIP-618)
+### Retired converters (Phase 1 — non-operational post VIP-620 / VIP-621)
 
 * RiskFundConverter: [`0xA5622D276CcbB8d9BBE3D1ffd1BB11a0032E53F0`](https://bscscan.com/address/0xA5622D276CcbB8d9BBE3D1ffd1BB11a0032E53F0)
 * SingleTokenConverterBeacon: [`0x4c9D57b05B245c40235D720A5f3A592f3DfF11ca`](https://bscscan.com/address/0x4c9D57b05B245c40235D720A5f3A592f3DfF11ca)
