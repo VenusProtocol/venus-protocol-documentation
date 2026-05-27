@@ -18,6 +18,7 @@
 * [Automatic Income Allocation](whats-new/automatic-income-allocation.md)
 * [TokenBuyback Contract](whats-new/token-converter.md)
 * [Venus Prime](whats-new/prime-yield.md)
+* [Fixed Rate Vaults](whats-new/fixed-rate-vaults.md)
 
 ## Governance
 
@@ -59,6 +60,9 @@
 * [Isolated E-mode](guides/isolated-e-mode.md)
 * [Boost and Repay with Collateral](guides/leveraged-positions.md)
 * [Trade](guides/trade.md)
+* [Fixed Rate Vaults](guides/fixed-rate-vaults/README.md)
+  * [Institution Guide](guides/fixed-rate-vaults/institution-guide.md)
+  * [Supplier Guide](guides/fixed-rate-vaults/supplier-guide.md)
 
 ## Technical reference
 
@@ -70,6 +74,7 @@
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
   * [E-Mode](technical-reference/reference-technical-articles/e-mode.md)
   * [Trade](technical-reference/reference-technical-articles/trade.md)
+  * [Fixed Rate Vaults](technical-reference/reference-technical-articles/fixed-rate-vaults.md)
   * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)
   * [Omnichain Governance](technical-reference/reference-technical-articles/omnichain-governance.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
@@ -209,6 +214,7 @@
 * [Token Converters](deployed-contracts/token-converters.md)
 * [VenusERC4626](deployed-contracts/venus-erc4626.md)
 * [Periphery](deployed-contracts/periphery.md)
+* [Fixed Rate Vaults](deployed-contracts/fixed-rate-vaults.md)
 
 ## Services
 
