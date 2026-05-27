@@ -1,0 +1,182 @@
+<svg width="920" height="730" viewBox="0 0 920 730" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#4f8ef7"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f87171"/>
+    </marker>
+    <marker id="arr-orange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#fb923c"/>
+    </marker>
+    <marker id="arr-gray" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#64748b"/>
+    </marker>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="920" height="730" fill="#0f1117" rx="16"/>
+
+  <!-- Title -->
+  <text x="460" y="28" font-size="11" fill="rgba(255,255,255,0.3)" font-family="sans-serif"
+        text-anchor="middle" letter-spacing="2.5">FIXED RATE VAULT — STATE MACHINE</text>
+
+  <!-- ── MAIN COLUMN (x=450) ── -->
+
+  <!-- 1. WaitingForMargin  y=65 -->
+  <g transform="translate(450,65)">
+    <rect x="-105" y="-22" width="210" height="44" rx="10" fill="#1e2a45" stroke="#4f8ef7" stroke-width="1.5" filter="url(#glow)"/>
+    <text font-size="12" font-weight="600" fill="#fff" text-anchor="middle" y="-6" font-family="sans-serif">WaitingForMargin</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" y="10" font-family="sans-serif">institution posts collateral margin</text>
+  </g>
+
+  <!-- 2. MarginDeposited  y=158 -->
+  <g transform="translate(450,158)">
+    <rect x="-105" y="-22" width="210" height="44" rx="10" fill="#1e2a45" stroke="#4f8ef7" stroke-width="1.5" filter="url(#glow)"/>
+    <text font-size="12" font-weight="600" fill="#fff" text-anchor="middle" y="-6" font-family="sans-serif">MarginDeposited</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" y="10" font-family="sans-serif">governance calls openVault()</text>
+  </g>
+
+  <!-- 3. Fundraising  y=258 -->
+  <g transform="translate(450,258)">
+    <rect x="-115" y="-28" width="230" height="56" rx="10" fill="#1e2a45" stroke="#4f8ef7" stroke-width="1.5" filter="url(#glow)"/>
+    <text font-size="12" font-weight="600" fill="#fff" text-anchor="middle" y="-10" font-family="sans-serif">Fundraising</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" y="6" font-family="sans-serif">suppliers deposit · institution tops up collateral</text>
+    <text font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle" y="20" font-family="sans-serif">within fundraising window</text>
+  </g>
+
+  <!-- 4. Lock  y=355 -->
+  <g transform="translate(450,355)">
+    <rect x="-105" y="-22" width="210" height="44" rx="10" fill="#1a2e3b" stroke="#38bdf8" stroke-width="1.5" filter="url(#glow)"/>
+    <text font-size="12" font-weight="600" fill="#fff" text-anchor="middle" y="-6" font-family="sans-serif">Lock</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" y="10" font-family="sans-serif">loan active · APY and totalDebt fixed</text>
+  </g>
+
+  <!-- 5. PendingSettlement  y=448 -->
+  <g transform="translate(450,448)">
+    <rect x="-115" y="-22" width="230" height="44" rx="10" fill="#1e2a45" stroke="#4f8ef7" stroke-width="1.5"/>
+    <text font-size="12" font-weight="600" fill="#fff" text-anchor="middle" y="-6" font-family="sans-serif">PendingSettlement</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" y="10" font-family="sans-serif">institution repays before deadline</text>
+  </g>
+
+  <!-- 6. SettlementDeadlineExceeded  x=730 y=448 -->
+  <g transform="translate(730,448)">
+    <rect x="-120" y="-22" width="240" height="44" rx="10" fill="#2a1f10" stroke="#fb923c" stroke-width="1.5"/>
+    <text font-size="11" font-weight="600" fill="#fb923c" text-anchor="middle" y="-6" font-family="sans-serif">SettlementDeadlineExceeded</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" y="10" font-family="sans-serif">deadline passed · debt still outstanding</text>
+  </g>
+
+  <!-- ── TERMINAL NODES (y=572) ── -->
+
+  <!-- Failed  x=155 -->
+  <g transform="translate(155,572)">
+    <rect x="-82" y="-22" width="164" height="44" rx="10" fill="#2d1515" stroke="#f87171" stroke-width="1.5"/>
+    <text font-size="12" font-weight="600" fill="#f87171" text-anchor="middle" y="-6" font-family="sans-serif">Failed</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" y="10" font-family="sans-serif">principal + margin returned</text>
+  </g>
+
+  <!-- Matured  x=450 -->
+  <g transform="translate(450,572)">
+    <rect x="-82" y="-22" width="164" height="44" rx="10" fill="#14301e" stroke="#34d399" stroke-width="1.5" filter="url(#glow)"/>
+    <text font-size="12" font-weight="600" fill="#34d399" text-anchor="middle" y="-6" font-family="sans-serif">Matured</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" y="10" font-family="sans-serif">suppliers redeem principal + yield</text>
+  </g>
+
+  <!-- Liquidated  x=730 -->
+  <g transform="translate(730,572)">
+    <rect x="-82" y="-22" width="164" height="44" rx="10" fill="#2d1e10" stroke="#fb923c" stroke-width="1.5"/>
+    <text font-size="12" font-weight="600" fill="#fb923c" text-anchor="middle" y="-6" font-family="sans-serif">Liquidated</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" y="10" font-family="sans-serif">settlement waterfall runs</text>
+  </g>
+
+  <!-- ── CLOSED (bottom centre, y=665) ── -->
+  <g transform="translate(450,665)">
+    <rect x="-82" y="-22" width="164" height="44" rx="10" fill="#151b26" stroke="#64748b" stroke-width="1.5"/>
+    <text font-size="12" font-weight="600" fill="#94a3b8" text-anchor="middle" y="-6" font-family="sans-serif">Closed</text>
+    <text font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle" y="10" font-family="sans-serif">governance calls closeVault()</text>
+  </g>
+
+  <!-- ══ MAIN FLOW ARROWS ══ -->
+
+  <!-- 1→2: depositCollateral() -->
+  <line x1="450" y1="87" x2="450" y2="136" stroke="#4f8ef7" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <text font-size="9.5" fill="rgba(255,255,255,0.4)" text-anchor="start" x="458" y="115" font-family="sans-serif">depositCollateral()</text>
+
+  <!-- 2→3: openVault() -->
+  <line x1="450" y1="180" x2="450" y2="230" stroke="#4f8ef7" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <text font-size="9.5" fill="rgba(255,255,255,0.4)" text-anchor="start" x="458" y="208" font-family="sans-serif">openVault()</text>
+
+  <!-- 3→4: raised ≥ minBorrowCap -->
+  <line x1="450" y1="286" x2="450" y2="333" stroke="#4f8ef7" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <text font-size="9.5" fill="rgba(255,255,255,0.4)" text-anchor="start" x="458" y="313" font-family="sans-serif">raised ≥ minBorrowCap</text>
+
+  <!-- 4→5: lockDuration elapsed -->
+  <line x1="450" y1="377" x2="450" y2="426" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <text font-size="9.5" fill="rgba(255,255,255,0.4)" text-anchor="start" x="458" y="405" font-family="sans-serif">lockDuration elapsed</text>
+
+  <!-- 5→Matured: repaid (happy path) -->
+  <line x1="450" y1="470" x2="450" y2="550" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr-green)"/>
+  <text font-size="9.5" fill="#34d399" text-anchor="start" x="458" y="513" font-family="sans-serif">totalDebt == 0</text>
+
+  <!-- 5→SDBE: deadline passed -->
+  <line x1="565" y1="448" x2="610" y2="448" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arr-orange)"/>
+  <text font-size="9.5" fill="rgba(255,255,255,0.4)" text-anchor="middle" x="588" y="438" font-family="sans-serif">deadline + debt &gt; 0</text>
+
+  <!-- SDBE→Liquidated: liquidateOverdueVault() -->
+  <line x1="730" y1="470" x2="730" y2="550" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arr-orange)"/>
+  <text font-size="9.5" fill="#fb923c" text-anchor="start" x="738" y="514" font-family="sans-serif">liquidateOverdueVault()</text>
+
+  <!-- SDBE→Matured: repaid late (dashed green) -->
+  <path d="M 610,458 Q 540,528 532,550" stroke="#34d399" stroke-width="1.2" fill="none" stroke-dasharray="5,3" marker-end="url(#arr-green)"/>
+  <text font-size="9.5" fill="rgba(52,211,153,0.7)" text-anchor="middle" x="555" y="536" font-family="sans-serif">repaid</text>
+
+  <!-- ══ FAILURE PATH: Fundraising → Failed ══ -->
+  <path d="M 335,258 Q 80,370 155,550"
+        stroke="#f87171" stroke-width="1.2" fill="none" stroke-dasharray="5,3" marker-end="url(#arr-red)"/>
+  <text font-size="9" fill="#f87171" text-anchor="middle" x="74" y="350" font-family="sans-serif">raise shortfall /</text>
+  <text font-size="9" fill="#f87171" text-anchor="middle" x="74" y="363" font-family="sans-serif">collateral underdelivery</text>
+
+  <!-- ══ CANCEL PATHS: WFM + MD → Failed ══ -->
+  <!-- WFM left → Failed -->
+  <path d="M 345,65 C 195,65 118,345 155,550"
+        stroke="#f87171" stroke-width="1.2" fill="none" stroke-dasharray="5,3" marker-end="url(#arr-red)"/>
+  <!-- MD left → Failed -->
+  <path d="M 345,158 C 200,158 122,355 155,550"
+        stroke="#f87171" stroke-width="1.2" fill="none" stroke-dasharray="5,3" marker-end="url(#arr-red)"/>
+  <!-- cancelVault() label -->
+  <text font-size="9" fill="#f87171" text-anchor="middle" x="174" y="192" font-family="sans-serif">cancelVault()</text>
+  <text font-size="9" fill="#f87171" text-anchor="middle" x="174" y="204" font-family="sans-serif">(governance)</text>
+
+  <!-- ══ closeVault() ARROWS TO CLOSED ══ -->
+  <!-- Matured → Closed -->
+  <line x1="450" y1="594" x2="450" y2="643" stroke="#64748b" stroke-width="1.2" marker-end="url(#arr-gray)"/>
+  <!-- Failed → Closed -->
+  <path d="M 200,585 Q 310,625 368,643" stroke="#64748b" stroke-width="1.2" fill="none" marker-end="url(#arr-gray)"/>
+  <!-- Liquidated → Closed -->
+  <path d="M 685,585 Q 590,625 532,643" stroke="#64748b" stroke-width="1.2" fill="none" marker-end="url(#arr-gray)"/>
+  <!-- closeVault() label -->
+  <text font-size="9" fill="rgba(100,116,139,0.85)" text-anchor="middle" x="450" y="622" font-family="sans-serif">closeVault()</text>
+
+  <!-- ══ LEGEND ══ -->
+  <g transform="translate(18,52)">
+    <rect x="0" y="0" width="200" height="108" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text x="10" y="16" font-size="9" fill="rgba(255,255,255,0.35)" font-family="sans-serif" letter-spacing="1">LEGEND</text>
+    <line x1="10" y1="30" x2="40" y2="30" stroke="#4f8ef7" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+    <text x="48" y="34" font-size="9" fill="rgba(255,255,255,0.5)" font-family="sans-serif">Normal progression</text>
+    <line x1="10" y1="50" x2="40" y2="50" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr-green)"/>
+    <text x="48" y="54" font-size="9" fill="rgba(255,255,255,0.5)" font-family="sans-serif">Successful settlement</text>
+    <line x1="10" y1="70" x2="40" y2="70" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arr-orange)"/>
+    <text x="48" y="74" font-size="9" fill="rgba(255,255,255,0.5)" font-family="sans-serif">Overdue / late path</text>
+    <line x1="10" y1="88" x2="40" y2="88" stroke="#f87171" stroke-width="1.2" stroke-dasharray="5,3"/>
+    <text x="48" y="92" font-size="9" fill="rgba(255,255,255,0.5)" font-family="sans-serif">Failure / cancel path</text>
+    <line x1="10" y1="104" x2="40" y2="104" stroke="#64748b" stroke-width="1.2" marker-end="url(#arr-gray)"/>
+    <text x="48" y="108" font-size="9" fill="rgba(255,255,255,0.5)" font-family="sans-serif">closeVault() to Closed</text>
+  </g>
+
+</svg>

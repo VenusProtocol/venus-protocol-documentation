@@ -1,421 +1,257 @@
 # Fixed Rate Vaults
 
-**Fixed Rate Vaults** are a new lending product on Venus Protocol. Institutions borrow stablecoins for a fixed term at a fixed interest rate, backing the loan with on-chain collateral. Suppliers fund the loan during a fundraising window and earn the headline APY at maturity.
+A Fixed Rate Vault is a two-party, fixed-term loan between an institution and a pool of on-chain suppliers. The institution borrows a stablecoin against crypto collateral at a rate and duration agreed at vault creation. Suppliers commit capital during a short fundraising window; at maturity they redeem their shares for principal plus the fixed interest, regardless of market conditions between entry and settlement.
 
-The system is deployed as a clone factory. The **InstitutionalVaultController** is the orchestration surface. It deploys a fresh **InstitutionalLoanVault** clone per institution, mints a position NFT to the nominated operator, and proxies governance operations to the vault. Suppliers interact with the vault directly via the standard ERC-4626 interface.
-
-| Component | Description |
-| --- | --- |
-| **BaseVault** | Abstract ERC-4626 base providing shared fundraising, interest computation, state machine, settlement waterfall, and pause logic |
-| **InstitutionalLoanVault** | Concrete vault deployed as an EIP-1167 clone. Extends `BaseVault` with collateral, borrowing, risk checks, and liquidation hooks |
-| **InstitutionalVaultController** | Orchestrator. Deploys clones, mints position NFTs, holds the AccessControlManager reference, and proxies governance calls |
-| **InstitutionPositionToken** | Non-upgradeable singleton ERC-721. One token per vault, minted to the institution's nominated operator. Transfer-gated by governance approval |
-| **LiquidationAdapter** | Routes both health-based and overdue liquidations. Holds liquidator/settler whitelists, the global `closeFactor`, and the protocol liquidation share |
-
----
+Each vault is a fully isolated contract clone — its own collateral, its own debt, its own supplier shares. A default, liquidation, or governance action in one vault has zero effect on any other vault or on Venus core markets.
 
 ## Architecture
 
-The Fixed Rate Vaults system consists of four contracts plus the shared ERC-4626 base:
+### Contracts
 
-| Contract | Role |
-| --- | --- |
-| **InstitutionalVaultController** | Central governance surface. Validates configurations, deploys vault clones, maintains the vault registry, and exposes ACM-gated admin functions. Deployed behind a transparent proxy. |
-| **InstitutionalLoanVault** | Per-loan vault. Holds collateral, raised funds, and debt; enforces the state machine; exposes institution and supplier entrypoints. Deployed as a minimal EIP-1167 clone |
-| **InstitutionPositionToken** | Singleton ERC-721. Mints one token per vault; gates transfers behind a single-use governance approval; provides the on-chain ownership credential for institution-side actions. Deployed once and cannot be upgraded. |
-| **LiquidationAdapter** | Routes liquidation calls. Enforces liquidator/settler whitelists, calculates seize amounts using either `liquidationIncentive` (health-based) or `latePenaltyRate` (overdue), and accrues the protocol share for periodic sweeps to PSR |
+The system is composed of four contracts. Each vault is an independent clone deployed by the controller — there is no shared state between loans.
 
-### Per-Vault Isolation
+<figure><img src="../../.gitbook/assets/fixed-rate-vault-architecture.svg" alt="Fixed Rate Vault contract architecture diagram"><figcaption><p>The controller deploys a fresh vault clone and mints a position NFT per loan; all liquidation calls are routed through the LiquidationAdapter</p></figcaption></figure>
 
-Each vault is an entirely independent contract. Collateral, supplier deposits, debt, settlement, and risk thresholds are scoped to a single vault, so one vault cannot affect another. Even institutions running multiple loans concurrently receive a fresh clone per loan.
+**InstitutionalVaultController** is the sole factory and the only conduit through which any admin operation reaches a vault. It deploys each vault clone and mints the corresponding position NFT in the same transaction. It also exposes the ACM-gated lifecycle calls (`openVault`, `cancelVault`, `partialPauseVault`, `completePauseVault`, `unpauseVault`, `closeVault`) and risk-parameter updates that governance invokes separately over the life of each vault. All ACM permission checks are enforced here — individual vaults carry no ACM wiring and trust calls from the controller implicitly. Deployed behind a transparent proxy, so governance policy can be updated without touching live contracts.
 
-| Layer | Mechanism |
-| --- | --- |
-| **Fund custody** | Each vault holds its own balance of the supply asset (ERC-4626 underlying) and collateral asset. |
-| **State machine** | Each vault advances through its own `VaultState` independently. Lifecycle timers (`openStartTime`, `lockEndTime`, `settlementDeadline`) are recorded on the vault itself |
-| **Access control** | Institution operations are gated by `onlyPositionHolder` which is checked against `positionToken.ownerOf(positionTokenId)` at call time. Governance operations are proxied through the controller and gated by Venus AccessControlManager |
-| **Deterministic deployment** | Clones are deployed with `Clones.cloneDeterministic(impl, salt)` using `keccak256(institution, nonce)` as salt. Per-institution nonce ensures uniqueness across deployments |
+**InstitutionalLoanVault** is the core execution contract for a single loan. It holds all assets — collateral and supply stablecoin — enforces the `VaultState` machine, and is the only place debt is created, tracked, and cleared. Suppliers interact through the standard ERC-4626 interface (`deposit`, `mint`, `withdraw`, `redeem`); institution-side calls (`depositCollateral`, `claimRaisedFunds`, `withdrawCollateral`) are gated by `onlyPositionHolder`; liquidation entry points are gated by `onlyLiquidationAdapter`. Each vault is deployed as an EIP-1167 minimal proxy clone — non-upgradeable and single-use. Its rules are immutable from the moment it goes live, and renewing a deal always means deploying a fresh clone rather than resetting an existing one.
 
-## State Machine
+**InstitutionPositionToken** is a singleton ERC-721 shared across all vaults — one contract, one token ID per vault. Whoever holds a given token ID controls all institution-side operations on that vault, since `depositCollateral`, `claimRaisedFunds`, and `withdrawCollateral` all resolve to `positionToken.ownerOf(positionTokenId)` at call time. Keeping ownership in a transferable NFT rather than hardcoded in the vault means control can move to a new address without any state change inside the vault itself. Every transfer requires a prior single-use governance approval via `approvePositionTransfer(vault, recipient)`, consumed on the next `safeTransferFrom`.
 
-Vault lifecycle is encoded as the `VaultState` enum (defined in `IVaultTypes.sol`). A vault advances through these states in a single direction; there is no rollback.
+**LiquidationAdapter** is the only address permitted to call `vault.liquidate()`, enforced by `onlyLiquidationAdapter` on each vault. The vault itself does one thing: check whether the health factor permits liquidation. Everything else — who is allowed to liquidate, how much they can seize, at what incentive rate, and what share goes to the protocol — is owned entirely by the adapter. Whitelisted liquidators and overdue settlers are registered here via two independent ACM-gated lists. Parameters like `closeFactor` and `protocolLiquidationShare` live here too, meaning governance can tune liquidation behaviour across the entire system without touching any deployed vault. The adapter also accumulates the protocol's share of seized collateral and transfers it to PSR via `sweepProtocolShareToReserve(address collateral)`.
 
-```solidity
-enum VaultState {
-    WaitingForMargin,           // 0 — awaiting institution margin deposit
-    MarginDeposited,            // 1 — margin in, awaiting governance to open
-    Fundraising,                // 2 — suppliers depositing supply asset
-    InstitutionConfirmation,    // 3 — reserved for subcontract use; unused here
-    Lock,                       // 4 — funds committed, interest accruing
-    PendingSettlement,          // 5 — maturity reached, awaiting repayment
-    SettlementDeadlineExceeded, // 6 — deadline passed with outstanding debt
-    Matured,                    // 7 — repayment settled, shares redeemable
-    Failed,                     // 8 — fundraising shortfall or institution default
-    Liquidated,                 // 9 — bad-debt rescue path
-    Closed                      // 10 — governance delisted; all actions blocked
-}
-```
+### BaseVault, ERC-4626, and extensibility
 
-The diagram below shows how a vault moves between states, with each arrow labelled by the condition that triggers the transition.
+`InstitutionalLoanVault` inherits `BaseVault`, an abstract contract built on top of ERC-4626 that was designed to be reusable across different kinds of fixed-rate vault. `BaseVault` captures everything that any such vault has in common — fundraising, interest computation, the settlement waterfall, state machine scaffolding, and the pause system — so a new vault type only has to implement what is specific to its loan structure. Future vault types follow the same pattern: inherit `BaseVault`, override its three virtual hooks (`_checkAndAdvanceState`, `_afterWithdrawHook`, `_beforeClaimRaisedFunds`), and add the remaining type-specific logic on top.
 
-```
-                       +------------------------+
-                       |    WaitingForMargin     |-- cancelVault() (governance) --+
-                       +-----------+------------+                                 |
-                                   |  depositCollateral()                         |
-                                   |  (collateral >= required margin)             |
-                                   v                                              |
-                       +------------------------+-- cancelVault() (governance) ---+
-                       |     MarginDeposited     |                                |
-                       +-----------+------------+                                 |
-                                   |  openVault()  (governance)                   |
-                                   v                                              |
-                       +------------------------+     raise short OR              |
-                       |       Fundraising       |--> collateral underdelivered --+
-                       |    (suppliers supply)   |                                | 
-                       +-----------+------------+                                 v
-                                   |  raised >= minBorrowCap                  +--------+                   +--------+
-                                   |  and collateral met                      | Failed |-- closeVault() -> | Closed |
-                                   v                                          +--------+                   +--------+
-                       +------------------------+     LT shortfall > 0
-                       |          Lock           |--> (health-based            +------------+                   +--------+
-                       |       (borrowing)       |     liquidation) ---------> | Liquidated |-- closeVault() -> | Closed |
-                       +-----------+------------+                              +------------+                   +--------+
-                                   |                                                ^
-                                   |  lockDuration elapsed                          |
-                                   |  (repaid in full early ------> Matured)        |
-                                   v                                                |
-                       +------------------------+                                   |
-                       |    PendingSettlement    |                                  |
-                       +-----------+------------+                                   |
-                                   |  settlementDeadline expired + debt > 0         |
-                                   |  (repaid ------> Matured)                      |
-                                   v                                                |
-                       +----------------------------+   liquidateOverdueVault()     |
-                       | SettlementDeadlineExceeded  |------------------------------+
-                       +-------------+--------------+
-                                     |  repaid
-                                     v
-                                 +---------+
-                                 | Matured |
-                                 +----+----+
-                                      |  closeVault() (governance)
-                                      v
-                                 +--------+
-                                 | Closed |
-                                 +--------+
-```
+ERC-4626 is used as the supplier-facing API, but several methods deviate from the specification to enforce lifecycle constraints:
 
-| State | Meaning | Allowed transitions |
+| Method | Standard behaviour | Vault behaviour |
 | --- | --- | --- |
-| **WaitingForMargin** | Vault deployed; institution must deposit the margin in a single transaction | → `MarginDeposited` (margin met), or → `Failed` (cancelled by governance) |
-| **MarginDeposited** | Margin in. Lifecycle timelines pre-computed but not started | → `Fundraising` (via `openVault`), or → `Failed` (cancelled) |
-| **Fundraising** | Suppliers deposit the supply asset; institution tops up to `idealCollateralAmount` | → `Lock` (raised ≥ minBorrowCap, collateral met), → `Failed` (raise short OR collateral underdelivered) |
-| **Lock** | Funds committed; full interest fixed; institution may claim funds, repay, top up collateral | → `PendingSettlement` (lock duration elapsed), → `Matured` (repaid in full early), → `Liquidated` (HF-based liquidation completed) |
-| **PendingSettlement** | Maturity reached; awaiting institution repayment | → `Matured` (debt cleared), → `SettlementDeadlineExceeded` (deadline passed with debt outstanding) |
-| **SettlementDeadlineExceeded** | Deadline breached with debt outstanding. Liquidatable at late-penalty rate | → `Matured` (repaid), → `Liquidated` (overdue liquidation completed) |
-| **Matured** | Settlement complete. Suppliers redeem pro-rata against `settlementAmount` | → `Closed` (governance delists) |
-| **Failed** | Two sub-scenarios — see below. Suppliers redeem; institution recovers residual collateral | → `Closed` |
-| **Liquidated** | Debt was cleared via liquidation. Suppliers redeem pro-rata against the leftover supply asset balance | → `Closed` |
-| **Closed** | Terminal. All entrypoints revert | — |
+| `deposit` | Always open; reverts on cap breach | Only in `Fundraising`; excess silently clamped to remaining cap, not reverted |
+| `mint` | Always open; reverts on cap breach | Only in `Fundraising`; excess silently clamped |
+| `withdraw` | Available any time (subject to balance) | Only in terminal states (`Matured`, `Failed`, `Liquidated`) |
+| `redeem` | Available any time (subject to balance) | Only in terminal states |
+| `maxDeposit` | Returns `type(uint256).max` | Returns `maxBorrowCap − totalRaised`; zero outside `Fundraising` |
+| `maxWithdraw` | Returns asset value of shares | Zero outside terminal states |
+| `maxRedeem` | Returns `balanceOf(owner)` | Zero outside terminal states |
+| `totalAssets` | Returns live underlying balance | Returns `totalRaised` pre-terminal; switches to `settlementAmount` once settled |
 
-### Happy Path
+`totalAssets()` is backed by internal accounting variables (`totalRaised` and `settlementAmount`) rather than `balanceOf(address(this))`. Tokens sent directly to the vault address have no effect on the share price, which removes the donation-based inflation attack that affects naive ERC-4626 implementations.
 
-`WaitingForMargin` → `MarginDeposited` → `Fundraising` → `Lock` → `PendingSettlement` → `Matured` → `Closed`
+`minSupplierDeposit` adds a minimum deposit floor absent from the spec. The floor is waived for the final deposit that fills the remaining capacity exactly, preventing the vault from getting permanently stuck below `maxBorrowCap` when the residual slot is smaller than the minimum. Fee-on-transfer and rebasing tokens are not supported for either the supply asset or collateral.
 
-### Failed Sub-Scenarios
+### Oracle
 
-The `Failed` state covers two distinct outcomes, distinguished by the `institutionDefaulted` flag in `InstitutionalRuntime`:
+All USD valuations in the system route through Venus `ResilientOracle`. The vault calls `oracle.getPrice(asset)`, which returns a price scaled to `36 − asset.decimals()` decimal places — always expressed as an 18-decimal USD value per token unit regardless of the token's own decimals. A zero price reverts with `InvalidOraclePrice`.
 
-* **Scenario A (raise shortfall).** `totalRaised < minBorrowCap` at the end of the open window. `institutionDefaulted = false`, `confiscatedMarginRemaining = 0`. Suppliers redeem principal only; institution recovers all collateral including the margin.
-* **Scenario B (collateral underdelivery).** `totalRaised ≥ minBorrowCap` but `totalCollateralDeposited < idealCollateralAmount` at the end of the open window. The margin (`idealCollateralAmount × marginRate`) is confiscated; `institutionDefaulted = true`. Suppliers redeem principal plus a pro-rata share of the confiscated margin in the collateral asset; institution recovers `totalCollateralDeposited − confiscatedMargin`.
+Both the supply asset and the collateral asset must have a non-zero oracle price at vault creation. The controller probes the oracle during `createVault` and reverts with `InvalidConfig` if either price is missing. This prevents a vault from entering price-dependent states — liquidation checks, claim validation, bad-debt detection — with an asset the oracle cannot price.
 
-## Lifecycle Parameters
+## State machine
 
-All vault configuration is set once at deployment via `createVault` and cannot be changed afterwards (except `RiskConfig` fields, which are governance-mutable post-deployment).
+The vault tracks lifecycle as a `VaultState` enum. Transitions are monotonic — no state ever goes backward. Every non-view entry point calls `_checkAndAdvanceState()` before its own logic, so state advances automatically on the first relevant call after a trigger condition is met. All transitions after `openVault` are automatic — no governance call is needed to move the vault from `Fundraising` through `Lock`, `PendingSettlement`, and into a terminal state. For cases where no interaction is pending but conditions for a transition are already met, anyone can call `updateVaultState()` to advance the state explicitly.
 
-### Shared Vault Configuration (`VaultConfig`)
+<figure><img src="../../.gitbook/assets/fixed-rate-vault-state-machine.svg" alt="Fixed Rate Vault state machine diagram"><figcaption><p>State transitions are monotonic — no state ever goes backward. Dashed red paths show cancel and failure routes; the grey arrows at the bottom show all three terminal states collapsing into Closed via <code>closeVault()</code></p></figcaption></figure>
 
-| Field | Type | Meaning |
-| --- | --- | --- |
-| `supplyAsset` | `IERC20` | The loan asset suppliers deposit and the institution borrows |
-| `fixedAPY` | `uint256` | Annualized interest rate. |
-| `reserveFactor` | `uint256` | Protocol share of interest.|
-| `minBorrowCap` | `uint256` | Minimum fundraise required to enter `Lock`. Below this, vault enters `Failed`|
-| `maxBorrowCap` | `uint256` | Hard ceiling on fundraising. Deposits clamp to remaining capacity |
-| `minSupplierDeposit` | `uint256` | Floor for a single deposit. Waived only when filling the final residual capacity |
-| `openDuration` | `uint40` | Length of the fundraising window in seconds |
-| `lockDuration` | `uint40` | Length of the locked-loan period in seconds. Used to compute total interest |
-| `settlementWindow` | `uint40` | Grace period after lock end before the vault becomes overdue |
+## Core mechanics
 
-### Institutional Configuration (`InstitutionalConfig`)
+### Margin deposit
 
-| Field | Type | Meaning |
-| --- | --- | --- |
-| `collateralAsset` | `IERC20` | Asset the institution posts as collateral |
-| `idealCollateralAmount` | `uint256` | Target collateral the institution should post. Computed off-chain by applying a collateral factor to `maxBorrowCap` |
-| `marginRate` | `uint256` | Margin percentage of `idealCollateralAmount`. |
-| `institutionOperator` | `address` | Initial recipient of the position NFT |
-| `positionTokenId` | `uint256` | NFT id assigned at vault creation |
+Before suppliers can interact, the institution must post a security deposit — the required margin — in a single `depositCollateral` call. It acts as a credible commitment: the institution either tops up collateral to `idealCollateralAmount` before fundraising closes or forfeits the margin to suppliers. The vault stays in `WaitingForMargin` until this condition is met:
 
-### Risk Configuration (`RiskConfig`)
+$$\text{requiredMargin} = \text{idealCollateralAmount} \times \frac{\text{marginRate}}{10^{18}}$$
 
-| Field | Type | Meaning | Mutable |
+Once `totalCollateralDeposited ≥ requiredMargin` the vault advances to `MarginDeposited`, where it waits for governance to inspect the configuration and call `openVault()` to open the fundraising window.
+
+### Fundraising
+
+`deposit` and `mint` are permissionless during `Fundraising`. Unlike standard ERC-4626, both calls silently clamp to remaining capacity (`maxBorrowCap - totalRaised`): a `deposit` that exceeds the cap fills the residual and mints fewer shares than requested, rather than reverting. `minSupplierDeposit` is enforced on every call except one that fills or exceeds the remaining capacity — because the residual may be smaller than the minimum, skipping the check on that deposit prevents the vault from being permanently stuck below `maxBorrowCap`. Share tokens are standard ERC-20s, freely transferable at all times.
+
+At `fundraisingEndTime` both sides are evaluated simultaneously. If `totalRaised ≥ minBorrowCap` and `totalCollateralDeposited ≥ idealCollateralAmount` the vault transitions to `Lock` and the loan begins.
+
+If either condition is not met, the vault transitions to `Failed`. Two distinct failure modes are possible, distinguished by `InstitutionalRuntime.institutionDefaulted`:
+
+**Raise shortfall** (`totalRaised < minBorrowCap` at window close). `institutionDefaulted = false`. No default has occurred; suppliers recover full principal and the institution recovers all collateral including the margin.
+
+**Collateral underdelivery** (`totalRaised ≥ minBorrowCap` but `totalCollateralDeposited < idealCollateralAmount` at window close). `institutionDefaulted = true`. Only the pre-determined margin is confiscated, not the institution's full collateral position. `confiscatedMargin` is set to exactly `requiredMargin`:
+
+$$\text{requiredMargin} = \text{idealCollateralAmount} \times \frac{\text{marginRate}}{10^{18}}$$
+
+Suppliers recover principal plus a pro-rata share of `confiscatedMargin` (see [Margin confiscation](#margin-confiscation-collateral-underdelivery) for the per-redemption distribution). The institution recovers `totalCollateralDeposited - confiscatedMargin`.
+
+#### Margin confiscation: collateral underdelivery
+
+When the vault fails via collateral underdelivery, `confiscatedMargin = requiredMargin`. Each `withdraw` / `redeem` triggers `_afterWithdrawHook`, which distributes a pro-rata slice of the remaining confiscated margin:
+
+$$\text{compensation} = \text{confiscatedMarginRemaining} \times \frac{\text{shares}}{\text{totalSupplyBeforeBurn}}$$
+
+Compensation is denominated in the **collateral asset** (e.g. BTC or ETH), not the supply stablecoin. `confiscatedMarginRemaining` decrements on every redemption, so early redeemers and late redeemers receive the same proportion.
+
+### Lock entry and borrowing
+
+When the vault transitions to `Lock`, two values are fixed for the lifetime of the loan:
+
+**Total interest** is stored immediately as `totalDebt` and is owed in full regardless of when the institution repays — there is no early-repayment discount:
+
+$$\text{totalInterest} = \frac{\text{totalRaised} \times \text{fixedAPY} \times \text{lockDuration}}{\text{BPS} \times \text{YEAR}}$$
+
+`BPS = 10000`, `YEAR = 365 days`. `totalDebt = totalInterest` at lock entry; after `claimRaisedFunds` it becomes `totalInterest + totalRaised`.
+
+**Minimum collateral floor** is recalculated proportionally to the actual raise. When the raise underfills `maxBorrowCap`, the floor scales down, freeing excess collateral above it for withdrawal during `Lock`:
+
+$$\text{minimumCollateralRequired} = \text{idealCollateralAmount} \times \frac{\text{totalRaised}}{\text{maxBorrowCap}}$$
+
+#### Claiming raised funds
+
+`claimRaisedFunds()` is a one-shot call (gated by `fundsWithdrawn`), available only in `Lock`. It transfers the entire supply asset balance to the position-NFT holder. Before releasing funds, it simulates **interest plus principal** against current collateral via `_getHypotheticalVaultLiquidity(0, totalRaised)` — not just the principal being claimed. The call reverts with `ClaimWouldBreachLT` if the combined debt would breach the liquidation threshold.
+
+After a successful claim, `totalDebt = totalInterest + totalRaised` — the full lifetime obligation.
+
+#### Repaying
+
+`repay(amount)` is unrestricted: any address can reduce `totalDebt` by pulling supply asset from its own balance. This is intentional — third parties can service the debt without holding the position NFT. Available in `Lock`, `PendingSettlement`, and `SettlementDeadlineExceeded`; overpayment silently clamps to `outstandingDebt()`.
+
+#### Collateral during Lock
+
+The institution may add or withdraw collateral during `Lock`. Withdrawal requires both checks to pass:
+
+1. **Floor check** — `totalCollateralDeposited − amount ≥ minimumCollateralRequired`. The locked floor cannot be touched.
+2. **LT health check** — the post-withdrawal state must not produce an LT shortfall.
+
+The tighter of the two determines how much can be withdrawn.
+
+### Settlement window
+
+At `lockEndTime` the vault enters `PendingSettlement`. This state is never skipped — even if the institution cleared all debt before the lock expired, the vault holds in `Lock` until `block.timestamp ≥ lockEndTime`, then moves to `PendingSettlement`, and only transitions to `Matured` once `outstandingDebt() == 0`.
+
+The institution has until `settlementDeadline` to repay in full. `repay()` remains available and unrestricted throughout. If the debt is cleared before the deadline the vault moves to `Matured` and the settlement waterfall runs. If the deadline passes with debt still outstanding the vault enters `SettlementDeadlineExceeded` — the institution may still repay voluntarily, but whitelisted settlers can now trigger overdue liquidation at the late-penalty rate (see [Overdue](#overdue)).
+
+### Settlement waterfall
+
+On entry to `Matured` or `Liquidated`, `_settleProtocolShare` runs once and distributes the supply asset balance:
+
+| Branch | Condition | Protocol fee | `settlementAmount` |
 | --- | --- | --- | --- |
-| `liquidationThreshold` | `uint256` | Maximum debt-to-collateral ratio before liquidation. | Yes |
-| `liquidationIncentive` | `uint256` | Health-based liquidator bonus. | Yes |
-| `latePenaltyRate` | `uint256` | Overdue liquidation bonus. Same range as `liquidationIncentive` | Yes |
+| Full repayment | `available ≥ totalRaised + totalInterest` | `totalInterest × reserveFactor` | `available − protocolFee − surplus` |
+| Partial interest shortfall | `totalRaised < available < totalRaised + totalInterest` | `(available − totalRaised) × reserveFactor` | `available − protocolFee` |
+| Principal shortfall | `available ≤ totalRaised` | 0 | `available` |
 
-All risk parameter updates flow through `InstitutionalVaultController.setLiquidationThreshold` / `setLiquidationIncentive` / `setLatePenaltyRate`, each gated by AccessControlManager.
+Surplus above `totalRaised + totalInterest` is forwarded to PSR. `ShortfallDetected(expected, available)` fires in the shortfall branches.
 
+`totalAssets()` returns `totalRaised` throughout `Lock` and `PendingSettlement`, then switches to `settlementAmount` once the vault settles — the conversion anchor for all ERC-4626 share-to-asset calculations on redemption. Each supplier's payout on redemption is:
 
-## Function Reference
+$$\text{payout} = \text{shares} \times \frac{\text{settlementAmount}}{\text{totalSupply}}$$
 
-### Governance (on `InstitutionalVaultController`)
+### Liquidation
 
-All controller entrypoints are gated by Venus AccessControlManager via the `_checkAccessAllowed` modifier.
+#### Health factor
 
-| Function | Effect |
-| --- | --- |
-| `createVault(...)` | Deploys a fresh `InstitutionalLoanVault` clone, mints the position NFT, registers the vault, and applies its `VaultConfig` / `InstitutionalConfig` / `RiskConfig`. Vault starts in `WaitingForMargin`. Emits `VaultCreated` |
-| `openVault(vault)` | `MarginDeposited` → `Fundraising`; fixes all lifecycle timers |
-| `cancelVault(vault)` | Cancels a pre-launch vault (`WaitingForMargin` / `MarginDeposited`) and refunds all collateral, including the margin; transitions to `Failed` with `institutionDefaulted = false` |
-| `approvePositionTransfer(vault, recipient)` / `revokePositionTransfer(vault)` | Grant or revoke a single-use approval for a position-NFT transfer |
-| `partialPauseVault` / `completePauseVault` / `unpauseVault` | Two-level pause control — see [Pause System](#pause-system) under Security Model |
-| `closeVault(vault)` | Terminal: transitions a settled vault to `Closed` |
-| `setLiquidationThreshold` / `setLiquidationIncentive` / `setLatePenaltyRate` | Update the mutable `RiskConfig` fields post-deployment |
+The vault's health is computed by `_getHypotheticalVaultLiquidity`, which follows the same accounting approach as Compound V2 (the protocol Venus is built on) — collateral is weighted by a liquidation threshold and compared against outstanding debt, both expressed in USD:
 
-### Institution (on the vault)
+$$\text{LT-cap} = \frac{\text{collateralUSD} \times \text{liquidationThreshold}}{10^{18}}$$
 
-The `onlyPositionHolder` modifier checks `positionToken.ownerOf(positionTokenId) == msg.sender` at call time. Transferring the NFT immediately transfers control of these functions.
+$$\begin{cases} \text{liquidity} = \text{LT-cap} - \text{debtUSD} & \text{if } \text{debtUSD} \leq \text{LT-cap} \\ \text{shortfall} = \text{debtUSD} - \text{LT-cap} & \text{otherwise} \end{cases}$$
 
-#### depositCollateral
+`liquidationThreshold` is a mantissa (e.g. `0.85e18` = 85%). A shortfall greater than zero means the vault is liquidatable. The same function is used with non-zero `withdrawAmount` or `additionalDebt` arguments to simulate hypothetical state changes — called by `claimRaisedFunds` and `withdrawCollateral` before executing the action, so neither operation can push the vault into an underwater position.
 
-```solidity
-function depositCollateral(uint256 amount) external;
+#### Seize calculation and Compound V2 lineage
+
+The collateral seize formula is taken directly from Compound V2. In Compound V2, liquidators repay debt in the borrowed asset and receive collateral at a bonus rate. The same principle applies here: the repaid value is converted to USD, multiplied by the incentive multiplier, then divided by the collateral price to arrive at collateral units:
+
+$$\text{seizeAmount} = \frac{\text{repayAmount} \times \text{supplyPrice} \times \text{incentive}}{10^{18} \times \text{collateralPrice}}$$
+
+`incentive` is `liquidationIncentive` for health-based liquidations and `latePenaltyRate` for overdue liquidations. Both are mantissa-encoded multipliers greater than `1e18` — an incentive of `1.1e18` means the liquidator receives 10% more collateral than the repaid debt's USD value. Prices come from `ResilientOracle.getPrice()` scaled to `36 − asset.decimals()` decimal places.
+
+The vault transfers the full `seizeAmount` to `LiquidationAdapter`. The adapter then isolates the bonus slice and takes the protocol's share of that slice only — not of the full seizure:
+
+```
+repayEquivalent  = totalSeized × MANTISSA_ONE / incentive
+incentiveAmount  = totalSeized − repayEquivalent
+protocolAmount   = incentiveAmount × protocolLiquidationShare / MANTISSA_ONE
+callerAmount     = totalSeized − protocolAmount
 ```
 
-Pulls the collateral asset from the caller. Allowed in `WaitingForMargin`, `Fundraising`, and `Lock`. In `WaitingForMargin`, the deposit must bring `totalCollateralDeposited` to at least `idealCollateralAmount × marginRate` in a single transaction. Partial deposits below the margin threshold revert with `InsufficientCollateral`. On success in `WaitingForMargin`, the vault transitions to `MarginDeposited`. Emits `CollateralDeposited(amount, totalCollateralDeposited)`.
+This mirrors Compound V2's `liquidationIncentiveMantissa` accounting: the protocol treasury participates only in the bonus, leaving the principal-equivalent collateral recovery entirely with the liquidator.
 
-#### withdrawCollateral
+#### Health-based
 
-```solidity
-function withdrawCollateral(uint256 amount) external;
-```
+Available in `Lock`, `PendingSettlement`, and `SettlementDeadlineExceeded` when the vault has a non-zero shortfall (see [Health factor](#health-factor) above).
 
-Releases collateral to the caller. Allowed in `Lock`, `Matured`, and `Failed`; blocked in all other states. During `Lock`, two checks gate the call:
+Whitelisted liquidators call `LiquidationAdapter.liquidate(vault, repayAmount)`. The adapter verifies the shortfall and forwards to `vault.liquidate(repayAmount)` through the `onlyLiquidationAdapter` modifier. Inside the vault, `_executeLiquidation` enforces the close factor: if `repayAmount > outstandingDebt × closeFactor` the call reverts with `ExceedsCloseFactor` — it is a hard revert, not a silent cap. Seized collateral is split between the caller and the protocol per the formula above.
 
-1. **Floor check.** `totalCollateralDeposited − amount ≥ minimumCollateralRequired`, where the floor is recalculated at Lock entry as `idealCollateralAmount × totalRaised / maxBorrowCap`. Withdrawals cannot touch the locked portion.
-2. **LT health check.** `_getHypotheticalVaultLiquidity(amount, 0)` simulates the post-withdrawal balance; if it would breach the liquidation threshold, the call reverts with `WithdrawalWouldBreachLT`.
+A health-based liquidation does not directly trigger a state transition. The vault advances normally — through `PendingSettlement` and into `Matured` once debt is zero. The `Liquidated` state is never reached via health-based liquidation.
 
-In `Failed` (`institutionDefaulted = true`), the withdrawable amount is capped at `totalCollateralDeposited − confiscatedMarginRemaining`.
+#### Overdue
 
-#### claimRaisedFunds
+Available once the vault enters `SettlementDeadlineExceeded`. No LT shortfall is required — the time breach alone qualifies. The same `closeFactor` cap applies, but collateral is seized at `latePenaltyRate` instead of `liquidationIncentive`. A vault that breaches both the LT cap and the deadline can be liquidated through either path; the chosen path determines the bonus rate. Like health-based liquidation, an overdue liquidation that clears all debt transitions the vault to `Matured`, not `Liquidated`. The `Liquidated` state is reached exclusively via `repayBadDebt`.
 
-```solidity
-function claimRaisedFunds() external;
-```
+#### Bad-debt rescue
 
-One-shot transfer of the entire raised supply asset balance to the caller. Allowed only in `Lock`, gated by `fundsWithdrawn` (set true on success). Pre-call health check: simulating the resulting debt (`_runtime.totalRaised`) against current collateral must not produce a shortfall, otherwise reverts with `ClaimWouldBreachLT`. Emits `RaisedFundsClaimed(amount)`.
+Available in `Lock`, `PendingSettlement`, and `SettlementDeadlineExceeded` whenever the USD value of deposited collateral falls below the USD value of outstanding debt. `repayBadDebt` is permissionless — any address may call it. The repayment must be large enough to reduce `totalDebt` to at most `totalInterest` in a single call (i.e., the principal must be fully covered); the call reverts with `InsufficientRepayment` otherwise. Once that condition is met the vault transitions to `Liquidated` and the settlement waterfall runs immediately over the combined supply asset balance. Without a rescue the vault remains in whichever state it was in and suppliers have no recourse beyond ordinary liquidation.
 
-#### repay
+## Risk parameters
 
-```solidity
-function repay(uint256 amount) external;
-```
+All tunable parameters grouped by contract, mutability, and who sets them.
 
-Anyone can call. Pulls supply asset from the caller and reduces `totalDebt`. Allowed in `Lock`, `PendingSettlement`, and `SettlementDeadlineExceeded`. Overpayment is automatically clamped to `outstandingDebt`. Emits `Repaid(amount, remainingDebt)`.
+**Set once at vault creation via `createVault` — fixed for the life of the vault:**
 
-### Supplier (on the vault, ERC-4626 interface)
-
-All supplier functions are permissionless. Anyone can supply.
-
-```solidity
-function deposit(uint256 assets, address receiver) external returns (uint256 shares);
-function mint(uint256 shares, address receiver) external returns (uint256 assets);
-function withdraw(uint256 assets, address receiver, address owner) external returns (uint256 shares);
-function redeem(uint256 shares, address receiver, address owner) external returns (uint256 assets);
-```
-
-* `deposit` and `mint` are allowed only in `Fundraising`. Both clamp to remaining capacity (`maxBorrowCap − totalRaised`); exceeding capacity does not revert unless capacity is zero, in which case `ExceedsMaxCap` is raised. `minSupplierDeposit` is enforced unless the deposit fills the final residual slot.
-
-* `withdraw` and `redeem` are allowed in `Matured`, `Failed`, and `Liquidated` only. Both follow standard ERC-4626 semantics, computing the supply-asset payout from `settlementAmount` and `totalSupply()`. In `Failed`, the `_afterWithdrawHook` additionally transfers a pro-rata slice of the confiscated margin in the collateral asset.
-
-Shares are standard ERC-20s, freely transferable at all times. Suppliers track their position through the share balance, not through any per-user NFT.
-
-### Liquidator (via `LiquidationAdapter`)
-
-Two liquidation paths exist on the vault, each gated by the `onlyLiquidationAdapter` modifier:
-
-```solidity
-function liquidate(uint256 repayAmount) external returns (uint256 actualRepay);
-function liquidateOverdueVault(uint256 repayAmount) external returns (uint256 actualRepay);
-```
-
-* `liquidate` (health-based) requires a current LT shortfall. Allowed in `Lock`, `PendingSettlement`, or `SettlementDeadlineExceeded`. The liquidator (via the adapter) repays up to `min(repayAmount, outstandingDebt × closeFactor)` and seizes collateral at the `liquidationIncentive` rate.
-
-* `liquidateOverdueVault` (deadline-based) requires the vault to be in `SettlementDeadlineExceeded`. No collateral shortfall is required; the time breach alone qualifies. Seize amount is computed at the `latePenaltyRate`.
-
-In both cases, seized collateral is split between the caller and the protocol per `LiquidationAdapter.protocolLiquidationShare`; the protocol share is accrued inside the adapter and periodically swept to PSR via `sweepProtocolShareToReserve`.
-
-### Read-Only Views
-
-```solidity
-function state() external view returns (VaultState);
-function config() external view returns (VaultConfig memory);      // BaseVault — shared config
-function runtime() external view returns (VaultRuntime memory);    // BaseVault — shared runtime
-function institutionalConfig() external view returns (InstitutionalConfig memory);
-function institutionalRuntime() external view returns (InstitutionalRuntime memory);
-function riskConfig() external view returns (RiskConfig memory);
-function outstandingDebt() external view returns (uint256);
-function totalAssets() external view returns (uint256);
-function maxDeposit(address) external view returns (uint256);
-function maxWithdraw(address) external view returns (uint256);
-function maxRedeem(address) external view returns (uint256);
-function previewDeposit(uint256) external view returns (uint256);
-function previewRedeem(uint256) external view returns (uint256);
-```
-
-`totalAssets()` returns `totalRaised` until shares become redeemable. Once the vault settles (`Matured`, `Failed`, or `Liquidated`) it returns `settlementAmount`.
-
-## Math
-
-### Required Margin
-
-The margin the institution must deposit to advance from `WaitingForMargin` to `MarginDeposited`:
-
-$$
-\text{requiredMargin} = \text{idealCollateralAmount} \times \frac{\text{marginRate}}{10^{18}}
-$$
-
-### Minimum Collateral Floor (at Lock Entry)
-
-When the vault transitions to `Lock`, the locked-collateral floor is recalculated proportionally to the actual raise:
-
-$$
-\text{minimumCollateralRequired} = \text{idealCollateralAmount} \times \frac{\text{totalRaised}}{\text{maxBorrowCap}}
-$$
-
-This frees the excess collateral above the floor for withdrawal during `Lock` when the raise underfills the cap.
-
-### Total Interest
-
-Fixed interest is computed once at Lock entry and is owed in full at maturity, regardless of when the institution repays:
-
-$$
-\text{totalInterest} = \frac{\text{totalRaised} \times \text{fixedAPY} \times \text{lockDuration}}{\text{BPS} \times \text{YEAR}}
-$$
-
-Where `BPS = 10000` and `YEAR = 365 days`. The result is stored as `totalDebt` at Lock entry; `claimRaisedFunds` adds `totalRaised` to `totalDebt`.
-
-### Protocol Fee at Settlement
-
-`_settleProtocolShare` runs the settlement waterfall once on entry to `Matured` or `Liquidated`. Three branches:
-
-| Branch | Condition | Protocol fee | Settlement amount |
+| Parameter | Location | Units | Constraint |
 | --- | --- | --- | --- |
-| **Full repayment** | `available ≥ totalRaised + totalInterest` | `totalInterest × reserveFactor` | `available − (protocolFee + surplus)` |
-| **Partial interest shortfall** | `totalRaised < available < totalRaised + totalInterest` | `(available − totalRaised) × reserveFactor` | `available − protocolFee` |
-| **Principal shortfall** | `available ≤ totalRaised` | `0` | `available` |
+| Supply asset | `VaultConfig.supplyAsset` | address | Must have non-zero oracle price; must differ from collateral |
+| Collateral asset | `InstitutionalConfig.collateralAsset` | address | Must have non-zero oracle price; must differ from supply asset |
+| Fixed APY | `VaultConfig.fixedAPY` | basis points | 1 – 10 000 |
+| Reserve factor | `VaultConfig.reserveFactor` | mantissa | ≤ `1e18` |
+| Minimum borrow cap | `VaultConfig.minBorrowCap` | supply asset units | > 0; ≤ `maxBorrowCap` |
+| Maximum borrow cap | `VaultConfig.maxBorrowCap` | supply asset units | ≥ `minBorrowCap` |
+| Minimum supplier deposit | `VaultConfig.minSupplierDeposit` | supply asset units | 0 = no floor |
+| Fundraising duration | `VaultConfig.openDuration` | seconds | > 0 |
+| Lock duration | `VaultConfig.lockDuration` | seconds | > 0 |
+| Settlement window | `VaultConfig.settlementWindow` | seconds | > 0 |
+| Ideal collateral amount | `InstitutionalConfig.idealCollateralAmount` | collateral token units | > 0 |
+| Margin rate | `InstitutionalConfig.marginRate` | mantissa | 0 < rate ≤ `1e18` |
 
-Any surplus above `totalRaised + totalInterest` is also forwarded to PSR. `ShortfallDetected(expected, available)` fires in the partial and principal-shortfall branches.
+**Set at vault creation — mutable per vault by governance via the controller:**
 
-### Per-Supplier Payout
+| Parameter | Location | Units | Constraint |
+| --- | --- | --- | --- |
+| Liquidation threshold | `RiskConfig.liquidationThreshold` | mantissa | 0 < LT ≤ `1e18`; `LT × LI < 1e36`; `LT × latePenaltyRate < 1e36` |
+| Liquidation incentive | `RiskConfig.liquidationIncentive` | mantissa | `1e18 < LI ≤ 1.5e18`; `LT × LI < 1e36` |
+| Late penalty rate | `RiskConfig.latePenaltyRate` | mantissa | `1e18 < rate ≤ 1.5e18`; `LT × rate < 1e36` |
 
-Standard ERC-4626 pro-rata against the post-settlement `settlementAmount`:
+**Held on `LiquidationAdapter` — global across all vaults, mutable by governance:**
 
-$$
-\text{payout} = \text{shares} \times \frac{\text{settlementAmount}}{\text{totalSupply}}
-$$
-
-### Margin Compensation per Redeem
-
-When the institution defaults on collateral delivery, the margin is distributed pro-rata to suppliers as they redeem:
-
-$$
-\text{compensation} = \text{confiscatedMarginRemaining} \times \frac{\text{shares}}{\text{totalSupplyBeforeBurn}}
-$$
-
-Compensation is paid in the collateral asset, not the supply asset. Integer division means the last supplier to redeem may receive a marginally smaller compensation than the proportional share suggests; the dust amount is negligible in practice.
-
-## Liquidation
-
-### Standard (Health-Based) Liquidation
-
-Triggered when the vault's debt exceeds its LT-capped collateral value. The liquidator (whitelisted on `LiquidationAdapter`) repays up to a fraction of the outstanding debt, capped by the global `closeFactor`, and seizes collateral at the `liquidationIncentive` rate.
-
-* **Eligibility**: the vault has a non-zero shortfall.
-* **Allowed states**: `Lock`, `PendingSettlement`, `SettlementDeadlineExceeded`.
-* **Repay cap**: `min(repayAmount, outstandingDebt × closeFactor)`. `closeFactor` lives on `LiquidationAdapter`, shared across all vaults.
-* **Seize amount**: computed from oracle-priced collateral and the supply asset, scaled by `liquidationIncentive`.
-
-When the resulting repayment clears the debt, the vault transitions to `Matured` if collateral remains, or to `Liquidated` if the settlement is bad-debt (collateral insufficient to fully cover principal + interest).
-
-### Overdue (Deadline-Based) Liquidation
-
-Triggered when the settlement deadline passes with debt outstanding, irrespective of collateral health.
-
-* **Eligibility**: `state == SettlementDeadlineExceeded` and `outstandingDebt > 0`.
-* **No collateral shortfall required.** The time breach alone qualifies.
-* **Seize amount**: scaled by `latePenaltyRate` instead of `liquidationIncentive`.
-
-A vault that breaches both the LT cap **and** the settlement deadline can be liquidated through either path; the chosen path determines the bonus rate applied to the seize.
-
-### Bad-Debt Rescue
-
-If a liquidation completes but leaves the vault unable to repay suppliers in full, `repayBadDebt` is the path for governance or a sponsoring party to inject supply asset and transition the vault to `Matured` cleanly. Without this rescue, the vault remains in `Liquidated` and suppliers redeem against whatever the seized + remaining balance allows.
-
-## Events
-
-The events suppliers, institutions, and indexers will care about:
-
-| Event | Emitted by | Meaning |
+| Parameter | Field | Constraint |
 | --- | --- | --- |
-| `StateTransition(from, to, timestamp)` | `BaseVault` | Every state change. The canonical lifecycle hook |
-| `Deposit(caller, owner, assets, shares)` | ERC-4626 standard | Supplier deposited |
-| `Withdraw(caller, receiver, owner, assets, shares)` | ERC-4626 standard | Supplier redeemed |
-| `CollateralDeposited(amount, total)` | `InstitutionalLoanVault` | Institution posted collateral |
-| `CollateralWithdrawn(positionHolder, amount, remaining)` | `InstitutionalLoanVault` | Institution withdrew collateral |
-| `RaisedFundsClaimed(amount)` | `BaseVault` | Institution claimed the raised funds |
-| `Repaid(amount, remainingDebt)` | `BaseVault` | Any repayment toward `totalDebt` |
-| `VaultLocked(totalRaised, lockEndTime)` | `InstitutionalLoanVault` | Vault entered `Lock` |
-| `VaultFailed(totalRaised, minBorrowCap)` | `InstitutionalLoanVault` | Vault entered `Failed` |
-| `MarginConfiscated(marginAmount)` | `InstitutionalLoanVault` | Failed — margin reserved for suppliers |
-| `MarginCompensationClaimed(receiver, amount)` | `InstitutionalLoanVault` | Per-supplier margin payout on redeem |
-| `LiquidationExecuted(liquidator, repayAmount, collateralSeized)` | `InstitutionalLoanVault` | Health-based liquidation |
-| `OverdueLiquidationExecuted(settler, repayAmount, collateralSeized)` | `InstitutionalLoanVault` | Deadline-based liquidation |
-| `SettlementConfirmed(settlementAmount, protocolFee, surplus)` | `BaseVault` | Settlement waterfall completed |
-| `ShortfallDetected(totalOwed, available)` | `BaseVault` | Available balance < expected repayment at settlement |
-| `VaultClosed(state)` | `BaseVault` | Vault terminated by governance |
+| Close factor | `closeFactor` | 0 < CF ≤ `1e18` |
+| Protocol liquidation share | `protocolLiquidationShare` | ≤ `1e18` |
 
-## Security Model
+The constraint `LT × LI < 1e36` (and the equivalent for `latePenaltyRate`) ensures that a liquidation always improves vault health rather than worsening it. The controller enforces this invariant on both creation (`_validateLiquidationInvariant`) and every subsequent per-vault update.
 
-### Access Boundaries
+## Governance and access control
 
-| Surface | Gate | Notes |
+### Pause system
+
+A two-level pause is controlled by governance via `partialPauseVault` / `completePauseVault`:
+
+| Level | Blocked | Live |
 | --- | --- | --- |
-| Governance operations (create, open, cancel, pause, close, risk updates) | Venus AccessControlManager via `_checkAccessAllowed` on `InstitutionalVaultController` | Each function is independently gated by its selector signature |
-| Institution operations (collateral, claim) | `onlyPositionHolder` on the vault — checks `positionToken.ownerOf(tokenId)` at call time | NFT transfer immediately reassigns control |
-| Liquidation entrypoints on the vault | `onlyLiquidationAdapter` | Only the configured adapter address can call `liquidate` / `liquidateOverdueVault` |
-| Liquidator/settler whitelists | ACM-gated `updateLiquidatorWhitelist` / `updateSettlerWhitelist` on the adapter | Separate whitelists for the two liquidation paths |
-| Supplier deposits and redemptions | Permissionless | Standard ERC-4626; no allowlist |
+| **Partial** | `deposit`, `mint`, `depositCollateral`, `claimRaisedFunds` | `repay`, `liquidate`, `withdraw`, `redeem` |
+| **Complete** | All vault interactions | — |
 
-### Pause System
+By design, governance can freeze new supply and collateral operations without interrupting active debt service or liquidations.
 
-A two-level pause governs all operations:
+### Position NFT
 
-* `Unpaused` (0): normal operation.
-* `Partial` (1): blocks deposits, collateral operations, fund claim, and the institution's repay path. Liquidation entrypoints and supplier withdrawals remain available.
-* `Complete` (2): blocks everything, including repayment and liquidation. Supplier withdrawals are still permitted via the `whenNotCompletelyPaused` guard, providing a safety valve to ensure suppliers can exit terminal-state vaults even during a complete pause.
+`depositCollateral`, `claimRaisedFunds`, and `withdrawCollateral` are gated by `onlyPositionHolder`, which checks `positionToken.ownerOf(positionTokenId) == msg.sender` at call time. Transferring the NFT immediately reassigns control of all three. `repay` carries no such guard — intentional, for the permissionless debt-service case.
 
-### Position NFT Transfer
+NFT transfers require a single-use governance approval: `approvePositionTransfer(vault, recipient)` records the approved target, consumed on the next `safeTransferFrom`. `revokePositionTransfer` cancels a pending approval before it is used.
 
-`InstitutionPositionToken` is a singleton ERC-721 deployed once and owned by the controller. Transfers are blocked unless governance has approved a specific recipient via `approveTransfer(tokenId, recipient)`. The approval is single-use. This prevents institutions from silently transferring control without governance review.
+### ACM permissions
 
-### One-Shot Lifecycle
+Governance operations (create, open, cancel, pause, close, risk-parameter updates) route through `InstitutionalVaultController` and are gated per selector by the Venus AccessControlManager. Liquidation entry points on the vault are gated by `onlyLiquidationAdapter`; the adapter maintains its own ACM-gated whitelists for liquidators and settlers independently.
 
-The state machine is monotonic; no state can re-enter `Fundraising` once it has been left. This eliminates classes of issues around re-initialization, ensures that interest cannot be compounded across cycles, and keeps the per-vault accounting bounded.
+## Further reading
 
-## Source
-
-Source contracts live in the [VenusProtocol fixed-rate-vaults repository](https://github.com/VenusProtocol/fixed-rate-vaults).
+- [Supplier Guide](../../guides/fixed-rate-vaults/supplier-guide.md)
+- [Institution Guide](../../guides/fixed-rate-vaults/institution-guide.md)
+- [Repository](https://github.com/VenusProtocol/fixed-rate-vaults)
