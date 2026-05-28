@@ -2,23 +2,23 @@
 
 Venus Protocol is introducing a new way to earn and borrow: **Fixed Term Vaults**.
 
-Instead of the variable rates and shared liquidity pools of Venus core markets, Fixed Rate Vaults offer something simpler and more predictable. An institution wants to borrow stablecoins for a set period at a set rate. Suppliers fund that loan, earn a fixed APY, and get their principal back at maturity. No rate fluctuations, no surprises — just a clear term with a clear outcome.
+Instead of the variable rates and shared liquidity pools of Venus core markets, Fixed Term Vaults offer something simpler and more predictable. An institution wants to borrow stablecoins for a set period at a set rate. Suppliers fund that loan, earn a target APR, and get their principal back at maturity. The rate and lock duration are set at vault creation — no mid-term rate changes.
 
 Each vault is **entirely self-contained**. It involves one stablecoin, one institution, and one contract. It shares no liquidity, no risk parameters, and no liquidation flow with Venus core markets or any other vault. Each vault stands or falls on its own.
 
 Every vault implements the **ERC-4626 tokenised vault standard**, so suppliers interact through the familiar `deposit`, `withdraw`, `redeem`, and `balanceOf` interface — no custom integration required. Share tokens are standard ERC-20s, freely transferable at any point in the vault's life.
 
-<figure><img src="../.gitbook/assets/fixed-rate-vault-flow.svg" alt="Fixed Rate Vault fund flow diagram"><figcaption><p>Suppliers deposit stablecoin into the vault, the institution receives the loan and repays with interest, and suppliers redeem principal plus yield at maturity</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/fixed-rate-vault-flow.svg" alt="Fixed Term Vault fund flow diagram"><figcaption><p>Suppliers supply stablecoins into the vault, the institution receives the loan and repays with interest, and suppliers redeem principal plus target yield at maturity</p></figcaption></figure>
 
 ## How a Vault Progresses
 
-<figure><img src="../.gitbook/assets/fixed-rate-vault-state-machine.svg" alt="Fixed Rate Vault state machine diagram"><figcaption><p>Fixed Rate Vault state transitions</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/fixed-rate-vault-state-machine.svg" alt="Fixed Term Vault state machine diagram"><figcaption><p>Fixed Term Vault state transitions</p></figcaption></figure>
 
 Every vault follows the same journey from creation to close. States move in one direction only — there's no going back.
 
 1. **Waiting for margin** — the vault exists on-chain, but the institution must post the full required collateral margin in a single transaction before anything else can happen.
 2. **Margin deposited** — the margin is locked in escrow. Governance reviews the vault and calls `openVault()` to begin the fundraising window.
-3. **Fundraising** — suppliers can now deposit. The vault accepts stablecoins up to its maximum borrow cap. During this same window, the institution tops up their collateral to the required level. Both sides must complete their part before the window closes.
+3. **Fundraising** — suppliers can now supply. The vault accepts stablecoins up to its maximum borrow cap. During this same window, the institution tops up their collateral to the required level. Both sides must complete their part before the window closes.
 4. **Lock** — fundraising succeeded. The fixed-term loan begins. Total interest is computed and fixed immediately as a single lump sum — the full lifetime obligation is known from this moment.
 5. **Pending settlement** — the lock period has ended. The institution now has until the settlement deadline to repay principal plus interest in full.
 6. **Settlement deadline exceeded** — the deadline passed with debt still outstanding. The institution can still repay voluntarily; if they don't, whitelisted settlers can trigger overdue liquidation.
@@ -31,7 +31,7 @@ Every vault follows the same journey from creation to close. States move in one 
 
 ### Suppliers
 
-Fixed Rate Vaults are designed to give lenders certainty:
+Fixed Term Vaults are designed to give lenders certainty:
 
 - **You know your target yield upfront.** The target APR and lock duration are set before fundraising opens — there's nothing to guess or monitor.
 - **Collateral is posted before you can supply.** The institution's margin is on-chain and locked before the fundraising window opens. Combined with full vault isolation, a default in one vault cannot affect any other vault or Venus core markets.
