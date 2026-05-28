@@ -1,8 +1,12 @@
 # Supplier Guide
 
-This guide walks through how to participate in a Fixed Rate Vault as a supplier. You deposit the loan asset during the fundraising window, hold through the lock period, and redeem principal plus the fixed yield at maturity.
+This guide walks through how to participate in a Fixed Term Vault as a supplier. You supply the loan asset during the fundraising window, hold through the lock period, and redeem principal plus the target yield at maturity.
 
-## Before You Deposit
+{% hint style="warning" %}
+**Capital is at risk.** The target APR is set at vault deployment and is not a guaranteed return. Actual proceeds at settlement depend on counterparty performance and may be less than the amount supplied. This product is not available to retail investors or persons in restricted jurisdictions (US, UK, Canada, mainland China, or OFAC-sanctioned countries).
+{% endhint %}
+
+## Before You Supply
 
 Each vault has a published set of terms set at deployment. Before committing funds, review:
 
