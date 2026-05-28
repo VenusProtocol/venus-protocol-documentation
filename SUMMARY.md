@@ -60,7 +60,7 @@
 * [Isolated E-mode](guides/isolated-e-mode.md)
 * [Boost and Repay with Collateral](guides/leveraged-positions.md)
 * [Trade](guides/trade.md)
-* [Fixed Rate Vaults](guides/fixed-rate-vaults/README.md)
+* [Fixed Term Vaults](guides/fixed-rate-vaults/README.md)
   * [Institution Guide](guides/fixed-rate-vaults/institution-guide.md)
   * [Supplier Guide](guides/fixed-rate-vaults/supplier-guide.md)
 
