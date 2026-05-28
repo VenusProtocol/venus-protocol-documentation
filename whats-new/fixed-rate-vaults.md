@@ -47,7 +47,7 @@ Fixed Rate Vaults give borrowers control over their cost of capital:
 
 ## Liquidations
 
-Fixed Rate Vaults run their own liquidation system, independent of Venus core. Two paths exist:
+Fixed Term Vaults run their own liquidation system, independent of Venus core. Two paths exist:
 
 - **Health-based liquidation** — available during the Lock and settlement phases if the vault's outstanding debt exceeds the liquidation-threshold value of its collateral. Whitelisted liquidators repay a portion of the debt (capped by the global close factor) and receive collateral at the liquidation incentive rate. A share of the bonus goes to the protocol.
 - **Overdue liquidation** — available once the institution has missed the settlement deadline, regardless of collateral health. The same close-factor cap applies, but collateral is seized at the late-penalty rate.
