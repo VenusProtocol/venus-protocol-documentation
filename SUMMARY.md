@@ -153,7 +153,7 @@
     * [MaxLoopsLimitHelper](technical-reference/reference-isolated-pools/utility/max-loops-limit-helper.md)
     * [ErrorReporter](technical-reference/reference-isolated-pools/utility/error-reporter.md)
     * [ExponentialNoError](technical-reference/reference-isolated-pools/utility/exponential-no-error.md)
-* [Fixed Rate Vaults](technical-reference/reference-fixed-rate-vaults/README.md)
+* [Fixed Term Vaults](technical-reference/reference-fixed-rate-vaults/README.md)
   * [InstitutionalVaultController](technical-reference/reference-fixed-rate-vaults/institutional-vault-controller.md)
   * [InstitutionalLoanVault](technical-reference/reference-fixed-rate-vaults/institutional-loan-vault.md)
   * [LiquidationAdapter](technical-reference/reference-fixed-rate-vaults/liquidation-adapter.md)
