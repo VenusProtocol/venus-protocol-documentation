@@ -74,7 +74,7 @@
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
   * [E-Mode](technical-reference/reference-technical-articles/e-mode.md)
   * [Trade](technical-reference/reference-technical-articles/trade.md)
-  * [Fixed Rate Vaults](technical-reference/reference-technical-articles/fixed-rate-vaults.md)
+  * [Fixed Term Vaults](technical-reference/reference-technical-articles/fixed-rate-vaults.md)
   * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)
   * [Omnichain Governance](technical-reference/reference-technical-articles/omnichain-governance.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
