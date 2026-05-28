@@ -41,7 +41,7 @@ Fixed Rate Vaults are designed to give lenders certainty:
 
 Fixed Rate Vaults give borrowers control over their cost of capital:
 
-- **Predictable cost.** The APY is fixed at vault creation — no variable-rate exposure over the loan term.
+- **Predictable cost.** The target APR is fixed at vault creation — no variable-rate exposure over the loan term.
 - **Your collateral stays safe.** It is locked in the vault contract and never lent out or rehypothecated — no third party can touch it. If it appreciates during the loan, that upside is still entirely yours.
 - **Plan your repayment from day one.** The total amount owed is calculable at lock entry, so there are no surprises when the settlement window opens.
 
