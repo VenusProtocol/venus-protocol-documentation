@@ -55,7 +55,7 @@ A vault raises 100,000 USDC at an 8% target APR for a 90-day lock. You supply 10
 * Assume a 10% protocol fee on interest: $$1{,}972.60 \times 0.10 \approx 197.26 \text{ USDC}$$
 * Target net interest paid to suppliers: $$1{,}972.60 - 197.26 \approx 1{,}775.34 \text{ USDC}$$
 * Settlement pool: $$100{,}000 + 1{,}775.34 = 101{,}775.34 \text{ USDC}$$
-* Your share (10%): **~10,177.53 USDC**. That's a return of ~1.78% over the 90-day term on your 10,000 USDC principal.
+* Your share (10%): **~10,177.53 USDC**. That's should be a return of ~1.78% over the 90-day term on your 10,000 USDC principal.
 
 ## Key Risks You Must Understand
 
