@@ -33,8 +33,8 @@ Every vault follows the same journey from creation to close. States move in one 
 
 Fixed Rate Vaults are designed to give lenders certainty:
 
-- **You know your yield upfront.** The APY and lock duration are fixed before fundraising opens — there's nothing to guess or monitor.
-- **Collateral is posted before you can deposit.** The institution's margin is on-chain and locked before the fundraising window opens. Combined with full vault isolation, a default in one vault cannot affect any other vault or Venus core markets.
+- **You know your target yield upfront.** The target APR and lock duration are set before fundraising opens — there's nothing to guess or monitor.
+- **Collateral is posted before you can supply.** The institution's margin is on-chain and locked before the fundraising window opens. Combined with full vault isolation, a default in one vault cannot affect any other vault or Venus core markets.
 - **Your position stays liquid.** Vault shares are transferable ERC-20s. You can move or sell them to another party at any time during the vault's life.
 
 ### Institutions
