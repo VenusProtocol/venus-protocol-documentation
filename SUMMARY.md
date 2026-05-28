@@ -8,7 +8,7 @@
 
 ## What's New?
 
-* [Fixed Rate Vaults](whats-new/fixed-rate-vaults.md)
+* [Fixed Term Vaults](whats-new/fixed-rate-vaults.md)
 * [Trade](whats-new/trade.md)
 * [Leveraged Positions](whats-new/leveraged-positions.md)
 * [E-Mode](whats-new/e-mode.md)
