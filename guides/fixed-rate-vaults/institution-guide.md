@@ -8,10 +8,12 @@ To get started, reach out to the Venus team. Once the terms are agreed upon off-
 
 After deployment, you receive two things:
 
-* The **vault address** — the target of every later action.
+* The **vault address**: the target of every later action.
 * A **position NFT** minted to the operator address you nominated. The NFT is the credential for all institution-side actions. Whoever holds it controls the vault.
 
 NFT transfers are blocked unless Venus approves a specific recipient. The vault is now ready for your first action.
+
+> Every institution action below is called directly on **your vault** contract. Opening and cancelling the vault happen on the **InstitutionalVaultController** and are performed by Venus governance, with no action from you.
 
 ## Step 1: Deposit the Margin
 
@@ -20,9 +22,15 @@ Deposit the margin into the vault in a single transaction. Partial deposits belo
 The margin is a fixed percentage of the ideal collateral amount set at vault deployment.
 If you never deposit the margin, the vault simply sits idle. Venus can cancel and clean it up.
 
+* **Function:** `depositCollateral(amount)` (approve the collateral asset to the vault first)
+* **Callable in:** `WaitingForMargin` (the same function is also used in `Fundraising` and `Lock`)
+* **Keep in mind:** `amount` must cover the full margin (`marginRate × idealCollateralAmount`) in one transaction; anything below the threshold reverts. On success the vault advances to `MarginDeposited`.
+
 ## Step 2: Wait for the Vault to Open
 
 After the margin lands, Venus opens the vault and starts the fundraising window. Suppliers can now deposit the loan asset. No action is required from you in this step.
+
+* **Function:** `openVault(vault)`, called on the **InstitutionalVaultController** by Venus governance, not by you. (Governance can instead `cancelVault(vault)` from `MarginDeposited` if needed, which refunds your margin.)
 
 ## Step 3: Top Up Collateral During Fundraising
 
@@ -30,8 +38,12 @@ While fundraising is open, bring the collateral balance up from the margin to th
 
 The full amount must be in place **before the fundraising window closes**. If it isn't, the vault fails, and the outcome depends on the raise:
 
-* **The raise also fell short of the minimum** — you recover all deposited collateral, including the margin.
-* **The raise succeeded but collateral was underdelivered** — the margin is confiscated and distributed to suppliers. You recover only the remaining non-margin collateral.
+* **The raise also fell short of the minimum:** you recover all deposited collateral, including the margin.
+* **The raise succeeded but collateral was underdelivered:** the margin is confiscated and distributed to suppliers. You recover only the remaining non-margin collateral.
+
+* **Function:** `depositCollateral(amount)` (same call as the margin deposit; approve the collateral asset first)
+* **Callable in:** `Fundraising`
+* **Keep in mind:** bring `totalCollateralDeposited` up to the full `idealCollateralAmount` **before the fundraising window closes**. Falling short here is what triggers the failure outcomes above.
 
 {% hint style="warning" %}
 If fundraising succeeds but you don't top up the collateral in time, the margin is confiscated. There is no recovery path once that happens.
@@ -41,7 +53,14 @@ If fundraising succeeds but you don't top up the collateral in time, the margin 
 
 Once fundraising closes successfully, the vault enters the lock period and the raised funds become available.
 
+* **Function:** `claimRaisedFunds()` (transfers the entire raised amount to you)
+* **Callable in:** `Lock`
+* **Keep in mind:** one-shot, all-or-nothing, with no partial draw.
+
 **During the lock period**, you can add collateral at any time to defend the position's health if the collateral price drops. You can also withdraw any collateral above the minimum floor, as long as the position stays within the liquidation threshold. If either constraint is breached, the withdrawal is rejected.
+
+* **Add collateral:** `depositCollateral(amount)`, callable in `Lock`; the most direct way to restore health when the collateral price falls.
+* **Withdraw collateral:** `withdrawCollateral(amount)`, callable in `Lock` (and later in `Matured` / `Failed`); in `Lock` it must keep collateral above the minimum floor and the position within the liquidation threshold, or it reverts.
 
 If you don't claim before the lock period ends, the funds stay in the vault. Interest is still owed at maturity either way, so claiming late means paying interest on capital you never used.
 
@@ -50,6 +69,10 @@ If you don't claim before the lock period ends, the funds stay in the vault. Int
 When the lock period ends, repayment is due. You have until the settlement deadline to repay in full.
 
 Repayments can be partial, and any wallet can repay on your behalf. Once the debt clears, the vault matures and suppliers can begin redeeming.
+
+* **Function:** `repay(amount)` (approve the supply asset to the vault first)
+* **Callable in:** `Lock`, `PendingSettlement`, `SettlementDeadlineExceeded`
+* **Keep in mind:** the call is **permissionless**, so any wallet can call it on your behalf. Partial repayments are allowed and overpayment is clamped to the outstanding debt. Interest is fixed for the full lock duration, so repaying early does not reduce what you owe, but it frees collateral and removes late-payment risk.
 
 {% hint style="warning" %}
 Missing the settlement deadline makes the vault liquidatable at the late-penalty rate, even if your collateral is healthy.
