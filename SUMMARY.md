@@ -8,6 +8,7 @@
 
 ## What's New?
 
+* [Fixed Rate Vaults](whats-new/fixed-rate-vaults.md)
 * [Trade](whats-new/trade.md)
 * [Leveraged Positions](whats-new/leveraged-positions.md)
 * [E-Mode](whats-new/e-mode.md)
@@ -18,7 +19,6 @@
 * [Automatic Income Allocation](whats-new/automatic-income-allocation.md)
 * [TokenBuyback Contract](whats-new/token-converter.md)
 * [Venus Prime](whats-new/prime-yield.md)
-* [Fixed Rate Vaults](whats-new/fixed-rate-vaults.md)
 
 ## Governance
 
