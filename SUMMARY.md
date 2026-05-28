@@ -220,7 +220,7 @@
 * [Token Converters](deployed-contracts/token-converters.md)
 * [VenusERC4626](deployed-contracts/venus-erc4626.md)
 * [Periphery](deployed-contracts/periphery.md)
-* [Fixed Rate Vaults](deployed-contracts/fixed-rate-vaults.md)
+* [Fixed Term Vaults](deployed-contracts/fixed-rate-vaults.md)
 
 ## Services
 
