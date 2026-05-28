@@ -65,7 +65,7 @@ A Fixed Term Vault is a fixed-term commitment. Be aware of the following before 
 * **Fundraising shortfall.** If the raise falls short of the minimum, the vault fails and you get your principal back with no interest.
 * **Collateral underdelivery.** If the institution doesn't top up collateral in time, you get your principal back plus a pro-rata share of the confiscated margin in the collateral asset.
 * **Overdue liquidation.** If the institution misses the settlement deadline, the vault is liquidated at the late-penalty rate, which can reduce the amount available for suppliers.
-* **Liquidation may reduce recovery.** If collateral didn't fully cover the debt, your payout may be less than the headline yield.
+* **Liquidation may reduce recovery.** If collateral didn't fully cover the debt, your payout may be less than the target rewards.
 
 ## Best Practices
 
