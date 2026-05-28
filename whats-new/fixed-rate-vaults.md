@@ -1,6 +1,6 @@
-# Fixed Rate Vaults
+# Fixed Term Vaults
 
-Venus Protocol is introducing a new way to earn and borrow: **Fixed Rate Vaults**.
+Venus Protocol is introducing a new way to earn and borrow: **Fixed Term Vaults**.
 
 Instead of the variable rates and shared liquidity pools of Venus core markets, Fixed Rate Vaults offer something simpler and more predictable. An institution wants to borrow stablecoins for a set period at a set rate. Suppliers fund that loan, earn a fixed APY, and get their principal back at maturity. No rate fluctuations, no surprises — just a clear term with a clear outcome.
 

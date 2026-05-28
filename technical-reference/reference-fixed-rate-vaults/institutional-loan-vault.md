@@ -4,7 +4,7 @@
 
 **Title:** InstitutionalLoanVault
 
-ERC-4626 vault for institutional fixed-rate lending with on-chain collateral,
+ERC-4626 vault for institutional fixed-term lending with on-chain collateral,
 borrowing, and liquidation support. Deployed as EIP-1167 minimal proxy clones.
 
 Inherits BaseVault for shared ERC-4626 mechanics, fundraising, interest, settlement,

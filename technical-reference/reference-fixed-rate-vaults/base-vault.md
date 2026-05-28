@@ -4,7 +4,7 @@
 
 **Title:** BaseVault
 
-Abstract base ERC-4626 vault providing shared mechanics for all Venus fixed-rate vault types:
+Abstract base ERC-4626 vault providing shared mechanics for all Venus fixed-term vault types:
 fundraising (time-bounded deposit window), interest computation, settlement (protocol fee waterfall),
 and core state machine transitions.
 

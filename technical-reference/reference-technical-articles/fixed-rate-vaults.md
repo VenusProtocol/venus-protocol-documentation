@@ -1,6 +1,6 @@
-# Fixed Rate Vaults
+# Fixed Term Vaults
 
-A Fixed Rate Vault is a two-party, fixed-term loan between an institution and a pool of on-chain suppliers. The institution borrows a stablecoin against crypto collateral at a rate and duration agreed at vault creation. Suppliers commit capital during a short fundraising window; at maturity they redeem their shares for principal plus the fixed interest, regardless of market conditions between entry and settlement.
+A Fixed Term Vault is a two-party, fixed-term loan between an institution and a pool of on-chain suppliers. The institution borrows a stablecoin against crypto collateral at a rate and duration agreed at vault creation. Suppliers commit capital during a short fundraising window; at maturity they redeem their shares for principal plus the fixed interest, regardless of market conditions between entry and settlement.
 
 Each vault is a fully isolated contract clone — its own collateral, its own debt, its own supplier shares. A default, liquidation, or governance action in one vault has zero effect on any other vault or on Venus core markets.
 
@@ -10,7 +10,7 @@ Each vault is a fully isolated contract clone — its own collateral, its own de
 
 The system is composed of four contracts. Each vault is an independent clone deployed by the controller — there is no shared state between loans.
 
-<figure><img src="../../.gitbook/assets/fixed-rate-vault-architecture.svg" alt="Fixed Rate Vault contract architecture diagram"><figcaption><p>The controller deploys a fresh vault clone and mints a position NFT per loan; all liquidation calls are routed through the LiquidationAdapter</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/fixed-rate-vault-architecture.svg" alt="Fixed Term Vault contract architecture diagram"><figcaption><p>The controller deploys a fresh vault clone and mints a position NFT per loan; all liquidation calls are routed through the LiquidationAdapter</p></figcaption></figure>
 
 **[InstitutionalVaultController](../reference-fixed-rate-vaults/institutional-vault-controller.md)** is the sole factory and the only conduit through which any admin operation reaches a vault. It deploys each vault clone and mints the corresponding position NFT in the same transaction. It also exposes the ACM-gated lifecycle calls (`openVault`, `cancelVault`, `partialPauseVault`, `completePauseVault`, `unpauseVault`, `closeVault`) and risk-parameter updates that governance invokes separately over the life of each vault. All ACM permission checks are enforced here — individual vaults carry no ACM wiring and trust calls from the controller implicitly. Deployed behind a transparent proxy, so governance policy can be updated without touching live contracts.
 
@@ -22,7 +22,7 @@ The system is composed of four contracts. Each vault is an independent clone dep
 
 ### BaseVault, ERC-4626, and extensibility
 
-`InstitutionalLoanVault` inherits `BaseVault`, an abstract contract built on top of ERC-4626 that was designed to be reusable across different kinds of fixed-rate vault. `BaseVault` captures everything that any such vault has in common — fundraising, interest computation, the settlement waterfall, state machine scaffolding, and the pause system — so a new vault type only has to implement what is specific to its loan structure. Future vault types follow the same pattern: inherit `BaseVault`, override its three virtual hooks (`_checkAndAdvanceState`, `_afterWithdrawHook`, `_beforeClaimRaisedFunds`), and add the remaining type-specific logic on top.
+`InstitutionalLoanVault` inherits `BaseVault`, an abstract contract built on top of ERC-4626 that was designed to be reusable across different kinds of fixed-term vault. `BaseVault` captures everything that any such vault has in common — fundraising, interest computation, the settlement waterfall, state machine scaffolding, and the pause system — so a new vault type only has to implement what is specific to its loan structure. Future vault types follow the same pattern: inherit `BaseVault`, override its three virtual hooks (`_checkAndAdvanceState`, `_afterWithdrawHook`, `_beforeClaimRaisedFunds`), and add the remaining type-specific logic on top.
 
 ERC-4626 is used as the supplier-facing API, but several methods deviate from the specification to enforce lifecycle constraints:
 
@@ -51,7 +51,7 @@ Both the supply asset and the collateral asset must have a non-zero oracle price
 
 The vault tracks lifecycle as a `VaultState` enum. Transitions are monotonic — no state ever goes backward. Every non-view entry point calls `_checkAndAdvanceState()` before its own logic, so state advances automatically on the first relevant call after a trigger condition is met. All transitions after `openVault` are automatic — no governance call is needed to move the vault from `Fundraising` through `Lock`, `PendingSettlement`, and into a terminal state. For cases where no interaction is pending but conditions for a transition are already met, anyone can call `updateVaultState()` to advance the state explicitly.
 
-<figure><img src="../../.gitbook/assets/fixed-rate-vault-state-machine.svg" alt="Fixed Rate Vault state machine diagram"><figcaption><p>State transitions are monotonic — no state ever goes backward. Dashed red paths show cancel and failure routes; the grey arrows at the bottom show all three terminal states collapsing into Closed via <code>closeVault()</code></p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/fixed-rate-vault-state-machine.svg" alt="Fixed Term Vault state machine diagram"><figcaption><p>State transitions are monotonic — no state ever goes backward. Dashed red paths show cancel and failure routes; the grey arrows at the bottom show all three terminal states collapsing into Closed via <code>closeVault()</code></p></figcaption></figure>
 
 ## Core mechanics
 
@@ -199,7 +199,7 @@ All tunable parameters grouped by contract, mutability, and who sets them.
 | --- | --- | --- | --- |
 | Supply asset | `VaultConfig.supplyAsset` | address | Must have non-zero oracle price; must differ from collateral |
 | Collateral asset | `InstitutionalConfig.collateralAsset` | address | Must have non-zero oracle price; must differ from supply asset |
-| Fixed APY | `VaultConfig.fixedAPY` | basis points | 1 – 10 000 |
+| Target APR | `VaultConfig.fixedAPY` | basis points | 1 – 10 000 |
 | Reserve factor | `VaultConfig.reserveFactor` | mantissa | ≤ `1e18` |
 | Minimum borrow cap | `VaultConfig.minBorrowCap` | supply asset units | > 0; ≤ `maxBorrowCap` |
 | Maximum borrow cap | `VaultConfig.maxBorrowCap` | supply asset units | ≥ `minBorrowCap` |

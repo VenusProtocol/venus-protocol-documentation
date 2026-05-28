@@ -1,6 +1,6 @@
-# Fixed Rate Vaults
+# Fixed Term Vaults
 
-Solidity API reference for the Fixed Rate Vault system, generated from NatSpec.
+Solidity API reference for the Fixed Term Vault system, generated from NatSpec.
 
 The system has three singleton contracts, one vault implementation contract (cloned per loan by the controller), and one abstract base:
 
