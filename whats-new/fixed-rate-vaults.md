@@ -59,3 +59,4 @@ Both paths route through the `LiquidationAdapter`, which maintains separate ACM-
 - [Supplier Guide](../guides/fixed-rate-vaults/supplier-guide.md) — step-by-step walkthrough for lenders.
 - [Institution Guide](../guides/fixed-rate-vaults/institution-guide.md) — step-by-step walkthrough for borrowers.
 - [Fixed Rate Vaults Technical Reference](../technical-reference/reference-technical-articles/fixed-rate-vaults.md) — contract architecture, math, and liquidation paths in full detail.
+- [Solidity API Reference](../technical-reference/reference-fixed-rate-vaults/README.md) — full function-level reference for all contracts.
