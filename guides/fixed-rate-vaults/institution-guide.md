@@ -1,6 +1,6 @@
 # Institution Guide
 
-This guide walks through the institution's lifecycle in a Fixed Rate Vault. It covers getting allocated a vault by Venus, depositing the margin, topping up collateral during fundraising, claiming the raised funds, repaying the loan, and recovering any remaining collateral.
+This guide walks through the institution's lifecycle in a Fixed Term Vault. It covers getting allocated a vault by Venus, depositing the margin, topping up collateral during fundraising, claiming the raised funds, repaying the loan, and recovering any remaining collateral.
 
 ## Getting a Vault
 
@@ -28,7 +28,7 @@ If you never deposit the margin, the vault simply sits idle. Venus can cancel an
 
 ## Step 2: Wait for the Vault to Open
 
-After the margin lands, Venus opens the vault and starts the fundraising window. Suppliers can now deposit the loan asset. No action is required from you in this step.
+After the margin lands, Venus opens the vault and starts the fundraising window. Suppliers can now supply the loan asset. No action is required from you in this step.
 
 * **Function:** `openVault(vault)`, called on the **InstitutionalVaultController** by Venus governance, not by you. (Governance can instead `cancelVault(vault)` from `MarginDeposited` if needed, which refunds your margin.)
 
@@ -80,7 +80,7 @@ Missing the settlement deadline makes the vault liquidatable at the late-penalty
 
 ## Key Risks You Must Understand
 
-A Fixed Rate Vault is a fixed-term commitment with a few timing-sensitive obligations. Be aware of the following before participating:
+A Fixed Term Vault is a fixed-term commitment with a few timing-sensitive obligations. Be aware of the following before participating:
 
 1. **Margin confiscation**
 
@@ -96,7 +96,7 @@ A Fixed Rate Vault is a fixed-term commitment with a few timing-sensitive obliga
 
 4. **No early changes to terms**
 
-   Fixed APY, lock duration, settlement window, and the borrow caps are all set at deployment and cannot be renegotiated on-chain. Confirm the terms with Venus off-chain before the vault is created.
+   Target APR, lock duration, settlement window, and the borrow caps are all set at deployment and cannot be renegotiated on-chain. Confirm the terms with Venus off-chain before the vault is created.
 
 ## Best Practices
 
@@ -106,4 +106,4 @@ A Fixed Rate Vault is a fixed-term commitment with a few timing-sensitive obliga
 
 * **Keep the position NFT in a wallet you control.** Whoever holds the NFT controls the vault. If you delegate it to an operator, treat that wallet with the same security as a treasury wallet.
 
-For the on-chain details, including the full state machine, function signatures, math, and liquidation paths, see the [Fixed Rate Vaults Technical Reference](../../technical-reference/reference-technical-articles/fixed-rate-vaults.md).
+For the on-chain details, including the full state machine, function signatures, math, and liquidation paths, see the [Fixed Term Vaults Technical Reference](../../technical-reference/reference-technical-articles/fixed-rate-vaults.md).
