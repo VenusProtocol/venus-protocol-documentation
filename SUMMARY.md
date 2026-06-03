@@ -96,6 +96,8 @@
   * [VToken](technical-reference/reference-core-pool/vtoken.md)
   * [Prime](technical-reference/reference-core-pool/prime/README.md)
     * [Prime token](technical-reference/reference-core-pool/prime/prime.md)
+    * [Prime leaderboard](technical-reference/reference-core-pool/prime/prime-leaderboard.md)
+    * [Prime leaderboard storage](technical-reference/reference-core-pool/prime/prime-leaderboard-storage.md)
     * [Prime liquidity provider](technical-reference/reference-core-pool/prime/prime-liquidity-provider.md)
     * [Prime storage](technical-reference/reference-core-pool/prime/prime-storage.md)
   * [Vaults](technical-reference/reference-core-pool/vaults/README.md)

@@ -1,14 +1,7 @@
-# PrimeStorageV1
-Storage for Prime Token
+# PrimeV2StorageV1
+Storage layout for the PrimeV2 contract with leaderboard-based Prime token distribution
 
 # Solidity API
-
-```solidity
-struct Token {
-  bool exists;
-  bool isIrrevocable;
-}
-```
 
 ```solidity
 struct Market {
@@ -36,82 +29,62 @@ struct PendingReward {
 }
 ```
 
-### tokens
+### isPrimeHolder
 
-Mapping to get prime token's metadata
+Whether a user holds a Prime token
 
 ```solidity
-mapping(address => struct PrimeStorageV1.Token) tokens
+mapping(address => bool) isPrimeHolder
 ```
 
 - - -
 
-### totalIrrevocable
+### totalTokens
 
-Tracks total irrevocable tokens minted
+Total count of Prime tokens
 
 ```solidity
-uint256 totalIrrevocable
+uint256 totalTokens
 ```
 
 - - -
 
-### totalRevocable
+### tokenLimit
 
-Tracks total revocable tokens minted
-
-```solidity
-uint256 totalRevocable
-```
-
-- - -
-
-### revocableLimit
-
-Indicates maximum revocable tokens that can be minted
+Maximum number of Prime tokens allowed
 
 ```solidity
-uint256 revocableLimit
-```
-
-- - -
-
-### irrevocableLimit
-
-Indicates maximum irrevocable tokens that can be minted
-
-```solidity
-uint256 irrevocableLimit
-```
-
-- - -
-
-### stakedAt
-
-Tracks when prime token eligible users started staking for claiming prime token
-
-```solidity
-mapping(address => uint256) stakedAt
+uint256 tokenLimit
 ```
 
 - - -
 
 ### markets
 
-vToken to market configuration
+Mapping of vToken to its market configuration
 
 ```solidity
-mapping(address => struct PrimeStorageV1.Market) markets
+mapping(address => struct PrimeV2StorageV1.Market) markets
 ```
 
 - - -
 
 ### interests
 
-vToken to user to user index
+Mapping of vToken -> user -> interest info
 
 ```solidity
-mapping(address => mapping(address => struct PrimeStorageV1.Interest)) interests
+mapping(address => mapping(address => struct PrimeV2StorageV1.Interest)) interests
+```
+
+- - -
+
+### vTokenForAsset
+
+Mapping of underlying token to vToken address (used to check if an asset is part of Prime markets)
+
+```solidity
+mapping(address => address) vTokenForAsset
 ```
 
 - - -
@@ -136,109 +109,9 @@ uint128 alphaDenominator
 
 - - -
 
-### xvsVault
-
-address of XVS vault
-
-```solidity
-address xvsVault
-```
-
-- - -
-
-### xvsVaultRewardToken
-
-address of XVS vault reward token
-
-```solidity
-address xvsVaultRewardToken
-```
-
-- - -
-
-### xvsVaultPoolId
-
-address of XVS vault pool id
-
-```solidity
-uint256 xvsVaultPoolId
-```
-
-- - -
-
-### isScoreUpdated
-
-mapping to check if a account's score was updated in the round
-
-```solidity
-mapping(uint256 => mapping(address => bool)) isScoreUpdated
-```
-
-- - -
-
-### nextScoreUpdateRoundId
-
-unique id for next round
-
-```solidity
-uint256 nextScoreUpdateRoundId
-```
-
-- - -
-
-### totalScoreUpdatesRequired
-
-total number of accounts whose score needs to be updated
-
-```solidity
-uint256 totalScoreUpdatesRequired
-```
-
-- - -
-
-### pendingScoreUpdates
-
-total number of accounts whose score is yet to be updated
-
-```solidity
-uint256 pendingScoreUpdates
-```
-
-- - -
-
-### vTokenForAsset
-
-mapping used to find if an asset is part of prime markets
-
-```solidity
-mapping(address => address) vTokenForAsset
-```
-
-- - -
-
-### comptroller
-
-address of core pool comptroller contract
-
-```solidity
-address comptroller
-```
-
-- - -
-
-### unreleasedPLPIncome
-
-unreleased income from PLP that's already distributed to prime holders
-
-```solidity
-mapping(address => uint256) unreleasedPLPIncome
-```
-
-- - -
-
 ### primeLiquidityProvider
 
-The address of PLP contract
+The address of the PrimeLiquidityProvider contract
 
 ```solidity
 address primeLiquidityProvider
@@ -248,7 +121,7 @@ address primeLiquidityProvider
 
 ### oracle
 
-The address of ResilientOracle contract
+The address of the ResilientOracle contract
 
 ```solidity
 contract ResilientOracleInterface oracle
@@ -256,3 +129,92 @@ contract ResilientOracleInterface oracle
 
 - - -
 
+### corePoolComptroller
+
+Address of the core pool comptroller contract
+
+```solidity
+address corePoolComptroller
+```
+
+- - -
+
+### unreleasedPLPIncome
+
+Unreleased income from the PLP per token that's already distributed to Prime holders
+
+```solidity
+mapping(address => uint256) unreleasedPLPIncome
+```
+
+- - -
+
+### undistributedReward
+
+Income accrued while no scored members existed in the market. Tracked per underlying so governance can reclaim the slice via `sweepUndistributed` without touching user-owed funds.
+
+```solidity
+mapping(address => uint256) undistributedReward
+```
+
+- - -
+
+### isScoreUpdated
+
+Mapping to check if an account's score was updated in a round
+
+```solidity
+mapping(uint256 => mapping(address => bool)) isScoreUpdated
+```
+
+- - -
+
+### nextScoreUpdateRoundId
+
+Current score update round ID
+
+```solidity
+uint256 nextScoreUpdateRoundId
+```
+
+- - -
+
+### pendingScoreUpdates
+
+Number of pending score updates in the current round
+
+```solidity
+uint256 pendingScoreUpdates
+```
+
+- - -
+
+### primeLeaderboard
+
+Address of the PrimeLeaderboard contract for permissionless eligibility checks
+
+```solidity
+address primeLeaderboard
+```
+
+- - -
+
+### mintThreshold
+
+Minimum effective stake required for permissionless Prime minting
+
+```solidity
+uint256 mintThreshold
+```
+
+- - -
+
+### mintDeadline
+
+Unix timestamp after which permissionless minting is closed (0 = no deadline)
+
+```solidity
+uint256 mintDeadline
+```
+
+- - -
