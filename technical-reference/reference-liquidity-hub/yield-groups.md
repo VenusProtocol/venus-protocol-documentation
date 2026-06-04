@@ -90,11 +90,7 @@ An optional per-resource deposit cap limits how much underlying *this YieldGroup
 
 FRV vaults are ERC-4626 with an **11-state machine** on top. `YieldGroupFRV` calls the vault's permissionless `updateVaultState()` *before every* capacity / liquidity check so routing always sees the current state, never a stale one.
 
-```
-WaitingForMargin → MarginDeposited → Fundraising → InstitutionConfirmation
-  → Lock → PendingSettlement → Matured             (happy path)
-                            ↘ SettlementDeadlineExceeded / Failed / Liquidated → Closed
-```
+<figure><img src="../../.gitbook/assets/liquidity-hub-frv-lifecycle.svg" alt="FRV lifecycle: the happy path WaitingForMargin to Matured, with deposits only in Fundraising and withdrawals only in the terminal Matured, Failed, or Liquidated states before Closed"><figcaption></figcaption></figure>
 
 The full `FRVVaultState` enum (values 0–10): `WaitingForMargin`, `MarginDeposited`, `Fundraising`, `InstitutionConfirmation`, `Lock`, `PendingSettlement`, `SettlementDeadlineExceeded`, `Matured`, `Failed`, `Liquidated`, `Closed`.
 

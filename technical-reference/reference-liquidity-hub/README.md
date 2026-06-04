@@ -8,27 +8,7 @@ For the user-facing introduction, see [Liquidity Hub](../../whats-new/liquidity-
 
 Routing is three-tiered. The Hub depends only on the `ISource` interface and never reaches past a Source into the underlying market.
 
-```
-                          User
-                       deposit / withdraw
-                            │
-                            ▼
-   ┌─────────────────────────────────────────────────┐
-   │ Hub_<asset>  (ERC-4626, beacon proxy)            │
-   │ dual caps · fees · APY EMA · per-tx withdraw cap │
-   └─────────────────────────────────────────────────┘
-        │ outer queues (independent deposit / withdraw order)
-        ├──────────────┬──────────────┐
-        ▼              ▼              ▼
-   YieldGroupCore  YieldGroupFlux  YieldGroupFRV       ← Sources (ISource)
-        │              │              │  inner queues
-        ▼              ▼              ▼
-   AdapterCoreV1   AdapterFlux    AdapterFRV           ← stateless, delegatecall
-        │              │              │
-        ▼              ▼              ▼
-    vToken          fToken         FRV vault           ← Resources
-   (Venus Core)    (Fluid)        (fixed-rate)
-```
+<figure><img src="../../.gitbook/assets/liquidity-hub-architecture.svg" alt="Liquidity Hub architecture: the Hub routes through Core, Flux, and FRV YieldGroups (Sources) via stateless delegatecall adapters into the underlying vToken, fToken, and FRV-vault resources"><figcaption></figcaption></figure>
 
 * **Hub** — the ERC-4626 entry point (one beacon proxy per asset). Holds the Source registry, the two outer routing queues, dual caps, the per-transaction withdrawal cap, fees, APY tracking, and the multi-level pause flags.
 * **YieldGroup (Source)** — aggregates one or more *resources* of a single protocol family behind the uniform `ISource` boundary, and owns its own inner deposit / withdraw queues and per-resource registry.

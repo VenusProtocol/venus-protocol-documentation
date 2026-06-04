@@ -1,0 +1,51 @@
+<svg width="940" height="220" viewBox="0 0 940 220" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6B83D6"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1FCB86"/>
+    </marker>
+    <style>
+      .neu  { fill: #3C4660; stroke: #515D7C; stroke-width: 1.2; }
+      .hub  { fill: #3A78FF; }
+      .src  { fill: #2F3B5C; stroke: #46557E; stroke-width: 1.2; }
+      .adp  { fill: #222B42; stroke: #38445F; stroke-width: 1.2; }
+      .res  { fill: #2348CC; stroke: #4366E6; stroke-width: 1.2; }
+      .lbl  { fill: #FFFFFF; font-size: 14px; font-weight: 600; }
+      .ttl  { fill: #FFFFFF; font-size: 15px; font-weight: 700; }
+      .note { fill: #9AA8CC; font-size: 11px; font-style: italic; }
+      .edge { stroke: #6B83D6; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .ret  { stroke: #1FCB86; stroke-width: 2.2; fill: none; stroke-dasharray: 5 4; marker-end: url(#arrowGreen); }
+      .la   { text-anchor: start; }
+      text  { text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="940" height="220" fill="#0E1626"/>
+
+  <text class="ttl la" x="28" y="32">Deposit</text>
+
+  <rect class="neu" x="28"  y="92" width="92"  height="56" rx="14"/>
+  <text class="lbl" x="74"  y="124">User</text>
+  <rect class="hub" x="180" y="92" width="120" height="56" rx="14"/>
+  <text class="lbl" x="240" y="124">Hub</text>
+  <rect class="src" x="360" y="92" width="150" height="56" rx="14"/>
+  <text class="lbl" x="435" y="124">YieldGroup</text>
+  <rect class="adp" x="570" y="92" width="130" height="56" rx="14"/>
+  <text class="lbl" x="635" y="124">Adapter</text>
+  <rect class="res" x="760" y="92" width="150" height="56" rx="14"/>
+  <text class="lbl" x="835" y="124">Resource</text>
+
+  <path class="edge" d="M122,120 L178,120"/>
+  <text class="note" x="150" y="80">assets</text>
+  <path class="edge" d="M302,120 L358,120"/>
+  <text class="note" x="330" y="80">outer queue</text>
+  <path class="edge" d="M512,120 L568,120"/>
+  <text class="note" x="540" y="80">delegatecall</text>
+  <path class="edge" d="M702,120 L758,120"/>
+  <text class="note" x="730" y="80">mint / deposit</text>
+
+  <path class="ret" d="M240,148 L240,182 L74,182 L74,150"/>
+  <text class="note" x="157" y="200" fill="#1FCB86">Hub mints shares to receiver</text>
+</svg>

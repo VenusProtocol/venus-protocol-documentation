@@ -21,6 +21,8 @@ All user-facing mutating operations are **atomic-or-revert** — they complete i
 
 ### Deposit
 
+<figure><img src="../../.gitbook/assets/liquidity-hub-deposit-flow.svg" alt="Deposit flow: assets routed from the user through the Hub and a YieldGroup's adapter into a resource, with shares minted back to the receiver"><figcaption></figcaption></figure>
+
 1. User calls `deposit(assets, receiver)` (or `mint`).
 2. The Hub accrues fees and refreshes APY, then pulls `assets` from the user — so the caller trades against the post-accrual share price.
 3. The Hub snapshots `totalAssets()` (which already includes the just-transferred idle) and walks the **outer deposit queue**.
@@ -31,6 +33,8 @@ All user-facing mutating operations are **atomic-or-revert** — they complete i
 
 ### Withdrawal
 
+<figure><img src="../../.gitbook/assets/liquidity-hub-withdrawal-flow.svg" alt="Withdrawal flow: assets pulled from a resource back through the adapter, YieldGroup, and Hub to the user, with the owner's shares burned at the Hub"><figcaption></figcaption></figure>
+
 1. User calls `withdraw(assets, receiver, owner)` (or `redeem`).
 2. The Hub accrues fees, refreshes APY, enforces the **per-transaction withdrawal cap** (`HubWithdrawCapExceeded`), then burns shares from `owner`.
 3. The Hub consumes its own **idle balance first**, then walks the **outer withdraw queue** (independent of the deposit queue).
@@ -40,6 +44,8 @@ All user-facing mutating operations are **atomic-or-revert** — they complete i
 7. If liquidity is short, the **entire transaction reverts** (`HubInsufficientLiquidity`).
 
 ### Reallocate
+
+<figure><img src="../../.gitbook/assets/liquidity-hub-reallocate-flow.svg" alt="Reallocate flow: the Operator directs the Hub to pull from Source A and push to Source B in a net-zero rebalance where funds never leave the Hub"><figcaption></figcaption></figure>
 
 Reallocate moves assets between Sources — and, optionally, between specific resources within a Source — without funds entering or leaving the Hub. Both legs share the [`ReallocateLeg`](#structs) struct. The Hub treats `resource` as an **opaque pass-through**: it holds no resource registry and never reads resource state — it relays the address to the owning Source, which validates it against its own registry.
 
@@ -109,6 +115,8 @@ newEMA = (alpha × spot + (10_000 − alpha) × oldEMA) / 10_000
 ## Multi-level pause
 
 Three independent scopes — a broader scope blocks everything beneath it; siblings keep operating. Pause is **asymmetric**: tightening (pause) is Operator-accessible, loosening (unpause) is governance-only.
+
+<figure><img src="../../.gitbook/assets/liquidity-hub-multi-level-pause.svg" alt="Multi-level pause: a Hub pause blocks all user operations; a paused Source is skipped in routing while sibling Sources keep operating; a paused resource is skipped in its YieldGroup's inner queue"><figcaption></figcaption></figure>
 
 * **Hub paused** — all deposits / withdrawals / mints / redeems, `reallocate`, fee / APY accrual, and the fee / EMA setters are blocked; `emergencyReallocate` and `sweep` stay callable; views stay readable. Underlying products keep operating. Accrual is skipped across the pause window so LPs are never charged for frozen time.
 * **Source paused** — the Hub-level flag makes routing skip the Source. Its balance still counts in `totalAssets()`; it is reachable only via `reallocate` / `emergencyReallocate`. New deposit / push legs revert `SourcePaused`.
