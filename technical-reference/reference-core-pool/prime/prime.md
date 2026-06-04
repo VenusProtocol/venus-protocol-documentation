@@ -80,7 +80,7 @@ function initialize(uint128 alphaNumerator_, uint128 alphaDenominator_, address 
 
 ### claimPrime
 
-Mint a Prime token for a user in a permissionless way. Checks the user's effective stake from `PrimeLeaderboard` against `mintThreshold`. Anyone can call this on behalf of an eligible user; no ACM required.
+Mint a Prime token for a user in a permissionless way. Checks the user's Prime Score from `PrimeLeaderboard` against `mintThreshold`. Anyone can call this on behalf of an eligible user; no ACM required.
 
 ```solidity
 function claimPrime(address user) external
@@ -99,7 +99,7 @@ function claimPrime(address user) external
 * Throw UserAlreadyHasPrimeToken if user already has a token
 * Throw LeaderboardNotSet if primeLeaderboard address is not configured
 * Throw MintThresholdNotSet if mintThreshold is zero
-* Throw EligibilityBelowThreshold if user's effective stake < mintThreshold
+* Throw EligibilityBelowThreshold if user's Prime Score < mintThreshold
 * Throw InvalidLimit if mint limit would be exceeded
 * Throw MintWindowClosed if the minting deadline has passed
 
@@ -665,7 +665,7 @@ function setPrimeLeaderboard(address primeLeaderboard_) external
 
 ### setMintThreshold
 
-Set the minimum effective stake threshold and minting deadline for permissionless Prime minting. Governance calls this after each epoch. Pass `mintThreshold_ = 0` to disable the permissionless minting window immediately. Pass `mintDeadline_ = 0` for no expiry; otherwise the window auto-closes once `block.timestamp` exceeds it.
+Set the minimum Prime Score threshold and minting deadline for permissionless Prime minting. Each epoch is one calendar month; governance typically calls this at end-of-epoch with the #500 user's Prime Score as the threshold. Pass `mintThreshold_ = 0` to disable the permissionless minting window immediately. Pass `mintDeadline_ = 0` for no expiry; otherwise the window auto-closes once `block.timestamp` exceeds it.
 
 ```solidity
 function setMintThreshold(uint256 mintThreshold_, uint256 mintDeadline_) external

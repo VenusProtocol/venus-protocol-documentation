@@ -47,7 +47,7 @@ The primary minting path is **governance issuance**:
 
 A **permissionless minting** window exists as a fallback and is **disabled by default**: `mintThreshold` initializes to `0`, so `claimPrime` / `claimPrimeBatch` revert with `MintThresholdNotSet`. Governance can open the window by calling `setMintThreshold(threshold, deadline)` — intended as a last resort if the keeper-driven issuance flow is unavailable. While open:
 
-* `claimPrime(user)` / `claimPrimeBatch(users)` are permissionless — anyone can mint a Prime token for any user whose Effective Stake ≥ `mintThreshold`. In the batch variant, users below the threshold are skipped (with a `SkippedIneligibleUser` event) rather than reverting the whole call.
+* `claimPrime(user)` / `claimPrimeBatch(users)` are permissionless — anyone can mint a Prime token for any user whose Prime Score ≥ `mintThreshold`. In the batch variant, users below the threshold are skipped (with a `SkippedIneligibleUser` event) rather than reverting the whole call.
 
 Total Prime tokens are capped by `tokenLimit` (default 500). Setting `mintThreshold` back to `0` closes the window; a non-zero `mintDeadline` auto-closes it once `block.timestamp` passes it.
 

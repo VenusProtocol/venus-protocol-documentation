@@ -1,5 +1,5 @@
 # PrimeLeaderboard
-PrimeLeaderboard manages Prime V2 eligibility with time-weighted scoring. It tracks per-deposit timestamps for LIFO withdrawals and computes each user's Effective Stake. It is called by the `XVSVault` via the existing `xvsUpdated()` callback. Governance reads `getEffectiveStakeBatch()` off-chain, ranks users, and either sets a mint threshold on PrimeV2 (for permissionless minting) or calls `PrimeV2.issue()` / `burn()` directly.
+PrimeLeaderboard manages Prime V2 eligibility with time-weighted scoring. It tracks per-deposit timestamps for LIFO withdrawals and computes each user's Prime Score. It is called by the `XVSVault` via the existing `xvsUpdated()` callback. Governance reads `getEffectiveStakeBatch()` off-chain, ranks users by Prime Score, and either sets a mint threshold on PrimeV2 (for permissionless minting) or calls `PrimeV2.issue()` / `burn()` directly.
 
 # Solidity API
 
@@ -125,7 +125,7 @@ function xvsUpdated(address user) external
 
 ### getEffectiveStake
 
-Get a user's current Effective Stake (time-weighted score)
+Get a user's current Prime Score (time-weighted score)
 
 ```solidity
 function getEffectiveStake(address user) public view returns (uint256 effectiveStake)
@@ -139,13 +139,13 @@ function getEffectiveStake(address user) public view returns (uint256 effectiveS
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| effectiveStake | uint256 | The time-weighted score |
+| effectiveStake | uint256 | The user's Prime Score (time-weighted) |
 
 - - -
 
 ### getEffectiveStakeBatch
 
-Batch view to get effective stakes for multiple users
+Batch view to get Prime Scores for multiple users
 
 ```solidity
 function getEffectiveStakeBatch(address[] users) external view returns (uint256[] scores)
@@ -159,7 +159,7 @@ function getEffectiveStakeBatch(address[] users) external view returns (uint256[
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| scores | uint256[] | Array of effective stake scores |
+| scores | uint256[] | Array of Prime Scores |
 
 - - -
 

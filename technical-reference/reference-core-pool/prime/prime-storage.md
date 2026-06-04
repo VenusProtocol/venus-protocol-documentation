@@ -201,7 +201,7 @@ address primeLeaderboard
 
 ### mintThreshold
 
-Minimum effective stake required for permissionless Prime minting
+Minimum Prime Score required for permissionless Prime minting
 
 ```solidity
 uint256 mintThreshold

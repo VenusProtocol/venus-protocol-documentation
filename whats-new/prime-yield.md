@@ -21,7 +21,7 @@ Venus Prime is the protocol's flagship incentive program, designed to reward lon
 Venus Prime is powered by two contracts:
 
 * **PrimeV2** — the boost engine. It holds each user's non-transferable (Soulbound) Prime token, tracks per-market scores, and distributes boosted rewards funded by protocol revenue.
-* **PrimeLeaderboard** — the eligibility engine. It measures how much $XVS each user has staked and for how long, producing a time-weighted **Effective Stake** that ranks users for Prime eligibility.
+* **PrimeLeaderboard** — the eligibility engine. It measures how much $XVS each user has staked and for how long, producing a time-weighted **Prime Score** that ranks users for Prime eligibility.
 
 ### **Venus Prime Essentials**
 
@@ -29,9 +29,9 @@ Venus Prime's uniqueness lies in its self-sustaining rewards system: instead of 
 
 Eligible $XVS stakers receive a single, non-transferable Soulbound Prime token, which boosts rewards across the selected markets. The token is capped at a configurable supply (`tokenLimit`, **500** by default), changeable via VIP.
 
-#### Eligibility: time-weighted Effective Stake
+#### Eligibility: time-weighted Prime Score
 
-Prime eligibility is no longer a fixed "stake X for Y days" rule. Instead, PrimeLeaderboard computes an **Effective Stake** that rewards both the size and the age of each XVS deposit.
+Prime eligibility is no longer a fixed "stake X for Y days" rule. Instead, PrimeLeaderboard computes a **Prime Score** that rewards both the size and the age of each XVS deposit.
 
 Every deposit and withdrawal in the XVS Vault is reported to PrimeLeaderboard, which records individual deposit tranches and applies a duration-based multiplier to each:
 
@@ -42,7 +42,7 @@ Every deposit and withdrawal in the XVS Vault is reported to PrimeLeaderboard, w
 | ≥ 60 days | 1.6x |
 | ≥ 90 days | 2.0x (cap) |
 
-A user's Effective Stake is the sum, across all of their active deposits, of:
+A user's Prime Score is the sum, across all of their active deposits, of:
 
 ```
 amount × multiplier(holdingDuration) × min(holdingDuration, 90 days)
@@ -52,9 +52,9 @@ Withdrawals are processed **LIFO** (newest deposits first), so a user's oldest, 
 
 #### Minting a Prime token
 
-The primary minting path is **governance issuance**. After each epoch, a keeper reads the leaderboard off-chain (via `getEffectiveStakeBatch`), ranks users, and governance mints Prime tokens to the qualifying users with the ACM-gated `issue`/`issueBatch` functions (and revokes them, when needed, via `burn`/`burnBatch`).
+The primary minting path is **governance issuance**. Each epoch is one calendar month. After each epoch, a keeper reads the leaderboard off-chain (via `getEffectiveStakeBatch`), ranks users by Prime Score, and governance mints Prime tokens to the qualifying users with the ACM-gated `issue`/`issueBatch` functions (and revokes them, when needed, via `burn`/`burnBatch`).
 
-A **permissionless minting** window is available as a fallback and is **disabled by default**. It only becomes usable if governance opens it by setting a minimum Effective Stake threshold with `setMintThreshold(threshold, deadline)`; until then, `mintThreshold` is `0` and `claimPrime` reverts. When open, anyone can call `claimPrime(user)` (or `claimPrimeBatch`) to mint a Prime token for any user whose Effective Stake is at or above the threshold, until the optional deadline passes. This serves as a last resort if the keeper-driven flow is unavailable. Governance can close it again at any time by setting the threshold back to `0`.
+A **permissionless minting** window is available as a fallback and is **disabled by default**. It only becomes usable if governance opens it by setting a minimum Prime Score threshold with `setMintThreshold(threshold, deadline)`; until then, `mintThreshold` is `0` and `claimPrime` reverts. When open, anyone can call `claimPrime(user)` (or `claimPrimeBatch`) to mint a Prime token for any user whose Prime Score is at or above the threshold, until the optional deadline passes. This serves as a last resort if the keeper-driven flow is unavailable. Governance can close it again at any time by setting the threshold back to `0`.
 
 There is no separate "revocable" vs. "irrevocable" token — there is a single Prime token whose lifecycle is managed by governance based on the leaderboard.
 
