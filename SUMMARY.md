@@ -18,6 +18,7 @@
 * [Automatic Income Allocation](whats-new/automatic-income-allocation.md)
 * [TokenBuyback Contract](whats-new/token-converter.md)
 * [Venus Prime](whats-new/prime-yield.md)
+* [Liquidity Hub](whats-new/liquidity-hub.md)
 
 ## Governance
 
@@ -198,6 +199,11 @@
   * [SwapRouter](technical-reference/reference-periphery/swap-router.md)
   * [DeviationSentinel](technical-reference/reference-periphery/deviation-sentinel.md)
   * [EBrake](technical-reference/reference-periphery/ebrake.md)
+* [Liquidity Hub](technical-reference/reference-liquidity-hub/README.md)
+  * [Hub](technical-reference/reference-liquidity-hub/hub.md)
+  * [Yield Groups](technical-reference/reference-liquidity-hub/yield-groups.md)
+  * [Adapters](technical-reference/reference-liquidity-hub/adapters.md)
+  * [Interfaces](technical-reference/reference-liquidity-hub/interfaces.md)
 
 ## Deployed Contracts
 
