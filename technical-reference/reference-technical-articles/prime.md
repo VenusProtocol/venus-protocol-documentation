@@ -13,6 +13,8 @@ Venus Prime is split across two contracts:
 * **PrimeV2** — holds Soulbound Prime tokens, tracks per-market user scores, and distributes boosted rewards funded by protocol revenue through `PrimeLiquidityProvider`.
 * **PrimeLeaderboard** — tracks time-weighted XVS staking and exposes an **Effective Stake** used to decide who is eligible to mint a Prime token.
 
+<figure><img src="../../.gitbook/assets/prime_architecture.svg" alt="Venus Prime architecture: XVSVault, PrimeLeaderboard, PrimeV2, PrimeLiquidityProvider and governance"><figcaption>PrimeV2 architecture — eligibility, governance and reward wiring</figcaption></figure>
+
 ## Eligibility and the leaderboard
 
 ### Effective Stake
