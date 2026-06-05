@@ -11,13 +11,15 @@ This technical article explains the implementation details of the Venus Prime pr
 Venus Prime is split across two contracts:
 
 * **PrimeV2** — holds Soulbound Prime tokens, tracks per-market user scores, and distributes boosted rewards funded by protocol revenue through `PrimeLiquidityProvider`.
-* **PrimeLeaderboard** — tracks time-weighted XVS staking and exposes an **Effective Stake** used to decide who is eligible to mint a Prime token.
+* **PrimeLeaderboard** — tracks time-weighted XVS staking and exposes a **Prime Score** used to decide who is eligible to mint a Prime token.
 
 <figure><img src="../../.gitbook/assets/prime_architecture.svg" alt="Venus Prime architecture: XVSVault, PrimeLeaderboard, PrimeV2, PrimeLiquidityProvider and governance"><figcaption>PrimeV2 architecture — eligibility, governance and reward wiring</figcaption></figure>
 
 ## Eligibility and the leaderboard
 
-### Effective Stake
+### Prime Score
+
+A user's **Prime Score** is their time-weighted stake, exposed on-chain via `getEffectiveStake` / `getEffectiveStakeBatch` (the contract returns it as `effectiveStake`).
 
 `PrimeLeaderboard` records each user's XVS deposits as individual tranches (amount + timestamp). It is notified of every stake change by the `XVSVault` through the existing `xvsUpdated(user)` callback, which diffs the user's current vault balance against the last known total and records a deposit or a LIFO withdrawal accordingly.
 
@@ -30,10 +32,10 @@ Each tranche earns a multiplier based on how long it has been held:
 | ≥ 60 days | 1.6x |
 | ≥ 90 days | 2.0x (cap) |
 
-A user's Effective Stake is:
+The Prime Score is:
 
 ```jsx
-effectiveStake = Σ  deposit.amount × multiplier(holdingDuration) × min(holdingDuration, capSeconds)
+primeScore = Σ  deposit.amount × multiplier(holdingDuration) × min(holdingDuration, capSeconds)
 ```
 
 where `capSeconds` is the longest configured tier duration (90 days by default). Tiers and the cap are configurable via `setMultiplierTiers(durations, multipliers)`; durations and multipliers must be strictly ascending and multipliers must be ≥ base (1e18).
@@ -136,6 +138,12 @@ rewards = (rewardIndex - userRewardIndex) * scoreOfUser;
 ```
 
 The `userRewardIndex` (`interests[market][account].rewardIndex`) is then updated to the current global value.
+
+### Per-cycle reward accounting
+
+Rewards are tracked in monthly **cycles** for off-chain reporting. Each user's `interests[market][user].lifetimeAccrued` is a monotonic running total of every reward ever accrued to that user in that market — it grows alongside `accrued` but is never reset on claim. The off-chain pipeline computes a user's earnings for a given cycle as the difference between their `lifetimeAccrued` at the cycle's start and end.
+
+Cycle boundaries are anchored on-chain: a keeper calls `recordCycleSnapshot(cycleId)`, which emits `CycleSnapshotRecorded(cycleId, block.number, block.timestamp)`. This is an operational hook (ACM-gated to a keeper, not the Timelock) and is intentionally not idempotent — the indexer de-duplicates repeated `cycleId`s. The snapshots themselves are read off-chain via `getLifetimeAccruedByMarket` / `getLifetimeAccruedByUser`, so no per-cycle state is stored on-chain beyond `lifetimeAccrued`.
 
 ## Income collection and distribution
 

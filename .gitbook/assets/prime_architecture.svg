@@ -41,7 +41,7 @@
 
   <rect class="box-active" x="380" y="250" width="280" height="84"/>
   <text class="label" x="520" y="282" text-anchor="middle">PrimeLeaderboard</text>
-  <text class="label-sm" x="520" y="302" text-anchor="middle">Effective Stake (time-weighted)</text>
+  <text class="label-sm" x="520" y="302" text-anchor="middle">Prime Score (time-weighted)</text>
   <text class="label-sm" x="520" y="320" text-anchor="middle">tiers 30/60/90d → 1.3/1.6/2.0x</text>
 
   <rect class="box-active" x="800" y="250" width="270" height="84"/>
@@ -101,7 +101,7 @@
 
   <!-- Notes -->
   <text class="note" x="40" y="588">Solid edges are on-chain calls; dashed edges are off-chain or user-initiated.</text>
-  <text class="note" x="40" y="608">Eligibility: XVSVault reports stake changes to PrimeLeaderboard, which computes each user's time-weighted Effective Stake and pushes score updates to PrimeV2.</text>
+  <text class="note" x="40" y="608">Eligibility: XVSVault reports stake changes to PrimeLeaderboard, which computes each user's time-weighted Prime Score and pushes score updates to PrimeV2.</text>
   <text class="note" x="40" y="628">Minting: governance ranks the leaderboard off-chain and issues Prime tokens via issue/issueBatch; permissionless claimPrime() is disabled by default and used only as a keeper-outage fallback.</text>
   <text class="note" x="40" y="648">Rewards: protocol income is bought back into USDT/U, funded through PrimeLiquidityProvider, and claimed by Prime users from PrimeV2 (claimInterest triggers releaseFunds if PrimeV2 is short).</text>
 </svg>

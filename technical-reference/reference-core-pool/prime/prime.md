@@ -398,6 +398,48 @@ function getPendingRewardsStatic(address user) external view returns (struct Pri
 
 - - -
 
+### getLifetimeAccruedByMarket
+
+Lifetime accrued rewards for many users in a single market. Pure view over the `lifetimeAccrued` field; intended for the off-chain cycle pipeline to snapshot per-(market, user) earnings without indexing events.
+
+```solidity
+function getLifetimeAccruedByMarket(address market, address[] users) external view returns (uint256[] amounts)
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| market | address | vToken address |
+| users | address[] | Array of user addresses |
+
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| amounts | uint256[] | Lifetime accrued amounts, indexed parallel to `users` |
+
+- - -
+
+### getLifetimeAccruedByUser
+
+Lifetime accrued rewards for one user across many markets.
+
+```solidity
+function getLifetimeAccruedByUser(address user, address[] markets_) external view returns (uint256[] amounts)
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| user | address | User address |
+| markets_ | address[] | Array of vToken addresses |
+
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| amounts | uint256[] | Lifetime accrued amounts, indexed parallel to `markets_` |
+
+- - -
+
 ### updateScores
 
 Update scores for a batch of users. Intentionally not gated by the pause — the keeper must complete rounds even during pauses.
@@ -685,6 +727,27 @@ function setMintThreshold(uint256 mintThreshold_, uint256 mintDeadline_) externa
 
 #### ❌ Errors
 * Throw InvalidDeadline if mintDeadline_ is non-zero and not strictly in the future
+
+- - -
+
+### recordCycleSnapshot
+
+Emit a cycle-start anchor event so the off-chain reward pipeline can recover cycle boundaries by indexing the event log. Operational hook, not a policy lever. Not idempotent on-chain: duplicate `cycleId`s emit duplicate events and must be de-duplicated by the indexer.
+
+```solidity
+function recordCycleSnapshot(uint256 cycleId) external
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| cycleId | uint256 | Identifier of the cycle whose start is being recorded |
+
+#### 📅 Events
+* Emits CycleSnapshotRecorded(cycleId, block.number, block.timestamp)
+
+#### ⛔️ Access Requirements
+* Controlled by ACM — grant `recordCycleSnapshot(uint256)` to a keeper EOA/bot, not the Timelock (cycles fire on a recurring schedule)
 
 - - -
 
