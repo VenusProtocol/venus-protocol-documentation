@@ -1,0 +1,115 @@
+<svg width="900" height="460" viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#4f8ef7"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
+    </marker>
+    <marker id="arr-blue-rev" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto">
+      <path d="M8,0 L8,6 L0,3 z" fill="#4f8ef7"/>
+    </marker>
+    <marker id="arr-green-rev" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto">
+      <path d="M8,0 L8,6 L0,3 z" fill="#34d399"/>
+    </marker>
+    <filter id="glow-blue">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-green">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="460" fill="#0f1117" rx="16"/>
+
+  <!-- Title -->
+  <text x="450" y="26" font-size="11" fill="rgba(255,255,255,0.3)" font-family="sans-serif"
+        text-anchor="middle" letter-spacing="2.5">FIXED RATE VAULT — FUND FLOW</text>
+
+  <!-- ── VAULT (centre) ── -->
+  <g transform="translate(450,228)">
+    <rect x="-72" y="-68" width="144" height="136" rx="14" fill="#111827"
+          stroke="#38bdf8" stroke-width="2" filter="url(#glow-blue)"/>
+    <!-- vault icon: simple stack of coins suggestion -->
+    <text font-size="11" font-weight="700" fill="#38bdf8" text-anchor="middle" y="-30" font-family="sans-serif" letter-spacing="1">VAULT</text>
+    <text font-size="10" fill="rgba(255,255,255,0.45)" text-anchor="middle" y="-12" font-family="sans-serif">ERC-4626</text>
+    <!-- divider -->
+    <line x1="-52" y1="0" x2="52" y2="0" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    <text font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle" y="16" font-family="sans-serif">collateral locked</text>
+    <text font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle" y="30" font-family="sans-serif">debt tracked</text>
+    <text font-size="9" fill="rgba(255,255,255,0.35)" text-anchor="middle" y="44" font-family="sans-serif">shares issued</text>
+  </g>
+
+  <!-- ── SUPPLIERS (left) ── -->
+  <!-- Supplier 1 -->
+  <g transform="translate(110,130)">
+    <rect x="-62" y="-22" width="124" height="44" rx="9" fill="#1e2a45" stroke="#4f8ef7" stroke-width="1.2"/>
+    <text font-size="12" font-weight="600" fill="#fff" text-anchor="middle" dominant-baseline="middle" y="-4" font-family="sans-serif">Supplier 1</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" dominant-baseline="middle" y="11" font-family="sans-serif">stablecoin holder</text>
+  </g>
+  <!-- Supplier 2 -->
+  <g transform="translate(110,228)">
+    <rect x="-62" y="-22" width="124" height="44" rx="9" fill="#1e2a45" stroke="#4f8ef7" stroke-width="1.2"/>
+    <text font-size="12" font-weight="600" fill="#fff" text-anchor="middle" dominant-baseline="middle" y="-4" font-family="sans-serif">Supplier 2</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" dominant-baseline="middle" y="11" font-family="sans-serif">stablecoin holder</text>
+  </g>
+  <!-- Supplier 3 -->
+  <g transform="translate(110,326)">
+    <rect x="-62" y="-22" width="124" height="44" rx="9" fill="#1e2a45" stroke="#4f8ef7" stroke-width="1.2"/>
+    <text font-size="12" font-weight="600" fill="#fff" text-anchor="middle" dominant-baseline="middle" y="-4" font-family="sans-serif">Supplier 3</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" dominant-baseline="middle" y="11" font-family="sans-serif">stablecoin holder</text>
+  </g>
+
+  <!-- ── INSTITUTION (right) ── -->
+  <g transform="translate(790,228)">
+    <rect x="-72" y="-38" width="144" height="76" rx="12" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5" filter="url(#glow-green)"/>
+    <text font-size="12" font-weight="700" fill="#34d399" text-anchor="middle" dominant-baseline="middle" y="-10" font-family="sans-serif">Institution</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" dominant-baseline="middle" y="8" font-family="sans-serif">borrower</text>
+    <text font-size="9" fill="rgba(255,255,255,0.45)" text-anchor="middle" dominant-baseline="middle" y="22" font-family="sans-serif">posts collateral</text>
+  </g>
+
+  <!-- ── PHASE LABELS (above each arrow label) ── -->
+  <text x="275" y="98" font-size="9" fill="rgba(255,255,255,0.35)" font-family="sans-serif" text-anchor="middle" letter-spacing="1.5">① FUNDRAISING</text>
+  <text x="622" y="174" font-size="9" fill="rgba(255,255,255,0.35)" font-family="sans-serif" text-anchor="middle" letter-spacing="1.5">② LOCK</text>
+  <text x="622" y="292" font-size="9" fill="rgba(255,255,255,0.35)" font-family="sans-serif" text-anchor="middle" letter-spacing="1.5">③ SETTLEMENT</text>
+  <text x="275" y="362" font-size="9" fill="rgba(255,255,255,0.35)" font-family="sans-serif" text-anchor="middle" letter-spacing="1.5">④ MATURITY</text>
+
+  <!-- ── ARROWS: Suppliers → Vault (deposit) ── -->
+  <!-- Supplier 1 → Vault top -->
+  <path d="M 172,122 Q 310,122 378,178" stroke="#4f8ef7" stroke-width="1.5" fill="none" marker-end="url(#arr-blue)"/>
+  <!-- Supplier 2 → Vault left -->
+  <line x1="172" y1="220" x2="378" y2="220" stroke="#4f8ef7" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <!-- Supplier 3 → Vault bottom -->
+  <path d="M 172,318 Q 310,318 378,266" stroke="#4f8ef7" stroke-width="1.5" fill="none" marker-end="url(#arr-blue)"/>
+
+  <!-- deposit label -->
+  <text x="275" y="112" font-size="10" fill="#4f8ef7" text-anchor="middle" font-family="sans-serif">deposit stablecoin</text>
+
+  <!-- Institution → Vault: collateral posted (during fundraising, dashed) -->
+  <path d="M 718,210 Q 638,138 522,168" stroke="#34d399" stroke-width="1.2" fill="none" stroke-dasharray="5,3" marker-end="url(#arr-green)"/>
+  <text x="638" y="122" font-size="9" fill="rgba(255,255,255,0.35)" font-family="sans-serif" text-anchor="middle" letter-spacing="1.5">① COLLATERAL POSTED</text>
+  <text x="638" y="136" font-size="10" fill="#34d399" text-anchor="middle" font-family="sans-serif">posts collateral</text>
+
+  <!-- ── ARROW: Vault → Institution (loan) ── -->
+  <path d="M 522,200 Q 620,178 718,210" stroke="#34d399" stroke-width="1.5" fill="none" marker-end="url(#arr-green)"/>
+  <text x="622" y="188" font-size="10" fill="#34d399" text-anchor="middle" font-family="sans-serif">loan disbursed</text>
+
+  <!-- ── ARROW: Institution → Vault (repayment) ── -->
+  <path d="M 718,250 Q 620,282 522,256" stroke="#34d399" stroke-width="1.5" fill="none" marker-end="url(#arr-green)"/>
+  <text x="622" y="306" font-size="10" fill="#34d399" text-anchor="middle" font-family="sans-serif">principal + interest</text>
+
+  <!-- ── ARROWS: Vault → Suppliers (redeem at maturity) ── -->
+  <!-- Vault → Supplier 1 -->
+  <path d="M 378,196 Q 310,142 172,142" stroke="#4f8ef7" stroke-width="1.5" fill="none" marker-end="url(#arr-blue)"/>
+  <!-- Vault → Supplier 2 -->
+  <line x1="378" y1="236" x2="172" y2="236" stroke="#4f8ef7" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <!-- Vault → Supplier 3 -->
+  <path d="M 378,282 Q 310,338 172,338" stroke="#4f8ef7" stroke-width="1.5" fill="none" marker-end="url(#arr-blue)"/>
+
+  <!-- redeem label -->
+  <text x="275" y="376" font-size="10" fill="#4f8ef7" text-anchor="middle" font-family="sans-serif">principal + yield</text>
+
+</svg>

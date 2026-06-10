@@ -8,6 +8,7 @@
 
 ## What's New?
 
+* [Fixed Term Vaults](whats-new/fixed-rate-vaults.md)
 * [Trade](whats-new/trade.md)
 * [Leveraged Positions](whats-new/leveraged-positions.md)
 * [E-Mode](whats-new/e-mode.md)
@@ -59,6 +60,9 @@
 * [Isolated E-mode](guides/isolated-e-mode.md)
 * [Boost and Repay with Collateral](guides/leveraged-positions.md)
 * [Trade](guides/trade.md)
+* [Fixed Term Vaults](guides/fixed-rate-vaults/README.md)
+  * [Institution Guide](guides/fixed-rate-vaults/institution-guide.md)
+  * [Supplier Guide](guides/fixed-rate-vaults/supplier-guide.md)
 
 ## Technical reference
 
@@ -70,6 +74,7 @@
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
   * [E-Mode](technical-reference/reference-technical-articles/e-mode.md)
   * [Trade](technical-reference/reference-technical-articles/trade.md)
+  * [Fixed Term Vaults](technical-reference/reference-technical-articles/fixed-rate-vaults.md)
   * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)
   * [Omnichain Governance](technical-reference/reference-technical-articles/omnichain-governance.md)
   * [Prime tokens](technical-reference/reference-technical-articles/prime.md)
@@ -148,6 +153,12 @@
     * [MaxLoopsLimitHelper](technical-reference/reference-isolated-pools/utility/max-loops-limit-helper.md)
     * [ErrorReporter](technical-reference/reference-isolated-pools/utility/error-reporter.md)
     * [ExponentialNoError](technical-reference/reference-isolated-pools/utility/exponential-no-error.md)
+* [Fixed Term Vaults](technical-reference/reference-fixed-rate-vaults/README.md)
+  * [InstitutionalVaultController](technical-reference/reference-fixed-rate-vaults/institutional-vault-controller.md)
+  * [InstitutionalLoanVault](technical-reference/reference-fixed-rate-vaults/institutional-loan-vault.md)
+  * [LiquidationAdapter](technical-reference/reference-fixed-rate-vaults/liquidation-adapter.md)
+  * [InstitutionPositionToken](technical-reference/reference-fixed-rate-vaults/institution-position-token.md)
+  * [BaseVault](technical-reference/reference-fixed-rate-vaults/base-vault.md)
 * [Oracle](technical-reference/reference-oracle/README.md)
   * [ResilientOracle](technical-reference/reference-oracle/resilient-oracle.md)
   * [DeviationBoundedOracle](technical-reference/reference-oracle/deviation-bounded-oracle.md)
@@ -209,6 +220,7 @@
 * [Token Converters](deployed-contracts/token-converters.md)
 * [VenusERC4626](deployed-contracts/venus-erc4626.md)
 * [Periphery](deployed-contracts/periphery.md)
+* [Fixed Term Vaults](deployed-contracts/fixed-rate-vaults.md)
 
 ## Services
 
