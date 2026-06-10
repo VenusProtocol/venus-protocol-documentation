@@ -12,7 +12,7 @@ Core contracts for the Fixed Term Vaults system. Each institution's vault is dep
 
 #### Deployed vaults
 
-* Vault, position token ID `1`: [`0x7D80A10bEdD13638888e7A946B82878E21fbB820`](https://bscscan.com/address/0x7D80A10bEdD13638888e7A946B82878E21fbB820) — USDT supplied against XAUM collateral, 6% fixed rate over a 30-day term.
+* Vault, position token ID `1`: [`0x7D80A10bEdD13638888e7A946B82878E21fbB820`](https://bscscan.com/address/0x7D80A10bEdD13638888e7A946B82878E21fbB820) — USDT supplied against XAUM collateral over a 30-day term, at a 6% fixed borrow rate; after the 10% reserve factor, suppliers earn 5.4% net.
 
 #### Liquidation whitelist
 
