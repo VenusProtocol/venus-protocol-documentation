@@ -101,7 +101,7 @@ The current list of correlated token oracles in Venus is:
 | Core | slisBNB | [SlisBNBOracle](https://bscscan.com/address/0xDDE6446E66c786afF4cd3D183a908bCDa57DF9c1) | - | - |  |
 | Core | solvBTC | [SolvBTCOneJumpChainlinkOracle](https://bscscan.com/address/0x3f4bC081E749032cffF29dcA2E8408Ec375e745A) | [SolvBTCOneJumpFundamentalOracle](https://bscscan.com/address/0x1f785B1AFE0808d69d1188db9e47b7B9Dd95ab09) | [SolvBTCOneJumpRedStoneOracle](https://bscscan.com/address/0xA3E6F08e3C1baD83e1971909483F27Cdd19937FC) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | sUSDe | [sUSDeOneJumpRedstoneOracle](https://bscscan.com/address/0x2B2895104f958E1EC042E6Ba5cbfeCbAD3C5beDb) | [sUSDeOneJumpChainlinkOracle](https://bscscan.com/address/0xA67F01322AF8EBa444D788Ee398775b446de51a0) | - | Upper bound: 1.01. Lower bound: 0.99 |
-| Core | SXP(Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | |
+| Core | SXP(Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | [Price fixed to $0.00046](https://app.venus.io/#/governance/proposal/631?chainId=56) |
 | Core | THE | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | TRX | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | TRXOLD(Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | - | Upper bound: 1.01. Lower bound: 0.99 |
@@ -148,16 +148,6 @@ The current list of correlated token oracles in Venus is:
 | Core | USDe | [RedStone](https://etherscan.io/address/0x0FC8001B2c9Ec90352A46093130e284de5889C86) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | tBTC | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 
-#### opBNB mainnet
-
-| Pool | Market | MAIN oracle | PIVOT oracle | FALLBACK oracle | Notes |
-|---|---|---|---|---|---|
-| Core | BTCB | [Binance](https://opbnbscan.com/address/0xB09EC9B628d04E1287216Aa3e2432291f50F9588) | - | - | |
-| Core | ETH | [Binance](https://opbnbscan.com/address/0xB09EC9B628d04E1287216Aa3e2432291f50F9588) | - | - | |
-| Core | FDUSD | [Binance](https://opbnbscan.com/address/0xB09EC9B628d04E1287216Aa3e2432291f50F9588) | - | - | |
-| Core | USDT | [Binance](https://opbnbscan.com/address/0xB09EC9B628d04E1287216Aa3e2432291f50F9588) | - | - | |
-| Core | WBNB | [Binance](https://opbnbscan.com/address/0xB09EC9B628d04E1287216Aa3e2432291f50F9588) | - | - | |
-
 #### Arbitrum One
 
 | Pool | Market | MAIN oracle | PIVOT oracle | FALLBACK oracle | Notes |
@@ -184,16 +174,6 @@ The current list of correlated token oracles in Venus is:
 | Core | wUSDM | [wUSDM-ERC4626Oracle](https://explorer.zksync.io/address/0x22cE94e302c8C80a6C2dCfa9Da6c5286e9f28692) | - | - | |
 | Core | zkETH | [ZkETHOracle](https://explorer.zksync.io/address/0x407dE1229BCBD2Ec876d063F3F93c4D8a38bd81a) | - | - | Assume 1:1 for WETH:rzkETH |
 
-#### Optimism Mainnet
-
-| Pool | Market | MAIN oracle | PIVOT oracle | FALLBACK oracle | Notes |
-|---|---|---|---|---|---|
-| Core | WBTC | [SequencerChainlinkOracle](https://optimistic.etherscan.io/address/0x1076e5A60F1aC98e6f361813138275F1179BEb52) | - | - | |
-| Core | WETH | [SequencerChainlinkOracle](https://optimistic.etherscan.io/address/0x1076e5A60F1aC98e6f361813138275F1179BEb52) | - | - | |
-| Core | USDC | [SequencerChainlinkOracle](https://optimistic.etherscan.io/address/0x1076e5A60F1aC98e6f361813138275F1179BEb52) | - | - | |
-| Core | USDT | [SequencerChainlinkOracle](https://optimistic.etherscan.io/address/0x1076e5A60F1aC98e6f361813138275F1179BEb52) | - | - | |
-| Core | OP | [SequencerChainlinkOracle](https://optimistic.etherscan.io/address/0x1076e5A60F1aC98e6f361813138275F1179BEb52) | - | - | |
-
 #### Base Mainnet
 
 | Pool | Market | MAIN oracle | PIVOT oracle | FALLBACK oracle | Notes |
@@ -203,18 +183,6 @@ The current list of correlated token oracles in Venus is:
 | Core | USDC | [ChainlinkOracle](https://basescan.org/address/0x6F2eA73597955DB37d7C06e1319F0dC7C7455dEb) | - | - | |
 | Core | wsuperOETHb | [wsuperOETHb-ERC4626Oracle](https://basescan.org/address/0xcd1d2C99642165440c2CC023AFa2092b487f033e) | - | - | |
 | Core | wstETH | [wstETHOneJumpChainlinkOracle](https://basescan.org/address/0xDDD4F0836c8016E11fC6741A4886E97B3c3d20C1) | - | - | |
-
-#### Unichain Mainnet
-
-| Pool | Market | MAIN oracle | PIVOT oracle | FALLBACK oracle | Notes |
-|---|---|---|---|---|---|
-| Core | WBTC | [RedStone](https://uniscan.xyz/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc) | - | - | |
-| Core | WETH | [RedStone](https://uniscan.xyz/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc) | - | - | |
-| Core | USDC | [RedStone](https://uniscan.xyz/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc) | - | - | |
-| Core | USD₮0 | [RedStone](https://uniscan.xyz/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc) | - | - | |
-| Core | UNI | [RedStone](https://uniscan.xyz/address/0x4d41a36D04D97785bcEA57b057C412b278e6Edcc) | - | - | |
-| Core | weETH | [weETHOneJumpOracle](https://uniscan.xyz/address/0xF9ECA470E2458Fe2B6FcAe660bEd1e2C0FB87E01) | - | - | |
-| Core | wstETH | [wstETHOneJumpOracle](https://uniscan.xyz/address/0x3938D6414c261C6F450f1bD059DF9af2BBfb603D) | - | - | |
 
 ### Further Reading
 
