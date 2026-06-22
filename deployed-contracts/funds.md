@@ -31,6 +31,7 @@
 * VAI Unitroller: [`0xf70C3C6b749BbAb89C081737334E74C9aFD4BE16`](https://testnet.bscscan.com/address/0xf70C3C6b749BbAb89C081737334E74C9aFD4BE16)
 * VAI Vault Proxy: [`0x7Db4f5cC3bBA3e12FF1F528D2e3417afb0a57118`](https://testnet.bscscan.com/address/0x7Db4f5cC3bBA3e12FF1F528D2e3417afb0a57118)
 * vBNB Admin: [`0x04109575c1dbB4ac2e59e60c783800ea10441BBe`](https://testnet.bscscan.com/address/0x04109575c1dbB4ac2e59e60c783800ea10441BBe)
+* TokenRedeemer: [`0x6E78a0d96257F8F2615d72F3ee48cb6fb2c970bd`](https://testnet.bscscan.com/address/0x6E78a0d96257F8F2615d72F3ee48cb6fb2c970bd)
 
 ## Ethereum mainnet
 
