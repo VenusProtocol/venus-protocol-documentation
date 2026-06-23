@@ -114,6 +114,9 @@ The current list of correlated token oracles in Venus is:
 | Core | XVS | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | U | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | PT-clisBNB-25JUN2026 | [PendleOracle-PT-clisBNB-25JUN2026](https://bscscan.com/address/0x0FfFBb55d51cD46cD10C7dc865Dc73BD76201310) | - | - | |
+| Core | TSLAB | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | - | Oracle Dynamic Protection (16.67% deviation trigger) |
+| Core | NVDAB | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | - | Oracle Dynamic Protection (16.67% deviation trigger) |
+| Core | SPCXB | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | - | Oracle Dynamic Protection (16.67% deviation trigger) |
 
 #### Ethereum
 
