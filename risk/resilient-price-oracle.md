@@ -81,9 +81,11 @@ The current list of correlated token oracles in Venus is:
 | Core | ADA | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | asBNB | [AsBNBOracle](https://bscscan.com/address/0x652B90D1d45a7cD5BE82c5Fb61a4A00bA126dde5) | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | BCH | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | Upper bound: 1.05. Lower bound: 0.95 |
+| Core | BETH (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | |
 | Core | BNB | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | WBNB | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | BTCB | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.01. Lower bound: 0.99 |
+| Core | BUSD (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | [Price fixed to $1](https://app.venus.io/#/governance/proposal/226?chainId=56) |
 | Core | CAKE | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | DAI | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | DOGE | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | Upper bound: 1.05. Lower bound: 0.95 |
@@ -94,13 +96,17 @@ The current list of correlated token oracles in Venus is:
 | Core | LINK | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | lisUSD | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | - |  |
 | Core | LTC | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | Upper bound: 1.05. Lower bound: 0.95 |
+| Core | MATIC (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | Price feed from [$POL](https://data.chain.link/feeds/bsc/mainnet/pol-usd) |
 | Core | SOL | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | slisBNB | [SlisBNBOracle](https://bscscan.com/address/0xDDE6446E66c786afF4cd3D183a908bCDa57DF9c1) | - | - |  |
 | Core | solvBTC | [SolvBTCOneJumpChainlinkOracle](https://bscscan.com/address/0x3f4bC081E749032cffF29dcA2E8408Ec375e745A) | [SolvBTCOneJumpFundamentalOracle](https://bscscan.com/address/0x1f785B1AFE0808d69d1188db9e47b7B9Dd95ab09) | [SolvBTCOneJumpRedStoneOracle](https://bscscan.com/address/0xA3E6F08e3C1baD83e1971909483F27Cdd19937FC) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | sUSDe | [sUSDeOneJumpRedstoneOracle](https://bscscan.com/address/0x2B2895104f958E1EC042E6Ba5cbfeCbAD3C5beDb) | [sUSDeOneJumpChainlinkOracle](https://bscscan.com/address/0xA67F01322AF8EBa444D788Ee398775b446de51a0) | - | Upper bound: 1.01. Lower bound: 0.99 |
+| Core | SXP (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | [Price fixed to $0.00046](https://app.venus.io/#/governance/proposal/631?chainId=56) |
 | Core | THE | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | TRX | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | TUSD | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.05. Lower bound: 0.95 |
+| Core | TRXOLD (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | - | Upper bound: 1.01. Lower bound: 0.99 |
+| Core | TUSDOLD (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | |
 | Core | TWT | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | - | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | UNI | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | USDC | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.01. Lower bound: 0.99 |
@@ -114,6 +120,7 @@ The current list of correlated token oracles in Venus is:
 | Core | XVS | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | U | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | PT-clisBNB-25JUN2026 | [PendleOracle-PT-clisBNB-25JUN2026](https://bscscan.com/address/0x0FfFBb55d51cD46cD10C7dc865Dc73BD76201310) | - | - | |
+| Core | PT-sUSDE-26JUN2025 (Paused) | [PendleOracle-PT-sUSDe-26JUN2025](https://bscscan.com/address/0x176ca46D7DcB4e001b8ee5F12d0fcd6D279214f4) | - | - | |
 | Core | TSLAB | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | - | Oracle Dynamic Protection (16.67% deviation trigger) |
 | Core | NVDAB | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | - | Oracle Dynamic Protection (16.67% deviation trigger) |
 | Core | SPCXB | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | - | Oracle Dynamic Protection (16.67% deviation trigger) |
@@ -124,23 +131,20 @@ The current list of correlated token oracles in Venus is:
 |---|---|---|---|---|---|
 | Core | crvUSD | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | DAI | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Core | TUSD | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
+| Core | TUSD (Paused) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | USDC | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | USDT | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | WBTC | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | WETH | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Core | FRAX | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
+| Core | FRAX (Paused) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | LBTC | [LBTCOneJumpRedStoneOracle](https://etherscan.io/address/0x54B033D102db7DD734E0Ad649463E90fFA78D853) | - | - | |
-| Core | EIGEN | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Core | sFRAX | [SFraxOracle](https://etherscan.io/address/0x1aDCE75BB3164bBf6060a4f44262df5414473110) | - | - | |
+| Core | EIGEN (Paused) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
+| Core | sFRAX (Paused) | [SFraxOracle](https://etherscan.io/address/0x1aDCE75BB3164bBf6060a4f44262df5414473110) | - | - | |
 | Core | eBTC | [eBTCAccountantOracle](https://etherscan.io/address/0x04d6096A6F089047C7af6E4644D18fB766B8d4cE) | - | - | |
 | Core | USDS | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | sUSDS | [sUSDS-ERC4646Oracle](https://etherscan.io/address/0xEC3865a8a5DCb8C507781DA17A38b754E3d01C50) | - | - | |
-| Core | BAL | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
-| Core | yvUSDC-1 | [yvUSDC-1-ERC4646Oracle](https://etherscan.io/address/0x49C6858B3ce4F3829b716fD3FafCa6Cb4Ccb7843) | - | - | |
-| Core | yvUSDS-1 | [yvUSDS-1-ERC4646Oracle](https://etherscan.io/address/0x50f97063b4097D4e81C4DD9c3278258A04DF15aA) | - | - | |
-| Core | yvUSDT-1 | [yvUSDT-1-ERC4646Oracle](https://etherscan.io/address/0xE113AE8D80Fb6dfB3221e0A396e297Aa42813d0A) | - | - | |
-| Core | yvWETH-1 | [yvWETH-1-ERC4646Oracle](https://etherscan.io/address/0x641817dE6c0E4f763C393AaD182E6C946e1a2e2b) | - | - | |
+| Core | weETHs | [WeETHAccountantOracle(weETHs)](https://etherscan.io/address/0x47f7a7f3486b08a019e0c10af969adc4b6e415cd) | - | - | |
+| Core | BAL (Paused) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
 | Core | sUSDe | [sUSDe-ERC4626Oracle](https://etherscan.io/address/0xaE847E81ff6dD2bdFB1fD563ccB4f848c74D2B70) | - | - | |
 | Core | USDe | [RedStone](https://etherscan.io/address/0x0FC8001B2c9Ec90352A46093130e284de5889C86) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | tBTC | [Chainlink](https://etherscan.io/address/0x94c3A2d6B7B2c051aDa041282aec5B0752F8A1F2) | - | - | |
