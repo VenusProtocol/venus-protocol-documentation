@@ -72,7 +72,7 @@
   * [Capped Oracles](technical-reference/reference-technical-articles/capped-oracles.md)
   * [Contributing](technical-reference/reference-technical-articles/contributing.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
-  * [E-Mode](technical-reference/reference-technical-articles/e-mode.md)
+  * [E-Mode](technical-reference/reference-technical-articles/emode.md)
   * [Trade](technical-reference/reference-technical-articles/trade.md)
   * [Fixed Term Vaults](technical-reference/reference-technical-articles/fixed-rate-vaults.md)
   * [Native Token Gateway](technical-reference/reference-technical-articles/native-token-gateway.md)

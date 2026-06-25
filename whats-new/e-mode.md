@@ -67,4 +67,4 @@ This gives liquidators **smarter targeting, higher transparency, and better rewa
 6. **Enjoy Higher Efficiency**  
    Borrow and manage positions with optimized collateral and liquidation rules.
 
-For a **detailed technical explanation**, including implementation and user examples, check out the [full E-Mode technical article](../technical-reference/reference-technical-articles/e-mode.md).
+For a **detailed technical explanation**, including implementation and user examples, check out the [full E-Mode technical article](../technical-reference/reference-technical-articles/emode.md).
