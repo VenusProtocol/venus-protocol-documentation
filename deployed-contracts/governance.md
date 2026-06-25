@@ -12,8 +12,11 @@
   * Guardian 2: [`0x1C2CAc6ec528c20800B2fe734820D87b581eAA6B`](https://bscscan.com/address/0x1C2CAc6ec528c20800B2fe734820D87b581eAA6B) - pause and resume features
   * Guardian 3: [`0x3a3284dC0FaFfb0b5F0d074c4C704D14326C98cF`](https://bscscan.com/address/0x3a3284dC0FaFfb0b5F0d074c4C704D14326C98cF) - oracles
 * Omnichain Proposal Sender: [`0x36a69dE601381be7b0DcAc5D5dD058825505F8f6`](https://bscscan.com/address/0x36a69dE601381be7b0DcAc5D5dD058825505F8f6)
-* RiskStewardReceiver: [`0xBa2a43279a228cf9cD94d072777d8d98e7e0a229`](https://bscscan.com/address/0xBa2a43279a228cf9cD94d072777d8d98e7e0a229)
-* MarketCapsRiskSteward: [`0xE7252dccd79F2A555E314B9cdd440745b697D562`](https://bscscan.com/address/0xE7252dccd79F2A555E314B9cdd440745b697D562)
+* RiskStewardReceiver: [`0x47856bFa74B71d24a5545c7506862B8FddE52baB`](https://bscscan.com/address/0x47856bFa74B71d24a5545c7506862B8FddE52baB)
+* MarketCapsRiskSteward: [`0x816FfD00A274EDE0091421F77817ca260Db3a3E3`](https://bscscan.com/address/0x816FfD00A274EDE0091421F77817ca260Db3a3E3)
+* CollateralFactorsRiskSteward: [`0x1414ADf007E324ec1D0A77b9F1A8759Ad33d2879`](https://bscscan.com/address/0x1414ADf007E324ec1D0A77b9F1A8759Ad33d2879)
+* InterestRateModelRiskSteward: [`0x8acaBc42Bb98E2e2b091902a7E23f60CcB730aaa`](https://bscscan.com/address/0x8acaBc42Bb98E2e2b091902a7E23f60CcB730aaa)
+* RiskOracle (managed by the risk manager): [`0x0E3E51958b0Daa8C57c949675975CBEDd7b5a1a1`](https://bscscan.com/address/0x0E3E51958b0Daa8C57c949675975CBEDd7b5a1a1)
 
 ## BNB Chain Testnet
 
@@ -23,8 +26,11 @@
 * FastTrack Timelock: [`0x3CFf21b7AF8390fE68799D58727d3b4C25a83cb6`](https://testnet.bscscan.com/address/0x3CFf21b7AF8390fE68799D58727d3b4C25a83cb6)
 * Critical Timelock: [`0x23B893a7C45a5Eb8c8C062b9F32d0D2e43eD286D`](https://testnet.bscscan.com/address/0x23B893a7C45a5Eb8c8C062b9F32d0D2e43eD286D)
 * Omnichain Proposal Sender: [`0xCfD34AEB46b1CB4779c945854d405E91D27A1899`](https://testnet.bscscan.com/address/0xCfD34AEB46b1CB4779c945854d405E91D27A1899)
-* RiskStewardReceiver: [`0x31DEb4D1326838522697f7a012992f0824d80f2b`](https://testnet.bscscan.com/address/0x31DEb4D1326838522697f7a012992f0824d80f2b)
-* MarketCapsRiskSteward: [`0x9b40390771cAeEa69DE55EEd176aeDC72d70cA3E`](https://testnet.bscscan.com/address/0x9b40390771cAeEa69DE55EEd176aeDC72d70cA3E)
+* RiskStewardReceiver: [`0x2F6eb64826f3A067eBFFb5909De7AA4e0Cb31b81`](https://testnet.bscscan.com/address/0x2F6eb64826f3A067eBFFb5909De7AA4e0Cb31b81)
+* MarketCapsRiskSteward: [`0xecC583037338D1EFE2C15bb2c6ac81E0294375C2`](https://testnet.bscscan.com/address/0xecC583037338D1EFE2C15bb2c6ac81E0294375C2)
+* CollateralFactorsRiskSteward: [`0xBf821F512EA224201108303cc6dA200391Eb38aC`](https://testnet.bscscan.com/address/0xBf821F512EA224201108303cc6dA200391Eb38aC)
+* InterestRateModelRiskSteward: [`0xE7AcaF3d6CeBA793d94f867FFCE0A1e9a6b3977C`](https://testnet.bscscan.com/address/0xE7AcaF3d6CeBA793d94f867FFCE0A1e9a6b3977C)
+* RiskOracle (managed by the risk manager): [`0x4DEA4D1A9F6101D4adacE89f16064D780D2F241d`](https://testnet.bscscan.com/address/0x4DEA4D1A9F6101D4adacE89f16064D780D2F241d)
 
 ## Ethereum mainnet
 
@@ -35,9 +41,6 @@
 * Critical Timelock: [`0xeB9b85342c34F65af734C7bd4a149c86c472bC00`](https://etherscan.io/address/0xeB9b85342c34F65af734C7bd4a149c86c472bC00)
 * Omnichain Governance Executor: [`0xd70ffB56E4763078b8B814C0B48938F35D83bE0C`](https://etherscan.io/address/0xd70ffB56E4763078b8B814C0B48938F35D83bE0C)
 * Omnichain Executor Owner Proxy: [`0x87Ed3Fd3a25d157637b955991fb1B41B566916Ba`](https://etherscan.io/address/0x87Ed3Fd3a25d157637b955991fb1B41B566916Ba)
-* RiskStewardReceiver: [`0x5086Dc718D1288E4cc4F6a75991E4a0bD0611bF1`](https://etherscan.io/address/0x5086Dc718D1288E4cc4F6a75991E4a0bD0611bF1)
-* MarketCapsRiskSteward: [`0x7191b4602Fe9d36E1A4b2cb84D0c80C543F13f9A`](https://etherscan.io/address/0x7191b4602Fe9d36E1A4b2cb84D0c80C543F13f9A)
-
 ## Sepolia (Ethereum testnet)
 
 * Access Control Manager: [`0xbf705C00578d43B6147ab4eaE04DBBEd1ccCdc96`](https://sepolia.etherscan.io/address/0xbf705C00578d43B6147ab4eaE04DBBEd1ccCdc96)
@@ -47,9 +50,6 @@
 * Critical Timelock: [`0xA24A7A65b8968a749841988Bd7d05F6a94329fDe`](https://sepolia.etherscan.io/address/0xA24A7A65b8968a749841988Bd7d05F6a94329fDe)
 * Omnichain Governance Executor: [`0xD9B18a43Ee9964061c1A1925Aa907462F0249109`](https://sepolia.etherscan.io/address/0xD9B18a43Ee9964061c1A1925Aa907462F0249109)
 * Omnichain Executor Owner Proxy: [`0xf964158C67439D01e5f17F0A3F39DfF46823F27A`](https://sepolia.etherscan.io/address/0xf964158C67439D01e5f17F0A3F39DfF46823F27A)
-* RiskStewardReceiver: [`0xDF1807d323Dd2E2871e8b394c8F7595E097e1C73`](https://sepolia.etherscan.io/address/0xDF1807d323Dd2E2871e8b394c8F7595E097e1C73)
-* MarketCapsRiskSteward: [`0xEa687c54321Db5b20CA544f38f08E429a4bfCBc8`](https://sepolia.etherscan.io/address/0xEa687c54321Db5b20CA544f38f08E429a4bfCBc8)
-
 ## opBNB mainnet
 
 * Access Control Manager: [`0xA60Deae5344F1152426cA440fb6552eA0e3005D6`](https://opbnbscan.com/address/0xA60Deae5344F1152426cA440fb6552eA0e3005D6)
@@ -89,9 +89,6 @@
 * Critical Timelock: [`0x0b32Be083f7041608E023007e7802430396a2123`](https://sepolia.arbiscan.io/address/0x0b32Be083f7041608E023007e7802430396a2123)
 * Omnichain Governance Executor: [`0xcf3e6972a8e9c53D33b642a2592938944956f138`](https://sepolia.arbiscan.io/address/0xcf3e6972a8e9c53D33b642a2592938944956f138)
 * Omnichain Executor Owner Proxy: [`0xfCA70dd553b7dF6eB8F813CFEA6a9DD039448878`](https://sepolia.arbiscan.io/address/0xfCA70dd553b7dF6eB8F813CFEA6a9DD039448878)
-* RiskStewardReceiver: [`0xE6b7B1846106605fdfaB3a9F407dd64bed6917a6`](https://sepolia.arbiscan.io/address/0xE6b7B1846106605fdfaB3a9F407dd64bed6917a6)
-* MarketCapsRiskSteward: [`0xe739ff9CFa2CFA24fb7816133e1CBe7046A37Ecc`](https://sepolia.arbiscan.io/address/0xe739ff9CFa2CFA24fb7816133e1CBe7046A37Ecc)
-
 ## ZKsync Mainnet
 
 * Access Control Manager: [`0x526159A92A82afE5327d37Ef446b68FD9a5cA914`](https://explorer.zksync.io/address/0x526159A92A82afE5327d37Ef446b68FD9a5cA914)
@@ -111,9 +108,6 @@
 * Critical Timelock: [`0x0E6138bE0FA1915efC73670a20A10EFd720a6Cc8`](https://sepolia.explorer.zksync.io/address/0x0E6138bE0FA1915efC73670a20A10EFd720a6Cc8)
 * Omnichain Governance Executor: [`0x83F79CfbaEee738173c0dfd866796743F4E25C9e`](https://sepolia.explorer.zksync.io/address/0x83F79CfbaEee738173c0dfd866796743F4E25C9e)
 * Omnichain Executor Owner Proxy: [`0xa34607D58146FA02aF5f920f29C3D916acAb0bC5`](https://sepolia.explorer.zksync.io/address/0xa34607D58146FA02aF5f920f29C3D916acAb0bC5)
-* RiskStewardReceiver: [`0x25483111881c431492D010a9071Ce6C84C3b90A6`](https://sepolia.explorer.zksync.io/address/0x25483111881c431492D010a9071Ce6C84C3b90A6)
-* MarketCapsRiskSteward: [`0xe88C01daAd0b931af68C9fD70bfa9bde8142FF64`](https://sepolia.explorer.zksync.io/address/0xe88C01daAd0b931af68C9fD70bfa9bde8142FF64)
-
 ## Optimism Mainnet
 
 * Access Control Manager: [`0xD71b1F33f6B0259683f11174EE4Ddc2bb9cE4eD6`](https://optimistic.etherscan.io/address/0xD71b1F33f6B0259683f11174EE4Ddc2bb9cE4eD6)
@@ -154,9 +148,6 @@
 * Critical Timelock: [`0xbeDb7F2d0617292364bA4D73cf016c0f6BB5542E`](https://sepolia.basescan.org/address/0xbeDb7F2d0617292364bA4D73cf016c0f6BB5542E)
 * Omnichain Governance Executor: [`0xDD59be81B3B5BFa391bDA3a84c9f5233BfEF52a4`](https://sepolia.basescan.org/address/0xDD59be81B3B5BFa391bDA3a84c9f5233BfEF52a4)
 * Omnichain Executor Owner Proxy: [`0xe3fb08B8817a0c88d39A4DA4eFFD586D3326b73b`](https://sepolia.basescan.org/address/0xe3fb08B8817a0c88d39A4DA4eFFD586D3326b73b)
-* RiskStewardReceiver: [`0xf69fd7757c8A59DFA5c35622d9D44B31dB21B0a2`](https://sepolia.basescan.org/address/0xf69fd7757c8A59DFA5c35622d9D44B31dB21B0a2)
-* MarketCapsRiskSteward: [`0xE03E243AC1f3239ed6a0793C25E79C951339a915`](https://sepolia.basescan.org/address/0xE03E243AC1f3239ed6a0793C25E79C951339a915)
-
 ## Unichain Mainnet
 
 * Access Control Manager: [`0x1f12014c497a9d905155eB9BfDD9FaC6885e61d0`](https://uniscan.xyz/address/0x1f12014c497a9d905155eB9BfDD9FaC6885e61d0)
@@ -176,5 +167,3 @@
 * Critical Timelock: [`0x86C093266e824FA4345484a7B9109e9567923DA6`](https://sepolia.uniscan.xyz/address/0x86C093266e824FA4345484a7B9109e9567923DA6)
 * Omnichain Governance Executor: [`0x4FD69A0821e35104Fc86B8B7fF09026956B45947`](https://sepolia.uniscan.xyz/address/0x4FD69A0821e35104Fc86B8B7fF09026956B45947)
 * Omnichain Executor Owner Proxy: [`0xD755873C16Eaeb26993D283292d3F6C605D9BC26`](https://sepolia.uniscan.xyz/address/0xD755873C16Eaeb26993D283292d3F6C605D9BC26)
-* RiskStewardReceiver: [`0x4fCbfE445396f31005b3Fd2F6DE2A986d6E2dCB5`](https://sepolia.uniscan.xyz/address/0x4fCbfE445396f31005b3Fd2F6DE2A986d6E2dCB5)
-* MarketCapsRiskSteward: [`0x6edbFE9a95dB5f0CdDcE446A0Fe75D7832Cf8DDB`](https://sepolia.uniscan.xyz/address/0x6edbFE9a95dB5f0CdDcE446A0Fe75D7832Cf8DDB)
