@@ -61,6 +61,14 @@
   <text class="label" x="895" y="500" text-anchor="middle">PrimeLiquidityProvider</text>
   <text class="label-sm" x="895" y="520" text-anchor="middle">per-token reward speeds</text>
 
+  <rect class="box" x="1100" y="470" width="200" height="64"/>
+  <text class="label" x="1200" y="500" text-anchor="middle">PrimeLens</text>
+  <text class="label-sm" x="1200" y="520" text-anchor="middle">calculateAPR (read-only)</text>
+
+  <!-- PrimeLens reads PrimeV2 state (off-chain views) -->
+  <path class="edge" d="M1200,470 C1200,410 1010,360 1000,334" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <text class="edge-label-sm" x="1110" y="430">reads state</text>
+
   <!-- Edges: eligibility -->
   <path class="edge" d="M240,290 L380,290" marker-end="url(#arrow)"/>
   <text class="edge-label" x="250" y="282">xvsUpdated()</text>
