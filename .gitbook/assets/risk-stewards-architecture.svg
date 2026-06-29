@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" font-family="Inter, 'Segoe UI', system-ui, -apple-system, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L7,3 L0,6 Z" fill="rgba(255,255,255,0.55)"/>
+    </marker>
+    <marker id="ahr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#fb7185"/>
+    </marker>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <style>
+      .top{font-size:13px;fill:#5b6b82;font-weight:600;letter-spacing:3px}
+      .panel{font-size:11px;fill:#5b6b82;font-weight:600;letter-spacing:2px}
+      .t{font-size:13.5px;font-weight:700}
+      .s{font-size:10.5px;fill:#94a3b8}
+      .e{font-size:10.5px;fill:#cbd5e1;font-weight:500}
+      .em{font-size:9.5px;fill:#7c8aa0}
+      .edge{stroke:rgba(255,255,255,0.4);stroke-width:1.6;fill:none}
+      .dash{stroke:#fb7185;stroke-width:1.5;stroke-dasharray:5 4;fill:none}
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="600" rx="14" fill="#0f1419"/>
+  <text class="top" x="480" y="30" text-anchor="middle">RISK STEWARDS — ARCHITECTURE</text>
+
+  <!-- panels -->
+  <rect x="24" y="52" width="556" height="524" rx="14" fill="rgba(255,255,255,0.02)" stroke="rgba(148,163,184,0.35)" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <text class="panel" x="44" y="76">BNB CHAIN — SOURCE</text>
+  <rect x="700" y="150" width="236" height="400" rx="14" fill="rgba(255,255,255,0.02)" stroke="rgba(148,163,184,0.35)" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <text class="panel" x="716" y="172">REMOTE CHAIN</text>
+  <text class="s" x="716" y="188">destination (one per supported chain)</text>
+
+  <!-- governance -->
+  <rect x="700" y="52" width="236" height="82" rx="10" fill="#1f0f14" stroke="#fb7185" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="818" y="76" text-anchor="middle" fill="#fb7185">Governance / ACM</text>
+  <text class="s" x="818" y="94" text-anchor="middle">whitelists providers &amp; executors,</text>
+  <text class="s" x="818" y="109" text-anchor="middle">sets debounce · timelock · safe-delta,</text>
+  <text class="s" x="818" y="124" text-anchor="middle">can pause processing</text>
+
+  <!-- BNB boxes -->
+  <rect x="70" y="92" width="464" height="58" rx="10" fill="#1b1407" stroke="#f59e0b" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="302" y="117" text-anchor="middle" fill="#f59e0b">Risk Parameter Providers</text>
+  <text class="s" x="302" y="136" text-anchor="middle">Chaos Labs · Allez Labs · Venus risk team — whitelisted</text>
+
+  <rect x="176" y="192" width="252" height="54" rx="10" fill="#161031" stroke="#a78bfa" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="302" y="215" text-anchor="middle" fill="#a78bfa">Risk Oracle</text>
+  <text class="s" x="302" y="233" text-anchor="middle">single source of truth</text>
+
+  <rect x="120" y="296" width="364" height="58" rx="10" fill="#0c1626" stroke="#60a5fa" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="302" y="320" text-anchor="middle" fill="#60a5fa">RiskStewardReceiver (RSR)</text>
+  <text class="s" x="302" y="338" text-anchor="middle">validate · route · execute or timelock</text>
+
+  <rect x="58" y="412" width="150" height="58" rx="10" fill="#0a1a14" stroke="#34d399" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="133" y="437" text-anchor="middle" fill="#34d399" font-size="12.5">Market Caps</text>
+  <text class="t" x="133" y="454" text-anchor="middle" fill="#34d399" font-size="12.5">Steward</text>
+  <rect x="221" y="412" width="150" height="58" rx="10" fill="#0a1a14" stroke="#34d399" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="296" y="437" text-anchor="middle" fill="#34d399" font-size="12.5">Collateral Factors</text>
+  <text class="t" x="296" y="454" text-anchor="middle" fill="#34d399" font-size="12.5">Steward</text>
+  <rect x="384" y="412" width="150" height="58" rx="10" fill="#0a1a14" stroke="#34d399" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="459" y="437" text-anchor="middle" fill="#34d399" font-size="12.5">IRM</text>
+  <text class="t" x="459" y="454" text-anchor="middle" fill="#34d399" font-size="12.5">Steward</text>
+
+  <rect x="70" y="506" width="464" height="54" rx="10" fill="#08191f" stroke="#22d3ee" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="302" y="528" text-anchor="middle" fill="#22d3ee">Core &amp; Isolated Comptrollers / vTokens</text>
+  <text class="s" x="302" y="546" text-anchor="middle">supply &amp; borrow caps · collateral factors · interest rate models</text>
+
+  <!-- BNB edges -->
+  <line class="edge" x1="302" y1="150" x2="302" y2="190" marker-end="url(#ah)"/>
+  <text class="e" x="312" y="174">publish</text>
+  <line class="edge" x1="302" y1="246" x2="302" y2="294" marker-end="url(#ah)"/>
+  <text class="e" x="312" y="266">processUpdate</text>
+  <text class="em" x="312" y="280">anyone — permissionless</text>
+  <line class="edge" x1="302" y1="354" x2="133" y2="410" marker-end="url(#ah)"/>
+  <line class="edge" x1="302" y1="354" x2="296" y2="410" marker-end="url(#ah)"/>
+  <line class="edge" x1="302" y1="354" x2="459" y2="410" marker-end="url(#ah)"/>
+  <text class="e" x="312" y="386">applyUpdate</text>
+  <line class="edge" x1="133" y1="470" x2="133" y2="504" marker-end="url(#ah)"/>
+  <line class="edge" x1="296" y1="470" x2="296" y2="504" marker-end="url(#ah)"/>
+  <line class="edge" x1="459" y1="470" x2="459" y2="504" marker-end="url(#ah)"/>
+
+  <!-- cross-chain -->
+  <rect x="596" y="307" width="92" height="42" rx="21" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.5" filter="url(#glow)"/>
+  <text class="t" x="642" y="332" text-anchor="middle" fill="#e2e8f0" font-size="12">LayerZero</text>
+  <line class="edge" x1="484" y1="328" x2="594" y2="328" marker-end="url(#ah)"/>
+  <text class="e" x="498" y="320">lzSend (remote)</text>
+  <line class="edge" x1="688" y1="328" x2="714" y2="328" marker-end="url(#ah)"/>
+
+  <rect x="716" y="300" width="204" height="58" rx="10" fill="#0c1626" stroke="#60a5fa" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="818" y="323" text-anchor="middle" fill="#60a5fa" font-size="12">Destination Steward Receiver</text>
+  <text class="s" x="818" y="341" text-anchor="middle">register · remoteDelay · execute</text>
+
+  <rect x="716" y="410" width="204" height="52" rx="10" fill="#0a1a14" stroke="#34d399" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="818" y="432" text-anchor="middle" fill="#34d399" font-size="12.5">Risk Stewards (remote)</text>
+  <text class="s" x="818" y="450" text-anchor="middle">Market Caps · Collateral Factors · IRM</text>
+
+  <rect x="716" y="496" width="204" height="48" rx="10" fill="#08191f" stroke="#22d3ee" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="818" y="517" text-anchor="middle" fill="#22d3ee" font-size="12.5">Comptrollers / vTokens</text>
+  <text class="s" x="818" y="533" text-anchor="middle">on the destination chain</text>
+
+  <line class="edge" x1="818" y1="358" x2="818" y2="408" marker-end="url(#ah)"/>
+  <text class="em" x="828" y="386">executor, after delay</text>
+  <line class="edge" x1="818" y1="462" x2="818" y2="494" marker-end="url(#ah)"/>
+
+  <!-- governance control arrows -->
+  <path class="dash" d="M742,134 C660,210 560,295 488,314" marker-end="url(#ahr)"/>
+  <text class="e" x="556" y="250" fill="#fb7185">configure · whitelist</text>
+  <path class="dash" d="M818,134 L818,298" marker-end="url(#ahr)"/>
+</svg>
