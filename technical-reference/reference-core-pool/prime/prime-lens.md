@@ -67,6 +67,30 @@ struct APRInfo {
 
 - - -
 
+### estimateAPR
+
+Returns supply and borrow APR for a user in a given market based on hypothetical supply, borrow and XVS staked amounts. The user's score is recomputed from the supplied inputs (subtracting their existing market score and re-adding the estimated one), so the result reflects what the APR would be under the provided position.
+
+```solidity
+function estimateAPR(address market, address user, uint256 borrow, uint256 supply, uint256 xvsStaked) external view returns (struct IPrimeV2.APRInfo aprInfo)
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| market | address | The market for which to fetch the APR |
+| user | address | The account for which to get the APR |
+| borrow | uint256 | Hypothetical borrow amount |
+| supply | uint256 | Hypothetical supply amount |
+| xvsStaked | uint256 | Hypothetical staked XVS amount |
+
+#### Return Values
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| aprInfo | struct IPrimeV2.APRInfo | APR information for the user in the given market (same `APRInfo` struct as `calculateAPR`) |
+
+- - -
+
 ### incomeDistributionYearly
 
 The total income that will be distributed to Prime token holders for a market over a year. Computed as the PrimeLiquidityProvider effective distribution speed for the market's underlying multiplied by `blocksOrSecondsPerYear`.

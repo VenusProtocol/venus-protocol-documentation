@@ -1,6 +1,6 @@
 # Prime
 
-The Venus Prime program is implemented by three contracts:
+The Venus Prime program is implemented by three core contracts, plus a read-only lens:
 
 * [PrimeV2](prime.md) — the Soulbound Prime token and boosted-reward engine.
 * [PrimeLeaderboard](prime-leaderboard.md) — time-weighted XVS staking tracker that decides eligibility.

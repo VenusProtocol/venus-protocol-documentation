@@ -9,6 +9,7 @@
 * Prime Liquidity Provider: [`0x23c4F844ffDdC6161174eB32c770D4D8C07833F2`](https://bscscan.com/address/0x23c4F844ffDdC6161174eB32c770D4D8C07833F2)
 * PrimeV2: [`0x4f5fd115Df31CC48De880a988D74aaD931851628`](https://bscscan.com/address/0x4f5fd115Df31CC48De880a988D74aaD931851628) (deployed, pending governance activation — the legacy `Prime` above remains live until a VIP wires PrimeV2)
 * PrimeLeaderboard: [`0x55e2ccF68B7A276dc28AfA107997b8B1Be932c0b`](https://bscscan.com/address/0x55e2ccF68B7A276dc28AfA107997b8B1Be932c0b) (deployed, pending governance activation)
+* PrimeLens: [`0x43e768EFa1bC365bfd0965A490a41d87c6Dea526`](https://bscscan.com/address/0x43e768EFa1bC365bfd0965A490a41d87c6Dea526) (read-only APR lens for PrimeV2)
 * Liquidator: [`0x0870793286aaDA55D39CE7f82fb2766e8004cF43`](https://bscscan.com/address/0x0870793286aaDA55D39CE7f82fb2766e8004cF43)
 * Peg Stability Module: [`0xC138aa4E424D1A8539e8F38Af5a754a2B7c3Cc36`](https://bscscan.com/address/0xC138aa4E424D1A8539e8F38Af5a754a2B7c3Cc36)
 * ProtocolShareReserve: [`0xCa01D5A9A248a830E9D93231e791B1afFed7c446`](https://bscscan.com/address/0xCa01D5A9A248a830E9D93231e791B1afFed7c446)
