@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 680" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6F7C95"/>
+    </marker>
+    <style>
+      .bg { fill: #0F1A2A; }
+      .box { fill: #16243B; stroke: #2E5BBA; stroke-width: 1.5; rx: 6; ry: 6; }
+      .box-active { fill: #2E5BBA; stroke: #2E5BBA; stroke-width: 1.5; rx: 6; ry: 6; }
+      .label { fill: #FFFFFF; font-size: 15px; font-weight: 600; }
+      .label-sm { fill: #C8D3E5; font-size: 12px; }
+      .edge-label { fill: #C8D3E5; font-size: 12px; font-weight: 600; }
+      .edge-label-sm { fill: #C8D3E5; font-size: 11px; font-weight: 600; }
+      .edge { fill: none; stroke: #6F7C95; stroke-width: 1.4; }
+      .section { fill: #8AA3CC; font-size: 12px; font-weight: 700; letter-spacing: 1px; }
+      .note { fill: #A0B0C5; font-size: 12px; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="680"/>
+
+  <!-- Section headers -->
+  <text class="section" x="40" y="34">STAKING</text>
+  <text class="section" x="380" y="34">ELIGIBILITY</text>
+  <text class="section" x="800" y="34">PRIME TOKEN</text>
+  <text class="section" x="1190" y="34">REWARDS</text>
+
+  <!-- Governance band -->
+  <rect class="box" x="430" y="80" width="320" height="64"/>
+  <text class="label" x="590" y="110" text-anchor="middle">Governance / Timelock</text>
+  <text class="label-sm" x="590" y="130" text-anchor="middle">issue · burn · setMintThreshold</text>
+
+  <rect class="box" x="880" y="80" width="230" height="64"/>
+  <text class="label" x="995" y="110" text-anchor="middle">Comptroller</text>
+  <text class="label-sm" x="995" y="130" text-anchor="middle">PolicyFacet hooks</text>
+
+  <!-- Middle band -->
+  <rect class="box" x="40" y="258" width="200" height="64"/>
+  <text class="label" x="140" y="288" text-anchor="middle">XVSVault</text>
+  <text class="label-sm" x="140" y="308" text-anchor="middle">stake / unstake</text>
+
+  <rect class="box-active" x="380" y="250" width="280" height="84"/>
+  <text class="label" x="520" y="282" text-anchor="middle">PrimeLeaderboard</text>
+  <text class="label-sm" x="520" y="302" text-anchor="middle">Prime Score (time-weighted)</text>
+  <text class="label-sm" x="520" y="320" text-anchor="middle">tiers 30/60/90d → 1.3/1.6/2.0x</text>
+
+  <rect class="box-active" x="800" y="250" width="270" height="84"/>
+  <text class="label" x="935" y="282" text-anchor="middle">PrimeV2</text>
+  <text class="label-sm" x="935" y="302" text-anchor="middle">Soulbound Prime token</text>
+  <text class="label-sm" x="935" y="320" text-anchor="middle">per-market scores + rewards</text>
+
+  <rect class="box" x="1190" y="264" width="170" height="56"/>
+  <text class="label" x="1275" y="296" text-anchor="middle">Prime user</text>
+
+  <!-- Bottom band -->
+  <rect class="box" x="380" y="470" width="240" height="64"/>
+  <text class="label" x="500" y="500" text-anchor="middle">TokenBuyback</text>
+  <text class="label-sm" x="500" y="520" text-anchor="middle">USDT / U</text>
+
+  <rect class="box-active" x="760" y="470" width="270" height="64"/>
+  <text class="label" x="895" y="500" text-anchor="middle">PrimeLiquidityProvider</text>
+  <text class="label-sm" x="895" y="520" text-anchor="middle">per-token reward speeds</text>
+
+  <rect class="box" x="1100" y="470" width="200" height="64"/>
+  <text class="label" x="1200" y="500" text-anchor="middle">PrimeLens</text>
+  <text class="label-sm" x="1200" y="520" text-anchor="middle">calculateAPR (read-only)</text>
+
+  <!-- PrimeLens reads PrimeV2 state (off-chain views) -->
+  <path class="edge" d="M1200,470 C1200,410 1010,360 1000,334" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <text class="edge-label-sm" x="1110" y="430">reads state</text>
+
+  <!-- Edges: eligibility -->
+  <path class="edge" d="M240,290 L380,290" marker-end="url(#arrow)"/>
+  <text class="edge-label" x="250" y="282">xvsUpdated()</text>
+
+  <path class="edge" d="M660,285 L800,285" marker-end="url(#arrow)"/>
+  <text class="edge-label-sm" x="664" y="277">accrue + updateScore</text>
+
+  <!-- Governance edges -->
+  <path class="edge" d="M510,144 C500,185 500,215 500,250" marker-end="url(#arrow)"/>
+  <text class="edge-label-sm" x="430" y="205">setMultiplierTiers</text>
+
+  <path class="edge" d="M660,144 C740,190 790,215 845,250" marker-end="url(#arrow)"/>
+  <text class="edge-label-sm" x="668" y="200">issue · setMintThreshold</text>
+
+  <!-- Keeper reads leaderboard off-chain (dashed) -->
+  <path class="edge" d="M590,250 C600,210 600,175 595,144" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <text class="edge-label-sm" x="600" y="235">rank off-chain</text>
+
+  <!-- Comptroller hook -->
+  <path class="edge" d="M970,144 C960,180 945,215 940,250" marker-end="url(#arrow)"/>
+  <text class="edge-label-sm" x="978" y="195">accrue + updateScore</text>
+
+  <!-- PLP funds PrimeV2 -->
+  <path class="edge" d="M895,470 L895,334" marker-end="url(#arrow)"/>
+  <text class="edge-label" x="903" y="410">releaseFunds()</text>
+
+  <!-- TokenBuyback -> PLP -->
+  <path class="edge" d="M620,502 L760,502" marker-end="url(#arrow)"/>
+  <text class="edge-label" x="650" y="494">USDT / U</text>
+
+  <!-- PrimeV2 -> user (rewards) -->
+  <path class="edge" d="M1070,282 L1190,282" marker-end="url(#arrow)"/>
+  <text class="edge-label" x="1085" y="274">rewards</text>
+
+  <!-- user -> PrimeV2 claimInterest (dashed) -->
+  <path class="edge" d="M1190,302 C1130,340 1090,320 1070,305" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <text class="edge-label-sm" x="1100" y="348">claimInterest()</text>
+
+  <!-- Notes -->
+  <text class="note" x="40" y="588">Solid edges are on-chain calls; dashed edges are off-chain or user-initiated.</text>
+  <text class="note" x="40" y="608">Eligibility: XVSVault reports stake changes to PrimeLeaderboard, which computes each user's time-weighted Prime Score and pushes score updates to PrimeV2.</text>
+  <text class="note" x="40" y="628">Minting: governance ranks the leaderboard off-chain and issues Prime tokens via issue/issueBatch; permissionless claimPrime() is disabled by default and used only as a keeper-outage fallback.</text>
+  <text class="note" x="40" y="648">Rewards: protocol income is bought back into USDT/U, funded through PrimeLiquidityProvider, and claimed by Prime users from PrimeV2 (claimInterest triggers releaseFunds if PrimeV2 is short).</text>
+</svg>

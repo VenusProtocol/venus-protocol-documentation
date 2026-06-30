@@ -1,18 +1,69 @@
 # Venus Prime
 
 {% hint style="info" %}
-Only available on BNB chain
+Venus Prime is being migrated to the PrimeV2 + PrimeLeaderboard architecture. The new contracts are live on BNB Chain testnet. On BNB Chain mainnet they are deployed but not yet activated — the legacy `Prime` contract remains live there until a VIP wires PrimeV2. Rollout to other networks follows per-chain via governance.
 {% endhint %}
 
 ## Overview
 
-This technical article explains implementation details of the Venus Prime program. The overview of the Venus Prime program can be checked [here](../../whats-new/prime-yield.md).
+This technical article explains the implementation details of the Venus Prime program. The high-level overview of the program can be found [here](../../whats-new/prime-yield.md).
+
+Venus Prime is split across two contracts:
+
+* **PrimeV2** — holds Soulbound Prime tokens, tracks per-market user scores, and distributes boosted rewards funded by protocol revenue through `PrimeLiquidityProvider`.
+* **PrimeLeaderboard** — tracks time-weighted XVS staking and exposes a **Prime Score** used to decide who is eligible to mint a Prime token.
+
+<figure><img src="../../.gitbook/assets/prime_architecture.svg" alt="Venus Prime architecture: XVSVault, PrimeLeaderboard, PrimeV2, PrimeLiquidityProvider and governance"><figcaption>PrimeV2 architecture — eligibility, governance and reward wiring</figcaption></figure>
+
+## Eligibility and the leaderboard
+
+### Prime Score
+
+A user's **Prime Score** is their time-weighted stake, exposed on-chain via `getEffectiveStake` / `getEffectiveStakeBatch` (the contract returns it as `effectiveStake`).
+
+`PrimeLeaderboard` records each user's XVS deposits as individual tranches (amount + timestamp). It is notified of every stake change by the `XVSVault` through the existing `xvsUpdated(user)` callback, which diffs the user's current vault balance against the last known total and records a deposit or a LIFO withdrawal accordingly.
+
+Each tranche earns a multiplier based on how long it has been held:
+
+| Holding duration | Multiplier (1e18) |
+| --- | --- |
+| < 30 days | 1.0x (base) |
+| ≥ 30 days | 1.3x |
+| ≥ 60 days | 1.6x |
+| ≥ 90 days | 2.0x (cap) |
+
+The Prime Score is:
+
+```jsx
+primeScore = Σ  deposit.amount × multiplier(holdingDuration) × min(holdingDuration, capSeconds)
+```
+
+where `capSeconds` is the longest configured tier duration (90 days by default). Tiers and the cap are configurable via `setMultiplierTiers(durations, multipliers)`; durations and multipliers must be strictly ascending and multipliers must be ≥ base (1e18).
+
+Withdrawals are processed **LIFO** so the oldest, highest-multiplier deposits survive longest. To bound gas, a user keeps at most `MAX_DEPOSITS_PER_USER` (30) tranches; when the limit is reached, deposits are compacted — first by losslessly merging all max-tier tranches, then, if needed, by merging tranches within the same tier using an amount-weighted average timestamp.
+
+### Minting
+
+The primary minting path is **governance issuance**:
+
+* `issue(user)` / `issueBatch(users)` let governance mint Prime tokens directly (ACM-gated). A keeper reads the leaderboard off-chain with `getEffectiveStakeBatch(users)`, ranks users, and governance issues tokens to the qualifying set.
+* `burn(user)` / `burnBatch(users)` let governance revoke tokens (ACM-gated).
+
+A **permissionless minting** window exists as a fallback and is **disabled by default**: `mintThreshold` initializes to `0`, so `claimPrime` / `claimPrimeBatch` revert with `MintThresholdNotSet`. Governance can open the window by calling `setMintThreshold(threshold, deadline)` — intended as a last resort if the keeper-driven issuance flow is unavailable. While open:
+
+* `claimPrime(user)` / `claimPrimeBatch(users)` are permissionless — anyone can mint a Prime token for any user whose Prime Score ≥ `mintThreshold`. In the batch variant, users below the threshold are skipped (with a `SkippedIneligibleUser` event) rather than reverting the whole call.
+
+Total Prime tokens are capped by `tokenLimit` (default 500). Setting `mintThreshold` back to `0` closes the window; a non-zero `mintDeadline` auto-closes it once `block.timestamp` passes it.
+
+### Staker migration
+
+When PrimeLeaderboard is first deployed, existing stakers are seeded with `initializeStakers(users, amounts, timestamps)` in batches (idempotent — already-seeded users are skipped). Once seeding is complete, `finalizeInitialization()` locks it permanently. The `XVSVault.primeToken` reference is then pointed at the leaderboard to begin live tracking.
 
 ## Rewards
 
 ([*Main explanation of Prime rewards*](../../whats-new/prime-yield.md#technical-reward-details))
 
-Qualifiable supply and borrow amounts limits are set by the staked XVS limit and the market multiplier. The USD values of the tokens and the USD value of XVS will be taken into account to calculate these caps. The following pseudocode shows how $$\sigma_{i,m}$$ is calculated considering the caps:
+Qualifiable supply and borrow amount limits are set by the staked XVS value and the market multiplier. The USD values of the tokens and of XVS are taken into account to calculate these caps. The following pseudocode shows how $$\sigma_{i,m}$$ is calculated considering the caps:
 
 ```jsx
 borrowUSDCap = toUSD(xvsBalanceOfUser * marketBorrowMultipler)
@@ -41,7 +92,7 @@ return borrowQVL + supplyQVL
 
 A higher α value increases the weight of stake contributions when determining rewards and decreases the weight of supply/borrow contributions. The value of α is between 0-1 (both excluded).
 
-A default weight of 0.5 has been evaluated as a good ratio and is not likely to be changed. A higher value would only be needed if Venus wanted to attract more XVS stake from the Prime token holders at the expense of supply/borrow rewards.
+A default weight of 0.5 has been evaluated as a good ratio and is not likely to be changed. A higher value would only be needed if Venus wanted to attract more XVS stake from Prime token holders at the expense of supply/borrow rewards.
 
 Here is an example to show how the score is impacted based on the value of α:
 
@@ -65,138 +116,111 @@ user B score: 501.1872336
 
 ### Implementation of the rewards in solidity
 
-`rewardIndex` and `sumOfMembersScore` are global variables in supported markets used when calculating rewards. `sumOfMembersScore` represents the current sum of all the Prime token holders score and `rewardIndex` needs to be updated whenever a user’s staked XVS or supply/borrow changes.
+`rewardIndex` and `sumOfMembersScore` are global variables in supported markets used when calculating rewards. `sumOfMembersScore` represents the current sum of all Prime token holders' scores, and `rewardIndex` is updated whenever interest is accrued for a market.
 
 ```jsx
 // every time accrueInterest is called. delta is interest per score
-delta = totalIncomeToDistribute / sumOfMembersScore;
+delta = distributionIncome / sumOfMembersScore;
 rewardIndex += delta;
 ```
 
-Whenever a user’s supply/borrow or XVS Vault balance changes we will recalculate the rewards accrued and add them to their account:
+If interest accrues for a market while it has no scored members yet, the slice is recorded in `undistributedReward[underlying]` so governance can reclaim it later via `sweepUndistributed` instead of stranding it.
 
-- In Comptroller (specifically in the `PolicyFacet`), after executing any operation that could impact the Prime score or interest, we accrue the interest and update the score for the Prime user by calling `accrueInterestAndUpdateScore`.
-- In the `XVSVault`, after depositing or requesting a withdrawal, the function `xvsUpdated` is invoked, to review the requirements of Prime holders.
+Whenever a user's supply/borrow or XVS Vault balance changes, the rewards accrued are recalculated and added to their account:
 
-This is how we will calculate the user rewards:
+- In the Comptroller (specifically in the `PolicyFacet`), after any operation that could impact a Prime score or interest, `accrueInterestAndUpdateScore(user, market)` is called on PrimeV2.
+- In the `XVSVault`, after depositing or requesting a withdrawal, `xvsUpdated(user)` is invoked on `PrimeLeaderboard`. The leaderboard updates its deposit tracking and then calls `accrueInterestAndUpdateScore(user)` on PrimeV2 so rewards are accrued at the old score before the score is recalculated.
+
+User rewards are calculated as:
 
 ```jsx
 rewards = (rewardIndex - userRewardIndex) * scoreOfUser;
 ```
 
-Then we will update the `userRewardIndex` (`interests[market][account]`) to their current global values.
+The `userRewardIndex` (`interests[market][account].rewardIndex`) is then updated to the current global value.
+
+### Per-cycle reward accounting
+
+Rewards are tracked in monthly **cycles** for off-chain reporting. Each user's `interests[market][user].lifetimeAccrued` is a monotonic running total of every reward ever accrued to that user in that market — it grows alongside `accrued` but is never reset on claim. The off-chain pipeline computes a user's earnings for a given cycle as the difference between their `lifetimeAccrued` at the cycle's start and end.
+
+Cycle boundaries are anchored on-chain: a keeper calls `recordCycleSnapshot(cycleId)`, which emits `CycleSnapshotRecorded(cycleId, block.number, block.timestamp)`. This is an operational hook (ACM-gated to a keeper, not the Timelock) and is intentionally not idempotent — the indexer de-duplicates repeated `cycleId`s. The snapshots themselves are read off-chain via `getLifetimeAccruedByMarket` / `getLifetimeAccruedByUser`, so no per-cycle state is stored on-chain beyond `lifetimeAccrued`.
 
 ## Income collection and distribution
 
-Every market in Venus (including Isolated Lending markets) contributes to the rewards that the Prime contract will distribute, following the protocol [tokenomics](../../governance/tokenomics.md). The following diagram shows the current implementation for the flow of funds.
+Every market in Venus (including Isolated Lending markets) contributes to the rewards that PrimeV2 distributes, following the protocol [tokenomics](../../governance/tokenomics.md).
 
-<figure><img src="../../.gitbook/assets/prime_funds.svg" alt="Flow of funds related to Prime"><figcaption></figcaption></figure>
+Prime rewards are denominated in the reward tokens accumulated by the `PrimeLiquidityProvider`. Protocol income that arrives in other tokens is converted into those reward tokens by [TokenBuyback](../../whats-new/token-converter.md) instances whose destination is the `PrimeLiquidityProvider`. On BNB Chain these are `USDTPrimeBuyback` (base asset USDT) and `UPrimeBuyback` (base asset U), so Prime rewards accumulate in USDT and U.
 
-Rewards will be distributed to Prime users only in USDT, USDC, BTC and ETH tokens. Other tokens will have to be converted to the tokens used for rewarding users in Prime. This conversion should follow a configurable (via VIP) distribution table, that initially will be:
+Interest reserves (part of the protocol income) from Isolated Pools and Core Pool markets are sent to the PSR ([Protocol Share Reserve](https://github.com/VenusProtocol/protocol-reserve/blob/main/contracts/ProtocolReserve/ProtocolShareReserve.sol)) contract. Based on the configuration, a percentage of income from all markets is reserved for Prime token holders. The interest reserves are sent to the PSR periodically (currently every 6 hours, changeable by the community via [VIP](https://app.venus.io/governance)).
 
-| Prime market | Distribution |
-| --- | --- |
-| USDT | 40% |
-| USDC | 30% |
-| ETH | 25% |
-| BTC | 5% |
+The PSR has a function `releaseFunds` that releases the funds to the destination contracts. The Prime-destined `TokenBuyback` instances receive income from the PSR, swap it into the Prime reward tokens at DEX market rate via an ACM-authorized finance-team cron, and forward the output to `PrimeLiquidityProvider`. How much of each reward token is released to Prime users over time is controlled by the per-token distribution speeds configured in the `PrimeLiquidityProvider` via VIP (`setTokensDistributionSpeed`); there is no fixed allocation percentage hardcoded in Prime.
 
-For example:
+`PrimeLiquidityProvider` then releases the funds to the PrimeV2 contract according to distribution speeds configured per reward token.
 
-- The CAKE market generates 1,000 CAKE of total income
-- 10% of the CAKE total income should be allocated to Prime → 100 CAKE (following the protocol tokenomics)
-- We should convert 100 CAKE to USDC, USDT, BTC and ETH, because in Prime the rewards are defined in these tokens
-- The conversion should follow the previous table:
-    - 40 CAKE should be converted to USDT
-    - 30 CAKE should be converted to USDC
-    - 25 CAKE should be converted to ETH
-    - 5 CAKE should be converted to BTC
-
-Interest reserves (part of the protocol income) from Isolated Pools and the Core Pool markets are sent to the PSR ([Protocol Share Reserve](https://github.com/VenusProtocol/protocol-reserve/blob/main/contracts/ProtocolReserve/ProtocolShareReserve.sol)) contract. Based on the configuration, a percentage of income from all markers is reserved for Prime token holders. The interest reserves will be sent to the PSR periodically (currently every 6 hours, but this can be changed by the community via [VIP](https://app.venus.io/governance)).
-
-The PSR has a function `releaseFunds` that needs to be invoked to release the funds to the destination contracts. [TokenBuyback](../../whats-new/token-converter.md) instances (e.g. `USDTPrimeBuyback`, `UPrimeBuyback`) receive income from the PSR, swap it into Prime reward tokens at DEX market rate via an ACM-authorized finance-team cron, and forward the output to `PrimeLiquidityProvider`.
-
-`PrimeLiquidityProvider` then releases the funds to the `Prime` contract according to distribution speeds configured per reward token.
-
-If a user tries to claim their rewards and the `Prime` contract doesn’t have enough funds, then we trigger the release of funds from `PrimeLiquidityProvider` to `Prime` contract in the same transaction i.e., in the `claimInterest` function.
+If a user tries to claim their rewards and PrimeV2 doesn't have enough funds, the release of funds from `PrimeLiquidityProvider` to PrimeV2 is triggered in the same transaction (in the `claimInterest` function).
 
 The following diagram shows the integration of the `TokenBuyback` contracts with the Prime contracts:
 
-<figure><img src="../../.gitbook/assets/prime_token_buyback.svg" alt="Integration of the Prime TokenBuyback contracts with the Prime contracts"><figcaption>PSR → Prime buybacks → PrimeLiquidityProvider → Prime → users</figcaption></figure>
+<figure><img src="../../.gitbook/assets/prime_token_buyback.svg" alt="Integration of the TokenBuyback contracts with the Prime contracts"><figcaption>PSR → Prime buybacks → PrimeLiquidityProvider → PrimeV2 → users</figcaption></figure>
 
 More information about income collection and distribution can be found [here](../../whats-new/automatic-income-allocation.md).
 
 ## Update cap multipliers and alpha
 
-Market multipliers and alpha can be updated at anytime and then need to be propagated to all users. Changes will be gradually applied to users as they borrow/supply assets and their individual scores are recalculated. This strategy has limitations because the scores will be wrong in aggregate until all Prime users have interacted with the markets.
+Market multipliers and alpha can be updated at any time and then need to be propagated to all users. When `addMarket`, `updateMultipliers` or `updateAlpha` is called, PrimeV2 opens a new score-update round: it increments `nextScoreUpdateRoundId` and sets `pendingScoreUpdates` to the total number of Prime tokens. If a previous round was still in progress, it is discarded with an `IncompleteRoundDiscarded` event.
 
-To mitigate this issue, Venus will supply a script that will use the permission-less function `updateScores` to update the scores of all users. This script won’t pause market and `Prime` contracts. The scores will need to be updated in multiple transactions because a single transaction will run out of gas trying to update all scores.
+While `pendingScoreUpdates > 0`, issuing and burning are blocked (`ScoreUpdateInProgress`) until all scores have been recomputed. A keeper completes the round by calling the permissionless `updateScores(users)` in batches (split across multiple transactions to avoid running out of gas). Each user is updated at most once per round, tracked via `isScoreUpdated[roundId][user]`.
 
-As markets won't be paused, there could be inconsistencies due to user supply/borrow transactions in between updating scores transactions. These inconsistencies will be very minor compared to letting it update gradually when users will borrow/supply.
-
-There are two main objectives for creating this script:
-
-- If the Venus community wants to update all users scores when multipliers or alpha are changed then we have an immediate option.
-- After minting Prime tokens if the Venus community decides to add an existing market to the Prime token program then users scores need to be updated in order for them to being receiving rewards. The scores cannot be applied gradually in this case as the first Prime users in the market will receive disproportionally large rewards until the rest of the users in the market have their scores updated. A script to quickly update score for all users in a market will prevent this scenario.
-
-There is a variable named `totalScoreUpdatesRequired` to track how many score updates are pending. This is for tracking purposes and visible to the community.
+This mechanism ensures that when multipliers/alpha change, or a new market is added to the program, all Prime users' scores are brought up to date promptly rather than drifting until each user next interacts with the markets — which would otherwise let the first users in a new market collect disproportionately large rewards.
 
 ## Calculate APR associated with a Prime market and user
 
-The goal is to offer a view function that allows the [Venus UI](https://app.venus.io) to show an estimation of the APR associated with the Prime token and the borrow/supply position of a user.
+APR estimation lives in a separate read-only contract, **[PrimeLens](../../reference-core-pool/prime/prime-lens.md)**, kept out of PrimeV2 to stay within the EVM contract-size limit. The [Venus UI](https://app.venus.io) calls it to show the APR a user's Prime boost adds in a given market.
 
-The steps to perform this calculation are:
+- `calculateAPR(market, user)` returns an `APRInfo` struct with the user's `supplyAPR` and `borrowAPR` (in BPS) plus the inputs behind them: `userScore`, `totalScore`, `xvsBalanceForScore`, `capital`, `cappedSupply`, `cappedBorrow`, `supplyCapUSD`, `borrowCapUSD`.
+- `incomeDistributionYearly(vToken)` returns the annualized income for a market — the PrimeLiquidityProvider effective distribution speed for the market's underlying multiplied by `blocksOrSecondsPerYear` (PrimeV2 runs on `TimeManagerV8`, so this is per-second on time-based chains and per-block otherwise).
 
-1. Fetch the income per block from PrimeLiquidityProvider
-2. Calculate the user yearly income by multiplying (1) with blocks per year
-3. Calculate the user score and total sum of scores for the market. This we can calculate the total rewards aloocation for the user for an year. 
-4. Calculate the capped supply and borrow of the user for the market
-5. Calculate the ratio of allocation of the rewards based on capped supply and borrow of the user
-6. Now borrow and supply APR of user can be calculated based on ratio of capped borrow and supply of the user. 
+Conceptually the lens performs these steps:
+
+1. Fetch the annualized income for the market (`incomeDistributionYearly`)
+2. Compute the user's score and the market's total score, giving the user's share of that income over a year
+3. Compute the user's capped supply and borrow for the market
+4. Split the user's income share across the capped supply and borrow legs
+5. Derive the supply and borrow APR from those legs
 
 **Example:**
 
-1. Income per block 0.00003 USDT
-2. Income per year is 10512000 blocks/year * 0.00003 = 315.36 USDT
-3. Assuming the user score for USDT: 3, and the sum of scores for USDT: 10, then we would have 94.608 USDT (yearly income for this user, generated by Prime)
-4. Assuming the user has the following positions:
-   1. borrow: 30 USDT. Let's say it's capped at 15 USDT, so we'll consider 15 USDT
-   2. supply: 10 USDT. Let's say it's also capped at 15 USDT, so we'll consider 10 USDT
-5. Allocating the rewards (94.608 USDT), considering these capped versions, we would have:
-   1. borrow: 94.608 \* 15/25 = 56.76 USDT
-   2. supply: 94.608 \* 10/25 = 37.84 USDT
-6. Calculating the APR with these allocations, we would have:
-   1. borrow: 56.76/30 = 1.89 = 189%
-   2. supply: 37.84/10 = 3.78 = 378%
+1. Annualized market income: 315.36 USDT
+2. With user score 3 and total market score 10, the user's yearly income is 94.608 USDT
+3. User positions — borrow 30 USDT (capped at 15), supply 10 USDT (capped at 10)
+4. Allocating 94.608 USDT across the capped legs (15 + 10 = 25): borrow 94.608 × 15/25 = 56.76 USDT, supply 94.608 × 10/25 = 37.84 USDT
+5. APR: borrow 56.76/30 = 189%, supply 37.84/10 = 378%
 
-Only the supply and borrow amounts below the cap generate Prime rewards. The supply and borrow amounts above the cap do not generate extra rewards. In the example, if the user supplies more USDT, they won't generate more rewards (because the supply amount to be considered is capped at 15 USDT). Therefore the supply APR would decrease if they supply more USDT.
+Only the supply and borrow amounts below the cap generate Prime rewards. Amounts above the cap do not generate extra rewards. In the example, if the user supplies more USDT they won't generate more rewards (the supply amount considered is capped), so the supply APR would decrease.
+
+`getPendingRewards(user)` / `getPendingRewardsStatic(user)` on PrimeV2 remain available for reading already-accrued, claimable rewards per market (the former accrues first, the latter is a pure view).
 
 ## Bootstrap liquidity for the Prime program
 
-There will be bootstrap liquidity available for the Prime program. This liquidity:
+There is bootstrap liquidity available for the Prime program. This liquidity:
 
 - should be uniformly distributed over a period of time, configurable via VIP
 - is defined by the tokens enabled for the Prime program
 
-These requirements will be enforced with the `PrimeLiquidityProvider` contract:
+These requirements are enforced with the `PrimeLiquidityProvider` contract:
 
-- The `Prime` contract has a reference to the `PrimeLiquidityProvider` contract
-- The `Prime` contract will transfer to itself the available liquidity from the `PrimeLiquidityProvider` as soon as it’s needed when a user claims interests, to reduce the number of transfers
-- The `Prime` contract takes into account the tokens available in the `PrimeLiquidityProvider` contract, when the interests are accrued and the estimated APR calculated
+- PrimeV2 holds a reference to the `PrimeLiquidityProvider` contract
+- PrimeV2 transfers to itself the available liquidity from the `PrimeLiquidityProvider` as soon as it is needed when a user claims interest, to reduce the number of transfers
+- PrimeV2 takes into account the tokens available in the `PrimeLiquidityProvider` contract when interest is accrued and the estimated APR is calculated
 
 Regarding the `PrimeLiquidityProvider`:
 
-- The `PrimeLiquidityProvider` contract maintains a speed per token (see `tokenDistributionSpeeds`, with the number of tokens to release each block), and the needed indexes, to release the required funds per block
-- Anyone can send tokens to the `PrimeLiquidityProvider` contract
-- Only accounts authorized via ACM will be able to change the `tokenDistributionSpeeds` attribute
-- The `PrimeLiquidityProvider` provides a view function to get the available funds that could be transferred for a specific token, taking into account:
-  - the current block number
-  - the speed associated with the token
-  - the last time those tokens were released
-- The `PrimeLiquidityProvider` provides a function to transfer the available funds to the `Prime` contract.
+- It maintains a speed per token (`tokenDistributionSpeeds`, the number of tokens to release each block) and the indexes needed to release the required funds per block
+- Anyone can send tokens to it
+- Only accounts authorized via ACM can change the `tokenDistributionSpeeds`
+- It exposes a view function for the available funds that can be transferred for a token, considering the current block number, the token's speed, and the last release time
+- It exposes a function to transfer the available funds to the PrimeV2 contract
 
-## Pause `claimInterest`
+## Pausing
 
-There is a feature flag to enable/disable the function `claimInterest`. When this feature is paused, no users will be able to invoke this function.
-
-The OpenZeppelin `PausableUpgradeable` contract is used. Only the `claimInterest` function is under control of this pause mechanism.
+PrimeV2 uses OpenZeppelin's `PausableUpgradeable`. The ACM-gated `pause()` / `unpause()` functions control the user-facing entry points (`claimPrime`, `claimPrimeBatch`, `claimInterest`). Accrual and score-update functions (`accrueInterest`, `accrueInterestAndUpdateScore`, `updateScores`) are intentionally **not** gated by the pause, so reward accounting stays fair and keepers can finish score rounds even while the contract is paused.
