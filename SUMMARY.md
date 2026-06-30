@@ -13,7 +13,6 @@
 * [Leveraged Positions](whats-new/leveraged-positions.md)
 * [E-Mode](whats-new/e-mode.md)
 * [Isolated E-Mode](whats-new/isolated-e-mode.md)
-* [Isolated Pools](whats-new/isolated-pools.md)
 * [Reward Distributor](whats-new/reward-distributor.md)
 * [Peg Stability Module](whats-new/psm.md)
 * [Automatic Income Allocation](whats-new/automatic-income-allocation.md)
