@@ -5,6 +5,7 @@
 * [Overview](README.md)
 * [Whitepaper V4](https://github.com/VenusProtocol/venus-protocol-documentation/blob/main/whitepapers/Venus-whitepaper-v4.pdf)
 * [FAQ](getting-started/faq.md)
+* [Glossary](getting-started/glossary.md)
 
 ## What's New?
 
