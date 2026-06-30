@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" font-family="Inter, 'Segoe UI', system-ui, -apple-system, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L7,3 L0,6 Z" fill="rgba(255,255,255,0.55)"/>
+    </marker>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <style>
+      .top{font-size:13px;fill:#5b6b82;font-weight:600;letter-spacing:3px}
+      .panel{font-size:11px;fill:#5b6b82;font-weight:600;letter-spacing:2px}
+      .t{font-size:12.5px;font-weight:700}
+      .s{font-size:10px;fill:#94a3b8}
+      .e{font-size:10px;fill:#cbd5e1;font-weight:500}
+      .edge{stroke:rgba(255,255,255,0.42);stroke-width:1.7;fill:none}
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="460" rx="14" fill="#0f1419"/>
+  <text class="top" x="480" y="28" text-anchor="middle">RISK STEWARDS — REMOTE (CROSS-CHAIN) UPDATE FLOW</text>
+
+  <!-- swimlanes -->
+  <rect x="20" y="56" width="920" height="116" rx="14" fill="rgba(255,255,255,0.02)" stroke="rgba(148,163,184,0.35)" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <text class="panel" x="38" y="76">BNB CHAIN — SOURCE</text>
+  <rect x="20" y="256" width="920" height="180" rx="14" fill="rgba(255,255,255,0.02)" stroke="rgba(148,163,184,0.35)" stroke-width="1.3" stroke-dasharray="5 4"/>
+  <text class="panel" x="38" y="276">DESTINATION CHAIN</text>
+
+  <!-- BNB row -->
+  <rect x="34" y="86" width="160" height="58" rx="10" fill="#1b1407" stroke="#f59e0b" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="114" y="110" text-anchor="middle" fill="#f59e0b">Risk provider</text>
+  <text class="s" x="114" y="128" text-anchor="middle">publish · dstEid = remote</text>
+
+  <rect x="214" y="86" width="140" height="58" rx="10" fill="#161031" stroke="#a78bfa" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="284" y="119" text-anchor="middle" fill="#a78bfa">Risk Oracle</text>
+
+  <rect x="374" y="86" width="180" height="58" rx="10" fill="#0c1626" stroke="#60a5fa" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="464" y="110" text-anchor="middle" fill="#60a5fa">RSR.processUpdate</text>
+  <text class="s" x="464" y="128" text-anchor="middle">validate · forward</text>
+
+  <line class="edge" x1="194" y1="115" x2="212" y2="115" marker-end="url(#ah)"/>
+  <line class="edge" x1="354" y1="115" x2="372" y2="115" marker-end="url(#ah)"/>
+
+  <!-- RSR -> LayerZero -->
+  <polyline class="edge" points="554,115 866,115 866,178" marker-end="url(#ah)"/>
+  <text class="e" x="690" y="107" text-anchor="middle">lzSend</text>
+
+  <!-- LayerZero bridge between lanes -->
+  <rect x="806" y="180" width="120" height="58" rx="16" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.5" filter="url(#glow)"/>
+  <text class="t" x="866" y="206" text-anchor="middle" fill="#e2e8f0">LayerZero</text>
+  <text class="s" x="866" y="223" text-anchor="middle">bridge</text>
+
+  <!-- destination row 1 (right to left) -->
+  <rect x="748" y="292" width="172" height="58" rx="10" fill="#0c1626" stroke="#60a5fa" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="834" y="316" text-anchor="middle" fill="#60a5fa" font-size="10">DestinationStewardReceiver</text>
+  <text class="s" x="834" y="334" text-anchor="middle">_lzReceive · register</text>
+
+  <rect x="486" y="292" width="190" height="58" rx="10" fill="#0c1626" stroke="#60a5fa" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="581" y="316" text-anchor="middle" fill="#60a5fa" font-size="11.5">DSR.executeUpdate</text>
+  <text class="s" x="581" y="334" text-anchor="middle">executor · after remoteDelay</text>
+
+  <rect x="240" y="292" width="176" height="58" rx="10" fill="#0a1a14" stroke="#34d399" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="328" y="325" text-anchor="middle" fill="#34d399" font-size="12">Risk Steward (remote)</text>
+
+  <!-- destination row 2 -->
+  <rect x="240" y="372" width="176" height="52" rx="10" fill="#08191f" stroke="#22d3ee" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="328" y="394" text-anchor="middle" fill="#22d3ee">Comptroller / vToken</text>
+  <text class="s" x="328" y="410" text-anchor="middle">destination chain</text>
+
+  <!-- destination edges -->
+  <line class="edge" x1="866" y1="238" x2="866" y2="290" marker-end="url(#ah)"/>
+  <text class="e" x="876" y="252">_lzReceive</text>
+  <line class="edge" x1="748" y1="321" x2="678" y2="321" marker-end="url(#ah)"/>
+  <text class="e" x="713" y="312" text-anchor="middle">execute</text>
+  <line class="edge" x1="486" y1="321" x2="418" y2="321" marker-end="url(#ah)"/>
+  <text class="e" x="452" y="312" text-anchor="middle">applyUpdate</text>
+  <line class="edge" x1="328" y1="350" x2="328" y2="370" marker-end="url(#ah)"/>
+  <text class="e" x="338" y="364">apply</text>
+</svg>

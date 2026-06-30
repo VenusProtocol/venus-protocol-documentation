@@ -75,6 +75,31 @@ We firmly believe that the true test of a smart contract's security lies in its 
 
 </details>
 
+### Risk Stewards V2
+
+**Scope**: Expansion of the Venus Risk Steward framework. In addition to supply and borrow caps, the stewards can now update collateral factors (with their liquidation thresholds) and interest rate models, governed by safe-delta and timelock controls. Recommendations are published to a Venus-owned Risk Oracle by whitelisted risk parameter providers, and updates can be executed locally on BNB Chain or forwarded cross-chain via LayerZero to destination receivers on other supported chains. Enabled in [VIP-592](https://app.venus.io/#/governance/proposal/592?chainId=56).
+
+* [Quantstamp audit report (2025/12/15)](https://github.com/VenusProtocol/governance-contracts/blob/b4b9fc4d3d4f3a8b5ecb3308693a0180399f8dec/audits/166_risk_steward_v2_quantstamp_20251215.pdf)
+* [Certik audit report (2025/12/29)](https://github.com/VenusProtocol/governance-contracts/blob/b4b9fc4d3d4f3a8b5ecb3308693a0180399f8dec/audits/167_risk_steward_v2_certik_20251229.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#163](https://github.com/VenusProtocol/governance-contracts/pull/163) in the `governance-contracts` repository:
+  - contracts/RiskSteward/RiskOracle.sol
+  - contracts/RiskSteward/RiskStewardReceiver.sol
+  - contracts/RiskSteward/DestinationStewardReceiver.sol
+  - contracts/RiskSteward/BaseRiskSteward.sol
+  - contracts/RiskSteward/MarketCapsRiskSteward.sol
+  - contracts/RiskSteward/CollateralFactorsRiskSteward.sol
+  - contracts/RiskSteward/IRMRiskSteward.sol
+  - contracts/RiskSteward/Interfaces/IRiskOracle.sol
+  - contracts/RiskSteward/Interfaces/IRiskSteward.sol
+  - contracts/RiskSteward/Interfaces/IRiskStewardReceiver.sol
+  - contracts/RiskSteward/Interfaces/IDestinationStewardReceiver.sol
+
+</details>
+
 ### Native Token Gateway upgrade
 
 **Scope**: [NativeTokenGateway contract](https://github.com/VenusProtocol/venus-periphery/blob/95e157b5b498ab80fe2715ca5ecf64203f6727fb/contracts/Gateway/NativeTokenGateway.sol) upgrade, to make it compatible with the Core pool on BNB Chain. Enabled in [VIP-543](https://app.venus.io/#/governance/proposal/543?chainId=56)

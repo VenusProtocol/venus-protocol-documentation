@@ -1,51 +1,41 @@
-# MarketCapsRiskSteward
-Contract that can update supply and borrow caps updates received from RiskStewardReceiver.
+# CollateralFactorsRiskSteward
+Contract that can update collateral factors and liquidation thresholds received from `RiskStewardReceiver`.
 
 # Solidity API
 
-### SUPPLY_CAP
+### COLLATERAL_FACTORS
 
-The update type for supply caps
+The update type for collateral factor and liquidation threshold.
 
 ```solidity
-string SUPPLY_CAP
+string COLLATERAL_FACTORS
 ```
 
 - - -
 
-### SUPPLY_CAP_KEY
+### COLLATERAL_FACTORS_KEY
 
-The update type key for supply caps (keccak256 hash of SUPPLY_CAP)
+The update type key for collateral factors (keccak256 hash of COLLATERAL_FACTORS)
 
 ```solidity
-bytes32 SUPPLY_CAP_KEY
+bytes32 COLLATERAL_FACTORS_KEY
 ```
 
 - - -
 
-### BORROW_CAP
+### CORE_POOL_COMPTROLLER
 
-The update type for borrow caps
-
-```solidity
-string BORROW_CAP
-```
-
-- - -
-
-### BORROW_CAP_KEY
-
-The update type key for borrow caps (keccak256 hash of BORROW_CAP)
+Address of the BNB Core Pool Comptroller.
 
 ```solidity
-bytes32 BORROW_CAP_KEY
+contract ICorePoolComptroller CORE_POOL_COMPTROLLER
 ```
 
 - - -
 
 ### RISK_STEWARD_RECEIVER
 
-Address of the RiskStewardReceiver used to validate incoming updates
+Address of the `RiskStewardReceiver` used to validate and dispatch incoming updates.
 
 ```solidity
 contract IRiskStewardReceiver RISK_STEWARD_RECEIVER
@@ -55,19 +45,20 @@ contract IRiskStewardReceiver RISK_STEWARD_RECEIVER
 
 ### constructor
 
-Sets the immutable RiskStewardReceiver address and disables initializers
+Sets the immutable `CORE_POOL_COMPTROLLER` and `RISK_STEWARD_RECEIVER` addresses and disables initializers.
 
 ```solidity
-constructor(address riskStewardReceiver_) public
+constructor(address corePoolComptroller_, address riskStewardReceiver_) public
 ```
 
 #### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| riskStewardReceiver_ | address | The address of the RiskStewardReceiver |
+| corePoolComptroller_ | address | The address of the Core Pool Comptroller |
+| riskStewardReceiver_ | address | The address of the `RiskStewardReceiver` |
 
 #### ❌ Errors
-* Throws ZeroAddressNotAllowed if the RiskStewardReceiver address is zero
+* Throws ZeroAddressNotAllowed if any of the addresses are zero
 
 - - -
 
@@ -88,7 +79,7 @@ function initialize(address accessControlManager_) external
 
 ### setSafeDeltaBps
 
-Sets the safe delta bps
+Sets the safe delta bps.
 
 ```solidity
 function setSafeDeltaBps(uint256 safeDeltaBps_) external
@@ -113,7 +104,7 @@ function setSafeDeltaBps(uint256 safeDeltaBps_) external
 
 ### isSafeForDirectExecution
 
-Checks if an update is safe for direct execution (no timelock required)
+Checks if an update is safe for direct execution (no timelock required).
 
 ```solidity
 function isSafeForDirectExecution(struct RiskParameterUpdate update) external view returns (bool)
@@ -122,7 +113,7 @@ function isSafeForDirectExecution(struct RiskParameterUpdate update) external vi
 #### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| update | struct RiskParameterUpdate | The update to check |
+| update | struct RiskParameterUpdate | The update to check. |
 
 #### Return Values
 | Name | Type | Description |
@@ -131,14 +122,14 @@ function isSafeForDirectExecution(struct RiskParameterUpdate update) external vi
 
 #### ❌ Errors
 * Throws UnsupportedUpdateType if the update type is not supported
-* Throws RedundantValue if the new cap value is equal to the current cap value
+* Throws RedundantValue if the new collateral factor and liquidation threshold are unchanged
 
 - - -
 
 ### applyUpdate
 
-Applies a market cap update from the RiskStewardReceiver.
-Directly updates the market supply or borrow cap on the market's comptroller.
+Applies a collateral parameter update from the `RiskStewardReceiver`.
+        Delta validation and timelock checks are already performed by `RiskStewardReceiver` before execution.
 
 ```solidity
 function applyUpdate(struct RiskParameterUpdate update) external
@@ -150,13 +141,13 @@ function applyUpdate(struct RiskParameterUpdate update) external
 | update | struct RiskParameterUpdate | RiskParameterUpdate update to apply |
 
 #### 📅 Events
-* Emits SupplyCapUpdated or BorrowCapUpdated depending on the update with the updateId, market and new cap
+* Emits CollateralFactorsUpdated with updateId
 
 #### ⛔️ Access Requirements
-* Only callable by the RiskStewardReceiver
+* Only callable by the `RiskStewardReceiver`
 
 #### ❌ Errors
-* Throws OnlyRiskStewardReceiver if the sender is not the RiskStewardReceiver
+* Throws OnlyRiskStewardReceiver if the sender is not the `RiskStewardReceiver`
 * Throws UnsupportedUpdateType if the update type is not supported
 
 - - -

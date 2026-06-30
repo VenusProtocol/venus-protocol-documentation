@@ -33,7 +33,7 @@
 * [Interest Rate Model](risk/interest-rate-model.md)
 * [Risk Fund and Shortfall Handling](risk/risk-fund-and-shortfall-handling.md)
 * [Risk Management](risk/risk-management.md)
-* [Risk Oracles and Risk Stewards](risk/risk-oracle-and-risk-stewards.md)
+* [Risk Oracle & Risk Stewards](risk/risk-oracle-and-risk-stewards.md)
 
 ## Tokens
 
@@ -196,8 +196,13 @@
   * [OmnichainProposalSender](technical-reference/reference-governance/omnichain-proposal-sender.md) 
   * [OmnichainGovernanceExecutor](technical-reference/reference-governance/omnichain-governance-executor.md) 
   * [OmnichainExecutorOwner](technical-reference/reference-governance/omnichain-executor-owner.md) 
-  * [RiskStewardReceiver](technical-reference/reference-governance/risk-steward-receiver.md) 
+  * [RiskOracle](technical-reference/reference-governance/risk-oracle.md)
+  * [RiskStewardReceiver](technical-reference/reference-governance/risk-steward-receiver.md)
+  * [DestinationStewardReceiver](technical-reference/reference-governance/destination-steward-receiver.md)
+  * [BaseRiskSteward](technical-reference/reference-governance/base-risk-steward.md)
   * [MarketCapsRiskSteward](technical-reference/reference-governance/market-caps-risk-steward.md)
+  * [CollateralFactorsRiskSteward](technical-reference/reference-governance/collateral-factors-risk-steward.md)
+  * [IRMRiskSteward](technical-reference/reference-governance/irm-risk-steward.md)
 * [XVS Bridge](technical-reference/reference-xvs-bridge/README.md)
   * [BaseXVSProxyOFT](technical-reference/reference-xvs-bridge/BaseXVSProxyOFT.md)
   * [XVSProxyOFTSrc](technical-reference/reference-xvs-bridge/XVSProxyOFTSrc.md)

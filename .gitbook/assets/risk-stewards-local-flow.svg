@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 606" font-family="Inter, 'Segoe UI', system-ui, -apple-system, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L7,3 L0,6 Z" fill="rgba(255,255,255,0.55)"/>
+    </marker>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <style>
+      .top{font-size:13px;fill:#5b6b82;font-weight:600;letter-spacing:3px}
+      .t{font-size:13px;font-weight:700}
+      .s{font-size:10.5px;fill:#94a3b8}
+      .e{font-size:10.5px;fill:#cbd5e1;font-weight:500}
+      .edge{stroke:rgba(255,255,255,0.42);stroke-width:1.7;fill:none}
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="606" rx="14" fill="#0f1419"/>
+  <text class="top" x="450" y="28" text-anchor="middle">RISK STEWARDS — BNB CHAIN UPDATE FLOW</text>
+
+  <!-- top row -->
+  <rect x="40" y="52" width="180" height="58" rx="10" fill="#1b1407" stroke="#f59e0b" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="130" y="77" text-anchor="middle" fill="#f59e0b">Risk provider</text>
+  <text class="s" x="130" y="95" text-anchor="middle">publishRiskParameterUpdate</text>
+
+  <rect x="260" y="52" width="180" height="58" rx="10" fill="#161031" stroke="#a78bfa" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="350" y="77" text-anchor="middle" fill="#a78bfa">Risk Oracle</text>
+  <text class="s" x="350" y="95" text-anchor="middle">stores update · assigns id</text>
+
+  <rect x="480" y="52" width="200" height="58" rx="10" fill="#0c1626" stroke="#60a5fa" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="580" y="77" text-anchor="middle" fill="#60a5fa">RSR.processUpdate</text>
+  <text class="s" x="580" y="95" text-anchor="middle">anyone calls</text>
+
+  <line class="edge" x1="220" y1="81" x2="258" y2="81" marker-end="url(#ah)"/>
+  <text class="e" x="222" y="73">publish</text>
+  <line class="edge" x1="440" y1="81" x2="478" y2="81" marker-end="url(#ah)"/>
+
+  <text class="s" x="580" y="128" text-anchor="middle">validates: active · latest · not expired · debounce</text>
+
+  <!-- decision -->
+  <line class="edge" x1="580" y1="136" x2="580" y2="156" marker-end="url(#ah)"/>
+  <polygon points="580,158 650,198 580,238 510,198" fill="#1b1407" stroke="#f59e0b" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="580" y="194" text-anchor="middle" fill="#fbbf24" font-size="11.5">within</text>
+  <text class="t" x="580" y="208" text-anchor="middle" fill="#fbbf24" font-size="11.5">safe delta?</text>
+
+  <!-- yes branch -->
+  <polyline class="edge" points="510,198 210,198 210,264" marker-end="url(#ah)"/>
+  <text class="e" x="300" y="188" fill="#34d399">Yes — within delta</text>
+  <rect x="110" y="266" width="200" height="58" rx="10" fill="#0a1a14" stroke="#34d399" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="210" y="291" text-anchor="middle" fill="#34d399">Apply immediately</text>
+  <text class="s" x="210" y="309" text-anchor="middle">no timelock</text>
+
+  <!-- no branch -->
+  <polyline class="edge" points="650,198 730,198 730,264" marker-end="url(#ah)"/>
+  <text class="e" x="658" y="182" fill="#f59e0b">No — exceeds delta</text>
+  <text class="e" x="658" y="195" fill="#f59e0b">(IRM &amp; eMode always)</text>
+  <rect x="600" y="266" width="260" height="58" rx="10" fill="#1b1407" stroke="#f59e0b" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="730" y="291" text-anchor="middle" fill="#f59e0b">Register + timelock</text>
+  <text class="s" x="730" y="309" text-anchor="middle">status: Pending</text>
+
+  <line class="edge" x1="730" y1="324" x2="730" y2="354" marker-end="url(#ah)"/>
+  <text class="e" x="740" y="343">wait timelock</text>
+  <rect x="600" y="356" width="260" height="58" rx="10" fill="#0c1626" stroke="#60a5fa" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="730" y="380" text-anchor="middle" fill="#60a5fa" font-size="11.5">RSR.executeRegisteredUpdate</text>
+  <text class="s" x="730" y="398" text-anchor="middle">executor · after timelock</text>
+
+  <!-- converge to steward -->
+  <rect x="300" y="440" width="300" height="56" rx="10" fill="#0a1a14" stroke="#34d399" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="450" y="464" text-anchor="middle" fill="#34d399">Steward.applyUpdate(update)</text>
+  <text class="s" x="450" y="482" text-anchor="middle">Market Caps · Collateral Factors · IRM</text>
+
+  <polyline class="edge" points="210,324 210,468 298,468" marker-end="url(#ah)"/>
+  <polyline class="edge" points="730,414 730,468 602,468" marker-end="url(#ah)"/>
+
+  <!-- protocol -->
+  <rect x="290" y="524" width="320" height="66" rx="10" fill="#08191f" stroke="#22d3ee" stroke-width="1.6" filter="url(#glow)"/>
+  <text class="t" x="450" y="547" text-anchor="middle" fill="#22d3ee" font-size="12.5">Comptroller / vToken updated</text>
+  <text class="s" x="450" y="565" text-anchor="middle" font-size="9.5">setMarketSupplyCaps · setMarketBorrowCaps</text>
+  <text class="s" x="450" y="580" text-anchor="middle" font-size="9.5">setCollateralFactor · setInterestRateModel</text>
+  <line class="edge" x1="450" y1="496" x2="450" y2="522" marker-end="url(#ah)"/>
+</svg>
