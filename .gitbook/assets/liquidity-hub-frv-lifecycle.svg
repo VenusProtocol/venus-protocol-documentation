@@ -1,0 +1,70 @@
+<svg width="980" height="300" viewBox="0 0 980 300" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6B83D6"/>
+    </marker>
+    <style>
+      .st   { fill: #2F3B5C; stroke: #46557E; stroke-width: 1.2; }
+      .go   { fill: #2F3B5C; stroke: #1FCB86; stroke-width: 2.4; }
+      .fail { fill: #2F3B5C; stroke: #F0556F; stroke-width: 2.4; }
+      .end  { fill: #222B42; stroke: #38445F; stroke-width: 1.2; }
+      .stl  { fill: #FFFFFF; font-size: 11px; font-weight: 600; }
+      .ttl  { fill: #FFFFFF; font-size: 15px; font-weight: 700; }
+      .lbl  { fill: #FFFFFF; font-size: 12px; font-weight: 600; }
+      .note { fill: #9AA8CC; font-size: 11px; font-style: italic; }
+      .nsub { fill: #AEB9D6; font-size: 10px; }
+      .tag  { fill: #1FCB86; font-size: 11px; font-weight: 600; }
+      .edge { stroke: #6B83D6; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .la   { text-anchor: start; }
+      text  { text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="980" height="300" fill="#0E1626"/>
+
+  <text class="ttl la" x="28" y="32">FRV lifecycle</text>
+
+  <text class="tag" x="362" y="58">deposits</text>
+  <text class="tag" x="874" y="58">withdrawals</text>
+
+  <rect class="st" x="48"  y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="106" y="93">Waiting</text>
+  <text class="stl" x="106" y="107">ForMargin</text>
+  <rect class="st" x="176" y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="234" y="93">Margin</text>
+  <text class="stl" x="234" y="107">Deposited</text>
+  <rect class="go" x="304" y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="362" y="101">Fundraising</text>
+  <rect class="st" x="432" y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="490" y="93">Institution</text>
+  <text class="stl" x="490" y="107">Confirmation</text>
+  <rect class="st" x="560" y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="618" y="101">Lock</text>
+  <rect class="st" x="688" y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="746" y="93">Pending</text>
+  <text class="stl" x="746" y="107">Settlement</text>
+  <rect class="go" x="816" y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="874" y="101">Matured</text>
+
+  <path class="edge" d="M166,97 L174,97"/>
+  <path class="edge" d="M294,97 L302,97"/>
+  <path class="edge" d="M422,97 L430,97"/>
+  <path class="edge" d="M550,97 L558,97"/>
+  <path class="edge" d="M678,97 L686,97"/>
+  <path class="edge" d="M806,97 L814,97"/>
+
+  <path class="edge" d="M746,122 C660,156 560,168 480,186"/>
+  <text class="note" x="632" y="156">on deadline / failure / liquidation</text>
+
+  <rect class="fail" x="300" y="188" width="340" height="66" rx="14"/>
+  <text class="stl" x="470" y="211" font-size="12">SettlementDeadlineExceeded</text>
+  <text class="stl" x="470" y="228" font-size="12">Failed · Liquidated</text>
+  <text class="nsub" x="470" y="245">terminal failure states</text>
+
+  <rect class="end" x="700" y="199" width="130" height="44" rx="14"/>
+  <text class="lbl" x="765" y="225">Closed</text>
+  <path class="edge" d="M640,221 L698,221"/>
+
+  <text class="note" x="490" y="278">Deposits only while Fundraising · withdrawals only in Matured / Failed / Liquidated</text>
+  <text class="note" x="490" y="293">(Failed &amp; Liquidated may return &lt; principal)</text>
+</svg>

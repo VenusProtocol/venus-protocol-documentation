@@ -1,0 +1,56 @@
+<svg width="960" height="320" viewBox="0 0 960 320" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6B83D6"/>
+    </marker>
+    <style>
+      .pause { fill: #2F3B5C; stroke: #F0556F; stroke-width: 2.4; }
+      .ok    { fill: #2F3B5C; stroke: #1FCB86; stroke-width: 2.4; }
+      .lbl   { fill: #FFFFFF; font-size: 14px; font-weight: 600; }
+      .ttl   { fill: #FFFFFF; font-size: 15px; font-weight: 700; }
+      .sub   { fill: #AEB9D6; font-size: 10px; }
+      .note  { fill: #9AA8CC; font-size: 11px; font-style: italic; }
+      .tagp  { fill: #F0556F; font-size: 11px; font-weight: 600; }
+      .tago  { fill: #1FCB86; font-size: 11px; font-weight: 600; }
+      .edge  { stroke: #6B83D6; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .la    { text-anchor: start; }
+      text   { text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="960" height="320" fill="#0E1626"/>
+
+  <text class="ttl la" x="28" y="32">Multi-level pause</text>
+
+  <rect class="pause" x="350" y="54" width="260" height="54" rx="14"/>
+  <text class="lbl" x="480" y="80">Hub paused</text>
+  <text class="sub" x="480" y="98">blocks all user-facing operations</text>
+
+  <path class="edge" d="M420,108 C362,128 282,138 250,153"/>
+  <path class="edge" d="M540,108 C598,128 678,138 710,153"/>
+
+  <rect class="pause" x="110" y="156" width="240" height="56" rx="14"/>
+  <text class="lbl" x="230" y="182">Source A — paused</text>
+  <text class="sub" x="230" y="200">skipped in routing; balance still counts</text>
+  <rect class="ok" x="610" y="156" width="240" height="56" rx="14"/>
+  <text class="lbl" x="730" y="182">Source B</text>
+  <text class="sub" x="730" y="200">unaffected — keeps operating</text>
+
+  <path class="edge" d="M200,212 C186,228 182,238 180,249"/>
+  <path class="edge" d="M290,212 C330,230 368,240 388,249"/>
+
+  <rect class="pause" x="90" y="252" width="180" height="52" rx="14"/>
+  <text class="lbl" x="180" y="276" font-size="13">Resource 1 — paused</text>
+  <text class="sub" x="180" y="293">skipped in inner queue</text>
+  <rect class="ok" x="300" y="252" width="180" height="52" rx="14"/>
+  <text class="lbl" x="390" y="276" font-size="13">Resource 2</text>
+  <text class="sub" x="390" y="293">unaffected</text>
+
+  <rect class="pause" x="610" y="245" width="15" height="15" rx="3"/>
+  <text class="tagp la" x="634" y="257">paused</text>
+  <rect class="ok" x="710" y="245" width="15" height="15" rx="3"/>
+  <text class="tago la" x="734" y="257">operating</text>
+
+  <text class="note la" x="610" y="284">Broader scope blocks everything beneath it.</text>
+  <text class="note la" x="610" y="302">Pause = Operator · unpause = governance.</text>
+</svg>
