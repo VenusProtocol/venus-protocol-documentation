@@ -198,7 +198,7 @@ Conceptually the lens performs these steps:
 
 Only the supply and borrow amounts below the cap generate Prime rewards. Amounts above the cap do not generate extra rewards. In the example, if the user supplies more USDT they won't generate more rewards (the supply amount considered is capped), so the supply APR would decrease.
 
-`getPendingRewards(user)` / `getPendingRewardsStatic(user)` on PrimeV2 remain available for reading already-accrued, claimable rewards per market (the former accrues first, the latter is a pure view).
+`getPendingRewards(user)` / `getPendingRewardsStatic(user)` on PrimeV2 remain available for reading already-accrued, claimable rewards per market (the former accrues first, the latter is a read-only view).
 
 ## Bootstrap liquidity for the Prime program
 
@@ -215,10 +215,10 @@ These requirements are enforced with the `PrimeLiquidityProvider` contract:
 
 Regarding the `PrimeLiquidityProvider`:
 
-- It maintains a speed per token (`tokenDistributionSpeeds`, the number of tokens to release each block) and the indexes needed to release the required funds per block
+- It maintains a speed per token (`tokenDistributionSpeeds`, the number of tokens to release each block or second, depending on the chain — PrimeLiquidityProvider runs on `TimeManagerV8`) and the indexes needed to release the required funds
 - Anyone can send tokens to it
 - Only accounts authorized via ACM can change the `tokenDistributionSpeeds`
-- It exposes a view function for the available funds that can be transferred for a token, considering the current block number, the token's speed, and the last release time
+- It accrues the distributable funds for a token via `accrueTokens` (public), based on the elapsed blocks or seconds, the token's speed, and the last accrued block/second; `getEffectiveDistributionSpeed` returns the current effective per-block/second rate for a token
 - It exposes a function to transfer the available funds to the PrimeV2 contract
 
 ## Pausing
