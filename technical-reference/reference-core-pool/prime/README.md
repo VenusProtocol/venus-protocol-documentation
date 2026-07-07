@@ -7,4 +7,6 @@ The Venus Prime program is implemented by three core contracts, plus a read-only
 * [PrimeLiquidityProvider](prime-liquidity-provider.md) — funds PrimeV2 with the reward tokens.
 * [PrimeLens](prime-lens.md) — read-only helper for off-chain APR queries against PrimeV2.
 
+Storage layouts: [PrimeV2Storage](prime-storage.md), [PrimeLeaderboardStorage](prime-leaderboard-storage.md).
+
 See the [Venus Prime technical article](../../reference-technical-articles/prime.md) for how these fit together.
