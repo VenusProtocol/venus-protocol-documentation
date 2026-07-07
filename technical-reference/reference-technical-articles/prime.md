@@ -1,9 +1,5 @@
 # Venus Prime
 
-{% hint style="info" %}
-Venus Prime is being migrated to the PrimeV2 + PrimeLeaderboard architecture. The new contracts are live on BNB Chain testnet. On BNB Chain mainnet they are deployed but not yet activated — the legacy `Prime` contract remains live there until a VIP wires PrimeV2. Rollout to other networks follows per-chain via governance.
-{% endhint %}
-
 ## Overview
 
 This technical article explains the implementation details of the Venus Prime program. The high-level overview of the program can be found [here](../../whats-new/prime-yield.md).
@@ -12,6 +8,8 @@ Venus Prime is split across two contracts:
 
 * **PrimeV2** — holds Soulbound Prime tokens, tracks per-market user scores, and distributes boosted rewards funded by protocol revenue through `PrimeLiquidityProvider`.
 * **PrimeLeaderboard** — tracks time-weighted XVS staking and exposes a **Prime Score** used to decide who is eligible to mint a Prime token.
+
+PrimeV2 is the current Prime architecture on BNB Chain. Other networks still run the earlier Prime (V1) contract and migrate to PrimeV2 per-chain through governance.
 
 <figure><img src="../../.gitbook/assets/prime_architecture.svg" alt="Venus Prime architecture: XVSVault, PrimeLeaderboard, PrimeV2, PrimeLiquidityProvider and governance"><figcaption>PrimeV2 architecture — eligibility, governance and reward wiring</figcaption></figure>
 
