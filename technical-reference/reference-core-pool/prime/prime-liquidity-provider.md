@@ -45,20 +45,20 @@ mapping(address => uint256) maxTokenDistributionSpeeds
 
 ### lastAccruedBlock
 
-The rate at which token is distributed to the Prime contract
+The last block or second up to which rewards were accrued for the token (view getter over the `lastAccruedBlockOrSecond` storage mapping)
 
 ```solidity
-mapping(address => uint256) lastAccruedBlock
+function lastAccruedBlock(address token_) external view returns (uint256)
 ```
 
 - - -
 
 ### tokenAmountAccrued
 
-The token accrued but not yet transferred to prime contract
+The token accrued but not yet transferred to prime contract (view getter over the internal `_tokenAmountAccrued` mapping)
 
 ```solidity
-mapping(address => uint256) tokenAmountAccrued
+function tokenAmountAccrued(address token_) external view returns (uint256)
 ```
 
 - - -
@@ -302,18 +302,18 @@ function accrueTokens(address token_) public
 
 - - -
 
-### getBlockNumber
+### getBlockNumberOrTimestamp
 
-Get the latest block number
+Get the current block number (block-based chains) or timestamp (time-based chains). Inherited from `TimeManagerV8`.
 
 ```solidity
-function getBlockNumber() public view virtual returns (uint256)
+function getBlockNumberOrTimestamp() public view virtual returns (uint256)
 ```
 
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | blockNumber returns the block number |
+| [0] | uint256 | blockNumberOrSecond returns the current block number or timestamp |
 
 - - -
 

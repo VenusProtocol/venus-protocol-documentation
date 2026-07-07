@@ -80,7 +80,7 @@ function initialize(uint128 alphaNumerator_, uint128 alphaDenominator_, address 
 
 ### claimPrime
 
-Mint a Prime token for a user in a permissionless way. Checks the user's Prime Score from `PrimeLeaderboard` against `mintThreshold`. Anyone can call this on behalf of an eligible user; no ACM required.
+Mint a Prime token for a user in a permissionless way. Checks the user's Prime Score (their effective stake, read via `PrimeLeaderboard.getEffectiveStake`) against `mintThreshold`. Anyone can call this on behalf of an eligible user; no ACM required.
 
 ```solidity
 function claimPrime(address user) external
@@ -95,6 +95,7 @@ function claimPrime(address user) external
 * Emits Mint event on new token issuance
 
 #### ❌ Errors
+* Throw InvalidAddress if user is the zero address
 * Throw ScoreUpdateInProgress if a score update round is active
 * Throw UserAlreadyHasPrimeToken if user already has a token
 * Throw LeaderboardNotSet if primeLeaderboard address is not configured
@@ -772,7 +773,8 @@ function sweepUndistributed(address vToken, address to) external
 * Controlled by ACM
 
 #### ❌ Errors
-* Throw MarketNotSupported if vToken is not a Prime market
 * Throw InvalidAddress if to is the zero address
+
+Note: for a `vToken` that is not a Prime market the call does not revert; it returns without transferring (the market's `undistributedReward` slice is zero).
 
 - - -

@@ -32,12 +32,52 @@ uint256 MAX_DEPOSITS_PER_USER
 
 - - -
 
+### EXP_SCALE
+
+Scaling factor for calculations (1e18)
+
+```solidity
+uint256 EXP_SCALE
+```
+
+- - -
+
+### _depositStacks
+
+User's deposit stack (LIFO order, index 0 = oldest). Holds the `Deposit` records described above.
+
+```solidity
+mapping(address => IPrimeLeaderboard.Deposit[]) _depositStacks
+```
+
+- - -
+
 ### totalStaked
 
 User's total staked XVS
 
 ```solidity
 mapping(address => uint256) totalStaked
+```
+
+- - -
+
+### _multiplierDurations
+
+Multiplier tier duration thresholds, in seconds. Default `[30 days, 60 days, 90 days]`.
+
+```solidity
+uint256[] _multiplierDurations
+```
+
+- - -
+
+### _multiplierValues
+
+Multiplier values corresponding to each tier (scaled by 1e18). Default `[1.3e18, 1.6e18, 2.0e18]`.
+
+```solidity
+uint256[] _multiplierValues
 ```
 
 - - -
