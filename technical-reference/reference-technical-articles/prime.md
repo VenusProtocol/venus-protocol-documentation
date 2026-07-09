@@ -1,7 +1,7 @@
 # Venus Prime
 
 {% hint style="info" %}
-Venus Prime is being migrated to the PrimeV2 + PrimeLeaderboard architecture. The new contracts are live on BNB Chain testnet. On BNB Chain mainnet they are deployed but not yet activated — the legacy `Prime` contract remains live there until a VIP wires PrimeV2. Rollout to other networks follows per-chain via governance.
+Venus Prime runs on the PrimeV2 + PrimeLeaderboard architecture, live on BNB Chain mainnet. Other networks still run the earlier Prime (V1) contract and migrate to PrimeV2 per-chain via governance.
 {% endhint %}
 
 ## Overview
@@ -21,7 +21,7 @@ Venus Prime is split across two contracts:
 
 A user's **Prime Score** is their time-weighted stake, exposed on-chain via `getEffectiveStake` / `getEffectiveStakeBatch` (the contract returns it as `effectiveStake`).
 
-`PrimeLeaderboard` records each user's XVS deposits as individual tranches (amount + timestamp). It is notified of every stake change by the `XVSVault` through the existing `xvsUpdated(user)` callback, which diffs the user's current vault balance against the last known total and records a deposit or a LIFO withdrawal accordingly.
+`PrimeLeaderboard` records each user's XVS deposits as individual tranches (amount + timestamp). It is notified of every stake change by the `XVSVault` through the existing `xvsUpdated(user)` callback, which diffs the user's current vault stake (net of pending withdrawal requests) against the last known total and records a deposit or a LIFO withdrawal accordingly.
 
 Each tranche earns a multiplier based on how long it has been held:
 
@@ -66,6 +66,7 @@ When PrimeLeaderboard is first deployed, existing stakers are seeded with `initi
 Qualifiable supply and borrow amount limits are set by the staked XVS value and the market multiplier. The USD values of the tokens and of XVS are taken into account to calculate these caps. The following pseudocode shows how $$\sigma_{i,m}$$ is calculated considering the caps:
 
 ```jsx
+// xvsBalanceOfUser is the user's XVS Vault stake, net of pending withdrawal requests
 borrowUSDCap = toUSD(xvsBalanceOfUser * marketBorrowMultipler)
 supplyUSDCap = toUSD(xvsBalanceOfUser * marketSupplyMultipler)
 borrowUSD = toUSD(borrowTokens)
@@ -159,6 +160,11 @@ The PSR has a function `releaseFunds` that releases the funds to the destination
 
 If a user tries to claim their rewards and PrimeV2 doesn't have enough funds, the release of funds from `PrimeLiquidityProvider` to PrimeV2 is triggered in the same transaction (in the `claimInterest` function).
 
+Two details about `claimInterest`:
+
+* A permissionless overload `claimInterest(vToken, user)` lets anyone trigger a claim on behalf of a user — the reward tokens are always sent to the user, never to the caller.
+* If the balance is still insufficient after pulling from the `PrimeLiquidityProvider`, the claim is partial: the shortfall stays recorded in the user's `accrued` balance and can be claimed later, instead of the transaction reverting.
+
 The following diagram shows the integration of the `TokenBuyback` contracts with the Prime contracts:
 
 <figure><img src="../../.gitbook/assets/prime_token_buyback.svg" alt="Integration of the TokenBuyback contracts with the Prime contracts"><figcaption>PSR → Prime buybacks → PrimeLiquidityProvider → PrimeV2 → users</figcaption></figure>
@@ -173,11 +179,18 @@ While `pendingScoreUpdates > 0`, issuing and burning are blocked (`ScoreUpdateIn
 
 This mechanism ensures that when multipliers/alpha change, or a new market is added to the program, all Prime users' scores are brought up to date promptly rather than drifting until each user next interacts with the markets — which would otherwise let the first users in a new market collect disproportionately large rewards.
 
+### Adding and removing markets
+
+`addMarket(market, supplyMultiplier, borrowMultiplier)` (ACM-gated) enrolls a Core Pool market into the program. The market must be listed in the Core Pool Comptroller, its underlying token must have at most 18 decimals, and only one Prime market can exist per underlying asset. As described above, adding a market opens a score-update round.
+
+`removeMarket(market)` (ACM-gated) removes a market from the program. It is only allowed once no Prime holder retains a score in that market (`sumOfMembersScore == 0`, enforced with `MarketHasActiveMembers`) — which happens only once every Prime holder has zero capital (supply and borrow) in that market and their scores have been recomputed, or the holders' Prime tokens have been burned. Before deletion, any pending income slice from the `PrimeLiquidityProvider` is flushed into `undistributedReward` so it stays recoverable via `sweepUndistributed`. Rewards already accrued by users in a removed market remain claimable through `claimInterest`.
+
 ## Calculate APR associated with a Prime market and user
 
-APR estimation lives in a separate read-only contract, **[PrimeLens](../../reference-core-pool/prime/prime-lens.md)**, kept out of PrimeV2 to stay within the EVM contract-size limit. The [Venus UI](https://app.venus.io) calls it to show the APR a user's Prime boost adds in a given market.
+APR estimation lives in a separate read-only contract, **[PrimeLens](../reference-core-pool/prime/prime-lens.md)**, kept out of PrimeV2 to stay within the EVM contract-size limit. The [Venus UI](https://app.venus.io) calls it to show the APR a user's Prime boost adds in a given market.
 
 - `calculateAPR(market, user)` returns an `APRInfo` struct with the user's `supplyAPR` and `borrowAPR` (in BPS) plus the inputs behind them: `userScore`, `totalScore`, `xvsBalanceForScore`, `capital`, `cappedSupply`, `cappedBorrow`, `supplyCapUSD`, `borrowCapUSD`.
+- `estimateAPR(market, user, borrow, supply, xvsStaked)` returns the same `APRInfo` struct for a hypothetical position — the supply, borrow and staked XVS amounts are passed in rather than read from the user's current state, so the UI can simulate the APR impact of a planned action.
 - `incomeDistributionYearly(vToken)` returns the annualized income for a market — the PrimeLiquidityProvider effective distribution speed for the market's underlying multiplied by `blocksOrSecondsPerYear` (PrimeV2 runs on `TimeManagerV8`, so this is per-second on time-based chains and per-block otherwise).
 
 Conceptually the lens performs these steps:

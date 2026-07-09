@@ -4,7 +4,7 @@ Storage layout for the PrimeLeaderboard contract
 # Solidity API
 
 ```solidity
-// Individual deposit record for LIFO tracking
+// Individual deposit record for LIFO tracking (declared in IPrimeLeaderboard)
 struct Deposit {
   uint128 amount;    // Amount deposited
   uint64 timestamp;  // Deposit timestamp
@@ -24,7 +24,7 @@ uint256 BASE_MULTIPLIER
 
 ### MAX_DEPOSITS_PER_USER
 
-Maximum deposits per user (DoS protection). Default 30.
+Maximum deposits per user (DoS protection). Constant, set to 30.
 
 ```solidity
 uint256 MAX_DEPOSITS_PER_USER

@@ -94,6 +94,8 @@ _Note: There is a limit for the qualifiable supply and borrow amounts, set by th
 
 ### User Reward Example:
 
+_Note: the example below uses a BTC market for illustration; the same math applies to whichever reward markets are enabled._
+
 **Model Parameters**
 
 * $$α$$ = 0.5

@@ -53,6 +53,30 @@ uint256 xvsVaultPoolId
 
 - - -
 
+### constructor
+
+PrimeV2 constructor. Sets the immutable references above and disables further initialization of the implementation contract.
+
+```solidity
+constructor(address wrappedNativeToken_, address nativeMarket_, address xvsVault_, address xvsVaultRewardToken_, uint256 xvsVaultPoolId_, bool timeBased_, uint256 blocksPerYear_) public
+```
+
+#### Parameters
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| wrappedNativeToken_ | address | Address of wrapped native token |
+| nativeMarket_ | address | Address of native market |
+| xvsVault_ | address | Address of XVSVault contract |
+| xvsVaultRewardToken_ | address | Reward token address in XVSVault |
+| xvsVaultPoolId_ | uint256 | Pool ID in XVSVault |
+| timeBased_ | bool | A boolean indicating whether the contract is based on time or block |
+| blocksPerYear_ | uint256 | Total blocks per year |
+
+#### ❌ Errors
+* Throw InvalidAddress if xvsVault_ or xvsVaultRewardToken_ is the zero address
+
+- - -
+
 ### initialize
 
 PrimeV2 initializer
@@ -80,7 +104,7 @@ function initialize(uint128 alphaNumerator_, uint128 alphaDenominator_, address 
 
 ### claimPrime
 
-Mint a Prime token for a user in a permissionless way. Checks the user's Prime Score (their effective stake, read via `PrimeLeaderboard.getEffectiveStake`) against `mintThreshold`. Anyone can call this on behalf of an eligible user; no ACM required.
+Mint a Prime token for a user in a permissionless way. Checks the user's Prime Score (their effective stake, read via `PrimeLeaderboard.getEffectiveStake`) against `mintThreshold`. Anyone can call this on behalf of an eligible user; no ACM required. Reverts while the contract is paused.
 
 ```solidity
 function claimPrime(address user) external
@@ -108,7 +132,7 @@ function claimPrime(address user) external
 
 ### claimPrimeBatch
 
-Mint Prime tokens for multiple users in a permissionless way. Non-holders below `mintThreshold` are skipped with a `SkippedIneligibleUser` event (not reverted). Existing Prime holders are silently skipped. Anyone can call this; no ACM required.
+Mint Prime tokens for multiple users in a permissionless way. Non-holders below `mintThreshold` are skipped with a `SkippedIneligibleUser` event (not reverted). Existing Prime holders are silently skipped. Anyone can call this; no ACM required. Reverts while the contract is paused.
 
 ```solidity
 function claimPrimeBatch(address[] users) external
@@ -129,6 +153,7 @@ function claimPrimeBatch(address[] users) external
 * Throw MintThresholdNotSet if mintThreshold is zero
 * Throw MintWindowClosed if the minting deadline has passed
 * Throw InvalidLimit if mint limit would be exceeded
+* Throw MaxLoopsLimitExceeded if the batch is larger than loopsLimit
 
 - - -
 
@@ -182,6 +207,7 @@ function issueBatch(address[] users) external
 * Throw InvalidAddress if any user in the batch is zero address
 * Throw InvalidLimit if mint limit would be exceeded
 * Throw ScoreUpdateInProgress if a score update round is active
+* Throw MaxLoopsLimitExceeded if the batch is larger than loopsLimit
 
 - - -
 
@@ -231,6 +257,7 @@ function burnBatch(address[] users) external
 
 #### ❌ Errors
 * Throw ScoreUpdateInProgress if a score update round is active
+* Throw MaxLoopsLimitExceeded if the batch is larger than loopsLimit
 
 - - -
 
@@ -256,7 +283,7 @@ function isUserPrimeHolder(address user) external view returns (bool)
 
 ### claimInterest
 
-Claim accrued interest for a market (to msg.sender)
+Claim accrued interest for a market (to msg.sender). If the PrimeV2 balance is insufficient, funds are pulled from the PrimeLiquidityProvider in the same transaction; any remaining shortfall stays recorded as accrued and claimable later (partial claim, no revert). Residual accrued interest remains claimable even after a market is removed. Reverts while the contract is paused.
 
 ```solidity
 function claimInterest(address vToken) external returns (uint256)
@@ -276,13 +303,13 @@ function claimInterest(address vToken) external returns (uint256)
 * Emits InterestClaimed event
 
 #### ❌ Errors
-* Throw MarketNotSupported if market is not supported
+* Throw MarketNotSupported if market is not supported (only when the vToken is not a current Prime market — never added, or since removed — and the user has no residual accrued balance)
 
 - - -
 
 ### claimInterest
 
-Claim accrued interest for a market to a specific address. Permissionless: anyone can trigger a claim on behalf of a user. Tokens are always sent to the user address, never to msg.sender.
+Claim accrued interest for a market to a specific address. Permissionless: anyone can trigger a claim on behalf of a user. Tokens are always sent to the user address, never to msg.sender. Same shortfall behavior as the single-argument overload: partial claim with the remainder kept as accrued, no revert. Reverts while the contract is paused.
 
 ```solidity
 function claimInterest(address vToken, address user) external returns (uint256)
@@ -303,7 +330,7 @@ function claimInterest(address vToken, address user) external returns (uint256)
 * Emits InterestClaimed event
 
 #### ❌ Errors
-* Throw MarketNotSupported if market is not supported
+* Throw MarketNotSupported if market is not supported (only when the vToken is not a current Prime market — never added, or since removed — and the user has no residual accrued balance)
 
 - - -
 
@@ -459,6 +486,7 @@ function updateScores(address[] users) external
 
 #### ❌ Errors
 * Throw NoScoreUpdatesRequired if no score updates are required
+* Throw MaxLoopsLimitExceeded if the batch is larger than loopsLimit
 
 - - -
 
@@ -499,7 +527,7 @@ function xvsBalanceOfUser(address user) external view returns (uint256)
 
 ### addMarket
 
-Add a market to Prime
+Add a market to Prime. Opens a new score-update round: all Prime holders' scores must be recomputed via `updateScores` before issuing, burning and claiming Prime tokens are unblocked.
 
 ```solidity
 function addMarket(address market, uint256 supplyMultiplier, uint256 borrowMultiplier) external
@@ -514,6 +542,7 @@ function addMarket(address market, uint256 supplyMultiplier, uint256 borrowMulti
 
 #### 📅 Events
 * Emits MarketAdded event
+* Emits IncompleteRoundDiscarded if a previous score-update round was still in progress
 
 #### ⛔️ Access Requirements
 * Controlled by ACM
@@ -579,7 +608,7 @@ function setLimit(uint256 tokenLimit_) external
 
 ### updateAlpha
 
-Update alpha parameter
+Update alpha parameter. Opens a new score-update round: all Prime holders' scores must be recomputed via `updateScores` before issuing, burning and claiming Prime tokens are unblocked.
 
 ```solidity
 function updateAlpha(uint128 alphaNumerator_, uint128 alphaDenominator_) external
@@ -593,6 +622,7 @@ function updateAlpha(uint128 alphaNumerator_, uint128 alphaDenominator_) externa
 
 #### 📅 Events
 * Emits AlphaUpdated event
+* Emits IncompleteRoundDiscarded if a previous score-update round was still in progress
 
 #### ⛔️ Access Requirements
 * Controlled by ACM
@@ -604,7 +634,7 @@ function updateAlpha(uint128 alphaNumerator_, uint128 alphaDenominator_) externa
 
 ### updateMultipliers
 
-Update market multipliers
+Update market multipliers. Opens a new score-update round: all Prime holders' scores must be recomputed via `updateScores` before issuing, burning and claiming Prime tokens are unblocked.
 
 ```solidity
 function updateMultipliers(address market, uint256 supplyMultiplier, uint256 borrowMultiplier) external
@@ -619,6 +649,7 @@ function updateMultipliers(address market, uint256 supplyMultiplier, uint256 bor
 
 #### 📅 Events
 * Emits MultiplierUpdated event
+* Emits IncompleteRoundDiscarded if a previous score-update round was still in progress
 
 #### ⛔️ Access Requirements
 * Controlled by ACM
@@ -775,6 +806,6 @@ function sweepUndistributed(address vToken, address to) external
 #### ❌ Errors
 * Throw InvalidAddress if to is the zero address
 
-Note: for a `vToken` that is not a Prime market the call does not revert; it returns without transferring (the market's `undistributedReward` slice is zero).
+Note: for a removed Prime market the call does not revert; it returns without transferring once the market's `undistributedReward` slice is zero. Passing an address that is not a vToken at all reverts when resolving its underlying token.
 
 - - -

@@ -145,7 +145,7 @@ address corePoolComptroller
 
 ### unreleasedPLPIncome
 
-Unreleased income from the PLP per token that's already distributed to Prime holders
+Unreleased income from the PLP per token that has already been accounted for — either indexed into `rewardIndex` for Prime holders, or recorded in `undistributedReward` while the market had no scored members
 
 ```solidity
 mapping(address => uint256) unreleasedPLPIncome
