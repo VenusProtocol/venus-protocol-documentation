@@ -303,7 +303,7 @@ function claimInterest(address vToken) external returns (uint256)
 * Emits InterestClaimed event
 
 #### ❌ Errors
-* Throw MarketNotSupported if market is not supported (only when the market was removed and the user has no residual accrued balance)
+* Throw MarketNotSupported if market is not supported (only when the vToken is not a current Prime market — never added, or since removed — and the user has no residual accrued balance)
 
 - - -
 
@@ -330,7 +330,7 @@ function claimInterest(address vToken, address user) external returns (uint256)
 * Emits InterestClaimed event
 
 #### ❌ Errors
-* Throw MarketNotSupported if market is not supported (only when the market was removed and the user has no residual accrued balance)
+* Throw MarketNotSupported if market is not supported (only when the vToken is not a current Prime market — never added, or since removed — and the user has no residual accrued balance)
 
 - - -
 

@@ -183,7 +183,7 @@ This mechanism ensures that when multipliers/alpha change, or a new market is ad
 
 `addMarket(market, supplyMultiplier, borrowMultiplier)` (ACM-gated) enrolls a Core Pool market into the program. The market must be listed in the Core Pool Comptroller, its underlying token must have at most 18 decimals, and only one Prime market can exist per underlying asset. As described above, adding a market opens a score-update round.
 
-`removeMarket(market)` (ACM-gated) removes a market from the program. It is only allowed once no Prime holder retains a score in that market (`sumOfMembersScore == 0`, enforced with `MarketHasActiveMembers`) — in practice, after governance zeroes the holders' scores there. Before deletion, any pending income slice from the `PrimeLiquidityProvider` is flushed into `undistributedReward` so it stays recoverable via `sweepUndistributed`. Rewards already accrued by users in a removed market remain claimable through `claimInterest`.
+`removeMarket(market)` (ACM-gated) removes a market from the program. It is only allowed once no Prime holder retains a score in that market (`sumOfMembersScore == 0`, enforced with `MarketHasActiveMembers`) — which happens only once every Prime holder has zero capital (supply and borrow) in that market and their scores have been recomputed, or the holders' Prime tokens have been burned. Before deletion, any pending income slice from the `PrimeLiquidityProvider` is flushed into `undistributedReward` so it stays recoverable via `sweepUndistributed`. Rewards already accrued by users in a removed market remain claimable through `claimInterest`.
 
 ## Calculate APR associated with a Prime market and user
 
