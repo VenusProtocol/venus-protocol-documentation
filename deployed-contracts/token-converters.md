@@ -65,6 +65,7 @@ Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the o
 * XVSVaultConverter: [`0x258f49254C758a0E37DAb148ADDAEA851F4b02a2`](https://testnet.bscscan.com/address/0x258f49254C758a0E37DAb148ADDAEA851F4b02a2)
 * WBNBBurnConverter: [`0x42DBA48e7cCeB030eC73AaAe29d4A3F0cD4facba`](https://testnet.bscscan.com/address/0x42DBA48e7cCeB030eC73AaAe29d4A3F0cD4facba)
 * ConverterNetwork: [`0xC8f2B705d5A2474B390f735A5aFb570e1ce0b2cf`](https://testnet.bscscan.com/address/0xC8f2B705d5A2474B390f735A5aFb570e1ce0b2cf)
+* TreasuryTokenBuybackDistributor: [`0xfd45810d4c669e59510A096fc4cFA2233e5e20FD`](https://testnet.bscscan.com/address/0xfd45810d4c669e59510A096fc4cFA2233e5e20FD)
 
 ## Sepolia
 
