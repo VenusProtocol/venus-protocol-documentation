@@ -18,7 +18,11 @@ Venus Governance has now categorized VIPs into three types: Normal, Fast-track, 
 
 * **Normal VIPs** encompass significant updates like contract upgrades or changes in access controls.
 * **Fast-track VIPs** deal with risk parameter adjustments such as interest rates or collateral factors.
-* **Critical VIPs** are utilized during emergencies demanding an immediate reaction.
+* **Critical VIPs** were utilized during emergencies demanding an immediate reaction.
+
+{% hint style="info" %}
+Since [VIP-645](https://app.venus.io/#/governance/proposal/645?chainId=56), the Critical Timelock holds no permission on any network, so the Critical route can no longer execute privileged actions. Emergency responses rely on the fine-grained pause mechanism (see below) and Fast-track VIPs.
+{% endhint %}
 
 Each VIP type has its unique proposal threshold, timelock, and voting periods, reflecting the potential risk and impact of the proposed changes.
 
@@ -30,7 +34,7 @@ The initial voting and delay periods for these types are as follows:
 
 **Role-based Access Control**
 
-Venus V4 employs a separate Access Control Manager contract that validates access permissions rather than merely verifying the caller as an "admin". This allows certain actions to bypass voting, enabling them to take the fast-track or critical route, or even to be executed directly through a multisig by guardians. It can be particularly useful for implementing borrowing and supply caps, pausing specific market actions, or responding to rapid market fluctuations.
+Venus V4 employs a separate Access Control Manager contract that validates access permissions rather than merely verifying the caller as an "admin". This allows certain actions to bypass voting, enabling them to take the fast-track route, or even to be executed directly through a multisig by guardians. It can be particularly useful for implementing borrowing and supply caps, pausing specific market actions, or responding to rapid market fluctuations.
 
 **Fine-grained Pause**
 

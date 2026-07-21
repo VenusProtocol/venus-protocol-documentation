@@ -12,7 +12,7 @@ Venus DAO is an autonomous and decentralized organization that functions via sma
 
 **3/ Voting:** Following a proposal's creation, token holders can vote on it. Venus DAO manages the voting process, queuing and voting on protocol updates within 48-hour timelocks. The voting method could entail a simple majority vote, a supermajority, or weighted voting based on each participant's token count, as is the case with Venus Protocol.
 
-**4/ Voting Period:** Venus DAO recognizes three Venus Improvement Proposals (VIP) roles: Normal, Fast Track, and Critical. Each VIP role has a unique proposal threshold, timelock, and voting period, which can be configured by Governance. This duration allows token holders ample time to review, discuss, and cast their votes. The votes are tallied once the voting period concludes.
+**4/ Voting Period:** Venus DAO recognizes three Venus Improvement Proposals (VIP) roles: Normal, Fast Track, and Critical. Each VIP role has a unique proposal threshold, timelock, and voting period, which can be configured by Governance. Note that since [VIP-645](https://app.venus.io/#/governance/proposal/645?chainId=56) the Critical Timelock holds no permission, so in practice proposals use the Normal or Fast Track roles. This duration allows token holders ample time to review, discuss, and cast their votes. The votes are tallied once the voting period concludes.
 
 **5/ Execution:** After a proposal garners support and votes, all Venus DAO members can execute the VIP directly in the Venus dapp through smart contracts.
 
