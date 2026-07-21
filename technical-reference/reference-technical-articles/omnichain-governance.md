@@ -90,7 +90,7 @@ It's crucial to understand that the proposal ID for the remote execution on the 
 
 * `OmnichainProposalSender` (BNB Chain):
   * Owned by: NormalTimelock contract on the BNB Chain.
-  * Authorized callers: Timelocks (Normal, Critical, Fast-track) are authorized to call the `execute` function on this contract.
+  * Authorized callers: the Normal and Fast-track Timelocks are authorized to call the `execute` function on this contract. The Critical Timelock was also authorized originally, but every permission it held was revoked in [VIP-645](https://app.venus.io/#/governance/proposal/645?chainId=56).
 * `OmnichainGovernanceExecutor` (destination network):
   * Owned by: `OmnichainExecutorOwner` contract. This owner performs Access Control Manager (ACM) checks before allowing any function calls on this contract.
 * `TimelockV8`:
