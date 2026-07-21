@@ -19,6 +19,10 @@ Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the o
 | `RiskFundBuyback` | USDT | `RiskFundV2` | [`0x0c71EFabD00329E839745ef23aB946d3ed24A805`](https://bscscan.com/address/0x0c71EFabD00329E839745ef23aB946d3ed24A805) |
 | `XVSBuyback` | XVS | `XVSVaultTreasury` | [`0x637E6246BBb0F9aBae9d764F5e1bB6347f028C12`](https://bscscan.com/address/0x637E6246BBb0F9aBae9d764F5e1bB6347f028C12) |
 
+### Helpers
+
+* TreasuryTokenBuybackDistributor: [`0xc594053D4b2FaA311b55dDbFAb2338f7c90D6632`](https://bscscan.com/address/0xc594053D4b2FaA311b55dDbFAb2338f7c90D6632) — one-shot helper for the Venus Treasury Cleanup VIP: splits treasury-withdrawn tokens across the six Treasury `TokenBuyback` contracts by fixed weights (BTCB 15% / ETH 15% / XVS 10% / USDT 15% / USDC 15% / U 30%, U absorbing rounding dust) and redeems VAI for USDT at the VAI Peg Stability Module, returning the USDT to `VTreasury`.
+
 ### Retired converters (Phase 1 — non-operational post VIP-620 / VIP-621)
 
 * RiskFundConverter: [`0xA5622D276CcbB8d9BBE3D1ffd1BB11a0032E53F0`](https://bscscan.com/address/0xA5622D276CcbB8d9BBE3D1ffd1BB11a0032E53F0)
@@ -65,7 +69,6 @@ Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the o
 * XVSVaultConverter: [`0x258f49254C758a0E37DAb148ADDAEA851F4b02a2`](https://testnet.bscscan.com/address/0x258f49254C758a0E37DAb148ADDAEA851F4b02a2)
 * WBNBBurnConverter: [`0x42DBA48e7cCeB030eC73AaAe29d4A3F0cD4facba`](https://testnet.bscscan.com/address/0x42DBA48e7cCeB030eC73AaAe29d4A3F0cD4facba)
 * ConverterNetwork: [`0xC8f2B705d5A2474B390f735A5aFb570e1ce0b2cf`](https://testnet.bscscan.com/address/0xC8f2B705d5A2474B390f735A5aFb570e1ce0b2cf)
-* TreasuryTokenBuybackDistributor: [`0xfd45810d4c669e59510A096fc4cFA2233e5e20FD`](https://testnet.bscscan.com/address/0xfd45810d4c669e59510A096fc4cFA2233e5e20FD)
 
 ## Sepolia
 
