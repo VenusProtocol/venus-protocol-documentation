@@ -13,6 +13,8 @@ After successfully connecting your wallet, you will gain access to all the featu
 3. Enable the asset. This will prompt a transaction confirmation in your wallet. Remember that a small gas fee applies, so ensure some native tokens (BNB for BNB chain, or ETH for Ethereum, for example) are available in your wallet.
 4. Specify the amount you want to supply. The selected assets are transferred directly from your wallet to Venus Protocol, earning interest immediately. This interest will be automatically added to your Supply Balance.
 
+Each market has a **supply cap** — the maximum total amount of that asset the protocol will accept as supply, set by governance to limit risk concentration; once it is reached, no further supply of that asset is possible until the cap is raised.
+
 ## Manage your Borrowing Limit
 
 Your borrowing limit on Venus Protocol is a function of the assets you have supplied. The following steps guide you to manage it:
