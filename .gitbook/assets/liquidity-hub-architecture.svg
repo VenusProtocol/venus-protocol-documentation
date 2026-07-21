@@ -1,0 +1,99 @@
+<svg width="920" height="530" viewBox="0 0 920 530" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6B83D6"/>
+    </marker>
+    <style>
+      .hub  { fill: #3A78FF; }
+      .src  { fill: #2F3B5C; stroke: #46557E; stroke-width: 1.2; }
+      .adp  { fill: #222B42; stroke: #38445F; stroke-width: 1.2; }
+      .res  { fill: #2348CC; stroke: #4366E6; stroke-width: 1.2; }
+      .neu  { fill: #3C4660; stroke: #515D7C; stroke-width: 1.2; }
+      .lbl  { fill: #FFFFFF; font-size: 15px; font-weight: 600; }
+      .ttl  { fill: #FFFFFF; font-size: 15px; font-weight: 700; }
+      .sub  { fill: #C2CCE6; font-size: 11px; }
+      .note { fill: #9AA8CC; font-size: 12px; font-style: italic; }
+      .edge { stroke: #6B83D6; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .la   { text-anchor: start; }
+      text  { text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="920" height="530" fill="#0E1626"/>
+
+  <text class="ttl la" x="28" y="32">Liquidity Hub architecture</text>
+
+  <!-- User -->
+  <rect class="neu" x="415" y="54" width="90" height="34" rx="17"/>
+  <text class="lbl" x="460" y="76">User</text>
+  <path class="edge" d="M460,88 L460,116"/>
+  <text class="note la" x="474" y="106">deposit / withdraw</text>
+
+  <!-- Hub -->
+  <rect class="hub" x="110" y="118" width="700" height="58" rx="14"/>
+  <text class="lbl" x="460" y="144">Hub — ERC-4626 vault (one beacon proxy per asset)</text>
+  <text class="sub" x="460" y="162" fill="#DCE6FF">dual caps · fees · APY EMA · per-tx withdrawal cap · multi-level pause</text>
+
+  <text class="note" x="460" y="198">outer queues — independent deposit &amp; withdraw order</text>
+
+  <!-- Hub -> Sources -->
+  <path class="edge" d="M200,176 L200,214"/>
+  <path class="edge" d="M460,176 L460,214"/>
+  <path class="edge" d="M720,176 L720,214"/>
+
+  <!-- Sources -->
+  <rect class="src" x="110" y="216" width="180" height="52" rx="14"/>
+  <text class="lbl" x="200" y="239">YieldGroupCore</text>
+  <text class="sub" x="200" y="256">Source · ISource</text>
+  <rect class="src" x="370" y="216" width="180" height="52" rx="14"/>
+  <text class="lbl" x="460" y="239">YieldGroupFlux</text>
+  <text class="sub" x="460" y="256">Source · ISource</text>
+  <rect class="src" x="630" y="216" width="180" height="52" rx="14"/>
+  <text class="lbl" x="720" y="239">YieldGroupFRV</text>
+  <text class="sub" x="720" y="256">Source · ISource</text>
+
+  <!-- Sources -> Adapters -->
+  <path class="edge" d="M200,268 L200,318"/>
+  <path class="edge" d="M460,268 L460,318"/>
+  <path class="edge" d="M720,268 L720,318"/>
+  <text class="note la" x="210" y="296">delegatecall</text>
+  <text class="note la" x="470" y="296">delegatecall</text>
+  <text class="note la" x="730" y="296">delegatecall</text>
+
+  <!-- Adapters -->
+  <rect class="adp" x="110" y="320" width="180" height="48" rx="14"/>
+  <text class="lbl" x="200" y="341">AdapterCoreV1</text>
+  <text class="sub" x="200" y="358">stateless singleton</text>
+  <rect class="adp" x="370" y="320" width="180" height="48" rx="14"/>
+  <text class="lbl" x="460" y="341">AdapterFlux</text>
+  <text class="sub" x="460" y="358">stateless singleton</text>
+  <rect class="adp" x="630" y="320" width="180" height="48" rx="14"/>
+  <text class="lbl" x="720" y="341">AdapterFRV</text>
+  <text class="sub" x="720" y="358">stateless singleton</text>
+
+  <!-- Adapters -> Resources -->
+  <path class="edge" d="M200,368 L200,418"/>
+  <path class="edge" d="M460,368 L460,418"/>
+  <path class="edge" d="M720,368 L720,418"/>
+
+  <!-- Resources -->
+  <rect class="res" x="110" y="420" width="180" height="54" rx="14"/>
+  <text class="lbl" x="200" y="443">vToken</text>
+  <text class="sub" x="200" y="460" fill="#C7D2FF">Venus Core</text>
+  <rect class="res" x="370" y="420" width="180" height="54" rx="14"/>
+  <text class="lbl" x="460" y="443">fToken</text>
+  <text class="sub" x="460" y="460" fill="#C7D2FF">Fluid</text>
+  <rect class="res" x="630" y="420" width="180" height="54" rx="14"/>
+  <text class="lbl" x="720" y="443">FRV vault</text>
+  <text class="sub" x="720" y="460" fill="#C7D2FF">fixed-rate</text>
+
+  <!-- Legend -->
+  <rect class="hub" x="130" y="490" width="14" height="14" rx="3"/>
+  <text class="sub la" x="152" y="501">Hub</text>
+  <rect class="src" x="210" y="490" width="14" height="14" rx="3"/>
+  <text class="sub la" x="232" y="501">Source (YieldGroup)</text>
+  <rect class="adp" x="430" y="490" width="14" height="14" rx="3"/>
+  <text class="sub la" x="452" y="501">Adapter</text>
+  <rect class="res" x="560" y="490" width="14" height="14" rx="3"/>
+  <text class="sub la" x="582" y="501">Resource</text>
+</svg>
