@@ -35,11 +35,12 @@ Verified at audit for every adapter:
 * **`deposit(address resource, uint256 amount)` → `uint256 deposited`** — deposit `amount` of underlying into `resource`; receipt tokens are credited to the YieldGroup.
 * **`withdraw(address resource, uint256 amount, address to)`** — redeem exactly `amount` of underlying from `resource` and deliver it to `to`.
 * **`asset(address resource)` → `address`** — the underlying ERC-20 accepted by `resource`.
-* **`totalAssets(address resource, address holder)` → `uint256`** — underlying value `holder` holds via `resource`, using the stale (non-accruing) exchange rate.
+* **`totalAssets(address resource, address holder)` → `uint256`** — underlying value `holder` holds via `resource`. The basis is per-adapter: `AdapterCoreV1` uses the stale (non-accruing) `exchangeRateStored` net of any Comptroller `treasuryPercent`; `AdapterFlux` uses the fToken's live `previewRedeem`; `AdapterFRV` uses a time-based linear coupon accrual.
 * **`maxDeposit(address resource)` → `uint256`** — spare deposit headroom on `resource` right now.
 * **`maxWithdraw(address resource, address holder)` → `uint256`** — underlying `holder` can withdraw right now, net of any redeem-time protocol fee.
 * **`spotAPYBps(address resource, uint256 blocksPerYear)` → `uint64`** — spot supply-side APY in BPS.
 * **`receiptBalance(address resource, address holder)` → `uint256`** — raw receipt-token balance (vToken / fToken / FRV shares), in receipt-token units — used by `removeResource` as a share-based emptiness gate.
+* **`accrue(address resource)`** — settle `resource`'s own global interest state so a following `totalAssets` read prices the position at a fresh rate. Invoked via normal `call`, **not** delegatecall, and therefore carries no `onlyDelegateCall` guard: it mutates the resource's global index, not the holder's position. Only block-lazy adapters do real work — `AdapterCoreV1` calls the vToken's `accrueInterest()`; `AdapterFlux` and `AdapterFRV` are no-ops.
 * **`validateRegistration(address resource)`** — reverts if `resource` fails a protocol-specific registration precondition.
 
 See [Interfaces](interfaces.md) for the full `IResourceAdapter` contract and its pre/post-conditions.
@@ -50,23 +51,23 @@ Wraps Venus Core V1 vTokens.
 
 * **`deposit`** — `forceApprove`s the vToken and calls `mint(amount)`; reverts `VTokenMintFailed` on a non-zero Compound error code.
 * **`withdraw`** — grosses up the request for the Comptroller's treasury cut (ceil-division), calls `redeemUnderlying`, verifies the received balance delta, and transfers exactly `amount` to `to`. Any gross-up surplus stays as idle on the YieldGroup (counted in `totalAssets`, consumed idle-first next time). Reverts `VTokenRedeemFailed` / `VTokenUnderfilled` on failure.
-* **Treasury-fee handling** — when the Comptroller's `treasuryPercent != 0`, `redeemUnderlying(X)` delivers only `X − fee`. The gross-up keeps individual redeems whole. `validateRegistration` **rejects** a vToken whose Comptroller already charges a non-zero `treasuryPercent` (`TreasuryFeeUnsupported`) — that exit fee leaves the pool without burning shares, so it is unmodeled in the Hub's gross NAV. `treasuryPercent >= 1e18` reverts `TreasuryPercentTooHigh`.
+* **Treasury-fee handling** — when the Comptroller's `treasuryPercent != 0`, `redeemUnderlying(X)` delivers only `X − fee`. The gross-up keeps individual redeems whole. `validateRegistration` **rejects** a vToken whose Comptroller already charges a non-zero `treasuryPercent` (`TreasuryFeeUnsupported`) — that exit fee leaves the pool without burning shares, so it is unmodeled in the Hub's gross NAV. The adapter performs no upper-bound check of its own on `treasuryPercent`; it relies on the Venus Comptroller's setter enforcing `treasuryPercent < 1e18`, which is what keeps the `MANTISSA_ONE − treasuryPct` subtraction and the gross-up denominator safe. Were that invariant ever violated on-chain, `withdraw` and `totalAssets` would revert on arithmetic underflow rather than with a named error.
 * **Dust handling** — a withdraw cascade can hand the adapter a sub-one-vToken redeem (e.g. a 1-wei remainder from an upstream ERC-4626 source) that Compound would floor to zero tokens and reject. In that case the adapter redeems exactly one vToken unit of underlying so the burn is non-zero, then transfers only `amount` and leaves the surplus idle on the YieldGroup. A no-op for normal-sized redeems.
 * **Spot APY** — `supplyRatePerBlock × blocksPerYear`, scaled to BPS and clamped to `uint64.max`.
-* **`maxDeposit`** — honors the Comptroller's mint pause and supply cap (`supplyCap == 0` rejects mint outright, surfaced as 0 capacity).
+* **`maxDeposit`** — honors the Comptroller's mint pause and supply cap (`supplyCap == 0` rejects mint outright, surfaced as 0 capacity), then trims a **0.1% conservative margin** (`raw − raw / 1000`) off the remaining headroom, so a normal inter-block interest accrual between the view and the mint cannot push `deposit(maxDeposit())` over the cap. Expect a persistent small shortfall when reconciling against the Comptroller's raw `supplyCaps(vToken)`.
 * **vBNB is unsupported by design** — `IVToken(resource).underlying()` reverts on vBNB, which trips `asset()` and prevents registration.
 
 **Constants:** `MANTISSA_ONE` (`1e18`), `EXP_SCALE` (`1e18`), `MANTISSA_TO_BPS` (`1e14`).
 
-**Errors:** `NotDelegateCall`, `VTokenMintFailed`, `VTokenRedeemFailed`, `VTokenUnderfilled`, `TreasuryPercentTooHigh`, `TreasuryFeeUnsupported`.
+**Errors:** `NotDelegateCall`, `VTokenMintFailed`, `VTokenRedeemFailed`, `VTokenAccrueFailed`, `VTokenUnderfilled`, `TreasuryFeeUnsupported`.
 
 ## AdapterFlux
 
 Wraps Fluid Lending fTokens (ERC-4626 shares). The adapter holds the Fluid `LendingResolver` address as an `immutable`, set at construction (`ZeroResolver` if zero).
 
 * **`deposit` / `withdraw`** — uses the fToken's ERC-4626 `deposit` / `withdraw`. There is no redeem-time pool fee (Fluid's cut is already in the supply rate), so no gross-up is needed.
-* **Spot APY** — read from the Fluid `LendingResolver` as a pre-annualised APR (not a per-block rate), so the `blocksPerYear` argument is unused here.
-* **`maxDeposit`** — a Fluid fToken's protocol-level `maxDeposit` is effectively unbounded, which is why the per-resource cap on `YieldGroupFlux` is the primary deposit control.
+* **Spot APY** — read from the Fluid `LendingResolver` via `getFTokenDetails`, as the base `supplyRate` (already in BPS) **plus `rewardsRate / 1e10`** (1e12-precision rewards converted to BPS), clamped to `uint64.max`. Both are pre-annualised APRs, not per-block rates, so the `blocksPerYear` argument is unused here. Reconciling this figure against Fluid's base `supplyRate` alone will show a gap equal to the reward rate.
+* **`maxDeposit`** — a Fluid fToken's protocol-level `maxDeposit` is effectively unbounded, which is why the per-resource cap on the Flux-configured `YieldGroup` deployment is the primary deposit control.
 * **`validateRegistration`** — a no-op (`pure`); Flux has no per-redeem pool fee to guard against.
 
 **Errors:** `NotDelegateCall`, `ZeroResolver`.

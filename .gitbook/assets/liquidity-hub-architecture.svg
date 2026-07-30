@@ -32,7 +32,7 @@
   <!-- Hub -->
   <rect class="hub" x="110" y="118" width="700" height="58" rx="14"/>
   <text class="lbl" x="460" y="144">Hub — ERC-4626 vault (one beacon proxy per asset)</text>
-  <text class="sub" x="460" y="162" fill="#DCE6FF">dual caps · fees · APY EMA · per-tx withdrawal cap · multi-level pause</text>
+  <text class="sub" x="460" y="162" fill="#DCE6FF">dual caps · fees · per-tx withdrawal cap · multi-level pause</text>
 
   <text class="note" x="460" y="198">outer queues — independent deposit &amp; withdraw order</text>
 
