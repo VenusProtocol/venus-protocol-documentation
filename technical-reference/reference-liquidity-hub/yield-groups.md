@@ -22,7 +22,7 @@ Every YieldGroup implements `IYieldGroupBase`. The Hub depends only on these fun
 * **`withdraw(uint256 amount, address to)`** — pull `amount` from resources via the inner withdraw queue (idle-first) and deliver exactly `amount` to `to`, or revert.
 * **`depositResource(address resource, uint256 amount)` → `uint256 deposited`** — deposit the full `amount` into one specific resource, bypassing the inner queue (for Operator reallocation). Reverts if that resource cannot accept exactly `amount`.
 * **`withdrawResource(address resource, uint256 amount, address to)`** — redeem exactly `amount` from one specific resource (no idle-first, no cascade); pulling from a paused resource is permitted (wind-down).
-* **`accrue()`** — `onlyHub`; the Hub pokes every registered Source before reading NAV so the management fee is charged on interest-current value. Core pokes each resource's `accrueInterest()`; Flux and FRV inherit the base no-op.
+* **`accrue()`** — `onlyHub`; the Hub pokes every registered Source before reading NAV so the management fee is charged on interest-current value. **All three families override the base no-op**, so it is unreachable in deployed code. Core and Flux share the `YieldGroup` loop, which calls `IResourceAdapter.accrue` on every registered resource — real work only for Core (`AdapterCoreV1` calls the vToken's `accrueInterest()`), an empty body for Flux. `YieldGroupFRV` instead pokes each vault's `updateVaultState()`, advancing its lifecycle. Every poke is best-effort per resource: one that reverts is isolated and reported via `ResourceAccrualFailed` rather than bubbling.
 * **Views** — `asset()`, `totalAssets()`, `maxDeposit()`, `maxWithdraw()`, `spotAPYBps()`.
 
 See [Interfaces](interfaces.md) for the full `IYieldGroupBase` contract and its conventions.
@@ -58,7 +58,7 @@ Each validates `asset_ == Hub.asset()` (`HubAssetMismatch` otherwise).
 ## Registry (governance)
 
 * **`addResource(address resource, address adapter)`** — register a resource alongside the stateless adapter that handles its ABI. Validates that both are contracts (`ResourceNotContract` / `AdapterNotContract`) and that `adapter.asset(resource)` matches the YieldGroup's underlying (`ResourceAssetMismatch`). It then calls `adapter.validateRegistration(resource)`, which is where family-specific preconditions live: `AdapterCoreV1` rejects a vToken whose Comptroller charges a non-zero `treasuryPercent`, while `AdapterFlux` and `AdapterFRV` implement it as a no-op. Does not auto-append to either inner queue. Reverts `ResourceAlreadyRegistered` if present. Emits `ResourceAdded`.
-* **`removeResource(address resource)`** — remove a resource. Requires a zero *raw receipt-token* balance (`ResourceHasBalance` otherwise) — the share-based check prevents a sub-unit residual from being rounded to zero and orphaning tokens. Also removes it from both inner queues via swap-and-pop. Emits `ResourceRemoved`.
+* **`removeResource(address resource)`** — remove a resource. Requires a zero *raw receipt-token* balance (`ResourceHasBalance` otherwise) — the share-based check prevents a sub-unit residual from being rounded to zero and orphaning tokens. Also removes it from both inner queues via swap-and-pop, **and clears its per-resource cap**: `addResource` never writes that mapping and the cap setters are registered-only, so leaving it set would let a later re-add of the same address silently inherit a stale value. A remove / re-add cycle therefore starts from *unbounded*, and the cap must be set again. Emits `ResourceRemoved`.
 
 * **`updateResourceAdapter(address resource, address adapter)`** — repoint a registered resource at a different adapter, without unwinding the position. Revalidates the new adapter the same way `addResource` does. Emits `ResourceAdapterUpdated`.
 * **`forceRemoveResource(address resource)`** — FRV only. Evict a resource whose vault has become unusable, abandoning any shares still held rather than blocking on the balance gate. Reverts `ResourceHasValue` if the position is still worth recovering. Emits `ResourceForceRemoved`.
@@ -73,7 +73,7 @@ The same stateless adapter address may be reused across any number of resources 
 ## Inner queues (Operator)
 
 * **`setInnerDepositQueue(address[] queue)`** — replace the inner deposit-routing order. Every entry must be a registered resource; duplicates revert `InvalidQueue`. Emits `InnerDepositQueueSet`.
-* **`setInnerWithdrawQueue(address[] queue)`** — replace the inner withdraw-routing order, independent of the deposit queue. Emits `InnerWithdrawQueueSet`.
+* **`setInnerWithdrawQueue(address[] queue)`** — replace the inner withdraw-routing order, independent of the deposit queue, under the same registration / duplicate validation; additionally, dropping a resource that still holds a receipt-token balance reverts `WithdrawQueueOmitsFundedResource`. The deposit queue carries no such guard — only the withdraw side must stay able to reach funded resources. Emits `InnerWithdrawQueueSet`.
 
 ## Pause (asymmetric)
 
@@ -86,7 +86,7 @@ There is no global YieldGroup pause — the only granularity inside a YieldGroup
 
 An optional per-resource deposit cap limits how much underlying *this YieldGroup* holds in one market, independent of the market's own protocol supply cap. Effective room is `min(protocolHeadroom, resourceCap − ourBalance)`.
 
-* **`raiseResourceCap(address resource, uint256 newCap)`** — loosen (governance-only). `newCap == 0` means unbounded, so raising to `0` removes the cap; the new value must be strictly looser (`NotIncreasing` otherwise). Emits `ResourceCapRaised`.
+* **`raiseResourceCap(address resource, uint256 newCap)`** — loosen (Operator-accessible, like `lowerResourceCap`, so the Operator can open headroom ahead of a rebalance without a governance round). `newCap == 0` means unbounded, so raising to `0` removes the cap; the new value must be strictly looser (`NotIncreasing` otherwise). Emits `ResourceCapRaised`.
 * **`lowerResourceCap(address resource, uint256 newCap)`** — tighten (Operator-accessible). Must be strictly tighter and non-zero (`NotDecreasing` otherwise). Lowering below the current balance simply stops new deposits; it never forces a withdrawal. Emits `ResourceCapLowered`.
 
 `YieldGroupFRV` does not expose these — FRV capacity comes entirely from the vault's own cap and its Fundraising-only rule.
@@ -103,7 +103,7 @@ An optional per-resource deposit cap limits how much underlying *this YieldGroup
 
 ## FRV lifecycle
 
-FRV vaults are ERC-4626 with an **11-state machine** on top. `YieldGroupFRV` calls the vault's permissionless `updateVaultState()` before every **mutating** sizing read — both cascade legs and both targeted `*Resource` legs — so deposit / withdraw routing always acts on current state. The `maxDeposit()` / `maxWithdraw()` **views** are `view` and structurally cannot advance state, so they can report a stale figure until someone pokes `updateVaultState()`.
+FRV vaults are ERC-4626 with an **11-state machine** on top. `YieldGroupFRV` calls the vault's permissionless `updateVaultState()` before every **mutating** sizing read — both cascade legs and both targeted `*Resource` legs — so deposit / withdraw routing always acts on current state. Its `accrue()` override pokes every registered vault the same way, so any Hub operation that accrues fees advances the whole family's lifecycle, not only the vault being routed to. The `maxDeposit()` / `maxWithdraw()` **views** are `view` and structurally cannot advance state, so they can report a stale figure until someone pokes `updateVaultState()`.
 
 <figure><img src="../../.gitbook/assets/liquidity-hub-frv-lifecycle.svg" alt="FRV lifecycle: the happy path WaitingForMargin to Matured, with deposits only in Fundraising and withdrawals only in the terminal Matured, Failed, or Liquidated states before Closed"><figcaption></figcaption></figure>
 
@@ -112,7 +112,7 @@ The full `FRVVaultState` enum (values 0–10): `WaitingForMargin`, `MarginDeposi
 * **Deposits** are accepted **only in `Fundraising`** (`maxDeposit` is 0 in every other state). Each vault has a `minSupplierDeposit` floor: a sub-floor cascade leg is skipped to the next vault; a sub-floor targeted `depositResource` reverts `ResourceBelowMinimumDeposit` — *unless* the sub-floor amount exactly fills the vault's remaining capacity (the residual tail), which is always accepted.
 * **Withdrawals** are possible **only in the terminal states** `Matured`, `Failed`, or `Liquidated` — capital is locked through `Lock` and `PendingSettlement`. `Matured` adds the fixed-rate yield; `Failed` / `Liquidated` can return **less than principal**, which marks down both `maxWithdraw` and `totalAssets`.
 * **Mark-to-model gap.** `AdapterFRV` values a locked position at principal plus the coupon accrued straight-line over the lock, and holds the **full** term coupon flat through `PendingSettlement` and `SettlementDeadlineExceeded` — while `maxWithdraw` stays `0` throughout. That accrued coupon therefore enters `Hub.totalAssets()` and the ERC-4626 share price before it is realized or withdrawable, and it is written down only if the vault settles `Failed` / `Liquidated`. Depositors minting during a lock buy in at a price that includes it; redeemers cannot exit against it until a terminal state.
-* Because `maxDeposit()` is a view it cannot advance state, so it can report stale non-zero capacity for a vault that is time-due to leave `Fundraising`; a permissionless `updateVaultState()` poke resolves it. This is a documented honesty-contract caveat, not a fund-safety issue.
+* Because `maxDeposit()` is a view it cannot advance state, so it can report stale non-zero capacity for a vault that is time-due to leave `Fundraising`; a permissionless `updateVaultState()` poke resolves it. In practice ordinary Hub traffic supplies that poke — every `deposit` / `mint` / `withdraw` / `redeem` / `reallocate` / `accrueFees` runs `YieldGroupFRV.accrue()`, which calls `updateVaultState()` on **every** registered vault, not just the one being routed to. This is a documented honesty-contract caveat, not a fund-safety issue.
 
 ## Events
 

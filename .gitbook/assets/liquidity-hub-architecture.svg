@@ -43,14 +43,14 @@
 
   <!-- Sources -->
   <rect class="src" x="110" y="216" width="180" height="52" rx="14"/>
-  <text class="lbl" x="200" y="239">YieldGroupCore</text>
-  <text class="sub" x="200" y="256">Source · ISource</text>
+  <text class="lbl" x="200" y="239">YieldGroup (Core)</text>
+  <text class="sub" x="200" y="256">Source · IYieldGroupBase</text>
   <rect class="src" x="370" y="216" width="180" height="52" rx="14"/>
-  <text class="lbl" x="460" y="239">YieldGroupFlux</text>
-  <text class="sub" x="460" y="256">Source · ISource</text>
+  <text class="lbl" x="460" y="239">YieldGroup (Flux)</text>
+  <text class="sub" x="460" y="256">Source · IYieldGroupBase</text>
   <rect class="src" x="630" y="216" width="180" height="52" rx="14"/>
   <text class="lbl" x="720" y="239">YieldGroupFRV</text>
-  <text class="sub" x="720" y="256">Source · ISource</text>
+  <text class="sub" x="720" y="256">Source · IYieldGroupBase</text>
 
   <!-- Sources -> Adapters -->
   <path class="edge" d="M200,268 L200,318"/>

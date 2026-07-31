@@ -24,6 +24,8 @@ A **Source** groups downstream products of the same kind behind one uniform inte
 | **Flux** | Fluid Lending (third-party) | fTokens (ERC-4626 shares)               |
 | **FRV**  | Venus Fixed-Rate Vaults  | Fixed-Rate Vault shares (ERC-4626)         |
 
+At launch only **Core** and **Flux** hold a live product. The FRV Source is registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for these assets on BNB Chain yet, so it is wired to nothing and receives no capital until a follow-up proposal adds one.
+
 The Source set is **governance-extensible**: new yield families can be added later without changing the Hub or the share token, because every Source is reached through the same interface.
 
 ### How deposits and withdrawals are routed
@@ -33,7 +35,7 @@ The Hub holds two independent, governance-configured ordered queues — a **depo
 * **Deposit** — capital cascades down the deposit queue. Each Source absorbs up to its available capacity (bounded by its cap), and any remainder overflows to the next Source. If the total deposit is larger than the combined free capacity of every Source, the **entire transaction reverts** — there is no partial fill.
 * **Withdraw** — the Hub serves the request from its own idle balance first, then walks the withdraw queue, pulling liquidity in order until the request is filled. If the request exceeds total available liquidity, or exceeds the per-transaction withdrawal cap, the **entire transaction reverts**.
 
-At launch the queues are configured **Core-first in, Flux-first out**. Core absorbs everyday inflows, so new capital lands in the deepest and most liquid market first; withdrawals are served from Flux ahead of Core, which keeps Core's balance intact as a buffer. The two orders are set independently and governance can reorder either.
+At launch the queues are configured **Core-first in, Flux-first out** — deposit `[Core, Flux]`, withdraw `[Flux, Core, FRV]`. Core absorbs everyday inflows, so new capital lands in the deepest and most liquid market first; withdrawals are served from Flux ahead of Core, which keeps Core's balance intact as a buffer. FRV is out of the deposit queue entirely (nothing to route into) and sits last on the withdraw side, where an empty Source costs nothing to walk past. The two orders are set independently and governance can reorder either.
 
 ### Operator rebalancing
 
@@ -45,7 +47,7 @@ Beyond user-driven flow, a privileged **Operator** can proactively rebalance cap
 * **Dual caps per Source** — each Source carries both an absolute cap and a percentage-of-Hub cap; the stricter one binds. A large Source can never quietly exceed its share of the Hub.
 * **Per-transaction withdrawal cap** — bounds any single withdrawal so one transaction cannot drain a downstream product's liquidity.
 * **Multi-level pause** — the Hub, an individual Source, or a single product can each be paused independently. A broader pause blocks everything beneath it; unaffected siblings keep operating, and the underlying products themselves keep running normally even while the Hub is paused.
-* **Asymmetric permissions** — every privileged function is a separate role, split so that loosening and tightening go to different holders. *Loosening* — unpausing at any level, registering a new route, raising the per-transaction withdrawal cap — requires a governance VIP. *Tightening* — lowering a cap, pausing — is available to the Operator alone. The one deliberate exception is raising a Source's cap, which the Operator also holds so it can open headroom immediately before a rebalance; it remains bounded by everything else governance set.
+* **Asymmetric permissions** — every privileged function is a separate role, and the split governs who holds it *besides* governance. *Loosening* — unpausing at any level, registering a new route, raising the per-transaction withdrawal cap, setting fees — is governance-only, behind a VIP. *Tightening* — lowering a cap, pausing — governance holds as well, but it is additionally delegated to the **Operator**, and pausing is delegated further to a **Guardian** multisig that acts with no timelock delay so it can contain an incident immediately. The Guardian is granted containment only: it can pause at every level but holds no unpause, so it can never undo a governance-ordered pause. The one deliberate exception to the pattern is raising a Source's cap, which the Operator also holds so it can open headroom immediately before a rebalance; it remains bounded by everything else governance set.
 
 ### Fees
 
@@ -59,6 +61,6 @@ At launch all three are set to **0%**. The machinery exists for governance to en
 
 ### Status
 
-The Liquidity Hub launches on **BNB Chain** with three supported assets — **USDT**, **USDC** and **U** — and more to follow. All fees are set to `0` at launch, the Operator role is held by the Venus Core multisig, and a Guardian multisig holds pause rights with no timelock delay. Contract addresses are listed in the [technical reference](../technical-reference/reference-liquidity-hub/README.md#deployment).
+The Liquidity Hub launches on **BNB Chain** with three supported assets — **USDT**, **USDC** and **U** — and more to follow. All fees are set to `0` at launch, the Operator role is held by a Venus operations multisig (the routine keeper), and a separate Guardian multisig holds pause rights with no timelock delay. Only **Core** and **Flux** carry a live product at launch: an FRV Source is registered on every Hub, but no Fixed-Rate Vault exists for these assets yet, so no capital routes to it until a follow-up proposal wires one. Contract addresses are listed in the [technical reference](../technical-reference/reference-liquidity-hub/README.md#deployment).
 
 For the contract-level architecture, flows, and full API, see the [Liquidity Hub technical reference](../technical-reference/reference-liquidity-hub/README.md).

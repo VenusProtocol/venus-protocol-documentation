@@ -26,6 +26,9 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 | Deposit / withdraw call  | `mint` / `redeemUnderlying`         | `deposit` / `withdraw`                | `deposit` / `withdraw`                 |
 | Spot APY source          | `supplyRatePerBlock` × `blocksPerYear` | Fluid `LendingResolver`            | vault `fixedAPY` (Fundraising / Lock)  |
 | Lifecycle constraint     | none                                | none                                  | 11-state machine                       |
+| Wired at launch          | ✅ vToken registered                 | ✅ fToken registered                   | ❌ Source registered, no resource       |
+
+**FRV carries no resource at launch.** An FRV Source is deployed and registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for USDT / USDC / U on BNB Chain yet, so the onboarding proposal calls `addResource` on the Core and Flux Sources only. FRV is therefore kept out of the outer deposit queue entirely and placed **last** in the outer withdraw queue — not because it can serve withdrawals, but because `setOuterWithdrawQueue` rejects a queue that omits a registered Source with non-zero `totalAssets()`, and that total counts idle balance: omitting FRV would let a 1-wei donation permanently block the Operator from reordering the queue. No capital routes to FRV until a follow-up proposal wires a vault.
 
 ## Contracts
 
@@ -43,13 +46,15 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 * **Dual caps per Source** (absolute amount and percentage of Hub TVL; the stricter binds) plus an optional per-resource cap and a per-transaction withdrawal cap.
 * **Multi-level pause** — Hub, Source, or single resource, each independent.
 * **Reentrancy-guarded value paths** — every entry point that moves assets is `nonReentrant`: `deposit` / `mint` / `withdraw` / `redeem` / `reallocate` / `emergencyReallocate` / `accrueFees` / `sweep` on the Hub, and `deposit` / `withdraw` / `depositResource` / `withdrawResource` / `sweep` on each YieldGroup. The ACM-gated admin setters are not individually guarded; they rely on ACM gating instead.
-* **Asymmetric permissions** — tightening (pause, lower a cap) is Operator-accessible, while most loosening (unpause, register a route, raise the withdrawal cap) requires governance. The one exception is `raiseYieldGroupCap`, which the Operator also holds so it can open headroom ahead of a rebalance. All gated by `AccessControlManagerV8`.
+* **Asymmetric permissions** — governance holds every gated function except `reallocate`; tightening (pause, lower a cap) is additionally Operator-accessible, and pausing is delegated further to a no-delay Guardian multisig, while loosening (unpause, register a route, raise the withdrawal cap, set fees) stays governance-only. The exceptions are `raiseYieldGroupCap` and `raiseResourceCap`, which the Operator also holds so it can open headroom ahead of a rebalance. All gated by `AccessControlManagerV8`.
 * **Stateless shared adapters** — zero storage, delegatecall dispatch; a new protocol family needs only a new adapter, not a Hub change.
 * **Fees off at launch** — management and performance fee machinery exists but ships at `0/0`.
 
 ## Deployment
 
 The Hub uses a **beacon-proxy model**: one `UpgradeableBeacon` per family per chain (Hub, Core, FRV, Flux), each owned by governance — upgrading a beacon upgrades every vault of that family atomically; per-asset instances are beacon proxies. Deploy scripts only deploy and initialize the proxies; **ACM wiring, `addYieldGroup` / `addResource`, and queue configuration are separate governance (ACM-gated) actions**.
+
+`HubRegistry` is the exception: it is a chain-level singleton behind a **`TransparentUpgradeableProxy`** with its own `ProxyAdmin`, not a beacon proxy, so it is upgraded independently of every Hub.
 
 v1 targets **BNB Chain**, launching with three assets: **USDT**, **USDC** and **U**.
 
@@ -77,8 +82,31 @@ Supporting contracts:
 | `AdapterCoreV1` | `0x4E514a0C7aB9d140eE204dfA0017574270D92944` | Shared singleton |
 | `AdapterFlux` | `0xA81bDf813A428053E764C34Bc679b3E4d0807be3` | Shared singleton |
 | `AdapterFRV` | `0x1FA0365bDd603452CE96BE3c0e12Db5515a35902` | Shared singleton |
+| `HubRegistryProxyAdmin` | `0x3E2fbA605c1d9D470FB2691c4AA59Eb0570caB3E` | `ProxyAdmin` for the registry's `TransparentUpgradeableProxy`; governance-owned |
 
 Each asset also has three YieldGroup proxies (`CoreSource_*`, `FluxSource_*`, `FRVSource_*`); resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding.
+
+**Launch parameters.** Identical across all three assets, which are all 18-decimal:
+
+| Parameter | USDT | USDC | U |
+| --------- | ---- | ---- | - |
+| Share token name / symbol | `Venus Hub USDT` / `vhUSDT` | `Venus Hub USDC` / `vhUSDC` | `Venus Hub U` / `vhU` |
+| `decimalsOffset` | 6 | 6 | 6 |
+| `maxWithdrawalSize` (per tx) | 10,000,000 | 10,000,000 | 10,000,000 |
+| Core cap (absolute / %) | 2,000,000,000 / disabled | same | same |
+| Flux cap (absolute / %) | 7,000,000 / 20% | same | same |
+| FRV cap (absolute / %) | 5,000,000 / 30% | same | same |
+| Management / performance / redeem fee | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
+
+`feeRecipient` is `0xF322942f644A996A617BD29c16bd7d231d9F35E9` on all three. Core's percentage dimension uses the `10_000` BPS sentinel, so only its absolute cap binds; Flux is held to 20% of TVL, which at launch sits well under its absolute cap, so it fills through Operator `reallocate` rather than from the deposit queue. Each Hub is seeded with a 10-token bootstrap deposit from the Treasury whose shares are minted to the burn address, so `totalSupply` is never zero and the refill-from-empty branch cannot be re-opened.
+
+**Role holders.** Granted by the onboarding proposal, not baked into the bytecode — see [Permissions](hub.md#permissions):
+
+| Role | Address |
+| ---- | ------- |
+| Governance | `0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396` — the [Normal Timelock](../../deployed-contracts/governance.md) |
+| Operator | `0x83f426233B358A36953F6951161E76FB7c866a7A` — the routine keeper multisig |
+| Guardian | `0x1C2CAc6ec528c20800B2fe734820D87b581eAA6B` — no-delay containment multisig |
 
 #### BSC testnet (chain ID 97)
 
@@ -89,6 +117,18 @@ A parallel deployment exists for integration testing. It ships **USDT only** —
 | `Hub_USDT` | `0x7cE6ADF754D0eC81A6CF8ACd9C7454F45077dc61` |
 | `HubRegistry` | `0x5346f648029d1D1d1034e09e8AD7a115f5D7A159` |
 | `Migrator` | `0x343D518d8C89f9B5D770000F1ed80f45bF1419f5` |
+| `CoreSource_USDT` | `0x11e39DC7b8b16BBDA8D9C2903dF741Ae9341Ec88` |
+| `FluxSource_USDT` | `0x044E572144bc08ed2D90E081EeEd7b5b6Cb01016` |
+| `FRVSource_USDT` | `0xA0Fb0fFeBdcB7F45A3Ec841cCE7F78B7CeBD0f82` |
+| `AdapterCoreV1` | `0xDf669957448eCB23309eEFda4de230c62d22AE33` |
+| `AdapterFlux` | `0x15Dca35ae0b16BeceabAEC9Dea49630e8C601730` |
+| `AdapterFRV` | `0xeF0E85ab9A23F50EB4595CF7e2F5461feF7E7fc5` |
+
+**Testnet is not a faithful mirror of mainnet.** Three differences will break assumptions carried over from a testnet harness:
+
+* The share token is named `Vault Share` / **`vSHARE`**, a placeholder — not the `Venus Hub <asset>` / `vh<asset>` pair mainnet uses.
+* **FRV is fully wired on testnet**: a Fixed-Rate Vault instance exists and is registered as a resource, and all three Sources sit in both outer queues. On mainnet the FRV Source has no resource at all.
+* Caps are effectively unbounded (`type(uint128).max` absolute, percentage dimension disabled) rather than the tiered mainnet values, and the per-transaction withdrawal cap is lower.
 
 ## Audits
 

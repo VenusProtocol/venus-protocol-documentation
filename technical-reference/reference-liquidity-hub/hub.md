@@ -54,7 +54,7 @@ Reallocate moves assets between Sources — and, optionally, between specific re
 
 1. The Operator calls `reallocate(withdraws, deposits)`.
 2. The Hub accrues fees (skipped while paused).
-3. **Pull phase** — every withdraw leg runs first: `Source.withdraw` (queue) or `Source.withdrawResource` (targeted). Underlying returns to the Hub as idle. Pulling from a *paused* resource is allowed (wind-down).
+3. **Pull phase** — every withdraw leg runs first: `Source.withdraw` (queue) or `Source.withdrawResource` (targeted). Underlying returns to the Hub as idle. Pulling from a *paused* resource is allowed (wind-down). Every leg on both sides must carry a non-zero `amount` — a zero-amount leg reverts `ZeroAmount` rather than being skipped, which matters when the plan is generated programmatically and a no-op leg is a natural artifact.
 4. The Hub takes a single TVL snapshot after all pulls — the cap reference for every push (valid because a balanced reallocate conserves TVL). While unpaused this is the strict, fail-closed `totalAssets()`. While paused (the `emergencyReallocate` path) it is a **fail-open** sum that skips any Source whose `totalAssets()` reverts, so a single bricked Source cannot block a rebalance among the healthy ones.
 5. **Push phase** — each deposit leg checks the Source is registered, unpaused, and within its effective cap, then `Source.deposit` (queue) or `Source.depositResource` (targeted). Depositing into a paused resource reverts.
 6. The Hub enforces `Σ withdraws == Σ deposits` (`ReallocateImbalanced` otherwise). **Net-zero invariant.**
@@ -116,11 +116,15 @@ Three independent scopes — a broader scope blocks everything beneath it; sibli
 
 ## Permissions
 
-Every ACM-gated call is authorised through `AccessControlManagerV8` — the role is `keccak256(abi.encodePacked(targetContract, roleString))`, where `roleString` is the literal function signature. The ownership functions (`transferOwnership` / `acceptOwnership` / `setAccessControlManager`) sit outside the ACM and are owner-only; see [Ownership and access control](#ownership-and-access-control). The contracts do not hard-code an Operator-vs-governance branch; the asymmetry is entirely a matter of which addresses governance grants each role to. In v1 the Operator is the Venus Core multisig.
+Every ACM-gated call is authorised through `AccessControlManagerV8` — the role is `keccak256(abi.encodePacked(targetContract, roleString))`, where `roleString` is the literal function signature. The ownership functions (`transferOwnership` / `acceptOwnership` / `setAccessControlManager`) sit outside the ACM and are owner-only; see [Ownership and access control](#ownership-and-access-control). The contracts do not hard-code an Operator-vs-governance branch; the asymmetry is entirely a matter of which addresses governance grants each role to.
 
-Three holders in v1: governance (a VIP, behind the Normal Timelock), the Operator (the Venus Core
-multisig), and the **Guardian** (a multisig that acts with no timelock delay, so it can contain an
-incident immediately). The Guardian is granted containment only — it can tighten but never loosen.
+Three holders in v1: governance (a VIP, behind the Normal Timelock), the **Operator** (a Venus
+operations multisig acting as the routine keeper, distinct from the Guardian), and the **Guardian**
+(a multisig that acts with no timelock delay, so it can contain an incident immediately). The
+Guardian is granted containment only — it can tighten but never loosen, and holds no unpause, so it
+can never undo a governance-ordered pause. Both role holders are addresses granted by the onboarding
+VIP, not roles baked into the bytecode; the granted addresses are listed under
+[Deployment](README.md#deployment).
 
 | Action class                                                                        | Governance (VIP) | Operator | Guardian |
 | ------------------------------------------------------------------------------------ | :--------------: | :------: | :------: |
@@ -253,7 +257,7 @@ Not all the standard ERC-4626 views behave identically to the OpenZeppelin base:
 ### Outer queues (Operator)
 
 * **`setOuterDepositQueue(address[] queue)`** — replace the deposit routing order; every entry must be a registered Source (`YieldGroupNotRegistered` otherwise) with no duplicates (`InvalidQueue`). Emits `OuterDepositQueueSet`.
-* **`setOuterWithdrawQueue(address[] queue)`** — replace the withdraw routing order under the same registration / duplicate validation; additionally, dropping a Source that still holds a balance reverts `WithdrawQueueOmitsFundedYieldGroup`. Emits `OuterWithdrawQueueSet`.
+* **`setOuterWithdrawQueue(address[] queue)`** — replace the withdraw routing order under the same registration / duplicate validation; additionally, dropping a Source that still holds a balance reverts `WithdrawQueueOmitsFundedYieldGroup`. The funded test is **fail-closed**: a Source whose `totalAssets()` view *reverts* counts as funded, so a bricked Source can never be dropped from the withdraw queue — the mirror of `removeYieldGroup`, which deliberately permits evicting it from the registry in exactly that case. Note also that `totalAssets()` counts a Source's idle balance, so a 1-wei donation to an otherwise-empty Source is enough to pin it in the queue. Emits `OuterWithdrawQueueSet`.
 
 ### Reallocate (Operator)
 
@@ -353,9 +357,9 @@ call everything else. Both sit with governance in v1.
 | `InvalidCap`                   | Cap pair is invalid (e.g. percentage > 100%, or `absoluteCap == uint256.max`) |
 | `InvalidQueue`                 | A queue contains a duplicate entry (an *unregistered* entry reverts `YieldGroupNotRegistered` instead) |
 | `ReallocateImbalanced`         | `reallocate` withdraw and deposit sums do not match                       |
-| `WithdrawQueueOmitsFundedYieldGroup`| A withdraw-queue replacement drops a funded Source                        |
+| `WithdrawQueueOmitsFundedYieldGroup`| A withdraw-queue replacement drops a funded Source. A Source whose `totalAssets()` reverts is treated as funded, so it cannot be dropped |
 | `SweepProtectedAsset`          | `sweep` called with `token == asset()`                                   |
-| `ZeroAddress` / `ZeroAmount`   | A required non-zero address / amount parameter was zero                   |
+| `ZeroAddress` / `ZeroAmount`   | A required non-zero address / amount parameter was zero. `ZeroAmount` also fires on a zero-amount `reallocate` / `emergencyReallocate` leg (either side), and on any attempt to set `maxWithdrawalSize` to `0` |
 | `InvalidDecimalsOffset`        | `decimalsOffset_` at init was `0` **or** exceeded `MAX_DECIMALS_OFFSET` (12) |
 | `InvalidFeeBps`                | A management / performance rate exceeded `MAX_FEE_BPS` (5000 = 50%), **or** the redeem rate exceeded `MAX_REDEEM_FEE_BPS` (500 = 5%) |
 | `NotIncreasing` / `NotDecreasing` | `raiseMaxWithdrawalSize` / `lowerMaxWithdrawalSize` was not strictly increasing / decreasing. For `raiseYieldGroupCap` / `lowerYieldGroupCap`, **both** dimensions must move in the requested direction (or stay equal) and at least one must move strictly — mixing a raise of one with a lower of the other reverts |
