@@ -2,7 +2,7 @@
 
 ### Overview
 
-The **Venus Liquidity Hub** is a per-asset *allocator vault*. A lender deposits a single asset (USDT, for example) and receives a yield-bearing share token. Under a governance-set policy, the Hub automatically spreads that capital across the yield families it is wired to — **Core** (Venus Core lending), **Flux** (Fluid Lending, a third-party protocol) and **FRV** (Venus Fixed-Rate Vaults) — and returns a blended yield, removing the need for lenders to pick a product, allocate across it, and assess each one's risk on their own. Capital routed to Flux is exposed to Fluid's contracts, not only to Venus's.
+The **Venus Liquidity Hub** is a per-asset *allocator vault*. A lender deposits a single asset (USDT, for example) and receives a yield-bearing share token. Under a governance-set policy, the Hub automatically spreads that capital across the yield families it is wired to — **Core** (Venus Core lending), **Flux** (Fluid Lending, a third-party protocol), **FRV** (Venus Fixed-Rate Vaults) and new yield sources as they come online — blending the underlying returns into a single yield, removing the need for lenders to pick a product, allocate across it, and assess each one's risk on their own. Capital routed to Flux is exposed to Fluid's contracts, not only to Venus's.
 
 There is **one Hub per asset**, with no cross-asset coupling: a USDT Hub only ever holds and routes USDT. Each Hub is a standard [ERC-4626](https://eips.ethereum.org/EIPS/eip-4626) vault, so any wallet, aggregator, or partner that already speaks ERC-4626 can integrate it once and automatically benefit as Venus adds new yield products behind it.
 

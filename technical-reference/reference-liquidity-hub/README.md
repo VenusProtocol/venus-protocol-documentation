@@ -54,7 +54,7 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 
 The Hub uses a **beacon-proxy model**: one `UpgradeableBeacon` per family per chain (Hub, Core, FRV, Flux), each owned by governance — upgrading a beacon upgrades every vault of that family atomically; per-asset instances are beacon proxies. Deploy scripts only deploy and initialize the proxies; **ACM wiring, `addYieldGroup` / `addResource`, and queue configuration are separate governance (ACM-gated) actions**.
 
-`HubRegistry` is the exception: it is a chain-level singleton behind a **`TransparentUpgradeableProxy`** with its own `ProxyAdmin`, not a beacon proxy, so it is upgraded independently of every Hub.
+`HubRegistry` is the exception: it is a chain-level singleton behind a **`TransparentUpgradeableProxy`**, not a beacon proxy, so it is upgraded independently of every Hub. On BNB Chain mainnet that proxy is administered by Venus's shared `DefaultProxyAdmin`, the same one that administers the core pool and isolated pools; the BSC testnet deployment predates that decision and still carries a registry-specific `ProxyAdmin`.
 
 v1 targets **BNB Chain**, launching with three assets: **USDT**, **USDC** and **U**.
 
@@ -68,7 +68,7 @@ The contracts are **deployed on BNB Chain mainnet**. Deployment only creates and
 | USDC  | `0x9D2D9592cF8DFbf59107fAab703d08494BE14617` |
 | U     | `0x0e5AA174d4F31b757a237eb1999DE151596788B0` |
 
-`HubRegistry` is deployed at `0x4196932b0c76A114178236C00A5e140f27866790`. Prefer resolving Hub addresses through it rather than hard-coding them.
+`HubRegistry` is deployed at `0x6D93Fd479f2d37445CFBe132412e316a0364acc2`. Prefer resolving Hub addresses through it rather than hard-coding them.
 
 Supporting contracts:
 
@@ -82,7 +82,7 @@ Supporting contracts:
 | `AdapterCoreV1` | `0x4E514a0C7aB9d140eE204dfA0017574270D92944` | Shared singleton |
 | `AdapterFlux` | `0xA81bDf813A428053E764C34Bc679b3E4d0807be3` | Shared singleton |
 | `AdapterFRV` | `0x1FA0365bDd603452CE96BE3c0e12Db5515a35902` | Shared singleton |
-| `HubRegistryProxyAdmin` | `0x3E2fbA605c1d9D470FB2691c4AA59Eb0570caB3E` | `ProxyAdmin` for the registry's `TransparentUpgradeableProxy`; governance-owned |
+| `DefaultProxyAdmin` | `0x6beb6D2695B67FEb73ad4f172E8E2975497187e4` | Venus's shared `ProxyAdmin`, administering the registry's `TransparentUpgradeableProxy`; governance-owned |
 
 Each asset also has three YieldGroup proxies (`CoreSource_*`, `FluxSource_*`, `FRVSource_*`); resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding.
 
@@ -123,12 +123,14 @@ A parallel deployment exists for integration testing. It ships **USDT only** —
 | `AdapterCoreV1` | `0xDf669957448eCB23309eEFda4de230c62d22AE33` |
 | `AdapterFlux` | `0x15Dca35ae0b16BeceabAEC9Dea49630e8C601730` |
 | `AdapterFRV` | `0xeF0E85ab9A23F50EB4595CF7e2F5461feF7E7fc5` |
+| `HubRegistryProxyAdmin` | `0x9f8413eEE33D434F6D4f40C83181f32A831c9ef7` |
 
-**Testnet is not a faithful mirror of mainnet.** Three differences will break assumptions carried over from a testnet harness:
+**Testnet is not a faithful mirror of mainnet.** Four differences will break assumptions carried over from a testnet harness:
 
 * The share token is named `Vault Share` / **`vSHARE`**, a placeholder — not the `Venus Hub <asset>` / `vh<asset>` pair mainnet uses.
 * **FRV is fully wired on testnet**: a Fixed-Rate Vault instance exists and is registered as a resource, and all three Sources sit in both outer queues. On mainnet the FRV Source has no resource at all.
 * Caps are effectively unbounded (`type(uint128).max` absolute, percentage dimension disabled) rather than the tiered mainnet values, and the per-transaction withdrawal cap is lower.
+* The registry proxy is administered by a registry-specific `HubRegistryProxyAdmin`, not the shared `DefaultProxyAdmin` mainnet uses.
 
 ## Audits
 
