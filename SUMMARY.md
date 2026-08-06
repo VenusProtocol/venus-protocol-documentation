@@ -55,6 +55,7 @@
 * [Borrowing VAI](guides/borrowing-vai.md)
 * [Gasless Transactions on zkSync](guides/gasless-transactions-zksync.md)
 * [Import Positions](guides/import-positions.md)
+* [Withdraw from Deprecated Isolated Pools](guides/withdraw-from-deprecated-isolated-pools.md)
 * [Enable E-mode](guides/enable-e-mode.md)
 * [Isolated E-mode](guides/isolated-e-mode.md)
 * [Boost and Repay with Collateral](guides/leveraged-positions.md)
