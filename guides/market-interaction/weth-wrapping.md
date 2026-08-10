@@ -11,7 +11,7 @@ The conversion of ETH -> WETH and WETH -> ETH is always available in the WETH to
 * If you wrap 1 ETH, you'll receive 1 WETH.
 * If you unwrap 1 WETH, you'll receive 1 ETH.
 
-Only the gas fee to execute the wrap/unwrap transactions will need to be paid. Each Ethereum network (including L2s) has its own WETH token (see the full list on [CoinMarketCap](https://coinmarketcap.com/currencies/weth/))).
+Only the gas fee to execute the wrap/unwrap transactions will need to be paid. Each Ethereum network (including L2s) has its own WETH token (see the full list on [CoinMarketCap](https://coinmarketcap.com/currencies/weth/)).
 
 ## Wrapping ETH using Uniswap
 

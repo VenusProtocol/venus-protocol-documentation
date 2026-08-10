@@ -18,12 +18,12 @@ After successfully connecting your wallet, you will gain access to all the featu
 2. Navigate to the "Dashboard" menu and choose the asset you want to supply. For example, if you want to supply TRX, click on the TRX market.
 3. Enable the asset. This will prompt a transaction confirmation in your wallet. Remember that a small gas fee applies, so ensure some native tokens (BNB for BNB chain, or ETH for Ethereum, for example) are available in your wallet.
 4. Specify the amount you want to supply. The selected assets are transferred directly from your wallet to Venus Protocol, earning interest immediately. This interest will be automatically added to your Supply Balance.
-5. **Enable as collateral.** After supplying, open the market modal and toggle the asset's collateral switch to the on position if you intend to borrow against it. Collateral is **not** enabled by default — you must turn it on explicitly before your supplied balance counts toward your borrowing limit.
+5. **Enable as collateral.** After supplying, use the collateral toggle in the Supply tab to switch the asset on if you intend to borrow against it. This toggle is separate from the ERC-20 approval in step 3 — collateral is **not** enabled by default and you must turn it on explicitly before your supplied balance counts toward your borrowing limit.
 
 Each market has a **supply cap** — the maximum total amount of that asset the protocol will accept as supply, set by governance to limit risk concentration; once it is reached, no further supply of that asset is possible until the cap is raised.
 
 {% hint style="warning" %}
-**Deprecated markets:** Some assets are deprecated and have a collateral factor of 0%, meaning they cannot be used as collateral regardless of the toggle setting. The UI labels deprecated markets clearly. Avoid supplying to a deprecated market if your goal is to borrow against the position.
+**Deprecated markets:** Some assets are deprecated and have a collateral factor of 0%, meaning they cannot be used as collateral regardless of the toggle setting. Avoid supplying to a deprecated market if your goal is to borrow against the position.
 {% endhint %}
 
 ## Manage your Borrowing Limit
@@ -56,7 +56,7 @@ To borrow:
 
 In addition to earning interest on supplied assets, you can also earn protocol rewards:
 
-* **Venus Prime** is the flagship rewards program — eligible users who stake XVS receive a non-transferable Prime token that boosts their APY on selected markets. See [Venus Prime](../../whats-new/prime-yield.md) for eligibility criteria and how to qualify.
+* **Venus Prime** is the flagship rewards program — staking XVS makes you eligible, but each epoch governance mints Prime tokens only to the top Prime Score holders, capped at 500. If you receive one, the non-transferable token automatically boosts your APY on selected markets. See [Venus Prime](../../whats-new/prime-yield.md) for scoring details and eligibility criteria.
 * **XVS and VAI Vaults** let you stake XVS or VAI tokens to earn additional XVS rewards. See the [Vaults guide](../vaults.md) for step-by-step staking instructions.
 
 ## Lending and Borrowing Example

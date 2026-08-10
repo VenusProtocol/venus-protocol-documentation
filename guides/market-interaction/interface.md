@@ -40,9 +40,9 @@ The Vaults interface allows you to access and manage the vaults associated with 
 
 ### Swap
 
-The Swap feature enables you to swap one cryptocurrency for another within Venus Protocol. Swapping is now integrated into the **Trade** interface — see the [Trade](#trade) section below for more details.
+The Swap feature enables you to swap one cryptocurrency for another within Venus Protocol.
 
-<figure><img src="../../.gitbook/assets/Screenshot 2023-08-02 at 9.38.18 AM.png" alt="Swap interface for exchanging one cryptocurrency for another"><figcaption>Swap — quickly exchange assets; this feature is now part of the unified Trade interface</figcaption></figure>
+<figure><img src="../../.gitbook/assets/Screenshot 2023-08-02 at 9.38.18 AM.png" alt="Swap interface for exchanging one cryptocurrency for another"><figcaption>Swap — quickly exchange one cryptocurrency for another</figcaption></figure>
 
 ### History
 
@@ -70,12 +70,18 @@ The VAI interface is where you can mint and manage the VAI stablecoin. VAI is cr
 
 ### Trade
 
-The Trade interface provides a unified swap and leverage experience within Venus Protocol. You can swap assets at competitive rates and — for supported markets — open leveraged supply positions directly from this screen. See the [Trade guide](../trade.md) and the [Trade announcement](../../whats-new/trade.md) for a full walkthrough.
+Trade is a relative-performance pair trading feature, currently in beta and available on **BNB Chain Core Pool only**. You open a position with two legs — a long on one asset and a short on another — and the net profit or loss settles in a Default Settlement Asset (USDT or USDC). This is distinct from Swap (simple token exchange) and from Boost (leveraged supply/borrow positions). See the [Trade guide](../trade.md) and the [Trade announcement](../../whats-new/trade.md) for a full walkthrough.
 
 ### E-Mode
 
-E-Mode (Efficiency Mode) lets you maximize capital efficiency when borrowing assets that are closely correlated with your collateral — for example, borrowing USDC against USDT. In E-Mode, the protocol applies higher collateral factors and higher liquidation thresholds for correlated asset pairs, allowing you to borrow more with the same collateral. See the [Enable E-Mode guide](../enable-e-mode.md) and the [E-Mode announcement](../../whats-new/e-mode.md) for setup instructions.
+E-Mode (Efficiency Mode) lets you maximize capital efficiency when borrowing assets that are closely correlated with your collateral — for example, borrowing USDC against USDT. It is available on **BNB Chain Core Pool only**. In E-Mode, the protocol applies higher collateral factors and higher liquidation thresholds for assets within the same E-Mode group. Note the following constraints:
+
+* Within an E-Mode group, you can **only borrow assets that belong to that group**.
+* Collateral from outside the group may or may not count toward your borrowing limit, depending on whether the group has `allowCorePoolFallback` enabled.
+* As a trade-off, the **liquidation incentive decreases** for E-Mode positions (alongside the increases to CF and LT).
+
+See the [Enable E-Mode guide](../enable-e-mode.md) and the [E-Mode announcement](../../whats-new/e-mode.md) for setup instructions.
 
 ### Prime
 
-Venus Prime is a protocol incentive program that rewards committed XVS stakers with boosted APY on selected markets. Eligible users receive a non-transferable Prime token that automatically applies the boost. See the [Venus Prime announcement](../../whats-new/prime-yield.md) for eligibility criteria and market coverage.
+Venus Prime is a protocol incentive program that rewards committed XVS stakers with boosted APY on selected markets. Staking XVS makes you **eligible**, but it does not guarantee a token: each epoch, governance mints Prime tokens to the top Prime Score holders, capped at 500 tokens in total. If you receive one, it is non-transferable and automatically applies the APY boost to your positions. See the [Venus Prime announcement](../../whats-new/prime-yield.md) for scoring details and market coverage.
