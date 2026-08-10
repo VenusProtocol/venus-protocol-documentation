@@ -74,7 +74,7 @@ The Trade interface provides a unified swap and leverage experience within Venus
 
 ### E-Mode
 
-E-Mode (Efficiency Mode) lets you maximize capital efficiency when borrowing assets that are closely correlated with your collateral — for example, borrowing USDC against USDT. In E-Mode, the protocol applies higher collateral factors and lower liquidation thresholds for correlated asset pairs. See the [Enable E-Mode guide](../enable-e-mode.md) and the [E-Mode announcement](../../whats-new/e-mode.md) for setup instructions.
+E-Mode (Efficiency Mode) lets you maximize capital efficiency when borrowing assets that are closely correlated with your collateral — for example, borrowing USDC against USDT. In E-Mode, the protocol applies higher collateral factors and higher liquidation thresholds for correlated asset pairs, allowing you to borrow more with the same collateral. See the [Enable E-Mode guide](../enable-e-mode.md) and the [E-Mode announcement](../../whats-new/e-mode.md) for setup instructions.
 
 ### Prime
 
