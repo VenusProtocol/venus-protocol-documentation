@@ -1,0 +1,82 @@
+<svg width="980" height="386" viewBox="0 0 980 386" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6B83D6"/>
+    </marker>
+    <style>
+      .st   { fill: #2F3B5C; stroke: #46557E; stroke-width: 1.2; }
+      .go   { fill: #2F3B5C; stroke: #1FCB86; stroke-width: 2.4; }
+      .fail { fill: #2F3B5C; stroke: #F0556F; stroke-width: 2.4; }
+      .end  { fill: #222B42; stroke: #38445F; stroke-width: 1.2; }
+      .stl  { fill: #FFFFFF; font-size: 11px; font-weight: 600; }
+      .ttl  { fill: #FFFFFF; font-size: 15px; font-weight: 700; }
+      .lbl  { fill: #FFFFFF; font-size: 12px; font-weight: 600; }
+      .note { fill: #9AA8CC; font-size: 11px; font-style: italic; }
+      .nsub { fill: #AEB9D6; font-size: 10px; }
+      .tag  { fill: #1FCB86; font-size: 11px; font-weight: 600; }
+      .edge { stroke: #6B83D6; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .la   { text-anchor: start; }
+      text  { text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="980" height="386" fill="#0E1626"/>
+
+  <text class="ttl la" x="28" y="32">FRV lifecycle</text>
+
+  <text class="tag" x="362" y="58">deposits</text>
+  <text class="tag" x="874" y="58">withdrawals</text>
+
+  <rect class="st" x="48"  y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="106" y="93">Waiting</text>
+  <text class="stl" x="106" y="107">ForMargin</text>
+  <rect class="st" x="176" y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="234" y="93">Margin</text>
+  <text class="stl" x="234" y="107">Deposited</text>
+  <rect class="go" x="304" y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="362" y="101">Fundraising</text>
+  <rect class="st" x="432" y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="490" y="93">Institution</text>
+  <text class="stl" x="490" y="107">Confirmation</text>
+  <rect class="st" x="560" y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="618" y="101">Lock</text>
+  <rect class="st" x="688" y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="746" y="93">Pending</text>
+  <text class="stl" x="746" y="107">Settlement</text>
+  <rect class="go" x="816" y="72" width="116" height="50" rx="10"/>
+  <text class="stl" x="874" y="101">Matured</text>
+
+  <path class="edge" d="M166,97 L174,97"/>
+  <path class="edge" d="M294,97 L302,97"/>
+  <path class="edge" d="M422,97 L430,97"/>
+  <path class="edge" d="M550,97 L558,97"/>
+  <path class="edge" d="M678,97 L686,97"/>
+  <path class="edge" d="M806,97 L814,97"/>
+
+  <path class="edge" d="M746,122 C746,142 740,152 736,162"/>
+  <text class="note la" x="756" y="150">on deadline</text>
+
+  <rect class="fail" x="618" y="166" width="234" height="54" rx="14"/>
+  <text class="stl" x="735" y="189" font-size="12">SettlementDeadlineExceeded</text>
+  <text class="nsub" x="735" y="207">not terminal — liquidation still to run</text>
+
+  <path class="edge" d="M234,122 C234,200 248,262 292,282"/>
+  <text class="note la" x="108" y="212">cancelVault()</text>
+
+  <path class="edge" d="M362,122 C362,192 382,232 400,258"/>
+  <text class="note la" x="388" y="186">raised &lt; minCap</text>
+
+  <path class="edge" d="M700,220 C668,240 616,250 574,260"/>
+  <text class="note la" x="692" y="242">liquidateOverdueVault()</text>
+
+  <rect class="fail" x="298" y="262" width="322" height="64" rx="14"/>
+  <text class="stl" x="459" y="290" font-size="12">Failed · Liquidated</text>
+  <text class="nsub" x="459" y="309">terminal states, together with Matured</text>
+
+  <rect class="end" x="680" y="272" width="130" height="44" rx="14"/>
+  <text class="lbl" x="745" y="299">Closed</text>
+  <path class="edge" d="M620,294 L676,294"/>
+
+  <text class="note" x="490" y="352">Deposits only while Fundraising · withdrawals only in Matured / Failed / Liquidated</text>
+  <text class="note" x="490" y="370">(Failed &amp; Liquidated may return &lt; principal)</text>
+</svg>

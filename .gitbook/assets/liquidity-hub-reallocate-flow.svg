@@ -1,0 +1,43 @@
+<svg width="920" height="270" viewBox="0 0 920 270" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6B83D6"/>
+    </marker>
+    <style>
+      .neu  { fill: #3C4660; stroke: #515D7C; stroke-width: 1.2; }
+      .hub  { fill: #3A78FF; }
+      .src  { fill: #2F3B5C; stroke: #46557E; stroke-width: 1.2; }
+      .lbl  { fill: #FFFFFF; font-size: 14px; font-weight: 600; }
+      .ttl  { fill: #FFFFFF; font-size: 15px; font-weight: 700; }
+      .sub  { fill: #C2CCE6; font-size: 11px; }
+      .note { fill: #9AA8CC; font-size: 11px; font-style: italic; }
+      .edge { stroke: #6B83D6; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .la   { text-anchor: start; }
+      text  { text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="920" height="270" fill="#0E1626"/>
+
+  <text class="ttl la" x="28" y="34">Reallocate (Operator)</text>
+
+  <rect class="neu" x="120" y="58" width="150" height="46" rx="14"/>
+  <text class="lbl" x="195" y="86">Operator</text>
+  <rect class="hub" x="380" y="54" width="170" height="58" rx="14"/>
+  <text class="lbl" x="465" y="80">Hub</text>
+  <text class="sub" x="465" y="98" fill="#DCE6FF">net-zero rebalance</text>
+  <path class="edge" d="M272,80 L378,80"/>
+  <text class="note" x="325" y="71">reallocate</text>
+
+  <rect class="src" x="110" y="180" width="180" height="54" rx="14"/>
+  <text class="lbl" x="200" y="211">Source A</text>
+  <rect class="src" x="630" y="180" width="180" height="54" rx="14"/>
+  <text class="lbl" x="720" y="211">Source B</text>
+
+  <path class="edge" d="M250,180 C300,128 360,116 392,108"/>
+  <text class="note" x="288" y="156">pull · withdraw legs</text>
+  <path class="edge" d="M538,108 C570,116 630,128 670,180"/>
+  <text class="note" x="636" y="156">push · deposit legs</text>
+
+  <text class="note" x="460" y="252" font-size="12">funds never leave the Hub · &#931; withdraws = &#931; deposits</text>
+</svg>
