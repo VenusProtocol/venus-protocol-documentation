@@ -46,6 +46,7 @@
 
 * [Venus interface](guides/market-interaction/interface.md)
 * [Supplying and borrowing](guides/market-interaction/supply-borrow.md)
+  * [Wrapping ETH (WETH)](guides/market-interaction/weth-wrapping.md)
 * [Liquidations](guides/market-interaction/liquidation.md)
 * [Governance](guides/governance/README.md)
   * [Submitting a VIP](guides/governance-guide/vip.md)
