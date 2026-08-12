@@ -234,6 +234,7 @@
 * [VenusERC4626](deployed-contracts/venus-erc4626.md)
 * [Periphery](deployed-contracts/periphery.md)
 * [Fixed Term Vaults](deployed-contracts/fixed-rate-vaults.md)
+* [Liquidity Hub](deployed-contracts/liquidity-hub.md)
 
 ## Services
 
