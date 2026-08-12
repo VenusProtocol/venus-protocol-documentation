@@ -68,7 +68,7 @@ The contracts are **deployed on BNB Chain mainnet**. Deployment only creates and
 | USDC  | `0x9D2D9592cF8DFbf59107fAab703d08494BE14617` |
 | U     | `0x0e5AA174d4F31b757a237eb1999DE151596788B0` |
 
-`HubRegistry` is deployed at `0x6D93Fd479f2d37445CFBe132412e316a0364acc2`. Prefer resolving Hub addresses through it rather than hard-coding them.
+`HubRegistry` is deployed at `0x6D93Fd479f2d37445CFBe132412e316a0364acc2`. Prefer resolving Hub addresses through it rather than hard-coding them. The [Deployed Contracts](../../deployed-contracts/liquidity-hub.md) page carries the same addresses as explorer links, including the per-asset YieldGroup proxies.
 
 Supporting contracts:
 
@@ -110,7 +110,7 @@ Each asset also has three YieldGroup proxies (`CoreSource_*`, `FluxSource_*`, `F
 
 #### BSC testnet (chain ID 97)
 
-A parallel deployment exists for integration testing. It ships **USDT only** — not the three assets mainnet carries — so a harness written against the mainnet asset list will not map cleanly.
+A parallel deployment exists for integration testing. The USDT Hub below is the reference deployment, but the testnet registry now lists **thirteen Hubs** over mock assets (USDT, WBNB, USDC, FDUSD, BTCB, ADA, AAVE, CAKE, ETH, DOGE, LTC, SOL and SXP), stood up for QA scenarios with per-Hub wiring that does not follow the mainnet shape — the full list is on the [Deployed Contracts](../../deployed-contracts/liquidity-hub.md#bnb-chain-testnet) page. Either way the mainnet asset trio does not map onto testnet, so a harness written against the mainnet asset list will not carry over.
 
 | Contract | Address |
 | -------- | ------- |

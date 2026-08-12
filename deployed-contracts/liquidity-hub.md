@@ -86,7 +86,7 @@ The testnet registry predates the decision to use the shared `DefaultProxyAdmin`
 
 ### Hubs
 
-The testnet registry lists thirteen Hubs. The USDT Hub is the one wired for integration testing; the other twelve are test deployments over mock assets.
+The testnet registry lists thirteen Hubs, all over mock assets. The USDT Hub is the reference deployment documented in the technical reference; the rest were stood up for QA scenarios and their wiring varies per Hub — some carry all three families, some only part of them, and one carries none. Read `registeredYieldGroups()` on a Hub, then `resources()` on each group, rather than assuming the mainnet shape.
 
 * Hub USDT (`vSHARE`): [`0x7cE6ADF754D0eC81A6CF8ACd9C7454F45077dc61`](https://testnet.bscscan.com/address/0x7cE6ADF754D0eC81A6CF8ACd9C7454F45077dc61)
 * Hub WBNB (`vhBNB`): [`0xAB0E89896740A9ABe3fd7905317adBA9D780F06e`](https://testnet.bscscan.com/address/0xAB0E89896740A9ABe3fd7905317adBA9D780F06e)
