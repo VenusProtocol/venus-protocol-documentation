@@ -12,7 +12,7 @@ Furthermore, the improved oracle infrastructure supports the integration of new 
 
 #### Resilient Price Feeds
 
-The Resilient Price Feeds replace the single source price provider used in the Comptroller contract with a more robust and reliable solution. This new component not only fetches asset prices from various on-chain sources but also includes a fallback mechanism to protect the protocol from oracle failures. Presently, this feature incorporates Chainlink, RedStone, Pyth Network, Binance and Atlas oracles, with the possibility of adding more in the future.
+The Resilient Price Feeds replace the single source price provider used in the Comptroller contract with a more robust and reliable solution. This new component not only fetches asset prices from various on-chain sources but also includes a fallback mechanism to protect the protocol from oracle failures. Presently, this feature incorporates Chainlink, RedStone, Pyth Network, Binance, Atlas and APRO oracles, with the possibility of adding more in the future.
 
 #### Governance Configurations
 
@@ -79,7 +79,7 @@ The current list of correlated token oracles in Venus is:
 |---|---|---|---|---|---|
 | Core | AAVE | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | ADA | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.05. Lower bound: 0.95 |
-| Core | asBNB | [AsBNBOracle](https://bscscan.com/address/0x652B90D1d45a7cD5BE82c5Fb61a4A00bA126dde5) | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | Upper bound: 1.05. Lower bound: 0.95 |
+| Core | asBNB | [AsBNBOracle](https://bscscan.com/address/0x652B90D1d45a7cD5BE82c5Fb61a4A00bA126dde5) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | BCH | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | BETH (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | |
 | Core | BNB | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.01. Lower bound: 0.99 |
@@ -98,8 +98,8 @@ The current list of correlated token oracles in Venus is:
 | Core | LTC | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | MATIC (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | Price feed from [$POL](https://data.chain.link/feeds/bsc/mainnet/pol-usd) |
 | Core | SOL | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | Upper bound: 1.05. Lower bound: 0.95 |
-| Core | slisBNB | [SlisBNBOracle](https://bscscan.com/address/0xDDE6446E66c786afF4cd3D183a908bCDa57DF9c1) | - | - |  |
-| Core | solvBTC | [SolvBTCOneJumpChainlinkOracle](https://bscscan.com/address/0x3f4bC081E749032cffF29dcA2E8408Ec375e745A) | [SolvBTCOneJumpFundamentalOracle](https://bscscan.com/address/0x1f785B1AFE0808d69d1188db9e47b7B9Dd95ab09) | [SolvBTCOneJumpRedStoneOracle](https://bscscan.com/address/0xA3E6F08e3C1baD83e1971909483F27Cdd19937FC) | Upper bound: 1.05. Lower bound: 0.95 |
+| Core | slisBNB | [SlisBNBOracle](https://bscscan.com/address/0xDDE6446E66c786afF4cd3D183a908bCDa57DF9c1) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.05. Lower bound: 0.95 |
+| Core | solvBTC | [SolvBTCOneJumpChainlinkOracle](https://bscscan.com/address/0x3f4bC081E749032cffF29dcA2E8408Ec375e745A) | [SolvBTCOneJumpFundamentalOracle](https://bscscan.com/address/0x1f785B1AFE0808d69d1188db9e47b7B9Dd95ab09) | - | Upper bound: 1.02. Lower bound: 0.98. MAIN reads the Chainlink SolvBTC/BTC exchange rate feed |
 | Core | sUSDe | [sUSDeOneJumpRedstoneOracle](https://bscscan.com/address/0x2B2895104f958E1EC042E6Ba5cbfeCbAD3C5beDb) | [sUSDeOneJumpChainlinkOracle](https://bscscan.com/address/0xA67F01322AF8EBa444D788Ee398775b446de51a0) | - | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | SXP (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | [Price fixed to $0.00046](https://app.venus.io/#/governance/proposal/631?chainId=56) |
 | Core | THE | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.05. Lower bound: 0.95 |
@@ -116,14 +116,15 @@ The current list of correlated token oracles in Venus is:
 | Core | VAI | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Binance](https://bscscan.com/address/0x594810b741d136f1960141C0d8Fb4a91bE78A820) | - | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | WBETH | [WBETHOracle](https://bscscan.com/address/0x49938fc72262c126eb5D4BdF6430C55189AEB2BA) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | XRP | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.05. Lower bound: 0.95 |
-| Core | xSolvBTC | [xSolvBTCOneJumpRedstoneOracle](https://bscscan.com/address/0xf5534f78Df9b610B19A63956d498d00CFaD8B9D3) | - | - |  |
+| Core | xSolvBTC | [xSolvBTCOneJumpChainlinkOracle](https://bscscan.com/address/0xDfDbF9DAFbc94Cb1F827d3364637dDBB26823739) | [xSolvBTCOneJumpRedstoneOracle](https://bscscan.com/address/0xf5534f78Df9b610B19A63956d498d00CFaD8B9D3) | - | Upper bound: 1.02. Lower bound: 0.98. MAIN reads the Chainlink SVR xSolvBTC/SolvBTC exchange rate feed |
 | Core | XVS | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | U | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | PT-clisBNB-25JUN2026 | [PendleOracle-PT-clisBNB-25JUN2026](https://bscscan.com/address/0x0FfFBb55d51cD46cD10C7dc865Dc73BD76201310) | - | - | |
 | Core | PT-sUSDE-26JUN2025 (Paused) | [PendleOracle-PT-sUSDe-26JUN2025](https://bscscan.com/address/0x176ca46D7DcB4e001b8ee5F12d0fcd6D279214f4) | - | - | |
-| Core | TSLAB | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | - | Oracle Dynamic Protection (16.67% deviation trigger) |
-| Core | NVDAB | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | - | Oracle Dynamic Protection (16.67% deviation trigger) |
-| Core | SPCXB | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | - | Oracle Dynamic Protection (16.67% deviation trigger) |
+| Core | TSLAB | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [APRO](https://bscscan.com/address/0x04480f1Ba2252CDF89deB022B58d0a03d1B4cF91) | - | Upper bound: 1.05. Lower bound: 0.95. Oracle Dynamic Protection (16.67% deviation trigger) |
+| Core | NVDAB | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [APRO](https://bscscan.com/address/0x04480f1Ba2252CDF89deB022B58d0a03d1B4cF91) | - | Upper bound: 1.05. Lower bound: 0.95. Oracle Dynamic Protection (16.67% deviation trigger) |
+| Core | SPCXB | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [APRO](https://bscscan.com/address/0x04480f1Ba2252CDF89deB022B58d0a03d1B4cF91) | - | Upper bound: 1.05. Lower bound: 0.95. Oracle Dynamic Protection (16.67% deviation trigger) |
+| Core | SKHYB | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [APRO](https://bscscan.com/address/0x04480f1Ba2252CDF89deB022B58d0a03d1B4cF91) | - | Upper bound: 1.05. Lower bound: 0.95. Oracle Dynamic Protection (16.67% deviation trigger) |
 
 #### Ethereum
 

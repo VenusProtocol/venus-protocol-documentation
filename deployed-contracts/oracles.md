@@ -23,6 +23,7 @@
 * OneJump Oracle sUSDe/USDe/USD (having intermediate oracle Redstone): [`0x2B2895104f958E1EC042E6Ba5cbfeCbAD3C5beDb`](https://bscscan.com/address/0x2B2895104f958E1EC042E6Ba5cbfeCbAD3C5beDb)
 * OneJump Oracle sUSDe/USDe/USD (having intermediate oracle Chainlink): [`0xA67F01322AF8EBa444D788Ee398775b446de51a0`](https://bscscan.com/address/0xA67F01322AF8EBa444D788Ee398775b446de51a0)
 * OneJump Oracle xSolvBTC/SolvBTC/USD (having intermediate oracle Redstone): [`0xf5534f78Df9b610B19A63956d498d00CFaD8B9D3`](https://bscscan.com/address/0xf5534f78Df9b610B19A63956d498d00CFaD8B9D3)
+* OneJump Oracle xSolvBTC/SolvBTC/USD (having intermediate oracle Chainlink): [`0xDfDbF9DAFbc94Cb1F827d3364637dDBB26823739`](https://bscscan.com/address/0xDfDbF9DAFbc94Cb1F827d3364637dDBB26823739)
 * PendleOracle PT-SolvBTC.BBN-27MAR2025 Oracle: [`0xE11965a3513F537d91D73d9976FBe8c0969Bb252`](https://bscscan.com/address/0xE11965a3513F537d91D73d9976FBe8c0969Bb252)
 * PendleOracle PT-clisBNB-25APR2025 Oracle: [`0xEa7a92D12196A325C76ED26DBd36629d7EC46459`](https://bscscan.com/address/0xEa7a92D12196A325C76ED26DBd36629d7EC46459)
 * PendleOracle PT-sUSDe-26JUN2025 Oracle: [`0xC407403fa78Bce509821D776b6Be7f91cC04474f`](https://bscscan.com/address/0xC407403fa78Bce509821D776b6Be7f91cC04474f)
@@ -31,6 +32,7 @@
 * PendleOracle PT-clisBNB-25JUN2026 Oracle: [`0x0FfFBb55d51cD46cD10C7dc865Dc73BD76201310`](https://bscscan.com/address/0x0FfFBb55d51cD46cD10C7dc865Dc73BD76201310)
 * PendleOracle PT-clisBNB-25JUN2026-Reference-PtToAsset Oracle: [`0xc94866f155FEA46C398385665B08B813D20DF802`](https://bscscan.com/address/0xc94866f155FEA46C398385665B08B813D20DF802)
 * Atlas Oracle: [`0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0`](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0)
+* APRO Oracle: [`0x04480f1Ba2252CDF89deB022B58d0a03d1B4cF91`](https://bscscan.com/address/0x04480f1Ba2252CDF89deB022B58d0a03d1B4cF91)
 
 ## BNB Chain Testnet
 
