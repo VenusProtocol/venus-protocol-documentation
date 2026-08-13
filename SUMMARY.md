@@ -45,6 +45,7 @@
 ## Guides
 
 * [Venus interface](guides/market-interaction/interface.md)
+* [Withdrawing from deprecated isolated pools](guides/isolated-pools-deprecation.md)
 * [Supplying and borrowing](guides/market-interaction/supply-borrow.md)
 * [Liquidations](guides/market-interaction/liquidation.md)
 * [Governance](guides/governance/README.md)
