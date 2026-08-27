@@ -1,6 +1,6 @@
 # DeviationBoundedOracle
 
-The DeviationBoundedOracle (DBO) is the contract that sits between the [ResilientOracle](../reference-oracle/resilient-oracle.md) and the Core Pool Comptroller on the borrow-power path. It maintains a per-asset rolling price window, detects when spot deviates beyond a configured threshold, and returns conservative bounded prices while the deviation persists. Its user-visible behaviour is the [Protection Mode](../../risk/protection-mode.md) feature; this article covers the contract itself — where it gets prices, what it stores, and how the Comptroller calls it.
+The DeviationBoundedOracle (DBO) is the contract that sits between the [ResilientOracle](../reference-oracle/resilient-oracle.md) and a Comptroller on the borrow-power path — the Core Pool Comptroller, and the [`SpokeComptroller`](../reference-isolated-pools/spoke/spoke-comptroller.md#bounded-collateral-pricing) of a hub-funded spoke pool. It maintains a per-asset rolling price window, detects when spot deviates beyond a configured threshold, and returns conservative bounded prices while the deviation persists. Its user-visible behaviour is the [Protection Mode](../../risk/protection-mode.md) feature; this article covers the contract itself — where it gets prices, what it stores, and how the Comptroller calls it.
 
 For function-level signatures, structs, events, and errors see the [DeviationBoundedOracle reference](../reference-oracle/deviation-bounded-oracle.md).
 
@@ -93,6 +93,12 @@ Liquidator → Comptroller (USE_LIQUIDATION_THRESHOLD) → ComptrollerLens → R
 
 The borrow-power path uses `WeightFunction.USE_COLLATERAL_FACTOR` and is the only path that calls `_updateProtectionStates`. The liquidation path uses `WeightFunction.USE_LIQUIDATION_THRESHOLD` and reads spot from the ResilientOracle directly. No bounded prices touch eligibility, seize-amount, or incentive calculations regardless of whether protection is active on either side of the position.
 
+## Hub-funded spoke pools
+
+A [hub-funded spoke pool](../reference-isolated-pools/spoke/README.md) wires the DBO the same way, through its own `SpokeComptroller.setDeviationBoundedOracle`. The split is identical: the collateral-factor path prices borrowing capacity through the DBO and calls `updateProtectionState` for every market the account is in, while the liquidation-threshold path and `liquidateCalculateSeizeTokens` stay on the ResilientOracle's spot price.
+
+One difference is worth knowing: in a spoke pool the DBO is **not optional**. Nothing falls back to spot when `deviationBoundedOracle` is unset — both calls into the zero address revert, so borrowing and redeeming fail closed until governance sets it. Minting and repaying are unaffected, since neither reads a price.
+
 ## Off-chain components
 
 - **Keeper.** Maintains the authoritative 15-minute rolling window off-chain and pushes corrected `minPrice` / `maxPrice` on-chain whenever the stored values have drifted past the 5% deadband. The on-chain writes are constrained by `newMin ≤ spot` and `newMax ≥ spot`. Once the on-chain exit conditions are satisfied — cooldown elapsed and window converged below `resetThreshold` — the keeper submits `exitProtectionMode(asset)`, or includes an `ExitProtectionMode` item inside a `syncPriceBoundsAndProtections` batch.
@@ -103,6 +109,7 @@ The borrow-power path uses `WeightFunction.USE_COLLATERAL_FACTOR` and is the onl
 ## Further Reading
 
 - [Protection Mode (risk overview)](../../risk/protection-mode.md)
+- [Hub-Funded Spoke Pools](../reference-isolated-pools/spoke/README.md)
 - [DeviationBoundedOracle contract reference](../reference-oracle/deviation-bounded-oracle.md)
 - [Resilient Price Oracle](../../risk/resilient-price-oracle.md)
 - [Repository](https://github.com/VenusProtocol/oracle)

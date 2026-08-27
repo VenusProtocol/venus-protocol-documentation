@@ -23,6 +23,21 @@ total collateral amount that is no larger than a universal `minLiquidatableColla
 Both functions settle all of an account’s borrows, but `healAccount()` may add `badDebt` to a vToken. For more detail, see the description of
 `healAccount()` and `liquidateAccount()` in the `Comptroller` summary section below.
 
+## Internal cash accounting
+
+A market's cash is tracked in a state variable, `internalCash`, rather than read from `underlying.balanceOf(address(this))`. `getCash()` and every internal caller (`exchangeRateStored`, the interest rate model, the redeem and borrow liquidity checks) return that tracked value.
+
+`internalCash` is updated only by movements the market itself makes:
+
+* `_doTransferIn` adds the **measured** delta of a transfer in, so a fee-on-transfer underlying is still accounted correctly;
+* `_doTransferOut` subtracts the amount sent;
+* `badDebtRecovered` adds the recovered amount, since a Shortfall auction returns real underlying to the market;
+* `syncCash` sets it to the market's live token balance.
+
+**A token sent directly to a market is therefore not cash.** It does not raise the exchange rate, does not lower the borrow rate, and cannot be redeemed — which is what removes the donation/inflation attack surface that reading `balanceOf` leaves open. Such a transfer can still be recovered by governance through `sweepToken`.
+
+> **`syncCash` must be called once per market after the upgrade that introduced `internalCash`.** A market upgraded through the `VTokenBeacon` starts with `internalCash = 0` while holding real underlying, so until it is synced the market reports zero cash: redeems and borrows fail for want of liquidity, and the exchange rate is understated. It is ACM-gated, so the sync belongs in the same VIP as the beacon upgrade.
+
 # Solidity API
 
 ### initialize
@@ -882,6 +897,24 @@ function sweepToken(contract IERC20Upgradeable token) external
 
 ---
 
+### syncCash
+
+Sync `internalCash` with the market's actual underlying token balance. Intended as a **one-time migration** to initialize `internalCash` after the upgrade that introduced it. See [Internal cash accounting](#internal-cash-accounting).
+
+```solidity
+function syncCash() external
+```
+
+#### 📅 Events
+
+- Emits CashSynced event
+
+#### ⛔️ Access Requirements
+
+- Controlled by AccessControlManager
+
+---
+
 ### setReduceReservesBlockDelta
 
 A public function to set new threshold of block difference after which funds will be sent to the protocol share reserve
@@ -974,7 +1007,7 @@ function getAccountSnapshot(address account) external view returns (uint256 erro
 
 ### getCash
 
-Get cash balance of this vToken in the underlying asset
+Get the internally tracked cash balance of this vToken in the underlying asset. See [Internal cash accounting](#internal-cash-accounting) — this is **not** `underlying.balanceOf(vToken)`.
 
 ```solidity
 function getCash() external view returns (uint256)
@@ -982,9 +1015,9 @@ function getCash() external view returns (uint256)
 
 #### Return Values
 
-| Name | Type    | Description                                                  |
-| ---- | ------- | ------------------------------------------------------------ |
-| [0]  | uint256 | cash The quantity of underlying asset owned by this contract |
+| Name | Type    | Description                                                      |
+| ---- | ------- | ---------------------------------------------------------------- |
+| [0]  | uint256 | cash The quantity of underlying asset tracked internally by this contract |
 
 ---
 

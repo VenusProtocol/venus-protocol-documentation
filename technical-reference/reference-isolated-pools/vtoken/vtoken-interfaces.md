@@ -191,6 +191,16 @@ uint256 reduceReservesBlockNumber
 
 ---
 
+### internalCash
+
+Tracked internal cash balance, immune to direct token transfers (donation attacks). Updated by `_doTransferIn()`, `_doTransferOut()`, `badDebtRecovered()` and `syncCash()`, and read by `getCash()` — never derived from `underlying.balanceOf()`. **Must be initialized via `syncCash()` after the upgrade that introduced it.** See [Internal cash accounting](vtoken.md#internal-cash-accounting).
+
+```solidity
+uint256 internalCash
+```
+
+---
+
 ```solidity
 struct RiskManagementInit {
   address shortfall;
@@ -213,3 +223,13 @@ function isVToken() external pure virtual returns (bool)
 | [0]  | bool | Always true |
 
 ---
+
+## Events
+
+### CashSynced
+
+Emitted when `internalCash` is synced with the market's actual token balance.
+
+```solidity
+event CashSynced(uint256 oldInternalCash, uint256 newInternalCash)
+```

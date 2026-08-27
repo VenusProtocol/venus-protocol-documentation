@@ -14,15 +14,18 @@ Today a lender has to choose between independent products — Venus Core lending
 
 The Hub is purely a routing layer. It does **not** modify the parameters or governance of the underlying Core / Flux / FRV products — it only moves capital into and out of them.
 
-### The three yield families (Sources)
+### The yield families (Sources)
 
-A **Source** groups downstream products of the same kind behind one uniform interface. v1 ships three:
+A **Source** groups downstream products of the same kind behind one uniform interface. v1 ships three, with a fourth built:
 
-| Source   | Underlying protocol      | What the Hub holds                         |
-| -------- | ------------------------ | ------------------------------------------ |
-| **Core** | Venus Core lending       | vTokens (Compound-style receipt tokens)    |
-| **Flux** | Fluid Lending (third-party) | fTokens (ERC-4626 shares)               |
-| **FRV**  | Venus Fixed-Rate Vaults  | Fixed-Rate Vault shares (ERC-4626)         |
+| Source    | Underlying protocol         | What the Hub holds                      |
+| --------- | --------------------------- | --------------------------------------- |
+| **Core**  | Venus Core lending          | vTokens (Compound-style receipt tokens) |
+| **Flux**  | Fluid Lending (third-party) | fTokens (ERC-4626 shares)               |
+| **FRV**   | Venus Fixed-Rate Vaults     | Fixed-Rate Vault shares (ERC-4626)      |
+| **Spoke** | Venus [hub-funded spoke pools](hub-funded-spoke-pools.md) | vTokens of the pool's liquidity side |
+
+The **Spoke** Source is what makes the Hub the funder of a hub-funded spoke pool: it supplies the borrowable side of an isolated pool that only the Hub is allowed to supply. It is written and tested but **not deployed** — no spoke pool exists yet for it to route into.
 
 At launch only **Core** and **Flux** hold a live product. The FRV Source is registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for these assets on BNB Chain yet, so it is wired to nothing and receives no capital until a follow-up proposal adds one.
 
