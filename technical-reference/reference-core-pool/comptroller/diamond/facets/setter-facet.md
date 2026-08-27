@@ -2,6 +2,10 @@
 
 This facet contract contains all the configurational setter functions
 
+{% hint style="danger" %}
+BNB Core Pool only. At block `118,363,255`, this facet was routed to `0xbc4885e5A27050E321d094503597aC6734AB1871`. Call its selectors through the Unitroller. Access is function-specific and can use admin-only, admin-or-guardian, or Access Control Manager checks; do not infer permission from this generated page. Verify the live selector and permission, then use the [v10.3.0 source](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Comptroller/Diamond/facets/SetterFacet.sol) for the exact ABI.
+{% endhint %}
+
 # Solidity API
 
 ### setPriceOracle

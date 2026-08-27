@@ -2,6 +2,10 @@
 
 This facet contract provides the external functions related to all claims and rewards of the protocol
 
+{% hint style="warning" %}
+BNB Core Pool only. At block `118,363,255`, this facet was routed to `0x9e0CCD70b5E0030472D5013bbBd37B6E868d416f`. Call its selectors through the Unitroller and check the live route. The [v10.3.0 source](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Comptroller/Diamond/facets/RewardFacet.sol) also exposes market-filtered `claimVenusAsCollateral` and `seizeVenus` overloads that this generated page may omit; the latter is permissioned through the Access Control Manager.
+{% endhint %}
+
 # Solidity API
 
 ### claimVenus

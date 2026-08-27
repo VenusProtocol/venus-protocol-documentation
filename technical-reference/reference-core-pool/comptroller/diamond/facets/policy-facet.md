@@ -1,6 +1,10 @@
 # PolicyFacet
 This facet contract contains all the external pre-hook functions related to vToken
 
+{% hint style="warning" %}
+BNB Core Pool only. At block `118,363,255`, this facet was routed to `0x8930B02c69EDd37464B50991680D306Bb9B8FDBD`. vTokens call policy selectors through the Unitroller. Verify the live selector assignment and use the [v10.3.0 source](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Comptroller/Diamond/facets/PolicyFacet.sol) for the exact pool, liquidity, Prime, and protection-mode behavior.
+{% endhint %}
+
 # Solidity API
 
 ### mintAllowed
@@ -21,7 +25,7 @@ function mintAllowed(address vToken, address minter, uint256 mintAmount) externa
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | 0 if the mint is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
+| \[0\] | uint256 | 0 if the mint is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
 
 - - -
 
@@ -61,7 +65,7 @@ function redeemAllowed(address vToken, address redeemer, uint256 redeemTokens) e
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | 0 if the redeem is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
+| \[0\] | uint256 | 0 if the redeem is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
 
 - - -
 
@@ -101,7 +105,7 @@ function borrowAllowed(address vToken, address borrower, uint256 borrowAmount) e
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | 0 if the borrow is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
+| \[0\] | uint256 | 0 if the borrow is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
 
 - - -
 
@@ -141,7 +145,7 @@ function repayBorrowAllowed(address vToken, address payer, address borrower, uin
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | 0 if the repay is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
+| \[0\] | uint256 | 0 if the repay is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
 
 - - -
 
@@ -260,7 +264,7 @@ function transferAllowed(address vToken, address src, address dst, uint256 trans
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | 0 if the transfer is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
+| \[0\] | uint256 | 0 if the transfer is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
 
 - - -
 
@@ -298,9 +302,9 @@ function getBorrowingPower(address account) external view returns (uint256, uint
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | (possible error code (semi-opaque),                 account liquidity in excess of collateral requirements,          account shortfall below collateral requirements) |
-| [1] | uint256 |  |
-| [2] | uint256 |  |
+| \[0\] | uint256 | (possible error code (semi-opaque),                 account liquidity in excess of collateral requirements,          account shortfall below collateral requirements) |
+| \[1\] | uint256 |  |
+| \[2\] | uint256 |  |
 
 - - -
 
@@ -320,9 +324,9 @@ function getAccountLiquidity(address account) external view returns (uint256, ui
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | (possible error code (semi-opaque),                 account liquidity in excess of liquidation threshold requirements,          account shortfall below liquidation threshold requirements) |
-| [1] | uint256 |  |
-| [2] | uint256 |  |
+| \[0\] | uint256 | (possible error code (semi-opaque),                 account liquidity in excess of liquidation threshold requirements,          account shortfall below liquidation threshold requirements) |
+| \[1\] | uint256 |  |
+| \[2\] | uint256 |  |
 
 - - -
 
@@ -345,9 +349,9 @@ function getHypotheticalAccountLiquidity(address account, address vTokenModify, 
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | (possible error code (semi-opaque),                 hypothetical account liquidity in excess of collateral requirements,          hypothetical account shortfall below collateral requirements) |
-| [1] | uint256 |  |
-| [2] | uint256 |  |
+| \[0\] | uint256 | (possible error code (semi-opaque),                 hypothetical account liquidity in excess of collateral requirements,          hypothetical account shortfall below collateral requirements) |
+| \[1\] | uint256 |  |
+| \[2\] | uint256 |  |
 
 - - -
 
