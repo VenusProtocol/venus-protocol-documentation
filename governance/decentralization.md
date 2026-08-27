@@ -1,43 +1,52 @@
-# VIPs
+# Venus Improvement Proposals
 
-### Overview
+Venus Protocol is governed through Venus Improvement Proposals (VIPs). On BNB Chain, the Governor reads voting power from the XVS Vault and executes successful proposals through route-specific timelocks. Cross-chain VIPs use the [omnichain governance system](../technical-reference/reference-technical-articles/omnichain-governance.md) to deliver approved actions to other networks.
 
-Venus Protocol's governance relies on participants locking XVS tokens into a vault to acquire voting power for Venus Improvement Proposals (VIPs). A 48-hour timelock period after voting ensures transparency and protection against malicious proposals. However, the initial model's rigidity prompted the introduction of a new governance structure in Venus V4. This upgraded model incorporates fast-track VIPs, role-based access control, and a fine-grained pause mechanism for enhanced flexibility and timely adjustments.
+## Proposal lifecycle
 
-### Governance Upgrade
+1. A proposer with enough delegated voting power submits a VIP.
+2. Voting power is snapshotted at the proposal's start block.
+3. Delegates vote **For**, **Against**, or **Abstain**.
+4. A successful proposal is queued in its assigned timelock.
+5. After the timelock delay, anyone can execute the queued proposal.
 
-Venus V4 introduces an improved governance structure with the following components:
+A proposal succeeds only when **For** votes are greater than **Against** votes and at least the quorum. Abstain votes are recorded but do not satisfy the quorum requirement.
 
-* Fast-track and Critical VIPs
-* Role-based access control
-* Fine-grained pause
+## Proposal routes and current configuration
 
-**Fast-track and Critical Improvement Proposals**
+Governance supports Normal, Fast-track, and Critical proposal routes. The Governor stores the voting delay, voting period, and proposal threshold separately for each route.
 
-Venus Governance has now categorized VIPs into three types: Normal, Fast-track, and Critical.
+The following values were read from the BNB Chain Governor at block `118,362,254`:
 
-* **Normal VIPs** encompass significant updates like contract upgrades or changes in access controls.
-* **Fast-track VIPs** deal with risk parameter adjustments such as interest rates or collateral factors.
-* **Critical VIPs** were utilized during emergencies demanding an immediate reaction.
+| Route | Voting delay | Voting period | Proposal threshold | Timelock delay |
+| --- | ---: | ---: | ---: | ---: |
+| Normal | 1 block | 192,384 blocks | 1,000,000 XVS | 48 hours |
+| Fast-track | 1 block | 192,384 blocks | 1,000,000 XVS | 6 hours |
+| Critical | 1 block | 48,096 blocks | 1,000,000 XVS | 1 hour |
 
-{% hint style="info" %}
-Since [VIP-645](https://app.venus.io/#/governance/proposal/645?chainId=56), the Critical Timelock holds no permission on any network, so the Critical route can no longer execute privileged actions. Emergency responses rely on the fine-grained pause mechanism (see below) and Fast-track VIPs.
+The global quorum is currently 1,500,000 **For** votes, and a proposal can contain at most 100 actions.
+
+{% hint style="warning" %}
+These are configurable on-chain values, not permanent protocol constants. Voting periods are measured in blocks, so they should not be presented as a guaranteed wall-clock duration. Before creating a VIP, verify `proposalConfigs`, `quorumVotes`, `proposalTimelocks`, and the selected timelock's `delay` directly on-chain. See [Deployed Governance Contracts](../deployed-contracts/governance.md).
 {% endhint %}
 
-Each VIP type has its unique proposal threshold, timelock, and voting periods, reflecting the potential risk and impact of the proposed changes.
+### Critical route status
 
-The initial voting and delay periods for these types are as follows:
+[VIP-645](https://venus.io/governance/proposal/645?chainId=56) removed every permission held by the Critical Timelock across Venus deployments. The route and its configuration still exist, but it cannot currently execute privileged protocol actions. Emergency responses instead use explicitly granted guardian permissions, the fine-grained pause mechanism, or a governance route that has the required permission.
 
-* Normal VIP: 24 hour voting period + 48 hour delay (+ 48 hour delay to execute commands on networks other than BNB Chain)
-* Fast-track VIP: 24 hour voting period + 6 hour delay (+ 6 hour delay to execute commands on networks other than BNB Chain)
-* Critical VIP: 6 hour voting period + 1 hour delay (+ 1 hour delay to execute commands on networks other than BNB Chain)
+## Access control and guardians
 
-**Role-based Access Control**
+Venus contracts use an Access Control Manager (ACM) for action-scoped permissions. A permission grants a specific caller the ability to invoke a specific function; it does not make that caller a global administrator.
 
-Venus V4 employs a separate Access Control Manager contract that validates access permissions rather than merely verifying the caller as an "admin". This allows certain actions to bypass voting, enabling them to take the fast-track route, or even to be executed directly through a multisig by guardians. It can be particularly useful for implementing borrowing and supply caps, pausing specific market actions, or responding to rapid market fluctuations.
+This model lets governance grant narrowly scoped capabilities to timelocks or guardians. For example, an authorized guardian may be able to pause a particular market action without being able to change unrelated parameters. Because these permissions can change through VIPs, integrations and operators should check the live ACM state instead of relying on a static list of roles.
 
-**Fine-grained Pause**
+The fine-grained pause mechanism can independently pause actions such as supplying, borrowing, or using an asset as collateral. The exact supported actions and authorized callers depend on the deployed contract and network.
 
-A fine-grained pause mechanism allows the pause guardian to individually halt any action on any market. Unlike previous versions, where the entire protocol was paused for damage control or protection against attacks, the updated model enables guardians to pause individual market actions like supply, borrow, and enabling collateral, offering greater control and flexibility.
+## Related documentation
 
-<figure><img src="../.gitbook/assets/0ba42e0a-87cc-4694-9a73-52334a5fd28e.png" alt=""><figcaption><p><em>Governance Process</em></p></figcaption></figure>
+* [Delegate voting power and vote](../guides/governance-guide/delegating.md)
+* [Submit a VIP](../guides/governance-guide/vip.md)
+* [Governor Bravo Delegate reference](../technical-reference/reference-governance/governor-bravo-delegate.md)
+* [Deployed Governance Contracts](../deployed-contracts/governance.md)
+
+<figure><img src="../.gitbook/assets/0ba42e0a-87cc-4694-9a73-52334a5fd28e.png" alt="Venus governance proposal, voting, timelock, and execution process"><figcaption><p><em>Governance process</em></p></figcaption></figure>
