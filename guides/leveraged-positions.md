@@ -1,146 +1,158 @@
-# **Looping Made Easy on Venus Protocol**
+# Leveraged Positions: Boost and Repay with Collateral
 
-On Venus Protocol, building leveraged positions — traditionally known as “looping” — used to require users to manually repeat a tedious cycle: borrow → swap on an external DEX → supply as collateral → borrow again, often 5–20 times. Each step cost gas, time, and risk of transaction failures.
+Boost and Repay with Collateral let users open or reduce leveraged Core Pool positions in a single transaction where the feature is available. Both operations use a flash loan internally, but the resulting position is an ordinary supplied-and-borrowed Venus position. It accrues interest and can be liquidated.
 
-Auto-leverage boost changes that completely.
+{% hint style="warning" %}
+**Version and deployment boundary (BNB Chain).** The behavior in this guide is mapped to `venus-periphery` source commit `c11d10190fb20394a4529872be3aebf34de0db4c` and its committed `deployments/bscmainnet/LeverageStrategiesManager_Implementation.json` artifact. That artifact records candidate implementation `0xB8c418eFf558D7eE517b8f26B5Eb0F4f3c53F5D5`, deployed at block `105684846`, for proxy `0x03F079E809185a669Ca188676D0ADb09cbAd6dC1`.
 
-With Venus’s one-click Boost feature, the entire looping process is fully automated and executed in a single, atomic transaction using flash loans.
+An artifact and deployment receipt do not prove which implementation or configuration the proxy currently uses. Before acting on this guide, verify at one recorded BNB Chain block the proxy implementation and code hash, owner and ACM permissions, flash-loan authorization and pause state, supported markets, per-market flash-loan configuration, and SwapHelper.
+{% endhint %}
 
-Here’s what happens behind the scenes when you click “Boost”:
+The source-and-artifact-mapped implementation uses one flash loan per operation. It does not repeat an internal borrow-swap-supply loop.
 
-* Venus instantly calculates the maximum safe leverage based on your current borrowing power and the selected collateral’s loan-to-value (LTV) ratio.  
-* A flash loan borrows a large amount (far beyond your normal borrowing power).  
-* The borrowed asset is swapped (via the best available route) into your chosen collateral asset.  
-* The resulting tokens are supplied as collateral on Venus.  
-* The loop repeats internally as many times as needed — all in the same transaction — until your target leverage is reached.  
-* The flash loan is repaid at the end, leaving you with a fully leveraged position.
+> Boost and Repay with Collateral are high-risk, money-moving operations. Check the selected markets, fee, minimum swap output, resulting debt, and projected health factor before signing. Leave a safety buffer rather than targeting the displayed maximum.
 
-Result: What once took dozens of manual transactions, high gas costs, and constant monitoring is now instant, and completely safe from liquidation on execution (health factor is always kept \> 1).
+## Boost
 
-Whether you’re looping 2×, 5×, or pushing close to the maximum LTV of assets like BNB, BTCB, or stablecoins, Venus does all the heavy lifting.
+Boost increases a user's supplied collateral and borrow balance in one atomic transaction.
 
-Looping is no longer reserved for advanced users — on Venus Protocol, it’s literally as easy as clicking Boost.
+### How Boost works
 
----
+For a cross-asset Boost, the leverage manager:
 
-# **Repay Debt with Collateral**
+1. Takes one flash loan of the selected borrowed asset.
+2. Swaps that asset into the selected collateral asset through the configured swap helper.
+3. Supplies the received collateral to Venus on behalf of the user.
+4. Borrows the flash-loan fee on behalf of the user and uses it for settlement.
+5. Allows the unpaid flash-loan principal to become the user's ordinary borrow balance.
+6. Checks the user's borrowing power after the operation.
 
-Closing or reducing a leveraged position on Venus Protocol is just as simple as opening one. The Repay with Collateral feature lets you instantly repay any borrowed asset using the collateral you already have supplied — without needing to hold the borrowed token in your wallet.
+For a same-asset Boost, the swap step is omitted: the flash-loaned asset is supplied directly as collateral. The fee is still borrowed on behalf of the user, and the principal still becomes ordinary debt.
 
-## **How it works**
+The user must authorize the leverage manager as a delegate. The operation also depends on current market listing, pause state, oracle prices, collateral factors, caps, available cash, token behavior, and, for cross-asset Boost, the minimum swap output.
 
-• Select the loan you want to repay (fully or partially).  
-• Venus automatically withdraws the required amount from one or more of your supplied assets.  
-• It swaps the withdrawn collateral into the exact borrowed asset (using the best available route).  
-• The debt is repaid immediately, and any leftover tokens are returned to your wallet.
+The transaction is atomic: if a required check or external call reverts, the state changes made by that operation roll back. Transaction gas is still paid. Token approvals or delegation transactions submitted earlier remain in effect.
 
-## **Perfect for leveraged positions**
+### Supported markets
 
-When you have a looped (Boosted) position, your wallet typically holds little or none of the borrowed asset. Repay with Collateral eliminates the need to manually unwind loops by letting you deleverage or fully close the position in a single transaction — even if you want to exit at maximum leverage.
+Use only markets offered by the Boost interface. The source-and-artifact-mapped manager rejects `vBNB`, the native BNB Core Pool market; verify the live proxy and interface before relying on that support boundary. Do not treat a reference to BNB as support for `vBNB`; a wrapped-token market, if offered, is a different market.
 
-## **Key benefits**
+## Repay with Collateral
 
-• No need to source the borrowed token externally  
-• One-click full or partial deleveraging  
-• Minimal slippage thanks to optimized routing  
-• Works seamlessly with Boost positions  
-• Saves a lot of time
+Repay with Collateral reduces debt using one selected supplied asset, without requiring the borrowed asset to be held in the user's wallet before the operation.
 
-Combined with the Boost feature, Repay with Collateral makes entering and exiting leveraged positions on Venus faster, and more user-friendly than ever before.
+The source-and-artifact-mapped manager processes one collateral market and one borrowed market per transaction:
 
----
+1. It takes a flash loan of the borrowed asset.
+2. It repays up to the selected amount of the user's debt.
+3. It redeems the selected collateral on behalf of the user.
+4. If the collateral and borrowed assets differ, it swaps the redeemed collateral into the borrowed asset.
+5. It requires the resulting funds to cover the flash-loan settlement and fee.
+6. It checks the user's borrowing power after the operation and returns any positive token-balance delta produced by that operation to the initiator.
 
-# **Key Use Cases for Users**
+Repay with Collateral can revert if delegation, redemption, market liquidity, the swap quote, slippage, flash-loan settlement, or the final safety check fails. A maximally leveraged position is not guaranteed to be fully closable with any selected collateral or quote.
 
-**Yield Farmers – Maximize APY with one click**  
-Loop stablecoins or blue-chip assets (e.g., USDT, USDD, BTCB) up to the maximum safe LTV and earn higher lending \+ VAI rewards without manually repeating borrow-\>swap-\>supply dozens of times.
+## Estimating a Boost amount
 
-**Long-term Bulls – Amplify exposure instantly**  
-Want 4–8× exposure to an asset with only your existing collateral? Boost turns a modest position into a highly leveraged long in seconds.
+There is no single formula that produces a safe Boost amount for every account or market. The result depends on the whole account and current market configuration, including:
 
-**Bearish Traders – Short an asset instantly**  
-Believe an asset is overvalued? Boost lets you instantly borrow and swap into stablecoins, creating a 5–10× leveraged short position in a single click.
+* collateral and borrowed-asset prices;
+* collateral factors and liquidation thresholds;
+* existing supplies and borrows;
+* the flash-loan fee and token-unit rounding;
+* borrow and supply caps;
+* available market cash and accrued interest; and
+* quoted swap output, price impact, and slippage for cross-asset Boost.
 
-**Quick deleveraging during volatility**  
-When prices move against you, repay any borrow instantly using your supplied collateral, no scrambling for tokens or manual unwinding.
+For a simplified same-asset example, let:
 
-**Closing Boosted positions – cleanly**  
-Exit an entire looped position (long or short) in one transaction. Repay with Collateral handles all withdrawals, swaps, and debt repayment automatically.
+* `S` be the existing supplied amount;
+* `D` be the existing debt;
+* `c` be the collateral factor;
+* `B` be the flash-loan principal used for Boost; and
+* `r` be the flash-loan fee rate for that market.
 
-**Capital-efficient entry & exit**  
-Enter high-leverage long or short strategies with zero upfront capital beyond your initial supply, and exit cleanly without ever holding large amounts of the borrowed asset.
+After the operation, the simplified balances are:
 
-Boost \+ Repay with Collateral turns advanced leveraged strategies — long or short — into simple, one-click actions on Venus Protocol.
+```text
+New supply = S + B
+Flash-loan fee = r × B
+New debt = D + B + (r × B)
+```
 
----
+The collateral-factor constraint is therefore:
 
-# **Risks of Using Boost & Repay with Collateral**
+```text
+c × (S + B) >= D + B + (r × B)
+```
 
-While the one-click experience makes leveraging incredibly fast and simple, the risks remain the same as any leveraged position on Venus — just easier to enter at higher ratios.
+Solving only this simplified constraint gives an algebraic boundary:
 
-## **Key risks you must understand:**
+```text
+B <= (c × S - D) / (1 - c + r)
+```
 
-**Liquidation Risk**  
-Boosted positions run very close to the asset’s maximum LTV. A small adverse price move can drop your health factor below 1.1 and trigger liquidation.
+This boundary is not a recommended amount. It has no execution or liquidation buffer and does not include the other constraints listed above. Health factor also uses liquidation thresholds, while borrowing power uses collateral factors; they are not interchangeable.
 
-**Amplified Price Exposure**  
-5–10× leverage magnifies gains and losses. A 10 % drop in the collateral asset price can wipe out 50–100 % of your equity.
+### Example: same-asset USDT Boost
 
-**Execution & Slippage Risk**  
-In rare cases of extreme market conditions, the internal swaps during Boost may fail or experience high slippage, causing the transaction to revert (you only lose gas).
+Assume only for this example:
 
-**Oracle Risk**  
-Venus relies on price oracles. Temporary oracle mispricing can lead to unexpected liquidations or failed Boost attempts.
+* 100 USDT supplied and enabled as collateral;
+* 20 USDT already borrowed;
+* an 80% collateral factor; and
+* an illustrative 0.09% flash-loan fee.
 
-**Borrow Interest Erosion**  
-High or rising borrow rates on leveraged positions can reduce net yield over time and can turn a profitable strategy negative.
+The unused borrowing power before Boost is:
 
-**Impermanent Loss (LP tokens)**  
-Boosting with liquidity-provider tokens adds impermanent loss risk on top of borrowing costs.
+```text
+(100 × 0.8) - 20 = 60 USDT
+```
 
-## **Best practices**
+The fee-omitting calculation `60 / (1 - 0.8) = 300 USDT` is not safe. Even with a zero fee, it lands exactly on the collateral-factor boundary. With the illustrative 0.09% fee:
 
-• Only use funds you can afford to lose  
-• Leave a safety margin instead of always maxing leverage  
-• Monitor your health factor regularly  
-• Know the exact liquidation price before confirming Boost
+```text
+Fee on 300 USDT = 0.27 USDT
+Supply after Boost = 100 + 300 = 400 USDT
+Debt after Boost = 20 + 300 + 0.27 = 320.27 USDT
+Collateral-factor capacity = 400 × 0.8 = 320 USDT
+```
 
-Leverage is a double-edged sword — Boost makes it easy to wield, but the responsibility remains yours.
+The resulting debt exceeds the simplified borrowing capacity, so the operation should revert rather than create the advertised position.
 
----
+The fee-aware algebraic boundary is approximately:
 
-# **How Venus Calculates Your Maximum Boost (With Example)**
+```text
+60 / (1 - 0.8 + 0.0009) = 298.65604778 USDT
+```
 
-Venus automatically determines the highest safe leverage so your health factor is above 1 after using Boost.
+That value still lands on the simplified boundary and should not be used as a target. Choose a lower amount, keep a meaningful safety margin, and verify the final wallet simulation before signing. An interface preview is an estimate, not an execution or liquidation guarantee.
 
-Note: Upon execution, the user's health factor will be greater than 1, which avoids immediate liquidation. Thereafter, the user must continue monitoring their health factor, as the protocol is not responsible for any subsequent liquidations that may occur.
+## Risks
 
-## **Internal Formula**
+### Liquidation risk
 
-**Maximum Additional Borrow \= Unused Borrowing Power ÷ (1 − Collateral Factor)**
+Leverage magnifies losses and reduces the distance to liquidation. Under the interface convention, a health factor at or below 1 is the liquidation boundary. A health factor near 1, including below 1.1, means the position has a thin buffer; 1.1 is not itself the liquidation trigger.
 
-## **Example – Looping USDT (Collateral Factor \= 80%)**
+Monitor health factor after execution. Price moves, interest accrual, and oracle updates can make a previously valid position liquidatable.
 
-**Your Current Position:**  
-• Supplied: 100 USDT (enabled as collateral)  
-• Already borrowed: 20 USDT
+### Amplified price exposure
 
-### **Step-by-Step Calculation (Performed Instantly by the Protocol)**
+If one asset drives the entire exposure, debt is fixed, and liquidation has not intervened, a 10% adverse asset move produces an approximate `10% × leverage` loss of starting equity. This simplified relationship is not a prediction: cross-asset correlations, interest, fees, swaps, and liquidation materially change outcomes.
 
-1. **Unused Borrowing Power**  
-   Unused Borrowing Power \= (Supplied × Collateral Factor) − Existing Borrow  
-   → (100 × 0.8) − 20 \= 80 − 20 \= 60 USDT  
-2. **Maximum Additional Borrow with Boost**  
-   → 60 ÷ (1 − 0.8) \= 60 ÷ 0.2 \= 300 USDT
+### Swap and execution risk
 
-### **Result After Clicking Boost**
+Cross-asset operations depend on external swap execution. High price impact, insufficient output, token behavior, or an external-call failure can revert the transaction. A revert rolls back that operation, but the user pays gas, and earlier approvals or delegations remain active until revoked.
 
-• Total supplied: ≈ 400 USDT  
-• Total borrowed: ≈ 320 USDT  
-• Net equity: still ≈ 80 USDT (your original capital)  
-• Effective leverage achieved: ≈ 5×
+### Oracle and market risk
 
-With only 60 USDT of unused borrowing power, Boost instantly creates a 5× leveraged position — something that would normally require 8–10 manual loops and multiple transactions.
+Oracle prices, market cash, caps, pause state, and interest rates can change. Oracle problems can cause a failed operation or unexpected liquidation. High or rising borrow rates can make a leveraged strategy unprofitable even when asset prices do not move.
 
-The Boost interface shows the exact boost amount, the final leverage multiplier, and the updated health factor before you confirm — no manual calculations needed.
+## Safer operating practices
 
+* Use only funds you can afford to lose.
+* Confirm the exact collateral and borrowed markets; do not assume native BNB support.
+* Leave a safety margin instead of selecting the maximum.
+* Review fee, minimum swap output, debt, collateral, and health factor before signing.
+* Monitor health factor and borrow rates after execution.
+* Revoke approvals or delegation when they are no longer needed.
