@@ -1,65 +1,13 @@
-# XVS Vault Proxy
-XVS Vault Proxy contract
+# XVSVaultProxy
 
-# Solidity API
+`XVSVaultProxy` is a custom delegate proxy used on every XVS Vault deployment. Users and integrations call the proxy; state is stored at the proxy while `implementation()` supplies the logic.
 
-### _setPendingImplementation
+The constructor sets the initial admin. The current admin can call `_setPendingImplementation(address)` and `_setPendingAdmin(address)`. A pending implementation or admin accepts through `_acceptImplementation()` or `_acceptAdmin()`.
 
-* Admin Functions **
+These functions return protocol error codes: `0` means success. Decode the return value and emitted events instead of relying only on EVM transaction success.
 
-```solidity
-function _setPendingImplementation(address newPendingImplementation) public returns (uint256)
-```
+{% hint style="warning" %}
+Implementation and admin are chain-specific. Resolve `implementation()`, `admin()`, pending values, pause state, and time mode on the exact proxy. See the [mainnet XVS Vault version map](README.md).
+{% endhint %}
 
-- - -
-
-### _acceptImplementation
-
-Accepts new implementation of XVS Vault. msg.sender must be pendingImplementation
-
-```solidity
-function _acceptImplementation() public returns (uint256)
-```
-
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | uint 0=success, otherwise a failure (see ErrorReporter.sol for details) |
-
-- - -
-
-### _setPendingAdmin
-
-Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
-
-```solidity
-function _setPendingAdmin(address newPendingAdmin) public returns (uint256)
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| newPendingAdmin | address | New pending admin. |
-
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | uint 0=success, otherwise a failure (see ErrorReporter.sol for details) |
-
-- - -
-
-### _acceptAdmin
-
-Accepts transfer of admin rights. msg.sender must be pendingAdmin
-
-```solidity
-function _acceptAdmin() public returns (uint256)
-```
-
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | uint 0=success, otherwise a failure (see ErrorReporter.sol for details) |
-
-- - -
-
+Source: [XVSVaultProxy.sol in venus-protocol v10.3.0](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/XVSVault/XVSVaultProxy.sol).

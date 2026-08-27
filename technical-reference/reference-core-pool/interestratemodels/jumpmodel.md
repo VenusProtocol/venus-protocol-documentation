@@ -1,13 +1,29 @@
 # JumpRateModel
 
+This page describes the BNB Core `JumpRateModel` source in venus-protocol v10.3.0. A market can point to this model directly or through a `CheckpointView` wrapper.
+
+{% hint style="warning" %}
+Resolve `interestRateModel()` on the target vToken and read the effective model's `blocksPerYear` before annualizing. Model address, parameters, and annualization basis are market- and block-specific.
+{% endhint %}
+
 # Solidity API
+
+### blocksPerYear
+
+Approximate blocks per year used to convert annual constructor parameters to per-block rates.
+
+```solidity
+uint256 blocksPerYear
+```
+
+---
 
 ### constructor
 
 Construct an interest rate model
 
 ```solidity
-constructor(uint256 baseRatePerYear, uint256 multiplierPerYear, uint256 jumpMultiplierPerYear, uint256 kink_) public
+constructor(uint256 baseRatePerYear, uint256 multiplierPerYear, uint256 jumpMultiplierPerYear, uint256 kink_, uint256 blocksPerYear_) public
 ```
 
 #### Parameters
@@ -18,6 +34,7 @@ constructor(uint256 baseRatePerYear, uint256 multiplierPerYear, uint256 jumpMult
 | multiplierPerYear | uint256 | The rate of increase in interest rate wrt utilization (scaled by 1e18) |
 | jumpMultiplierPerYear | uint256 | The multiplierPerBlock after hitting a specified utilization point |
 | kink\_ | uint256 | The utilization point at which the jump multiplier is applied |
+| blocksPerYear\_ | uint256 | The approximate number of blocks per year assumed by this model |
 
 ---
 

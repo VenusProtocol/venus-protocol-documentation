@@ -2,14 +2,28 @@
 
 The parameterized model described in section 2.4 of the original Venus Protocol whitepaper
 
+{% hint style="warning" %}
+Legacy BNB Core model reference. Some unlisted markets still retain supply or debt, so the ABI remains operationally relevant. Resolve the market's exact model and `blocksPerYear` at the historical block; do not use this page to infer that a market is active or deprecated.
+{% endhint %}
+
 # Solidity API
+
+### blocksPerYear
+
+Approximate blocks per year used to convert annual constructor parameters to per-block rates.
+
+```solidity
+uint256 blocksPerYear
+```
+
+---
 
 ### constructor
 
 Construct an interest rate model
 
 ```solidity
-constructor(uint256 baseRatePerYear, uint256 multiplierPerYear) public
+constructor(uint256 baseRatePerYear, uint256 multiplierPerYear, uint256 blocksPerYear_) public
 ```
 
 #### Parameters
@@ -18,6 +32,7 @@ constructor(uint256 baseRatePerYear, uint256 multiplierPerYear) public
 | ---- | ---- | ----------- |
 | baseRatePerYear | uint256 | The approximate target base APR, as a mantissa (scaled by 1e18) |
 | multiplierPerYear | uint256 | The rate of increase in interest rate wrt utilization (scaled by 1e18) |
+| blocksPerYear\_ | uint256 | The approximate number of blocks per year assumed by this model |
 
 ---
 
