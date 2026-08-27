@@ -1,19 +1,30 @@
 # Community Resources
 
-## Monitoring
+The links on this page were reviewed on August 27, 2026. Channel ownership, availability, and data coverage can change.
 
-* [Dune dashboard](https://dune.com/xvslove\_team/venus-protocol-dashboard)
-* [Chaos labs analytics](https://community.chaoslabs.xyz/venus/risk/overview)
-* [Messari dashboard](https://messari.io/project/venus/protocols/venus)
+{% hint style="danger" %}
+Community bots and third-party dashboards are not sources of truth for balances, positions, market parameters, governance state, or contract addresses. Cross-check important data against the live contracts and official Venus interfaces. Never connect a wallet, reveal a recovery phrase, or sign a transaction requested by a Telegram bot or direct message.
+{% endhint %}
 
-## Telegram Groups
+## Official community channels
 
-* [Venus Discussion Group](https://t.me/venusprotocol)
-* [Venus Announcement Channel](https://t.me/VenusNewsBroadcast)
+* [Venus website](https://venus.io/) — use the community links in the website footer to verify official handles
+* [Governance and community forum](https://community.venus.io/)
+* [Venus discussion group](https://t.me/venusprotocol)
+* [Venus Discord](https://discord.gg/venus-protocol-912811548651708448)
+* [Venus announcement channel](https://t.me/VenusNewsBroadcast) — also identified from the official Telegram discussion group profile
 
-### Telegram Bots
+## External data and monitoring
 
-* [Venus Stats](https://t.me/venusstats). Total supply, total borrow, total reserves, XVS Vault stats, Prime holders, etc.
-* [Venus Whales](https://t.me/venuswhaleswatch). Watching for significant sum movement (> $1M) on Venus Protocol
-* [Venus Liquidations](https://t.me/venusliqwatch). Watching on liquidation events of Venus Protocol
-* [Venus Governance](https://t.me/venusgovwatch). Watching governance proposals (VIP) of Venus Protocol
+These services are operated outside the Venus documentation and can be delayed, incomplete, or use different accounting definitions.
+
+* [Chaos Labs risk analytics](https://community.chaoslabs.xyz/venus/risk/overview)
+* [DeFiLlama Venus dashboard](https://defillama.com/protocol/venus)
+* [Community-created Dune dashboard](https://dune.com/xvslove_team/venus-protocol-dashboard)
+* [Messari Venus profile](https://messari.io/project/venus)
+
+## Community-maintained Telegram feeds
+
+* [Venus Stats](https://t.me/venusstats) — automated summaries of supply, borrow, reserves, XVS Vaults, and Prime holders
+
+This feed is not listed as an official Venus channel. Treat every value as informational and verify it independently before acting.

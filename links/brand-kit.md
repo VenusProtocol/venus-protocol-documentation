@@ -38,6 +38,6 @@
 
 ## VTokens logo
 
-<figure><img src="../.gitbook/assets/brand_kit/vTokens/preview.png" alt="VAI logo"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/brand_kit/vTokens/preview.png" alt="vTokens logos"><figcaption></figcaption></figure>
 
 [[ZIP](../.gitbook/assets/brand_kit/vTokens/vTokens_set.zip)]
