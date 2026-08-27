@@ -111,11 +111,11 @@ Venus Protocol contracts can be grouped as follows:
 
 At the heart of the Core Pool is the comptroller. The latest version is [Comptroller](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/Comptroller/Diamond/Diamond.sol). The comptroller is responsible for listing markets, managing user's positions in markets, liquidations, and emitting rewards. It contains setters and getters for market configuration variables such as collateral factor, close factor, and liquidation incentive. Lending actions can be be paused globally or per market from the comptroller.
 
-[**JumpRateModel**](reference-core-pool/interest-rate-models/jump-model.md)
+[**JumpRateModel**](reference-core-pool/interestratemodels/jumpmodel.md)
 
 Each market gets deployed with an interest rate model. The [JumpRateModel](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/InterestRateModels/JumpRateModel.sol) uses a linear curve to determine interest rates based on supply and demand of the asset until it reaches the kink after which there is a sharp increase in rates.
 
-[**WhitePaperInterestRateModel**](reference-core-pool/interest-rate-models/white-paper-interest-rate-model.md)
+[**WhitePaperInterestRateModel**](reference-core-pool/interestratemodels/whitepapermodel.md)
 
 Another interest rate model that can be deployed with markets is the [WhitePaperInterestRateModel](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/InterestRateModels/WhitePaperInterestRateModel.sol). It is similar to the JumpRateModel except it doesn't include a kink. Instead it contains a fixed base rate.
 

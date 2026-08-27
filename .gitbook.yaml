@@ -1,0 +1,8 @@
+root: ./
+
+structure:
+  readme: README.md
+  summary: SUMMARY.md
+
+redirects:
+  technical-reference/reference-isolated-pools/erc4626: technical-reference/reference-isolated-pools/erc4626/venus-erc4626.md
