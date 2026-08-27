@@ -220,6 +220,7 @@
   * [EBrake](technical-reference/reference-periphery/ebrake.md)
 * [Liquidity Hub](technical-reference/reference-liquidity-hub/README.md)
   * [Hub](technical-reference/reference-liquidity-hub/hub.md)
+  * [vhToken](technical-reference/reference-liquidity-hub/vhtoken.md)
   * [Yield Groups](technical-reference/reference-liquidity-hub/yield-groups.md)
   * [Adapters](technical-reference/reference-liquidity-hub/adapters.md)
   * [Interfaces](technical-reference/reference-liquidity-hub/interfaces.md)
