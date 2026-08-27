@@ -1,6 +1,6 @@
 # FacetBase
 
-This facet contract contains functions related to access and checks
+`FacetBase` is shared inherited code for the BNB Core Pool facets, not a separately deployed runtime facet. The public getters below are reached through whichever installed facet exposes their selectors. Resolve each selector through the live Diamond before calling it.
 
 # Solidity API
 
@@ -10,6 +10,16 @@ The initial Venus index for a market
 
 ```solidity
 uint224 venusInitialIndex
+```
+
+---
+
+### corePoolId
+
+Returns the Core Pool identifier used by the shared facet storage.
+
+```solidity
+function corePoolId() external pure returns (uint96)
 ```
 
 ---
