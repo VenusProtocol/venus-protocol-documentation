@@ -4,6 +4,12 @@
 
 For architecture details and implementation walkthrough, see the [Trade Technical Article](../reference-technical-articles/trade.md).
 
+> **Version scope:** This API reference follows [`venus-periphery` v1.2.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/contracts/RelativePositionManager). RelativePositionManager is an upgradeable proxy; PositionAccounts are deterministic EIP-1167 clones of the one-time configured implementation. Verify the current proxy implementation, locked PositionAccount implementation, ACM grants, DSA configuration, pause state, and manager dependencies before integrating.
+
+{% hint style="warning" %}
+PositionAccount is an accounting boundary, not an exclusive-custody guarantee. Standard Venus liquidations can seize vTokens held by a PositionAccount. In addition, an account granted the RelativePositionManager ACM permission for `executePositionAccountCall(address,address[],bytes[])` can cause arbitrary external calls from a PositionAccount through `genericCalls`; this emergency/administrative path does not require a contemporaneous transaction from the position owner.
+{% endhint %}
+
 # Solidity API
 
 ### COMPTROLLER
@@ -158,6 +164,10 @@ while allowing defensive operations (close, supply principal).
 function partialPause() external
 ```
 
+#### Access Requirements
+
+- ACM permission required: `partialPause()`
+
 ---
 
 ### partialUnpause
@@ -167,6 +177,10 @@ Removes partial pause, re-enabling risk operations (unless completely paused).
 ```solidity
 function partialUnpause() external
 ```
+
+#### Access Requirements
+
+- ACM permission required: `partialUnpause()`
 
 ---
 
@@ -178,6 +192,10 @@ Completely pauses all state-changing user operations on the manager
 function completePause() external
 ```
 
+#### Access Requirements
+
+- ACM permission required: `completePause()`
+
 ---
 
 ### completeUnpause
@@ -187,6 +205,10 @@ Removes complete pause, re-enabling all operations (unless partially paused).
 ```solidity
 function completeUnpause() external
 ```
+
+#### Access Requirements
+
+- ACM permission required: `completeUnpause()`
 
 ---
 
@@ -203,6 +225,11 @@ function setPositionAccountImplementation(address positionAccountImpl) external
 | Name                | Type    | Description                                                 |
 | ------------------- | ------- | ----------------------------------------------------------- |
 | positionAccountImpl | address | Implementation contract for PositionAccount EIP-1167 clones |
+
+#### Access Requirements
+
+- ACM permission required: `setPositionAccountImplementation(address)`
+- The implementation can be set only once; existing and future clones then use that locked address
 
 #### 📅 Events
 
@@ -229,13 +256,17 @@ function setProportionalCloseTolerance(uint256 newTolerance) external
 | ------------ | ------- | ----------------------------------- |
 | newTolerance | uint256 | New tolerance value in basis points |
 
+#### Access Requirements
+
+- ACM permission required: `setProportionalCloseTolerance(uint256)`
+
 #### 📅 Events
 
 - Emits ProportionalCloseToleranceUpdated event.
 
 #### ❌ Errors
 
-- Throw InvalidProportionalCloseTolerance if tolerance is outside [1, 10000].
+- Throw InvalidProportionalCloseTolerance if tolerance is outside `[1, 10000]`.
 - Throw SameProportionalCloseTolerance if tolerance is unchanged.
 
 ---
@@ -253,6 +284,10 @@ function addDSAVToken(address dsaVToken) external
 | Name      | Type    | Description                                         |
 | --------- | ------- | --------------------------------------------------- |
 | dsaVToken | address | The vToken market address to add as a supported DSA |
+
+#### Access Requirements
+
+- ACM permission required: `addDSAVToken(address)`
 
 #### 📅 Events
 
@@ -281,6 +316,10 @@ function setDSAVTokenActive(uint8 dsaIndex, bool active) external
 | dsaIndex | uint8 | Index of the DSA vToken in the internal mapping                      |
 | active   | bool  | New active flag (true to allow new activations, false to block them) |
 
+#### Access Requirements
+
+- ACM permission required: `setDSAVTokenActive(uint8,bool)`
+
 #### 📅 Events
 
 - Emits DSAVTokenActiveUpdated when the active flag is changed.
@@ -294,7 +333,7 @@ function setDSAVTokenActive(uint8 dsaIndex, bool active) external
 
 ### executePositionAccountCall
 
-Executes multiple generic calls on behalf of a position account
+Executes multiple generic calls from a position account for emergency or administrative actions.
 
 ```solidity
 function executePositionAccountCall(address positionAccount, address[] targets, bytes[] data) external
@@ -307,6 +346,11 @@ function executePositionAccountCall(address positionAccount, address[] targets, 
 | positionAccount | address   | Address of the position account     |
 | targets         | address[] | Array of target contract addresses  |
 | data            | bytes[]   | Array of encoded function call data |
+
+#### Access Requirements
+
+- ACM permission required: `executePositionAccountCall(address,address[],bytes[])`
+- The granted caller selects every target and calldata item. RelativePositionManager forwards them to the PositionAccount's `genericCalls` function without restricting the called contracts or selectors.
 
 ---
 
@@ -471,7 +515,7 @@ of the position account to cover the fee.
 
 **Implementation notes:**
 - **First exit (long → short):** long/short amounts are derived from BPS; the user passes shortAmountToRepayForFirstSwap,
-  which is validated to be within [0, expectedShort] and minAmountOutFirst must be >= shortAmountToRepayForFirstSwap.
+  which is validated to be within `[0, expectedShort]` and minAmountOutFirst must be >= shortAmountToRepayForFirstSwap.
   For 100% close with one leg, shortAmountToRepayForFirstSwap should be slightly higher to cover the internal tolerance bump.
 - **Second exit (DSA → short):** the second repay amount is calculated as expectedShort - shortAmountToRepayForFirstSwap
   (and bumped for 100% close when > 0). minAmountOutSecond must be >= the calculated second repay (slippage protection;
@@ -503,7 +547,7 @@ function closeWithLoss(contract IVToken longVToken, contract IVToken shortVToken
 #### 📅 Events
 
 - Emits PositionClosed event. When DSA == Long, PositionClosed.longDustRedeemed is reclassified
--               back as principal vTokens rather than transferred.
+  back as principal vTokens rather than transferred.
 
 #### ❌ Errors
 
@@ -1023,7 +1067,7 @@ function transferDustToOwner(address token) external
 
 ### genericCalls
 
-Executes multiple generic calls to external contracts
+Executes multiple generic calls to external contracts. Direct callers are restricted to RelativePositionManager, but the manager exposes the ACM-gated `executePositionAccountCall` administrative path described above.
 
 ```solidity
 function genericCalls(address[] targets, bytes[] data) external
@@ -1035,6 +1079,10 @@ function genericCalls(address[] targets, bytes[] data) external
 | ------- | --------- | ----------------------------------- |
 | targets | address[] | Array of target contract addresses  |
 | data    | bytes[]   | Array of encoded function call data |
+
+#### Trust Boundary
+
+Each target call executes from the PositionAccount and can therefore act on its token balances, approvals, and protocol permissions. Review the live ACM grantee for `executePositionAccountCall(address,address[],bytes[])`; `onlyRelativePositionManager` does not make this path owner-only.
 
 #### ❌ Errors
 
