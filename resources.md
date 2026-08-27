@@ -1,10 +1,34 @@
 # Resources
 
-We have compiled a list of helpful resources to provide you with the necessary information. Whether you are a new user or an experienced one, this page is designed to address the most frequently asked questions and concerns about our protocol. We understand that sometimes you may need additional support beyond this page, so we encourage you to visit our [community forum](https://community.venus.io/). There, you can engage with our community and ask any additional questions. We hope you find this resource helpful and informative
+Use the versioned documentation below for current procedures. Blog posts, videos, and screenshots describe the interface and deployments at the time they were published and may no longer match the live protocol.
 
-* [How to Use Venus Protocol Mini Program on Binance App?](https://medium.com/venusprotocol/how-to-use-venus-protocol-mini-program-on-binance-app-226b76a85312)
-* [How To Use Venus Guide?](https://medium.com/venusprotocol/how-to-use-venus-protocol-71cb09703fbf)
-* [How to setup BNB Chain on MetaMask?](https://medium.com/venusprotocol/venus-protocol-main-network-launched-52ea9929091f)
-* [How to use XVS Vault? How to stake XVS?](https://medium.com/@Venus_protocol/venus-vault-user-guide-cd1042b18401)
-* [How do liquidations work?](https://community.venus.io/t/liquidation-guide-for-venus-protocol/2930)
-* [Venus All Social Media Links](https://linktr.ee/venusprotocol)
+{% hint style="warning" %}
+Verify the network, market, token, contract address, and transaction details before signing. Do not rely on search results, direct messages, or an old tutorial for an app URL or contract address.
+{% endhint %}
+
+## User guides
+
+* [Venus overview](README.md)
+* [Venus interface](guides/market-interaction/interface.md)
+* [Supplying and borrowing](guides/market-interaction/supply-borrow.md)
+* [Liquidations](guides/market-interaction/liquidation.md)
+* [XVS Vault](guides/vaults.md)
+* [Governance](guides/governance/README.md)
+* [Protocol math](guides/protocol-math.md)
+
+## Protocol and developer references
+
+* [Contracts overview](technical-reference/contracts-overview.md)
+* [Deployed markets](deployed-contracts/markets.md)
+* [API](services/api.md)
+* [Subgraphs](services/subgraphs.md)
+* [Security and audits](security-and-audits.md)
+
+## Support and project links
+
+* [Venus app](https://app.venus.io)
+* [Venus website](https://venus.io/)
+* [Governance and community forum](https://community.venus.io/)
+* [Venus Protocol on GitHub](https://github.com/VenusProtocol)
+* [Community-maintained resources](links/community-resources.md)
+* [Brand kit](links/brand-kit.md)
