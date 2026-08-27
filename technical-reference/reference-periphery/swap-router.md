@@ -89,9 +89,8 @@ User wants to supply 1,000 USDC to a Venus market using DAI:
 **Errors:**
 
 - `ZeroAmount`: Thrown if `amountIn` is zero.
-- `ZeroAddress`: Thrown if `vToken` or `tokenIn` is zero address.
+- `ZeroAddress`: Thrown if `vToken` is zero address.
 - `MarketNotListed`: Thrown if `vToken` is not listed in Comptroller.
-- `InsufficientBalance`: Thrown if user has insufficient balance for swap.
 - `SwapFailed`: Thrown if swap operation fails.
 - `InsufficientAmountOut`: Thrown if received amount is less than `minAmountOut`.
 - `NoTokensReceived`: Thrown if no tokens are received from swap.
@@ -177,9 +176,8 @@ User has 500 USDT debt in a Venus market and wants to repay using USDC:
 **Errors:**
 
 - `ZeroAmount`: Thrown if `amountIn` or user debt is zero.
-- `ZeroAddress`: Thrown if `vToken` or `tokenIn` is zero address.
+- `ZeroAddress`: Thrown if `vToken` is zero address.
 - `MarketNotListed`: Thrown if `vToken` is not listed in Comptroller.
-- `InsufficientBalance`: Thrown if user has insufficient balance for swap.
 - `SwapFailed`: Thrown if swap operation fails.
 - `InsufficientAmountOut`: Thrown if received amount is less than `minAmountOut`.
 - `NoTokensReceived`: Thrown if no tokens are received from swap.
@@ -204,13 +202,13 @@ function swapNativeAndRepay(
 - `swapCallData`: Encoded swap instructions for SwapHelper
 
 **Scenario Example:**
-User has 0.5 BNB debt in a Venus market and wants to repay using native BNB:
+User has 1,000 DAI debt in `vDAI` and wants to repay it using up to 0.5 BNB:
 
 1. User holds 0.5 BNB.
 2. Calls `swapNativeAndRepay` with vDAI, minAmountOut = 1,000 DAI, and swapCallData for BNB→DAI swap, sending 0.5 BNB.
-3. SwapRouter wraps 0.5 BNB to WBNB, swaps WBNB. → ~1,010 DAI.
+3. SwapRouter wraps 0.5 BNB to WBNB and swaps WBNB → ~1,010 DAI.
 4. Repays 1,000 DAI debt in vDAI market.
-5. Final: User has 0 DAI debt, 10 DAI returned as excess, 0 ETH.
+5. Final: User has 0 DAI debt, 10 DAI returned as excess output, and 0 BNB remaining from the amount sent.
 
 **Events:**
 
@@ -243,17 +241,19 @@ function swapAndRepayFull(
 
 - `vToken`: The vToken market to repay full debt to
 - `tokenIn`: The input token to swap from
-- `maxAmountIn`: The maximum amount of input tokens to use
-- `swapCallData`: Encoded swap instructions for SwapHelper
+- `maxAmountIn`: The ERC-20 amount that the Router requests from the caller and makes available to the signed SwapHelper execution. Treat it as the maximum total input you are willing to expose for the current debt amount.
+- `swapCallData`: Backend-signed swap instructions for SwapHelper. For a cross-asset route, DEX limits and any unused-input sweep or refund must be encoded in these instructions; SwapRouter does not validate them separately. If `tokenIn` is already the market underlying, SwapHelper is skipped and `_repay` returns input above the current debt as excess underlying.
 
 **Scenario Example:**
-User has 1,200 USDC debt in a Venus market and wants to repay full debt using DAI:
+User has approximately 1,200 USDC debt in a Venus market and wants to repay the full debt using at most 1,250 DAI:
 
 1. User holds 1,250 DAI.
-2. Calls `swapAndRepayFull` with vUSDC, DAI, 1,250 DAI, and swapCallData for DAI→USDC swap.
-3. SwapRouter swaps 1,250 DAI → ~1,210 USDC.
-4. Repays 1,200 USDC debt in vUSDC market.
-5. Final: User has 0 USDC debt, 10 USDC returned as excess, 0 DAI.
+2. Requests a fresh signed DAI→USDC quote and verifies its input limit, price limits, and unused-input recipient.
+3. Calls `swapAndRepayFull` with vUSDC, DAI, 1,250 DAI, and the signed `swapCallData`.
+4. SwapRouter reads the current debt and requires the swap to return at least that amount of USDC. If the swap returns 1,210 USDC and the current debt is 1,200 USDC, it repays the debt and returns 10 USDC as excess output.
+5. Because this is a cross-asset route, any unused DAI is handled only as encoded in the signed SwapHelper/DEX call sequence; SwapRouter does not itself refund that unused input.
+
+`swapAndRepayFull` has no caller-selected `minAmountOut`. Its on-chain output floor is the current debt amount. The caller's input-side protection comes from choosing `maxAmountIn` conservatively and verifying the price and amount limits in the signed `swapCallData`.
 
 **Events:**
 
@@ -262,9 +262,8 @@ User has 1,200 USDC debt in a Venus market and wants to repay full debt using DA
 **Errors:**
 
 - `ZeroAmount`: Thrown if `maxAmountIn` or user debt is zero.
-- `ZeroAddress`: Thrown if `vToken` or `tokenIn` is zero address.
+- `ZeroAddress`: Thrown if `vToken` is zero address.
 - `MarketNotListed`: Thrown if `vToken` is not listed in Comptroller.
-- `InsufficientBalance`: Thrown if user has insufficient balance for swap.
 - `SwapFailed`: Thrown if swap operation fails.
 - `InsufficientAmountOut`: Thrown if received amount is less than debt amount.
 - `NoTokensReceived`: Thrown if no tokens are received from swap.
@@ -284,16 +283,18 @@ function swapNativeAndRepayFull(
 **Parameters:**
 
 - `vToken`: The vToken market to repay full debt to
-- `swapCallData`: Encoded swap instructions for SwapHelper
+- `swapCallData`: Backend-signed swap instructions for SwapHelper. For a cross-asset route, DEX limits and any unused-input sweep or refund must be encoded in these instructions; SwapRouter does not validate them separately. When repaying `vBNB`, the wrapped input and market underlying are both WBNB, so SwapHelper is skipped and `_repay` returns WBNB above the current debt.
 
 **Scenario Example:**
-User has 0.8 BNB debt in a Venus market and wants to repay full debt using native BNB:
+User has approximately 250 USDT debt in `vUSDT` and is willing to spend at most 0.85 BNB to repay it:
 
 1. User holds 0.85 BNB.
-2. Calls `swapNativeAndRepayFull` with vUSDT and swapCallData for BNB→USDT swap, sending 0.85 BNB.
-3. SwapRouter wraps 0.85 BNB to WBNB, swaps WBNB → ~260 USDT.
-4. Repays 250 USDT debt in vUSDT market.
-5. Final: User has 0 USDT debt, 10 USDT returned as excess, 0 BNB.
+2. Requests a fresh signed BNB→USDT quote and verifies its maximum-input and price limits.
+3. Calls `swapNativeAndRepayFull` with vUSDT and the signed `swapCallData`, sending 0.85 BNB.
+4. SwapRouter wraps the full `msg.value`, reads the current USDT debt, and requires the swap to return at least that debt amount. If the swap returns 260 USDT and the current debt is 250 USDT, it repays the debt and returns 10 USDT as excess output.
+5. The excess is returned as USDT, not BNB. Any unused WBNB input is handled only as encoded in the signed SwapHelper/DEX call sequence.
+
+`swapNativeAndRepayFull` has no caller-selected `minAmountOut`. Its output floor is the current debt amount, while `msg.value` is the total input cap made available to SwapHelper.
 
 **Events:**
 
@@ -345,8 +346,8 @@ swapRouter.sweepNative();
 - `RepayFailed(uint256 errorCode)`: Thrown when repay operation to Venus market fails. Returns the error code from the vToken.
 - `SwapFailed()`: Thrown when the swap operation fails (e.g., SwapHelper call reverts).
 - `NoTokensReceived()`: Thrown when no tokens are received from the swap operation.
-- `NativeTransferFailed()`: Thrown when native token transfer fails (e.g., sweepNative fails to send ETH/BNB).
-- `InsufficientBalance()`: Thrown when the user has insufficient balance for the swap or supply/repay operation.
+- `NativeTransferFailed()`: Thrown when `sweepNative` fails to send native currency.
+- `InsufficientBalance()`: Declared in the ABI but not explicitly used by the mapped implementation's entry paths. Insufficient balance or allowance normally causes the token transfer to revert instead.
 - `MarketNotListed(address vToken)`: Thrown when the vToken market is not listed in the Comptroller.
 - `InsufficientAmountOut(uint256 amountOut, uint256 minAmountOut)`: Thrown when the swap output is less than the minimum required amount (slippage protection).
 - `UnauthorizedNativeSender(address sender)`: Thrown when an unauthorized sender tries to send native tokens to the contract.
@@ -360,29 +361,29 @@ swapRouter.sweepNative();
 
 ### Reentrancy Protection
 
-- All external functions are protected by the `nonReentrant` modifier.
+- All user swap, supply, and repay entry points are protected by the `nonReentrant` modifier. The initializer and owner-only sweep functions are not marked `nonReentrant`.
 
-### Slippage Protection
+### Price and Slippage Protection
 
-- All swap functions require a `minAmountOut` parameter. The transaction reverts if the swap output is below this threshold.
+- `swapAndSupply`, `swapNativeAndSupply`, `swapAndRepay`, and `swapNativeAndRepay` accept a caller-selected `minAmountOut` and revert when the received output is below it.
+- `swapAndRepayFull` and `swapNativeAndRepayFull` do **not** accept a caller-selected `minAmountOut`. They read the caller's current debt and require the swap output to be at least that debt amount.
+- For full-repay calls, choose `maxAmountIn` or `msg.value` as the maximum input you are willing to expose and verify the DEX price and amount limits encoded in the backend-signed `swapCallData`. A quote can consume the full maximum at a poor price while still producing enough output to repay the debt.
 
 ### Market Validation
 
 - The contract checks that the vToken market is listed in the Comptroller before proceeding.
 
-### Account Safety
+### Excess and Unused Tokens
 
-- The contract validates user balances and market status before executing operations.
-
-### Dust Handling
-
-- Any excess tokens after repay operations are returned to the user.
+- `_repay` returns underlying tokens received above the current debt amount. On a cross-asset route, this is an excess-`tokenOut` refund; unused `tokenIn` remains dependent on the backend-signed SwapHelper/DEX call sequence, including its recipients and sweep steps.
+- If `tokenIn` already equals the market underlying, SwapHelper is skipped. The full input is treated as output, and `_repay` returns the amount above the debt in that same underlying token.
+- For native input used to repay `vBNB`, the Router first wraps BNB to WBNB. Because the market underlying is also WBNB, `_repay` returns any excess as WBNB, not BNB.
 
 ## Integration
 
 ### For Users
 
-1. Approve the SwapRouter to spend your tokens (for ERC-20 operations):
+1. Approve only the verified, chain-specific SwapRouter **proxy** to spend your tokens (for ERC-20 operations). Do not approve the implementation or SwapHelper. Approve no more than the intended input cap and reduce or revoke any unused allowance after the transaction. Find the proxy on the [Deployed Contracts](../../deployed-contracts/periphery.md) page:
    ```solidity
    IERC20(tokenIn).approve(swapRouterAddress, amount);
    ```
@@ -396,14 +397,15 @@ swapRouter.sweepNative();
 
 Cross-asset operations require signed swap data from the Venus Swap API:
 
-1. Request a swap quote from the API with source and destination tokens
-2. Receive encoded `multicall` parameters with backend signature
-3. Pass the signed `_swapData` to the entry function
+1. Request a fresh swap quote from the API with source and destination tokens.
+2. Receive encoded `multicall` parameters with a backend signature.
+3. Verify the quote's input cap, DEX price or amount limits, deadline, output and unused-input recipients, and sweep steps.
+4. Pass the signed `swapCallData` to the entry function. For full-repay calls, remember that SwapRouter enforces only the current debt as its output floor.
 
 ## Audits
 
-SwapRouter undergoes security audits before mainnet deployment. Audit reports are available in the [venus-periphery repository](https://github.com/VenusProtocol/venus-periphery/tree/main/audits).
+Published SwapRouter audit reports are available in the [venus-periphery repository](https://github.com/VenusProtocol/venus-periphery/tree/main/audits). An audit report covers the code and version reviewed; verify that the live proxy implementation bytecode matches the audited version before treating the report as coverage for a deployment.
 
 ## Deployment
 
-See [Deployed Contracts](../deployed-contracts/periphery.md) for current addresses.
+See [Deployed Contracts](../../deployed-contracts/periphery.md) for current addresses.
