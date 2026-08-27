@@ -1,329 +1,67 @@
-# PSM
+# Peg Stability Module
 
-## Peg Stability Contract.
+The BNB Chain Peg Stability Module (PSM) swaps USDT and VAI. It is a transparent proxy at [`0xC138aa4E424D1A8539e8F38Af5a754a2B7c3Cc36`](https://bscscan.com/address/0xC138aa4E424D1A8539e8F38Af5a754a2B7c3Cc36).
 
-Contract for swapping stable token for VAI token and vice versa to maintain the peg stability between them.
+## Live version and configuration
 
-## Solidity API
+At BNB Chain block `118,364,540`:
 
-```solidity
-enum FeeDirection {
-  IN,
-  OUT
-}
-```
+| Field | Value |
+| --- | --- |
+| Implementation | `0x9664568e5131e85f67d87fcd55b249f5d25fa43e` |
+| Paused | No |
+| Stable token | USDT `0x55d398326f99059fF775485246999027B3197955` |
+| VAI | `0x4BD17003473389A42DAF6a0a729f6Fdb328BbBd7` |
+| Fee in | 0 basis points |
+| Fee out | 10 basis points |
+| VAI mint cap | 5,000,000 VAI |
+| VAI attributed to PSM mints | 465,696.242314352647832029 VAI |
+| Treasury | `0xF322942f644A996A617BD29c16BD7d231d9F35E9` |
+| Access Control Manager | `0x4788629ABc6cFCA10F9f969efdEAa1cF70c23555` |
 
-#### BASIS\_POINTS\_DIVISOR
+These values are governance-configurable. Read the proxy at the relevant block before constructing a swap.
 
-The divisor used to convert fees to basis points.
+## Swap API
 
-```solidity
-uint256 BASIS_POINTS_DIVISOR
-```
-
-***
-
-#### MANTISSA\_ONE
-
-The mantissa value representing 1 (used for calculations).
+### `swapStableForVAI`
 
 ```solidity
-uint256 MANTISSA_ONE
+function swapStableForVAI(address receiver, uint256 stableTknAmount)
+    external
+    returns (uint256 vaiOut)
 ```
 
-***
+The caller must approve the PSM to transfer USDT. The PSM supports fee-on-transfer accounting by measuring the amount actually received. It mints the net VAI to `receiver`, not necessarily to the caller. The gross USD value counts against `vaiMintCap`; any fee is minted to the treasury.
 
-#### ONE\_DOLLAR
-
-The value representing one dollar in the stable token.
+### `swapVAIForStable`
 
 ```solidity
-uint256 ONE_DOLLAR
+function swapVAIForStable(address receiver, uint256 stableTknAmount)
+    external
+    returns (uint256 vaiBurned)
 ```
 
-***
+The caller must approve the PSM to transfer any VAI fee. The requested stable-token amount is sent to `receiver`; the corresponding VAI is burned from the caller and `vaiMinted` is reduced.
 
-#### VAI
-
-VAI token contract.
-
-```solidity
-contract IVAI VAI
-```
-
-***
-
-#### STABLE\_TOKEN\_ADDRESS
-
-The address of the stable token contract.
-
-```solidity
-address STABLE_TOKEN_ADDRESS
-```
-
-***
-
-#### oracle
-
-The address of ResilientOracle contract wrapped in its interface.
-
-```solidity
-contract ResilientOracleInterface oracle
-```
-
-***
-
-#### venusTreasury
-
-The address of the Venus Treasury contract.
-
-```solidity
-address venusTreasury
-```
-
-***
-
-#### feeIn
-
-The incoming stableCoin fee. (Fee for swapStableForVAI).
-
-```solidity
-uint256 feeIn
-```
-
-***
-
-#### feeOut
-
-The outgoing stableCoin fee. (Fee for swapVAIForStable).
-
-```solidity
-uint256 feeOut
-```
-
-***
-
-#### vaiMintCap
-
-The maximum amount of VAI that can be minted through this contract.
-
-```solidity
-uint256 vaiMintCap
-```
-
-***
-
-#### vaiMinted
-
-The total amount of VAI minted through this contract.
-
-```solidity
-uint256 vaiMinted
-```
-
-***
-
-#### isPaused
-
-A flag indicating whether the contract is currently paused or not.
-
-```solidity
-bool isPaused
-```
-
-***
-
-#### initialize
-
-Initializes the contract via Proxy Contract with the required parameters.
-
-```solidity
-function initialize(address accessControlManager_, address venusTreasury_, address oracleAddress_, uint256 feeIn_, uint256 feeOut_, uint256 vaiMintCap_) external
-```
-
-**Parameters**
-
-| Name                   | Type    | Description                                                       |
-| ---------------------- | ------- | ----------------------------------------------------------------- |
-| accessControlManager\_ | address | The address of the AccessControlManager contract.                 |
-| venusTreasury\_        | address | The address where fees will be sent.                              |
-| oracleAddress\_        | address | The address of the ResilientOracle contract.                      |
-| feeIn\_                | uint256 | The percentage of fees to be applied to a stablecoin -> VAI swap. |
-| feeOut\_               | uint256 | The percentage of fees to be applied to a VAI -> stablecoin swap. |
-| vaiMintCap\_           | uint256 | The cap for the total amount of VAI that can be minted.           |
-
-***
-
-#### swapVAIForStable
-
-Swaps VAI for a stable token.
-
-```solidity
-function swapVAIForStable(address receiver, uint256 stableTknAmount) external returns (uint256)
-```
-
-**Parameters**
-
-| Name            | Type    | Description                                    |
-| --------------- | ------- | ---------------------------------------------- |
-| receiver        | address | The address where the stablecoin will be sent. |
-| stableTknAmount | uint256 | The amount of stable tokens to receive.        |
-
-**Return Values**
-
-| Name | Type    | Description                                           |
-| ---- | ------- | ----------------------------------------------------- |
-| \[0] | uint256 | The amount of VAI received and burnt from the sender. |
-
-***
-
-#### swapStableForVAI
-
-Swaps stable tokens for VAI with fees.
-
-```solidity
-function swapStableForVAI(address receiver, uint256 stableTknAmount) external returns (uint256)
-```
-
-**Parameters**
-
-| Name            | Type    | Description                                   |
-| --------------- | ------- | --------------------------------------------- |
-| receiver        | address | The address that will receive the VAI tokens. |
-| stableTknAmount | uint256 | The amount of stable tokens to be swapped.    |
-
-**Return Values**
-
-| Name | Type    | Description                         |
-| ---- | ------- | ----------------------------------- |
-| \[0] | uint256 | Amount of VAI minted to the sender. |
-
-***
-
-#### pause
-
-Pause the PSM contract.
-
-```solidity
-function pause() external
-```
-
-***
-
-#### resume
-
-Resume the PSM contract.
-
-```solidity
-function resume() external
-```
-
-***
-
-#### setFeeIn
-
-Set the fee percentage for incoming swaps.
-
-```solidity
-function setFeeIn(uint256 feeIn_) external
-```
-
-**Parameters**
-
-| Name    | Type    | Description                                |
-| ------- | ------- | ------------------------------------------ |
-| feeIn\_ | uint256 | The new fee percentage for incoming swaps. |
-
-***
-
-#### setFeeOut
-
-Set the fee percentage for outgoing swaps.
-
-```solidity
-function setFeeOut(uint256 feeOut_) external
-```
-
-**Parameters**
-
-| Name     | Type    | Description                                |
-| -------- | ------- | ------------------------------------------ |
-| feeOut\_ | uint256 | The new fee percentage for outgoing swaps. |
-
-***
-
-#### setVenusTreasury
-
-Set the address of the Venus Treasury contract.
-
-```solidity
-function setVenusTreasury(address venusTreasury_) external
-```
-
-**Parameters**
-
-| Name            | Type    | Description                                     |
-| --------------- | ------- | ----------------------------------------------- |
-| venusTreasury\_ | address | The new address of the Venus Treasury contract. |
-
-***
-
-#### setOracle
-
-Set the address of the ResilientOracle contract.
-
-```solidity
-function setOracle(address oracleAddress_) external
-```
-
-**Parameters**
-
-| Name            | Type    | Description                                      |
-| --------------- | ------- | ------------------------------------------------ |
-| oracleAddress\_ | address | The new address of the ResilientOracle contract. |
-
-***
-
-#### previewSwapVAIForStable
-
-Calculates the amount of VAI that would be burnt from the user.
-
-```solidity
-function previewSwapVAIForStable(uint256 stableTknAmount) external view returns (uint256)
-```
-
-**Parameters**
-
-| Name            | Type    | Description                                                |
-| --------------- | ------- | ---------------------------------------------------------- |
-| stableTknAmount | uint256 | The amount of stable tokens to be received after the swap. |
-
-**Return Values**
-
-| Name | Type    | Description                                          |
-| ---- | ------- | ---------------------------------------------------- |
-| \[0] | uint256 | The amount of VAI that would be taken from the user. |
-
-***
-
-#### previewSwapStableForVAI
-
-Calculates the amount of VAI that would be sent to the receiver.
+### Preview functions
 
 ```solidity
 function previewSwapStableForVAI(uint256 stableTknAmount) external view returns (uint256)
+function previewSwapVAIForStable(uint256 stableTknAmount) external view returns (uint256)
 ```
 
-**Parameters**
+Preview results can differ from execution if oracle prices or configuration change before the transaction is mined.
 
-| Name            | Type    | Description                                        |
-| --------------- | ------- | -------------------------------------------------- |
-| stableTknAmount | uint256 | The amount of stable tokens provided for the swap. |
+## Administration
 
-**Return Values**
+Every state-changing administrative function below checks its exact signature through the Access Control Manager:
 
-| Name | Type    | Description                                           |
-| ---- | ------- | ----------------------------------------------------- |
-| \[0] | uint256 | The amount of VAI that would be sent to the receiver. |
+* `pause()` and `resume()`;
+* `setFeeIn(uint256)` and `setFeeOut(uint256)`;
+* `setVAIMintCap(uint256)`;
+* `setVenusTreasury(address)`;
+* `setOracle(address)`.
 
-***
+Permission is signature-specific. Check the live ACM grantee for the target proxy rather than treating “governance” or “guardian” as a universal role.
+
+Source: [PegStability.sol in venus-protocol v10.3.0](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/PegStability/PegStability.sol).

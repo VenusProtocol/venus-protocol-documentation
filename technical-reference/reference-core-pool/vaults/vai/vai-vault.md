@@ -1,135 +1,33 @@
-# VAI Vault
-The VAI Vault is configured for users to stake VAI And receive XVS as a reward.
+# VAI Vault API
 
-# Solidity API
+This reference applies to the BNB Chain VAI Vault proxy `0x0667Eed0a0aAb930af74a3dfeDD263A73994f216`, which used implementation `0xA52f2a56aBb7cbDD378bC36c6088fAfEaf9AC423` at block `118,364,540`.
 
-### pause
+{% hint style="warning" %}
+Call the proxy, not the implementation. Verify `vaiVaultImplementation()`, `vaultPaused()`, token addresses, reward funding, and live permissions at the block relevant to the transaction.
+{% endhint %}
 
-Pause vault
-
-```solidity
-function pause() external
-```
-
-- - -
-
-### resume
-
-Resume vault
+## User functions
 
 ```solidity
-function resume() external
-```
-
-- - -
-
-### deposit
-
-Deposit VAI to VAIVault for XVS allocation
-
-```solidity
-function deposit(uint256 _amount) external
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _amount | uint256 | The amount to deposit to vault |
-
-- - -
-
-### withdraw
-
-Withdraw VAI from VAIVault
-
-```solidity
-function withdraw(uint256 _amount) external
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _amount | uint256 | The amount to withdraw from vault |
-
-- - -
-
-### claim
-
-Claim XVS from VAIVault
-
-```solidity
+function deposit(uint256 amount) external
+function withdraw(uint256 amount) external
 function claim() external
-```
-
-- - -
-
-### claim
-
-Claim XVS from VAIVault
-
-```solidity
 function claim(address account) external
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| account | address | The account for which to claim XVS |
-
-- - -
-
-### pendingXVS
-
-View function to see pending XVS on frontend
-
-```solidity
-function pendingXVS(address _user) public view returns (uint256)
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _user | address | The user to see pending XVS |
-
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | Amount of XVS the user can claim |
-
-- - -
-
-### updatePendingRewards
-
-Function that updates pending rewards
-
-```solidity
+function pendingXVS(address user) public view returns (uint256)
 function updatePendingRewards() public
 ```
 
-- - -
+`deposit` transfers VAI from the caller and therefore requires an underlying VAI allowance. `withdraw` returns staked VAI. `claim(address)` pays the named account; it does not redirect that account's rewards to the caller.
 
-### _become
+The vault can record rewards that have not yet been distributed. Check both `pendingXVS` and current reward funding before presenting a claim as guaranteed.
 
-* Admin Functions **
+## Administration
 
-```solidity
-function _become(contract VAIVaultProxy vaiVaultProxy) external
-```
+* `pause()` and `resume()` are signature-gated through the Access Control Manager.
+* `_become(VAIVaultProxy)` can accept an implementation only when called by the proxy admin.
+* `setAccessControl(address)` is restricted to the proxy admin.
+* `setVenusInfo(address xvs, address vai)` updates the token references, in that order, and is restricted to the proxy admin.
 
-- - -
+Permission assignments and token addresses can change. Query the proxy and ACM instead of relying on a static caller label.
 
-### setAccessControl
-
-Sets the address of the access control of this contract
-
-```solidity
-function setAccessControl(address newAccessControlAddress) external
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| newAccessControlAddress | address | New address for the access control |
-
-- - -
-
+Source: [VAIVault.sol in venus-protocol v10.3.0](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/VAIVault/VAIVault.sol).

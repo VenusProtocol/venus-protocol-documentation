@@ -1,6 +1,10 @@
 # PrimeLens
 PrimeLens is a read-only helper contract for off-chain APR queries against PrimeV2. It is kept separate from PrimeV2 to stay within the EVM contract-size limit. It holds an immutable reference to a PrimeV2 instance and derives values from PrimeV2 and PrimeLiquidityProvider state.
 
+{% hint style="info" %}
+BNB PrimeV2 only. The non-proxy lens `0x2f8c5e4562E22DB7908C56Bf99961C053436473c` points to BNB PrimeV2. It is not the lens or ABI for Prime V1 deployments on other networks.
+{% endhint %}
+
 # Solidity API
 
 ### primeV2
