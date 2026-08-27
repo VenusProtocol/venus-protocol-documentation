@@ -1,176 +1,65 @@
-# ComptrollerStorage
+# Comptroller State and Storage
 
-Storage layout for the `Comptroller` contract.
+This page describes the state exposed by the [`ComptrollerStorage` v4.4.0 source](https://github.com/VenusProtocol/isolated-pools/blob/v4.4.0/contracts/ComptrollerStorage.sol). It is **not** a slot-by-slot storage layout.
 
-# Solidity API
+For an upgrade review, resolve the current Comptroller beacon implementation from the [engine version map](../README.md#mainnet-implementation-map) and use the compiler-generated storage layout for that exact build. The complete layout includes inherited upgradeable contracts, internal mappings and arrays, and reserved gaps that public getters do not reveal.
+
+## Structures
 
 ```solidity
 struct LiquidationOrder {
-  contract VToken vTokenCollateral;
-  contract VToken vTokenBorrowed;
-  uint256 repayAmount;
+    VToken vTokenCollateral;
+    VToken vTokenBorrowed;
+    uint256 repayAmount;
 }
-```
 
-```solidity
 struct AccountLiquiditySnapshot {
-  uint256 totalCollateral;
-  uint256 weightedCollateral;
-  uint256 borrows;
-  uint256 effects;
-  uint256 liquidity;
-  uint256 shortfall;
+    uint256 totalCollateral;
+    uint256 weightedCollateral;
+    uint256 borrows;
+    uint256 effects;
+    uint256 liquidity;
+    uint256 shortfall;
 }
-```
 
-```solidity
 struct RewardSpeeds {
-  address rewardToken;
-  uint256 supplySpeed;
-  uint256 borrowSpeed;
+    address rewardToken;
+    uint256 supplySpeed;
+    uint256 borrowSpeed;
 }
-```
 
-```solidity
 struct Market {
-  bool isListed;
-  uint256 collateralFactorMantissa;
-  uint256 liquidationThresholdMantissa;
-  mapping(address => bool) accountMembership;
+    bool isListed;
+    uint256 collateralFactorMantissa;
+    uint256 liquidationThresholdMantissa;
+    mapping(address => bool) accountMembership;
 }
 ```
 
-```solidity
-enum Action {
-  MINT,
-  REDEEM,
-  BORROW,
-  REPAY,
-  SEIZE,
-  LIQUIDATE,
-  TRANSFER,
-  ENTER_MARKET,
-  EXIT_MARKET
-}
-```
+## Public state getters
 
-### oracle
+| Getter | Meaning |
+|---|---|
+| `oracle()` | ResilientOracle used for pool liquidity and liquidation checks |
+| `closeFactorMantissa()` | maximum regular-liquidation repayment fraction, scaled by `1e18` |
+| `liquidationIncentiveMantissa()` | gross collateral seizure multiplier, scaled by `1e18` |
+| `accountAssets(account, index)` | markets entered by an account |
+| `markets(vToken)` | listing, collateral factor, and liquidation threshold; the nested membership mapping is not returned |
+| `allMarkets(index)` | historical market array; use `isMarketListed` to distinguish current listing |
+| `borrowCaps(vToken)` / `supplyCaps(vToken)` | current market caps |
+| `minLiquidatableCollateral()` | threshold separating regular and batch liquidation paths |
+| `isForcedLiquidationEnabled(vToken)` | whether liquidity checks can be skipped for forced liquidation of that borrowed market |
+| `prime()` | Prime contract used by borrow policy, or zero where not configured |
+| `approvedDelegates(user, delegate)` | permission for delegated borrow and redeem flows |
 
-Oracle which gives the price of any given asset
+The implementation also exposes immutable `poolRegistry()` and inherited `maxLoopsLimit()` configuration outside `ComptrollerStorage` itself.
 
-```solidity
-contract ResilientOracleInterface oracle
-```
+## Internal state that a getter-only list misses
 
-- - -
+- `_actionPaused[market][action]`, exposed through `actionPaused`;
+- `rewardsDistributors` and `rewardsDistributorExists`, exposed through reward getters;
+- constants that constrain close and collateral factors;
+- the v4.4.0 `uint256[47] __gap`;
+- inherited `Ownable2StepUpgradeable`, `AccessControlledV8`, max-loop, reentrancy, and other parent storage.
 
-### closeFactorMantissa
-
-Multiplier used to calculate the maximum repayAmount when liquidating a borrow
-
-```solidity
-uint256 closeFactorMantissa
-```
-
-- - -
-
-### liquidationIncentiveMantissa
-
-Multiplier representing the discount on collateral that a liquidator receives
-
-```solidity
-uint256 liquidationIncentiveMantissa
-```
-
-- - -
-
-### accountAssets
-
-Per-account mapping of "assets you are in"
-
-```solidity
-mapping(address => contract VToken[]) accountAssets
-```
-
-- - -
-
-### markets
-
-Official mapping of vTokens -> Market metadata
-
-```solidity
-mapping(address => struct ComptrollerStorage.Market) markets
-```
-
-- - -
-
-### allMarkets
-
-A list of all markets
-
-```solidity
-contract VToken[] allMarkets
-```
-
-- - -
-
-### borrowCaps
-
-Borrow caps enforced by borrowAllowed for each vToken address. Defaults to zero which restricts borrowing.
-
-```solidity
-mapping(address => uint256) borrowCaps
-```
-
-- - -
-
-### minLiquidatableCollateral
-
-Minimal collateral required for regular (non-batch) liquidations
-
-```solidity
-uint256 minLiquidatableCollateral
-```
-
-- - -
-
-### supplyCaps
-
-Supply caps enforced by mintAllowed for each vToken address. Defaults to zero which corresponds to minting not allowed
-
-```solidity
-mapping(address => uint256) supplyCaps
-```
-
-- - -
-
-### isForcedLiquidationEnabled
-
-Flag indicating whether forced liquidation enabled for a market
-
-```solidity
-mapping(address => bool) isForcedLiquidationEnabled
-```
-
-- - -
-
-### prime
-
-Prime token address
-
-```solidity
-contract IPrime prime
-```
-
-- - -
-
-### approvedDelegates
-
-Whether the delegate is allowed to borrow or redeem on behalf of the user
-
-```solidity
-mapping(address => mapping(address => bool)) approvedDelegates
-```
-
-- - -
-
+Never infer storage slots from the order of the table above. Beacon upgrades affect every Comptroller proxy using that beacon, while each proxy retains its own storage.
