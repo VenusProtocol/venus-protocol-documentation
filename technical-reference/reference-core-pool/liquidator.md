@@ -1,6 +1,24 @@
-#
+# Liquidator
 
-# Solidity API
+This BNB Chain Core Pool reference corresponds to the [`Liquidator` source family in `venus-protocol` v10.3.0](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Liquidator/Liquidator.sol). It does not prove which implementation is behind a deployed proxy. Resolve the live implementation, immutable constructor addresses, owner, AccessControlManager, ProtocolShareReserve destination, treasury percentage, force-VAI settings, and per-borrower restrictions before encoding a call.
+
+{% hint style="danger" %}
+Liquidation repays debt and transfers seized collateral. Use the verified BNB Chain Liquidator proxy for this source generation, not its implementation address and not a Liquidator from another contract generation. The beacon-based Core Pools on other networks use their own VToken liquidation entry points.
+{% endhint %}
+
+## Access and routing summary
+
+| Entry points | Source-level access in v10.3.0 |
+| --- | --- |
+| `liquidateBorrow` | Public, subject to live force-VAI and borrower-specific restriction/allowlist state |
+| `restrictLiquidation`, `unrestrictLiquidation`, `addToAllowlist`, `removeFromAllowlist` | Signature-specific AccessControlManager permission |
+| `setTreasuryPercent`, `setMinLiquidatableVAI`, `setPendingRedeemChunkLength`, `pauseForceVAILiquidate`, `resumeForceVAILiquidate` | Signature-specific AccessControlManager permission |
+| `setProtocolShareReserve` | Owner only |
+| `reduceReserves` | Public; transfers accrued reserves to the configured ProtocolShareReserve |
+
+Permissions and configured destinations can change. Re-read them at the block where the transaction will execute.
+
+## Solidity API
 
 ### vBnb
 

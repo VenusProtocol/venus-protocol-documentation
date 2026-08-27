@@ -54,7 +54,7 @@
 * [Protocol Math](guides/protocol-math.md)
 * [XVS Bridge](guides/xvs-bridge.md)
 * [Borrowing VAI](guides/borrowing-vai.md)
-* [Gasless Transactions on zkSync](guides/gasless-transactions-zksync.md)
+* [Gasless Transactions on ZKsync](guides/gasless-transactions-zksync.md)
 * [Import Positions](guides/import-positions.md)
 * [Enable E-mode](guides/enable-e-mode.md)
 * [Isolated E-mode](guides/isolated-e-mode.md)

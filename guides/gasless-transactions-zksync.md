@@ -1,4 +1,10 @@
-This guide will walk you through the steps to interact with Venus Protocol on ZKsync without needing ETH to cover gas fees, thanks to the integration of [Zyfi Paymaster](https://www.zyfi.org/). All transactions will be sponsored, so you can focus on using the protocol without worrying about gas expenses.
+# Gasless transactions on ZKsync
+
+The Venus app can offer transactions that use a [Zyfi Paymaster](https://docs.zyfi.org/integration-guide/paymasters-integration/sponsored-paymaster) on ZKsync. Paymaster availability, supported actions, sponsorship percentage, fee token, quota, and quote expiry are dynamic; a displayed option is not a promise that every transaction will be fully sponsored.
+
+{% hint style="danger" %}
+Do not depend on sponsorship for urgent position management. Keep enough ETH for a standard ZKsync transaction, or use a fee token only when the current Venus quote explicitly identifies it and its maximum cost. Never sign an opaque or unexpected payload: verify the ZKsync network, contract, action, token, amount, fee, and expiry shown by the app and wallet.
+{% endhint %}
 
 ## Step-by-Step Guide
 
@@ -9,25 +15,25 @@ This guide will walk you through the steps to interact with Venus Protocol on ZK
 
 <figure><img src="../.gitbook/assets/gasless-zksync-network-selection.png" alt="Selection of ZKsync network"><figcaption>Selection of ZKsync network</figcaption></figure>
 
-### Step 2: Interact with the Venus Protocol
+### Step 2: Prepare the Venus action
 
-In this example, we will approve the use of the ZK market as collateral.
+In this example, the action enables the ZK market as collateral. Enabling collateral changes liquidation risk; review the market and resulting account health before continuing.
 
 1. Navigate to the ZK market on Venus.
 2. Click on "Collateral" to enable the use of this market as collateral.
 
 <figure><img src="../.gitbook/assets/gasless-zksync-features.png" alt="Interaction with any feature on ZKsync"><figcaption>Interaction with any feature on ZKsync</figcaption></figure>
 
-### Step 3: Sign the Transaction
+### Step 3: Review the quote and authorize the transaction
 
-1. Instead of sending a typical transaction, you will be prompted to **sign a message**. This step authorizes Zyfi to pay for the gas fee of the transaction on your behalf.
-2. Sign the message in your wallet. The gas for the transaction will be covered by Zyfi Paymaster, so you **don’t need ETH** in your wallet.
-3. Once signed, Zyfi processes the transaction, and it is sent to the ZKsync blockchain with gas paid through their vault.
+1. If sponsorship is currently available for the action, the app displays a paymaster quote. Check whether sponsorship is full or partial, which token pays any remainder, the maximum fee, and the quote expiry.
+2. Review the wallet request. Wallets and integration versions can present a transaction or typed authorization differently; confirm the decoded target and action match the Venus action you prepared. Reject an unexpected chain, contract, spender, amount, fee token, value, nonce, or deadline.
+3. Authorize only after those values match. If the quote has expired or sponsorship is unavailable, cancel and use the normal wallet transaction flow with ETH rather than repeatedly signing stale payloads.
 
-<figure><img src="../.gitbook/assets/gasless-zksync-rabby.png" alt="Sign a message with Rabby, instead of sending a transaction"><figcaption>Sign a message with Rabby, instead of sending a transaction</figcaption></figure>
+<figure><img src="../.gitbook/assets/gasless-zksync-rabby.png" alt="Example Zyfi authorization prompt in Rabby"><figcaption>Example Zyfi authorization prompt in Rabby; verify the current decoded request.</figcaption></figure>
 
-<figure><img src="../.gitbook/assets/gasless-zksync-metamask.png" alt="Sign a message with Metamask, instead of sending a transaction"><figcaption>Sign a message with Metamask, instead of sending a transaction</figcaption></figure>
+<figure><img src="../.gitbook/assets/gasless-zksync-metamask.png" alt="Example Zyfi authorization prompt in MetaMask"><figcaption>Example Zyfi authorization prompt in MetaMask; verify the current decoded request.</figcaption></figure>
 
 ### Viewing the Transaction
 
-You can verify the transaction on the [ZKsync Explorer](https://explorer.zksync.io/). The transaction will display Zyfi as the Paymaster, covering the gas fees.
+Verify the submitted transaction on the [ZKsync Explorer](https://explorer.zksync.io/). If a paymaster was used, the transaction details identify it; also confirm the called Venus contract, status, token movements, and final fee. The screenshots above are illustrative and may not match the current wallet or app flow.
