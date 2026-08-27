@@ -1,7 +1,8 @@
 # AccessControlledV8
 
-This contract is helper between access control manager and actual contract. This contract further inherited by other contract (using solidity 0.8.13)
-to integrate access controlled mechanism. It provides initialise methods and verifying access methods.
+[`AccessControlledV8`](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Governance/AccessControlledV8.sol) is the current Solidity 0.8.25 upgradeable adapter between an inheriting contract and AccessControlManager. The previous statement that this stable source uses Solidity 0.8.13 is stale.
+
+The base inherits OpenZeppelin `Ownable2StepUpgradeable`: `setAccessControlManager` is owner-only, while ownership transfer requires the pending owner to accept. Older inheriting deployments can expose a different inherited surface, so select the ABI by implementation rather than by this base page alone.
 
 # Solidity API
 

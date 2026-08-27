@@ -1,8 +1,8 @@
 # OmnichainExecutorOwner
 
-OmnichainProposalSender contract acts as a governance and access control mechanism,
-allowing owner to upsert signature of OmnichainGovernanceExecutor contract,
-also contains function to transfer the ownership of contract as well.
+[`OmnichainExecutorOwner` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Cross-chain/OmnichainExecutorOwner.sol) is the upgradeable access-controlled owner of a destination OmnichainGovernanceExecutor. The previous description incorrectly called this contract `OmnichainProposalSender`.
+
+Known selectors are registered by their full function-signature strings. The fallback resolves `msg.sig`, checks the corresponding AccessControlManager permission, and forwards the original calldata to the executor. `upsertSignature` is owner-only; `setTrustedRemoteAddress` and `transferBridgeOwnership` use exact ACM signatures. Ownership renunciation is disabled.
 
 # Solidity API
 
@@ -85,7 +85,7 @@ fallback(bytes data_) external returns (bytes)
 
 | Name | Type  | Description             |
 | ---- | ----- | ----------------------- |
-| [0]  | bytes | Result of function call |
+| \[0]  | bytes | Result of function call |
 
 #### ⛔️ Access Requirements
 

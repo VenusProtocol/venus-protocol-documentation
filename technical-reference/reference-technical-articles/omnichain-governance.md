@@ -1,5 +1,7 @@
 # Omnichain Governance
 
+The contract descriptions are pinned to stable [`governance-contracts` v2.15.0](https://github.com/VenusProtocol/governance-contracts/tree/v2.15.0). This governance transport uses LayerZero V1 `uint16` endpoint IDs (named chain IDs in the ABI) and trusted-remote APIs. It is separate from the Risk Steward V2 OApp transport, which uses `uint32` EIDs and peers.
+
 ## System Overview
 
 Omnichain Governance is designed to facilitate the execution of VIP across multiple blockchain networks, integrating with the Access Control Manager (ACM) and LayerZero communication protocol. It extends the [governance model proposed by LayerZero](https://github.com/LayerZero-Labs/omnichain-governance-executor/tree/main).
@@ -52,11 +54,11 @@ Omnichain Governance is designed to facilitate the execution of VIP across multi
 1. Proposing a remote VIP on BNB Chain
 
 * A proposer submits a VIP through the existing governance mechanism on the BNB Chain.
-* The must VIP include a command invoking the `OmnichainProposalSender::execute` function which will send the remote VIP payload.
+* The VIP must include a command invoking `OmnichainProposalSender::execute`, which sends the remote VIP payload.
 * The `execute` function takes four arguments:
-  * `chainID`: Identifies the destination network for the remote execution (`endpointId` according to [LayerZero](https://layerzero.gitbook.io/docs/technical-reference/mainnet/supported-chain-ids)).
+  * `chainID`: The destination's [LayerZero V1 endpoint ID](https://docs.layerzero.network/v1/deployments/deployed-contracts), not its EVM chain ID or LayerZero V2 EID.
   * `payload`: Encoded data (off-chain) containing the specific commands to be executed on the target network.
-  * `adapterParams`: The params used to specify the custom amount of gas required for the execution on the destination encoded as (ethers.utils.solidityPack(['uint16','uint256'],[1, gasValue])).
+  * `adapterParams`: Parameters specifying destination execution gas, encoded with `ethers.utils.solidityPack(["uint16", "uint256"], [1, gasValue])` for a version-1 adapter payload.
   * `zroPaymentAddress_`: The address of the ZRO token holder who would pay for the transaction.
 
 2. Eligibility checks and limits
@@ -228,7 +230,7 @@ This contract executes proposal transactions sent from the main chain. It contro
 
 #### State variables
 
-* **`GUARDIAN (address)`**: A privileged role that can cancel any proposal.
+* **`guardian (address)`**: A privileged role that can cancel a queued remote proposal.
 * **`srcChainId (uint16)`**: Stores the layerzero endpoint ID.
 * **`lastProposalReceived (uint256)`**: Last proposal count received.
 * **`proposals (mapping)`**: Official record of all proposals ever proposed.

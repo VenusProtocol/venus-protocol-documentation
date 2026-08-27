@@ -1,10 +1,12 @@
 # BaseOmnichainControllerDest
 
+[`BaseOmnichainControllerDest` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Cross-chain/BaseOmnichainControllerDest.sol) is the abstract destination-side base for OmnichainGovernanceExecutor. It uses the LayerZero V1 `NonblockingLzApp` API, applies one 24-hour receive-command limit to the BNB source, and disables ownership renunciation. It is not a standalone deployment.
+
 # Solidity API
 
 ### maxDailyReceiveLimit
 
-Maximum daily limit for receiving commands from Binance chain
+Maximum daily limit for receiving commands from BNB Chain
 
 ```solidity
 uint256 maxDailyReceiveLimit

@@ -1,6 +1,8 @@
 # MarketCapsRiskSteward
 Contract that can update supply and borrow caps updates received from RiskStewardReceiver.
 
+This page follows [`MarketCapsRiskSteward.sol` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/RiskSteward/MarketCapsRiskSteward.sol). On BNB mainnet at block `118369568`, proxy `0x816FfD00A274EDE0091421F77817ca260Db3a3E3` used implementation `0x6c4538b7e85b073099BFf08B43F7273E4792Bb43`, matching the tagged artifact. Destination-mainnet deployment must be verified separately; the stable tag contains destination instances on testnets.
+
 # Solidity API
 
 ### SUPPLY_CAP
@@ -127,7 +129,7 @@ function isSafeForDirectExecution(struct RiskParameterUpdate update) external vi
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | bool | True if update is safe for direct execution, false if timelock is required |
+| \[0] | bool | True if update is safe for direct execution, false if timelock is required |
 
 #### ❌ Errors
 * Throws UnsupportedUpdateType if the update type is not supported
@@ -160,4 +162,3 @@ function applyUpdate(struct RiskParameterUpdate update) external
 * Throws UnsupportedUpdateType if the update type is not supported
 
 - - -
-

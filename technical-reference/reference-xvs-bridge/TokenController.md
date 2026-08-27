@@ -1,4 +1,6 @@
 # TokenController
+[`TokenController` at token-bridge v2.7.0](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/token/TokenController.sol) is inherited by the destination-chain XVS token; it is not deployed separately. Its mint accounting is per authorized minter. `minterToMintedAmount` increases when that minter mints and decreases when it burns.
+
 TokenController contract acts as a governance and access control mechanism,
 allowing the owner to manage minting restrictions and blacklist certain addresses to maintain control and security within the token ecosystem.
 It provides a flexible framework for token-related operations.
@@ -129,6 +131,27 @@ function setAccessControlManager(address newAccessControlAddress_) external
 
 - - -
 
+### migrateMinterTokens
+
+Moves the full recorded minted amount from one minter's accounting bucket to another. The destination minter must already have enough cap, the addresses must differ, and the operation does not move ERC-20 balances.
+
+```solidity
+function migrateMinterTokens(address source_, address destination_) external
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| --- | --- | --- |
+| source\_ | address | Minter whose recorded minted amount is cleared |
+| destination\_ | address | Minter that receives the recorded minted amount |
+
+#### Access requirements
+
+* Controlled by AccessControlManager using `migrateMinterTokens(address,address)`.
+
+- - -
+
 ### isBlackListed
 
 Returns the blacklist status of the address.
@@ -145,7 +168,6 @@ function isBlackListed(address user_) external view returns (bool)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | bool | bool status of blacklist. |
+| \[0] | bool | bool status of blacklist. |
 
 - - -
-
