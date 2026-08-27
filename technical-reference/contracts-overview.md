@@ -56,17 +56,17 @@ To make querying pool data easier, Isolated Pools contains a [lens](https://gith
 
 #### Risk Management
 
-[**RiskFund**](reference-isolated-pools/risk-fund-and-shortfall/risk-fund.md)
+[**RiskFundV2**](reference-isolated-pools/risk-fund-and-shortfall/risk-fund-v2.md)
 
-Lending comes with the inherent risk that borrows will not be able to repay their loan, which is a threat to the protocol's insolvency. Venus mitigates this risk with a [RiskFund](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/RiskFund/RiskFund.sol). A percentage of protocol revenues is transferred to the RiskFund as it is accrued. When bad debt is detected, this fund can be auctioned off and used to cover the bad debt.
+RiskFundV2 is the current BNB Chain mainnet custody contract for the risk-fund share of protocol income. It holds global raw token balances; the former per-pool reserve ledger was removed. Applying those funds to bad debt is not an automatic workflow and requires a scope-specific governance or operational action.
 
 [**Shortfall**](reference-isolated-pools/risk-fund-and-shortfall/shortfall.md)
 
-When bad deb is auctioned off the [Shortfall](https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/Shortfall/Shortfall.sol) contract is responsible for running the action and paying the winner.
+Shortfall is the deployed legacy auction and transfer-debt recovery contract. New auction starts and restarts are paused on BNB Chain mainnet, and RiskFundV2 no longer exposes the per-pool reserve accounting on which that design depended. Keep the interface only for historical analysis and verified `claimTokenDebt` recovery.
 
 [**ProtocolShareReserve**](reference-isolated-pools/risk-fund-and-shortfall/protocol-share-reserve.md)
 
-The [ProtocolShareReserve](https://github.com/VenusProtocol/protocol-reserve/blob/main/contracts/ProtocolReserve/ProtocolShareReserve.sol) acts as a treasury where each isolated pool can transfer their revenue.
+The [ProtocolShareReserve](https://github.com/VenusProtocol/protocol-reserve/blob/main/contracts/ProtocolReserve/ProtocolShareReserve.sol) remains a current, cross-pool income-accounting and distribution contract. Its on-chain configuration determines each schema's destinations and percentages.
 
 ## Oracle Contracts
 
