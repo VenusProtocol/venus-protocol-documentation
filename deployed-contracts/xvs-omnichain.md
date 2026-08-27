@@ -1,5 +1,11 @@
 # XVS Omnichain - Deployed Contracts
 
+These addresses implement the stable [`token-bridge` v2.7.0](https://github.com/VenusProtocol/token-bridge/tree/v2.7.0) LayerZero V1 bridge family. They are an address inventory, not a live route matrix. Before bridging, verify both local and remote bridges, `paused()`, trusted remotes, endpoint/library configuration, send/receive limits, destination mint cap, owner/ACM permissions, and any failed-message recovery state.
+
+{% hint style="warning" %}
+BNB uses the source OFT that locks canonical XVS; destination networks use destination OFTs that burn and mint their local XVS. A pair of deployed endpoints does not by itself prove that the route between them is configured or currently usable. All networks under the testnet heading are **Test-only**.
+{% endhint %}
+
 ## Mainnet chains
 
 ### BNB Chain
@@ -50,7 +56,7 @@
 * XVSProxyOFTDest: [`0x9c95f8aa28fFEB7ECdC0c407B9F632419c5daAF8`](https://uniscan.xyz/address/0x9c95f8aa28fFEB7ECdC0c407B9F632419c5daAF8)
 * XVS: [`0x81908BBaad3f6fC74093540Ab2E9B749BB62aA0d`](https://uniscan.xyz/address/0x81908BBaad3f6fC74093540Ab2E9B749BB62aA0d)
 
-## Testnet chains
+## Testnet chains (Test-only)
 
 ### BNB Chain
 

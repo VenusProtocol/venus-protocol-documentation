@@ -1,5 +1,11 @@
 # Token Converters - Deployed Contracts
 
+The stable source/deployment baseline for these converter families is [`protocol-reserve` v3.5.0](https://github.com/VenusProtocol/protocol-reserve/tree/v3.5.0). A deployed proxy or beacon does not prove that conversion is enabled, funded, still connected to a keeper/network, or safe to call. Re-read pause state, balances, owner/ACM permissions, beacon/proxy implementation, base asset, and destination.
+
+{% hint style="warning" %}
+The BNB Phase 2 migration labels apply only to the BNB mainnet rows described below. The Ethereum and Arbitrum rows are earlier converter families whose current pause, balance, and integration state must be verified independently. Every testnet section is **Test-only**.
+{% endhint %}
+
 ## BNB Chain Mainnet
 
 Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the original community-driven Token Converters via [VIP-620](https://app.venus.io/#/governance/proposal/620?chainId=56) and [VIP-621](https://app.venus.io/#/governance/proposal/621?chainId=56). The migration was originally proposed as [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56), which became unexecutable when BSC's Osaka hardfork enforced a hard per-tx gas cap of 2^24 = 16,777,216 (the single-call `helper.execute()` required ~17.5M gas). VIP-620 + VIP-621 split the work across two transactions and use a redeployed set of buyback proxies. The six timelock-owned legacy converters remain deployed for reference but are no longer operational — conversion is paused on each and balances have been drained into the corresponding new buyback. `WBNBBurnConverter` (Guardian-owned) is wound down via a separate multisig transaction; `ConverterNetwork` is unreferenced. Pre-existing ACM grants on the legacy converters are not explicitly revoked, but the paused state renders them inert.
@@ -21,7 +27,7 @@ Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the o
 
 ### Helpers
 
-* TreasuryTokenBuybackDistributor: [`0xc594053D4b2FaA311b55dDbFAb2338f7c90D6632`](https://bscscan.com/address/0xc594053D4b2FaA311b55dDbFAb2338f7c90D6632) — one-shot helper for the Venus Treasury Cleanup VIP: splits treasury-withdrawn tokens across the six Treasury `TokenBuyback` contracts by fixed weights (BTCB 15% / ETH 15% / XVS 10% / USDT 15% / USDC 15% / U 30%, U absorbing rounding dust) and redeems VAI for USDT at the VAI Peg Stability Module, returning the USDT to `VTreasury`.
+* TreasuryTokenBuybackDistributor: [`0xc594053D4b2FaA311b55dDbFAb2338f7c90D6632`](https://bscscan.com/address/0xc594053D4b2FaA311b55dDbFAb2338f7c90D6632) — historical one-shot helper for the Venus Treasury Cleanup VIP. Its deployment does not imply that it remains unexecuted or authorized; inspect its transaction history and current permissions before reuse.
 
 ### Retired converters (Phase 1 — non-operational post VIP-620 / VIP-621)
 
@@ -35,7 +41,7 @@ Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the o
 * WBNBBurnConverter: [`0x9eF79830e626C8ccA7e46DCEd1F90e51E7cFCeBE`](https://bscscan.com/address/0x9eF79830e626C8ccA7e46DCEd1F90e51E7cFCeBE)
 * ConverterNetwork: [`0xF7Caad5CeB0209165f2dFE71c92aDe14d0F15995`](https://bscscan.com/address/0xF7Caad5CeB0209165f2dFE71c92aDe14d0F15995)
 
-## Ethereum
+## Ethereum (V1 family; live state required)
 
 * XVSVaultTreasury: [`0xaE39C38AF957338b3cEE2b3E5d825ea88df02EfE`](https://etherscan.io/address/0xaE39C38AF957338b3cEE2b3E5d825ea88df02EfE)
 * SingleTokenConverterBeacon: [`0x5C0b5D09388F2BA6441E74D40666C4d96e4527D1`](https://etherscan.io/address/0x5C0b5D09388F2BA6441E74D40666C4d96e4527D1)
@@ -46,7 +52,7 @@ Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the o
 * XVSVaultConverter: [`0x1FD30e761C3296fE36D9067b1e398FD97B4C0407`](https://etherscan.io/address/0x1FD30e761C3296fE36D9067b1e398FD97B4C0407)
 * ConverterNetwork: [`0x232CC47AECCC55C2CAcE4372f5B268b27ef7cac8`](https://etherscan.io/address/0x232CC47AECCC55C2CAcE4372f5B268b27ef7cac8)
 
-## Arbitrum One
+## Arbitrum One (V1 family; live state required)
 
 * XVSVaultTreasury: [`0xb076D4f15c08D7A7B89466327Ba71bc7e1311b58`](https://arbiscan.io/address/0xb076D4f15c08D7A7B89466327Ba71bc7e1311b58)
 * SingleTokenConverterBeacon: [`0x993900Ab4ef4092e5B76d4781D09A2732086F0F0`](https://arbiscan.io/address/0x993900Ab4ef4092e5B76d4781D09A2732086F0F0)
@@ -57,7 +63,7 @@ Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the o
 * XVSVaultConverter: [`0x9c5A7aB705EA40876c1B292630a3ff2e0c213DB1`](https://arbiscan.io/address/0x9c5A7aB705EA40876c1B292630a3ff2e0c213DB1)
 * ConverterNetwork: [`0x2F6672C9A0988748b0172D97961BecfD9DC6D6d5`](https://arbiscan.io/address/0x2F6672C9A0988748b0172D97961BecfD9DC6D6d5)
 
-## BNB Chain Testnet
+## BNB Chain Testnet (Test-only)
 
 * RiskFundConverter: [`0x32Fbf7bBbd79355B86741E3181ef8c1D9bD309Bb`](https://testnet.bscscan.com/address/0x32Fbf7bBbd79355B86741E3181ef8c1D9bD309Bb)
 * XVSVaultTreasury: [`0x317c6C4c9AA7F87170754DB08b4804dD689B68bF`](https://testnet.bscscan.com/address/0x317c6C4c9AA7F87170754DB08b4804dD689B68bF)
@@ -70,7 +76,7 @@ Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the o
 * WBNBBurnConverter: [`0x42DBA48e7cCeB030eC73AaAe29d4A3F0cD4facba`](https://testnet.bscscan.com/address/0x42DBA48e7cCeB030eC73AaAe29d4A3F0cD4facba)
 * ConverterNetwork: [`0xC8f2B705d5A2474B390f735A5aFb570e1ce0b2cf`](https://testnet.bscscan.com/address/0xC8f2B705d5A2474B390f735A5aFb570e1ce0b2cf)
 
-## Sepolia
+## Sepolia (Test-only)
 
 * XVSVaultTreasury: [`0xCCB08e5107b406E67Ad8356023dd489CEbc79B40`](https://sepolia.etherscan.io/address/0xCCB08e5107b406E67Ad8356023dd489CEbc79B40)
 * SingleTokenConverterBeacon: [`0xb86e532a5333d413A1c35d86cCdF1484B40219eF`](https://sepolia.etherscan.io/address/0xb86e532a5333d413A1c35d86cCdF1484B40219eF)
@@ -81,7 +87,7 @@ Phase 2 [TokenBuyback](../whats-new/token-converter.md) instances replaced the o
 * XVSVaultConverter: [`0xc203bfA9dCB0B5fEC510Db644A494Ff7f4968ed2`](https://sepolia.etherscan.io/address/0xc203bfA9dCB0B5fEC510Db644A494Ff7f4968ed2)
 * ConverterNetwork: [`0xB5A4208bFC4cC2C4670744849B8fC35B21A690Fa`](https://sepolia.etherscan.io/address/0xB5A4208bFC4cC2C4670744849B8fC35B21A690Fa)
 
-## Arbitrum Sepolia
+## Arbitrum Sepolia (Test-only)
 
 * XVSVaultTreasury: [`0x309b71a417dA9CfA8aC47e6038000B1739d9A3A6`](https://sepolia.arbiscan.io/address/0x309b71a417dA9CfA8aC47e6038000B1739d9A3A6)
 * SingleTokenConverterBeacon: [`0xC77D0F75f1e4e3720DA1D2F5D809F439125a2Fd4`](https://sepolia.arbiscan.io/address/0xC77D0F75f1e4e3720DA1D2F5D809F439125a2Fd4)
