@@ -1,86 +1,47 @@
-# WstETHOracle
-Depending on the equivalence flag price is either based on assumption that 1 stETH = 1 ETH
-        or the price of stETH/USD (secondary market price) is obtained from the oracle.
+# WstETHOracle and WstETHOracleV2
 
-# Solidity API
+The repository contains two incompatible wstETH oracle families. Current Ethereum deployment artifacts use `WstETHOracleV2`; the older `WstETHOracle` API is retained below only for exact legacy deployments.
 
-### ASSUME_STETH_ETH_EQUIVALENCE
+## V2 deployed family
 
-A flag assuming 1:1 price equivalence between stETH/ETH
+The [`WstETHOracleV2` v2.16.0 source](https://github.com/VenusProtocol/oracle/blob/v2.16.0/contracts/oracles/WstETHOracleV2.sol) inherits the [capped base](common/correlated-token-oracle.md):
 
 ```solidity
-bool ASSUME_STETH_ETH_EQUIVALENCE
+constructor(
+    address stETH,
+    address wstETH,
+    address underlyingToken,
+    address resilientOracle,
+    uint256 annualGrowthRate,
+    uint256 snapshotInterval,
+    uint256 initialSnapshotMaxExchangeRate,
+    uint256 initialSnapshotTimestamp,
+    address accessControlManager,
+    uint256 snapshotGap
+)
 ```
 
-- - -
+It obtains stETH per wstETH from `getPooledEthByShares(1e18)` and assumes the configured underlying token is equivalent to stETH for that conversion.
 
-### STETH
+`STETH()` exposes the immutable stETH contract used for that conversion.
 
-Address of stETH
+| Route | Address | Underlying route | State at block `25845949` |
+|---|---|---|---|
+| equivalence | `0x6b51Ee3aF70b350AaADc05f418502b330c5Aad7c` | WETH | interval `2,592,000`, growth/second `2,124,556,062`, gap `6,637,568,880,406,786`, not capped |
+| non-equivalence | `0x6ecf38558B0D1fFc6Ea28bEC6BD39F9F0Fdd6631` | stETH | same cap parameters, not capped |
+
+## Legacy V1 source
+
+[`WstETHOracle.sol`](https://github.com/VenusProtocol/oracle/blob/v2.16.0/contracts/oracles/WstETHOracle.sol) is a separate, uncapped five-argument implementation:
 
 ```solidity
-contract IStETH STETH
+constructor(
+    address wstETH,
+    address weth,
+    address stETH,
+    address resilientOracle,
+    bool assumeStETHETHEquivalence
+)
 ```
 
-- - -
-
-### WSTETH_ADDRESS
-
-Address of wstETH
-
-```solidity
-address WSTETH_ADDRESS
-```
-
-- - -
-
-### WETH_ADDRESS
-
-Address of WETH
-
-```solidity
-address WETH_ADDRESS
-```
-
-- - -
-
-### RESILIENT_ORACLE
-
-Address of Resilient Oracle
-
-```solidity
-contract OracleInterface RESILIENT_ORACLE
-```
-
-- - -
-
-### constructor
-
-Constructor for the implementation contract.
-
-```solidity
-constructor(address wstETHAddress, address wETHAddress, address stETHAddress, address resilientOracleAddress, bool assumeEquivalence) public
-```
-
-- - -
-
-### getPrice
-
-Gets the USD price of wstETH asset
-
-```solidity
-function getPrice(address asset) public view returns (uint256)
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| asset | address | Address of wstETH |
-
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | wstETH Price in USD scaled by 1e18 |
-
-- - -
-
+Do not infer that V1 is active from the continued source file, and do not decode the V2 addresses with the V1 boolean constructor. Identify any legacy consumer by its exact deployed bytecode before retaining or retiring it.

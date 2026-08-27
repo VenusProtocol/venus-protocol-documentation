@@ -1,4 +1,18 @@
 # BinanceOracle
+
+## Mainnet versions
+
+The following transparent-proxy implementations were read on August 27, 2026 and match the [`BinanceOracle` v2.16.0 source](https://github.com/VenusProtocol/oracle/blob/v2.16.0/contracts/oracles/BinanceOracle.sol):
+
+| Network | Checked block | Proxy | Implementation |
+|---|---:|---|---|
+| BNB Chain | `118367342` | `0x594810b741d136f1960141C0d8Fb4a91bE78A820` | `0x201C72986d391A5a8E1713ac5a42CEAf90556a1b` |
+| opBNB | `178837732` | `0xB09EC9B628d04E1287216Aa3e2432291f50F9588` | `0x05CEE4B936C654be43993D3A8Baa76c8fdd5BeCC` |
+
+Feed-registry addresses, token-symbol overrides, stale periods, ownership, ACM permissions, and active ResilientOracle roles are dynamic and must be read separately.
+
+The proxy API inherits `owner`, `pendingOwner`, `transferOwnership`, `acceptOwnership`, `renounceOwnership`, `accessControlManager`, and owner-only `setAccessControlManager`.
+
 This oracle fetches price of assets from Binance.
 
 # Solidity API
@@ -137,7 +151,7 @@ function getFeedRegistryAddress() public view returns (address)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | address | feedRegistryAddress Address of binance oracle feed registry. |
+| \[0\] | address | feedRegistryAddress Address of binance oracle feed registry. |
 
 - - -
 
@@ -157,7 +171,6 @@ function getPrice(address asset) public view returns (uint256)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | Price in USD |
+| \[0\] | uint256 | Price in USD |
 
 - - -
-
