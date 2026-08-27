@@ -56,7 +56,7 @@ Each mainnet vhToken has a deployed Venus Core pool market. After the listing VI
 
 The collateral factor equals the liquidation threshold on all three markets. A position opened at the maximum LTV therefore sits on the liquidation boundary, so borrowers should leave a safety buffer.
 
-vhToken Core markets do not currently support [E-Mode](../reference-core-pool/resilient-price-feeds/e-mode.md) or Isolation Mode. Borrowers migrating a position from a market that uses either mode should note that the effective LTV and liquidation parameters may differ — the collateral factors listed above apply as-is, without any mode-specific boost or restriction.
+vhToken Core markets do not currently support [E-Mode](../reference-technical-articles/emode.md) or Isolation Mode. Borrowers migrating a position from a market that uses either mode should note that the effective LTV and liquidation parameters may differ — the collateral factors listed above apply as-is, without any mode-specific boost or restriction.
 
 All three launch with a liquidation incentive of 10%, a reserve factor of 10%, a supply cap of 10,000,000 and a **borrow cap of `0`** — the vhToken itself is never borrowable. The market exists to let the shares back a loan, not to create a market in the shares.
 
