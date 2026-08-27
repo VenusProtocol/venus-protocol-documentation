@@ -1,24 +1,17 @@
-# Isolated Pools
+# Legacy Isolated Pools
 
-### Overview
+## Status
 
-Isolated Pools are made up of separate collections of assets with tailored risk management configurations. This design offers users broader opportunities to manage risk and allocate assets to earn yield. Moreover, it prevents hypothetical failures from affecting the liquidity of the entire protocol as they are confined to isolated markets.
+The standalone Isolated Pools product has been fully deprecated on BNB Chain, Ethereum, and Arbitrum. Its navigation and market screens have been removed, and new supply and borrow activity in these pools is no longer available through the Venus interface.
 
-Isolated Pools also offer custom rewards for each market in the pool, incentivizing users accordingly.
+These pools were separate collections of lending markets with their own assets and risk configurations. Their contracts and existing positions remain on-chain. If you still have supplied assets, an outstanding borrow, or unclaimed rewards in one of these pools, follow the [exit and rewards guide](../guides/isolated-pools-deprecation.md).
 
-### Isolated Pools Architecture
+## Do not confuse Isolated Pools with Isolation Mode
 
-The Isolated Pools system is based on the *PoolRegistry* contract. It maintains a directory of isolated lending pools, allows the creation and registration of new pools, and offers getter methods to fetch pool details.
+The retirement of standalone Isolated Pools does not affect the Core Pool or [Isolation Mode](isolated-e-mode.md). Isolation Mode applies borrowing restrictions to selected collateral within the Core Pool; it does not move funds into a standalone isolated pool.
 
-To add a new market to an existing lending pool, the PoolRegistry deploys a JumpRateModelV2 or a WhitePaperInterestRateModel contract, deploying the upgradable VToken for the market before gaining the approval of the market's Comptroller.
+## Technical references
 
-<figure><img src="../.gitbook/assets/fd111ec8-a057-490c-bb3d-d1a8c026bb12.png" alt=""><figcaption><p><em>Isolated Lending Pools Architecture</em></p></figcaption></figure>
+The retirement applies to the standalone product and its interface, not to the entire underlying codebase or every shared component. Some components from the Isolated Pools architecture also support active deployments, including Core Pools.
 
-### User Actions
-
-Users can perform the following actions on any market in a pool:
-
-1. **Deposit**: Users can deposit an asset, receiving vTokens that correspond to the liquidity deposited. These vTokens accrue interest until they are burned on redeem or liquidated.
-2. **Borrow**: Users can borrow assets, in exchange for locked collateral.
-3. **Redeem**: Users can redeem vTokens for the underlying asset based on the exchange rate.
-4. **Repay Borrow**: Users can repay the borrowed asset and accrued interest.
+The [Isolated Pools technical reference](../technical-reference/reference-isolated-pools/README.md) documents this architecture, while [deployed market addresses](../deployed-contracts/markets.md) remain available for developers and legacy position holders who need to inspect deployed contracts. Neither reference should be interpreted as making the standalone product available for new activity through the Venus interface.

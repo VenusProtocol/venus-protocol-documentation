@@ -1,142 +1,70 @@
 # Diamond
 
-This contract contains functions related to facets
+The Diamond is the selector router used as the BNB Core Pool Unitroller implementation. The current stable source inherits `ComptrollerV19Storage`.
 
-# Solidity API
+{% hint style="warning" %}
+Use these functions through the Unitroller at `0xfD36E2c2a6789Db23113685031d7F16329158384`. The Diamond implementation address and selector map are upgradeable; verify the [live version map](../README.md) before use.
+{% endhint %}
 
-```solidity
-struct Facet {
-  address facetAddress;
-  bytes4[] functionSelectors;
-}
-```
+Source: [Diamond.sol in venus-protocol v10.3.0](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Comptroller/Diamond/Diamond.sol).
 
-### \_become
+## Solidity API
 
-Call \_acceptImplementation to accept the diamond proxy as new implementaion
+### `_become`
 
-```solidity
-function _become(contract Unitroller unitroller) public
-```
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| unitroller | contract Unitroller | Address of the unitroller |
-
----
-
-### diamondCut
-
-To add function selectors to the facet's mapping
+Accepts the pending Unitroller implementation role. Only the Unitroller admin can initiate this transition.
 
 ```solidity
-function diamondCut(struct IDiamondCut.FacetCut[] diamondCut_) public
+function _become(Unitroller unitroller) public
 ```
 
-#### Parameters
+### `diamondCut`
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| diamondCut\_ | struct IDiamondCut.FacetCut\[] | IDiamondCut contains facets address, action and function selectors |
+Adds, replaces, or removes selector assignments. Only the Unitroller admin can call it in the delegated Unitroller context.
 
----
+```solidity
+function diamondCut(IDiamondCut.FacetCut[] diamondCut_) public
+```
 
-### facetFunctionSelectors
+### `facetFunctionSelectors`
 
-Get all function selectors mapped to the facet address
+Returns the selectors currently assigned to a facet address.
 
 ```solidity
 function facetFunctionSelectors(address facet) external view returns (bytes4[])
 ```
 
-#### Parameters
+### `facetPosition`
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| facet | address | Address of the facet |
-
-#### Return Values
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| \[0] | bytes4\[] | selectors Array of function selectors |
-
----
-
-### facetPosition
-
-Get facet position in the \_facetFunctionSelectors through facet address
+Returns a facet's position in the internal facet-address array.
 
 ```solidity
 function facetPosition(address facet) external view returns (uint256)
 ```
 
-#### Parameters
+### `facetAddresses`
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| facet | address | Address of the facet |
-
-#### Return Values
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| \[0] | uint256 | Position of the facet |
-
----
-
-### facetAddresses
-
-Get all facet addresses
+Returns every facet address currently registered in the Diamond.
 
 ```solidity
 function facetAddresses() external view returns (address[])
 ```
 
-#### Return Values
+### `facetAddress`
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| \[0] | address\[] | facetAddresses Array of facet addresses |
-
----
-
-### facetAddress
-
-Get facet address and position through function selector
+Returns the current facet address and selector position for a function selector.
 
 ```solidity
-function facetAddress(bytes4 functionSelector) external view returns (struct ComptrollerV13Storage.FacetAddressAndPosition)
+function facetAddress(bytes4 functionSelector)
+    external
+    view
+    returns (ComptrollerV19Storage.FacetAddressAndPosition)
 ```
 
-#### Parameters
+### `facets`
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| functionSelector | bytes4 | function selector |
-
-#### Return Values
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| \[0] | struct ComptrollerV13Storage.FacetAddressAndPosition | FacetAddressAndPosition facet address and position |
-
----
-
-### facets
-
-Get all facets address and their function selector
+Returns every registered facet with its assigned selectors.
 
 ```solidity
-function facets() external view returns (struct Diamond.Facet[])
+function facets() external view returns (Diamond.Facet[])
 ```
-
-#### Return Values
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| \[0] | struct Diamond.Facet\[] | facets\_ Array of Facet |
-
----

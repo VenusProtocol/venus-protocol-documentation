@@ -2,38 +2,56 @@
 description: The Venus Protocol API providing access to indexed protocol data.
 ---
 
-# API
+API
+===
 
-Venus Protocol API provides three groups of endpoints
+The Venus Protocol API exposes indexed lending-market, pool, and governance data. The OpenAPI specification embedded below currently documents two endpoint families:
 
-**Market Data -** Endpoints relating to lending markets
+* **Market and pool data** — listed markets, pool configuration, historical market snapshots, and aggregate TVL
+* **Governance data** — proposals, votes, and voter activity
 
-**Activity -** Endpoints relating to user interactions with markets
+{% hint style="warning" %}
+API responses are derived from indexed data and can lag the chain, omit a recent event, or temporarily fail. Do not treat them as authoritative for transaction simulation, balances, permissions, market pause state, prices, or liquidation safety. Read the relevant contracts through an RPC endpoint at a recorded block when correctness depends on live state.
+{% endhint %}
 
-**Governance -** Endpoints providing information about proposals and voter activity
+The live [Swagger playground](https://api.venus.io/docs/playground) and [OpenAPI JSON](https://api.venus.io/docs/swagger.json) are the source of truth for the currently published request parameters and response schemas. The checked-in specification rendered on this page is a snapshot and should be resynchronized when the live JSON changes.
 
-## Base URL
+Base URL
+---
 
-The API is available without authentication for testnet and mainnet.
+The documented read endpoints are available without authentication at these origins. Endpoint paths are appended directly to the origin; there is no `/api` prefix.
 
-mainnet: [https://api.venus.io](https://api.venus.io/api/governance/venus)\
-testnet: [https://testnetapi.venus.io](https://testnetapi.venus.io/api/transactions/)
+```text
+mainnet: https://api.venus.io
+testnet: https://testnetapi.venus.io
+```
 
-## Versioning
+For example, a BNB Chain mainnet request to the default `stable` pools route is:
 
-Endpoints are versioned using the `accept-version` header. The values for this header can be `stable` or `next`. By default the `stable` version is returned. When a `next` version is available, a `Warning - 299` header will be added to the `stable` version with a message of breaking changes. To receive this new version the `accept-version` header can be set to `next`.
+```bash
+curl --get 'https://api.venus.io/pools' \
+  --data-urlencode 'chainId=56'
+```
 
-When the latest `next` version is made stable and the previous stable version is deprecated, both values for `accept-version` will return the latest version. Using the `next` header at this point will add a `Warning - 299` header alerting the client to remove `accept-version: next` to avoid receiving unexpected changes in the future.
+Versioning
+---
 
-#### Versioning Choreography
+Routes that declare the `accept-version` request header support `stable` and `next`. Omitting the header selects `stable`; an unsupported value is rejected. Do not assume every API route is versioned—check the OpenAPI entry for the specific path.
 
-These steps describe the process of upgrading endpoints to new versions as they are released
+`stable` and `next` can have different required query parameters and response shapes. In the published specification, this is material for `/markets` and `/pools`; read the schema for the selected version instead of deserializing both as the same object.
 
-1. A `next` version is made available, accessible with the `accept-version: next` header. A `Warning - 299` header is added to the stable version with details about breaking changes.
-2. Clients will be given adequate time to upgrade to use the next version.
-3. The previous stable version will be deprecated, the next version becomes stable and using the `accept-version: next` header will add a warning to remove the header or use the stable version.
-4. Clients remove the `accept-version: next` header to avoid receiving unexpected changes.
-5. The endpoint is now ready to release another version.
+The current `stable` responses for those routes include an HTTP `Warning: 299` header instructing clients to migrate to `accept-version: next`. Test the `next` schema before switching and monitor response warnings during every rollout:
+
+```bash
+curl --get 'https://api.venus.io/markets' \
+  --header 'accept-version: next' \
+  --data-urlencode 'chainId=56' \
+  --data-urlencode 'limit=1'
+```
+
+When `next` is promoted, the server can make both header values resolve to the newly stable implementation and warn clients to remove `accept-version: next`. Removing that opt-in after promotion avoids silently receiving a later preview. Pin client expectations with contract tests; the header name is not a permanent schema version identifier.
+
+This page was checked against the live v1.73.0 specification. Live service behavior and the live OpenAPI document take precedence over the checked-in snapshot rendered below.
 
 ### Pool Endpoints
 
@@ -90,4 +108,3 @@ These steps describe the process of upgrading endpoints to new versions as they 
 {% swagger src="../.gitbook/assets/swagger.json" path="/governance/proposals/{proposalId}" method="get" %}
 [swagger.json](../.gitbook/assets/swagger.json)
 {% endswagger %}
-

@@ -1,6 +1,10 @@
 # PrimeLeaderboardStorageV1
 Storage layout for the PrimeLeaderboard contract
 
+{% hint style="warning" %}
+BNB PrimeLeaderboard only. Upgrade review must include inherited storage and the proxy's exact implementation. Source: [PrimeLeaderboardStorage.sol](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Tokens/Prime/PrimeLeaderboardStorage.sol).
+{% endhint %}
+
 # Solidity API
 
 ```solidity
@@ -98,6 +102,16 @@ Whether staker initialization is complete (prevents further initialization calls
 
 ```solidity
 bool stakersInitialized
+```
+
+- - -
+
+### __gap
+
+Reserved storage for future upgrades.
+
+```solidity
+uint256[45] __gap
 ```
 
 - - -

@@ -1,6 +1,10 @@
 # PrimeV2
 PrimeV2 is the Prime token contract with leaderboard-based distribution. Prime status is decided by the `PrimeLeaderboard` contract based on time-weighted XVS staking, and boosted rewards are distributed to Prime holders across supported markets.
 
+{% hint style="warning" %}
+BNB Chain only. At block `118,364,540`, proxy `0x059EabA8676b03e4e8f009eFb7F587C28450F50f` used implementation `0x18cb7198cbb6d6e94001458cf3cf47c106d83a1b` and was unpaused. Other mainnets currently use Prime V1; see [Prime Contract Versions](README.md).
+{% endhint %}
+
 # Solidity API
 
 ### WRAPPED_NATIVE_TOKEN
@@ -11,7 +15,7 @@ Address of wrapped native token
 address WRAPPED_NATIVE_TOKEN
 ```
 
-- - -
+---
 
 ### NATIVE_MARKET
 
@@ -21,7 +25,7 @@ Address of native market vToken
 address NATIVE_MARKET
 ```
 
-- - -
+---
 
 ### xvsVault
 
@@ -31,7 +35,7 @@ Address of XVSVault contract
 address xvsVault
 ```
 
-- - -
+---
 
 ### xvsVaultRewardToken
 
@@ -41,7 +45,7 @@ Reward token address in XVSVault
 address xvsVaultRewardToken
 ```
 
-- - -
+---
 
 ### xvsVaultPoolId
 
@@ -51,7 +55,7 @@ Pool ID in XVSVault
 uint256 xvsVaultPoolId
 ```
 
-- - -
+---
 
 ### constructor
 
@@ -75,7 +79,7 @@ constructor(address wrappedNativeToken_, address nativeMarket_, address xvsVault
 #### ❌ Errors
 * Throw InvalidAddress if xvsVault_ or xvsVaultRewardToken_ is the zero address
 
-- - -
+---
 
 ### initialize
 
@@ -100,7 +104,7 @@ function initialize(uint128 alphaNumerator_, uint128 alphaDenominator_, address 
 * Throw InvalidAddress if any of the address is zero
 * Throw InvalidAlphaArguments if alpha arguments are invalid
 
-- - -
+---
 
 ### claimPrime
 
@@ -128,7 +132,7 @@ function claimPrime(address user) external
 * Throw InvalidLimit if mint limit would be exceeded
 * Throw MintWindowClosed if the minting deadline has passed
 
-- - -
+---
 
 ### claimPrimeBatch
 
@@ -155,7 +159,7 @@ function claimPrimeBatch(address[] users) external
 * Throw InvalidLimit if mint limit would be exceeded
 * Throw MaxLoopsLimitExceeded if the batch is larger than loopsLimit
 
-- - -
+---
 
 ### issue
 
@@ -182,7 +186,7 @@ function issue(address user) external
 * Throw UserAlreadyHasPrimeToken if user already has a token
 * Throw ScoreUpdateInProgress if a score update round is active
 
-- - -
+---
 
 ### issueBatch
 
@@ -209,7 +213,7 @@ function issueBatch(address[] users) external
 * Throw ScoreUpdateInProgress if a score update round is active
 * Throw MaxLoopsLimitExceeded if the batch is larger than loopsLimit
 
-- - -
+---
 
 ### burn
 
@@ -234,7 +238,7 @@ function burn(address user) external
 * Throw UserHasNoPrimeToken if user has no prime token
 * Throw ScoreUpdateInProgress if a score update round is active
 
-- - -
+---
 
 ### burnBatch
 
@@ -259,7 +263,7 @@ function burnBatch(address[] users) external
 * Throw ScoreUpdateInProgress if a score update round is active
 * Throw MaxLoopsLimitExceeded if the batch is larger than loopsLimit
 
-- - -
+---
 
 ### isUserPrimeHolder
 
@@ -277,9 +281,9 @@ function isUserPrimeHolder(address user) external view returns (bool)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | bool | whether the user has a Prime token |
+| \[0\] | bool | whether the user has a Prime token |
 
-- - -
+---
 
 ### claimInterest
 
@@ -297,7 +301,7 @@ function claimInterest(address vToken) external returns (uint256)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | amount claimed |
+| \[0\] | uint256 | amount claimed |
 
 #### 📅 Events
 * Emits InterestClaimed event
@@ -305,7 +309,7 @@ function claimInterest(address vToken) external returns (uint256)
 #### ❌ Errors
 * Throw MarketNotSupported if market is not supported (only when the vToken is not a current Prime market — never added, or since removed — and the user has no residual accrued balance)
 
-- - -
+---
 
 ### claimInterest
 
@@ -324,7 +328,7 @@ function claimInterest(address vToken, address user) external returns (uint256)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | amount claimed |
+| \[0\] | uint256 | amount claimed |
 
 #### 📅 Events
 * Emits InterestClaimed event
@@ -332,7 +336,7 @@ function claimInterest(address vToken, address user) external returns (uint256)
 #### ❌ Errors
 * Throw MarketNotSupported if market is not supported (only when the vToken is not a current Prime market — never added, or since removed — and the user has no residual accrued balance)
 
-- - -
+---
 
 ### accrueInterest
 
@@ -350,7 +354,7 @@ function accrueInterest(address vToken) public
 #### ❌ Errors
 * Throw MarketNotSupported if market is not supported
 
-- - -
+---
 
 ### accrueInterestAndUpdateScore
 
@@ -366,7 +370,7 @@ function accrueInterestAndUpdateScore(address user, address market) external
 | user | address | User address |
 | market | address | Market address |
 
-- - -
+---
 
 ### accrueInterestAndUpdateScore
 
@@ -384,7 +388,7 @@ function accrueInterestAndUpdateScore(address user) external
 #### ❌ Errors
 * Throw OnlyPrimeLeaderboard if caller is not the PrimeLeaderboard contract
 
-- - -
+---
 
 ### getPendingRewards
 
@@ -404,7 +408,7 @@ function getPendingRewards(address user) external returns (struct PrimeV2Storage
 | ---- | ---- | ----------- |
 | pendingRewards | struct PrimeV2StorageV1.PendingReward[] | Array of pending rewards per market |
 
-- - -
+---
 
 ### getPendingRewardsStatic
 
@@ -424,7 +428,7 @@ function getPendingRewardsStatic(address user) external view returns (struct Pri
 | ---- | ---- | ----------- |
 | pendingRewards | struct PrimeV2StorageV1.PendingReward[] | Array of pending rewards per market |
 
-- - -
+---
 
 ### getLifetimeAccruedByMarket
 
@@ -445,7 +449,7 @@ function getLifetimeAccruedByMarket(address market, address[] users) external vi
 | ---- | ---- | ----------- |
 | amounts | uint256[] | Lifetime accrued amounts, indexed parallel to `users` |
 
-- - -
+---
 
 ### getLifetimeAccruedByUser
 
@@ -466,7 +470,7 @@ function getLifetimeAccruedByUser(address user, address[] markets_) external vie
 | ---- | ---- | ----------- |
 | amounts | uint256[] | Lifetime accrued amounts, indexed parallel to `markets_` |
 
-- - -
+---
 
 ### updateScores
 
@@ -488,7 +492,7 @@ function updateScores(address[] users) external
 * Throw NoScoreUpdatesRequired if no score updates are required
 * Throw MaxLoopsLimitExceeded if the batch is larger than loopsLimit
 
-- - -
+---
 
 ### getAllMarkets
 
@@ -501,9 +505,9 @@ function getAllMarkets() external view returns (address[])
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | address[] | Array of market addresses |
+| \[0\] | address[] | Array of market addresses |
 
-- - -
+---
 
 ### xvsBalanceOfUser
 
@@ -521,9 +525,9 @@ function xvsBalanceOfUser(address user) external view returns (uint256)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | User's XVS balance |
+| \[0\] | uint256 | User's XVS balance |
 
-- - -
+---
 
 ### addMarket
 
@@ -555,7 +559,7 @@ function addMarket(address market, uint256 supplyMultiplier, uint256 borrowMulti
 * Throw MaxLoopsLimitExceeded if listing this market would exceed loopsLimit
 * Throw UnsupportedUnderlyingDecimals if underlying token has decimals > 18
 
-- - -
+---
 
 ### removeMarket
 
@@ -580,7 +584,7 @@ function removeMarket(address market) external
 * Throw MarketNotSupported if market doesn't exist
 * Throw MarketHasActiveMembers if market still has members with scores
 
-- - -
+---
 
 ### setLimit
 
@@ -604,7 +608,7 @@ function setLimit(uint256 tokenLimit_) external
 #### ❌ Errors
 * Throw InvalidLimit if limit is less than current count
 
-- - -
+---
 
 ### updateAlpha
 
@@ -630,7 +634,7 @@ function updateAlpha(uint128 alphaNumerator_, uint128 alphaDenominator_) externa
 #### ❌ Errors
 * Throw InvalidAlphaArguments if alpha arguments are invalid
 
-- - -
+---
 
 ### updateMultipliers
 
@@ -658,7 +662,7 @@ function updateMultipliers(address market, uint256 supplyMultiplier, uint256 bor
 * Throw MarketNotSupported if market is not supported
 * Throw InvalidMultipliers if both multipliers are zero
 
-- - -
+---
 
 ### pause
 
@@ -674,7 +678,7 @@ function pause() external
 #### ⛔️ Access Requirements
 * Controlled by ACM
 
-- - -
+---
 
 ### unpause
 
@@ -690,7 +694,7 @@ function unpause() external
 #### ⛔️ Access Requirements
 * Controlled by ACM
 
-- - -
+---
 
 ### setMaxLoopsLimit
 
@@ -711,7 +715,7 @@ function setMaxLoopsLimit(uint256 loopsLimit) external
 #### ⛔️ Access Requirements
 * Controlled by ACM
 
-- - -
+---
 
 ### setPrimeLeaderboard
 
@@ -735,7 +739,7 @@ function setPrimeLeaderboard(address primeLeaderboard_) external
 #### ❌ Errors
 * Throw InvalidAddress if address is zero
 
-- - -
+---
 
 ### setMintThreshold
 
@@ -760,7 +764,7 @@ function setMintThreshold(uint256 mintThreshold_, uint256 mintDeadline_) externa
 #### ❌ Errors
 * Throw InvalidDeadline if mintDeadline_ is non-zero and not strictly in the future
 
-- - -
+---
 
 ### recordCycleSnapshot
 
@@ -779,9 +783,9 @@ function recordCycleSnapshot(uint256 cycleId) external
 * Emits CycleSnapshotRecorded(cycleId, block.number, block.timestamp)
 
 #### ⛔️ Access Requirements
-* Controlled by ACM — grant `recordCycleSnapshot(uint256)` to a keeper EOA/bot, not the Timelock (cycles fire on a recurring schedule)
+* Controlled by ACM. Check the live grantees and current operations runbook; this reference does not prescribe an EOA, bot, or Timelock as the caller.
 
-- - -
+---
 
 ### sweepUndistributed
 
@@ -808,4 +812,4 @@ function sweepUndistributed(address vToken, address to) external
 
 Note: for a removed Prime market the call does not revert; it returns without transferring once the market's `undistributedReward` slice is zero. Passing an address that is not a vToken at all reverts when resolving its underlying token.
 
-- - -
+---

@@ -1,395 +1,237 @@
 # Shortfall
 
-Shortfall is an auction contract designed to auction off the `convertibleBaseAsset` accumulated in `RiskFund`. The `convertibleBaseAsset`
-is auctioned in exchange for users paying off the pool's bad debt. An auction can be started by anyone once a pool's bad debt has reached a minimum value.
-This value is set and can be changed by the authorized accounts. If the pool’s bad debt exceeds the risk fund plus a 10% incentive, then the auction winner
-is determined by who will pay off the largest percentage of the pool's bad debt. The auction winner then exchanges for the entire risk fund. Otherwise,
-if the risk fund covers the pool's bad debt plus the 10% incentive, then the auction winner is determined by who will take the smallest percentage of the
-risk fund in exchange for paying off all the pool's bad debt.
+{% hint style="warning" %}
+**Legacy auction and recovery contract on BNB Chain mainnet.** The standalone Isolated Pools product is deprecated. At BNB Chain mainnet block `118349571` (August 27, 2026, 08:12:46 UTC), `auctionsPaused()` was `true`, and all eight pools returned by PoolRegistry had auction status `NOT_STARTED`.
 
-# Solidity API
+Do not approve tokens to Shortfall or call `startAuction`, `restartAuction`, or `placeBid` based on this reference. The pause is governance-controlled rather than an irreversible contract retirement. A historical user should consider only the separately verified `claimTokenDebt` recovery path described below.
+{% endhint %}
+
+The BNB Chain mainnet contracts at the snapshot were:
+
+| Contract | Address |
+|---|---|
+| Shortfall proxy | [`0xf37530A8a810Fcb501AA0Ecd0B0699388F0F2209`](https://bscscan.com/address/0xf37530A8a810Fcb501AA0Ecd0B0699388F0F2209) |
+| Current implementation | [`0x4F41EcAce160f6ef893102D64f84E8040c06d8B0`](https://bscscan.com/address/0x4F41EcAce160f6ef893102D64f84E8040c06d8B0) |
+| Configured RiskFundV2 | [`0xdF31a28D68A2AB381D42b380649Ead7ae2A76E42`](https://bscscan.com/address/0xdF31a28D68A2AB381D42b380649Ead7ae2A76E42) |
+
+The source boundary for this API is [`isolated-pools@943e7db`](https://github.com/VenusProtocol/isolated-pools/tree/943e7db1855c8ab4a09104f1d09e2b2db0506b95/contracts/Shortfall). For the corrected historical calculations and auction-event discovery rules, see [Shortfall and auctions](../../reference-technical-articles/shortfall-and-auctions.md).
+
+## Historical design
+
+Shortfall was designed to exchange a pool-attributed risk-fund reserve for bidder payments of isolated-market bad debt. Two auction types existed:
 
 ```solidity
 enum AuctionType {
-  LARGE_POOL_DEBT,
-  LARGE_RISK_FUND
+    LARGE_POOL_DEBT,
+    LARGE_RISK_FUND
+}
+
+enum AuctionStatus {
+    NOT_STARTED,
+    STARTED,
+    ENDED
 }
 ```
 
-```solidity
-enum AuctionStatus {
-  NOT_STARTED,
-  STARTED,
-  ENDED
-}
-```
+In a `LARGE_POOL_DEBT` auction, bidders competed by paying an increasing fraction of every market's snapshotted bad debt for the complete seized risk-fund amount. In a `LARGE_RISK_FUND` auction, bidders paid every market's complete snapshotted debt and competed by requesting a decreasing fraction of the seized risk fund.
+
+RiskFundV2 no longer holds a per-pool ledger, and `getPoolsBaseAssetReserves(comptroller)` now always returns zero. Together with the BNB Chain mainnet pause, this makes the auction mechanism a legacy compatibility surface rather than the current bad-debt process.
+
+## Auction state
+
+The internal struct is:
 
 ```solidity
 struct Auction {
-  uint256 startBlock;
-  enum Shortfall.AuctionType auctionType;
-  enum Shortfall.AuctionStatus status;
-  contract VToken[] markets;
-  uint256 seizedRiskFund;
-  address highestBidder;
-  uint256 highestBidBps;
-  uint256 highestBidBlock;
-  uint256 startBidBps;
-  mapping(contract VToken => uint256) marketDebt;
-  mapping(contract VToken => uint256) bidAmount;
+    uint256 startBlockOrTimestamp;
+    AuctionType auctionType;
+    AuctionStatus status;
+    VToken[] markets;
+    uint256 seizedRiskFund;
+    address highestBidder;
+    uint256 highestBidBps;
+    uint256 highestBidBlockOrTimestamp;
+    uint256 startBidBps;
+    mapping(VToken => uint256) marketDebt;
+    mapping(VToken => uint256) bidAmount;
 }
 ```
 
-### poolRegistry
-
-Pool registry address
-
-```solidity
-address poolRegistry
-```
-
----
-
-### riskFund
-
-Risk fund address
-
-```solidity
-contract IRiskFund riskFund
-```
-
----
-
-### minimumPoolBadDebt
-
-Minimum USD debt in pool for shortfall to trigger
-
-```solidity
-uint256 minimumPoolBadDebt
-```
-
----
-
-### incentiveBps
-
-Incentive to auction participants, initial value set to 1000 or 10%
-
-```solidity
-uint256 incentiveBps
-```
-
----
-
-### nextBidderBlockLimit
-
-Time to wait for next bidder. Initially waits for 100 blocks
-
-```solidity
-uint256 nextBidderBlockLimit
-```
-
----
-
-### auctionsPaused
-
-Boolean of if auctions are paused
-
-```solidity
-bool auctionsPaused
-```
-
----
-
-### waitForFirstBidder
-
-Time to wait for first bidder. Initially waits for 100 blocks
-
-```solidity
-uint256 waitForFirstBidder
-```
-
----
-
 ### auctions
 
-Auctions for each pool
-
 ```solidity
-mapping(address => struct Shortfall.Auction) auctions
+function auctions(
+    address comptroller
+) external view returns (
+    uint256 startBlockOrTimestamp,
+    AuctionType auctionType,
+    AuctionStatus status,
+    uint256 seizedRiskFund,
+    address highestBidder,
+    uint256 highestBidBps,
+    uint256 highestBidBlockOrTimestamp,
+    uint256 startBidBps
+);
 ```
 
----
+The generated public getter exposes only the eight scalar values above. It does not return `markets`, `marketDebt`, or `bidAmount`. A historical integration must obtain the market array and debt snapshot from the matching `AuctionStarted` event; the current `Comptroller.getAllMarkets()` result is not a substitute for an old auction snapshot.
 
-### initialize
-
-Initialize the shortfall contract
+### Other state getters
 
 ```solidity
-function initialize(contract IRiskFund riskFund_, uint256 minimumPoolBadDebt_, address accessControlManager_) external
+function poolRegistry() external view returns (address);
+
+function riskFund() external view returns (address);
+
+function minimumPoolBadDebt() external view returns (uint256);
+
+function incentiveBps() external view returns (uint256);
+
+function nextBidderBlockLimit() external view returns (uint256);
+
+function waitForFirstBidder() external view returns (uint256);
+
+function auctionsPaused() external view returns (bool);
 ```
 
-#### Parameters
+The numeric parameters are deployment and governance state. Values historically described as 1,000 USD, 1,000 bps, or 100 blocks are not universal constants.
 
-| Name                   | Type               | Description                                                |
-| ---------------------- | ------------------ | ---------------------------------------------------------- |
-| riskFund\_             | contract IRiskFund | RiskFund contract address                                  |
-| minimumPoolBadDebt\_   | uint256            | Minimum bad debt in base asset for a pool to start auction |
-| accessControlManager\_ | address            | AccessControlManager contract address                      |
+## Block-or-timestamp mode
 
-#### ❌ Errors
-
-- ZeroAddressNotAllowed is thrown when convertible base asset address is zero
-- ZeroAddressNotAllowed is thrown when risk fund address is zero
-
----
-
-### placeBid
-
-Place a bid greater than the previous in an ongoing auction
+Shortfall inherits deployment-specific time management:
 
 ```solidity
-function placeBid(address comptroller, uint256 bidBps, uint256 auctionStartBlock) external
+function isTimeBased() external view returns (bool);
+
+function blocksOrSecondsPerYear() external view returns (uint256);
+
+function getBlockNumberOrTimestamp() external view returns (uint256);
 ```
 
-#### Parameters
+When `isTimeBased()` is false, auction slots and bidder limits use block numbers. When it is true, the corresponding values use timestamps and seconds. This is why the struct and ABI use `startBlockOrTimestamp` and `highestBidBlockOrTimestamp` rather than the old `startBlock` and `highestBidBlock` names.
 
-| Name              | Type    | Description                                                            |
-| ----------------- | ------- | ---------------------------------------------------------------------- |
-| comptroller       | address | Comptroller address of the pool                                        |
-| bidBps            | uint256 | The bid percent of the risk fund or bad debt depending on auction type |
-| auctionStartBlock | uint256 | The block number when auction started                                  |
-
-#### 📅 Events
-
-- Emits BidPlaced event on success
-
----
-
-### closeAuction
-
-Close an auction
+## Initialization
 
 ```solidity
-function closeAuction(address comptroller) external
+function initialize(
+    address riskFund_,
+    uint256 minimumPoolBadDebt_,
+    address accessControlManager_
+) external;
 ```
 
-#### Parameters
+The initializer requires a nonzero RiskFund address and a nonzero minimum bad-debt value, then initializes ownership, ACM, reentrancy protection, transfer-debt tracking, auction defaults, and the RiskFund link. The implementation contract itself has initializers disabled.
 
-| Name        | Type    | Description                     |
-| ----------- | ------- | ------------------------------- |
-| comptroller | address | Comptroller address of the pool |
+## Legacy auction entry points
 
-#### 📅 Events
-
-- Emits AuctionClosed event on successful close
-
----
+These functions remain in the deployed ABI. They are documented for compatibility and incident analysis, not as participation instructions.
 
 ### startAuction
 
-Start a auction when there is not currently one active
-
 ```solidity
-function startAuction(address comptroller) external
+function startAuction(address comptroller) external;
 ```
 
-#### Parameters
-
-| Name        | Type    | Description                     |
-| ----------- | ------- | ------------------------------- |
-| comptroller | address | Comptroller address of the pool |
-
-#### 📅 Events
-
-- Emits AuctionStarted event on success
-- Errors if auctions are paused
-
----
+Historically permissionless. It reverts while `auctionsPaused()` is true. When enabled, it verifies the PoolRegistry entry, snapshots every market's `badDebt`, updates oracle prices, requires total USD bad debt to meet `minimumPoolBadDebt`, and reads the pool reserve through RiskFundV2's compatibility getter.
 
 ### restartAuction
 
-Restart an auction
-
 ```solidity
-function restartAuction(address comptroller) external
+function restartAuction(address comptroller) external;
 ```
 
-#### Parameters
+Historically permissionless. It reverts while auctions are paused and also requires a `STARTED` auction with no bidder that has become stale. Restarting ends the prior instance, reruns oracle updates, and recomputes the auction valuation, market-debt snapshot, start bid, and seized reserve amount at a new block or timestamp.
 
-| Name        | Type    | Description         |
-| ----------- | ------- | ------------------- |
-| comptroller | address | Address of the pool |
-
-#### 📅 Events
-
-- Emits AuctionRestarted event on successful restart
-
----
-
-### updateNextBidderBlockLimit
-
-Update next bidder block limit which is used determine when an auction can be closed
+### placeBid
 
 ```solidity
-function updateNextBidderBlockLimit(uint256 _nextBidderBlockLimit) external
+function placeBid(
+    address comptroller,
+    uint256 bidBps,
+    uint256 auctionStartBlockOrTimestamp
+) external;
 ```
 
-#### Parameters
+The third argument must equal the auction's current `startBlockOrTimestamp`; it is not `startBidBps`. `bidBps` must be between 1 and 10,000. A first `LARGE_POOL_DEBT` bid must meet or exceed `startBidBps`, and later bids must strictly increase the highest bid. A first `LARGE_RISK_FUND` bid must meet or fall below `startBidBps`, and later bids must strictly decrease the highest bid.
 
-| Name                   | Type    | Description                 |
-| ---------------------- | ------- | --------------------------- |
-| \_nextBidderBlockLimit | uint256 | New next bidder block limit |
+Historically, for each market in the auction snapshot:
 
-#### 📅 Events
+* `LARGE_POOL_DEBT` pulled `floor(marketDebt × bidBps / 10_000)` of the underlying token;
+* `LARGE_RISK_FUND` pulled the complete snapshotted `marketDebt` of the underlying token; and
+* the bidder had to separately approve the Shortfall proxy for every required underlying token.
 
-- Emits NextBidderBlockLimitUpdated on success
+The contract recorded the actual balance increase as `bidAmount`. When a better bid replaced the previous bidder, Shortfall tried to return each deposited token; a failed outgoing transfer was recorded as claimable `tokenDebt`.
 
-#### ⛔️ Access Requirements
+`placeBid` does not check `auctionsPaused`. It could operate only on an auction that was already `STARTED`, had the matching identifier, and was not stale. The recorded snapshot confirmed that no registered BNB Chain mainnet pool was in that state.
 
-- Restricted by ACM
-
----
-
-### updateIncentiveBps
-
-Updates the incentive BPS
+### closeAuction
 
 ```solidity
-function updateIncentiveBps(uint256 _incentiveBps) external
+function closeAuction(address comptroller) external;
 ```
 
-#### Parameters
+Historically permissionless. It required a `STARTED` auction, a nonzero highest bidder, and a current block or timestamp strictly greater than `highestBidBlockOrTimestamp + nextBidderBlockLimit`. It then:
 
-| Name           | Type    | Description       |
-| -------------- | ------- | ----------------- |
-| \_incentiveBps | uint256 | New incentive BPS |
+1. marks the auction `ENDED`;
+2. transfers each winning `bidAmount` to its vToken;
+3. calls `badDebtRecovered` with the vToken's actual underlying balance increase;
+4. requests the winning payout from RiskFundV2; and
+5. transfers the base asset to the winner or records `tokenDebt` if that outgoing transfer fails.
 
-#### 📅 Events
+`closeAuction` does not check `auctionsPaused`; pausing alone does not prove that no existing auction needs completion. The separate all-pool state read at the top of this page established that boundary for the recorded BNB Chain mainnet block.
 
-- Emits IncentiveBpsUpdated on success
+## Historical transfer-debt recovery
 
-#### ⛔️ Access Requirements
+Shortfall inherits `TokenDebtTracker`. It records an outgoing token transfer as debt when the contract has enough balance but the recipient transfer fails. This can occur when returning an outbid participant's underlying tokens or paying the auction winner.
 
-- Restricted by ACM
-
----
-
-### updateMinimumPoolBadDebt
-
-Update minimum pool bad debt to start auction
+### tokenDebt
 
 ```solidity
-function updateMinimumPoolBadDebt(uint256 _minimumPoolBadDebt) external
+function tokenDebt(
+    address token,
+    address user
+) external view returns (uint256);
 ```
 
-#### Parameters
+Returns the amount of `token` owed to `user`.
 
-| Name                 | Type    | Description                                                    |
-| -------------------- | ------- | -------------------------------------------------------------- |
-| \_minimumPoolBadDebt | uint256 | Minimum bad debt in the base asset for a pool to start auction |
-
-#### 📅 Events
-
-- Emits MinimumPoolBadDebtUpdated on success
-
-#### ⛔️ Access Requirements
-
-- Restricted by ACM
-
----
-
-### updateWaitForFirstBidder
-
-Update wait for first bidder block count. If the first bid is not made within this limit, the auction is closed and needs to be restarted
+### totalTokenDebt
 
 ```solidity
-function updateWaitForFirstBidder(uint256 _waitForFirstBidder) external
+function totalTokenDebt(
+    address token
+) external view returns (uint256);
 ```
 
-#### Parameters
+Returns the aggregate recorded debt for a token. It helps distinguish tokens owed to users from other token balances held by Shortfall.
 
-| Name                 | Type    | Description                           |
-| -------------------- | ------- | ------------------------------------- |
-| \_waitForFirstBidder | uint256 | New wait for first bidder block count |
-
-#### 📅 Events
-
-- Emits WaitForFirstBidderUpdated on success
-
-#### ⛔️ Access Requirements
-
-- Restricted by ACM
-
----
-
-### updatePoolRegistry
-
-Update the pool registry this shortfall supports
+### claimTokenDebt
 
 ```solidity
-function updatePoolRegistry(address poolRegistry_) external
+function claimTokenDebt(
+    address token,
+    uint256 amount
+) external;
 ```
 
-#### Parameters
+Claims only `msg.sender`'s recorded debt. Pass the exact amount to claim partially, or `type(uint256).max` to claim the caller's complete recorded amount. The call reverts if a non-max amount exceeds `tokenDebt(token, msg.sender)` or if the final token transfer fails. No third party can redirect another user's claim.
 
-| Name           | Type    | Description                       |
-| -------------- | ------- | --------------------------------- |
-| poolRegistry\_ | address | Address of pool registry contract |
+Before claiming, verify the full token address, `tokenDebt(token, yourAddress)`, the Shortfall token balance, and the explorer proxy/implementation. No token approval is required.
 
-#### 📅 Events
+At the snapshot block, Shortfall held zero balance and reported zero `totalTokenDebt` for each of the 27 scanned unique underlying tokens represented by 35 `getAllMarkets()` entries across eight PoolRegistry pools. Of those entries, 34 were listed and one was unlisted. Native BNB was also zero. Token and beneficiary sets are not enumerable, so this does not prove that every arbitrary token address has zero debt; it does show that the current registered-market underlying set had no recorded transfer debt.
 
-- Emits PoolRegistryUpdated on success
+## Governance configuration
 
-#### ⛔️ Access Requirements
+| Function | Access | Effect |
+|---|---|---|
+| `updateNextBidderBlockLimit(uint256)` | ACM | Updates the blocks-or-seconds interval after the latest bid. Value must be nonzero. |
+| `updateIncentiveBps(uint256)` | ACM | Updates the bidder incentive. Value must be nonzero; 10% is not a source-enforced maximum. |
+| `updateMinimumPoolBadDebt(uint256)` | ACM | Updates the USD threshold for starting an auction. |
+| `updateWaitForFirstBidder(uint256)` | ACM | Updates the blocks-or-seconds interval before a no-bid auction is stale. |
+| `updatePoolRegistry(address)` | Owner | Updates the PoolRegistry; the address must be nonzero. |
+| `pauseAuctions()` | ACM | Prevents new starts and restarts. Reverts if already paused. |
+| `resumeAuctions()` | ACM | Clears the pause. Reverts if already active. |
 
-- Restricted to owner
+The presence of `resumeAuctions` means the pause is reversible through governance permissions. The separate RiskFundV2 per-pool getter behavior and deprecated-product policy must also be considered before treating a resumed selector as a supported workflow.
 
-#### ❌ Errors
-
-- ZeroAddressNotAllowed is thrown when pool registry address is zero
-
----
-
-### pauseAuctions
-
-Pause auctions. This disables starting new auctions but lets the current auction finishes
-
-```solidity
-function pauseAuctions() external
-```
-
-#### 📅 Events
-
-- Emits AuctionsPaused on success
-
-#### ⛔️ Access Requirements
-
-- Restricted by ACM
-
-#### ❌ Errors
-
-- Errors is auctions are paused
-
----
-
-### resumeAuctions
-
-Resume paused auctions.
-
-```solidity
-function resumeAuctions() external
-```
-
-#### 📅 Events
-
-- Emits AuctionsResumed on success
-
-#### ⛔️ Access Requirements
-
-- Restricted by ACM
-
-#### ❌ Errors
-
-- Errors is auctions are active
-
----
+Keep this contract reference until historical `tokenDebt`, Shortfall token balances, all auction states, market bad-debt balances, and any governance recovery duties have been resolved. Do not infer that those obligations are zero from the pause flag alone.

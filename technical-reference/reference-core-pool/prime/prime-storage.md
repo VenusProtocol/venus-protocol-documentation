@@ -1,6 +1,10 @@
 # PrimeV2StorageV1
 Storage layout for the PrimeV2 contract with leaderboard-based Prime token distribution
 
+{% hint style="warning" %}
+BNB PrimeV2 only. This is the direct `PrimeV2StorageV1` layout from the implementation used at block `118,364,540`; upgrade review must also include inherited storage and the proxy's exact implementation. Source: [PrimeV2Storage.sol](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Tokens/Prime/PrimeV2Storage.sol).
+{% endhint %}
+
 # Solidity API
 
 ```solidity
@@ -79,6 +83,16 @@ Mapping of vToken -> user -> interest info
 
 ```solidity
 mapping(address => mapping(address => struct PrimeV2StorageV1.Interest)) interests
+```
+
+- - -
+
+### _allMarkets
+
+Internal array of all Prime-participating markets. This field is stored between `interests` and `vTokenForAsset`.
+
+```solidity
+address[] _allMarkets
 ```
 
 - - -
@@ -219,6 +233,16 @@ Unix timestamp after which permissionless minting is closed (0 = no deadline)
 
 ```solidity
 uint256 mintDeadline
+```
+
+- - -
+
+### __gap
+
+Reserved storage for future upgrades.
+
+```solidity
+uint256[40] __gap
 ```
 
 - - -

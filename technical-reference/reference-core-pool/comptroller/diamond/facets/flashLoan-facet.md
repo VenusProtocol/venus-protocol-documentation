@@ -1,6 +1,10 @@
 # FlashLoanFacet
 This facet contract contains functions for flash loan operations
 
+{% hint style="warning" %}
+BNB Core Pool only. At block `118,363,255`, this facet was routed to `0xAC54A4D148690b7FDA22B1D29c4439aCBF668fb2`. Call its selectors through the Unitroller, verify the live selector assignment, authorized caller, pause state, and market implementation, and treat the [v10.3.0 source](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Comptroller/Diamond/facets/FlashLoanFacet.sol) as the source reference rather than a permanent deployed ABI.
+{% endhint %}
+
 # Solidity API
 
 ### executeFlashLoan
@@ -29,4 +33,3 @@ Transfers the specified assets to the receiver contract and handles repayment. S
 | param | bytes | The bytes passed in the executeOperation call |
 
 - - -
-

@@ -24,9 +24,9 @@ No platform can be considered entirely risk-free. Risks associated with Venus V4
 
 Venus Protocol focuses on improving three main areas:
 
-* **Risk Management:** Prioritizing the risk management, Venus introduces new features like Isolated Pools and more sophisticated risk parameters.
+* **Risk Management:** Venus introduced more sophisticated risk parameters, layered oracle validation, and fine-grained controls.
 * **Decentralization:** The governance model has been enhanced by introducing fast-track VIPs, role-based access control, and a fine-grained pause mechanism.
-* **User Experience:** The latest version offers an enhanced user interface, a more effective reward system, isolated lending, and the Venus Prime Soulbound Token, all aimed at providing a smooth user experience.
+* **User Experience:** The latest version offers an enhanced user interface, a more effective reward system, and Venus Prime, all aimed at providing a smooth user experience.
 
 ### **What is the Resilient Price Oracle?**
 
@@ -34,11 +34,13 @@ The Resilient Price Oracle introduced in Venus V4 fetches prices from multiple s
 
 ### **What are Isolated Pools?**
 
-Isolated Pools are a new feature in Venus V4, designed to overcome the limitations of a single core pool. Each Isolated Pool is an independent collection of assets with custom risk management configurations. This setup allows users to better manage their risk and earn yield, while also preventing failures in one market from impacting others.
+Standalone Isolated Pools were separate collections of lending markets with their own risk configurations. This product has since been fully deprecated on BNB Chain, Ethereum, and Arbitrum, and its screens have been removed from the Venus interface. If you still have a position or unclaimed rewards in one of these legacy pools, follow the [exit and rewards guide](../guides/isolated-pools-deprecation.md).
+
+This retirement does not apply to the Core Pool or to [Isolation Mode](../guides/isolated-e-mode.md), which applies borrowing restrictions to selected collateral within the Core Pool.
 
 ### **What is the Risk Fund?**
 
-In Venus V4, a risk fund is maintained for each pool. A percentage of the protocol's revenue is deposited into this fund, aiming to counterbalance bad debt and prevent potential market insolvencies.
+The Risk Fund is a reserve-management component used to hold protocol reserves that can help address bad debt. The original V4 isolated-pool design used per-pool accounting, but that accounting model has since been removed; the `RiskFundV2` contract itself remains active.
 
 ### **What changes were made to the governance model in Venus V4?**
 

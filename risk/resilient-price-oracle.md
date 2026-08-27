@@ -2,21 +2,21 @@
 
 ### Overview
 
-In its previous version, Venus was fully reliant on the Chainlink price oracle for fetching prices. This dependence, while generally reliable, created a single point of failure. An erroneous or stale price could, without a secondary mechanism for validation, pose threats such as unwarranted liquidations or inflated borrowing.
+Before Venus V4, Venus relied on a Chainlink oracle adapter for protocol prices. A single configured source can become a single point of failure: an erroneous, manipulated, or stale price can cause improper liquidations or unsafe borrowing.
 
-In light of these risks, Venus V4 introduces the Resilient Price Oracle, a more robust system capable of pulling data from multiple sources for cross-validation. The Resilient Oracle is equipped with an algorithm to verify prices between two or more sources, providing a safeguard in cases where the primary source proves unreliable or fails.
+Venus V4 introduced `ResilientOracle`, which lets governance assign main, pivot, and fallback roles per underlying asset. When multiple roles are enabled, the contract can compare sources within governance-set bounds and try another valid source when a comparison fails.
 
-Furthermore, the improved oracle infrastructure supports the integration of new price oracles in real-time and permits the enabling and disabling of price oracles per token.
+This design provides configurable validation and fallback paths; it does not guarantee that every asset has multiple independent sources. If no pivot is configured or enabled, a valid main-oracle response can be returned without cross-validation. Oracle addresses, roles, enable flags, and bounds are mutable governance configuration and must be checked on-chain.
 
 ### Key Features
 
 #### Resilient Price Feeds
 
-The Resilient Price Feeds replace the single source price provider used in the Comptroller contract with a more robust and reliable solution. This new component not only fetches asset prices from various on-chain sources but also includes a fallback mechanism to protect the protocol from oracle failures. Presently, this feature incorporates Chainlink, RedStone, Pyth Network, Binance, Atlas and APRO oracles, with the possibility of adding more in the future.
+The Resilient Price Feeds replace a single provider in the Comptroller with per-asset source roles. Published configurations currently include Chainlink, RedStone, Binance, Atlas, APRO, and asset-specific adapters. A provider can be used as main, pivot, or fallback depending on the asset; the provider name alone does not determine its role.
 
 #### Governance Configurations
 
-The Resilient Price Feeds system can be configured by the Venus governance via Venus Improvement Proposals (VIPs). These configurations include pause and resume functionalities for the oracle, price feed configurations, and fixed price settings, among others.
+Authorized governance actions can pause or unpause a `ResilientOracle`, set an asset's source addresses and roles, enable or disable a role, and update validation bounds. Fixed-price behavior, where used, is implemented by the configured source rather than by treating this page as configuration.
 
 ### Safety Measures
 
@@ -24,7 +24,7 @@ In implementing the Resilient Price Oracle, several safety measures have been ad
 
 * **Price Continuity:** Asset prices pre and post upgrade were validated in a simulated environment to ensure consistency.
 * **Testnet Deployment:** The oracles have been deployed and tested in the Venus Protocol testnet environment.
-* **Auditing:** The code has been audited by OpenZeppelin, Peckshield, Certik, and Hacken.
+* **Auditing:** Specific revisions have been reviewed by OpenZeppelin, Peckshield, Certik, and Hacken. Read each report's exact scope and verify that the deployed implementation maps to the reviewed revision.
 
 <figure><img src="../.gitbook/assets/17b75928-d6a2-4207-9a0b-89d1d41690d4.png" alt=""><figcaption></figcaption></figure>
 
@@ -34,12 +34,12 @@ For low-liquidity collateral assets, the Resilient Oracle's spot price is wrappe
 
 ### Correlated Token Oracles
 
-For correlated tokens, like Liquid Staked Tokens (LST), best practice suggests oracles quote first smart contracts to get the exchange rate between the correlated assets, and then multiply that by the USD market price of the second token to complete the calculation.
+For correlated tokens, such as liquid staking tokens (LSTs), an adapter can read the on-chain exchange rate between correlated assets and multiply it by the underlying asset's USD price.
 
-In Venus we use dedicated oracles for each LST asset in order to calculate the price as follows:
+Venus uses dedicated adapters for supported correlated assets to calculate a price as follows:
 
-* convert the LST to the underlying tokens (using the exchange rate provided by the LST contracts)
-* convert the underlying token calculated in the previous step to USD, using a “traditional” oracle based on market price
+* convert the LST to its underlying token using the rate exposed by the relevant protocol contract; and
+* convert the resulting underlying amount to USD using the configured market-price oracle.
 
 The current list of correlated token oracles in Venus is:
 
@@ -52,26 +52,23 @@ The current list of correlated token oracles in Venus is:
 * `AsBNBOracle`. It returns the USD price of the [asBNB](https://bscscan.com/address/0x77734e70b6E88b4d82fE632a168EDf6e700912b6) token, converting on-chain from asBNB to slisBNB using the exchange rate from the [asBNB minter](https://bscscan.com/address/0x2F31ab8950c50080E77999fa456372f276952fD8) contract.
 * `StkBNBOracle`. It returns the USD price of the [stkBNB](https://bscscan.com/address/0xc2E9d07F66A89c44062459A47a0D2Dc038E4fb16) token, converting on-chain from stkBNB to BNB using the exchange rate from the [stake pool](https://bscscan.com/address/0xC228CefDF841dEfDbD5B3a18dFD414cC0dbfa0D8) contract.
 * `WBETHOracle`. It returns the USD price of the [WBETH](https://bscscan.com/address/0xa2e3356610840701bdf5611a53974510ae27e2e1) token, converting on-chain from WBETH to BNB using the exchange rate from the WBETH contract.
-* `WeETHOracle`. It returns the USD price of the [weETH](https://etherscan.io/token/0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee) token, converting on-chain from weETH to eETH using the exchange rate from the [liquidity pool](https://etherscan.io/address/0x308861A430be4cce5502d0A12724771Fc6DaF216) contract, and assumming 1 eETH = 1 ETH.
+* `WeETHOracle`. It returns the USD price of the [weETH](https://etherscan.io/token/0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee) token, converting on-chain from weETH to eETH using the exchange rate from the [liquidity pool](https://etherscan.io/address/0x308861A430be4cce5502d0A12724771Fc6DaF216) contract and assuming 1 eETH = 1 ETH.
 * `WeETHsOracle` (instance of `WeETHAccountantOracle`). It returns the USD price of the [weETHs](https://etherscan.io/token/0x917ceE801a67f933F2e6b33fC0cD1ED2d5909D88) token, converting on-chain from weETHs to WETH using the exchange rate from the [Accountant](https://etherscan.io/address/0xbe16605B22a7faCEf247363312121670DFe5afBE) contract.
-* `WstETHOracle`. It returns the USD price of the [wstETH](https://etherscan.io/token/0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0) token, converting on-chain from wstETH to stETH using the exchange rate from the [stETH](https://etherscan.io/token/0xae7ab96520de3a18e5e111b5eaab095312d7fe84) contract, and assumming 1 stETH = 1 ETH.
+* `WstETHOracle`. It returns the USD price of the [wstETH](https://etherscan.io/token/0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0) token, converting on-chain from wstETH to stETH using the exchange rate from the [stETH](https://etherscan.io/token/0xae7ab96520de3a18e5e111b5eaab095312d7fe84) contract and assuming 1 stETH = 1 ETH.
 
 {% hint style="warning" %}
 
 **Assumption on Liquid Staked Tokens**
 
-`WeETHOracle` and `WstETHOracle` assume a 1:1 price ratio between the LST and the underlying asset (e.g. 1 ETH = 1 stETH). The primary risks associated with this approach involve smart contract vulnerabilities and counterparty risks that could impact the redemption processes of the LSTs. In cases of substantial counterparty risk, particularly if the underlying tokens are not redeemable against the LSTs, the direct smart contract pricing might become unreliable. Here's our plan to mitigate such situations:
-
-* We will deploy two on-chain oracles for each LST token:
-  * The first oracle will return the price based on the assumption of a 1:1 ratio between the LST token and the underlying asset.
-  * The second oracle will return the price based on a secondary market feed (using Chainlink, for instance).
-* By default, the `ResilientOracle` will be configured to use only the oracle assuming a 1:1 ratio between the LST asset and the underlying, serving as the primary oracle.
-* The second oracle, which derives price from the market price feed without assuming a 1:1 ratio, will not be initially configured in our `ResilientOracle`.
-* We have implemented an off-chain monitoring system to track the prices returned by both oracles. In the event of a significant deviation over an extended period, the situation will be reviewed. It will be determined whether to switch the primary oracle from the one assuming a 1:1 ratio to the one that does not, or whether to temporarily include the latter as a pivot oracle in the `ResilientOracle` configuration.
+`WeETHOracle` and `WstETHOracle` assume a 1:1 price ratio between the LST's immediate underlying asset and ETH (for example, 1 stETH = 1 ETH). Smart-contract, counterparty, liquidity, or redemption failures can break that assumption. The existence of a market-price adapter, monitor, pivot, or fallback does not prove it is configured or enabled for an asset. Verify the live source roles, bounds, and latest governance actions before relying on the assumption or any secondary path.
 
 {% endhint %}
 
 ### Current configuration
+
+{% hint style="warning" %}
+The tables below are a documentation snapshot, last updated for BNB Chain oracle changes in VIP-654 on August 11, 2026. They cover only the listed Core markets and networks and are not an exhaustive deployment registry or a live status feed. A `(Paused)` label is also only a snapshot of market lifecycle state. For live verification, resolve the Comptroller's active oracle, then read `getTokenConfig(asset)`, `getOracle(asset, role)`, the relevant `BoundValidator` bounds, and the latest governance execution. See [deployed oracle addresses](../deployed-contracts/oracles.md).
+{% endhint %}
 
 #### BNB chain
 
@@ -85,7 +82,7 @@ The current list of correlated token oracles in Venus is:
 | Core | BNB | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | WBNB | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | BTCB | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.01. Lower bound: 0.99 |
-| Core | BUSD (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | [Price fixed to $1](https://app.venus.io/#/governance/proposal/226?chainId=56) |
+| Core | BUSD (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | [Price fixed to $1](https://venus.io/governance/proposal/226?chainId=56) |
 | Core | CAKE | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | DAI | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | DOGE | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | Upper bound: 1.05. Lower bound: 0.95 |
@@ -101,7 +98,7 @@ The current list of correlated token oracles in Venus is:
 | Core | slisBNB | [SlisBNBOracle](https://bscscan.com/address/0xDDE6446E66c786afF4cd3D183a908bCDa57DF9c1) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | solvBTC | [SolvBTCOneJumpChainlinkOracle](https://bscscan.com/address/0x3f4bC081E749032cffF29dcA2E8408Ec375e745A) | [SolvBTCOneJumpFundamentalOracle](https://bscscan.com/address/0x1f785B1AFE0808d69d1188db9e47b7B9Dd95ab09) | - | Upper bound: 1.02. Lower bound: 0.98. MAIN reads the Chainlink SolvBTC/BTC exchange rate feed |
 | Core | sUSDe | [sUSDeOneJumpRedstoneOracle](https://bscscan.com/address/0x2B2895104f958E1EC042E6Ba5cbfeCbAD3C5beDb) | [sUSDeOneJumpChainlinkOracle](https://bscscan.com/address/0xA67F01322AF8EBa444D788Ee398775b446de51a0) | - | Upper bound: 1.01. Lower bound: 0.99 |
-| Core | SXP (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | [Price fixed to $0.00046](https://app.venus.io/#/governance/proposal/631?chainId=56) |
+| Core | SXP (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | [Price fixed to $0.00046](https://venus.io/governance/proposal/631?chainId=56) |
 | Core | THE | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | TRX | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | TUSD | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.05. Lower bound: 0.95 |
@@ -201,4 +198,3 @@ For more detailed information, refer to the following resources:
 
 * [Repository](https://github.com/VenusProtocol/oracle)
 * [Community post about Venus V4, introducing Resilient Price Feeds](https://community.venus.io/t/proposing-venus-v4/3188#price-feed-redundancy-6)
-* [Venus Stars blog post about Binance Oracle](https://venusstars.io/community/index.php/2023/05/09/venus-enhances-resilience-binance-oracle-feeds/)

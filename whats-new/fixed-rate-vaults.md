@@ -2,13 +2,13 @@
 
 Venus Protocol is introducing a new way to earn and borrow: **Fixed Term Vaults**.
 
-Instead of the variable rates and shared liquidity pools of Venus core markets, Fixed Term Vaults offer something simpler and more predictable. An institution wants to borrow stablecoins for a set period at a set rate. Suppliers fund that loan, earn a target APR, and get their principal back at maturity. The rate and lock duration are set at vault creation — no mid-term rate changes.
+Instead of the variable rates and shared liquidity pools of Venus core markets, Fixed Term Vaults offer a scheduled rate and term set when the vault is created. An institution borrows stablecoins against collateral, and suppliers receive ERC-20 vault shares representing a claim on the assets available at settlement. Principal and target interest are not guaranteed: a shortfall or liquidation can reduce the amount redeemable.
 
-Each vault is **entirely self-contained**. It involves one stablecoin, one institution, and one contract. It shares no liquidity, no risk parameters, and no liquidation flow with Venus core markets or any other vault. Each vault stands or falls on its own.
+Each loan uses a separate vault clone with its own collateral, debt accounting, and supplier shares; it does not share liquidity with Venus Core markets or other vault clones. The system still depends on shared controller, PositionToken, oracle, ProtocolShareReserve, LiquidationAdapter, and governance components, and some risk and liquidation settings can change.
 
-Every vault implements the **ERC-4626 tokenised vault standard**, so suppliers interact through the familiar `deposit`, `withdraw`, `redeem`, and `balanceOf` interface — no custom integration required. Share tokens are standard ERC-20s, freely transferable at any point in the vault's life.
+Every vault exposes an **ERC-4626 tokenised vault interface**, with lifecycle constraints on methods such as `deposit`, `withdraw`, and `redeem`. Share tokens are standard ERC-20s and can be transferred, but transferability does not guarantee a buyer, secondary market, or sale price.
 
-<figure><img src="../.gitbook/assets/fixed-rate-vault-flow.svg" alt="Fixed Term Vault fund flow diagram"><figcaption><p>Suppliers supply stablecoins into the vault, the institution receives the loan and repays with interest, and suppliers redeem principal plus target yield at maturity</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/fixed-rate-vault-flow.svg" alt="Fixed Term Vault fund flow diagram"><figcaption><p>Suppliers supply stablecoins into the vault, the institution receives the loan, and suppliers redeem their pro-rata share of the assets available at settlement</p></figcaption></figure>
 
 ## How a Vault Progresses
 
@@ -33,24 +33,24 @@ Every vault follows the same journey from creation to close. States move in one 
 
 Fixed Term Vaults are designed to give lenders certainty:
 
-- **You know your target yield upfront.** The target APR and lock duration are set before fundraising opens — there's nothing to guess or monitor.
-- **Collateral is posted before you can supply.** The institution's margin is on-chain and locked before the fundraising window opens. Combined with full vault isolation, a default in one vault cannot affect any other vault or Venus core markets.
-- **Your position stays liquid.** Vault shares are transferable ERC-20s. You can move or sell them to another party at any time during the vault's life.
+- **The scheduled rate and term are set upfront.** The target APR and lock duration are set before fundraising opens. Actual redemption still depends on the vault's terminal state and settlement assets.
+- **Collateral is posted before you can supply.** The institution's margin is on-chain and locked before the fundraising window opens. Each vault has separate assets and accounting, so a default does not directly draw liquidity or collateral from another vault or Venus Core market. Vaults still depend on shared system components and governance.
+- **Vault shares are transferable, but early liquidity is not guaranteed.** Shares are ERC-20 tokens and can be transferred, but Venus does not guarantee a buyer, secondary market, or sale price. The vault's `withdraw` and `redeem` functions are available only after it reaches a terminal state.
 
 ### Institutions
 
 Fixed Term Vaults give borrowers control over their cost of capital:
 
-- **Predictable cost.** The target APR is fixed at vault creation — no variable-rate exposure over the loan term.
-- **Your collateral stays safe.** It is locked in the vault contract and never lent out or rehypothecated — no third party can touch it. If it appreciates during the loan, that upside is still entirely yours.
-- **Plan your repayment from day one.** The total amount owed is calculable at lock entry, so there are no surprises when the settlement window opens.
+- **Scheduled interest cost.** The target APR is fixed at vault creation rather than accruing at a variable borrow rate. Liquidation and late-penalty terms remain separate risk parameters.
+- **Collateral is held in the vault and is not lent or rehypothecated.** It remains subject to the vault's health checks and documented liquidation paths, under which authorized liquidators or settlers can receive seized collateral. The controller also has governance-controlled pause and recovery functions. Any collateral remaining for the position-token holder is subject to the vault's debt, liquidation, and settlement rules.
+- **Plan the scheduled repayment from day one.** The scheduled interest is calculated at lock entry. Liquidation conditions, penalties, and the final settlement outcome remain subject to the vault's risk parameters and state.
 
 ## Liquidations
 
-Fixed Term Vaults run their own liquidation system, independent of Venus core. Two paths exist:
+Fixed Term Vaults use liquidation entry points and accounting that are separate from Venus Core Pool liquidation. This is not full system independence: the vault paths still rely on the shared ResilientOracle, controller, LiquidationAdapter, ProtocolShareReserve, governance, and configured permissions. Two vault-specific paths exist:
 
-- **Health-based liquidation** — available during the Lock and settlement phases if the vault's outstanding debt exceeds the liquidation-threshold value of its collateral. Whitelisted liquidators repay a portion of the debt (capped by the global close factor) and receive collateral at the liquidation incentive rate. A share of the bonus goes to the protocol.
-- **Overdue liquidation** — available once the institution has missed the settlement deadline, regardless of collateral health. The same close-factor cap applies, but collateral is seized at the late-penalty rate.
+- **Health-based liquidation** — available during the Lock and settlement phases if the vault's outstanding debt exceeds the liquidation-threshold value of its collateral. Whitelisted liquidators submit a debt repayment and receive collateral at the liquidation incentive rate. The vault applies the global close factor to the repayment amount; a request above the allowed amount reverts with `ExceedsCloseFactor` rather than being silently reduced to the limit. A share of the bonus goes to the protocol.
+- **Overdue liquidation** — available once the institution has missed the settlement deadline, regardless of collateral health. The same hard-reverting close-factor check applies, but collateral is seized at the late-penalty rate.
 
 Both paths route through the `LiquidationAdapter`, which maintains separate ACM-gated whitelists for health-based liquidators and overdue settlers. Direct vault calls are blocked.
 
@@ -60,3 +60,4 @@ Both paths route through the `LiquidationAdapter`, which maintains separate ACM-
 - [Institution Guide](../guides/fixed-rate-vaults/institution-guide.md) — step-by-step walkthrough for borrowers.
 - [Fixed Term Vaults Technical Reference](../technical-reference/reference-technical-articles/fixed-rate-vaults.md) — contract architecture, math, and liquidation paths in full detail.
 - [Solidity API Reference](../technical-reference/reference-fixed-rate-vaults/README.md) — full function-level reference for all contracts.
+- [Deployed Contracts](../deployed-contracts/fixed-rate-vaults.md) — published contract addresses and vault-discovery guidance; verify live implementations, configuration, and permissions at a recorded block.

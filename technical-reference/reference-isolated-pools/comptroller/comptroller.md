@@ -23,7 +23,7 @@ The initializer configures ownership, AccessControlManager, and the maximum loop
 | `healAccount(address)` | settle an insolvent small account, seize all collateral, and record the unpaid remainder as bad debt |
 | `liquidateAccount(address,LiquidationOrder[])` | batch-liquidate a small account when collateral can cover all debt |
 
-`healAccount` and `liquidateAccount` are permissionless but condition-bound. They are only for accounts at or below `minLiquidatableCollateral`; regular `VToken.liquidateBorrow` is used above that threshold.
+`healAccount` and `liquidateAccount` are permissionless but condition-bound. They are only for accounts at or below `minLiquidatableCollateral`; regular `VToken.liquidateBorrow` is used above that threshold. Recording bad debt does not itself trigger automatic fund coverage: that balance historically fed Shortfall auctions, but on BNB Chain mainnet new auction starts and restarts are paused and RiskFundV2 no longer maintains the per-pool reserve ledger.
 
 ## VToken policy hooks
 
