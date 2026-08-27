@@ -1,5 +1,13 @@
 # Markets - Deployed Contracts
 
+This page is an address registry, not a guarantee that every listed market currently accepts supply, borrow, redeem, repay, liquidation, or collateral use. Market listing, pause flags, caps, collateral factors, oracle state, and beacon/proxy implementations can change through governance. Verify live state at the address before interacting; testnet rows are never evidence of mainnet support.
+
+Stable implementation baselines are available in [`venus-protocol` v10.3.0](https://github.com/VenusProtocol/venus-protocol/tree/v10.3.0) for the BNB Core family and [`isolated-pools` v4.4.0](https://github.com/VenusProtocol/isolated-pools/tree/v4.4.0) for the beacon-based Core and historical Isolated Pools families. The on-chain proxy or beacon implementation remains authoritative.
+
+{% hint style="warning" %}
+**Lifecycle legend:** Core Pool sections contain current production address families, but individual markets can still be staged, paused, non-collateral, or unlisted. Every non-Core mainnet pool on BNB Chain, Ethereum, and Arbitrum is marked **Legacy / exit-only** because the Isolated Pools product on those networks has been retired from the app. Those addresses are retained for direct repayment, redemption, reward claims, and recovery; see [Withdrawing from deprecated isolated pools](../guides/isolated-pools-deprecation.md). Every testnet section is **Test-only**.
+{% endhint %}
+
 ## BNB Chain Mainnet
 
 * PoolRegistry: [`0x9F7b01A536aFA00EF10310A162877fd792cD0666`](https://bscscan.com/address/0x9F7b01A536aFA00EF10310A162877fd792cD0666)
@@ -9,6 +17,10 @@
 * VToken Beacon: [`0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4`](https://bscscan.com/address/0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4)
 
 ### Core Pool
+
+{% hint style="warning" %}
+**Matured PT market checkpoint — BNB block `118372455` (August 27, 2026):** `vPT-sUSDE-26JUN2025` is listed with CF/LT zero; supply and borrow are paused while redeem and repay remain unpaused. `vPT-USDe-30OCT2025` is unlisted and supply, redeem, borrow, and repay are all paused. `vPT-clisBNB-25JUN2026` is listed with CF/LT zero; borrow is paused while supply, redeem, and repay remain unpaused. These are recorded-block observations, not permanent guarantees; re-read `markets(vToken)` and `actionPaused(vToken, action)` before interacting.
+{% endhint %}
 
 * Comptroller: [`0xfD36E2c2a6789Db23113685031d7F16329158384`](https://bscscan.com/address/0xfD36E2c2a6789Db23113685031d7F16329158384)
 * Comptroller Lens: [`0xd701C1fDAE34f9Cf242a4de19a2e7288f924EA1C`](https://bscscan.com/address/0xd701C1fDAE34f9Cf242a4de19a2e7288f924EA1C)
@@ -88,9 +100,9 @@
   * vLTC: [`0x57A5297F2cB2c0AaC9D554660acd6D385Ab50c6B`](https://bscscan.com/address/0x57A5297F2cB2c0AaC9D554660acd6D385Ab50c6B)
   * vMATIC: [`0x5c9476FcD6a4F9a3654139721c949c2233bBbBc8`](https://bscscan.com/address/0x5c9476FcD6a4F9a3654139721c949c2233bBbBc8)
   * vNVDAB: [`0xEb8Ca841cBe1BC4832A10b15c7dAB1081eDaD371`](https://bscscan.com/address/0xEb8Ca841cBe1BC4832A10b15c7dAB1081eDaD371)
-  * vPT-sUSDE-26JUN2025: [`0x9e4E5fed5Ac5B9F732d0D850A615206330Bf1866`](https://bscscan.com/address/0x9e4E5fed5Ac5B9F732d0D850A615206330Bf1866)
-  * vPT-USDe-30OCT2025: [`0x6D0cDb3355c93A0cD20071aBbb3622731a95c73E`](https://bscscan.com/address/0x6D0cDb3355c93A0cD20071aBbb3622731a95c73E)
-  * vPT-clisBNB-25JUN2026: [`0x6d3BD68E90B42615cb5abF4B8DE92b154ADc435e`](https://bscscan.com/address/0x6d3BD68E90B42615cb5abF4B8DE92b154ADc435e)
+  * vPT-sUSDE-26JUN2025 (listed; supply/borrow paused at the checkpoint): [`0x9e4E5fed5Ac5B9F732d0D850A615206330Bf1866`](https://bscscan.com/address/0x9e4E5fed5Ac5B9F732d0D850A615206330Bf1866)
+  * vPT-USDe-30OCT2025 (unlisted; supply/redeem/borrow/repay paused at the checkpoint): [`0x6D0cDb3355c93A0cD20071aBbb3622731a95c73E`](https://bscscan.com/address/0x6D0cDb3355c93A0cD20071aBbb3622731a95c73E)
+  * vPT-clisBNB-25JUN2026 (listed with zero CF/LT; borrow paused at the checkpoint): [`0x6d3BD68E90B42615cb5abF4B8DE92b154ADc435e`](https://bscscan.com/address/0x6d3BD68E90B42615cb5abF4B8DE92b154ADc435e)
   * vslisBNB: [`0x89c910Eb8c90df818b4649b508Ba22130Dc73Adc`](https://bscscan.com/address/0x89c910Eb8c90df818b4649b508Ba22130Dc73Adc)
   * vSOL: [`0xBf515bA4D1b52FFdCeaBF20d31D705Ce789F2cEC`](https://bscscan.com/address/0xBf515bA4D1b52FFdCeaBF20d31D705Ce789F2cEC)
   * vSolvBTC: [`0xf841cb62c19fCd4fF5CD0AaB5939f3140BaaC3Ea`](https://bscscan.com/address/0xf841cb62c19fCd4fF5CD0AaB5939f3140BaaC3Ea)
@@ -121,7 +133,7 @@
   * vXVS: [`0x151B1e2635A717bcDc836ECd6FbB62B674FE3E1D`](https://bscscan.com/address/0x151B1e2635A717bcDc836ECd6FbB62B674FE3E1D)
   * vXAUM: [`0x92e6Ea74a1A3047DabF4186405a21c7D63a0612A`](https://bscscan.com/address/0x92e6Ea74a1A3047DabF4186405a21c7D63a0612A)
 
-### BTC Pool
+### BTC Pool (Legacy / exit-only)
 
 * Comptroller: [`0x9DF11376Cf28867E2B0741348044780FbB7cb1d6`](https://bscscan.com/address/0x9DF11376Cf28867E2B0741348044780FbB7cb1d6)
 * Underlying tokens:
@@ -129,7 +141,7 @@
 * Markets:
   * vBTCB\_BTC: [`0x8F2AE20b25c327714248C95dFD3b02815cC82302`](https://bscscan.com/address/0x8F2AE20b25c327714248C95dFD3b02815cC82302)
 
-### DeFi Pool
+### DeFi Pool (Legacy / exit-only)
 
 * Comptroller: [`0x3344417c9360b963ca93A4e8305361AEde340Ab9`](https://bscscan.com/address/0x3344417c9360b963ca93A4e8305361AEde340Ab9)
 * Underlying tokens:
@@ -151,7 +163,7 @@
   * vUSDD\_DeFi: [`0xA615467caE6B9E0bb98BC04B4411d9296fd1dFa0`](https://bscscan.com/address/0xA615467caE6B9E0bb98BC04B4411d9296fd1dFa0)
   * vUSDT\_DeFi: [`0x1D8bBDE12B6b34140604E18e9f9c6e14deC16854`](https://bscscan.com/address/0x1D8bBDE12B6b34140604E18e9f9c6e14deC16854)
 
-### GameFi Pool
+### GameFi Pool (Legacy / exit-only)
 
 * Comptroller: [`0x1b43ea8622e76627B81665B1eCeBB4867566B963`](https://bscscan.com/address/0x1b43ea8622e76627B81665B1eCeBB4867566B963)
 * Underlying tokens:
@@ -165,7 +177,7 @@
   * vUSDD\_GameFi: [`0x9f2FD23bd0A5E08C5f2b9DD6CF9C96Bfb5fA515C`](https://bscscan.com/address/0x9f2FD23bd0A5E08C5f2b9DD6CF9C96Bfb5fA515C)
   * vUSDT\_GameFi: [`0x4978591f17670A846137d9d613e333C38dc68A37`](https://bscscan.com/address/0x4978591f17670A846137d9d613e333C38dc68A37)
 
-### Liquid Staked BNB Pool
+### Liquid Staked BNB Pool (Legacy / exit-only)
 
 * Comptroller: [`0xd933909A4a2b7A4638903028f44D1d38ce27c352`](https://bscscan.com/address/0xd933909A4a2b7A4638903028f44D1d38ce27c352)
 * NativeTokenGateway:[`0x24896601A4bf1b6a27E51Cb3eff750Bd9FE00d08`](https://bscscan.com/address/0x24896601A4bf1b6a27E51Cb3eff750Bd9FE00d08)
@@ -186,7 +198,7 @@
   * vstkBNB\_LiquidStakedBNB: [`0xcc5D9e502574cda17215E70bC0B4546663785227`](https://bscscan.com/address/0xcc5D9e502574cda17215E70bC0B4546663785227)
   * vWBNB\_LiquidStakedBNB: [`0xe10E80B7FD3a29fE46E16C30CC8F4dd938B742e2`](https://bscscan.com/address/0xe10E80B7FD3a29fE46E16C30CC8F4dd938B742e2)
 
-### Liquid Staked ETH Pool
+### Liquid Staked ETH Pool (Legacy / exit-only)
 
 * Comptroller: [`0xBE609449Eb4D76AD8545f957bBE04b596E8fC529`](https://bscscan.com/address/0xBE609449Eb4D76AD8545f957bBE04b596E8fC529)
 * Underlying tokens:
@@ -198,7 +210,7 @@
   * vweETH\_LiquidStakedETH: [`0xc5b24f347254bD8cF8988913d1fd0F795274900F`](https://bscscan.com/address/0xc5b24f347254bD8cF8988913d1fd0F795274900F)
   * vwstETH\_LiquidStakedETH: [`0x94180a3948296530024Ef7d60f60B85cfe0422c8`](https://bscscan.com/address/0x94180a3948296530024Ef7d60f60B85cfe0422c8)
 
-### Meme Pool
+### Meme Pool (Legacy / exit-only)
 
 * Comptroller: [`0x33B6fa34cd23e5aeeD1B112d5988B026b8A5567d`](https://bscscan.com/address/0x33B6fa34cd23e5aeeD1B112d5988B026b8A5567d)
 * Underlying tokens:
@@ -208,7 +220,7 @@
   * vBabyDoge\_Meme: [`0x52eD99Cd0a56d60451dD4314058854bc0845bbB5`](https://bscscan.com/address/0x52eD99Cd0a56d60451dD4314058854bc0845bbB5)
   * vUSDT\_Meme: [`0x4a9613D06a241B76b81d3777FCe3DDd1F61D4Bd0`](https://bscscan.com/address/0x4a9613D06a241B76b81d3777FCe3DDd1F61D4Bd0)
 
-### Stablecoin Pool
+### Stablecoin Pool (Legacy / exit-only)
 
 * Comptroller: [`0x94c1495cD4c557f1560Cbd68EAB0d197e6291571`](https://bscscan.com/address/0x94c1495cD4c557f1560Cbd68EAB0d197e6291571)
 * Underlying tokens:
@@ -222,7 +234,7 @@
   * vUSDD\_Stablecoins: [`0xc3a45ad8812189cAb659aD99E64B1376f6aCD035`](https://bscscan.com/address/0xc3a45ad8812189cAb659aD99E64B1376f6aCD035)
   * vUSDT\_Stablecoins: [`0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B`](https://bscscan.com/address/0x5e3072305F9caE1c7A82F6Fe9E38811c74922c3B)
 
-### Tron Pool
+### Tron Pool (Legacy / exit-only)
 
 * Comptroller: [`0x23b4404E4E5eC5FF5a6FFb70B7d14E3FabF237B0`](https://bscscan.com/address/0x23b4404E4E5eC5FF5a6FFb70B7d14E3FabF237B0)
 * Underlying tokens:
@@ -299,7 +311,7 @@
   * vyvUSDS-1\_Core: [`0x520d67226Bc904aC122dcE66ed2f8f61AA1ED764`](https://etherscan.io/address/0x520d67226Bc904aC122dcE66ed2f8f61AA1ED764)
   * vyvWETH-1\_Core: [`0xba3916302cBA4aBcB51a01e706fC6051AaF272A0`](https://etherscan.io/address/0xba3916302cBA4aBcB51a01e706fC6051AaF272A0)
 
-### Curve Pool
+### Curve Pool (Legacy / exit-only)
 
 * Comptroller: [`0x67aA3eCc5831a65A5Ba7be76BED3B5dc7DB60796`](https://etherscan.io/address/0x67aA3eCc5831a65A5Ba7be76BED3B5dc7DB60796)
 * Underlying tokens:
@@ -309,7 +321,7 @@
   * vCRV\_Curve: [`0x30aD10Bd5Be62CAb37863C2BfcC6E8fb4fD85BDa`](https://etherscan.io/address/0x30aD10Bd5Be62CAb37863C2BfcC6E8fb4fD85BDa)
   * vcrvUSD\_Curve: [`0x2d499800239C4CD3012473Cb1EAE33562F0A6933`](https://etherscan.io/address/0x2d499800239C4CD3012473Cb1EAE33562F0A6933)
 
-### Ethena Pool
+### Ethena Pool (Legacy / exit-only)
 
 * Comptroller: [`0x562d2b6FF1dbf5f63E233662416782318cC081E4`](https://etherscan.io/address/0x562d2b6FF1dbf5f63E233662416782318cC081E4)
 * Underlying tokens:
@@ -323,7 +335,7 @@
   * vsUSDe\_Ethena: [`0x0792b9c60C728C1D2Fd6665b3D7A08762a9b28e0`](https://etherscan.io/address/0x0792b9c60C728C1D2Fd6665b3D7A08762a9b28e0)
   * vUSDC\_Ethena: [`0xa8e7f9473635a5CB79646f14356a9Fc394CA111A`](https://etherscan.io/address/0xa8e7f9473635a5CB79646f14356a9Fc394CA111A)
 
-### Liquid Staked ETH Pool
+### Liquid Staked ETH Pool (Legacy / exit-only)
 
 * Comptroller: [`0xF522cd0360EF8c2FF48B648d53EA1717Ec0F3Ac3`](https://etherscan.io/address/0xF522cd0360EF8c2FF48B648d53EA1717Ec0F3Ac3)
 * NativeTokenGateway: [`0xBC1471308eb2287eBE137420Eb1664A964895D21`](https://etherscan.io/address/0xBC1471308eb2287eBE137420Eb1664A964895D21)
@@ -400,7 +412,7 @@
   * vWBTC\_Core: [`0xaDa57840B372D4c28623E87FC175dE8490792811`](https://arbiscan.io/address/0xaDa57840B372D4c28623E87FC175dE8490792811)
   * vWETH\_Core: [`0x68a34332983f4Bf866768DD6D6E638b02eF5e1f0`](https://arbiscan.io/address/0x68a34332983f4Bf866768DD6D6E638b02eF5e1f0)
 
-### Liquid Staked ETH Pool
+### Liquid Staked ETH Pool (Legacy / exit-only)
 
 * Comptroller: [`0x52bAB1aF7Ff770551BD05b9FC2329a0Bf5E23F16`](https://arbiscan.io/address/0x52bAB1aF7Ff770551BD05b9FC2329a0Bf5E23F16)
 * NativeTokenGateway: [`0xD1e89806BAB8Cd7680DFc7425D1fA6d7D5F0C3FE`](https://arbiscan.io/address/0xD1e89806BAB8Cd7680DFc7425D1fA6d7D5F0C3FE)
@@ -525,7 +537,7 @@
   * vweETH\_Core: [`0x0170398083eb0D0387709523baFCA6426146C218`](https://uniscan.xyz/address/0x0170398083eb0D0387709523baFCA6426146C218)
   * vwstETH\_Core: [`0xbEC19Bef402C697a7be315d3e59E5F65b89Fa1BB`](https://uniscan.xyz/address/0xbEC19Bef402C697a7be315d3e59E5F65b89Fa1BB)
 
-## BNB Chain Testnet
+## BNB Chain Testnet (Test-only)
 
 * PoolRegistry: [`0xC85491616Fa949E048F3aAc39fbf5b0703800667`](https://testnet.bscscan.com/address/0xC85491616Fa949E048F3aAc39fbf5b0703800667)
 * PoolLens: [`0x166C45bCCE54166Ecf9bCDF8d2EC562014A06048`](https://testnet.bscscan.com/address/0x166C45bCCE54166Ecf9bCDF8d2EC562014A06048)
@@ -713,7 +725,7 @@
   * vUSDT\_Tron: [`0x712774CBFFCBD60e9825871CcEFF2F917442b2c3`](https://testnet.bscscan.com/address/0x712774CBFFCBD60e9825871CcEFF2F917442b2c3)
   * vWIN\_Tron: [`0xEe543D5de2Dbb5b07675Fc72831A2f1812428393`](https://testnet.bscscan.com/address/0xEe543D5de2Dbb5b07675Fc72831A2f1812428393)
 
-## Sepolia (Ethereum testnet)
+## Sepolia (Ethereum testnet; Test-only)
 
 * PoolRegistry: [`0x758f5715d817e02857Ba40889251201A5aE3E186`](https://sepolia.etherscan.io/address/0x758f5715d817e02857Ba40889251201A5aE3E186)
 * PoolLens: [`0x07C0Ce579fCf5641A3DF45663BCa58955d7a0a34`](https://sepolia.etherscan.io/address/0x07C0Ce579fCf5641A3DF45663BCa58955d7a0a34)
@@ -789,7 +801,7 @@
   * vUSDC\_Stablecoins: [`0xD5f83FCbb4a62779D0B37b9E603CD19Ad84884F0`](https://sepolia.etherscan.io/address/0xD5f83FCbb4a62779D0B37b9E603CD19Ad84884F0)
   * vUSDT\_Stablecoins: [`0x93dff2053D4B08823d8B39F1dCdf8497f15200f4`](https://sepolia.etherscan.io/address/0x93dff2053D4B08823d8B39F1dCdf8497f15200f4)
 
-## opBNB Chain Testnet
+## opBNB Chain Testnet (Test-only)
 
 * PoolRegistry: [`0x560eA4e1cC42591E9f5F5D83Ad2fd65F30128951`](https://testnet.opbnbscan.com/address/0x560eA4e1cC42591E9f5F5D83Ad2fd65F30128951)
 * PoolLens: [`0x32B3aA8805b4A4b80BA03Bd8f69c2C0e2710803D`](https://testnet.opbnbscan.com/address/0x32B3aA8805b4A4b80BA03Bd8f69c2C0e2710803D)
@@ -807,7 +819,7 @@
   * vUSDT\_Core: [`0xe3923805f6E117E51f5387421240a86EF1570abC`](https://testnet.opbnbscan.com/address/0xe3923805f6E117E51f5387421240a86EF1570abC)
   * vWBNB\_Core: [`0xD36a31AcD3d901AeD998da6E24e848798378474e`](https://testnet.opbnbscan.com/address/0xD36a31AcD3d901AeD998da6E24e848798378474e)
 
-## Arbitrum Sepolia
+## Arbitrum Sepolia (Test-only)
 
 * PoolRegistry: [`0xf93Df3135e0D555185c0BC888073374cA551C5fE`](https://sepolia.arbiscan.io/address/0xf93Df3135e0D555185c0BC888073374cA551C5fE)
 * PoolLens: [`0xd08422A9A7b19404cC01FB970a247d19CE4EA7fE`](https://sepolia.arbiscan.io/address/0xd08422A9A7b19404cC01FB970a247d19CE4EA7fE)
@@ -841,7 +853,7 @@
   * vWETH\_LiquidStakedETH: [`0xd7057250b439c0849377bB6C3263eb8f9cf49d98`](https://sepolia.arbiscan.io/address/0xd7057250b439c0849377bB6C3263eb8f9cf49d98)
   * vwstETH\_LiquidStakedETH: [`0x253515E19e8b888a4CA5a0a3363B712402ce4046`](https://sepolia.arbiscan.io/address/0x253515E19e8b888a4CA5a0a3363B712402ce4046)
 
-## ZKsync Sepolia
+## ZKsync Sepolia (Test-only)
 
 * PoolRegistry: [`0x1401404e6279BB8C06E5E3999eCA3e2008B46A76`](https://sepolia.explorer.zksync.io/address/0x1401404e6279BB8C06E5E3999eCA3e2008B46A76)
 * PoolLens: [`0x214Ed51c798EE53f0be79d810E9Fc91662FDE243`](https://sepolia.explorer.zksync.io/address/0x214Ed51c798EE53f0be79d810E9Fc91662FDE243)
@@ -864,7 +876,7 @@
   * vZK\_Core: [`0x92f4BD794303c0BD0791B350Be5531DB38414f47`](https://sepolia.explorer.zksync.io/address/0x92f4BD794303c0BD0791B350Be5531DB38414f47)
   * vzkETH\_Core: [`0xac01abfbe100b56Fc414C346B175599E5f582912`](https://sepolia.explorer.zksync.io/address/0xac01abfbe100b56Fc414C346B175599E5f582912)
 
-## Optimism Sepolia
+## Optimism Sepolia (Test-only)
 
 * PoolRegistry: [`0x6538C861C7A6997602311342657b9143dD9E8152`](https://sepolia-optimism.etherscan.io/address/0x6538C861C7A6997602311342657b9143dD9E8152)
 * PoolLens: [`0x1b977533bABE14D40E5D66ec65483300dD5f6B0A`](https://sepolia-optimism.etherscan.io/address/0x1b977533bABE14D40E5D66ec65483300dD5f6B0A)
@@ -883,7 +895,7 @@
   * vWBTC\_Core: [`0x6149eFAd7671f496C900B3BeC16Ba31Aed60BE4b`](https://sepolia-optimism.etherscan.io/address/0x6149eFAd7671f496C900B3BeC16Ba31Aed60BE4b)
   * vWETH\_Core: [`0x4E610626BeF901EEE22D558b2ed19e6f7B87cf51`](https://sepolia-optimism.etherscan.io/address/0x4E610626BeF901EEE22D558b2ed19e6f7B87cf51)
 
-## Base Sepolia
+## Base Sepolia (Test-only)
 
 * PoolRegistry: [`0xCa330282BEeb07a81963336d0bf8f5f34317916c`](https://sepolia.basescan.org/address/0xCa330282BEeb07a81963336d0bf8f5f34317916c)
 * PoolLens: [`0x968E60E2Aaf7a99d1FB33825E7a58EdA7841C7a6`](https://sepolia.basescan.org/address/0x968E60E2Aaf7a99d1FB33825E7a58EdA7841C7a6)
@@ -907,7 +919,7 @@
   * vwstETH\_Core: [`0x40A30E1B01e0CF3eE3F22f769b0E437160550eEa`](https://sepolia.basescan.org/address/0x40A30E1B01e0CF3eE3F22f769b0E437160550eEa)
   * vwsuperOETHb\_Core: [`0xF9d609ba31724E199ccaacaD3e3e7ED8462C20C5`](https://sepolia.basescan.org/address/0xF9d609ba31724E199ccaacaD3e3e7ED8462C20C5)
 
-## Unichain Sepolia
+## Unichain Sepolia (Test-only)
 
 * PoolRegistry: [`0x9027cF782515F3184bbF7A6cD7a33052dc52E439`](https://sepolia.uniscan.xyz/address/0x9027cF782515F3184bbF7A6cD7a33052dc52E439)
 * PoolLens: [`0xE32DD86fc8cc7984E453703Ef04Fe822aF411f74`](https://sepolia.uniscan.xyz/address/0xE32DD86fc8cc7984E453703Ef04Fe822aF411f74)
