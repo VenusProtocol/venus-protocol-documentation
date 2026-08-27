@@ -1,9 +1,13 @@
 # BaseXVSProxyOFT
+
+[`BaseXVSProxyOFT` at token-bridge v2.7.0](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/BaseXVSProxyOFT.sol) is the shared abstract LayerZero OFT V2 base. It is not an upgradeable proxy or a standalone deployment. The concrete source and destination contracts fix the token, shared decimals, LayerZero V1 endpoint, and ResilientOracle in their constructors.
+
+In addition to the Venus-specific functions below, the concrete ABI inherits OFT/LzApp functions such as `sendFrom`, `estimateSendFee`, `retryMessage`, trusted-remote and messaging-library configuration, ownership, and packet state. Those inherited functions use LayerZero V1 `uint16` endpoint IDs, named chain IDs in the ABI. Administrative calls should normally be routed through XVSBridgeAdmin and checked against its function registry and AccessControlManager permissions.
 The `BaseXVSProxyOFT` contract is tailored for facilitating cross-chain transactions with an ERC20 token.
 It manages transaction limits of a single and daily transactions.
 This contract inherits key functionalities from other contracts, including pausing capabilities and error handling.
 It holds state variables for the inner token and maps for tracking transaction limits and statistics across various chains and addresses.
-The contract allows the owner to configure limits, set whitelists, and control pausing.
+The contract owner can configure bridge state directly at the Solidity level, but production ownership is assigned to XVSBridgeAdmin, which applies its own registry and AccessControlManager checks.
 Internal functions conduct eligibility check of transactions, making the contract a fundamental component for cross-chain token management.
 
 # Solidity API
@@ -376,6 +380,16 @@ function sendAndCall(address from_, uint16 dstChainId_, bytes32 toAddress_, uint
 
 - - -
 
+### retryMessage
+
+Retries a stored failed LayerZero V1 message after requiring the supplied source path to equal the contract's current nonempty trusted remote. Anyone can submit the retry transaction, but the payload must match the stored failed-message hash.
+
+```solidity
+function retryMessage(uint16 srcChainId_, bytes srcAddress_, uint64 nonce_, bytes payload_) public payable
+```
+
+- - -
+
 ### renounceOwnership
 
 Empty implementation of renounce ownership to avoid any mishappening.
@@ -397,7 +411,6 @@ function token() public view returns (address)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | address | Address of the inner token of this bridge. |
+| \[0] | address | Address of the inner token of this bridge. |
 
 - - -
-

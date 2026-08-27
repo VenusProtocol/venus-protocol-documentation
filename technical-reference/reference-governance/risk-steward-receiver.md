@@ -2,6 +2,10 @@
 Contract that reads updates from a Risk Oracle, validates them with timelock and debounce,
         and either executes them locally via the configured RiskSteward or forwards them cross‑chain.
 
+This page follows [`RiskStewardReceiver.sol` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/RiskSteward/RiskStewardReceiver.sol). On BNB mainnet at block `118369568`, proxy `0x47856bFa74B71d24a5545c7506862B8FddE52baB` used implementation `0xC00Ec4149eCfB60378152e05C5B896c08EA49e6E`, matching the tagged artifact.
+
+This is the origin receiver. It uses LayerZero V2 OApp endpoint IDs (`uint32`), unlike the older `uint16` LayerZero V1 endpoint IDs in Omnichain Governance and the XVS bridge. Do not interchange their peer, fee, or retry APIs.
+
 # Solidity API
 
 ### UPDATE_EXPIRATION_TIME
@@ -397,7 +401,7 @@ function isUpdateExecutable(uint256 updateId) external view returns (bool)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | bool | True if the update is pending, not expired, active, and past its timelock |
+| \[0] | bool | True if the update is pending, not expired, active, and past its timelock |
 
 - - -
 
@@ -417,7 +421,7 @@ function getRiskParameterConfig(string updateType) external view returns (struct
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | struct IRiskStewardReceiver.RiskParamConfig | The risk parameter configuration |
+| \[0] | struct IRiskStewardReceiver.RiskParamConfig | The risk parameter configuration |
 
 - - -
 
@@ -438,7 +442,7 @@ function getLastProcessedUpdate(string updateType, address market) external view
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | The last processed update ID |
+| \[0] | uint256 | The last processed update ID |
 
 - - -
 
@@ -459,7 +463,7 @@ function getLastRegisteredUpdate(string updateType, address market) external vie
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | The last registered update ID |
+| \[0] | uint256 | The last registered update ID |
 
 - - -
 
@@ -507,6 +511,16 @@ function lzSend(uint32 dstEid, struct RiskParameterUpdate update, bytes options,
 
 - - -
 
+### transferOwnership
+
+Starts the two-step ownership transfer used jointly by AccessControlledV8 and the LayerZero OApp base. The pending owner must call `acceptOwnership`.
+
+```solidity
+function transferOwnership(address newOwner) public
+```
+
+- - -
+
 ### renounceOwnership
 
 Disables renounceOwnership function
@@ -519,4 +533,3 @@ function renounceOwnership() public pure
 * Throws RenounceOwnershipNotAllowed
 
 - - -
-

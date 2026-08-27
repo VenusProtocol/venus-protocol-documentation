@@ -2,6 +2,10 @@
 Destination‑chain contract that receives bridged updates from `RiskStewardReceiver` via LayerZero,
         enforces a fixed remote delay, and then executes the updates on the configured `IRiskSteward` contracts.
 
+This page follows [`DestinationStewardReceiver.sol` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/RiskSteward/DestinationStewardReceiver.sol). The stable tag contains destination receiver artifacts on Sepolia-family testnets, but not on the seven destination mainnets. Treat this as the stable staged-rollout API, not evidence that every production network already has this component.
+
+The receiver uses LayerZero V2 OApp endpoint IDs (`uint32`) and peers, not the LayerZero V1 `uint16` trusted-remote model used by Omnichain Governance.
+
 # Solidity API
 
 ### REMOTE_UPDATE_EXPIRATION_TIME
@@ -311,7 +315,7 @@ function getRiskParameterConfig(string updateType) external view returns (struct
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | struct IDestinationStewardReceiver.RiskParamConfig | The risk parameter configuration |
+| \[0] | struct IDestinationStewardReceiver.RiskParamConfig | The risk parameter configuration |
 
 - - -
 
@@ -332,7 +336,7 @@ function getRegisteredUpdate(string updateType, address market) external view re
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | struct IDestinationStewardReceiver.DestinationUpdate | The registered update |
+| \[0] | struct IDestinationStewardReceiver.DestinationUpdate | The registered update |
 
 - - -
 
@@ -353,7 +357,17 @@ function getLastExecutedAt(string updateType, address market) external view retu
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | The last executed timestamp |
+| \[0] | uint256 | The last executed timestamp |
+
+- - -
+
+### transferOwnership
+
+Starts the two-step ownership transfer used jointly by AccessControlledV8 and the LayerZero OApp base. The pending owner must call `acceptOwnership`.
+
+```solidity
+function transferOwnership(address newOwner) public
+```
 
 - - -
 
@@ -369,4 +383,3 @@ function renounceOwnership() public pure
 * Throws RenounceOwnershipNotAllowed
 
 - - -
-
