@@ -12,9 +12,7 @@
 
 **The share token is the Hub.** The `Hub` contract inherits `ERC4626Upgradeable`, so it is itself the ERC-20. There is no separate token contract to look up: the `vhUSDT` address and the USDT Hub address are the same address. Resolve it from `HubRegistry.hubForAsset(asset)` rather than hard-coding.
 
-A vhToken is a claim on a share of the Hub's whole portfolio, not on any one yield source. The capital behind it sits wherever the Hub's policy and queues placed it. At launch on BNB Chain that means Core and Flux only: an FRV Source is registered on every Hub with its caps set, but no Fixed-Rate Vault exists for USDT, USDC or U yet, so no capital routes there until a follow-up proposal wires one.
-
-On BSC testnet the USDT Hub's share token is still named `Vault Share` / `vSHARE`, a placeholder that predates the `vh<asset>` convention. See [Deployed Contracts](../../deployed-contracts/liquidity-hub.md).
+A vhToken is a claim on a share of the Hub's whole portfolio, not on any one yield source. The capital behind it sits wherever the Hub's policy and queues placed it — across whichever Sources are registered and have non-zero caps at the time.
 
 ## Rate
 
@@ -48,17 +46,25 @@ A vhToken is a plain ERC-20: `transfer`, `transferFrom` and `approve` behave nor
 
 ### Supply it to the Core pool as collateral
 
-Each vhToken is being onboarded as a Venus Core pool market, so a holder can supply it, use it as collateral, and borrow other assets against it while the shares keep earning Hub yield underneath.
+Each mainnet vhToken has a deployed Venus Core pool market. After the listing VIP executes, a holder can supply it, use it as collateral, and borrow other assets against it while the shares keep earning Hub yield underneath.
 
-| vhToken | Core market | Collateral factor |
-| ------- | ----------- | ----------------- |
-| `vhUSDT` | `vvhUSDT` | 80% |
-| `vhUSDC` | `vvhUSDC` | 82.5% |
-| `vhU` | `vvhU` | 75% |
+| vhToken | Core market | Collateral factor | Liquidation threshold |
+| ------- | ----------- | ----------------- | --------------------- |
+| `vhUSDT` | `vvhUSDT` | 80% | 80% |
+| `vhUSDC` | `vvhUSDC` | 82.5% | 82.5% |
+| `vhU` | `vvhU` | 75% | 75% |
 
-All three launch with a reserve factor of 10%, a supply cap of 10,000,000 and a **borrow cap of `0`** — the vhToken itself is never borrowable. The market exists to let the shares back a loan, not to create a market in the shares.
+The collateral factor equals the liquidation threshold on all three markets. A position opened at the maximum LTV therefore sits on the liquidation boundary, so borrowers should leave a safety buffer.
 
-**Not live yet.** The market contracts are deployed but the listing VIP has not executed, and the deployment PR is still open. Until it lands, a vhToken is a plain lending position with no collateral value.
+vhToken Core markets do not currently support [E-Mode](../reference-core-pool/resilient-price-feeds/e-mode.md) or Isolation Mode. Borrowers migrating a position from a market that uses either mode should note that the effective LTV and liquidation parameters may differ — the collateral factors listed above apply as-is, without any mode-specific boost or restriction.
+
+All three launch with a liquidation incentive of 10%, a reserve factor of 10%, a supply cap of 10,000,000 and a **borrow cap of `0`** — the vhToken itself is never borrowable. The market exists to let the shares back a loan, not to create a market in the shares.
+
+The Core pool does not value this collateral at the Hub's uncapped redemption rate. Its price source is a [capped oracle](../reference-technical-articles/capped-oracles.md) that multiplies the underlying asset's Resilient Oracle price by a capped `convertToAssets(1 share)` rate. At launch the maximum rate grows at 5% per year, with a 30-day snapshot interval and a 41-basis-point snapshot gap. If the Hub's raw exchange rate outruns that allowance, the collateral price can temporarily trail the value redeemable from the Hub.
+
+Each market also opts into [Protection Mode](../../risk/protection-mode.md), configured with a 5% deviation trigger, a 2% reset threshold and a one-hour cooldown. When protection is active it can reduce the price used for new borrow-capacity checks; liquidation eligibility and seize amounts continue to use the Resilient Oracle spot price.
+
+**Mainnet status:** the market and capped-oracle contracts are deployed. On BSC testnet, the equivalent `vSHARE` / `vvSHARE` market is already live following [proposal 713](https://venus-testnet.vercel.app/#/governance/proposal/713?chainId=97).
 
 The Migrator runs the other direction: `migrateFromCore` / `migrateFromCoreBNB` convert an existing Venus Core supply position into Hub shares in one transaction. It is stateless, permissionless and non-upgradeable, deployed at `0xfe6b8BEf1215C19Cd247FbF495ef560932F1Eb9B`.
 
@@ -73,3 +79,4 @@ The Migrator runs the other direction: `migrateFromCore` / `migrateFromCoreBNB` 
 * [Hub](hub.md) — the contract that issues and prices the share token.
 * [Liquidity Hub](../../whats-new/liquidity-hub.md) — the user-facing introduction.
 * [Deployed Contracts](../../deployed-contracts/liquidity-hub.md) — addresses on both networks.
+* [Core pool markets](../../deployed-contracts/markets.md#core-pool) and [oracles](../../deployed-contracts/oracles.md#bnb-chain-mainnet) — collateral-market and price-source addresses.
