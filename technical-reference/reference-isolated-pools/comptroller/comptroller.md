@@ -14,7 +14,7 @@ the `minLiquidatableCollateral` for the `Comptroller`:
 - `healAccount()`: This function is called to seize all of a given user’s collateral, requiring the `msg.sender` repay a certain percentage
 of the debt calculated by `collateral/(borrows*liquidationIncentive)`. The function can only be called if the calculated percentage does not exceed
 100%, because otherwise no `badDebt` would be created and `liquidateAccount()` should be used instead. The difference in the actual amount of debt
-and debt paid off is recorded as `badDebt` for each market, which can then be auctioned off for the risk reserves of the associated pool.
+and debt paid off is recorded as `badDebt` for each market. That balance historically fed the Shortfall auction design. On BNB Chain mainnet, new auction starts and restarts are paused and RiskFundV2 no longer maintains the per-pool reserve ledger, so recording `badDebt` does not trigger automatic fund coverage.
 - `liquidateAccount()`: This function can only be called if the collateral seized will cover all borrows of an account, as well as the liquidation
 incentive. Otherwise, the pool will incur bad debt, in which case the function `healAccount()` should be used instead. This function skips the logic
 verifying that the repay amount does not exceed the close factor.
@@ -980,4 +980,3 @@ function actionPaused(address market, enum ComptrollerStorage.Action action) pub
 | [0]  | bool | paused True if the action is paused otherwise false |
 
 - - -
-
