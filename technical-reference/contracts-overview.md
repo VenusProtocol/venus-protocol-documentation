@@ -72,7 +72,7 @@ The [ProtocolShareReserve](https://github.com/VenusProtocol/protocol-reserve/blo
 
 [**ResilientOracle**](reference-oracle/resilient-oracle.md)
 
-Venus Protocol implements secondary, primary and pivot oracles to create a validation and fallback strategy that avoids creating a single point of a failure by relying on a single source for prices. The [ResilientOracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/ResilientOracle.sol) contract is responsible for fetching and validating prices for a given vToken and managing which oracles are used for a particular vToken.
+Venus Protocol supports main, pivot, and fallback roles to create per-asset validation and fallback strategies. The [ResilientOracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/ResilientOracle.sol) fetches prices for a vToken's underlying asset and manages the source address and enable flag for each role. Multiple roles are optional, so the live configuration must be checked before assuming that a price is cross-validated.
 
 [**DeviationBoundedOracle**](reference-oracle/deviation-bounded-oracle.md)
 
@@ -82,7 +82,7 @@ The [DeviationBoundedOracle](https://github.com/VenusProtocol/oracle/blob/main/c
 
 [**ChainlinkOracle**](reference-oracle/oracles/chainlink-oracle.md)
 
-[ChainLinkOracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/oracles/ChainlinkOracle.sol) is the primary oracle. If a token isn't support by Chainlink then prices will be fetched from a secondary oracle.
+[ChainlinkOracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/oracles/ChainlinkOracle.sol) reads configured Chainlink feeds and normalizes their prices for the Venus oracle interface. Its role is configured per asset; it is not necessarily the main source for every market.
 
 [**RedStoneOracle**](https://redstone.finance/)
 
@@ -90,11 +90,7 @@ The [DeviationBoundedOracle](https://github.com/VenusProtocol/oracle/blob/main/c
 
 [**BinanceOracle**](reference-oracle/oracles/binance-oracle.md)
 
-[BinanceOracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/oracles/BinanceOracle.sol) contract is responsible for fetching token prices from the Binance oracle. It is used as a secondary oracle.
-
-[**PythOracle**](broken-reference)
-
-[PythOracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/oracles/PythOracle.sol) is used as a pivot oracle to validate prices returned by primary and secondary oracles.
+The [BinanceOracle](https://github.com/VenusProtocol/oracle/blob/main/contracts/oracles/BinanceOracle.sol) fetches configured Binance oracle feeds. Like every source adapter, whether it is main, pivot, fallback, disabled, or unused is determined by the live per-asset configuration.
 
 ## Venus Protocol
 
