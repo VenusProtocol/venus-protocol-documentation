@@ -230,6 +230,7 @@
   * [vhToken](technical-reference/reference-liquidity-hub/vhtoken.md)
   * [Yield Groups](technical-reference/reference-liquidity-hub/yield-groups.md)
   * [Adapters](technical-reference/reference-liquidity-hub/adapters.md)
+  * [HubRouter](technical-reference/reference-liquidity-hub/hub-router.md)
   * [Interfaces](technical-reference/reference-liquidity-hub/interfaces.md)
 
 ## Deployed Contracts

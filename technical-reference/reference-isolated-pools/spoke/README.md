@@ -1,6 +1,6 @@
 # Hub-Funded Spoke Pools
 
-A **spoke pool** is an isolated pool whose Comptroller is `SpokeComptroller` instead of the shared [`Comptroller`](../comptroller/comptroller.md). Everything else is unchanged: the same [`PoolRegistry`](../pool-registry/pool-registry.md), the same [`VToken`](../vtoken/vtoken.md) markets behind the same `VTokenBeacon`, the same [`RewardsDistributor`](../rewards/rewards-distributor.md), the same [Shortfall](../risk-fund-and-shortfall/shortfall.md) and [ProtocolShareReserve](../risk-fund-and-shortfall/protocol-share-reserve.md) plumbing.
+A **spoke pool** is an isolated pool whose Comptroller is `SpokeComptroller` instead of the shared [`Comptroller`](../comptroller/comptroller.md), listed in a [`PoolRegistry`](../pool-registry/pool-registry.md) instance of its own. The rest of the machinery is unchanged: the same [`VToken`](../vtoken/vtoken.md) markets behind the same `VTokenBeacon`, the same [`RewardsDistributor`](../rewards/rewards-distributor.md), the same [Shortfall](../risk-fund-and-shortfall/shortfall.md) and [ProtocolShareReserve](../risk-fund-and-shortfall/protocol-share-reserve.md) plumbing.
 
 What the fork adds is policy that only makes sense for a pool the protocol funds itself:
 
@@ -44,26 +44,58 @@ Because each pool has its own Comptroller, a spoke pool is isolated from the Cor
 * [**SpokeComptroller**](spoke-comptroller.md) — the fork: what it adds on top of `Comptroller`, the new setters and getters, the liquidation routing math, and the bounded-pricing path.
 * [**SpokeComptrollerStorage**](spoke-comptroller-storage.md) — the storage layout, including where it deliberately diverges from `ComptrollerStorage`.
 
+## A registry of its own
+
+A spoke pool is **not** registered in the isolated-pools [`PoolRegistry`](../pool-registry/pool-registry.md). It gets a second, dedicated instance of the same contract, deployed under the name `SpokePoolRegistry`.
+
+The registry is the directory every consumer reads to answer which pools exist: `getAllPools` drives the indexer, the frontend pool list and the risk tooling, and `getVTokenForAsset` is what [ProtocolShareReserve](../risk-fund-and-shortfall/protocol-share-reserve.md) uses as a membership check. Putting a pool whose supply, borrow and liquidation sides are all restricted to known accounts into that directory would hand it to every one of those consumers, each of which would then need a special case keyed on its address. A separate registry gives them the separation for free.
+
+It also separates permissions. An [AccessControlManager](../../reference-governance/access-control-manager.md) role is `keccak256(contractAddress, roleString)`, so a grant on one registry cannot reach the other's pools, and the two products stay independently upgradeable.
+
+> **ProtocolShareReserve holds a single `poolRegistry` address.** It rejects any non-core pool whose vToken that one registry does not know, so pointing it at the spoke registry would break `reduceReserves` and every liquidation in the existing isolated pools, while leaving it where it is starves the spoke pool of income routing. Multi-registry support ships from the `protocol-reserve` repo and has to be live before the spoke registry is wired in. This is a hard prerequisite for listing, not a follow-up.
+
 ## Deployment shape
 
-A spoke pool is created the same way as any other isolated pool, with one difference in the Comptroller it points at. The deploy script does three things:
+Two deploy scripts run, in order.
 
-1. Deploys `SpokeComptrollerImpl` with the `PoolRegistry` address as a constructor argument. It is an immutable, so a wrong value can only be fixed by redeploying the implementation and re-pointing the beacon.
+**`SpokePoolRegistry`** deploys a `PoolRegistry` behind the chain's existing `DefaultProxyAdmin`, initializes it with the AccessControlManager, and *nominates* the Normal Timelock as owner. It is `Ownable2Step`, so the deployer stays the live owner until the VIP accepts. The script refuses to hand over a registry that is not empty or whose ACM address does not read back as expected.
+
+**`SpokeComptroller`** then:
+
+1. Deploys `SpokeComptrollerImpl` with that registry's address as a constructor argument. It is an immutable, so a wrong value can only be fixed by redeploying the implementation and re-pointing the beacon; the script asserts it did not resolve to the isolated-pools registry.
 2. Deploys `SpokeComptrollerBeacon` pointing at that implementation. It is **separate from the shared `ComptrollerBeacon`**, so upgrading one family never touches the other.
-3. Deploys and initializes a `BeaconProxy` against it, transfers the beacon to the Normal Timelock, and *nominates* the Timelock as the Comptroller's owner. The Comptroller is `Ownable2Step`, so the deployer stays the live owner until the listing VIP accepts.
+3. Deploys and initializes a `BeaconProxy` against it, transfers the beacon to the Normal Timelock, and nominates the Timelock as the Comptroller's owner.
 
 Everything else is governance action, and the order matters:
 
-1. `acceptOwnership()` on the Comptroller — it has to come first, before any owner-gated setter.
-2. `setPriceOracle` and `setDeviationBoundedOracle`. The bounded oracle is dereferenced without a zero check, so borrowing and redeeming fail closed until it is set — see [Bounded collateral pricing](spoke-comptroller.md#bounded-collateral-pricing).
-3. `PoolRegistry.addPool`, which requires a non-zero oracle and is also what sets the pool-wide liquidation incentive for the first time.
-4. `PoolRegistry.addMarket` per market, then the per-market configuration: caps, collateral factor, liquidation threshold, IRM, liquidation incentive, and the allowlists.
+1. `acceptOwnership()` on both the registry and the Comptroller — before any owner-gated setter.
+2. `setPriceOracle` and `setDeviationBoundedOracle` on the Comptroller. The bounded oracle is dereferenced without a zero check, so borrowing and redeeming fail closed until it is set — see [Bounded collateral pricing](spoke-comptroller.md#bounded-collateral-pricing).
+3. `SpokePoolRegistry.addPool`, which requires a non-zero oracle and is also what sets the pool-wide liquidation incentive for the first time.
+4. `SpokePoolRegistry.addMarket` per market, then the per-market configuration: caps, collateral factor, liquidation threshold, IRM, liquidation incentive, and the allowlists.
 
-Every policy setter is gated by the [AccessControlManager](../../reference-governance/access-control-manager.md), so the roles have to be granted in the same VIP.
+### Roles the VIP has to grant
+
+None of the isolated pools' existing grants carry over, because each names the isolated-pools registry as the account.
+
+| On | Role string | Granted to |
+| --- | --- | --- |
+| `SpokePoolRegistry` | `addPool(string,address,uint256,uint256,uint256)` | governance |
+| `SpokePoolRegistry` | `addMarket(AddMarketInput)` | governance |
+| `SpokePoolRegistry` | `setPoolName(address,string)` | governance |
+| `SpokePoolRegistry` | `updatePoolMetadata(address,VenusPoolMetaData)` | governance |
+| `SpokeComptroller` | `setCloseFactor(uint256)` | `SpokePoolRegistry` |
+| `SpokeComptroller` | `setLiquidationIncentive(uint256)` | `SpokePoolRegistry` |
+| `SpokeComptroller` | `setMinLiquidatableCollateral(uint256)` | `SpokePoolRegistry` |
+| `SpokeComptroller` | `setCollateralFactor(address,uint256,uint256)` | `SpokePoolRegistry` |
+| `SpokeComptroller` | `setMarketSupplyCaps(address[],uint256[])` | `SpokePoolRegistry` |
+| `SpokeComptroller` | `setMarketBorrowCaps(address[],uint256[])` | `SpokePoolRegistry` |
+
+The bottom six are the setters `addPool` and `addMarket` drive with the registry as the caller; without them `addPool` reverts at execution. The pool's own policy setters (the allowlists, the per-market incentive) and `enterMarketBehalf` are separate grants on top of these — see [SpokeComptroller](spoke-comptroller.md#solidity-api).
 
 ## Integration notes
 
-* **Reading the pool.** `SpokeComptrollerViewInterface` collects the getters an integrator needs — the two allowlists, the effective liquidation incentive, the bounded oracle, plus `supplyCaps` and `actionPaused` repeated so that consuming a spoke pool takes one import rather than three. `actionPaused` is declared there with a `uint8` action so a consumer does not have to import this repo's `Action` enum; the encoding is identical.
+* **Reading the pool through the lens.** [`PoolLens`](../lens/pool-lens.md) reports the spoke-only state alongside everything else, so a consumer does not need a separate code path. `PoolData` gains `deviationBoundedOracle` and `liquidationAllowlistEnabled`; `VTokenMetadata` gains `supplyAllowlistEnabled` and a `liquidationIncentiveMantissa` that is **per market**. Each is read with a `staticcall`, so an ordinary isolated pool reports absence (`address(0)` / `false`) rather than reverting the whole read, and the per-market incentive falls back to the pool-wide value there. The fields are appended rather than reordered, so a decoder built against the older shape still reads the fields it knows. `PoolData.minLiquidatableCollateral` remains pool-wide; the per-market discount is the one on `VTokenMetadata`.
+* **Reading the pool directly.** `SpokeComptrollerViewInterface` collects the getters an integrator needs — the two allowlists, the effective liquidation incentive, the bounded oracle, plus `supplyCaps` and `actionPaused` repeated so that consuming a spoke pool takes one import rather than three. `actionPaused` is declared there with a `uint8` action so a consumer does not have to import this repo's `Action` enum; the encoding is identical.
 * **Reading events and errors.** `SpokeComptrollerInterface` declares the full observable surface. Where an error means the same thing as in the shared `Comptroller`, it keeps the same name, arguments and selector; where the meaning changed, it was given a new name deliberately so the two do not collide. See [Errors](spoke-comptroller.md#errors).
 * **The Liquidity Hub** supplies the liquidity side through `AdapterSpokeV1` and the Spoke YieldGroup — see [Adapters](../../reference-liquidity-hub/adapters.md#adapterspokev1).
 * **Liquidating tokenized-stock collateral** in a spoke pool is covered by [`BStockLiquidator`](../../reference-core-pool/bstock-liquidator.md), which serves both the Core pool and allowlisted spoke pools from the same entry points.

@@ -40,6 +40,15 @@ The Hub holds two independent, governance-configured ordered queues — a **depo
 
 At launch the queues are configured **Core-first in, Flux-first out** — deposit `[Core, Flux]`, withdraw `[Flux, Core, FRV]`. Core absorbs everyday inflows, so new capital lands in the deepest and most liquid market first; withdrawals are served from Flux ahead of Core, which keeps Core's balance intact as a buffer. FRV is out of the deposit queue entirely (nothing to route into) and sits last on the withdraw side, where an empty Source costs nothing to walk past. The two orders are set independently and governance can reorder either.
 
+### Getting in and out in one transaction
+
+Depositing into the Hub and putting the resulting [vhToken](../technical-reference/reference-liquidity-hub/vhtoken.md) to work as Core collateral are two separate actions, and doing them by hand means four transactions. The **[HubRouter](../technical-reference/reference-liquidity-hub/hub-router.md)** collapses that into one call, and covers two cases a user cannot easily do themselves:
+
+* **Moving an existing Core position into the Hub.** A position with borrows against it cannot simply be redeemed — removing the collateral first would leave the account under water. The router borrows the position's worth from Core, supplies the replacement collateral *before* the old collateral leaves, and repays inside the same transaction, so a leveraged position migrates in full rather than in slices.
+* **Supplying collateral to a spoke pool.** In a [hub-funded spoke pool](hub-funded-spoke-pools.md) the protocol lends and users post the collateral, and enabling a market as collateral is a second transaction of its own. The router does both at once, across several markets and even several pools in one call.
+
+The router is permissionless and immutable, holds no funds between calls, and can only ever act for the account that called it. It is written but not yet deployed, and its spoke paths additionally wait on a governance grant.
+
 ### Operator rebalancing
 
 Beyond user-driven flow, a privileged **Operator** can proactively rebalance capital between *already-registered* Sources and products — for example, pulling funds back to Core when general-market utilization tightens, or seeding a newly onboarded product. Rebalancing is **net-zero** (the amount pulled equals the amount pushed; nothing enters or leaves the Hub) and is bounded by the same caps governance sets. The Operator can never create a new route or move funds outside the registered set.

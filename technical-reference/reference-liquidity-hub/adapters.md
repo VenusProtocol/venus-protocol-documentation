@@ -16,7 +16,7 @@ All four implement [`IResourceAdapter`](interfaces.md).
 The split between mutating and view dispatch is load-bearing for security:
 
 * **Mutating functions (`deposit`, `withdraw`) MUST be invoked via `delegatecall`** from the YieldGroup. They execute in the YieldGroup's storage context, so receipt-token credits and debits land on the YieldGroup, not the adapter. From the resource's perspective, `msg.sender` is the YieldGroup.
-* **View functions are invoked via normal `call` / `staticcall`.** Where the answer depends on whose position is being queried, they take an explicit `holder` parameter (the YieldGroup).
+* **View functions are invoked via normal `call` / `staticcall`.** Where the answer depends on whose position is being queried, they take an explicit `holder` parameter (the YieldGroup). `maxDeposit` and `validateRegistration` name no account and read `msg.sender` instead, which is the calling YieldGroup — see [Caller identity](#caller-identity).
 
 ### `onlyDelegateCall` guard
 
@@ -92,18 +92,22 @@ Its selectors are nearly the same as `AdapterCoreV1`'s, and it disagrees with it
 
 * **NAV excludes `badDebt`.** See [Valuation](#valuation-excludes-written-off-debt) below — this is the important one.
 * **Liquidity is cash *net of reserves*,** and both it and the position are floored to a whole number of vTokens, because `withdraw` redeems by vToken **count** rather than by underlying amount.
-* **No exit fee to gross up.** Isolated pools have no `treasuryPercent`; their cut is the reserve factor, already netted out of the exchange rate. There is nothing unmodeled to reject at registration, so `validateRegistration` guards the supply allowlist instead.
-* **The supply-cap sentinels are inverted** relative to Core (see `maxDeposit` below).
+* **No exit fee to gross up.** Isolated pools have no `treasuryPercent`; their cut is the reserve factor, already netted out of the exchange rate. There is nothing unmodeled to reject at registration, so `validateRegistration` guards the market listing and the supply allowlist instead.
+* **The supply cap has an uncapped sentinel** that Core does not (see `maxDeposit` below).
 
 Detail per function:
 
 * **`deposit`** — `forceApprove`s the market and calls `mint(amount)`. Under delegatecall the market sees the YieldGroup as `msg.sender`, so the vTokens are credited there — and that is also the account the market's supply allowlist checks. Reverts `DepositBelowOneVToken` rather than minting zero for a sub-one-vToken remainder, which hands the leg back to the YieldGroup's cascade to route around instead of stranding the amount silently.
 * **`withdraw`** — **denominated in vTokens, not in underlying**: it calls `redeem(tokens)` with the fewest vTokens worth at least `amount`, rather than `redeemUnderlying(amount)`. `redeemUnderlying` derives the burn by rounding up and that derived count is not bounded by the caller's balance — `_redeemFresh` subtracts it in checked arithmetic and panics when it overshoots. Naming the burn removes the derivation. The payout is `truncate(exchangeRate × tokens)`, so it is at least `amount` and exceeds it by up to one vToken unit; the adapter forwards exactly `amount` and leaves the surplus as idle on the YieldGroup. **Unlike Flux and FRV, Spoke leaves a surplus on essentially every redeem.**
 * **`accrue`** — pokes the market's `accrueInterest()`, like Core.
-* **`maxDeposit`** — honors, in order: the market's supply allowlist, its `MINT` pause, and its supply cap. **The cap sentinels are the inverse of Core's**: a cap of `0` is a real cap of zero (`preMintHook` rejects every mint against it), and `type(uint256).max` is the "uncapped" sentinel. Uncapped markets report `type(uint128).max` rather than `type(uint256).max`, because `YieldGroupBase.maxDeposit()` sums the room of every queued resource in checked arithmetic and two uncapped markets would overflow that sum. Headroom is then trimmed by a **0.1% conservative margin**, as Core does, so a normal accrual between the view and the mint cannot push `deposit(maxDeposit())` over the cap. Room below one vToken unit is reported as zero.
+* **`maxDeposit`** — honors, in order: the market's supply allowlist, its `MINT` pause, and its supply cap. **The uncapped sentinel is one-sided**: here `type(uint256).max` skips the cap check entirely, while `0` is a real cap of zero (`preMintHook` compares `nextTotalSupply > supplyCap`, so every mint is rejected). The Core Comptroller has no uncapped sentinel, and there `0` is the value that disables minting. Uncapped markets report `type(uint128).max` rather than `type(uint256).max`, because `YieldGroupBase.maxDeposit()` sums the room of every queued resource in checked arithmetic and two uncapped markets would overflow that sum. Headroom is then trimmed by a **0.1% conservative margin**, as Core does, so a normal accrual between the view and the mint cannot push `deposit(maxDeposit())` over the cap. Room below one vToken unit is reported as zero.
 * **`maxWithdraw`** — the lesser of the position's recoverable value and the market's *payable* cash (`getCash − totalReserves`; reserves sit inside cash but are not redeemable, and `_redeemFresh` gates on the difference). Subtracting reserves also makes the figure invariant across the reserve sweep `accrueInterest` performs. Both sides are floored to a whole number of vTokens and valued back into underlying, because `withdraw` redeems by count. The flooring is exact rather than conservative, so the last vToken stays withdrawable and a market can be drained to zero and deregistered.
 * **`spotAPYBps`** — `supplyRatePerBlock × blocksOrSecondsPerYear`, read from the **market itself**. The `blocksPerYear` argument is ignored: an isolated-pools market carries its own annualiser as an immutable and may be block- or time-based, so a YieldGroup-level constant would misprice whichever kind it was not configured for. Deploy the Spoke YieldGroup with `blocksPerYear = 0`, as the Flux family already does.
-* **`validateRegistration`** — rejects a market whose supply allowlist is enabled without the registering YieldGroup on it (`SupplyNotAllowed`); every deposit would revert, so the resource would occupy a queue slot it can never fill. **The listing VIP must therefore call `setAllowedSupplier(vToken, <SpokeSource>, true)` on the pool before `addResource`.** The same call doubles as proof that the market really belongs to a spoke pool, since the allowlist accessors exist only on `SpokeComptroller` and the call reverts against any other Comptroller. Nothing else is asserted — in particular an unset `deviationBoundedOracle` is *not* grounds for rejection: it blocks borrowing, and so the market's yield, but leaves the Hub's own paths intact.
+* **`validateRegistration`** — rejects the two configurations `preMintHook` would reject on every deposit, either of which would leave the resource holding a queue slot it can never fill:
+  * a market its own Comptroller does not list (`MarketNotListed`), and
+  * a market whose supply allowlist is enabled without the registering YieldGroup on it (`SupplyNotAllowed`). **The listing VIP must therefore call `setAllowedSupplier(vToken, <SpokeSource>, true)` on the pool before `addResource`.**
+
+  The two checks also establish what the market is. The listing check ties `resource` to the Comptroller it names — any contract can return a real `SpokeComptroller` from `comptroller()`, but only a market that Comptroller actually lists passes. The allowlist accessors then pin that Comptroller to the spoke fork, since they exist nowhere else and the call reverts against any other Comptroller. Nothing else is asserted — in particular an unset `deviationBoundedOracle` is *not* grounds for rejection: it blocks borrowing, and so the market's yield, but leaves the Hub's own paths intact.
 
 ### Valuation excludes written-off debt
 
@@ -117,13 +121,15 @@ Note that `maxDeposit` uses the market's **own** (badDebt-inclusive) exchange ra
 
 ### Caller identity
 
-`maxDeposit` and `validateRegistration` are the two `IResourceAdapter` members that take no `holder`, and both are invoked by the YieldGroup as a plain call — so `msg.sender` **is** the prospective supplier, and reading the market's allowlist against it is exact rather than a convention. Operationally this means a YieldGroup whose grant is revoked reports zero room and is routed around, instead of advertising capacity that every deposit then reverts on.
+`maxDeposit` and `validateRegistration` name no `holder`, and both are invoked by the YieldGroup as a plain call — so `msg.sender` **is** the prospective supplier, and reading the market's allowlist against it is exact rather than a convention. (Every other view that depends on whose position is being queried takes the holder explicitly, and the mutating members arrive by delegatecall.) Operationally this means a YieldGroup whose grant is revoked reports zero room and is routed around, instead of advertising capacity that every deposit then reverts on.
 
 Fee-on-transfer underlyings are unsupported, matching the rest of the Hub.
 
 **Constants:** `EXP_SCALE` (`1e18`), `UNCAPPED_DEPOSIT_ROOM` (`type(uint128).max`), `MANTISSA_TO_BPS` (`1e14`), `CAP_TRIM_DIVISOR` (`1000`).
 
-**Errors:** `NotDelegateCall`, `VTokenMintFailed`, `VTokenRedeemFailed`, `VTokenAccrueFailed`, `VTokenUnderfilled`, `DepositBelowOneVToken`, `SupplyNotAllowed`.
+**Errors:** `NotDelegateCall`, `VTokenUnderfilled`, `DepositBelowOneVToken`, `SupplyNotAllowed`, `MarketNotListed`.
+
+Unlike `AdapterCoreV1` there are no `VTokenMintFailed` / `VTokenRedeemFailed` / `VTokenAccrueFailed` variants: an isolated-pools `mint`, `redeem` or `accrueInterest` either returns `NO_ERROR` or reverts, so a failure arrives as the market's own revert rather than as an error code. Only the legacy Core pool still sets those codes.
 
 ## Adding a new protocol family
 
