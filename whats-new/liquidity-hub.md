@@ -14,15 +14,18 @@ Today a lender has to choose between independent products — Venus Core lending
 
 The Hub is purely a routing layer. It does **not** modify the parameters or governance of the underlying Core / Flux / FRV products — it only moves capital into and out of them.
 
-### The three yield families (Sources)
+### The yield families (Sources)
 
-A **Source** groups downstream products of the same kind behind one uniform interface. v1 ships three:
+A **Source** groups downstream products of the same kind behind one uniform interface. v1 ships three, with a fourth built:
 
-| Source   | Underlying protocol      | What the Hub holds                         |
-| -------- | ------------------------ | ------------------------------------------ |
-| **Core** | Venus Core lending       | vTokens (Compound-style receipt tokens)    |
-| **Flux** | Fluid Lending (third-party) | fTokens (ERC-4626 shares)               |
-| **FRV**  | Venus Fixed-Rate Vaults  | Fixed-Rate Vault shares (ERC-4626)         |
+| Source    | Underlying protocol         | What the Hub holds                      |
+| --------- | --------------------------- | --------------------------------------- |
+| **Core**  | Venus Core lending          | vTokens (Compound-style receipt tokens) |
+| **Flux**  | Fluid Lending (third-party) | fTokens (ERC-4626 shares)               |
+| **FRV**   | Venus Fixed-Rate Vaults     | Fixed-Rate Vault shares (ERC-4626)      |
+| **Spoke** | Venus [hub-funded spoke pools](hub-funded-spoke-pools.md) | vTokens of the pool's liquidity side |
+
+The **Spoke** Source is what makes the Hub the funder of a hub-funded spoke pool: it supplies the borrowable side of an isolated pool that only the Hub is allowed to supply. It is written and tested but **not deployed** — no spoke pool exists yet for it to route into.
 
 At launch only **Core** and **Flux** hold a live product. The FRV Source is registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for these assets on BNB Chain yet, so it is wired to nothing and receives no capital until a follow-up proposal adds one.
 
@@ -36,6 +39,15 @@ The Hub holds two independent, governance-configured ordered queues — a **depo
 * **Withdraw** — the Hub serves the request from its own idle balance first, then walks the withdraw queue, pulling liquidity in order until the request is filled. If the request exceeds total available liquidity, or exceeds the per-transaction withdrawal cap, the **entire transaction reverts**.
 
 At launch the queues are configured **Core-first in, Flux-first out** — deposit `[Core, Flux]`, withdraw `[Flux, Core, FRV]`. Core absorbs everyday inflows, so new capital lands in the deepest and most liquid market first; withdrawals are served from Flux ahead of Core, which keeps Core's balance intact as a buffer. FRV is out of the deposit queue entirely (nothing to route into) and sits last on the withdraw side, where an empty Source costs nothing to walk past. The two orders are set independently and governance can reorder either.
+
+### Getting in and out in one transaction
+
+Depositing into the Hub and putting the resulting [vhToken](../technical-reference/reference-liquidity-hub/vhtoken.md) to work as Core collateral are two separate actions, and doing them by hand means four transactions. The **[HubRouter](../technical-reference/reference-liquidity-hub/hub-router.md)** collapses that into one call, and covers two cases a user cannot easily do themselves:
+
+* **Moving an existing Core position into the Hub.** A position with borrows against it cannot simply be redeemed — removing the collateral first would leave the account under water. The router borrows the position's worth from Core, supplies the replacement collateral *before* the old collateral leaves, and repays inside the same transaction, so a leveraged position migrates in full rather than in slices.
+* **Supplying collateral to a spoke pool.** In a [hub-funded spoke pool](hub-funded-spoke-pools.md) the protocol lends and users post the collateral, and enabling a market as collateral is a second transaction of its own. The router does both at once, across several markets and even several pools in one call.
+
+The router is permissionless and immutable, holds no funds between calls, and can only ever act for the account that called it. It is written but not yet deployed, and its spoke paths additionally wait on a governance grant.
 
 ### Operator rebalancing
 
