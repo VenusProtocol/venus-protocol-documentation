@@ -1,8 +1,8 @@
 # OmnichainProposalSender
 
-OmnichainProposalSender contract builds upon the functionality of its parent contract, BaseOmnichainControllerSrc
-It sends a proposal's data to remote chains for execution after the proposal passes on the main chain
-when used with GovernorBravo, the owner of this contract must be set to the Timelock contract
+[`OmnichainProposalSender` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Cross-chain/OmnichainProposalSender.sol) is the BNB-side LayerZero V1 sender. It sends proposal data to configured destination executors after the BNB proposal passes. In the production governance flow its owner is the Normal Timelock, while the exact caller permissions for `execute` and administrative functions are resolved by AccessControlManager.
+
+The current API includes inherited `setMaxDailyLimit`, `pause`, `unpause`, `setAccessControlManager`, `owner`, and `transferOwnership` selectors. Ownership renunciation is deliberately disabled. `retryExecute` is for sends that failed before LayerZero accepted them; `fallbackWithdraw` clears a matching stored execution and recovers its original native-token value.
 
 # Solidity API
 
@@ -67,8 +67,8 @@ function estimateFees(uint16 remoteChainId_, bytes payload_, bool useZro_, bytes
 
 | Name | Type    | Description                                                    |
 | ---- | ------- | -------------------------------------------------------------- |
-| [0]  | uint256 | nativeFee The amount of fee in the native gas token (e.g. ETH) |
-| [1]  | uint256 | zroFee The amount of fee in ZRO token                          |
+| \[0]  | uint256 | nativeFee The amount of fee in the native gas token (e.g. ETH) |
+| \[1]  | uint256 | zroFee The amount of fee in ZRO token                          |
 
 ---
 

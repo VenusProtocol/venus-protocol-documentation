@@ -1,7 +1,9 @@
 # DiamondConsolidated
 
-This contract contains the functions defined in the different facets of the Diamond, plus the getters to the public variables.
-This contract cannot be deployed, due to its size. Its main purpose is to allow the easy generation of an ABI and the typechain to interact with the
-Unitroller contract in a simple way
+`DiamondConsolidated` inherits the Diamond and all five facet contracts to generate a convenient combined ABI and TypeChain type.
 
-# Solidity API
+It is a build-time artifact and is too large to deploy. It has no runtime address, and it must not be treated as the Unitroller implementation or as evidence that every inherited selector is currently installed.
+
+Use the combined ABI to decode calls only after checking the selector against `facetAddress(bytes4)` or `facets()` on the live Unitroller. See the [BNB Core Pool Comptroller version map](../README.md).
+
+Source: [DiamondConsolidated.sol in venus-protocol v10.3.0](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Comptroller/Diamond/DiamondConsolidated.sol).

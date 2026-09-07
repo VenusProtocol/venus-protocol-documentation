@@ -4,7 +4,7 @@ Let's take a quick look at the Venus interface and the features available in eac
 
 ### Dashboard
 
-In the center of the Dashboard interface, you will find the Supply and Borrow markets. You'll also notice a new column called 'Pool' which identifies the pool to which each market belongs. The Supply market allows you to lend your cryptocurrency assets and earn interest on them. You can choose which assets to supply and specify the amount you want to lend. On the other hand, the Borrow market allows you to borrow cryptocurrency assets by using your supplied assets as collateral. You can select the assets you want to borrow and specify the amount you need.
+In the center of the Dashboard interface, you will find the Supply and Borrow markets. The Supply market allows you to lend your cryptocurrency assets and earn interest on them. You can choose which assets to supply and specify the amount you want to lend. On the other hand, the Borrow market allows you to borrow cryptocurrency assets by using your supplied assets as collateral. You can select the assets you want to borrow and specify the amount you need.
 
 <figure><img src="../../.gitbook/assets/Screenshot 2023-08-02 at 9.35.46 AM.png" alt=""><figcaption></figcaption></figure>
 
@@ -16,15 +16,13 @@ The Account interface provides an overview of your supplied and borrowed assets.
 
 ### Core Pool
 
-The Core Pool interface is your hub for exploring all primary markets available. It allows you to click on each market to examine essential metrics such as 'Supply APY', 'Borrow APY', and 'Total Liquidity', among others. This interface centralizes all your lending and borrowing activities within the main markets.
+The Core Pool is accessed from the Markets interface, which lists lending markets for the selected chain and displays metrics such as Supply APY, Borrow APY, and liquidity. On chains where [Isolation Mode](../../whats-new/isolated-e-mode.md) groups are available, they appear as an **Isolation mode** tab within the Core Pool interface.
 
-<figure><img src="../../.gitbook/assets/Screenshot 2023-08-02 at 10.01.29 AM.png" alt=""><figcaption></figcaption></figure>
+Isolation Mode is separate from the deprecated standalone Isolated Pools product described below.
 
 ### Pools
 
-The Pools interface allows you to explore all isolated pools available. You can click on each pool to view all the markets within it. In the markets, you can see various metrics such as 'Supply APY', 'Borrow APY', 'Total Liquidity', and more.
-
-<figure><img src="../../.gitbook/assets/Screenshot 2023-08-02 at 9.33.46 AM.png" alt=""><figcaption></figcaption></figure>
+The standalone Isolated Pools navigation and market screens described in earlier versions of this guide have been removed. New supply and borrow activity in these pools is not available through the Venus interface. If you still have a position or unclaimed rewards in a legacy isolated pool, follow the [exit and rewards guide](../isolated-pools-deprecation.md).
 
 ### Vaults
 

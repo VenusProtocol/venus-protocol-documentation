@@ -2,9 +2,11 @@
 
 EBrake (Emergency Brake) is a Venus periphery contract that acts as an emergency action router for the protocol. It exposes a curated set of Comptroller emergency functions behind Access Control Manager (ACM) permissions, allowing the multisig, automated monitoring contracts, and trusted third-party services to rapidly tighten protocol parameters during an incident — without waiting for a governance VIP.
 
+> **Version scope:** This API reference follows [`venus-periphery` v1.2.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/contracts/EmergencyBrake). EBrake is deployed behind upgradeable proxies. Its effective behavior depends on the current implementation, immutable Comptroller/type pair, ACM grants, and the Comptroller version on each network; verify those values from the [deployment registry](../../deployed-contracts/periphery.md) and explorer before incident use.
+
 ## Overview
 
-During a security incident, every block of delay increases potential losses. EBrake provides a fast-path for protective actions that are safe to take without governance: pausing market actions, reducing collateral factors, and lowering supply/borrow caps. It enforces a strict **"tighten only, never loosen"** invariant — the worst outcome from a compromised EBrake caller is a temporary freeze, never fund loss.
+During a security incident, every block of delay can increase potential losses. EBrake provides a fast path for selected protective actions without waiting for a governance proposal: pausing market actions, reducing collateral factors, and lowering supply/borrow caps. The contract restricts these mutators to tightening configured parameters, but a mistaken or compromised caller can still block user actions, reduce borrowing capacity, or prolong an incident. The contract does not guarantee that downstream economic loss is impossible.
 
 Recovery from any EBrake action always goes through a governance VIP, which also calls the snapshot reset functions to prepare EBrake for future incidents.
 
@@ -33,14 +35,14 @@ EBrake can only tighten restrictions, never loosen them. This means it intention
 - **Target individual users** — prevents griefing specific addresses
 - **Change the oracle or liquidation incentive** — would cause mass mispricing or alter liquidation economics for all users
 
-**Worst-case if EBrake is compromised:**
+**Actions available to a compromised authorized caller include:**
 
-- Pauses minting, borrowing, redeeming, or transfers (inconvenient, no fund loss)
-- Zeros supply/borrow caps (blocks new positions; existing positions are unaffected)
-- Decreases collateral factor (blocks new borrows against an asset; does **not** liquidate existing positions since LT is unchanged)
-- Pauses flash loans (blocks flash loan attack vector, no user impact)
+- Pausing minting, borrowing, redeeming, or transfers, which can delay entry and exit operations
+- Zeroing supply/borrow caps, which blocks additional exposure and can affect later account actions
+- Decreasing collateral factor, which does not directly change liquidation eligibility while liquidation threshold is preserved, but can restrict later borrows or redemptions
+- Pausing flash loans, which can block integrations that depend on that facility
 
-Recovery is a governance VIP that restores all parameters — a temporary freeze, not a catastrophic loss.
+Recovery requires a governance VIP that restores the affected parameters and clears the corresponding snapshots. Operational and economic consequences depend on the affected markets and recovery time.
 
 ### Pre-Incident Snapshots
 
@@ -48,7 +50,7 @@ Whenever EBrake tightens a parameter for the first time, it snapshots the origin
 
 ### BSC vs Non-BSC Differences
 
-EBrake is deployed on all Venus chains, but its behavior differs based on the underlying comptroller:
+EBrake supports two Comptroller families. The currently published registry lists deployments on only a subset of Venus networks, and behavior differs by the configured Comptroller:
 
 | Feature                              | BSC — Diamond Comptroller (`IS_ISOLATED_POOL=false`) | Non-BSC — IL Comptroller (`IS_ISOLATED_POOL=true`) |
 | ------------------------------------ | ---------------------------------------------------- | -------------------------------------------------- |
@@ -63,7 +65,7 @@ All other functions (`pauseActions`, `pauseSupply`, `pauseBorrow`, `pauseRedeem`
 
 ## Inheritance
 
-- `AccessControlledV8` — All functions are gated via the Venus Access Control Manager
+- `AccessControlledV8` — privileged state-changing functions are gated through the Venus Access Control Manager; initialization and public views are not ACM actions
 
 ## State Variables
 
@@ -109,6 +111,18 @@ Holds the pre-incident state captured by EBrake before any tightening action. Ne
 # Solidity API
 
 ## EBrake
+
+### initialize
+
+Initializes the proxy with its Access Control Manager. The implementation constructor fixes `COMPTROLLER` and `IS_ISOLATED_POOL` and disables direct initialization of the implementation.
+
+```solidity
+function initialize(address accessControlManager_) external initializer
+```
+
+This is a one-time proxy initialization function; it is not an ACM-gated incident action.
+
+---
 
 ### pauseActions
 
@@ -404,7 +418,7 @@ Targets a single pool. No-ops (returns without event) if `newCF == currentCF`. U
 
 ### setMarketBorrowCaps
 
-Decrease borrow caps on one or more markets. Setting to 0 blocks all new borrows. Existing borrows are never affected by caps.
+Decrease borrow caps on one or more markets. Setting a cap to 0 blocks additional borrowing; it does not change debt already recorded, although the account remains subject to normal interest and liquidation rules.
 
 ```solidity
 function setMarketBorrowCaps(address[] calldata markets, uint256[] calldata newBorrowCaps) external
@@ -439,7 +453,7 @@ Iterates the markets array. Elements equal to the current cap are silently skipp
 
 ### setMarketSupplyCaps
 
-Decrease supply caps on one or more markets. Setting to 0 blocks all new deposits. Existing deposits are never affected by caps.
+Decrease supply caps on one or more markets. Setting a cap to 0 blocks additional deposits; it does not change an existing supplied balance, although a separate redeem pause can still block withdrawals.
 
 ```solidity
 function setMarketSupplyCaps(address[] calldata markets, uint256[] calldata newSupplyCaps) external
@@ -614,7 +628,7 @@ function getMarketCFSnapshot(address market, uint96 poolId) external view return
 
 ### Access Control
 
-All functions are gated via the Venus ACM. No function can be called without an explicit ACM permission grant. The set of permissions granted at deployment differs between BSC and non-BSC chains — Diamond-only functions (`pauseFlashLoan`, `disablePoolBorrow`, `revokeFlashLoanAccess`, `decreaseCF(address,uint96,uint256)`) are not granted on IL chains.
+Privileged EBrake mutators require an explicit Venus ACM grant for their exact signature. Public view functions such as `getMarketCFSnapshot` are ungated, and `initialize` is protected by one-time initialization rather than ACM. The set of mutator grants differs between BSC and non-BSC chains — Diamond-only functions (`pauseFlashLoan`, `disablePoolBorrow`, `revokeFlashLoanAccess`, `decreaseCF(address,uint96,uint256)`) are not intended for IL chains.
 
 ### Snapshot Integrity
 
@@ -628,7 +642,7 @@ EBrake uses first-write-wins snapshots to capture the pre-incident state:
 
 EBrake decreases CF but always preserves LT when calling `setCollateralFactor`. This is intentional:
 
-- Decreasing CF prevents **new** borrows against the asset but does not affect existing positions.
+- Decreasing CF does not directly lower LT or make an account liquidatable by itself, but it can reduce available liquidity and restrict later borrow or redeem operations for existing accounts.
 - Decreasing LT would instantly make previously healthy positions liquidatable, harming innocent users.
 
 Recovery VIPs may restore both CF and LT to their original values, which is why both are included in the snapshot.
@@ -644,7 +658,7 @@ Both flags must allow borrowing for borrows to actually proceed. A recovery VIP 
 
 ## Deployment
 
-EBrake is deployed behind a `TransparentUpgradeableProxy`. The `IS_ISOLATED_POOL` flag is set in the constructor and cannot be changed. On BSC, `IS_ISOLATED_POOL = false`; on all other chains, `IS_ISOLATED_POOL = true`.
+EBrake is deployed behind a `TransparentUpgradeableProxy`. The implementation constructor fixes `COMPTROLLER` and `IS_ISOLATED_POOL`, so every proxy-to-implementation mapping must use an implementation built for that network and Comptroller family. On the documented BSC deployment `IS_ISOLATED_POOL = false`; the documented IL Comptroller deployments use `true`.
 
 ### BNB Chain Mainnet
 
@@ -662,4 +676,4 @@ EBrake is deployed behind a `TransparentUpgradeableProxy`. The `IS_ISOLATED_POOL
 
 ## Audits
 
-EBrake undergoes security audits before mainnet deployment. Audit reports are available in the [venus-periphery repository](https://github.com/VenusProtocol/venus-periphery/tree/main/audits).
+Published EBrake and DeviationSentinel audit reports are indexed in the [`venus-periphery` v1.2.0 release](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/audits). A report's scope and reviewed commit should be checked against the current proxy implementation.

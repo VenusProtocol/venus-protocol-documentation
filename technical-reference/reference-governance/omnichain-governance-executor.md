@@ -1,6 +1,8 @@
 # OmnichainGovernanceExecutor
 
-Executes the proposal transactions sent from the main chain
+[`OmnichainGovernanceExecutor` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Cross-chain/OmnichainGovernanceExecutor.sol) receives LayerZero V1 messages from the trusted BNB sender, queues each route through its destination TimelockV8, and permits permissionless execution after the timelock ETA. Only the configured guardian can cancel a queued remote proposal.
+
+The deployed surface also inherits LayerZero configuration, trusted-remote, failed-message, pause, ownership, and receive-limit selectors from `NonblockingLzApp` and [BaseOmnichainControllerDest](base-omnichain-controller-dest.md). Administrative calls normally pass through OmnichainExecutorOwner; do not infer direct caller authority from public ABI presence.
 
 # Solidity API
 
@@ -276,6 +278,6 @@ function state(uint256 proposalId_) public view returns (enum OmnichainGovernanc
 
 | Name | Type                                           | Description    |
 | ---- | ---------------------------------------------- | -------------- |
-| [0]  | enum OmnichainGovernanceExecutor.ProposalState | Proposal state |
+| \[0]  | enum OmnichainGovernanceExecutor.ProposalState | Proposal state |
 
 ---

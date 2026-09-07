@@ -1,11 +1,21 @@
 # DeviationBoundedOracle
+
+## Deployment scope
+
+This API matches the current [`DeviationBoundedOracle` v2.16.0 source](https://github.com/VenusProtocol/oracle/blob/v2.16.0/contracts/DeviationBoundedOracle.sol). At BNB Chain block `118367342`, transparent proxy `0xc79Cb7efEBd121DC4B39eA141C214606595D665A` pointed to implementation `0x16691f500541ca35bd63DD878B6D78728C9518AE`.
+
+The proxy and implementation do not establish the live whitelist, protection state, cache settings, ACM permissions, or keeper assignments. Read those values at the block used by an operator or integration.
+
+The proxy API also inherits `owner`, `pendingOwner`, `transferOwnership`, `acceptOwnership`, `renounceOwnership`, `accessControlManager`, and owner-only `setAccessControlManager`.
+
 The DeviationBoundedOracle provides manipulation-resistant pricing for lending operations.
 
 It maintains a per-market rolling min/max price window. When the current spot price deviates
 significantly from the window bounds, protection mode activates automatically and conservative
 pricing kicks in:
-  - Collateral is valued at min(spot, windowMin) — caps collateral value at recent window low
-  - Debt is valued at max(spot, windowMax) — floors debt value at recent window high
+
+- Collateral is valued at min(spot, windowMin) — caps collateral value at recent window low
+- Debt is valued at max(spot, windowMax) — floors debt value at recent window high
 
 This protects against instantaneous or short-duration price manipulation attacks on low-liquidity
 collateral tokens. Sustained attacks beyond the window period are expected to be handled by
@@ -662,7 +672,7 @@ function getInitializedAssets() external view returns (address[])
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | address[] | Array of all initialized asset addresses |
+| \[0\] | address[] | Array of all initialized asset addresses |
 
 - - -
 
@@ -682,7 +692,7 @@ function isBoundedPricingEnabled(address asset) external view returns (bool)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | bool | True if the asset is whitelisted |
+| \[0\] | bool | True if the asset is whitelisted |
 
 - - -
 
@@ -702,7 +712,7 @@ function currentlyUsingProtectedPrice(address asset) external view returns (bool
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | bool | True if the asset is currently using the protected price instead of spot |
+| \[0\] | bool | True if the asset is currently using the protected price instead of spot |
 
 - - -
 
@@ -717,7 +727,7 @@ function getAllBoundedPricingEnabledAssets() external view returns (address[])
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | address[] | result Array of whitelisted asset addresses |
+| \[0\] | address[] | result Array of whitelisted asset addresses |
 
 - - -
 
@@ -737,7 +747,7 @@ function canExitProtection(address asset) external view returns (bool)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | bool | True if protection can be disabled |
+| \[0\] | bool | True if protection can be disabled |
 
 - - -
 

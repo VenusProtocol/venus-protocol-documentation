@@ -1,53 +1,30 @@
 # XVS Bridge
 
-### Introduction
+The Venus interface can bridge XVS among BNB Chain, Ethereum, Arbitrum, opBNB, Optimism, Base, zkSync Era, and Unichain. Available paths and limits are mutable; use the networks and live checks shown by the interface rather than a saved limits table.
 
-This guide provides step-by-step instructions on how to bridge XVS tokens from the BNB Chain to the Ethereum network.
+## Before you start
 
-### Steps for Bridging XVS from BNB Chain to Ethereum
+* Open the official [XVS Bridge](https://app.venus.io/#/bridge) and confirm the domain before connecting a wallet.
+* Keep native gas tokens on the source network.
+* Confirm the source and destination networks, connected account, XVS amount, quoted LayerZero fee, bridge address, and wallet spending limit.
+* The current interface sends destination XVS to the connected account. Do not use this workflow when you need a different recipient.
+* Bridging is asynchronous and depends on both networks, Venus bridge configuration, its oracle and limits, destination mint capacity, and LayerZero V1 messaging.
 
-#### Step 1: Access the Venus Bridge
+## Submit a transfer
 
-* Navigate to the Venus Protocol and select the "Bridge" option from the sidebar menu. [XVS Bridge](https://app.venus.io/#/bridge)
+1. Connect the wallet that holds XVS and select the source network.
+2. Choose a different destination network. Switching the source network in the form also requests a wallet network switch.
+3. Enter the XVS amount. The interface checks the local balance, single and rolling 24-hour bridge limits, destination mint capacity, and estimated native-token fee.
+4. If the interface requests an approval, inspect the exact token, spender, amount, and network before signing. BNB Chain outbound transfers lock native XVS with `transferFrom`; destination-chain transfers burn omnichain XVS through the authorized local bridge.
+5. Review the final quote and submit the bridge transaction. The fee can change before inclusion, so reject a wallet request whose value or contract differs from the reviewed transaction.
+6. Track the source transaction and the corresponding LayerZero message. The destination balance is final only after the destination transaction succeeds.
 
-#### Step 2: Connect Your Wallet
+## If a transfer is delayed or fails
 
-* Click on the "Connect wallet" button in the top right corner of the Venus Bridge interface to connect your wallet.
+Do not immediately repeat the transfer: a delayed message can still execute and a duplicate transfer would send another amount. Record the source transaction hash and inspect its LayerZero message and destination status.
 
-<figure><img src="../.gitbook/assets/Screenshot 2024-01-22 at 1.15.11 PM.png" alt=""><figcaption></figcaption></figure>
+Common causes include a paused bridge or token, stale or rejected oracle price, path limits, insufficient destination gas, an untrusted route, blacklisting, or exhausted destination mint capacity. `retryMessage` is an administrative recovery path for a stored failed payload, not a normal user action. Report the transaction hash and both networks through an official Venus support channel if the interface does not recover normally.
 
-#### Step 3: Configure the Bridge Transaction
+## Approval hygiene
 
-* **From**: Ensure "BNB mainnet" is selected in the "From" dropdown menu.
-* **To**: Select "Ethereum" in the "To" dropdown menu to set the destination network.
-
-<figure><img src="../.gitbook/assets/Screenshot 2024-01-22 at 1.25.29 PM.png" alt=""><figcaption></figcaption></figure>
-
-#### Step 4: Enter the Amount to Bridge
-
-* Enter the amount of XVS you wish to transfer in the "Amount" field. You can also use the "MAX" button to transfer the total available balance.
-* Check your "Wallet balance" to confirm you have sufficient XVS and BNB for gas fees.
-
-#### Step 5: Approve XVS Token
-
-* Before initiating the transfer, you must give the bridge contract permission to access your XVS tokens. Click on the "Approve XVS" button to do this.
-* A wallet pop-up will request your confirmation for the approval. Confirm to proceed.
-
-<figure><img src="../.gitbook/assets/Screenshot 2024-01-22 at 1.31.35 PM.png" alt=""><figcaption></figcaption></figure>
-
-#### Step 6: Initiate the Transfer
-
-* After approving XVS token usage, the interface will update to reflect the next step. Click the "Transfer" button (which replaces the "Approve XVS" button after approval) to initiate the bridging process.
-* A confirmation pop-up will appear in your wallet for you to approve the transaction.
-
-#### Step 7: Confirm and Wait
-
-* Confirm the transaction in your wallet. The Venus Bridge interface will show the transaction as pending, indicating that it is being processed. This may take a few minutes.
-
-#### Step 8: Transaction Completion
-
-* Once the transaction is complete, the XVS tokens will be available in your Ethereum wallet.
-
-### Conclusion
-
-Bridging XVS tokens from BNB Chain to Ethereum is made simple with the Venus Protocol. Remember to approve your tokens for use by the bridge and to check transaction details carefully before confirming to ensure a smooth bridging experience.
+An ERC-20 approval remains after a transfer unless it is consumed or revoked. Prefer the amount needed for the intended transaction. After bridging, review the remaining XVS allowance to the source bridge and revoke it if you do not plan to bridge again.

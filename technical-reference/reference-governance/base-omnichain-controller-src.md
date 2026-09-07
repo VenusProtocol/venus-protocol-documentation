@@ -1,5 +1,7 @@
 # BaseOmnichainControllerSrc
 
+[`BaseOmnichainControllerSrc` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Cross-chain/BaseOmnichainControllerSrc.sol) is the abstract BNB-side base for the current OmnichainProposalSender. It uses LayerZero V1 `uint16` endpoint IDs, named chain IDs in the ABI, applies per-destination 24-hour command limits, and disables ownership renunciation. It is not a standalone deployment.
+
 # Solidity API
 
 ### accessControlManager

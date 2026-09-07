@@ -1,19 +1,23 @@
 # XVS Cross-Chain Bridge Documentation
 
-This documentation provides detailed instructions and explanations for using the XVS Cross-Chain Bridge. The bridge allows users to transfer tokens between different blockchain networks, including the [BNB chain](https://www.bnbchain.org) and multiple destination chains. The supported networks are as follows:
+This article describes the stable [`token-bridge` v2.7.0 architecture](https://github.com/VenusProtocol/token-bridge/tree/v2.7.0). It uses LayerZero OFT V2 contracts on the LayerZero V1 messaging stack (`uint16` endpoint IDs, named chain IDs in the ABI); it is not the LayerZero V2 OApp API.
+
+The current Venus interface includes these mainnets:
+
 * [Arbitrum](https://arbitrum.io)
 * [Base](https://www.base.org/)
-* [BNB](https://www.bnbchain.org)
+* [BNB Chain](https://www.bnbchain.org)
 * [Ethereum](https://ethereum.org)
 * [opBNB](https://opbnb.bnbchain.org)
 * [Optimism](https://app.optimism.io)
+* [Unichain](https://www.unichain.org/)
 * [ZKsync](https://zksync.io/)
 
 ## Supported Transfer Paths
 
-The bridge supports transfers between all network pairs, providing users with enhanced flexibility and interoperability across blockchain ecosystems.
+The interface can construct transfers between its supported networks, but a path is usable only while both bridge contracts, their trusted remotes, limits, oracle, LayerZero configuration, and destination mint capacity permit it. Recheck the selected path immediately before signing.
 
-The system consists of multiple contracts, including [XVSBridgeAdmin](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSBridgeAdmin.sol), [XVSProxySrc](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSProxyOFTSrc.sol), [XVSProxyDest](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSProxyOFTDest.sol), and [XVS](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/token/XVS.sol) token contracts.
+The system consists of [XVSBridgeAdmin](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/XVSBridgeAdmin.sol), [XVSProxyOFTSrc](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/XVSProxyOFTSrc.sol), [XVSProxyOFTDest](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/XVSProxyOFTDest.sol), and the destination-chain [XVS](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/token/XVS.sol) token.
 
 **_The functionality of the bridge relies on [LayerZero](https://layerzero.network) for the seamless transfer of XVS tokens across different networks. Consequently, the security and integrity of the token on each network are subject to potential vulnerabilities inherent in the bridging mechanism. It is essential to note that these risks are a general characteristic of integrating with network bridges and do not stem from any particular weaknesses within the token implementation._**
 
@@ -31,13 +35,13 @@ Before transferring XVS tokens, you need to approve the `Bridge` contract on the
 
 ### 1.2. Estimating Transaction Fees
 
-To estimate the transaction fees required to send XVS tokens to the destination chain, call the `estimateSend` function of the `Bridge` contract with the following parameters:
+To estimate the transaction fees required to send XVS tokens to the destination chain, call `estimateSendFee` on the local bridge with the following parameters:
 
-- `_dstChainId`: Destination chain ID, [defined by LayerZero](https://layerzero.gitbook.io/docs/technical-reference/mainnet/supported-chain-ids) (e.g., Ethereum virtual chain ID (101))
+- `_dstChainId`: Destination [LayerZero V1 endpoint ID](https://docs.layerzero.network/v1/deployments/deployed-contracts), not the EVM chain ID (for example, Ethereum V1 endpoint ID `101`)
 - `_toAddress`: Receiver address on the destination chain
 - `_amount`: Amount of XVS tokens you want to send, defined with 18 decimals
 - `_useZro`: `false` (indicating that you are not paying in LayerZero ZRO tokens)
-- `_adapterParams`: `0x000100000000000000000000000000000000000000000000000000000000000493E0` (ethers.utils.solidityPack(['uint16','uint256'],[1, gasValue]) the gas value should be greater then minDestGas which is set to 300k).
+- `_adapterParams`: Versioned LayerZero V1 adapter parameters with destination gas at or above the bridge's current `minDstGasLookup` requirement. Do not copy a historical fixed gas value.
 
 ## 2. Transferring Tokens
 
@@ -47,19 +51,19 @@ The actual token transfer is performed using the `sendFrom` function of the `Bri
 
 <figure><img src="../../.gitbook/assets/XVS_bridge_BNB_to_dest.svg" alt="Assets bridging from src chain to dest chain"><figcaption></figcaption></figure>
 
-1. Call the `sendFrom` function of the `Bridge` contract with the following parameters::
-   - `_from`: Your address on the BNB chain
-   - `_dstChainId`: Destination chain ID [defined by LayerZero](https://layerzero.gitbook.io/docs/technical-reference/mainnet/supported-chain-ids) (e.g., Ethereum virtual chain ID (101))
+1. Call the `sendFrom` function of the local bridge with the following parameters:
+   - `_from`: Your address on the source network
+   - `_dstChainId`: Destination LayerZero V1 endpoint ID (for example, Ethereum `101`)
    - `_toAddress`: The address on the destination chain where you want to receive the XVS tokens
    - `_amount`: Amount of XVS tokens you want to send, defined with 18 decimals
-   - `_callParams`: ["RefundGasAddress", "ZROaddress", "adapterParams"]
+   - `_callParams`: `[refundAddress, zroPaymentAddress, adapterParams]`
      - `RefundGasAddress`: Address where you want to receive a refund for excessive gas sent. It can be the sender's address.
      - `ZROaddress`: `0x0000000000000000000000000000000000000000` (indicating that you are not paying in ZRO tokens)
-     - `adapterParams`: `0x000100000000000000000000000000000000000000000000000000000000000493E0` (ethers.utils.solidityPack(['uint16','uint256'],[1, gasValue]) the gas value should be greater then minDestGas which is set to 300k).
+     - `adapterParams`: The same current LayerZero V1 adapter parameters used for the fee estimate.
 
 ## 3. Receiving Tokens on the Destination Chain
 
-When you send XVS tokens to the destination chain using the bridge, the tokens will be minted by the `Bridge` contract to the receiver's address on the destination chain.
+When BNB-chain XVS leaves BNB Chain it is locked by XVSProxyOFTSrc; XVSProxyOFTDest mints destination-chain XVS to the receiver. For destination-to-destination transfers, the source destination token is burned and the target destination token is minted.
 
 ## 4. Transferring Tokens Back to the BNB chain
 
@@ -82,7 +86,7 @@ After initiating a token transfer, you should wait for the transaction to confir
 - Use the `transferOwnership` method in the `XVSBridgeAdmin` contract to transfer ownership of the admin contract.
 - Use the `transferBridgeOwnership` method to transfer ownership of the `Bridge` contract from one contract to another.
 - Ownership control is crucial in case of emergencies or security issues.
-- The owner of the `XVSBridgeAdmin` contract will be initially the `Guardian`, but it will be transferred to Governance as soon as the `MultichainGovernance` module is deployed.
+- The initial-Guardian rollout statement is obsolete. On August 27, 2026, each mainnet XVSBridgeAdmin was owned by that network's Normal Timelock, and each local bridge was owned by its XVSBridgeAdmin. Verify both `owner()` values before preparing an administrative action.
 
 ### 6.2. Pause and Resume
 
@@ -94,48 +98,31 @@ After initiating a token transfer, you should wait for the transaction to confir
 
 - Example: Limit the maximum XVS transfer to USD 1,000 in one transaction and USD 100,000 in one day. These limits can be adjusted using VIPs.
 
-### 6.4. Transfer Delays
+### 6.4. Message Finality
 
-- Configurable delay after XVS transfers to the target network by specifying a minimum number of blocks in the LayerZero endpoint configuration.
+- The bridge contract does not expose a user-set transfer delay. Delivery time and confirmation requirements come from the selected LayerZero V1 path, both networks, adapter gas, and current messaging-library configuration.
 
 ### 6.5. Token Controller Contract
 
-- [Token Controller](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/token/TokenController.sol) contract within the XVS token deployed on the target network to blacklist addresses, preventing them from transferring or receiving XVS. Integrated with the ACM.
+- The [TokenController](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/token/TokenController.sol) within destination-chain XVS can blacklist addresses, preventing them from transferring or receiving XVS. Its protected functions use the local AccessControlManager.
 
 ### 6.6. Cap on Token Minting
 
-- Cap on the amount of tokens that can be minted in the destination target network. This feature can be integrated in Token Controller.
+- Destination-chain XVS already enforces `minterToCap` and `minterToMintedAmount` for each authorized bridge minter. This is a live second bound in addition to bridge send/receive limits.
 
 ### 6.7. Mitigation Plans for Mint Cap Reached
 
-- If XVS become stuck between bridges due to exceeding the mint cap, the system will extend the mint cap via VIP. The failed message will be retried.
+- A mint-cap failure creates an operational incident; it does not guarantee that governance will raise the cap. Any cap change and message retry require an independently reviewed authorized action.
 
 ### 6.8. Bridge Model
 
-- The `XVSProxyOFTDest` contract serves as the `Bridge` model. It will be authorized to mint and burn XVS in the destination chain. Limits on these actions will be set by Governance or the Guardian.
-- While the initial deployment involves one `Bridge` contract per network, the system is designed to support several bridges simultaneously, providing users with flexibility.
-- The system's architecture allows for the deployment of multiple bridges within the same network, offering users the option to choose different bridges for their transactions. This flexibility ensures efficient and diverse token bridging capabilities.
-
-   **Example of Bridging in Case of Multiple Active Bridges:**
-
-      1. Initial Setup:
-         - Bridge Contract A (BridgeA) has a minterToMintedAmount of 100 XVS.
-         - User A holds all 100 XVS minted by BridgeA.
-
-      2. Separate Bridge Contract B Setup:
-         - Bridge Contract B (BridgeB) has a separate minterToMintedAmount of 50 XVS.
-         - User B holds all 50 XVS minted by BridgeB.
-
-      3. User B Bridges Off Tokens Using Bridge A:
-         - User B decides to use BridgeA to bridge off his 50 XVS.
-         - After the successful bridging process, BridgeA's minterToMintedAmount is now 50, reflecting the XVS burned by User B through this BridgeA.
-
-      4. User A Bridges Off Tokens Using Both Bridges:
-         - Now, User A intends to bridge off his 100 XVS, splitting them between BridgeA and BridgeB.
-         - User A uses BridgeA for 50 XVS and BridgeB for the remaining 50 XVS.
+- XVSProxyOFTDest is authorized through the destination XVS token's AccessControlManager to mint and burn. Its bridge owner is XVSBridgeAdmin; current administrative caller permissions must be read from the local ACM.
+- The stable mainnet artifacts contain one bridge per network. TokenController supports migrating minter accounting if governance replaces a destination bridge, but that recovery capability is not evidence of multiple simultaneously supported user routes on one network.
 
 ### 6.9. Bridge Replacement Scenario
-In the event that a `Bridge` contract needs replacement, such as due to a security risk, the following steps will be taken:
+
+A bridge replacement is a governance and incident-response procedure, not one atomic contract call. A reviewed plan can include:
+
 1. **Pause the Bridge:**
    - Temporarily pause the `Bridge` contract to prevent further transactions.
 
@@ -143,15 +130,16 @@ In the event that a `Bridge` contract needs replacement, such as due to a securi
    - Evaluate whether pausing the XVS token is necessary during the replacement process.
 
 3. **Migrate MinterToMintedAmount:**
-   - Move the `minterToMintedAmount` value to a different `Bridge` contract address using the `migrateMintedTokens` function.
+   - Move the recorded `minterToMintedAmount` value to a replacement bridge with `migrateMinterTokens`. This updates accounting only; it does not transfer users' ERC-20 balances.
 
-4. **Reduce MintCap:**
-   - Reduce the `mintCap` to zero for the `Bridge` contract address with security issues.
+4. **Reduce the old minter cap:**
+   - Set the affected bridge's `minterToCap` to its remaining accounted minted amount or complete a valid migration before reducing it further; `setMintCap` rejects a cap below `minterToMintedAmount`.
 
-These steps ensure a secure and systematic replacement of a `Bridge` contract, maintaining the integrity of the token. Simultaneously, on the BNB chain, the locked XVS will be transferred and locked in the other `Bridge` contract, ensuring a fix total supply of XVS.
+BNB-side custody must be reconciled separately with the source bridge's `fallbackWithdraw` and `fallbackDeposit` accounting and the exact failed-message state. None of these steps automatically proves global XVS supply conservation; the complete cross-chain supply and in-flight messages must be reconciled before enabling the replacement path.
 
-### 6.10. Default Downtime
-- Currently, the `Bridge` relies on a single relayer, the [default](https://layerzero.gitbook.io/docs/technical-reference/mainnet/default-config) by LayerZero, to generate proofs and submit them to target chains. While this configuration is functional, it's important to be aware of the potential implications. If the relayer goes offline or encounters problems, there's no immediate backup to maintain bridge functionality, potentially delaying or preventing transactions. In the event of unforeseen downtime affecting the default LayerZero relayer, a wallet can be authorized to temporarily generate proofs and submit them on the target network on behalf of the relayer. This authorization is granted only in exceptional circumstances via VIP.
+### 6.10. Messaging Dependency
+
+- Delivery depends on each path's current LayerZero V1 endpoint, messaging library, oracle/relayer configuration, trusted remote, and destination execution gas. The old blanket statement that every route uses one fixed default relayer is not a durable configuration guarantee. Inspect the live endpoint configuration for the exact route when diagnosing downtime.
 
 
 ## 7. Contract Details
@@ -160,20 +148,20 @@ Here, we provide more details about the key contracts used in the XVS Cross-chai
 
 ### 7.1. XVSBridgeAdmin
 
-- [XVSBridgeAdmin](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSBridgeAdmin.sol) is the admin contract for the bridge, ensuring proper setup.
+- [XVSBridgeAdmin](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/XVSBridgeAdmin.sol) is the admin contract for the bridge, ensuring proper setup.
 - It contains a `functionRegistry` mapping for function signatures, allowing the contract to call corresponding methods in destination contracts after ensuring access control permissions.
 - Ownership transfers for `XVSBridgeAdmin` and `Bridge` can be executed via the `transferOwnership` and `transferBridgeOwnership` methods respectively.
 
 ### 7.2. XVSProxySrc
 
-- [XVSProxySrc](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSProxyOFTSrc.sol) extends the [BaseOFTV2](https://github.com/LayerZero-Labs/solidity-examples/blob/main/contracts/token/oft/v2/BaseOFTV2.sol) contract and includes custom logic for token transfers.
+- [XVSProxyOFTSrc](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/XVSProxyOFTSrc.sol) extends the LayerZero `BaseOFTV2` contract and includes custom logic for token transfers.
 - It overrides the `_debitFrom` and `_creditTo` functions, checking transaction limits and user eligibility.
 - It enforces transaction limits, tracks 24-hour window limits, and allows whitelisting of users.
 - `XVSProxySrc` can be paused and resumed in emergencies.
 
 ### 7.3. XVSProxyDest
 
-- [XVSProxyDest](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/XVSProxyOFTDest.sol) is similar to `XVSProxySrc` but with specific differences.
+- [XVSProxyOFTDest](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/XVSProxyOFTDest.sol) shares the base bridge controls but uses burn/mint token accounting.
 - Transaction limits are enforced primarily for outbound amounts only in the source chain.
 - It overrides the `debitFrom` function to include custom logic for checking transaction limits in USD and performs an external call to the XVS token contract to burn tokens from the sender.
 - It overrides the `creditTo` function to trigger an external call to the XVS token contract to mint tokens for the receiver.
@@ -182,13 +170,13 @@ Here, we provide more details about the key contracts used in the XVS Cross-chai
 
 ### 7.4. XVS Token
 
-- The [XVS](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/token/XVS.sol) token contract is deployed on destination chains, and it is used within the `XVSProxyDest` contract.
-- The XVS token follows the ERC20 standard and extends the [TokenController](https://github.com/VenusProtocol/token-bridge/blob/develop/contracts/Bridge/token/TokenController.sol) ownable contract, which contains all controlling mechanisms of the XVS.
+- The [XVS](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/token/XVS.sol) token contract is deployed on destination chains and is used by XVSProxyOFTDest.
+- The XVS token follows the ERC-20 standard and extends the [TokenController](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/token/TokenController.sol) ownable contract.
 - It is responsible for setting minting limits for the minter (in this case, the remote `Bridge` contract).
 - When receiving transactions and tokens from the source chain's `Bridge` contract, an external call is made to mint tokens for the receiver.
 - When sending tokens to the source chain's `Bridge` contract, an external call is made from the `Bridge` contract to burn tokens from the sender.
 - Offers a blacklisting feature to prevent certain users from receiving, transferring and bridging XVS tokens.
-- [ACM](https://github.com/VenusProtocol/governance-contracts/blob/develop/contracts/Governance/AccessControlManager.sol) integration is used for setting minting caps and blacklisting, and these settings can be configured via VIPs or Guardian.
+- [AccessControlManager v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Governance/AccessControlManager.sol) integration is used for mint caps, blacklisting, pause controls, and bridge administration. The authorized caller must be checked from current permissions; it is not implied by the labels “VIP” or “Guardian.”
 
 ## 8. Additional Features
 
@@ -204,39 +192,8 @@ In addition to the core functionality, the XVS Cross-chain Bridge includes addit
 
 ### 8.3. Transaction Limits
 
-- The contract introduces transaction limits for both sending and receiving transactions, based on a daily and single transaction basis. The limits are defined using `chainIdToMaxSingleTransactionLimit`, `chainIdToMaxDailyLimit`, `chainIdToMaxSingleReceiveTransactionLimit`, and `chainIdToMaxDailyReceiveLimit`.
-
-- Single Send Limit (source network in the first column, destination network in the first row)
-
-   |          |   BNB     |   opBNB   |   Arbitrum   |   Ethereum   |   ZKsync  | Optimism  |    Base   |
-   |----------|-----------|-----------|--------------|--------------|-----------|-----------|-----------|
-   | BNB      |     -     | $10,000   | $20,000      | $100,000     | $20,000   | $20,000   | $20,000   |
-   | opBNB    | $10,000   |    -      | $20,000      | $10,000      | $20,000   | $20,000   | $20,000   |
-   | Arbitrum | $20,000   | $20,000   |     -        | $20,000      | $20,000   | $20,000   | $20,000   |
-   | Ethereum | $100,000  | $10,000   | $20,000      |      -       | $20,000   | $20,000   | $20,000   |  
-   | ZKsync   | $20,000   | $20,000   | $20,000      | $20,000      |     -     | $20,000   | $20,000   |
-   | Optimism | $20,000   | $20,000   | $20,000      | $20,000      | $20,000   |    -      | $20,000   |
-   | Base     | $20,000   | $20,000   | $20,000      | $20,000      | $20,000   | $20,000   |    -      |
-
-   
-- Daily Send Limit (source network in the first column, destination network in the first row)
-
-   |          |    BNB     |   opBNB   |   Arbitrum   |   Ethereum   |   ZKsync  | Optimism  |    Base   |
-   |----------|------------|-----------|--------------|--------------|-----------|-----------|-----------|
-   | BNB      |     -      | $50,000   | $100,000     | $1,000,000   | $100,000  | $100,000  | $100,000  |
-   | opBNB    | $50,000    |    -      | $100,000     | $50,000      | $100,000  | $100,000  | $100,000  |
-   | Arbitrum | $100,000   | $100,000  |     -        | $100,000     | $100,000  | $100,000  | $100,000  |
-   | Ethereum | $1,000,000 | $50,000   | $100,000     |      -       | $100,000  | $100,000  | $100,000  |
-   | ZKsync   | $100,000   | $100,000  | $100,000     | $100,000     |     -     | $100,000  | $100,000  |
-   | Optimism | $100,000   | $100,000  | $100,000     | $100,000     | $100,000  |     -     | $100,000  |
-   | Base     | $100,000   | $100,000  | $100,000     | $100,000     | $100,000  | $100,000  |     -     |
-
-
-- Single Receive Limit = Single Send Limit + 2%
-
-- Daily Receive Limit = Daily Send Limit + 2%
-
-**Note**: The additional 2% provides a margin to account for potential price fluctuations during the processing of bridging transactions.
+- The bridge enforces mutable single-send, daily-send, single-receive, and daily-receive USD limits per LayerZero path. Read `chainIdToMaxSingleTransactionLimit`, `chainIdToMaxDailyLimit`, `chainIdToMaxSingleReceiveTransactionLimit`, and `chainIdToMaxDailyReceiveLimit` on the source contract selected by the interface.
+- The historical static matrices have been removed: they omitted Unichain and could become unsafe after a governance update. Also read the current rolling-window counters and the destination XVS mint capacity before signing.
 
 ### 8.4. Pause and Unpause Mechanism
 
@@ -261,13 +218,13 @@ In addition to the core functionality, the XVS Cross-chain Bridge includes addit
 
 ### Retry Mechanism for Failed Transactions
 
-In the event of a failed transaction, follow the below step-by-step process using block explorers and the [`retryMessage`](https://github.com/VenusProtocol/token-bridge/blob/main/contracts/Bridge/BaseXVSProxyOFT.sol#L368) function to retry transactions on the respective blockchain. Here's a detailed guide:
+In the event of a failed transaction, inspect the destination event and the stable [`retryMessage` implementation](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/BaseXVSProxyOFT.sol). Retrying is a state-changing action: confirm that the stored payload hash still exists, the trusted path is unchanged, and the underlying failure has been resolved.
 
 1. **Identify the Failed Transaction:**
    - Use [LayerZero scan](https://layerzeroscan.com) to identify the failed transaction within the target network by providing the transaction hash from the source network where the transaction was initiated.
 
 2. **Examine the MessageFailed Log:**
-   - Access the emitted events of the failed transaction and specifically examine the [`MessageFailed`](https://github.com/LayerZero-Labs/solidity-examples/blob/main/contracts/lzApp/NonblockingLzApp.sol#L20) log. This log contains essential function parameters needed for the retry.
+   - Examine the emitted `MessageFailed` event. Its source chain ID, source path, nonce, payload, and reason identify the stored message and retry parameters.
 
 3. **Extract Function Parameters:**
    - From the `MessageFailed` log, extract the following essential function parameters:

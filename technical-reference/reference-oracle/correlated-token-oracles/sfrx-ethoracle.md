@@ -1,111 +1,32 @@
 # SFrxETHOracle
-This oracle fetches the price of sfrxETH
 
-# Solidity API
+`SFrxETHOracle` is a special transparent-proxy oracle and does not inherit `CorrelatedTokenOracle`.
 
-### SFRXETH_FRAX_ORACLE
+| Checked block | Proxy | Implementation |
+|---:|---|---|
+| `25845949` | `0x5E06A5f48692E4Fff376fDfCA9E4C0183AAADCD1` | `0x93e19584359C6c5844f1f7E1621983418b5A892F` |
 
-Address of SfrxEthFraxOracle
-
-```solidity
-contract ISfrxEthFraxOracle SFRXETH_FRAX_ORACLE
-```
-
-- - -
-
-### SFRXETH
-
-Address of sfrxETH
+The [`v2.16.0 source`](https://github.com/VenusProtocol/oracle/blob/v2.16.0/contracts/oracles/SFrxETHOracle.sol) fixes the Frax oracle and sfrxETH token in the implementation constructor:
 
 ```solidity
-address SFRXETH
+constructor(address sfrxEthFraxOracle, address sfrxETH)
 ```
 
-- - -
-
-### maxAllowedPriceDifference
-
-Maximum allowed price difference
+Proxy initialization and configuration are:
 
 ```solidity
-uint256 maxAllowedPriceDifference
+function initialize(
+    address accessControlManager,
+    uint256 maxAllowedPriceDifference
+) external;
+
+function setMaxAllowedPriceDifference(
+    uint256 maxAllowedPriceDifference
+) external;
 ```
 
-- - -
+The setter is ACM-controlled. At the checked block, `maxAllowedPriceDifference()` was `1.14e18` and `accessControlManager()` was `0x230058da2D23eb8836EC5DB7037ef7250c56E25E`.
 
-### constructor
+`SFRXETH()` and `SFRXETH_FRAX_ORACLE()` expose the implementation immutables. The proxy also exposes inherited `owner`, `pendingOwner`, `transferOwnership`, `acceptOwnership`, `renounceOwnership`, and owner-only `setAccessControlManager` functions.
 
-Constructor for the implementation contract.
-
-```solidity
-constructor(address _sfrxEthFraxOracle, address _sfrxETH) public
-```
-
-#### ❌ Errors
-* ZeroAddressNotAllowed is thrown when `_sfrxEthFraxOracle` or `_sfrxETH` are the zero address
-
-- - -
-
-### initialize
-
-Sets the contracts required to fetch prices
-
-```solidity
-function initialize(address _accessControlManager, uint256 _maxAllowedPriceDifference) external
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _accessControlManager | address | Address of the access control manager contract |
-| _maxAllowedPriceDifference | uint256 | Maximum allowed price difference |
-
-#### ❌ Errors
-* ZeroValueNotAllowed is thrown if `_maxAllowedPriceDifference` is zero
-
-- - -
-
-### setMaxAllowedPriceDifference
-
-Sets the maximum allowed price difference
-
-```solidity
-function setMaxAllowedPriceDifference(uint256 _maxAllowedPriceDifference) external
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _maxAllowedPriceDifference | uint256 | Maximum allowed price difference |
-
-#### ❌ Errors
-* ZeroValueNotAllowed is thrown if `_maxAllowedPriceDifference` is zero
-
-- - -
-
-### getPrice
-
-Fetches the USD price of sfrxETH
-
-```solidity
-function getPrice(address asset) external view returns (uint256)
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| asset | address | Address of the sfrxETH token |
-
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | price The price scaled by 1e18 |
-
-#### ❌ Errors
-* InvalidTokenAddress is thrown when the `asset` is not the sfrxETH token (`SFRXETH`)
-* BadPriceData is thrown if the `SFRXETH_FRAX_ORACLE` oracle informs it has bad data
-* ZeroValueNotAllowed is thrown if the prices (low or high, in USD) are zero
-* PriceDifferenceExceeded is thrown if priceHigh/priceLow is greater than `maxAllowedPriceDifference`
-
-- - -
-
+`getPrice(asset)` accepts only the configured sfrxETH address. It obtains Frax's low/high price pair, rejects bad or zero data, converts both values to USD, enforces the maximum high/low ratio, and returns their average.

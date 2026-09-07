@@ -1,182 +1,85 @@
 # PoolRegistry
 
-The Isolated Pools architecture centers around the `PoolRegistry` contract. The `PoolRegistry` maintains a directory of isolated lending
-pools and can perform actions like creating and registering new pools, adding new markets to existing pools, setting and updating the pool's required
-metadata, and providing the getter methods to get information on the pools.
+[`PoolRegistry`](https://github.com/VenusProtocol/isolated-pools/blob/v4.4.0/contracts/Pool/PoolRegistry.sol) is an upgradeable directory and administration entry point. It registers an already deployed Comptroller proxy; it does not expose a `createRegistryPool` function.
 
-Isolated lending has three main components: PoolRegistry, pools, and markets. The PoolRegistry is responsible for managing pools.
-It can create new pools, update pool metadata and manage markets within pools. PoolRegistry contains getter methods to get the details of
-any existing pool like `getVTokenForAsset` and `getPoolsSupportedByAsset`. It also contains methods for updating pool metadata (`updatePoolMetadata`)
-and setting pool name (`setPoolName`).
+See the [engine version map](../README.md#mainnet-implementation-map) for current mainnet proxy and implementation addresses.
 
-The directory of pools is managed through two mappings: `_poolByComptroller` which is a hashmap with the comptroller address as the key and `VenusPool` as
-the value and `_poolsByID` which is an array of comptroller addresses. Individual pools can be accessed by calling `getPoolByComptroller` with the pool's
-comptroller address. `_poolsByID` is used to iterate through all of the pools.
+## Initialization
 
-PoolRegistry also contains a map of asset addresses called `_supportedPools` that maps to an array of assets suppored by each pool. This array of pools by
-asset is retrieved by calling `getPoolsSupportedByAsset`.
+```solidity
+function initialize(address accessControlManager) external;
+```
 
-PoolRegistry registers new isolated pools in the directory with the `createRegistryPool` method. Isolated pools are composed of independent markets with
-specific assets and custom risk management configurations according to their markets.
+Initialization configures `Ownable2StepUpgradeable` and `AccessControlledV8`. It must be performed through the proxy exactly once.
 
-# Solidity API
+## Privileged operations
+
+All four operations below call `AccessControlManager`. Authorization is checked against the exact signature shown.
+
+### `addPool`
+
+```solidity
+function addPool(
+    string name,
+    Comptroller comptroller,
+    uint256 closeFactor,
+    uint256 liquidationIncentive,
+    uint256 minLiquidatableCollateral
+) external returns (uint256 index);
+```
+
+Authorization signature: `addPool(string,address,uint256,uint256,uint256)`.
+
+The Comptroller and its oracle must already exist. The call registers the Comptroller proxy and then configures the pool's close factor, liquidation incentive, and minimum liquidatable collateral. It does not deploy a pool.
+
+### `addMarket`
 
 ```solidity
 struct AddMarketInput {
-  contract VToken vToken;
-  uint256 collateralFactor;
-  uint256 liquidationThreshold;
-  uint256 initialSupply;
-  address vTokenReceiver;
-  uint256 supplyCap;
-  uint256 borrowCap;
+    VToken vToken;
+    uint256 collateralFactor;
+    uint256 liquidationThreshold;
+    uint256 initialSupply;
+    address vTokenReceiver;
+    uint256 supplyCap;
+    uint256 borrowCap;
 }
+
+function addMarket(AddMarketInput input) external;
 ```
 
-### metadata
+Authorization signature: `addMarket(AddMarketInput)`.
 
-Maps pool's comptroller address to metadata.
+The VToken must belong to a registered Comptroller. The call lists the market, sets risk factors and caps, records the underlying-to-VToken mapping, transfers `initialSupply` from the caller, and calls `mintBehalf(vTokenReceiver, amountReceived)`. The caller pays the underlying; the receiver gets the vTokens.
+
+### Metadata changes
 
 ```solidity
-mapping(address => struct PoolRegistryInterface.VenusPoolMetaData) metadata
+function setPoolName(address comptroller, string name) external;
+
+function updatePoolMetadata(
+    address comptroller,
+    VenusPoolMetaData metadata
+) external;
 ```
 
----
+Authorization signatures are `setPoolName(address,string)` and `updatePoolMetadata(address,VenusPoolMetaData)`. Pool names are limited to 100 bytes.
 
-### initialize
-
-Initializes the deployer to owner
+## Read API
 
 ```solidity
-function initialize(address accessControlManager_) external
+function getAllPools() external view returns (VenusPool[] memory);
+function getPoolByComptroller(address comptroller) external view returns (VenusPool memory);
+function getVTokenForAsset(address comptroller, address asset) external view returns (address);
+function getPoolsSupportedByAsset(address asset) external view returns (address[] memory);
+function getVenusPoolMetadata(address comptroller) external view returns (VenusPoolMetaData memory);
+function metadata(address comptroller) external view returns (string, string, string);
 ```
 
-#### Parameters
+`getAllPools()` iterates over the complete registry and is intended for offchain calls. `_supportedPools` maps an **asset** to Comptroller proxy addresses—not a pool to its assets.
 
-| Name                   | Type    | Description                           |
-| ---------------------- | ------- | ------------------------------------- |
-| accessControlManager\_ | address | AccessControlManager contract address |
+The implementation also inherits `owner`, `pendingOwner`, `transferOwnership`, `acceptOwnership`, `renounceOwnership`, `accessControlManager`, and owner-only `setAccessControlManager`.
 
----
+## Lifecycle boundary
 
-### addPool
-
-Adds a new Venus pool to the directory
-
-```solidity
-function addPool(string name, contract Comptroller comptroller, uint256 closeFactor, uint256 liquidationIncentive, uint256 minLiquidatableCollateral) external virtual returns (uint256 index)
-```
-
-#### Parameters
-
-| Name                      | Type                 | Description                                                  |
-| ------------------------- | -------------------- | ------------------------------------------------------------ |
-| name                      | string               | The name of the pool                                         |
-| comptroller               | contract Comptroller | Pool's Comptroller contract                                  |
-| closeFactor               | uint256              | The pool's close factor (scaled by 1e18)                     |
-| liquidationIncentive      | uint256              | The pool's liquidation incentive (scaled by 1e18)            |
-| minLiquidatableCollateral | uint256              | Minimal collateral for regular (non-batch) liquidations flow |
-
-#### Return Values
-
-| Name  | Type    | Description                            |
-| ----- | ------- | -------------------------------------- |
-| index | uint256 | The index of the registered Venus pool |
-
-#### ❌ Errors
-
-- ZeroAddressNotAllowed is thrown when Comptroller address is zero
-- ZeroAddressNotAllowed is thrown when price oracle address is zero
-
----
-
-### addMarket
-
-Add a market to an existing pool and then mint to provide initial supply
-
-```solidity
-function addMarket(struct PoolRegistry.AddMarketInput input) external
-```
-
-#### Parameters
-
-| Name  | Type                               | Description                                                           |
-| ----- | ---------------------------------- | --------------------------------------------------------------------- |
-| input | struct PoolRegistry.AddMarketInput | The structure describing the parameters for adding a market to a pool |
-
-#### ❌ Errors
-
-- ZeroAddressNotAllowed is thrown when vToken address is zero
-- ZeroAddressNotAllowed is thrown when vTokenReceiver address is zero
-
----
-
-### setPoolName
-
-Modify existing Venus pool name
-
-```solidity
-function setPoolName(address comptroller, string name) external
-```
-
-#### Parameters
-
-| Name        | Type    | Description        |
-| ----------- | ------- | ------------------ |
-| comptroller | address | Pool's Comptroller |
-| name        | string  | New pool name      |
-
----
-
-### updatePoolMetadata
-
-Update metadata of an existing pool
-
-```solidity
-function updatePoolMetadata(address comptroller, struct PoolRegistryInterface.VenusPoolMetaData metadata_) external
-```
-
-#### Parameters
-
-| Name        | Type                                           | Description        |
-| ----------- | ---------------------------------------------- | ------------------ |
-| comptroller | address                                        | Pool's Comptroller |
-| metadata\_  | struct PoolRegistryInterface.VenusPoolMetaData | New pool metadata  |
-
----
-
-### getAllPools
-
-Returns arrays of all Venus pools' data
-
-```solidity
-function getAllPools() external view returns (struct PoolRegistryInterface.VenusPool[])
-```
-
-#### Return Values
-
-| Name | Type                                     | Description                                                         |
-| ---- | ---------------------------------------- | ------------------------------------------------------------------- |
-| [0]  | struct PoolRegistryInterface.VenusPool[] | A list of all pools within PoolRegistry, with details for each pool |
-
----
-
-### getVTokenForAsset
-
-Get the address of the VToken contract in the Pool where the underlying token is the provided asset
-
-```solidity
-function getVTokenForAsset(address comptroller, address asset) external view returns (address)
-```
-
----
-
-### getPoolsSupportedByAsset
-
-Get the addresss of the Pools supported that include a market for the provided asset
-
-```solidity
-function getPoolsSupportedByAsset(address asset) external view returns (address[])
-```
-
----
+PoolRegistry has no removal method or supported-product flag. A returned pool can be active, paused, unlisted in part, or retained for exits. Registry results are therefore discovery data, not an instruction to open a new position.

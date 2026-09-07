@@ -1,6 +1,8 @@
 # CollateralFactorsRiskSteward
 Contract that can update collateral factors and liquidation thresholds received from `RiskStewardReceiver`.
 
+This page follows [`CollateralFactorsRiskSteward.sol` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/RiskSteward/CollateralFactorsRiskSteward.sol). On BNB mainnet at block `118369568`, proxy `0x1414ADf007E324ec1D0A77b9F1A8759Ad33d2879` used implementation `0x92352572478965A0377F57a4A2bebb4B369c22d4`, matching the tagged artifact. Destination-mainnet deployment must be verified separately; the stable tag contains destination instances on testnets.
+
 # Solidity API
 
 ### COLLATERAL_FACTORS
@@ -118,7 +120,7 @@ function isSafeForDirectExecution(struct RiskParameterUpdate update) external vi
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | bool | True if update is safe for direct execution, false if timelock is required |
+| \[0] | bool | True if update is safe for direct execution, false if timelock is required |
 
 #### ❌ Errors
 * Throws UnsupportedUpdateType if the update type is not supported
@@ -151,4 +153,3 @@ function applyUpdate(struct RiskParameterUpdate update) external
 * Throws UnsupportedUpdateType if the update type is not supported
 
 - - -
-

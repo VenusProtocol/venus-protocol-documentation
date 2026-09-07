@@ -1,36 +1,22 @@
-# InterestRateModelLens
+# InterestRateModelLens — Unverified Legacy Reference
 
-Lens for querying interest rate model simulations
-
-# Solidity API
+The former page described this function:
 
 ```solidity
-struct SimulationResponse {
-  uint256[] borrowSimulation;
-  uint256[] supplySimulation;
-}
+function getNextInterestRates(
+    uint256 cash,
+    uint256 borrows,
+    uint256 reserves,
+    uint256 reserveFactorMantissa,
+    uint256 badDebt,
+    InterestRateModel interestRateModel
+) external view returns (uint256 borrowRate, uint256 supplyRate)
 ```
 
-### getSimulationResponse
+No canonical source file, deployed address, supported network, or current consumer for `InterestRateModelLens` has been identified in the stable Venus repositories or deployment registries.
 
-Simulate interest rate curve fo a specific interest rate model given a reference borrow amount and reserve factor
+{% hint style="danger" %}
+Do not assume this contract is deployed or supported. Simulate rates by calling the exact model selected by the target market, after resolving any `CheckpointView` wrapper. See [BNB Core Interest Rate Models](README.md).
+{% endhint %}
 
-```solidity
-function getSimulationResponse(uint256 referenceAmountInWei, address interestRateModel, uint256 reserveFactorMantissa) external view returns (struct InterestRateModelLens.SimulationResponse)
-```
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| referenceAmountInWei | uint256 | Borrow amount to use in simulation |
-| interestRateModel | address | Address for interest rate model to simulate |
-| reserveFactorMantissa | uint256 | Reserve Factor to use in simulation |
-
-#### Return Values
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| \[0] | struct InterestRateModelLens.SimulationResponse |  |
-
----
+This page is retained only to prevent old links from silently implying that the unverified ABI is current. It can be archived after integrations and ownership are conclusively ruled out.

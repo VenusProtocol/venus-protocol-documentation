@@ -1,6 +1,8 @@
 # SwapHelper
 
-The SwapHelper is a Venus periphery contract that enables secure, backend-authorized token swaps. It provides an atomic multicall interface with EIP-712 signature verification, allowing the Venus backend to authorize specific swap operations while preventing arbitrary execution.
+The SwapHelper is a Venus periphery contract for backend-authorized token operations. It provides an atomic multicall interface with EIP-712 signature verification, allowing the configured backend signer to authorize a specific batch of approvals, arbitrary external calls, and token sweeps.
+
+> **Version scope:** This API reference follows the standalone [`SwapHelper` in `venus-periphery` v1.2.0](https://github.com/VenusProtocol/venus-periphery/blob/v1.2.0/contracts/SwapHelper/SwapHelper.sol). It is not a proxy. Its current owner, pending owner, backend signer, EIP-712 domain/address, and consuming manager/router versions are live trust inputs that must be checked before use.
 
 ## Overview
 
@@ -50,7 +52,7 @@ The contract is designed to be called by the LeverageStrategiesManager during fl
 ## Inheritance
 
 - `EIP712` - EIP-712 typed data hashing for signature verification
-- `Ownable` - Access control for admin functions
+- `Ownable2Step` - Two-step ownership transfer and owner access for admin functions
 - `ReentrancyGuard` - Reentrancy protection
 
 ## State Variables
@@ -274,12 +276,14 @@ All multicall operations require a valid EIP-712 signature from the `backendSign
 - The deadline timestamp
 - A unique salt
 
-This prevents:
+Assuming the backend signer and owner remain trusted, these checks prevent:
 
 - Unauthorized swap execution
 - Cross-address signature replay attacks
 - Replay attacks (via salt tracking)
 - Stale quote execution (via deadline)
+
+They do not constrain what a valid signed batch may call. The signer can authorize `approveMax`, `genericCall`, and `sweep`, and the owner can call those functions directly. Integrations must validate the complete encoded call list and output conditions, not only the signature and deadline.
 
 ### Access Control
 
@@ -287,6 +291,8 @@ Functions that interact with external contracts (`genericCall`, `sweep`, `approv
 
 - Direct calls require owner privileges
 - Calls within `multicall` are authorized via backend signature
+
+`approveMax` grants an unlimited allowance and `sweep` transfers the helper's full balance of the selected token. End users should not approve SwapHelper or leave tokens in it; callers such as LeverageStrategiesManager should transfer only the amount needed for an atomic operation and validate the returned output.
 
 ### Reentrancy Protection
 
@@ -303,9 +309,7 @@ This domain separation ensures signatures are specific to this contract and vers
 
 ## Deployment
 
-SwapHelper is currently deployed on BNB Chain Mainnet. See [Deployed Contracts](../deployed-contracts/periphery.md) for current addresses.
-
-Deployments on additional networks are planned. The contract is designed to be deployed on any EVM-compatible network where Venus Protocol operates.
+SwapHelper is currently published for BNB Chain Mainnet and testnet. See [Deployed Contracts](../../deployed-contracts/periphery.md) for current addresses. Source portability does not establish a deployment on another network.
 
 ## Integration
 
@@ -376,4 +380,4 @@ The API returns encoded `multicall` parameters with the backend signature that i
 
 ## Audits
 
-SwapHelper undergoes security audits before mainnet deployment. Audit reports are available in the [venus-periphery repository](https://github.com/VenusProtocol/venus-periphery/tree/main/audits).
+Published SwapHelper audit reports are indexed in the [`venus-periphery` v1.2.0 release](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/audits). Check each report's scope and reviewed commit against the deployed standalone bytecode.

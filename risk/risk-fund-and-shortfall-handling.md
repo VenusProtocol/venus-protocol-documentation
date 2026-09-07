@@ -1,37 +1,66 @@
-# Risk Fund and Shortfall Handling
+# Protocol income, RiskFundV2, and bad-debt handling
 
-### **Overview**
+Protocol income, risk-fund custody, and bad-debt recovery are separate processes. Risk-fund assets are protocol-controlled funds allocated by governance; they are not a per-user insurance policy, and their existence does not guarantee that every loss or bad-debt balance will be repaid.
 
-Venus Protocol manages risks of high volatility tokens with isolated pools. Each pool (Isolated Pools and the Core pool) has an associated risk fund receiving a percentage of the pool's income (interest and liquidation bonus) in USDT to prevent insolvency. The specific percentage is defined by the [tokenomics](../governance/tokenomics.md) of the project. The risk fund also covers bad debt in case of bankruptcy without a liquidator.
+## Current income path
 
-### Risk fund
+Markets send withdrawn interest reserves and liquidation-related revenue to `ProtocolShareReserve` (PSR). PSR records income by Comptroller, asset, and one of two schemas:
 
-The risk fund concerns three main contracts:
+* `PROTOCOL_RESERVES` for spread income; and
+* `ADDITIONAL_REVENUE` for liquidation and other income.
 
-* `ProtocolShareReserve`
-* `RiskFund`
-* `ReserveHelpers`
+PSR then distributes each schema according to its on-chain `distributionTargets`. Those targets and percentages are governance-controlled configuration, not fixed 50/50 constants. `releaseFunds(comptroller, assets)` is permissionless, but callers cannot choose the recipients or percentages.
 
-These three contracts are designed to hold funds that have been accumulated from interest reserves and liquidation incentives, send a portion to the protocol treasury, and send the remainder to the `RiskFund` contract. When `reduceReserves()` is called in a vToken contract, all accumulated liquidation fees and interests reserves are sent to the `ProtocolShareReserve` contract. Once funds are transferred to the `ProtocolShareReserve`, anyone can call `releaseFunds()` to transfer 50% to the `protocolIncome` address and the other 50% to the `riskFund` contract. Once in the `riskFund` contract, the tokens can be swapped via PancakeSwap pairs to the convertible base asset, which can be updated by the authorized accounts. When tokens are converted to the `convertibleBaseAsset`, they can be used in the `Shortfall` contract to auction off the pool's bad debt. Note that just as each pool is isolated, the risk funds for each pool are also isolated: only the associated risk fund for a pool can be used when auctioning off the bad debt of the pool.
+The downstream path is chain- and configuration-specific. On BNB Chain mainnet, [VIP-620](https://app.venus.io/#/governance/proposal/620?chainId=56) and [VIP-621](https://app.venus.io/#/governance/proposal/621?chainId=56) replaced the legacy converter network with `TokenBuyback` instances. The risk-fund route is:
 
-### Shortfall
+```text
+markets → ProtocolShareReserve → RiskFundBuyback → RiskFundV2
+```
 
-When a borrower's shortfall (total borrowed amount converted to USD is greater than the total supplied amount converted to USD) is detected in a market in the Isolated Pools, Venus halts the interest accrual, writes off the borrower's balance, and tracks the bad debt.
+`RiskFundBuyback` receives the risk-fund share of underlying assets, and an ACM-authorized finance process converts them through allowlisted routers. Its base asset is USDT, which it forwards to `RiskFundV2`. See [TokenBuyback](../whats-new/token-converter.md) for the conversion controls and migration details.
 
-`Shortfall` is an auction contract designed to auction off the `convertibleBaseAsset` accumulated in `RiskFund`. The `convertibleBaseAsset` is auctioned in exchange for users paying off the pool's bad debt. An auction can be started by anyone once a pool's bad debt has reached a minimum value (see `Shortfall.minimumPoolBadDebt()`). This value is set and can be changed by the authorized accounts. If the pool’s bad debt exceeds the risk fund plus a 10% incentive, then the auction winner is determined by who will pay off the largest percentage of the pool's bad debt. The auction winner repays the bid percentage of the bad debt in exchange for the entire risk fund. Otherwise, if the risk fund covers the pool's bad debt plus the 10% incentive, then the auction winner is determined by who will take the smallest percentage of the risk fund in exchange for paying off all the pool's bad debt.
+| BNB Chain mainnet component | Current role |
+|---|---|
+| [`ProtocolShareReserve`](https://bscscan.com/address/0xCa01D5A9A248a830E9D93231e791B1afFed7c446) | Active income accounting and distribution proxy. |
+| [`RiskFundBuyback`](https://bscscan.com/address/0x0c71EFabD00329E839745ef23aB946d3ed24A805) | Active USDT buyback route whose destination is RiskFundV2. |
+| [`RiskFundV2`](https://bscscan.com/address/0xdF31a28D68A2AB381D42b380649Ead7ae2A76E42) | Active protocol-fund custody proxy. It holds raw token balances and no longer maintains a per-pool reserve ledger. |
+| [`Shortfall`](https://bscscan.com/address/0xf37530A8a810Fcb501AA0Ecd0B0699388F0F2209) | Deployed legacy auction and recovery proxy. New auction starts and restarts are paused on BNB Chain mainnet. |
 
-The main configurable (via VIP) parameters in the `Shortfall` contract, and their initial values, are:
+The current BNB Chain mainnet `RiskFundV2` implementation removed `poolAssetsFunds`, `updatePoolState`, and `sweepTokenFromPool`. Its compatibility getter `getPoolsBaseAssetReserves(comptroller)` always returns zero; it must not be used as a current per-pool reserve balance. Governance can sweep raw ERC-20 balances. RiskFundV2 also retains `transferReserveForAuction`, which only the configured Shortfall address can call; it draws from the global raw USDT balance rather than a pool-attributed reserve. That compatibility surface does not make the paused auction system a current bad-debt workflow.
 
-* `minimumPoolBadDebt` - Minimum USD bad debt in the pool to allow the initiation of an auction. Initial value set to 1,000 USD
-* `waitForFirstBidder` - Blocks to wait for first bidder. Initial value sets to 100 blocks
-* `nextBidderBlockLimit` - Time to wait for next bidder. Initial value set to 100 blocks
-* `incentiveBps` - Incentive to auction participants. Initial value set to 1000 bps or 10%
+## How isolated-pool bad debt is recorded
 
-{% hint style="info" %}
-**Availability**:
+An undercollateralized account does not become market bad debt merely because a shortfall is observed. In the isolated-pool lending engine, `healAccount(user)` is limited to an insolvent account whose total collateral does not exceed `minLiquidatableCollateral` and whose collateral-to-incentivized-borrow ratio does not exceed 100%. The call seizes all of the account's collateral vTokens. The caller receives the liquidator share, while each market's protocol seize share is redeemed to underlying and sent to PSR.
 
-* `Shortfall` contract will be used only for the markets in the Isolated Pools.
-* The markets in the Core pool don't track the bad debt at the moment, so it cannot be reduced automatically.
-* The funds generated in the Core pool, that should be allocated to the risk fund, are temporarily sent to the [Venus Treasury](https://bscscan.com/address/0xf322942f644a996a617bd29c16bd7d231d9f35e9) contract. With the relase of the [Automatic income allocation](../whats-new/automatic-income-allocation.md) feature, this income will be sent to the `ProtocolShareReserve` contract, where there will be distributed following the [tokenomics](../governance/tokenomics.md) of the project.
-* The funds associated with the Core pool, accumulated in the `RiskFund` contract, will be used to repay the bad debt of the Core pool via VIP.
-{% endhint %}
+For each borrowed market, the caller then attempts the proportional repayment calculated from the account-wide collateral, borrows, and liquidation incentive. The vToken uses the amount actually transferred in: it removes the original borrow from the account and active `totalBorrows`, records `borrowBalance - actualRepayAmount` as market `badDebt`, and leaves the borrower's principal at zero. The written-off amount therefore no longer accrues as that borrower's debt.
+
+This accounting can remain relevant to legacy isolated markets even though the standalone Isolated Pools product is deprecated. It does not mean the recorded market bad debt will be covered automatically.
+
+## Legacy Shortfall auctions
+
+Shortfall was designed to exchange a pool-attributed risk-fund reserve for bidder repayments of isolated-market bad debt. That design depended on the per-pool ledger removed from RiskFundV2.
+
+As part of the joint VIP-620/VIP-621 migration, the BNB Chain mainnet Shortfall auctions were paused and the old converter path was retired. At BNB Chain mainnet block `118349571` (August 27, 2026, 08:12:46 UTC):
+
+* `auctionsPaused()` returned `true`;
+* all eight pools returned by PoolRegistry had auction status `NOT_STARTED`;
+* `getPoolsBaseAssetReserves(comptroller)` returned zero for all eight pools; and
+* the RiskFundV2 proxy held one global raw USDT balance rather than eight attributed balances.
+
+The same snapshot found nonzero `badDebt()` in nine isolated vTokens. No active auction therefore does not mean no legacy market bad debt.
+
+Do not approve tokens to Shortfall or call `startAuction`, `restartAuction`, or `placeBid` based on the old workflow. The pause is governance-controlled, however, and historical transfer debt can still require the `claimTokenDebt` recovery function. See [Shortfall and auctions](../technical-reference/reference-technical-articles/shortfall-and-auctions.md) for the dated historical design and recovery boundaries.
+
+## Current bad-debt response
+
+There is no universal on-chain function that automatically applies RiskFundV2 to every Venus bad-debt balance. Core Pool and isolated-pool accounting differ, and any use of protocol funds for recovery requires an explicit, scope-specific governance or operational action. Before describing a debt as covered, verify the relevant market state, asset balances, executed governance proposal, and on-chain repayment or recovery transaction.
+
+For current integration work, verify all of the following rather than relying on historical architecture diagrams:
+
+* PSR `distributionTargets` and percentages for the relevant chain and schema;
+* the identity and configuration of each downstream income destination;
+* RiskFundV2 raw token balances, owner, base asset, and configured Shortfall address;
+* Shortfall pause and per-pool auction state, plus any `tokenDebt` owed to a historical bidder; and
+* each affected market's `badDebt` balance and the governance actions that address it.
+
+Contract addresses are listed under [Deployed Contracts → Funds](../deployed-contracts/funds.md). The current source boundaries used by this page are [`protocol-reserve@eaed4e3`](https://github.com/VenusProtocol/protocol-reserve/tree/eaed4e323edd44bf87b5be1e56522fc772cb5990) and [`isolated-pools@943e7db`](https://github.com/VenusProtocol/isolated-pools/tree/943e7db1855c8ab4a09104f1d09e2b2db0506b95).

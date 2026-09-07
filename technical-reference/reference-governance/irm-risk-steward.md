@@ -1,6 +1,8 @@
 # IRMRiskSteward
 Contract that can update interest rate models updates received from RiskStewardReceiver.
 
+This page follows [`IRMRiskSteward.sol` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/RiskSteward/IRMRiskSteward.sol). On BNB mainnet at block `118369568`, proxy `0x8acaBc42Bb98E2e2b091902a7E23f60CcB730aaa` used implementation `0x0548A031574221e432f21a96bd7D24C0463c9eA5`, matching the tagged artifact. Destination-mainnet deployment must be verified separately; the stable tag contains destination instances on testnets.
+
 # Solidity API
 
 ### INTEREST_RATE_MODEL
@@ -119,11 +121,10 @@ function isSafeForDirectExecution(struct RiskParameterUpdate update) external vi
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | bool | True if update is safe for direct execution, false if timelock is required |
+| \[0] | bool | True if update is safe for direct execution, false if timelock is required |
 
 #### ❌ Errors
 * Throws UnsupportedUpdateType if the update type is not supported
 * Throws RedundantValue if the new IRM address is equal to the current IRM address
 
 - - -
-

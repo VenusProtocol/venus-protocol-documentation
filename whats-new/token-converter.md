@@ -87,7 +87,7 @@ Governance-only. Emergency token recovery from the contract. Also the canonical 
 | `DailyCapUpdated(oldCap, newCap)` | `setDailyCapUsd` succeeds |
 | `SlippageEventUsdUpdated(oldThreshold, newThreshold)` | `setSlippageEventUsd` succeeds |
 
-### BSC: Before & After
+### BNB Chain: Before & After
 
 **Before (8 contracts)**
 
@@ -102,7 +102,7 @@ Governance-only. Emergency token recovery from the contract. Also the canonical 
 | `WBNBBurnConverter` | Retired (was burn path) |
 | `ConverterNetwork` | Retired (registry) |
 
-**After (10 TokenBuyback instances, deployed on BSC mainnet)**
+**After (10 TokenBuyback instances, deployed on BNB Chain mainnet)**
 
 | Instance | Base Asset | Destination | Proxy address |
 |---|---|---|---|
@@ -130,7 +130,7 @@ Governance-only. Emergency token recovery from the contract. Also the canonical 
 
 ### Migration
 
-BSC mainnet migration executed across two governance proposals — [VIP-620](https://app.venus.io/#/governance/proposal/620?chainId=56) and [VIP-621](https://app.venus.io/#/governance/proposal/621?chainId=56) ([vips PR #708](https://github.com/VenusProtocol/vips/pull/708)). The work was originally proposed as a single transaction in [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56), which became unexecutable when BSC's Osaka hardfork enforced a hard per-tx gas cap of 2^24 = 16,777,216: the single-call `helper.execute()` required ~17.5M gas, driven primarily by the converter drain (6 converters × 47 core-pool tokens) and the router allowlist (10 buybacks × 9 routers). Splitting the drain + router allowlist into a separate `execute2()` entrypoint drops both halves comfortably under the cap.
+The BNB Chain mainnet migration executed across two governance proposals — [VIP-620](https://app.venus.io/#/governance/proposal/620?chainId=56) and [VIP-621](https://app.venus.io/#/governance/proposal/621?chainId=56) ([vips PR #708](https://github.com/VenusProtocol/vips/pull/708)). The work was originally proposed as a single transaction in [VIP-618](https://app.venus.io/#/governance/proposal/618?chainId=56), which became unexecutable when the BNB Smart Chain (BSC) Osaka hardfork enforced a hard per-transaction gas cap of 2^24 = 16,777,216: the single-call `helper.execute()` required ~17.5M gas, driven primarily by the converter drain (6 converters × 47 core-pool tokens) and the router allowlist (10 buybacks × 9 routers). Splitting the drain and router allowlist into a separate `execute2()` entrypoint drops both halves comfortably under the cap.
 
 **Pre-VIP** (deploy-script setup):
 
@@ -168,7 +168,7 @@ BSC mainnet migration executed across two governance proposals — [VIP-620](htt
 | Metric | Before | After |
 |---|---|---|
 | Solidity lines | ~2,160 across 5 contracts | ~425 lines, single contract class |
-| Deployed instances (BSC) | 8 | 10 (all `TokenBuyback`) |
+| Deployed instances (BNB Chain) | 8 | 10 (all `TokenBuyback`) |
 | Conversion trigger | External community (voluntary) | Finance cron (scheduled) |
 | Pricing | Oracle + up to 50% premium | DEX market rate |
 | Community dependency | Required | None |

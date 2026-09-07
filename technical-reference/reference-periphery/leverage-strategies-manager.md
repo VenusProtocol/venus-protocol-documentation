@@ -2,6 +2,8 @@
 
 The LeverageStrategiesManager is a Venus periphery contract that enables users to enter and exit leveraged positions atomically using flash loans. It integrates with the Venus Comptroller's flash loan functionality and the SwapHelper contract to execute complex leverage operations in a single transaction.
 
+> **Version scope:** This API reference follows [`venus-periphery` v1.2.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/contracts/LeverageManager). The deployed manager is an upgradeable proxy whose implementation fixes the Comptroller, SwapHelper, and unsupported vBNB address. Verify the current proxy implementation and dependencies before approving tokens or delegation.
+
 ## Overview
 
 Leverage operations in DeFi typically require multiple transactions: borrowing, swapping, and supplying assets. The LeverageStrategiesManager consolidates these into atomic operations using flash loans, eliminating intermediate exposure and reducing gas costs.
@@ -18,7 +20,7 @@ The contract supports five distinct leverage strategies:
 
 ## Prerequisites
 
-Before using the LeverageStrategiesManager, users must delegate borrowing rights to the contract:
+Before using the LeverageStrategiesManager, users must delegate account actions to the exact manager **proxy** for their network:
 
 ```solidity
 // On the Venus Comptroller
@@ -31,6 +33,8 @@ This delegation allows the contract to:
 - Mint vTokens on behalf of the user
 - Redeem vTokens on behalf of the user
 - Repay borrows on behalf of the user
+
+Obtain `leverageStrategiesManagerAddress` from [Deployed Contracts](../../deployed-contracts/periphery.md), not from an implementation address or the SwapHelper address. The delegation remains enabled until the user revokes it with `updateDelegate(leverageStrategiesManagerAddress, false)`.
 
 ## Inheritance
 
@@ -65,6 +69,18 @@ The contract uses EIP-1153 transient storage to pass state between entry functio
 | `minAmountOutAfterSwap` | `uint256`       | Slippage protection threshold               |
 
 # Solidity API
+
+### initialize
+
+Initializes two-step ownership and reentrancy protection on the manager proxy.
+
+```solidity
+function initialize() external initializer
+```
+
+The implementation constructor fixes the Comptroller, SwapHelper, and vBNB addresses and disables initialization on the implementation. Verify that the deployed proxy has already been initialized.
+
+---
 
 ### enterSingleAssetLeverage
 
@@ -380,6 +396,24 @@ function executeOperation(
 - `FlashLoanAssetOrAmountMismatch` if arrays length is not 1
 - `InvalidExecuteOperation` if operation type is unknown
 
+---
+
+### sweepToken
+
+Transfers the manager's full balance of an ERC-20 token to its current owner. This is a recovery function, not a user refund path.
+
+```solidity
+function sweepToken(address token) external onlyOwner nonReentrant
+```
+
+#### Access Requirements
+
+- Current contract owner only
+
+#### Security Considerations
+
+- The call transfers the entire token balance and has no protected-token list or lifecycle condition. Integrations should avoid leaving balances on the manager and should verify the live proxy owner before relying on recovery.
+
 ## Events
 
 | Event                        | Parameters                                                                                         | Description                                               |
@@ -390,6 +424,7 @@ function executeOperation(
 | `LeverageExited`             | user, collateralMarket, collateralAmountToRedeemForSwap, borrowedMarket, borrowedAmountToFlashLoan | Cross-asset leverage position closed                      |
 | `SingleAssetLeverageExited`  | user, collateralMarket, collateralAmountToFlashLoan                                                | Single-asset leverage position closed                     |
 | `DustTransferred`            | recipient, token, amount                                                                           | Residual tokens transferred after operation               |
+| `TokensSwept`                | token, recipient, amount                                                                            | Owner recovered the manager's full token balance           |
 
 ## Security Considerations
 
@@ -412,7 +447,7 @@ All swap operations accept a `minAmountOutAfterSwap` parameter. The transaction 
 
 - Enter operations perform pre-checks to ensure the user is not already at liquidation risk
 - All operations perform post-checks to verify the final position is healthy
-- Exit operations skip pre-checks since reducing debt can only improve health
+- Exit operations skip the initial liquidity pre-check because they begin by reducing debt, but they also redeem collateral to settle the flash loan. The contract therefore still performs a final account-liquidity check; an exit is not assumed safe solely because debt decreased.
 
 ### Dust Handling
 
@@ -429,9 +464,10 @@ See [Deployed Contracts](../../deployed-contracts/periphery.md) for current addr
 
 ### For Users
 
-1. **Enable Delegation**: Call `Comptroller.updateDelegate(leverageStrategiesManagerAddress, true)` to authorize the contract
+1. **Enable Delegation**: Resolve the network's manager proxy from [Deployed Contracts](../../deployed-contracts/periphery.md), then call `Comptroller.updateDelegate(leverageStrategiesManagerAddress, true)`
 2. **Approve Tokens**: Grant token spending approval to LeverageStrategiesManager for collateral tokens
 3. **Execute Operations**: Call the appropriate entry function with parameters
+4. **Revoke When Finished**: Call `Comptroller.updateDelegate(leverageStrategiesManagerAddress, false)` when the manager no longer needs to act for the account
 
 ### For Developers
 
@@ -480,4 +516,4 @@ Cross-asset operations (enterLeverage, enterLeverageFromBorrow, exitLeverage) re
 
 ## Audits
 
-LeverageStrategiesManager undergoes security audits before mainnet deployment. Audit reports are available in the [venus-periphery repository](https://github.com/VenusProtocol/venus-periphery/tree/main/audits).
+Published LeverageStrategiesManager audit reports are indexed in the [`venus-periphery` v1.2.0 release](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/audits). Check each report's scope and reviewed commit against the current proxy implementation.

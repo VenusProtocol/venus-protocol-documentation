@@ -1,6 +1,8 @@
 # GovernorBravoDelegate
 
-Venus Governance latest on chain governance includes several new features including variable proposal routes and fine grained pause control.
+The BNB mainnet Governor is the `GovernorBravoDelegator` proxy at `0x2d56dC077072B53571b8252008C60e945108c75a`. At block `118369123`, its `implementation()` was `0x9975d7064e40D16E1B76B90e56F606D72B385701`, matching the stable [`GovernorBravoDelegate` v2.15.0 API](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Governance/GovernorBravoDelegate.sol).
+
+Venus Governance includes variable proposal routes and fine-grained pause control.
 Variable routes for proposals allows for governance paramaters such as voting threshold and timelocks to be customized based on the risk level and
 impact of the proposal. Added granularity to the pause control mechanism allows governance to pause individual actions on specific markets,
 which reduces impact on the protocol as a whole. This is particularly useful when applied to isolated pools.
@@ -24,11 +26,12 @@ Governance has **3 main contracts**: **GovernanceBravoDelegate, XVSVault, XVS** 
 * Cancel a proposal
 * Queue a proposal for execution with a timelock executor contract.
 
-`GovernanceBravoDelegate` uses the XVSVault to get restrict certain actions based on a user's voting power. The governance rules it inforces are:
+`GovernorBravoDelegate` uses the XVSVault to restrict certain actions based on a user's voting power. The governance rules it enforces are:
 
-* A user's voting power must be greater than the `proposalThreshold` to submit a proposal
-* If a user's voting power drops below certain amount, anyone can cancel the the proposal. The governance guardian and proposal creator can also
-  cancel a proposal at anytime before it is queued for execution.
+* A user's prior voting power must be greater than or equal to the selected route's `proposalConfigs[proposalType].proposalThreshold` to submit a proposal.
+* Before queueing, the proposer or guardian can cancel. Other callers can cancel if the proposer's prior votes have dropped below that route's threshold.
+
+The public V1 scalar getters `proposalThreshold`, `votingDelay`, and `votingPeriod` are deprecated storage retained for compatibility. They are not the authoritative current route configuration.
 
 ## Venus Improvement Proposal
 
@@ -40,7 +43,7 @@ that can prevent a larger risk to the protocol and are not urgent. There are thr
 * `FASTTRACK`
 * `CRITICAL`
 
-When initializing the `GovernorBravo` contract, the parameters for the three routes are set. The parameters are:
+Each route stores a configuration that can be initialized or updated with `setProposalConfigs`, subject to `validationParams` and the contract's threshold constants:
 
 * `votingDelay`: The delay in blocks between submitting a proposal and when voting begins
 * `votingPeriod`: The number of blocks where voting will be open
@@ -51,8 +54,7 @@ flow of each type of VIP.
 
 ## Voting
 
-After a VIP is proposed, voting is opened after the `votingDelay` has passed. For example, if `votingDelay = 0`, then voting will begin in the next block
-after the proposal has been submitted. After the delay, the proposal state is `ACTIVE` and users can cast their vote `for`, `against`, or `abstain`,
+After a VIP is proposed, voting opens after the selected route's configured `votingDelay`. Current validation requires a nonzero minimum delay and bounds every route's delay and period. Once the start block is reached, the proposal state is `ACTIVE` and users can cast their vote `for`, `against`, or `abstain`,
 weighted by their total voting power (tokens + delegated voting power). Abstaining from a voting allows for a vote to be cast and optionally include a
 comment, without the incrementing for or against vote count. The total voting power for the user is obtained by calling XVSVault's `getPriorVotes`.
 
@@ -75,17 +77,38 @@ vote delegation by calling the same function with a value of `0`.
 Used to initialize the contract during delegator contructor
 
 ```solidity
-function initialize(address xvsVault_, struct GovernorBravoDelegateStorageV2.ProposalConfig[] proposalConfigs_, contract TimelockInterface[] timelocks, address guardian_) public
+function initialize(address xvsVault_, struct GovernorBravoDelegateStorageV3.ValidationParams validationParams_, struct GovernorBravoDelegateStorageV2.ProposalConfig[] proposalConfigs_, contract TimelockInterface[] timelocks, address guardian_) public
 ```
 
 #### Parameters
 
-| Name              | Type                                                   | Description                                  |
-| ----------------- | ------------------------------------------------------ | -------------------------------------------- |
-| xvsVault\_        | address                                                | The address of the XvsVault                  |
+| Name | Type | Description |
+| --- | --- | --- |
+| xvsVault\_ | address | The address of the XvsVault |
+| validationParams\_ | struct GovernorBravoDelegateStorageV3.ValidationParams | Minimum and maximum voting delay and voting period accepted for route configuration |
 | proposalConfigs\_ | struct GovernorBravoDelegateStorageV2.ProposalConfig\[] | Governance configs for each governance route |
-| timelocks         | contract TimelockInterface\[]                           | Timelock addresses for each governance route |
-| guardian\_        | address                                                |                                              |
+| timelocks | contract TimelockInterface\[] | Timelock addresses for each governance route |
+| guardian\_ | address | Governance guardian |
+
+---
+
+### setValidationParams
+
+Sets the allowed minimum and maximum voting delay and voting period. The proxy admin is the only authorized caller.
+
+```solidity
+function setValidationParams(struct GovernorBravoDelegateStorageV3.ValidationParams newValidationParams) public
+```
+
+---
+
+### setProposalConfigs
+
+Sets all three route configurations after checking their delay, period, and threshold against the validation bounds and the contract's threshold constants. The proxy admin is the only authorized caller.
+
+```solidity
+function setProposalConfigs(struct GovernorBravoDelegateStorageV2.ProposalConfig[] proposalConfigs_) public
+```
 
 ---
 
@@ -151,7 +174,7 @@ function execute(uint256 proposalId) external
 
 ### cancel
 
-Cancels a proposal only if sender is the proposer, or proposer delegates dropped below proposal threshold
+Cancels an unexecuted proposal when called by its proposer or the guardian, or when the proposer's prior votes have dropped below the selected route's proposal threshold.
 
 ```solidity
 function cancel(uint256 proposalId) external

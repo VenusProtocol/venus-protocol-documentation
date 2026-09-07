@@ -1,6 +1,8 @@
 # BaseRiskSteward
 Abstract base contract for Risk Steward contracts providing common functionality
 
+[`BaseRiskSteward` at governance-contracts v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/RiskSteward/BaseRiskSteward.sol) is not deployed directly. It provides the shared `safeDeltaBps` threshold and owner-only update used by the concrete market-cap, collateral-factor, and interest-rate-model stewards.
+
 # Solidity API
 
 ### safeDeltaBps
@@ -26,4 +28,3 @@ function renounceOwnership() public pure
 * Throws RenounceOwnershipNotAllowed
 
 - - -
-

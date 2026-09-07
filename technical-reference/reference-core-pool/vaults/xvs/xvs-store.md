@@ -1,97 +1,22 @@
-# XVS Store
-XVS Store responsible for distributing XVS rewards
+# XVSStore
 
-# Solidity API
+XVSStore holds reward tokens and transfers them on behalf of its configured owner, normally an XVS Vault. It is a non-proxy contract with separate `admin` and `owner` roles.
 
-### safeRewardTransfer
+{% hint style="warning" %}
+Every network has its own store, roles, balances, and active reward-token list. Read those values from the exact address in [Deployed Funds](../../../../deployed-contracts/funds.md).
+{% endhint %}
 
-Safely transfer rewards. Only active reward tokens can be sent using this function.
-Only callable by owner
+## Roles and API
 
-```solidity
-function safeRewardTransfer(address token, address _to, uint256 _amount) external
-```
+| Function | Caller requirement | Effect |
+| --- | --- | --- |
+| `safeRewardTransfer(address,address,uint256)` | Owner | Transfers an active reward token, capped by the store's available balance |
+| `setPendingAdmin(address)` | Admin | Starts an admin transfer |
+| `acceptAdmin()` | Pending admin | Accepts the admin role |
+| `setNewOwner(address)` | Admin | Replaces the owner that can distribute or withdraw rewards |
+| `setRewardToken(address,bool)` | Admin **or owner** | Enables or disables a reward token |
+| `emergencyRewardWithdraw(address,uint256)` | Owner | Withdraws a reward token from the store |
 
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| token | address | Reward token to transfer |
-| _to | address | Destination address of the reward |
-| _amount | uint256 | Amount to transfer |
+The owner can therefore both distribute active rewards and change which tokens are active. The admin can replace the owner. Permission reviews must account for both roles rather than treating the vault as the only privileged actor.
 
-- - -
-
-### setPendingAdmin
-
-Allows the admin to propose a new admin
-Only callable admin
-
-```solidity
-function setPendingAdmin(address _admin) external
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _admin | address | Propose an account as admin of the XVS store |
-
-- - -
-
-### acceptAdmin
-
-Allows an account that is pending as admin to accept the role
-nly calllable by the pending admin
-
-```solidity
-function acceptAdmin() external
-```
-
-- - -
-
-### setNewOwner
-
-Set the contract owner
-
-```solidity
-function setNewOwner(address _owner) external
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _owner | address | The address of the owner to set Only callable admin |
-
-- - -
-
-### setRewardToken
-
-Set or disable a reward token
-
-```solidity
-function setRewardToken(address _tokenAddress, bool status) external
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _tokenAddress | address | The address of a token to set as active or inactive |
-| status | bool | Set whether a reward token is active or not |
-
-- - -
-
-### emergencyRewardWithdraw
-
-Security function to allow the owner of the contract to withdraw from the contract
-
-```solidity
-function emergencyRewardWithdraw(address _tokenAddress, uint256 _amount) external
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _tokenAddress | address | Reward token address to withdraw |
-| _amount | uint256 | Amount of token to withdraw |
-
-- - -
-
+Source: [XVSStore.sol in venus-protocol v10.3.0](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/XVSVault/XVSStore.sol).

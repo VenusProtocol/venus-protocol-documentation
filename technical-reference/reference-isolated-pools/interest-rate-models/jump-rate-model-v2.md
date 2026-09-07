@@ -1,30 +1,68 @@
-# Compound's JumpRateModel Contract V2 for V2 vTokens
+# JumpRateModelV2
 
-Supports only for V2 vTokens
+[`JumpRateModelV2`](https://github.com/VenusProtocol/isolated-pools/blob/v4.4.0/contracts/JumpRateModelV2.sol) uses one slope up to `kink` and a steeper slope above it. This page consolidates the current contract; there is no separate `BaseJumpRateModelV2` contract in v4.4.0.
 
-# Solidity API
-
-### getBorrowRate
-
-Calculates the current borrow rate per block
+## Constructor
 
 ```solidity
-function getBorrowRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 badDebt) external view returns (uint256)
+constructor(
+    uint256 baseRatePerYear,
+    uint256 multiplierPerYear,
+    uint256 jumpMultiplierPerYear,
+    uint256 kink,
+    IAccessControlManagerV8 accessControlManager,
+    bool timeBased,
+    uint256 blocksPerYear
+)
 ```
 
-#### Parameters
+The three annual rate inputs are divided by `blocksOrSecondsPerYear()` and stored per slot. When `timeBased` is `true`, `blocksPerYear` must be zero and the inherited clock uses `31,536,000` seconds/year. When it is false, `blocksPerYear` must be nonzero.
 
-| Name     | Type    | Description                          |
-| -------- | ------- | ------------------------------------ |
-| cash     | uint256 | The amount of cash in the market     |
-| borrows  | uint256 | The amount of borrows in the market  |
-| reserves | uint256 | The amount of reserves in the market |
-| badDebt  | uint256 | The amount of badDebt in the market  |
+The public storage names `baseRatePerBlock`, `multiplierPerBlock`, and `jumpMultiplierPerBlock` are retained for compatibility. On a time-based deployment they hold per-second values despite those names.
 
-#### Return Values
+## Rate functions
 
-| Name | Type    | Description                                                         |
-| ---- | ------- | ------------------------------------------------------------------- |
-| \[0]  | uint256 | The borrow rate percentage per block as a mantissa (scaled by 1e18) |
+```solidity
+function getBorrowRate(
+    uint256 cash,
+    uint256 borrows,
+    uint256 reserves,
+    uint256 badDebt
+) external view returns (uint256);
 
----
+function getSupplyRate(
+    uint256 cash,
+    uint256 borrows,
+    uint256 reserves,
+    uint256 reserveFactorMantissa,
+    uint256 badDebt
+) public view returns (uint256);
+
+function utilizationRate(
+    uint256 cash,
+    uint256 borrows,
+    uint256 reserves,
+    uint256 badDebt
+) public pure returns (uint256);
+```
+
+For utilization `u ≤ kink`:
+
+```text
+borrow rate = baseRatePerBlock + u × multiplierPerBlock
+```
+
+Above the kink, the model adds `jumpMultiplierPerBlock × (u - kink)` to the rate at the kink. All values are `1e18` mantissas and the result is per slot.
+
+## Parameter updates
+
+```solidity
+function updateJumpRateModel(
+    uint256 baseRatePerYear,
+    uint256 multiplierPerYear,
+    uint256 jumpMultiplierPerYear,
+    uint256 kink
+) external;
+```
+
+The call is authorized by `AccessControlManager` using the signature `updateJumpRateModel(uint256,uint256,uint256,uint256)`. Record the effective block whenever parameters are changed; constructor data alone is not the current configuration.

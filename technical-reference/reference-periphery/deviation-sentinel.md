@@ -2,11 +2,13 @@
 
 The DeviationSentinel is a Venus periphery contract that monitors price deviations between the ResilientOracle and a DEX-based SentinelOracle. When deviations exceed configured thresholds, it routes emergency actions through the [EBrake](ebrake.md) contract to pause market actions and zero collateral factors, protecting the protocol from price manipulation or oracle failures.
 
+> **Version scope:** This API reference follows [`venus-periphery` v1.2.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/contracts/DeviationSentinel). DeviationSentinel, EBrake, SentinelOracle, and the DEX oracle contracts are upgradeable. Resolve the current proxy implementation, configured backend, pools, direct-price overrides, keepers, token thresholds, and ACM grants before treating this page as live configuration.
+
 ## Overview
 
 Price oracle reliability is critical for lending protocols. A compromised or malfunctioning oracle can lead to undercollateralized borrows or improper liquidations. The DeviationSentinel mitigates this risk by continuously comparing prices from two independent sources and taking protective action when they diverge beyond acceptable limits.
 
-The system consists of seven contracts:
+The system consists of seven contract types:
 
 | Contract                    | Description                                                                     |
 | --------------------------- | ------------------------------------------------------------------------------- |
@@ -40,7 +42,7 @@ The deviation response logic is designed to counter specific attack vectors that
 
 **Action:** Set collateral factor to 0 and pause supply for the affected asset.
 
-Pauses trigger only for large price deviations (e.g., 15%-50%), not for minor discrepancies (1%-10%), to avoid unnecessary interruptions from normal pool volatility. Small deviations are not economically viable for attackers.
+Thresholds are configured per token to balance incident sensitivity against normal pool volatility. Whether a particular deviation is economically exploitable depends on the configured threshold, available liquidity, pool depth, execution costs, and the rest of the transaction path; the contract does not prove that a smaller deviation is harmless.
 
 ### Deviation Response Logic
 
@@ -55,15 +57,15 @@ DeviationSentinel can only tighten restrictions. Recovery (unpausing, restoring 
 
 ### Off-Chain Monitoring
 
-An off-chain monitoring service continuously compares the ResilientOracle price with the on-chain price reported by the SentinelOracle for each monitored token (sourced from the configured DEX backend — Uniswap V3, PancakeSwap V3, Curve StableSwap-NG, or Aerodrome Slipstream). When the deviation exceeds a configured threshold, the monitor calls `handleDeviation` via a trusted keeper address, which routes the emergency action through EBrake to pause the affected market.
+An off-chain monitoring service continuously compares the ResilientOracle price with the on-chain price reported by the SentinelOracle for each monitored token (sourced from its configured DEX backend). When the deviation exceeds a configured threshold, the monitor calls `handleDeviation` via a trusted keeper address, which routes the emergency action through EBrake to pause the affected market.
 
-`handleDeviation` re-runs the deviation check against live on-chain prices before acting, so a compromised or faulty off-chain monitor cannot trigger a pause that the on-chain prices don't justify. Once the incident is resolved, a governance VIP restores all parameters on the Comptroller and calls the EBrake snapshot reset functions to prepare for future incidents.
+`handleDeviation` re-runs the configured check against current on-chain inputs before acting. This prevents a keeper from substituting an arbitrary off-chain price, but it does not make the result independent of the selected DEX pool, spot-price manipulation, token configuration, or a governance-set direct-price override. Once the incident is resolved, a governance VIP restores all parameters on the Comptroller and calls the EBrake snapshot reset functions to prepare for future incidents.
 
 ## Architecture
 
 <figure><img src="../../.gitbook/assets/emergency_brake.png" alt="DeviationSentinel Architecture"><figcaption></figcaption></figure>
 
-Any of the four DEX-oracle backends (`UniswapOracle`, `PancakeSwapOracle`, `CurveOracle`, `AerodromeSlipstreamOracle`) can sit behind `SentinelOracle` per token, with the right backend chosen at deploy time per chain.
+One of four DEX-oracle backends (`UniswapOracle`, `PancakeSwapOracle`, `CurveOracle`, or `AerodromeSlipstreamOracle`) can sit behind `SentinelOracle` for a token. The live choice is mutable configuration and can differ by token and network.
 
 ## Inheritance
 
@@ -789,13 +791,13 @@ Pause and collateral factor events are now emitted by EBrake (`ActionPaused`, `C
 
 - **Governance Functions**: All configuration functions (`setTokenConfig`, `setTrustedKeeper`, `setTokenMonitoringEnabled`) are restricted via `AccessControlManager`
 - **Keeper Functions**: `handleDeviation` is restricted to trusted keepers via the `onlyKeeper` modifier
-- **Direct Price Overrides**: The `setDirectPrice` function on `SentinelOracle` is governance-controlled to prevent price manipulation
+- **Direct Price Overrides**: `setDirectPrice` on `SentinelOracle` is governance-controlled. A nonzero override replaces the configured DEX-backend value, so its live value is part of the system's trust and configuration surface.
 
 ### Separation of Detection and Execution
 
 DeviationSentinel contains only detection logic. All Comptroller interactions (pausing, CF changes) are executed by EBrake. This means:
 
-- A compromised keeper can only trigger EBrake actions, not call the Comptroller directly
+- A keeper cannot supply an arbitrary off-chain price; it can trigger only the EBrake action produced by the configured on-chain comparison. Those on-chain inputs and configurations must still be trusted and monitored.
 - EBrake enforces its own "tighten only" invariant independently — the sentinel cannot unpause or restore CF even if its logic were modified
 - Pre-incident state snapshots (original CF, borrow caps, supply caps) are tracked by EBrake, not DeviationSentinel
 
@@ -824,4 +826,4 @@ See [Deployed Contracts](../../deployed-contracts/periphery.md) for current addr
 
 ## Audits
 
-DeviationSentinel undergoes security audits before mainnet deployment. Audit reports are available in the [venus-periphery repository](https://github.com/VenusProtocol/venus-periphery/tree/main/audits).
+Published DeviationSentinel and EBrake audit reports are indexed in the [`venus-periphery` v1.2.0 release](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/audits). Check each report's scope and reviewed commit against every current proxy implementation and configured oracle backend.

@@ -1,70 +1,40 @@
-# Compound's InterestRateModel Interface
+# InterestRateModel Interface
 
-# Solidity API
+The current [`InterestRateModel`](https://github.com/VenusProtocol/isolated-pools/blob/v4.4.0/contracts/InterestRateModel.sol) interface exposes three functions. Rates are mantissas scaled by `1e18` and are returned per slot, where the implementation defines a slot as a block or one second.
 
-### getBorrowRate
-
-Calculates the current borrow interest rate per block
+## `getBorrowRate`
 
 ```solidity
-function getBorrowRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 badDebt) external view virtual returns (uint256)
+function getBorrowRate(
+    uint256 cash,
+    uint256 borrows,
+    uint256 reserves,
+    uint256 badDebt
+) external view returns (uint256);
 ```
 
-#### Parameters
+Returns the borrow rate per slot. Current model implementations calculate utilization from `(borrows + badDebt) / (cash + borrows + badDebt - reserves)` and cap utilization at `1e18`.
 
-| Name     | Type    | Description                                            |
-| -------- | ------- | ------------------------------------------------------ |
-| cash     | uint256 | The total amount of cash the market has                |
-| borrows  | uint256 | The total amount of borrows the market has outstanding |
-| reserves | uint256 | The total amount of reserves the market has            |
-| badDebt  | uint256 | The amount of badDebt in the market                    |
-
-#### Return Values
-
-| Name | Type    | Description                                                     |
-| ---- | ------- | --------------------------------------------------------------- |
-| \[0]  | uint256 | The borrow rate per block (as a percentage, and scaled by 1e18) |
-
----
-
-### getSupplyRate
-
-Calculates the current supply interest rate per block
+## `getSupplyRate`
 
 ```solidity
-function getSupplyRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 reserveFactorMantissa, uint256 badDebt) external view virtual returns (uint256)
+function getSupplyRate(
+    uint256 cash,
+    uint256 borrows,
+    uint256 reserves,
+    uint256 reserveFactorMantissa,
+    uint256 badDebt
+) external view returns (uint256);
 ```
 
-#### Parameters
+Returns the supplier rate per slot after applying the reserve factor. Supply-rate income is based on performing borrows; bad debt affects utilization and the denominator but is not multiplied into `incomeToDistribute`.
 
-| Name                  | Type    | Description                                            |
-| --------------------- | ------- | ------------------------------------------------------ |
-| cash                  | uint256 | The total amount of cash the market has                |
-| borrows               | uint256 | The total amount of borrows the market has outstanding |
-| reserves              | uint256 | The total amount of reserves the market has            |
-| reserveFactorMantissa | uint256 | The current reserve factor the market has              |
-| badDebt               | uint256 | The amount of badDebt in the market                    |
-
-#### Return Values
-
-| Name | Type    | Description                                                     |
-| ---- | ------- | --------------------------------------------------------------- |
-| \[0]  | uint256 | The supply rate per block (as a percentage, and scaled by 1e18) |
-
----
-
-### isInterestRateModel
-
-Indicator that this is an InterestRateModel contract (for inspection)
+## `isInterestRateModel`
 
 ```solidity
-function isInterestRateModel() external pure virtual returns (bool)
+function isInterestRateModel() external pure returns (bool);
 ```
 
-#### Return Values
+Returns `true` as a compatibility marker.
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| \[0]  | bool | Always true |
-
----
+The interface does not expose the clock. Current implementations inherit `isTimeBased()` and `blocksOrSecondsPerYear()` from `TimeManagerV8`; read those functions from the deployed model before annualizing a rate.

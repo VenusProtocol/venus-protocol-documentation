@@ -139,7 +139,7 @@ The `(DESTINATION, BASE_ASSET)` pair is fixed per instance. Common destinations 
 
 * **`VTreasury`** — accumulates protocol-revenue tokens (U, BTCB, ETH, USDT, USDC, XVS) bought back from non-Prime, non-RiskFund income.
 * **`PrimeLiquidityProvider`** — accumulates Prime rewards in USDT and U; later distributed to Prime users according to per-token speeds configured via VIP. See [Prime tokens](prime.md).
-* **`RiskFundV2`** — accumulates USDT used by [Shortfall auctions](shortfall-and-auctions.md). Per-pool accounting was removed alongside the migration; `RiskFundV2` now draws against its raw balance.
+* **`RiskFundV2`** — receives the risk-fund route's converted USDT on BNB Chain mainnet. Per-pool accounting was removed alongside the migration, and Shortfall auction starts and restarts are paused; use of the global raw balance is governance-controlled rather than an automatic auction workflow.
 * **`XVSVaultTreasury`** — accumulates XVS that funds `XVSVault` rewards via VIP.
 
 See [deployed contracts](../../deployed-contracts/token-converters.md) for per-chain proxy addresses and their `(base asset, destination)` mapping.

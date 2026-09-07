@@ -1,6 +1,10 @@
 # Risk Oracle
 Contract for managing and publishing risk parameter updates for Risk-Steward Updates
 
+This API is pinned to [`RiskOracle.sol` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/RiskSteward/RiskOracle.sol). On BNB mainnet at block `118369568`, proxy `0x0E3E51958b0Daa8C57c949675975CBEDd7b5a1a1` used implementation `0x34045517284cB1Ac2806Fe3298a39886DA29De48`, matching the tagged artifact.
+
+The proxy surface also includes inherited two-step ownership, AccessControlManager, and upgrade selectors. Publishing authorization is determined by `authorizedSenders` and active update types; ABI presence alone does not authorize a caller.
+
 # Solidity API
 
 ### updateCounter
@@ -271,7 +275,7 @@ function getLatestUpdateByTypeAndMarket(string updateType, address market) exter
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | struct RiskParameterUpdate | The most recent RiskParameterUpdate for the specified parameter and market |
+| \[0] | struct RiskParameterUpdate | The most recent RiskParameterUpdate for the specified parameter and market |
 
 #### ❌ Errors
 * Throws NoUpdateFound if no update exists for the specified parameter and market
@@ -294,7 +298,7 @@ function getUpdateById(uint256 updateId) external view returns (struct RiskParam
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | struct RiskParameterUpdate | The RiskParameterUpdate for the specified id |
+| \[0] | struct RiskParameterUpdate | The RiskParameterUpdate for the specified id |
 
 #### ❌ Errors
 * Throws InvalidUpdateId if updateId is 0 or greater than updateCounter
@@ -312,7 +316,7 @@ function allUpdateTypesLength() external view returns (uint256)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | The length of the allUpdateTypes array |
+| \[0] | uint256 | The length of the allUpdateTypes array |
 
 - - -
 
@@ -333,7 +337,7 @@ function getLatestUpdateIdByTypeAndMarket(string updateType, address market) ext
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | The latest update ID for the given market and update type, or 0 if none exists |
+| \[0] | uint256 | The latest update ID for the given market and update type, or 0 if none exists |
 
 - - -
 
@@ -353,7 +357,7 @@ function getActiveUpdateTypes(string updateType) external view returns (bool)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | bool | True if the update type is active, false otherwise |
+| \[0] | bool | True if the update type is active, false otherwise |
 
 - - -
 
@@ -368,7 +372,7 @@ function getAllUpdateTypes() external view returns (string[])
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | string[] | An array of all update type strings |
+| \[0] | string[] | An array of all update type strings |
 
 - - -
 
@@ -384,4 +388,3 @@ function renounceOwnership() public pure
 * Throws RenounceOwnershipNotAllowed
 
 - - -
-

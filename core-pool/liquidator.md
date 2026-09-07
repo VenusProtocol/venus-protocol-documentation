@@ -1,8 +1,12 @@
-# Liquidator
+# Legacy Liquidator API (unversioned)
 
-The Liquidator contract is the only publicly accessible interface for liquidations in the core pool and was introduced in [VIP-64](https://app.venus.io/governance/proposal/64) so that the protocol could capture a part of the liquidation revenue. It has a unified interface for VAI, BNB and BEP-20 token liquidations.
+This hidden generated page describes an older treasury-backed BNB Chain Liquidator source generation. It is retained for legacy analysis while historical deployment-to-implementation coverage remains unresolved; it is not the current integration reference and does not establish that an address still uses this ABI.
 
-# Solidity API
+{% hint style="danger" %}
+Do not encode a transaction from this page without first resolving the target proxy's implementation at the relevant block. The [current public Liquidator reference](../technical-reference/reference-core-pool/liquidator.md) documents a later WBNB, AccessControlManager, and ProtocolShareReserve generation with a different constructor and initializer.
+{% endhint %}
+
+## Solidity API
 
 ## Storage
 
@@ -52,7 +56,7 @@ Percent of seized amount that goes to treasury.
 mapping(address => mapping(address => bool)) allowedLiquidatorsByAccount
 ```
 
-Mapping of addresses allowed to liquidate an account if liquidationRestricted[borrower] == true
+Mapping of addresses allowed to liquidate an account if `liquidationRestricted[borrower] == true`.
 
 ### liquidationRestricted
 
@@ -423,4 +427,3 @@ function _splitLiquidationIncentive(uint256 seizedAmount) internal view returns 
 {% hint style="info" %}
 Computes the amounts that would go to treasury and to the liquidator.
 {% endhint %}
-

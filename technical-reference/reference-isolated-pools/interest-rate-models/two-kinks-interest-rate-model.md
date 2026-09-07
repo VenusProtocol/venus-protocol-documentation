@@ -1,188 +1,58 @@
 # TwoKinksInterestRateModel
-An interest rate model with two different slope increase or decrease each after a certain utilization threshold called **kink** is reached.
 
-# Solidity API
+[`TwoKinksInterestRateModel`](https://github.com/VenusProtocol/isolated-pools/blob/v4.4.0/contracts/TwoKinksInterestRateModel.sol) has three utilization segments separated by `KINK_1` and `KINK_2`. Signed slope inputs allow a segment to rise or fall, while the returned borrow rate is floored at zero.
 
-### MULTIPLIER_PER_BLOCK_OR_SECOND
-
-The multiplier of utilization rate per block or second that gives the slope 1 of the interest rate scaled by EXP_SCALE
+## Constructor
 
 ```solidity
-int256 MULTIPLIER_PER_BLOCK_OR_SECOND
+constructor(
+    int256 baseRatePerYear,
+    int256 multiplierPerYear,
+    int256 kink1,
+    int256 multiplier2PerYear,
+    int256 baseRate2PerYear,
+    int256 kink2,
+    int256 jumpMultiplierPerYear,
+    bool timeBased,
+    uint256 blocksPerYear
+)
 ```
 
-- - -
+`baseRatePerYear` and `baseRate2PerYear` cannot be negative, and the kinks must satisfy `0 < kink1 < kink2`. Annual rates are divided by the implementation's slots/year value and stored in immutable per-block-or-second fields. A time-based deployment requires `blocksPerYear = 0`; a block-based deployment requires a nonzero value.
 
-### BASE_RATE_PER_BLOCK_OR_SECOND
+## Public parameters
 
-The base interest rate per block or second which is the y-intercept when utilization rate is 0 scaled by EXP_SCALE
+- `BASE_RATE_PER_BLOCK_OR_SECOND`, `MULTIPLIER_PER_BLOCK_OR_SECOND`, and `KINK_1`
+- `BASE_RATE_2_PER_BLOCK_OR_SECOND`, `MULTIPLIER_2_PER_BLOCK_OR_SECOND`, and `RATE_1`
+- `KINK_2`, `JUMP_MULTIPLIER_PER_BLOCK_OR_SECOND`, and `RATE_2`
+- inherited `isTimeBased()` and `blocksOrSecondsPerYear()`
+
+All rate and utilization values use `1e18` mantissa scaling. `RATE_1` and `RATE_2` are precomputed constructor values used to keep the three curve segments continuous.
+
+## Rate functions
 
 ```solidity
-int256 BASE_RATE_PER_BLOCK_OR_SECOND
+function getBorrowRate(
+    uint256 cash,
+    uint256 borrows,
+    uint256 reserves,
+    uint256 badDebt
+) external view returns (uint256);
+
+function getSupplyRate(
+    uint256 cash,
+    uint256 borrows,
+    uint256 reserves,
+    uint256 reserveFactorMantissa,
+    uint256 badDebt
+) public view returns (uint256);
+
+function utilizationRate(
+    uint256 cash,
+    uint256 borrows,
+    uint256 reserves,
+    uint256 badDebt
+) public pure returns (uint256);
 ```
 
-- - -
-
-### KINK_1
-
-The utilization point at which the multiplier2 is applied
-
-```solidity
-int256 KINK_1
-```
-
-- - -
-
-### MULTIPLIER_2_PER_BLOCK_OR_SECOND
-
-The multiplier of utilization rate per block or second that gives the slope 2 of the interest rate scaled by EXP_SCALE
-
-```solidity
-int256 MULTIPLIER_2_PER_BLOCK_OR_SECOND
-```
-
-- - -
-
-### BASE_RATE_2_PER_BLOCK_OR_SECOND
-
-The base interest rate per block or second which is the y-intercept when utilization rate hits KINK_1 scaled by EXP_SCALE
-
-```solidity
-int256 BASE_RATE_2_PER_BLOCK_OR_SECOND
-```
-
-- - -
-
-### RATE_1
-
-The maximum kink interest rate scaled by EXP_SCALE
-
-```solidity
-int256 RATE_1
-```
-
-- - -
-
-### KINK_2
-
-The utilization point at which the jump multiplier is applied
-
-```solidity
-int256 KINK_2
-```
-
-- - -
-
-### JUMP_MULTIPLIER_PER_BLOCK_OR_SECOND
-
-The multiplier of utilization rate per block or second that gives the slope 3 of interest rate scaled by EXP_SCALE
-
-```solidity
-int256 JUMP_MULTIPLIER_PER_BLOCK_OR_SECOND
-```
-
-- - -
-
-### RATE_2
-
-The maximum kink interest rate scaled by EXP_SCALE
-
-```solidity
-int256 RATE_2
-```
-
-- - -
-
-### constructor
-
-Construct an interest rate model
-
-```solidity
-constructor(int256 baseRatePerYear_, int256 multiplierPerYear_, int256 kink1_, int256 multiplier2PerYear_, int256 baseRate2PerYear_, int256 kink2_, int256 jumpMultiplierPerYear_, bool timeBased_, uint256 blocksPerYear_) public
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| baseRatePerYear_ | int256 | The approximate target base APR, as a mantissa (scaled by EXP_SCALE) |
-| multiplierPerYear_ | int256 | The rate of increase or decrease in interest rate wrt utilization (scaled by EXP_SCALE) |
-| kink1_ | int256 | The utilization point at which the multiplier2 is applied |
-| multiplier2PerYear_ | int256 | The rate of increase or decrease in interest rate wrt utilization after hitting KINK_1 (scaled by EXP_SCALE) |
-| baseRate2PerYear_ | int256 | The additonal base APR after hitting KINK_1, as a mantissa (scaled by EXP_SCALE) |
-| kink2_ | int256 | The utilization point at which the jump multiplier is applied |
-| jumpMultiplierPerYear_ | int256 | The multiplier after hitting KINK_2 |
-| timeBased_ | bool | A boolean indicating whether the contract is based on time or block. |
-| blocksPerYear_ | uint256 | The number of blocks per year |
-
-- - -
-
-### getBorrowRate
-
-Calculates the current borrow rate per slot (block or second)
-
-```solidity
-function getBorrowRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 badDebt) external view returns (uint256)
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| cash | uint256 | The amount of cash in the market |
-| borrows | uint256 | The amount of borrows in the market |
-| reserves | uint256 | The amount of reserves in the market |
-| badDebt | uint256 | The amount of badDebt in the market |
-
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | The borrow rate percentage per slot (block or second) as a mantissa (scaled by EXP_SCALE) |
-
-- - -
-
-### getSupplyRate
-
-Calculates the current supply rate per slot (block or second)
-
-```solidity
-function getSupplyRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 reserveFactorMantissa, uint256 badDebt) public view virtual returns (uint256)
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| cash | uint256 | The amount of cash in the market |
-| borrows | uint256 | The amount of borrows in the market |
-| reserves | uint256 | The amount of reserves in the market |
-| reserveFactorMantissa | uint256 | The current reserve factor for the market |
-| badDebt | uint256 | The amount of badDebt in the market |
-
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | The supply rate percentage per slot (block or second) as a mantissa (scaled by EXP_SCALE) |
-
-- - -
-
-### utilizationRate
-
-Calculates the utilization rate of the market: `(borrows + badDebt) / (cash + borrows + badDebt - reserves)`
-
-```solidity
-function utilizationRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 badDebt) public pure returns (uint256)
-```
-
-#### Parameters
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| cash | uint256 | The amount of cash in the market |
-| borrows | uint256 | The amount of borrows in the market |
-| reserves | uint256 | The amount of reserves in the market (currently unused) |
-| badDebt | uint256 | The amount of badDebt in the market |
-
-#### Return Values
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| [0] | uint256 | The utilization rate as a mantissa between [0, MANTISSA_ONE] |
-
-- - -
-
+The model is immutable. Identify the exact deployed address and constructor values returned by a market's `interestRateModel()`; a model family name is not enough to reproduce the curve.

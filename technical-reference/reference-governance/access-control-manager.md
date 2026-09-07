@@ -1,18 +1,20 @@
 # AccessControlManager
 
+This page follows [`AccessControlManager.sol` at governance-contracts v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Governance/AccessControlManager.sol). The BNB mainnet instance uses an older deployed ABI without `hasPermission`; the destination-mainnet v2.15.0 artifacts include that selector. `isAllowedToCall` remains the permission hook on both generations.
+
 Access control plays a crucial role in the Venus governance model. It is used to restrict functions so that they can only be called from one
 account or list of accounts (EOA or Contract Accounts).
 
-The implementation of `AccessControlManager`(https://github.com/VenusProtocol/governance-contracts/blob/main/contracts/Governance/AccessControlManager.sol)
+The [`AccessControlManager` implementation](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Governance/AccessControlManager.sol)
 inherits the [Open Zeppelin AccessControl](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/AccessControl.sol)
 contract as a base for role management logic. There are two role types: admin and granular permissions.
 
 ## Granular Roles
 
 Granular roles are built by hashing the contract address and its function signature. For example, given contract `Foo` with function `Foo.bar()` which
-is guarded by ACM, calling `giveRolePermission` for account B do the following:
+is guarded by ACM, calling `giveCallPermission` for account B does the following:
 
-1. Compute `keccak256(contractFooAddress,functionSignatureBar)`
+1. Compute `keccak256(abi.encodePacked(contractFooAddress, functionSignatureBar))`
 2. Add the computed role to the roles of account B
 3. Account B now can call `ContractFoo.bar()`
 
@@ -114,6 +116,8 @@ function isAllowedToCall(address account, string functionSig) public view return
 ### hasPermission
 
 Verifies if the given account can call a contract's guarded function
+
+This convenience view exists in the current source and destination-mainnet deployments. It is not present in the BNB mainnet AccessControlManager ABI; offchain tools querying that instance must compute the role and use `hasRole`, or call the guarded contract's normal permission path.
 
 ```solidity
 function hasPermission(address account, address contractAddress, string functionSig) public view returns (bool)

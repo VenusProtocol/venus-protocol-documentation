@@ -1,23 +1,27 @@
-# Admins and ownership
+# Legacy two-step admin pattern
 
-Most of our contracts have a dedicated admin. The admin of most of the contracts is Governance. The admin can be changed with a two-step procedure that guarantees there's no error during transferring the rights.
+This hidden page documents the Compound-style `admin`/`pendingAdmin` transfer used by specific legacy contracts such as Unitroller and older vTokens. It is not a protocol-wide ownership model: other Venus contracts use `Ownable2Step`, proxy admins, AccessControlManager permissions, timelock roles, guardians, or combinations of them.
 
-The interface is similar but for historical reasons some of the contracts do not revert in case of failure. These contracts return 0 if the transaction was successful and an error code otherwise.
+{% hint style="warning" %}
+Governance is not automatically the effective caller for every privileged function. For the exact deployed address, resolve the implementation and read its live admin, pending admin, owner, proxy admin, AccessControlManager, and function permission before preparing a transfer.
+{% endhint %}
+
+Some legacy implementations return `0` on success and an error code on failure instead of reverting. Callers must check the returned value as well as transaction status.
 
 ## _setPendingAdmin
 
-```
+```solidity
 function _setPendingAdmin(
     address newPendingAdmin
-) external [returns (uint256 error)];
+) external returns (uint256 errorCode);
 ```
 
-Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer. The function is only callable by admin.
+Begins the legacy two-step transfer. The current admin proposes `newPendingAdmin`; that address must call `_acceptAdmin` to finish.
 
 ## _acceptAdmin
 
 ```solidity
-function _acceptAdmin() external [returns (uint256)];
+function _acceptAdmin() external returns (uint256 errorCode);
 ```
 
-Accepts transfer of admin rights. The function is only callable by pendingAdmin.
+Accepts the legacy transfer. The function is callable only by the recorded pending admin. Read both storage fields after execution instead of assuming the change completed from transaction status alone.

@@ -1,91 +1,133 @@
 # Shortfall and auctions
 
-A set of processes are executed in a market when a shortfall (total borrowed amount converted to USD is greater than the total supplied amount converted to USD) is detected for a borrower to pause the interest accrual on the borrow, write off the borrower's borrow balance and track the market bad debt.
+{% hint style="warning" %}
+**Legacy and disabled on BNB Chain.** This page describes the former Shortfall auction design used by Venus Isolated Pools. [Isolated Pools have been deprecated](../../guides/isolated-pools-deprecation.md).
 
-_V_ represents the total bad debt including the accrued interest on the bad debt. To calculate the accrued interest the borrow index when the bad debt is detected is divided by the initial borrow index and then multiplied by the borrowed amount. For example, if the initial borrow index is 1.2 and when bad debt of 100 USDC is detected the borrow index is 1.5 then the _V_ (total bad debt) becomes 100 \* (1.5/1.2) = 125 USDC.
+At BNB Chain block `118328948` (August 27, 2026, 05:38:04 UTC), `Shortfall.auctionsPaused()` was `true`, and every pool returned by the PoolRegistry had auction status `NOT_STARTED`. The pause was executed as part of the TokenBuyback migration in [this transaction](https://bscscan.com/tx/0xe49e06d4711752f731cb38879c23c9a6954b2c6d7b57181352a32a2ef8552c85).
 
-The calculated total bad debt of the account is written off for the borrower and interest accrual is stopped on the bad debt.
+Do not approve tokens to Shortfall or call `startAuction`, `restartAuction`, or `placeBid` based on this historical page. Users with remaining Isolated Pool positions should follow the deprecation guide linked above. A historical bidder with a nonzero `tokenDebt(token, account)` may still need the separate `claimTokenDebt` recovery path.
+{% endhint %}
 
-When the pool's bad debt reaches a minimum amount the risk fund reserve is auctioned off to cover the bad debt (see `Shortfall.minimumPoolBadDebt()`). Anyone will be allowed to start or restart an auction if the constraints are satisfied:
+## Historical design
 
-* no other auction is in progress for the same pool (`Shortfall.auctions(comptrollerAddress).status in (AuctionStatus.NOT_STARTED, AuctionStatus.ENDED)`)
-* the bad debt accumulated in the pool, in USD, is greater than `Shortfall.minimumPoolBadDebt()`
+When an undercollateralized borrow was written off in an Isolated Pool market, its borrow balance stopped accruing interest and the market tracked the amount as bad debt.
 
-Auction participants receive a maximum 10% incentive (configurable by the community via VIP, see `RiskFund.incentiveBps()`) for covering the bad debt. Depending on the size of the reserve in the risk fund, either 100% of bad debt or a portion of it is raised.
+_V_ represents total bad debt including interest accrued before the write-off. If the initial borrow index was 1.2 and the borrow index was 1.5 when 100 USDC of principal became bad debt, then:
 
-_N_ represents the total pool’s bad debt denoted in USD and _M_ represents total risk fund balance in USD.  When an auction begins, a starting bid is set to prevent bidders from taking advantage of the auction by opening with an undervalued bid. The highest bidder’s funds are locked, and when the auction closes the market(s) total cash reserve is increased, the bad debt of the market(s) is decreased and the risk fund partially/completely transferred to the winning bidder.
+```text
+V = 100 USDC × (1.5 / 1.2) = 125 USDC
+```
 
-<figure><img src="../../.gitbook/assets/auctions.png" alt="Auction scenarios"><figcaption></figcaption></figure>
+Historically, anyone could start an auction when:
 
-## Auction scenarios
+* no auction was in progress for that pool (`status` was `NOT_STARTED` or `ENDED`); and
+* the pool's USD-denominated bad debt was greater than or equal to `Shortfall.minimumPoolBadDebt()`.
 
-In scenario 1, X% indicates the percentage of bad debt the bidder is willing to pay and in scenario 2, the Y% indicates the percentage of the risk fund the bidder is willing to seize. During the auction, bidders are only allowed to specify X% or Y% depending on the type of auction.
+`Shortfall.incentiveBps()` configured the bidder incentive. Its value at the snapshot block above was 1,000 bps, or 10%; 10% was a configured value, not a source-enforced maximum.
 
-A bid will be successful only if the bidder has sufficient funds to cover the bad debt they are bidding for and they make the best offer. When a bid is placed it is transferred to the  `Shortfall` contract, and released if they are out bid. Subsequent bids should be placed within 100 blocks (adjustable via VIP, see `Shortfall.nextBidderBlockLimit()`) of the previous bid, otherwise anyone (including the winning bidder) can close the auction. If there is no bid for 100 blocks (adjustable via VIP, see `Shortfall.waitForFirstBidder()`) the auction can be restarted accounting for any changes in the risk fund and bad debt balance.
+_N_ represents the pool's total bad debt in USD and _M_ represents the pool's risk-fund balance in USD. After calculating the bad debt plus the configured incentive, the historical source selected the auction type as follows:
 
-The auction process attempts to cover as much market bad debt as possible. In scenario 1, all of the bad debt may not be covered by the auction. In this case, the bad debt not covered will be maintained in the system until a new auction is started.
+* `LARGE_POOL_DEBT` when the bad debt plus incentive was greater than or equal to _M_: bidders competed by offering a larger percentage of every market's bad debt. The winner was owed the auction's entire `seizedRiskFund` snapshot; Shortfall either transferred the payout or recorded it as claimable `tokenDebt` if the transfer to the winner failed.
+* `LARGE_RISK_FUND` when the bad debt plus incentive was less than _M_: every bidder covered 100% of every market's bad debt and competed by requesting a smaller percentage of the `seizedRiskFund` snapshot.
 
-## Examples
+<figure><img src="../../.gitbook/assets/auctions.png" alt="Historical Shortfall auction scenarios"><figcaption>Historical Shortfall auction scenarios</figcaption></figure>
 
-Let’s take a scenario when bad debt is greater than the total risk fund balance.
+## Auction state and pause semantics
 
-* **Bad Debt**: Assuming that pool bad debt is 10 BTC and the price of BTC is $20,000. Then, the total bad debt is $200,000. If the incentive is 10% then the final bad debt is $220,000.
-* **Risk Fund**: Given the risk fund is stored in USDT token, the token risk fund balance is 100,000 USDT and 1 USDT is equal to $1, then the total risk fund balance is $100,000
-* **Minimum Bid**: In order for a user to bid they have to supply a minimum percentage of bad debt calculated as `(100000/220000) * 0.9 = 40.90%`
-* **User A Starts Auction**: User A notices that the pool’s bad debt is greater than the minimum bad debt required to start an auction, then they can start an auction using this function call:
-  * **Minimum Pool Bad Debt**: You can find the minimum required bad debt for a pool to start an auction using `minimumPoolBadDebt` state variable and the bad debt of individual markets using the `badDebt` state variable of the vToken contract.
-  * **Start Auction Signature**: `startAuction(comptrollerAddress)`
-    * Address of the pool’s comptroller.
-    * Starting an auction triggers `AuctionStarted` event which can be monitored to get notifications.
-* **User A Places Bid**: Now user A sees that the auction has started and wishes to place a bid. In this case, the user will place the minimum bid and try to seize the risk fund balance at the lowest value possible:
-  * **Block Limit**: Note that the first bid has to be placed within 100 blocks from starting the auction, otherwise the auction needs to be restarted.
-  * **Approval**: You need to give approval to the `Shortfall` contract to transfer the bid amount of funds to itself.
-    * To calculate the amount for approval you need to first decide the bid bps. In this case, the minimum bid bps can be read using `auctions[comptrollerAddress].startBidBps` state variable.
-    * In this example, it’s 4090 i.e., 40.90%. So you need to transfer 40.90% of 10 BTC which is 4.9 BTC. This is the approval amount. If there are multiple tokens as part of the bad debt then you have to provide 40.90% of each of the tokens bad debt.
-    * You can find the list of markets involved in the bad debt by using `auctions[comptrollerAddress].markets` variable and then retrieving the underlying token of each of the markets using `underlying()` function.
-  * **Place Bid Signature**: `placeBid(comptrollerAddress, bidBps, auctionStartBlock)`
-    * **Auction Start Block**: This is the block number when the auction was started. You can find this using: `auctions[comptrollerAddress].startBlock` state variable.
-    * Placing a bid triggers `BidPlaced` event which can be monitored.
-* **User B Places Bid**: Now user B sees an opportunity and decides to place a bid. They have to place a bid bigger than 40.90% bid bps to succeed in placing the bid. For example, user B places a bid for 41% to outperform User A’s bid.
-  * **Refund**: User A will immediately receive back the BTC they sent to the `Shortfall` contract as part of the first bid.
-* **User A Places Improved Bid**: Now user A sees that User B places a better bid. Then User A can wish to complete with a better bid again. Suppose user A places a new bid for 43%.
-* **User A Closed Auction**: After placing a bid, User A waits for 100 blocks and sees there are no new bids that outperform their bid then they can close the auction and win it.
-  * **Close Auction Signature**: `closeAuction(comptrollerAddress)`
-  * **Risk Fund Transfer**: At this point in time all the 100,000 USDT is transferred from the risk fund to user A’s address.
+The historical ABI was:
 
-***
+```solidity
+function startAuction(address comptroller) external;
 
-Scenario when bad debt is less than total risk fund balance
+function restartAuction(address comptroller) external;
 
-* **Bad Debt**: Assuming pool bad debt is 10 BTC and the price of BTC is $20,000. Then, the total bad debt is $200,000. Suppose the incentive is 10% then the final bad debt is $220,000.
-* **Risk Fund**: Given the risk fund is stored in USDT token, the token risk fund balance is 500,000 USDT and 1 USDT is equal to $1, then the total risk fund balance is $500,000
-* **Maximum Bid**: Now for a user to bid they have to supply 100% of the bad debt and can claim a maximum of `(220000 * 1.1) * 500000 = 48.40%` of the risk fund balance.
-* **User A Starts Auction**: Now suppose user A notices that the pool’s bad debt is greater than the minimum bad debt required to start an auction, then they can start an auction.
-  * **Minimum Pool Bad Debt**: You can find the minimum required bad debt for a pool to start an auction using `minimumPoolBadDebt` state variable and the bad debt of individual markets using `badDebt` state variable of the vToken contract.
-  * **Start Auction Signature**: `startAuction(comptrollerAddress)`
-    * Address of the pool’s comptroller.
-    * Starting an auction triggers `AuctionStarted` event which can be monitored to get notifications.
-* **User A Places Bid**: Now user A sees that the auction has started and wishes to place a bid. In this case, the user will place the maximum bid and try to seize the maximum possible risk fund balance by covering 100% of bad debt:
-  * **Block Limit**: Note that the first bid has to be placed within 100 blocks from starting the auction, otherwise it needs to be restarted.
-  * **Approval**: You need to give approval to the `Shortfall` contract to transfer the bid amount of funds to itself.
-    * **Amount**: You need to transfer 10 BTC i.e., the complete bad debt. This is the approval amount. If there are multiple tokens as part of the bad debt then you have to provide complete bad debt for each token.
-    * You can find the list of markets involved in the bad debt using `auctions[comptrollerAddress].markets` variable and then read the underlying token of each of the markets using `underlying()` function.
-  * **Place Bid Signature**: `placeBid(comptrollerAddress, bidBps, auctionStartBlock)`
-    * **Auction Start Block**: This is the block number when the auction was started. You can find this using: `auctions[comptrollerAddress].startBidBps` state variable.
-    * **Bid BPS**: In this example, the bid bps is 100% which indicates 100% of 48.40% (i.e., 242,000 USDT).
-    * Placing a bid triggers `BidPlaced` event which can be monitored.
-* **User B Places Bid**: Now user B sees an opportunity and decides to place a bid. They have to place a bid lower than 100% bid bps to succeed in placing a bid. Imagine user B places a bid for 95% (i.e., risk fund seize amount is `242000 - (100-95)% = 229900`) to outperform User A’s bid.
-  * **Refund**: User A will immediately receive back the BTC they sent to the `Shortfall` contract as part of the first bid.
-* **User A Places Improved Bid**: Now user A sees that User B places a better bid. Then User A can wish to complete with a better bid again. Suppose user A places a new bid for 94%.
-* **User A Closed Auction**: After placing a bid, User A waits for 100 blocks and sees there are no new bids that outperform their bid then they can close the auction and win it.
-  * **Close Auction Signature**: `closeAuction(comptrollerAddress)`
-  * **Risk Fund Transfer**: At this point in time 94% of 242,000 USDT i.e., 227,480 USDT is transferred from the risk fund to user A’s address.
+function placeBid(
+    address comptroller,
+    uint256 bidBps,
+    uint256 auctionStartBlockOrTimestamp
+) external;
 
-***
+function closeAuction(address comptroller) external;
+```
 
-Scenario when the auction was started and nobody participated so instead of starting a new auction we need to restart the auction
+The third argument to `placeBid` had to equal `auctions(comptroller).startBlockOrTimestamp`. It was not `startBidBps`, and the deployed struct did not have a `startBlock` field.
 
-* **Auction Started**: Suppose an auction was started and there was no bidder till 100 blocks. Then in this case the auction is stale and bids cannot be placed.
-* **Restart Auction**: Now suppose a user wants to restart the auction and/or place a bid then they can restart using:
-  * **Restart Auction Signature**: `restartAuction(comtrollerAddress)`
-* **Place Bids and Close Auction**: Now just like previous steps a user can place bids and close the auction.
+The generated `auctions(address)` getter exposed only scalar fields. It did not expose the dynamic `markets` array or the per-market `marketDebt` and `bidAmount` mappings. Historical integrations had to obtain `auctionStartBlockOrTimestamp`, `markets`, `marketsDebt`, and `startBidBps` from the matching `AuctionStarted` event, then independently verify every underlying token and its decimals. `Comptroller.getAllMarkets()` describes current pool membership and is not a substitute for an auction snapshot.
+
+Pausing had function-specific effects:
+
+| Function | Effect while `auctionsPaused() == true` |
+|---|---|
+| `startAuction` | Reverted. |
+| `restartAuction` | Reverted. |
+| `placeBid` | Did not check the pause flag; it could accept a bid only if an auction was already `STARTED` and not stale. |
+| `closeAuction` | Did not check the pause flag; it could close an already `STARTED` auction with a bidder after the configured limit. |
+| `claimTokenDebt` | Remained available for historical transfer debt. |
+
+Therefore, a pause flag alone did not prove that no auction required completion. The block-specific state check recorded at the top of this page separately confirmed that all eight registered BNB Chain pools were `NOT_STARTED`.
+
+At the snapshot block, both `waitForFirstBidder` and `nextBidderBlockLimit` were 100 blocks. In the historical source, an auction with no bidder became stale only when the current block was greater than `startBlockOrTimestamp + waitForFirstBidder`. An auction with a bidder could be closed only when the current block was greater than `highestBidBlockOrTimestamp + nextBidderBlockLimit`.
+
+## Historical examples
+
+The following examples explain the old source calculations. They are not instructions to participate in an auction.
+
+### Scenario 1: bad debt plus incentive equals or exceeds the risk fund
+
+Assume:
+
+* market bad debt: 10 BTC;
+* BTC price: $20,000, so _N_ = $200,000;
+* `incentiveBps`: 1,000, or 10%; and
+* risk-fund balance _M_: 100,000 USDT, worth $100,000.
+
+This was a `LARGE_POOL_DEBT` auction. The source calculated the starting bid as:
+
+```text
+startBidBps = floor(10,000 × 10,000 × M
+                    / (N × (10,000 + incentiveBps)))
+
+                = floor(100,000,000 × 100,000
+                    / (200,000 × 11,000))
+
+                = 4,545 bps = 45.45%
+```
+
+For a market with 10 BTC of snapshotted debt, the first bid transferred:
+
+```text
+floor(10 BTC × 4,545 / 10,000) = 4.545 BTC
+```
+
+The bidder historically had to approve the Shortfall proxy for at least the calculated amount of each underlying token in the `AuctionStarted` snapshot. Integer division rounded each token amount down in its smallest unit.
+
+The first bid had to be at least 4,545 bps. Subsequent bids had to be higher than the current highest bid—for example, 4,600 bps and then 4,700 bps. A 4,090 bps, 41%, or 43% bid would not satisfy this example's starting-bid constraint. When a better bid was accepted, the previous bidder's deposited tokens were returned or recorded as claimable token debt if the transfer failed.
+
+After the winning bid remained unchallenged beyond the configured next-bidder limit, `closeAuction(comptroller)` transferred the winning token amounts to the markets and requested the full 100,000 USDT `seizedRiskFund` snapshot for the winner. Shortfall then transferred that payout to the winner or recorded it as claimable `tokenDebt` if the winner transfer failed.
+
+### Scenario 2: the risk fund exceeds bad debt plus incentive
+
+Assume the same 10 BTC of debt at $20,000 per BTC, but a 500,000 USDT risk-fund balance.
+
+This was a `LARGE_RISK_FUND` auction. The source applied the 10% incentive once:
+
+```text
+badDebtPlusIncentive = $200,000 × (1 + 1,000 / 10,000)
+                     = $220,000
+
+share of total risk fund = $220,000 / $500,000 = 44%
+```
+
+The auction's `seizedRiskFund` snapshot was therefore 220,000 USDT, not 242,000 USDT. Every bidder transferred the full 10 BTC of snapshotted bad debt. `bidBps` selected the fraction of the 220,000 USDT snapshot that the bidder requested:
+
+| Bid | Requested risk-fund amount |
+|---:|---:|
+| 100% | 220,000 USDT |
+| 95% | 209,000 USDT |
+| 94% | 206,800 USDT |
+
+The first bid could be at most 100%, and each subsequent bid had to be lower than the current highest bid. After the next-bidder limit passed, `closeAuction(comptroller)` calculated the winner's payout from the winning percentage of the 220,000 USDT snapshot; the payout was transferred or recorded as claimable `tokenDebt` if the winner transfer failed.
+
+### Historical restart behavior
+
+When an auction had no bidder and became stale, `restartAuction(comptroller)` ended the old auction and created a new snapshot of bad debt and risk-fund balances. Restarting required auctions not to be paused. Because BNB Chain auctions are currently paused and all registered pools were `NOT_STARTED` at the recorded block, this historical restart flow is not currently available.

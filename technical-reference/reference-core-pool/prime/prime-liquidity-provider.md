@@ -1,7 +1,25 @@
 # PrimeLiquidityProvider
 PrimeLiquidityProvider is used to fund Prime
 
+PrimeLiquidityProvider deployments can accrue per block or per second and can fund either Prime V1 or PrimeV2. See the [Prime version map](README.md) for current consumer, clock, and pause state by network.
+
+{% hint style="warning" %}
+Distribution speeds use the deployment's `isTimeBased()` clock. Read `blocksOrSecondsPerYear()` and `paused()` from the exact proxy before annualizing a speed or assuming funds can be released.
+{% endhint %}
+
 # Solidity API
+
+### constructor
+
+Configures the immutable time basis on the implementation.
+
+```solidity
+constructor(bool timeBased_, uint256 blocksPerYear_)
+```
+
+When `timeBased_` is true, the contract uses seconds and the annualization constant is 31,536,000; otherwise it uses the supplied block count.
+
+---
 
 ### DEFAULT_MAX_DISTRIBUTION_SPEED
 
@@ -11,7 +29,7 @@ The default max token distribution speed
 uint256 DEFAULT_MAX_DISTRIBUTION_SPEED
 ```
 
-- - -
+---
 
 ### prime
 
@@ -21,17 +39,17 @@ Address of the Prime contract
 address prime
 ```
 
-- - -
+---
 
 ### tokenDistributionSpeeds
 
-The rate at which token is distributed (per block)
+The rate at which a token is distributed per block or second
 
 ```solidity
 mapping(address => uint256) tokenDistributionSpeeds
 ```
 
-- - -
+---
 
 ### maxTokenDistributionSpeeds
 
@@ -41,7 +59,7 @@ The max token distribution speed for token
 mapping(address => uint256) maxTokenDistributionSpeeds
 ```
 
-- - -
+---
 
 ### lastAccruedBlock
 
@@ -51,7 +69,7 @@ The last block or second up to which rewards were accrued for the token (view ge
 function lastAccruedBlock(address token_) external view returns (uint256)
 ```
 
-- - -
+---
 
 ### tokenAmountAccrued
 
@@ -61,7 +79,7 @@ The token accrued but not yet transferred to prime contract (view getter over th
 function tokenAmountAccrued(address token_) external view returns (uint256)
 ```
 
-- - -
+---
 
 ### initialize
 
@@ -83,7 +101,7 @@ function initialize(address accessControlManager_, address[] tokens_, uint256[] 
 #### ❌ Errors
 * Throw InvalidArguments on different length of tokens and speeds array
 
-- - -
+---
 
 ### initializeTokens
 
@@ -101,7 +119,7 @@ function initializeTokens(address[] tokens_) external
 #### ⛔️ Access Requirements
 * Only Governance
 
-- - -
+---
 
 ### pauseFundsTransfer
 
@@ -114,7 +132,7 @@ function pauseFundsTransfer() external
 #### ⛔️ Access Requirements
 * Controlled by ACM
 
-- - -
+---
 
 ### resumeFundsTransfer
 
@@ -127,11 +145,11 @@ function resumeFundsTransfer() external
 #### ⛔️ Access Requirements
 * Controlled by ACM
 
-- - -
+---
 
 ### setTokensDistributionSpeed
 
-Set distribution speed (amount of token distribute per block)
+Set distribution speed per block or second
 
 ```solidity
 function setTokensDistributionSpeed(address[] tokens_, uint256[] distributionSpeeds_) external
@@ -149,11 +167,11 @@ function setTokensDistributionSpeed(address[] tokens_, uint256[] distributionSpe
 #### ❌ Errors
 * Throw InvalidArguments on different length of tokens and speeds array
 
-- - -
+---
 
 ### setMaxTokensDistributionSpeed
 
-Set max distribution speed for token (amount of maximum token distribute per block)
+Set maximum distribution speed per block or second
 
 ```solidity
 function setMaxTokensDistributionSpeed(address[] tokens_, uint256[] maxDistributionSpeeds_) external
@@ -171,7 +189,7 @@ function setMaxTokensDistributionSpeed(address[] tokens_, uint256[] maxDistribut
 #### ❌ Errors
 * Throw InvalidArguments on different length of tokens and speeds array
 
-- - -
+---
 
 ### setPrimeToken
 
@@ -192,7 +210,7 @@ function setPrimeToken(address prime_) external
 #### ⛔️ Access Requirements
 * Only owner
 
-- - -
+---
 
 ### setMaxLoopsLimit
 
@@ -213,11 +231,11 @@ function setMaxLoopsLimit(uint256 loopsLimit) external
 #### ⛔️ Access Requirements
 * Controlled by ACM
 
-- - -
+---
 
 ### releaseFunds
 
-Claim all the token accrued till last block
+Release the token amount accrued through the latest block or second
 
 ```solidity
 function releaseFunds(address token_) external
@@ -236,7 +254,7 @@ function releaseFunds(address token_) external
 * Throw FundsTransferIsPaused is paused
 * Throw InvalidCaller if the sender is not the Prime contract
 
-- - -
+---
 
 ### sweepToken
 
@@ -262,11 +280,11 @@ function sweepToken(contract IERC20Upgradeable token_, address to_, uint256 amou
 #### ❌ Errors
 * Throw InsufficientBalance if amount_ is greater than the available balance of the token in the contract
 
-- - -
+---
 
 ### getEffectiveDistributionSpeed
 
-Get rewards per block for token
+Get the effective reward speed per block or second for a token
 
 ```solidity
 function getEffectiveDistributionSpeed(address token_) external view returns (uint256)
@@ -280,9 +298,9 @@ function getEffectiveDistributionSpeed(address token_) external view returns (ui
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | speed returns the per block reward |
+| \[0] | uint256 | Effective reward speed in the deployment's configured time unit |
 
-- - -
+---
 
 ### accrueTokens
 
@@ -300,7 +318,7 @@ function accrueTokens(address token_) public
 #### 📅 Events
 * Emits TokensAccrued event
 
-- - -
+---
 
 ### getBlockNumberOrTimestamp
 
@@ -313,7 +331,6 @@ function getBlockNumberOrTimestamp() public view virtual returns (uint256)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | blockNumberOrSecond returns the current block number or timestamp |
+| \[0\] | uint256 | blockNumberOrSecond returns the current block number or timestamp |
 
-- - -
-
+---

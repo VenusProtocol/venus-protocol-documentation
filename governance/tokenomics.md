@@ -1,36 +1,46 @@
 # Tokenomics
 
-### Overview
+Venus Protocol revenue distribution is configured by governance. [Tokenomics version 4.1](https://snapshot.box/#/s:venus-xvs.eth/proposal/0xb8f03ad2dd2988a6d2e89a1adbebc52c7a62b284ea493008752c71b7f00b3386) established the current model, and [VIP-585](https://venus.io/governance/proposal/585?chainId=56) ended the BNB Burn allocation and introduced chain-revenue eligibility rules.
 
-The Venus Protocol tokenomics have been reevaluated to optimize income distribution and cater to the protocol's present and future needs. [Version 4.1](https://snapshot.box/#/s:venus-xvs.eth/proposal/0xb8f03ad2dd2988a6d2e89a1adbebc52c7a62b284ea493008752c71b7f00b3386) of the Venus Protocol revenue distribution model optimizes the allocation between rewards, treasury reserves, and a risk fund. Following the cessation of the BNB Burn program ([VIP-585](https://app.venus.io/#/governance/proposal/585)), the previous 25% BNB Burn allocation has been redistributed to the Treasury.
+{% hint style="warning" %}
+The percentages and reward speeds below are a governance-policy snapshot, not immutable token properties. Check recent VIPs and the live Protocol Share Reserve and XVS Vault configuration before using them in financial models.
+{% endhint %}
 
-### XVS Vault Base Rewards
+## Protocol reserve revenue
 
-The XVS Staking Vault is an integral component of the Venus ecosystem. It enables governance voting participation and is a prerequisite for Venus Prime eligibility. To incentivize XVS staking, additional rewards will be offered in the form of Base Rewards (previously referred to as Legacy Rewards).
+Protocol reserves are primarily generated from interest paid by borrowers. For an eligible deployment, the configured allocation is:
 
-These rewards will be transferred every six months from the [XVS Distributor](https://bscscan.com/address/0xfd36e2c2a6789db23113685031d7f16329158384) to the [XVS Vault Store](https://www.bscscan.com/address/0x1e25cf968f12850003db17e0dba32108509c4359), where they will be emitted at a rate of 308.7 XVS per day.
+| Destination | Share |
+| --- | ---: |
+| Treasury | 40% |
+| XVS Vault rewards | 20% |
+| Venus Prime | 20% |
+| Risk Fund | 20% |
 
-### Revenue Distribution from Protocol Reserves
+XVS Vault revenue is used to buy XVS and distribute it through vault rewards. The Prime allocation supplies eligible markets with protocol-funded rewards. The Risk Fund helps cover protocol shortfalls.
 
-Protocol reserves are mainly composed of accumulated borrow fees. The model for revenue allocation from these reserves divides income into four segments:
+## Other revenue
 
-* **Treasury Reserve (40%)**: The treasury reserve is used to fund community-driven initiatives and essential protocol expenses for its ongoing operations.
-* **XVS Vault Rewards (20%)**: This allocation is designated for the buyback of XVS, which is then distributed via vault rewards.
-* **Venus Prime Token Program (20%)**: Used to boost select market APYs with organic rewards for users that qualify.
-* **Risk Fund (20%)**: This fund is established to address potential shortfalls in the protocol, particularly in situations of ineffective or delayed liquidations.
+Revenue streams such as liquidation income use this allocation:
 
-### Allocation for Additional Revenue Streams
+| Destination | Share |
+| --- | ---: |
+| Treasury | 60% |
+| XVS Vault rewards | 20% |
+| Risk Fund | 20% |
 
-Other revenue streams include liquidation penalties and potential income generated from future product releases. The revenue distribution for these streams is as follows:
+New products or revenue sources may use a different governance-approved configuration.
 
-* **Treasury Reserves (60%)**
-* **XVS Vault Rewards (20%)**
-* **Risk Fund (20%)**
+## Chain eligibility
 
-This dual allocation model accounts for the diverse revenue sources within the Venus Protocol ecosystem, ensuring robust and responsive financial management. As the protocol evolves and introduces new products, these models may further be adjusted to optimally serve the Venus community.
+A deployment is eligible to allocate revenue to XVS Vault rewards and Venus Prime when it generates at least $50,000 in average monthly revenue over the preceding six months. An ineligible deployment routes 100% of its revenue to the Treasury. Governance periodically evaluates eligibility, so it can change as the rolling revenue window changes.
 
-### Chain Eligibility
+## XVS Vault rewards
 
-Revenue distribution to XVS Vault Rewards and Venus Prime is subject to a chain eligibility threshold: a chain must generate at least $50,000 in average monthly revenue over a rolling 6-month period to qualify. Chains that do not meet this threshold send 100% of their revenue to the Treasury.
+Vault reward speed is governance-configured and can combine a base allocation with XVS purchased using protocol revenue. It is not a guaranteed yield or a permanent emission rate.
 
-<figure><img src="../.gitbook/assets/tokenomics.svg" alt=""><figcaption></figcaption></figure>
+[VIP-641](https://venus.io/governance/proposal/641?chainId=56) retained a base allocation equivalent to 308.7 XVS per day and, together with buybacks, configured a total BNB Chain vault speed equivalent to 535 XVS per day for Q3 2026. At BNB Chain block `118,362,254`, the XVS Vault reported `0.002786458333333333` XVS per block, equivalent to the same nominal daily rate at 192,000 blocks per day.
+
+Future VIPs can fund the vault and change the speed at any time. Read `rewardTokenAmountsPerBlockOrSecond(XVS)` on the live XVS Vault and review its funding balance before quoting a current reward rate.
+
+<figure><img src="../.gitbook/assets/tokenomics.svg" alt="Venus Protocol revenue distribution between the treasury, XVS Vault, Venus Prime, and Risk Fund"><figcaption><p><em>Governance-configured revenue distribution</em></p></figcaption></figure>

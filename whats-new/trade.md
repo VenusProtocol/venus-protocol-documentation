@@ -1,14 +1,14 @@
 # Venus Trade
 
 {% hint style="info" %}
-Available on BNB Chain Core Pool.
+The published architecture and deployment records are scoped to the BNB Chain Core Pool. Current user availability still depends on the live RelativePositionManager configuration and pause state, active DSA markets, supported market pairs and swap routes, and the current Venus interface. Verify those before treating a pair or action as available.
 {% endhint %}
 
 ## Overview
 
 **Venus Trade** is a relative performance trading product built on top of Venus Protocol's existing lending and borrowing infrastructure. It allows users to express a view that one asset will outperform another — packaged into a single, easy-to-manage position.
 
-Instead of manually managing separate lending and borrowing positions across multiple markets, Trade combines everything into **one unified action** with automated execution, proportional closing, and built-in yield generation.
+Instead of requiring every lending and borrowing step to be submitted separately, the published contracts support combined activation-and-open and proportional close flows. Some full-close flows can also be combined with deactivation; the exact actions presented by the current interface may vary.
 
 This is not directional trading. Trade positions profit (or lose) based on the **relative price movement between two assets**, regardless of whether the overall market is going up or down.
 
@@ -19,27 +19,31 @@ Trade introduces a set of new periphery contracts and capabilities alongside Ven
 | Component | Description |
 | --- | --- |
 | **RelativePositionManager** | The main orchestration contract that manages the full lifecycle of Trade positions — from activation and opening to proportional closing and deactivation |
-| **PositionAccount** | A dedicated smart contract account deployed per user per trading pair. All collateral, borrow positions, and yield accrual live here, fully isolated from other positions |
-| **Paired Positions** | Long and short legs treated as a single unit with combined PnL, health, and lifecycle management |
-| **Default Settlement Asset (DSA)** | A designated stablecoin (USDT or USDC) that users must supply as the initial collateral backing the position. All borrows of the short asset are secured against this DSA collateral, and all realized profits and losses are settled in DSA |
+| **PositionAccount** | A dedicated smart contract account deployed per user per trading pair. Its collateral, borrow positions, and yield accrual are accounted for separately from other PositionAccounts |
+| **Paired Positions** | Long collateral and short debt managed under one position record; account health also includes the configured DSA collateral |
+| **Default Settlement Asset (DSA)** | A settlement-asset vToken selected from the manager's governance-configured active DSA list and supplied as initial principal. It contributes to collateral backing the short borrow, and realized profits and losses are settled in that asset |
 | **Proportional Closing** | Flexible partial or full position closing using on-chain flash loans and token swaps, with automatic dust handling |
 | **Capital Utilization Tracking** | Real-time calculation of how much deposited collateral is locked by open positions, enabling accurate withdrawable balance reporting |
 
 ## Architecture Overview
 
-Trade is built as a peripheral orchestration layer. No changes were made to the Venus Core Pool, Comptroller, or vToken contracts.
+Trade is built as a peripheral orchestration layer that interacts with existing Venus Core Pool, Comptroller, and vToken interfaces. A PositionAccount is a regular Core account from the Comptroller's perspective and remains subject to Core market and liquidation rules.
+
+{% hint style="warning" %}
+This overview describes the published BNB Chain architecture. Before integrating, verify the live RelativePositionManager proxy implementation, PositionAccount implementation and clone immutables, and ACM permissions at a recorded block using the [deployed-contracts page](../deployed-contracts/periphery.md). Repository ABIs and deployment records alone do not prove the current on-chain configuration.
+{% endhint %}
 
 <figure><img src="../.gitbook/assets/trade-architecture.png" alt="Trade Architecture Overview"><figcaption></figcaption></figure>
 
-Each user gets a **dedicated PositionAccount** per trading pair, deployed as a minimal proxy clone. This account holds all funds, enters markets on the Comptroller, and delegates all position operations to the RelativePositionManager.
+Each user gets a **dedicated PositionAccount** per trading pair, deployed as a minimal proxy clone. This account holds the position's funds, enters markets on the Comptroller, and delegates supported operations to the RelativePositionManager and LeverageStrategiesManager.
 
-All funds inside a PositionAccount are **owned exclusively by that account** — no external party can move them. The only contract permitted to execute operations on a PositionAccount is the RelativePositionManager, and the RPM enforces that every call must originate from the account's owner (`msg.sender`). This means neither the RPM nor any third party can act on a user's position without the user's direct on-chain request.
+Each PositionAccount is the on-chain holder of that position's collateral and debt. Its own operational entry points accept calls only from the configured RelativePositionManager, and normal user lifecycle operations are scoped to the caller's stored position. This is not an exclusive-control guarantee: standard Venus liquidations can seize vTokens held by the account, the account delegates supported actions to the RelativePositionManager and LeverageStrategiesManager through the Comptroller, and an ACM-authorized caller can use `executePositionAccountCall` for emergency or administrative calls from a PositionAccount. These protocol and governance paths do not require a contemporaneous transaction from the account owner.
 
-PositionAccounts are **deterministically deployed** using the owner's `msg.sender` address and the trading pair as the salt. The same wallet will always produce the same PositionAccount address for a given pair — no registry lookup required.
+PositionAccounts are deployed as deterministic EIP-1167 clones with CREATE2. The salt is `keccak256(user, longVToken, shortVToken)`, but the resulting address also depends on the RelativePositionManager deployer address and its configured PositionAccount implementation. `getPositionAccountAddress` therefore predicts a stable address only for that specific manager deployment and implementation; the same wallet and pair can produce a different address on another chain or manager deployment.
 
 ### Position Isolation
 
-Every `(user, trading pair)` combination gets its own isolated PositionAccount. Collateral, debt, and Health Factor are entirely separate — a loss or liquidation on one position cannot affect another.
+Every `(user, trading pair)` combination has separate PositionAccount balances, debt, and health calculations; debt in one PositionAccount is not directly netted against another. PositionAccounts still use shared Venus Core markets, oracles, liquidity, rates, periphery contracts, and governance, so market-wide and protocol-wide conditions can affect multiple positions.
 
 <figure><img src="../.gitbook/assets/trade-isolated.png" alt="Trade Position Isolation"><figcaption></figcaption></figure>
 
@@ -47,24 +51,24 @@ Every `(user, trading pair)` combination gets its own isolated PositionAccount. 
 
 ### Long Leg and Short Leg
 
-A Trade position always consists of two legs:
+A Trade position's relative exposure is described through two distinct markets; the configured DSA is an additional collateral and settlement component and may use the same market as either the long or short side:
 
-- **Long Leg** — the asset you believe will outperform. The system supplies this asset into Venus to earn lending yield.
-- **Short Leg** — the asset you believe will underperform. The system borrows this asset from Venus.
+- **Long side** — the asset you believe will outperform. The PositionAccount supplies this asset into Venus.
+- **Short side** — the asset you believe will underperform. The PositionAccount borrows this asset from Venus.
 
-You never manage these legs separately. Trade treats them as a single position.
+The product can present them as one position, but the on-chain close paths still calculate and execute distinct debt-repayment, profit-conversion, or loss-coverage legs with separate amounts and swap data.
 
 ### Default Settlement Asset (DSA)
 
-When activating a position, you choose a **Default Settlement Asset** — either USDT or USDC. This stablecoin is supplied as the initial collateral into the PositionAccount and is the asset against which all borrows of the short asset are secured. The DSA's collateral factor determines the maximum borrow capacity and therefore the maximum available leverage. All realized profits and losses are also settled in DSA — think of it as the "home currency" for the entire position lifecycle.
+When activating a position, you select a **Default Settlement Asset** from the manager's governance-configured DSA vTokens that are active for new activations. Published interfaces may offer stablecoins such as USDT or USDC, but the source does not hardcode the list: governance can add a listed vToken or deactivate one for new activations. The selected asset is supplied as initial principal in the PositionAccount and contributes to collateral backing the short borrow. The collateral factors of the DSA and long asset contribute to borrow capacity and maximum available leverage. Realized profits and losses are settled in the selected DSA.
 
 ### Leverage
 
-Trade supports leveraged positions, amplifying your exposure to relative price movements. The maximum available leverage is determined by the collateral factors of the assets involved. Leverage is fixed at activation and cannot be changed while a position is open.
+Trade supports leveraged positions, amplifying your exposure to relative price movements. The target leverage setting is recorded when a position is activated. While the position is active, the user can still increase exposure with `scalePosition` and can supply more principal; the maximum additional borrow is recalculated from current position values and collateral factors, so actual exposure and the effective limit can change over time.
 
 ### Capital Utilization
 
-Capital utilization tells you how much of your deposited collateral is currently locked by your open position. The remaining portion — **Available Capital** — can be used to open additional positions or withdrawn.
+Capital utilization tells you how much of your deposited collateral is currently locked by your open position. The remaining portion — **Available Capital** — can support an increase to that position or be withdrawn, subject to the live risk checks.
 
 ## How It Works
 
@@ -90,18 +94,18 @@ You can monitor Health Factor, PnL, entry price, and liquidation price at any ti
 
 ### Step 3 — Reduce and Exit
 
-Reducing is proportional — you specify what fraction of the position to close (1% to 100%) in a single transaction. Profits are automatically converted into DSA collateral. Losses are covered by your existing DSA collateral.
+Reducing is proportional — the contract accepts `closeFractionBps` from 1 to 10,000 basis points, so the source-level range is **0.01% to 100%** (`1 bp = 0.01%`). Profit and loss closes use different parameter sets and swap legs: profit output can be converted into DSA collateral, while a loss close can redeem DSA collateral to cover remaining short debt.
 
-After a full reduce (100% reduce), the position account remains active for re-entry. Use **Deactivate** (Exit Market) to fully withdraw and shut down the position account.
+After a full reduce, the PositionAccount can remain active. `deactivatePosition` requires the short debt to be zero, redeems remaining long and DSA balances to the user, and marks the position inactive; it does not destroy the PositionAccount. The same `(user, long, short)` account can be activated again later, including with a different currently active DSA.
 
-We also provide a one-click Exit function that completes both "reduce 100%" and "Exit Market" in a single transaction.
+The published contract exposes two atomic combined paths: `closeWithProfitAndDeactivate` and `closeWithLossAndDeactivate`. Each hardcodes a 100% close and then deactivates, but callers must choose the path and provide its required swap parameters. Whether the current Venus interface offers either path as a one-click action is a separate runtime/UI availability question.
 
 ## Impact on Existing Users
 
-Trade is an entirely new feature built as a peripheral contract layer. **No changes were made** to the Venus Core Pool, vToken markets, interest rate models, Comptroller, oracles, or any existing protocol infrastructure. Existing users are not affected.
+Trade is implemented through periphery contracts that interact with existing Venus Core markets. Trade PositionAccounts use the same market liquidity, utilization, interest rates, oracle values, and liquidation mechanisms as other Core accounts, so they can affect and be affected by normal shared-market conditions.
 
 ## Security
 
-The RelativePositionManager and PositionAccount contracts were independently audited before deployment. Reports are available in the [Security & Audits](../security-and-audits.md) section.
+Published RelativePositionManager and PositionAccount audit reports are available in the [Security & Audits](../security-and-audits.md) section. An audit report applies to the code and version reviewed; verify the live proxy and implementation against the report before treating it as coverage for a deployment.
 
 For a full technical breakdown of the implementation, see the [Trade Technical Article](../technical-reference/reference-technical-articles/trade.md).

@@ -1,9 +1,15 @@
 # Periphery - Deployed Contracts
 
+The stable source/deployment baseline for these address families is [`venus-periphery` v1.2.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0). This registry does not certify the current proxy implementation, clone instance, owner, signer, router/DEX configuration, pause level, EBrake control, or oracle consumer. Verify those values on-chain before a trade or emergency action.
+
+{% hint style="warning" %}
+BNB Trade contracts are money-moving. `PositionAccount` below is the implementation template used by cloned user accounts, not a shared account to fund. The BNB testnet section is **Test-only**.
+{% endhint %}
+
 ## BNB Chain Mainnet
 
 - RelativePositionManager: [`0x1525D804DFff218DcC8B9359940F423209356C42`](https://bscscan.com/address/0x1525D804DFff218DcC8B9359940F423209356C42)
-- PositionAccount: [`0xa75C5b438226bc73BDCc83408E7Aa41771b33E2C`](https://bscscan.com/address/0xa75C5b438226bc73BDCc83408E7Aa41771b33E2C)
+- PositionAccount implementation template: [`0xa75C5b438226bc73BDCc83408E7Aa41771b33E2C`](https://bscscan.com/address/0xa75C5b438226bc73BDCc83408E7Aa41771b33E2C)
 - SwapHelper: [`0xD79be25aEe798Aa34A9Ba1230003d7499be29A24`](https://bscscan.com/address/0xD79be25aEe798Aa34A9Ba1230003d7499be29A24)
 - LeverageStrategiesManager: [`0x03F079E809185a669Ca188676D0ADb09cbAd6dC1`](https://bscscan.com/address/0x03F079E809185a669Ca188676D0ADb09cbAd6dC1)
 - SwapRouter: [`0xde7E4f67Af577F29e5F3B995f9e67FD425F73621`](https://bscscan.com/address/0xde7E4f67Af577F29e5F3B995f9e67FD425F73621)
@@ -13,10 +19,10 @@
 - PancakeSwapOracle: [`0x44B72078240A3509979faF450085Fa818401D32E`](https://bscscan.com/address/0x44B72078240A3509979faF450085Fa818401D32E)
 - EBrake: [`0x35eBaBB99c7Fb7ba0C90bCc26e5d55Cdf89C23Ec`](https://bscscan.com/address/0x35eBaBB99c7Fb7ba0C90bCc26e5d55Cdf89C23Ec)
 
-## BNB Chain Testnet
+## BNB Chain Testnet (Test-only)
 
 - RelativePositionManager: [`0x25dbA64B28F93cC40e9cAf9691266043fe1000a2`](https://testnet.bscscan.com/address/0x25dbA64B28F93cC40e9cAf9691266043fe1000a2)
-- PositionAccount: [`0xC9A5f1598e434E3E52CE25D7ff290E4CF167ee52`](https://testnet.bscscan.com/address/0xC9A5f1598e434E3E52CE25D7ff290E4CF167ee52)
+- PositionAccount implementation template: [`0xC9A5f1598e434E3E52CE25D7ff290E4CF167ee52`](https://testnet.bscscan.com/address/0xC9A5f1598e434E3E52CE25D7ff290E4CF167ee52)
 - SwapHelper: [`0xf7Cfd0eDfAC7AA473813559b372297332EdEbB8B`](https://testnet.bscscan.com/address/0xf7Cfd0eDfAC7AA473813559b372297332EdEbB8B)
 - LeverageStrategiesManager: [`0x5187226337C95c4BE683D37Ffc66D41f5b6cE38f`](https://testnet.bscscan.com/address/0x5187226337C95c4BE683D37Ffc66D41f5b6cE38f)
 - SwapRouter: [`0xd3F226acA3210990DBA3f410b74E36b08F31FCf2`](https://testnet.bscscan.com/address/0xd3F226acA3210990DBA3f410b74E36b08F31FCf2)

@@ -1,7 +1,21 @@
 # PrimeLeaderboard
 PrimeLeaderboard manages Prime V2 eligibility with time-weighted scoring. It tracks per-deposit timestamps for LIFO withdrawals and computes each user's Prime Score. It is called by the `XVSVault` via the existing `xvsUpdated()` callback. Governance reads `getEffectiveStakeBatch()` off-chain, ranks users by Prime Score, and either sets a mint threshold on PrimeV2 (for permissionless minting) or calls `PrimeV2.issue()` / `burn()` directly.
 
+{% hint style="warning" %}
+BNB PrimeV2 only. At block `118,364,540`, proxy `0x55e2ccF68B7A276dc28AfA107997b8B1Be932c0b` used implementation `0xd80de9ecb6596df95dd67af73b67122054c2d1a1`. Resolve the live proxy and Access Control Manager before using an administrative function.
+{% endhint %}
+
 # Solidity API
+
+### constructor
+
+Sets immutable XVS Vault references and disables initialization on the implementation.
+
+```solidity
+constructor(address xvsVault_, address xvsVaultRewardToken_, uint256 xvsVaultPoolId_)
+```
+
+---
 
 ### xvsVault
 
@@ -11,7 +25,7 @@ Address of XVSVault contract
 address xvsVault
 ```
 
-- - -
+---
 
 ### xvsVaultRewardToken
 
@@ -21,7 +35,7 @@ Reward token address in XVSVault
 address xvsVaultRewardToken
 ```
 
-- - -
+---
 
 ### xvsVaultPoolId
 
@@ -31,7 +45,7 @@ Pool ID in XVSVault
 uint256 xvsVaultPoolId
 ```
 
-- - -
+---
 
 ### initialize
 
@@ -47,7 +61,7 @@ function initialize(address accessControlManager_, uint256 loopsLimit_) external
 | accessControlManager_ | address | Address of AccessControlManager |
 | loopsLimit_ | uint256 | Maximum number of loops allowed in a single transaction |
 
-- - -
+---
 
 ### initializeStakers
 
@@ -75,7 +89,7 @@ function initializeStakers(address[] users, uint256[] amounts, uint64[] timestam
 * Throw LengthMismatch if array lengths don't match
 * Throw InvalidTimestamp if a seeded timestamp is zero or in the future
 
-- - -
+---
 
 ### finalizeInitialization
 
@@ -94,7 +108,7 @@ function finalizeInitialization() external
 #### ❌ Errors
 * Throw StakersAlreadyInitialized if already finalized
 
-- - -
+---
 
 ### xvsUpdated
 
@@ -121,7 +135,7 @@ function xvsUpdated(address user) external
 * Throw OnlyXVSVaultAllowed if caller is not XVSVault
 * Throw ZeroAddress if user address is zero
 
-- - -
+---
 
 ### getEffectiveStake
 
@@ -141,7 +155,7 @@ function getEffectiveStake(address user) public view returns (uint256 effectiveS
 | ---- | ---- | ----------- |
 | effectiveStake | uint256 | The user's Prime Score (time-weighted) |
 
-- - -
+---
 
 ### getEffectiveStakeBatch
 
@@ -161,7 +175,7 @@ function getEffectiveStakeBatch(address[] users) external view returns (uint256[
 | ---- | ---- | ----------- |
 | scores | uint256[] | Array of Prime Scores |
 
-- - -
+---
 
 ### getTotalStaked
 
@@ -179,9 +193,9 @@ function getTotalStaked(address user) external view returns (uint256)
 #### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| [0] | uint256 | The total XVS staked |
+| \[0\] | uint256 | The total XVS staked |
 
-- - -
+---
 
 ### getDeposits
 
@@ -201,7 +215,7 @@ function getDeposits(address user) external view returns (struct IPrimeLeaderboa
 | ---- | ---- | ----------- |
 | deposits | struct IPrimeLeaderboard.Deposit[] | Array of deposits (index 0 = oldest) |
 
-- - -
+---
 
 ### getDepositCount
 
@@ -221,7 +235,7 @@ function getDepositCount(address user) external view returns (uint256 count)
 | ---- | ---- | ----------- |
 | count | uint256 | Number of deposit tranches |
 
-- - -
+---
 
 ### getMultiplier
 
@@ -241,7 +255,7 @@ function getMultiplier(uint256 holdingDuration) external view returns (uint256 m
 | ---- | ---- | ----------- |
 | multiplier | uint256 | The multiplier (scaled by 1e18) |
 
-- - -
+---
 
 ### getMultiplierTiers
 
@@ -257,7 +271,7 @@ function getMultiplierTiers() external view returns (uint256[] durations, uint25
 | durations | uint256[] | Array of duration thresholds |
 | multipliers | uint256[] | Array of multiplier values |
 
-- - -
+---
 
 ### setMultiplierTiers
 
@@ -284,7 +298,7 @@ function setMultiplierTiers(uint256[] durations, uint256[] multipliers) external
 * Throw InvalidValue if durations array is empty
 * Throw InvalidMultiplierTiers if tiers are not in ascending order or multipliers below base
 
-- - -
+---
 
 ### setPrimeV2
 
@@ -308,7 +322,7 @@ function setPrimeV2(address primeV2_) external
 #### ❌ Errors
 * Throw ZeroAddress if address is zero
 
-- - -
+---
 
 ### setMaxLoopsLimit
 
@@ -329,5 +343,4 @@ function setMaxLoopsLimit(uint256 loopsLimit) external
 #### ⛔️ Access Requirements
 * Controlled by ACM
 
-- - -
-
+---
