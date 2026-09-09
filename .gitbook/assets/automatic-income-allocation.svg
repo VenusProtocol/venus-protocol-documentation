@@ -60,7 +60,7 @@
 
   <!-- Row 3: XVS Vault Treasury + Risk Fund V2 -->
   <rect class="box" x="100"  y="730" width="440" height="100" rx="10"/>
-  <text class="lbl" x="320"  y="780">XVS Vault Treasury</text>
+  <text class="lbl" x="320"  y="780">VTreasury</text>
 
   <rect class="box" x="1720" y="730" width="440" height="100" rx="10"/>
   <text class="lbl" x="1940" y="780">Risk Fund V2</text>
@@ -75,7 +75,4 @@
   <text class="ann" x="1400" y="665">VTreasury</text>
 
   <!-- Row 4: XVS Vault -->
-  <rect class="box" x="100"  y="950" width="440" height="100" rx="10"/>
-  <text class="lbl" x="320"  y="1000">XVS Vault</text>
-  <path class="flow" d="M 320 830 L 320 950" marker-end="url(#arrow)"/>
 </svg>

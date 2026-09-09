@@ -7,38 +7,22 @@
     .subtitle { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; font-size: 11px; fill: #6B7280; text-anchor: middle; }
     .legend-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; font-size: 12px; fill: #D1D5DB; dominant-baseline: central; }
   </style>
-  <path d="M 215.00 55.00 A 175 175 0 0 1 317.86 371.58 L 283.18 323.85 A 116 116 0 0 0 215.00 114.00 Z" fill="#03967B"/>
-  <path d="M 317.86 371.58 A 175 175 0 0 1 112.14 371.58 L 146.82 323.85 A 116 116 0 0 0 283.18 323.85 Z" fill="#F5B242"/>
-  <path d="M 112.14 371.58 A 175 175 0 0 1 48.57 175.92 L 104.68 194.15 A 116 116 0 0 0 146.82 323.85 Z" fill="#414D6A"/>
-  <path d="M 48.57 175.92 A 175 175 0 0 1 215.00 55.00 L 215.00 114.00 A 116 116 0 0 0 104.68 194.15 Z" fill="#AA0185"/>
-  <text x="355.8" y="177.3" class="label">Treasury</text>
-  <text x="355.8" y="192.3" class="pct">40%</text>
-  <text x="215.0" y="371.0" class="label">Risk Fund</text>
-  <text x="215.0" y="386.0" class="pct">20%</text>
-  <text x="74.2" y="268.7" class="label">Venus Prime</text>
-  <text x="74.2" y="283.7" class="pct">20%</text>
-  <text x="128.0" y="103.3" class="label">XVS Vault</text>
-  <text x="128.0" y="118.3" class="pct">20%</text>
-  <text x="215" y="224" class="title">PROTOCOL</text>
-  <text x="215" y="242" class="subtitle">RESERVES</text>
-  <path d="M 725.00 55.00 A 175 175 0 1 1 622.14 371.58 L 656.82 323.85 A 116 116 0 1 0 725.00 114.00 Z" fill="#03967B"/>
-  <path d="M 622.14 371.58 A 175 175 0 0 1 558.57 175.92 L 614.68 194.15 A 116 116 0 0 0 656.82 323.85 Z" fill="#F5B242"/>
-  <path d="M 558.57 175.92 A 175 175 0 0 1 725.00 55.00 L 725.00 114.00 A 116 116 0 0 0 614.68 194.15 Z" fill="#AA0185"/>
-  <text x="865.8" y="268.7" class="label">Treasury</text>
-  <text x="865.8" y="283.7" class="pct">60%</text>
-  <text x="584.2" y="268.7" class="label">Risk Fund</text>
-  <text x="584.2" y="283.7" class="pct">20%</text>
-  <text x="638.0" y="103.3" class="label">XVS Vault</text>
-  <text x="638.0" y="118.3" class="pct">20%</text>
-  <text x="725" y="224" class="title">ADDITIONAL</text>
-  <text x="725" y="242" class="subtitle">REVENUE</text>
-  <rect x="120" y="484" width="700" height="32" rx="16" fill="#1C2233"/>
-  <circle cx="188" cy="500" r="6" fill="#03967B"/>
-  <text x="200" y="500" class="legend-text">Treasury</text>
-  <circle cx="368" cy="500" r="6" fill="#AA0185"/>
-  <text x="380" y="500" class="legend-text">XVS Vault Rewards</text>
-  <circle cx="533" cy="500" r="6" fill="#414D6A"/>
-  <text x="545" y="500" class="legend-text">Venus Prime</text>
-  <circle cx="688" cy="500" r="6" fill="#F5B242"/>
-  <text x="700" y="500" class="legend-text">Risk Fund</text>
+  <path d="M 215.00 25.00 A 175 175 0 0 1 317.86 341.58 L 283.18 293.85 A 116 116 0 0 0 215.00 84.00 Z" fill="#03967B"/>
+<path d="M 317.86 341.58 A 175 175 0 0 1 48.57 145.92 L 104.68 164.15 A 116 116 0 0 0 283.18 293.85 Z" fill="#414D6A"/>
+<path d="M 48.57 145.92 A 175 175 0 0 1 215.00 25.00 L 215.00 84.00 A 116 116 0 0 0 104.68 164.15 Z" fill="#F5B242"/>
+<text x="355.8" y="151.3" class="label">Treasury</text><text x="355.8" y="166.3" class="pct">40%</text>
+<text x="128.0" y="316.7" class="label">Venus Prime</text><text x="128.0" y="331.7" class="pct">40%</text>
+<text x="128.0" y="77.3" class="label">Risk Fund</text><text x="128.0" y="92.3" class="pct">20%</text>
+<text x="215" y="224" class="title">PROTOCOL</text><text x="215" y="242" class="subtitle">RESERVES</text>
+<path d="M 725.00 25.00 A 175 175 0 1 1 622.14 341.58 L 656.82 293.85 A 116 116 0 1 0 725.00 84.00 Z" fill="#03967B"/>
+<path d="M 622.14 341.58 A 175 175 0 0 1 558.57 145.92 L 614.68 164.15 A 116 116 0 0 0 656.82 293.85 Z" fill="#414D6A"/>
+<path d="M 558.57 145.92 A 175 175 0 0 1 725.00 25.00 L 725.00 84.00 A 116 116 0 0 0 614.68 164.15 Z" fill="#F5B242"/>
+<text x="865.8" y="242.7" class="label">Treasury</text><text x="865.8" y="257.7" class="pct">60%</text>
+<text x="584.2" y="242.7" class="label">Venus Prime</text><text x="584.2" y="257.7" class="pct">20%</text>
+<text x="638.0" y="77.3" class="label">Risk Fund</text><text x="638.0" y="92.3" class="pct">20%</text>
+<text x="725" y="224" class="title">ADDITIONAL</text><text x="725" y="242" class="subtitle">REVENUE</text>
+<rect x="200" y="484" width="540" height="32" rx="16" fill="#1C2233"/>
+<circle cx="268" cy="500" r="6" fill="#03967B"/><text x="280" y="500" class="legend-text">Treasury</text>
+<circle cx="448" cy="500" r="6" fill="#414D6A"/><text x="460" y="500" class="legend-text">Venus Prime</text>
+<circle cx="618" cy="500" r="6" fill="#F5B242"/><text x="630" y="500" class="legend-text">Risk Fund</text>
 </svg>
