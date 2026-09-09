@@ -24,7 +24,7 @@ A **Source** groups downstream products of the same kind behind one uniform inte
 | **Flux** | Fluid Lending (third-party) | fTokens (ERC-4626 shares)               |
 | **FRV**  | Venus Fixed-Rate Vaults  | Fixed-Rate Vault shares (ERC-4626)         |
 
-At launch only **Core** and **Flux** hold a live product. The FRV Source is registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for these assets on BNB Chain yet, so it is wired to nothing and receives no capital until a follow-up proposal adds one.
+At launch only **Core** and **Flux** hold a live product. The FRV Source is registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for these assets on BNB Chain yet, so it is wired to nothing and receives no capital until a follow-up proposal adds one. That follow-up, [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56), has since wired the Solv (Ceffu custody) fixed-rate vault into the USDT Hub and the Asseto CASH+ vault into the U Hub; the USDC Hub's FRV Source is still unwired.
 
 The Source set is **governance-extensible**: new yield families can be added later without changing the Hub or the share token, because every Source is reached through the same interface.
 
@@ -61,6 +61,6 @@ At launch all three are set to **0%**. The machinery exists for governance to en
 
 ### Status
 
-The Liquidity Hub launches on **BNB Chain** with three supported assets — **USDT**, **USDC** and **U** — and more to follow. All fees are set to `0` at launch, the Operator role is held by a Venus operations multisig (the routine keeper), and a separate Guardian multisig holds pause rights with no timelock delay. Only **Core** and **Flux** carry a live product at launch: an FRV Source is registered on every Hub, but no Fixed-Rate Vault exists for these assets yet, so no capital routes to it until a follow-up proposal wires one. Contract addresses are listed in the [technical reference](../technical-reference/reference-liquidity-hub/README.md#deployment).
+The Liquidity Hub launches on **BNB Chain** with three supported assets — **USDT**, **USDC** and **U** — and more to follow. All fees are set to `0` at launch, the Operator role is held by a Venus operations multisig (the routine keeper), and a separate Guardian multisig holds pause rights with no timelock delay. Only **Core** and **Flux** carry a live product at launch: an FRV Source is registered on every Hub, but no Fixed-Rate Vault exists for these assets yet, so no capital routes to it until a follow-up proposal wires one. [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) has since wired fixed-rate vaults into the USDT and U Hubs (see above). Contract addresses are listed in the [technical reference](../technical-reference/reference-liquidity-hub/README.md#deployment).
 
 For the contract-level architecture, flows, and full API, see the [Liquidity Hub technical reference](../technical-reference/reference-liquidity-hub/README.md).
