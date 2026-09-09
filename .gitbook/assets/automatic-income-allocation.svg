@@ -26,13 +26,13 @@
   <!-- Core pool <-> PSR arrows -->
   <path class="flow" d="M 400 130 L 850 130" marker-end="url(#arrow)"/>
   <text class="ann"  x="625" y="115">Interest reserves</text>
-  <path class="flow" d="M 850 170 L 400 170" marker-end="url(#arrow)"/>
+  <path class="flow" d="M 400 170 L 850 170" marker-end="url(#arrow)"/>
   <text class="ann"  x="625" y="190">Liquidations</text>
 
   <!-- PSR <-> Isolated pools arrows -->
   <path class="flow" d="M 1860 130 L 1410 130" marker-end="url(#arrow)"/>
   <text class="ann"  x="1635" y="115">Interest reserves</text>
-  <path class="flow" d="M 1410 170 L 1860 170" marker-end="url(#arrow)"/>
+  <path class="flow" d="M 1860 170 L 1410 170" marker-end="url(#arrow)"/>
   <text class="ann"  x="1635" y="190">Liquidations</text>
 
   <!-- Row 2: 4 buyback boxes (centers at 320, 860, 1400, 1940) -->
