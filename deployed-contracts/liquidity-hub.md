@@ -69,6 +69,10 @@ Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach 
 
 Stateless, permissionless and non-upgradeable; one-click migration of a Venus Core position into a Hub via `migrateFromCore` / `migrateFromCoreBNB` (plus the `*WithConsent` variants).
 
+* HubLens: `TBD` — not yet deployed
+
+Stateless, unowned and non-upgradeable; read-only. The Hub itself computes no deposit ceiling, so this is where a frontend or an integrator reads one: `maxDeposit(hub)`, `maxMint(hub)`, `depositCapacityBreakdown(hub)` and `spotAPYBps(hub)`. The Hub is a call parameter, so this single deployment serves every Hub. It is **not** registered in the `HubRegistry` and no Hub exposes its address, so this entry is the only place to find it — see [Sizing a deposit](../technical-reference/reference-liquidity-hub/hub.md#sizing-a-deposit).
+
 ### Access control
 
 Every gated function on the Hubs and YieldGroups is checked against `AccessControlManagerV8` [`0x4788629ABc6cFCA10F9f969efdEAa1cF70c23555`](https://bscscan.com/address/0x4788629ABc6cFCA10F9f969efdEAa1cF70c23555). Role holders (governance, Operator, Guardian) are granted by proposal rather than baked into the bytecode — see [Permissions](../technical-reference/reference-liquidity-hub/hub.md#permissions).
@@ -128,3 +132,4 @@ Unlike mainnet, **FRV is fully wired on testnet**: the FRV YieldGroup has a Fixe
 ### Periphery
 
 * Migrator: [`0x343D518d8C89f9B5D770000F1ed80f45bF1419f5`](https://testnet.bscscan.com/address/0x343D518d8C89f9B5D770000F1ed80f45bF1419f5)
+* HubLens: `TBD` — not yet deployed
