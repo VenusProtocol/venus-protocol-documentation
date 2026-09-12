@@ -95,7 +95,7 @@ Each asset also has three YieldGroup proxies (`CoreSource_*`, `FluxSource_*`, `F
 | `maxWithdrawalSize` (per tx) | 10,000,000 | 10,000,000 | 10,000,000 |
 | Core cap (absolute / %) | 2,000,000,000 / disabled | same | same |
 | Flux cap (absolute / %) | 7,000,000 / 20% | same | same |
-| FRV cap (absolute / %) | 5,000,000 / 30% | same | same |
+| FRV cap (absolute / %) | 5,000,000 / 50% | 5,000,000 / 30% | 5,000,000 / 50% |
 | Management / performance / redeem fee | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
 
 `feeRecipient` is `0xF322942f644A996A617BD29c16bd7d231d9F35E9` on all three. Core's percentage dimension uses the `10_000` BPS sentinel, so only its absolute cap binds; Flux is held to 20% of TVL, which at launch sits well under its absolute cap, so it fills through Operator `reallocate` rather than from the deposit queue. Each Hub is seeded with a 10-token bootstrap deposit from the Treasury whose shares are minted to the burn address, so `totalSupply` is never zero and the refill-from-empty branch cannot be re-opened.
