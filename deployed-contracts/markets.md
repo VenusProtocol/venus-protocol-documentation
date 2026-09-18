@@ -11,7 +11,7 @@ Stable implementation baselines are available in [`venus-protocol` v10.3.0](http
 ## BNB Chain Mainnet
 
 * PoolRegistry: [`0x9F7b01A536aFA00EF10310A162877fd792cD0666`](https://bscscan.com/address/0x9F7b01A536aFA00EF10310A162877fd792cD0666)
-* PoolLens: [`0xA179d2f1Fd53D15Bc790bE91d5fF4a0108E29621`](https://bscscan.com/address/0xA179d2f1Fd53D15Bc790bE91d5fF4a0108E29621)
+* PoolLens: [`0x9459a33c0a4EAd7794497Da85867859CdB06aCc5`](https://bscscan.com/address/0x9459a33c0a4EAd7794497Da85867859CdB06aCc5)
 * DefaultProxyAdmin: [`0x6beb6D2695B67FEb73ad4f172E8E2975497187e4`](https://bscscan.com/address/0x6beb6D2695B67FEb73ad4f172E8E2975497187e4)
 * Comptroller Beacon: [`0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2`](https://bscscan.com/address/0x38B4Efab9ea1bAcD19dC81f19c4D1C2F9DeAe1B2)
 * VToken Beacon: [`0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4`](https://bscscan.com/address/0x2b8A1C539ABaC89CbF7E2Bc6987A0A38A5e660D4)
@@ -23,8 +23,8 @@ Stable implementation baselines are available in [`venus-protocol` v10.3.0](http
 {% endhint %}
 
 * Comptroller: [`0xfD36E2c2a6789Db23113685031d7F16329158384`](https://bscscan.com/address/0xfD36E2c2a6789Db23113685031d7F16329158384)
-* Comptroller Lens: [`0xd701C1fDAE34f9Cf242a4de19a2e7288f924EA1C`](https://bscscan.com/address/0xd701C1fDAE34f9Cf242a4de19a2e7288f924EA1C)
-* Venus Lens: [`0xf15A9c5aaDc327B383945D5821C7aC08Cdac7430`](https://bscscan.com/address/0xf15A9c5aaDc327B383945D5821C7aC08Cdac7430)
+* Comptroller Lens: [`0xd5DEb631cB6c6a667e926a482aadc95a471b120c`](https://bscscan.com/address/0xd5DEb631cB6c6a667e926a482aadc95a471b120c)
+* Venus Lens: [`0xe797804c5d4410777c70EF8769c4eB9C39BEF662`](https://bscscan.com/address/0xe797804c5d4410777c70EF8769c4eB9C39BEF662)
 * SwapRouter: [`0xde7E4f67Af577F29e5F3B995f9e67FD425F73621`](https://bscscan.com/address/0xde7E4f67Af577F29e5F3B995f9e67FD425F73621)
 * Underlying tokens:
   * AAVE: [`0xfb6115445Bff7b52FeB98650C87f44907E58f802`](https://bscscan.com/address/0xfb6115445Bff7b52FeB98650C87f44907E58f802)
@@ -185,7 +185,7 @@ Stable implementation baselines are available in [`venus-protocol` v10.3.0](http
   * ankrBNB: [`0x52F24a5e03aee338Da5fd9Df68D2b6FAe1178827`](https://bscscan.com/address/0x52F24a5e03aee338Da5fd9Df68D2b6FAe1178827)
   * asBNB: [`0x77734e70b6E88b4d82fE632a168EDf6e700912b6`](https://bscscan.com/address/0x77734e70b6E88b4d82fE632a168EDf6e700912b6)
   * BNBx: [`0x1bdd3Cf7F79cfB8EdbB955f20ad99211551BA275`](https://bscscan.com/address/0x1bdd3Cf7F79cfB8EdbB955f20ad99211551BA275)
-  * PT-clisBNB-25APR2025: [`0xe8f1c9804770e11ab73395be54686ad656601e9e`](https://bscscan.com/address/0xe8f1c9804770e11ab73395be54686ad656601e9e)
+  * PT-clisBNB-24APR2025: [`0xe8f1c9804770e11ab73395be54686ad656601e9e`](https://bscscan.com/address/0xe8f1c9804770e11ab73395be54686ad656601e9e)
   * slisBNB: [`0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B`](https://bscscan.com/address/0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B)
   * stkBNB: [`0xc2E9d07F66A89c44062459A47a0D2Dc038E4fb16`](https://bscscan.com/address/0xc2E9d07F66A89c44062459A47a0D2Dc038E4fb16)
   * WBNB: [`0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c`](https://bscscan.com/address/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c)
