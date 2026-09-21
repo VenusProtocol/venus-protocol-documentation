@@ -1,8 +1,8 @@
 # Withdrawing from opBNB, Optimism and Unichain
 
-Venus no longer supports **opBNB**, **Optimism** and **Unichain**, and these networks have been removed from the Venus app. Your funds are still in the protocol and you can withdraw them yourself through the network's block explorer.
+Venus no longer supports **opBNB**, **Optimism** and **Unichain**. The market, dashboard and vault pages for these networks have been removed from the Venus app, so an open position has to be closed through the network's block explorer instead. Your funds are still in the protocol.
 
-Supplying and borrowing are paused on these networks. Repaying, withdrawing, claiming rewards, unstaking XVS and bridging XVS all still work.
+Supplying and borrowing are paused. Repaying, withdrawing, claiming rewards and unstaking XVS all still work through the explorer, and the XVS Bridge in the app still supports all three networks.
 
 Borrow interest keeps accruing and positions can still be liquidated, so repay first, then withdraw.
 
@@ -128,25 +128,13 @@ If the vault cannot pay a reward in full it records the remainder, which stays c
 
 ## Step 6 — Bridge XVS to BNB Chain
 
-XVS on these networks can be bridged back to BNB Chain. Since the networks are no longer in the app, the bridge contract has to be called directly. Take care with the recipient encoding: an incorrect value sends tokens to an address nobody can recover.
+Unlike the steps above, this one does not need the explorer. The XVS Bridge in the Venus app still supports all three networks.
 
-| Network  | XVSProxyOFTDest                                                                                                |
-| -------- | -------------------------------------------------------------------------------------------------------------- |
-| opBNB    | [`0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2`](https://opbnbscan.com/address/0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2) |
-| Optimism | [`0xbBe46bAec851355c3FC4856914c47eB6Cea0B8B4`](https://optimistic.etherscan.io/address/0xbBe46bAec851355c3FC4856914c47eB6Cea0B8B4) |
-| Unichain | [`0x9c95f8aa28fFEB7ECdC0c407B9F632419c5daAF8`](https://uniscan.xyz/address/0x9c95f8aa28fFEB7ECdC0c407B9F632419c5daAF8) |
+Open the [XVS Bridge](https://venus.io/#/bridge?chainId=56), set **From** to your network and **To** to BNB Chain, and enter the amount. Changing the **From** network asks your wallet to switch network. The app quotes the fee, applies the transfer limits and sends the XVS to the connected account.
 
-Three values are the same for every transfer:
+The [XVS Bridge guide](xvs-bridge.md) covers the flow in full.
 
-* Destination — `102`, the LayerZero endpoint ID for BNB Chain. This is not the chain ID.
-* Recipient — your address left-padded to 32 bytes: `0x000000000000000000000000` followed by your address without its `0x`.
-* Adapter parameters — `0x000100000000000000000000000000000000000000000000000000000000000493e0`. An empty value is rejected.
-
-1. On the XVS token, `approve` the bridge address for the amount you are sending.
-2. Bridge → **Read as Proxy** → `estimateSendFee(102, <padded recipient>, <amount>, false, <adapter params>)`. The first returned value is the native fee.
-3. Bridge → **Write as Proxy** → `sendFrom(<your address>, 102, <padded recipient>, <amount>, <your address>, 0x0000000000000000000000000000000000000000, <adapter params>)`, with `payableAmount` set to that fee plus a small margin. Anything unused is refunded.
-
-Per-transaction and daily limits apply, so split larger amounts across several transfers. Delivery is asynchronous — if a transfer looks delayed, wait rather than resending, because the pending message can still execute and a second transaction would send a second amount.
+Delivery is asynchronous. If a transfer looks delayed, wait rather than sending it again — the pending message can still execute, and a second transaction would send a second amount.
 
 ## If a transaction fails
 
