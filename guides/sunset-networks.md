@@ -1,29 +1,25 @@
-# Exiting positions on sunset networks
+# Withdrawing from opBNB, Optimism and Unichain
 
-Venus is winding down its deployments on **opBNB**, **Optimism** and **Unichain**. On every Core Pool market on those three networks, supplying (`MINT`), borrowing (`BORROW`) and entering a market as collateral (`ENTER_MARKET`) are paused on-chain, while repaying (`REPAY`), redeeming (`REDEEM`) and exiting a market (`EXIT_MARKET`) remain open. This was checked on 21 September 2026 at opBNB block `187368051`, Optimism block `157180092` and Unichain block `59210622`. Pause states are governance-controlled and can change, so verify them as described in Step 2 before submitting a transaction.
+Venus no longer supports **opBNB**, **Optimism** and **Unichain**, and these networks have been removed from the Venus app. Your funds are still in the protocol and you can withdraw them yourself through the network's block explorer.
 
-Liquidation is not paused. A borrow position that becomes undercollateralized can still be liquidated, and borrow interest keeps accruing, so close positions rather than leaving them open.
+Supplying and borrowing are paused on these networks. Repaying, withdrawing, claiming rewards, unstaking XVS and bridging XVS all still work.
 
-If one of these networks is no longer offered in the Venus app, the position can still be closed by interacting directly with the market contracts through a block explorer. Positions on BNB Chain, Ethereum, Arbitrum, Base and ZKsync Era are separate deployments and are not affected by this guide.
+Borrow interest keeps accruing and positions can still be liquidated, so repay first, then withdraw.
 
-| Network  | Chain ID | Block explorer                                                       |
-| -------- | -------- | -------------------------------------------------------------------- |
-| opBNB    | 204      | [opBNBScan](https://opbnbscan.com)                                   |
-| Optimism | 10       | [Optimistic Etherscan](https://optimistic.etherscan.io)              |
-| Unichain | 130      | [Uniscan](https://uniscan.xyz)                                       |
+Positions on BNB Chain, Ethereum, Arbitrum, Base and ZKsync Era are separate deployments and are not affected.
 
-## Before you begin
+## Before you start
 
-* Connect the same wallet that holds the position, and confirm the explorer domain, the network and the full contract address before signing anything. Token names and symbols can be imitated. Venus contributors and support representatives will never ask for your seed phrase or private key.
-* vTokens are beacon proxies and the Comptroller, XVS Vault and RewardsDistributor are transparent proxies. On an explorer, open **Contract** and use **Read as Proxy** or **Write as Proxy** when those tabs are available. If the explorer has not recognized the proxy, do not guess an implementation address or construct a transaction manually; stop and ask for verification through the [Venus community forum](https://community.venus.io/).
-* Contract inputs use integer base units, not human-readable decimal amounts. Check `decimals()` on the underlying token: `1 USDC` with 6 decimals is `1000000`.
-* Keep enough of the network's native token for gas.
-* The direct vToken flow operates on ERC-20 underlying tokens. In the WBNB and WETH markets, repayment requires the wrapped token and redemption returns the wrapped token. Native BNB or ETH held for gas is not the same asset; see the NativeTokenGateway notes in Steps 3 and 4.
-* Work through one market at a time, and repeat on every network where you have a position.
+* Open the explorer for your network and connect the wallet that holds the position:
+  * opBNB (chain ID 204) — [opBNBScan](https://opbnbscan.com)
+  * Optimism (chain ID 10) — [Optimistic Etherscan](https://optimistic.etherscan.io)
+  * Unichain (chain ID 130) — [Uniscan](https://uniscan.xyz)
+* On each contract page, open the **Contract** tab and use **Read as Proxy** / **Write as Proxy**. If the explorer does not show those tabs, stop — do not guess an implementation address or build the transaction by hand.
+* Amounts are entered in base units, not decimals. Check `decimals()` on the token: 1 USDC with 6 decimals is `1000000`.
+* Keep some native BNB or ETH for gas.
+* Only use the addresses in the tables below. Token names and symbols can be imitated, and Venus will never ask for your seed phrase or private key.
 
-## Contract reference
-
-Addresses below were read from each network's Core Pool Comptroller on 21 September 2026 and match the [Deployed Contracts → Markets](../deployed-contracts/markets.md) page. Every listed market was confirmed listed at that time.
+## Your contracts
 
 ### opBNB
 
@@ -66,83 +62,54 @@ Addresses below were read from each network's Core Pool Comptroller on 21 Septem
 | vweETH\_Core  | [`0x0170398083eb0D0387709523baFCA6426146C218`](https://uniscan.xyz/address/0x0170398083eb0D0387709523baFCA6426146C218) | weETH [`0x7DCC39B4d1C53CB31e1aBc0e358b43987FEF80f7`](https://uniscan.xyz/address/0x7DCC39B4d1C53CB31e1aBc0e358b43987FEF80f7) |
 | vwstETH\_Core | [`0xbEC19Bef402C697a7be315d3e59E5F65b89Fa1BB`](https://uniscan.xyz/address/0xbEC19Bef402C697a7be315d3e59E5F65b89Fa1BB) | wstETH [`0xc02fE7317D4eb8753a02c35fe019786854A92001`](https://uniscan.xyz/address/0xc02fE7317D4eb8753a02c35fe019786854A92001) |
 
-## Step 1 — Look up your position
+## Step 1 — Find your position
 
-Open each vToken above on the network's explorer and read these functions under **Read as Proxy**:
+Open each vToken for your network and use **Read as Proxy**:
 
-* `balanceOf(<your address>)` — your vToken balance. A non-zero value represents a supplied position.
-* `borrowBalanceStored(<your address>)` — debt denominated in the underlying token, calculated with the market's latest stored borrow index. It does not first accrue new interest, so the true debt is slightly higher.
-* `exchangeRateStored()` — vTokens to underlying, scaled by `1e18` adjusted for token decimals. Useful to estimate what a redemption returns.
-* `underlying()` — the ERC-20 token used to repay the market and received on a direct redemption.
+* `balanceOf(<your address>)` — the vTokens you hold. A non-zero value means you have a supplied position.
+* `borrowBalanceStored(<your address>)` — what you owe, in the underlying token. Your real debt is slightly higher, because interest has accrued since this number was last updated.
 
-`borrowBalanceCurrent(<your address>)` and `balanceOfUnderlying(<your address>)` accrue interest and are not view functions. Explorers place them under **Write as Proxy**, where broadcasting a transaction does not display the returned value. Do not send a transaction merely to read a balance. A wallet simulation or an RPC `eth_call` returns the simulated value; otherwise use the stored variants above.
+A borrow can exist even when `balanceOf` is zero, so check every market in the table rather than only the tokens visible in your wallet.
 
-A borrow-only account can have a zero vToken balance, so the absence of a vToken from your wallet's token list does not prove that you have no debt. Review your Venus transaction history on each network, and check every market in the tables above.
+## Step 2 — Repay what you owe
 
-The Comptroller also answers account-level questions under **Read as Proxy**:
+Skip to Step 3 if `borrowBalanceStored` is zero in every market. Otherwise, for each market with debt:
 
-* `getAssetsIn(<your address>)` — markets your account has entered as collateral.
-* `getAccountLiquidity(<your address>)` — returns `(error, liquidity, shortfall)`. A non-zero shortfall means the account is undercollateralized and can be liquidated; repay before attempting to redeem.
+1. Open the underlying token from the table and call `approve(spender, amount)`. `spender` is the vToken address, and `amount` should be slightly above your debt so it still covers the interest accrued by the time the next transaction lands.
+2. Open the vToken → **Write as Proxy** → `repayBorrow(repayAmount)`. To repay in full, enter `115792089237316195423570985008687907853269984665640564039457584007913129639935`. The contract takes only what you actually owe.
 
-## Step 2 — Confirm the market still accepts the action
+**If you owe WBNB or WETH and hold native BNB or ETH:** open your network's NativeTokenGateway → **Write Contract** → `wrapAndRepay()`, and enter the amount in the `payableAmount` field. It wraps your native token, repays the debt and refunds the excess.
 
-Open the network's Comptroller under **Read as Proxy** and check, for each vToken you intend to use:
+Anyone can repay on your behalf with `repayBorrowBehalf(borrower, repayAmount)` after approving the vToken from their own wallet.
 
-* `isMarketListed(<vToken address>)` must return `true`.
-* `actionPaused(<vToken address>, 3)` checks `REPAY` and must return `false` before repayment.
-* `actionPaused(<vToken address>, 1)` checks `REDEEM` and must return `false` before redemption.
+Afterwards, re-check `borrowBalanceStored(<your address>)` — it must be `0`. Then revoke the leftover allowance on the underlying token with `approve(<vToken address>, 0)`.
 
-The second argument is the action index: `0` MINT, `1` REDEEM, `2` BORROW, `3` REPAY, `4` SEIZE, `5` LIQUIDATE, `6` TRANSFER, `7` ENTER_MARKET, `8` EXIT_MARKET.
+## Step 3 — Withdraw your supply
 
-If the market is unlisted or the action you need is paused, the call in the next steps will revert. Stop and ask for help through the [Venus community forum](https://community.venus.io/); include the network, wallet address, vToken address, and any transaction hash or revert data, but never share private credentials.
+For each market where `balanceOf` is non-zero, open the vToken → **Write as Proxy**:
 
-## Step 3 — Repay your borrows
+* `redeem(redeemTokens)` — enter the full value returned by `balanceOf(<your address>)` to withdraw everything. Use this for a full exit.
+* `redeemUnderlying(redeemAmount)` — a partial withdrawal, in the underlying token's base units. Rounding means it will not cleanly empty the position.
 
-Do this only for markets where `borrowBalanceStored` is non-zero and `REPAY` is available. If you have no borrows, skip to Step 4.
+Withdrawing from a WBNB or WETH market gives you the wrapped token. To receive native BNB or ETH instead, use the NativeTokenGateway:
 
-1. Open the underlying token returned by `underlying()` and call `approve(spender, amount)`, using **Write as Proxy** if the token is itself a proxy.
-   * `spender` is the vToken proxy address, not its implementation.
-   * `amount` must cover the debt after newly accrued interest, in the underlying token's base units. If an existing allowance is non-zero, some tokens require setting it to zero before changing it.
-2. Open the vToken under **Write as Proxy** and call `repayBorrow(repayAmount)`. For a full repayment, pass `repayAmount = 115792089237316195423570985008687907853269984665640564039457584007913129639935`, which is `type(uint256).max`.
+1. Comptroller → **Write as Proxy** → `updateDelegate(<gateway address>, true)`.
+2. Gateway → **Write Contract** → `redeemAndUnwrap(redeemTokens)` for a full exit, or `redeemUnderlyingAndUnwrap(redeemAmount)` for part of it.
+3. Comptroller → `updateDelegate(<gateway address>, false)` to revoke the permission.
 
-Passing `type(uint256).max` asks the vToken to repay up to the debt after interest accrual; it caps the transfer at that debt rather than attempting to transfer `uint256.max`. The transaction can still revert because of market state, insufficient token balance or allowance, or token behavior; fee-on-transfer behavior can also leave debt behind.
+Confirm that `balanceOf(<your address>)` is back to `0` and that the tokens reached your wallet.
 
-Someone else can repay on your behalf with `repayBorrowBehalf(borrower, repayAmount)` after approving the vToken from their own wallet. No delegate approval is required for repayment.
+## Step 4 — Claim rewards (Unichain only)
 
-**Repaying a WBNB or WETH borrow with native BNB or ETH.** Instead of wrapping manually, open the network's NativeTokenGateway under **Write Contract** and call `wrapAndRepay()` with the native amount in the `payableAmount` field. The gateway wraps the value, repays your debt in the wrapped-native market and refunds any excess native token. Use it only for the market named in the reference above; the gateway serves a single market per network.
+opBNB and Optimism have no Core Pool rewards. On Unichain no new rewards accrue, but anything already earned is still claimable.
 
-After confirmation, re-check `borrowBalanceStored(<your address>)`. Do not treat the position as closed unless it is zero. Then check `allowance(<your address>, <vToken address>)` on the underlying token and revoke any unused allowance with `approve(<vToken address>, 0)`.
+* RewardsDistributor (XVS): [`0x4630B71C1BD27c99DD86aBB2A18C50c3F75C88fb`](https://uniscan.xyz/address/0x4630B71C1BD27c99DD86aBB2A18C50c3F75C88fb)
 
-## Step 4 — Withdraw your supplied assets
+**Read as Proxy** → `rewardTokenAccrued(<your address>)` shows what has been recorded so far. **Write as Proxy** → `claimRewardToken(holder)` with your address claims it. No approval is needed, and claiming is independent of repaying and withdrawing.
 
-For each market where `balanceOf` is non-zero and `REDEEM` is available, open the vToken under **Write as Proxy**:
+## Step 5 — Unstake XVS
 
-* `redeem(redeemTokens)` — burns the specified vTokens and returns the corresponding underlying. For a full exit, pass the complete value returned by `balanceOf(<your address>)`. This is the preferred method.
-* `redeemUnderlying(redeemAmount)` — requests a partial withdrawal denominated in the underlying token's base units. Rounding during conversion means it is not a reliable way to empty the position.
-
-Redeeming from a market you have entered makes the Comptroller check your account across all entered markets in the pool, using the Resilient Oracle. Repay borrows first: it removes shortfall as a blocker, though it does not guarantee that redemption succeeds. Insufficient market cash, an unavailable oracle price, or token behavior can still cause a revert.
-
-**Receiving native BNB or ETH instead of the wrapped token.** A direct `redeem` on a WBNB or WETH market returns the wrapped token, which you can unwrap yourself by calling `withdraw(wad)` on the wrapped-token contract. Alternatively use the NativeTokenGateway, which requires one extra approval because it redeems on your behalf:
-
-1. On the Comptroller, **Write as Proxy** → `updateDelegate(delegate, approved)` with the gateway address and `true`.
-2. On the gateway, **Write Contract** → `redeemAndUnwrap(redeemTokens)` with your vToken balance, or `redeemUnderlyingAndUnwrap(redeemAmount)` for a partial amount in underlying base units. The gateway redeems, unwraps and sends you native tokens.
-3. Afterwards, call `updateDelegate(<gateway address>, false)` to revoke the delegation.
-
-After confirmation, re-check `balanceOf(<your address>)` and confirm that the tokens reached your wallet.
-
-## Step 5 — Claim outstanding market rewards
-
-Only Unichain has a RewardsDistributor attached to its Core Pool; the opBNB and Optimism Core Pools have none. Reward speeds on Unichain are currently zero, so no new rewards accrue, but previously accrued rewards can still be claimed.
-
-* Unichain RewardsDistributor (XVS): [`0x4630B71C1BD27c99DD86aBB2A18C50c3F75C88fb`](https://uniscan.xyz/address/0x4630B71C1BD27c99DD86aBB2A18C50c3F75C88fb)
-
-Under **Read as Proxy**, `rewardTokenAccrued(<your address>)` shows the amount already recorded for you; it does not include rewards not yet updated for your markets. To claim, use **Write as Proxy** → `claimRewardToken(holder)` with your address. That overload processes every market in the pool, which is valid here because all Unichain Core Pool markets are listed and the pool is well below the contract's loop limit.
-
-Payment succeeds only if the distributor still holds enough of its reward token; the contract keeps the accrual recorded rather than making a partial payment. No token approval is required, and claiming is independent of repaying and redeeming.
-
-## Step 6 — Unstake XVS from the XVS Vault
-
-Each of the three networks has an XVS Vault. Stakes there are separate from Core Pool positions and must be withdrawn separately, with a **7-day lock** between the request and the withdrawal.
+XVS staked in the XVS Vault is separate from your market positions. There is a **7-day lock** between requesting a withdrawal and receiving the tokens.
 
 | Network  | XVS Vault proxy                                                                                                | XVS token                                                                                                     |
 | -------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -150,20 +117,18 @@ Each of the three networks has an XVS Vault. Stakes there are separate from Core
 | Optimism | [`0x133120607C018c949E91AE333785519F6d947e01`](https://optimistic.etherscan.io/address/0x133120607C018c949E91AE333785519F6d947e01) | [`0x4a971e87ad1F61f7f3081645f52a99277AE917cF`](https://optimistic.etherscan.io/address/0x4a971e87ad1F61f7f3081645f52a99277AE917cF) |
 | Unichain | [`0x5ECa0FBBc5e7bf49dbFb1953a92784F8e4248eF6`](https://uniscan.xyz/address/0x5ECa0FBBc5e7bf49dbFb1953a92784F8e4248eF6) | [`0x81908BBaad3f6fC74093540Ab2E9B749BB62aA0d`](https://uniscan.xyz/address/0x81908BBaad3f6fC74093540Ab2E9B749BB62aA0d) |
 
-Each network has a single pool, so `_rewardToken` is that network's XVS address and `_pid` is `0`.
+Each network has one pool, so every call below takes that network's XVS address as the reward token and `0` as the pool id.
 
-1. **Check the stake.** Under **Read as Proxy**, `getUserInfo(<XVS address>, 0, <your address>)` returns your staked `amount`, `rewardDebt` and `pendingWithdrawals`. `pendingReward(<XVS address>, 0, <your address>)` shows unclaimed rewards.
-2. **Request the withdrawal.** Under **Write as Proxy**, `requestWithdrawal(<XVS address>, 0, <amount>)` with the amount in XVS base units (18 decimals). This also pays out pending rewards and starts the 7-day lock. Voting power for the requested amount is removed immediately.
-3. **Wait, then check eligibility.** `getEligibleWithdrawalAmount(<XVS address>, 0, <your address>)` returns the amount whose lock has expired.
-4. **Execute.** `executeWithdrawal(<XVS address>, 0)` transfers every unlocked amount back to your wallet. It reverts while nothing is eligible.
+1. **Check your stake** — **Read as Proxy** → `getUserInfo(<XVS address>, 0, <your address>)`.
+2. **Request the withdrawal** — **Write as Proxy** → `requestWithdrawal(<XVS address>, 0, <amount>)`, with the amount in XVS base units (18 decimals). This also pays out pending rewards and starts the 7-day lock.
+3. **After 7 days, check eligibility** — `getEligibleWithdrawalAmount(<XVS address>, 0, <your address>)`.
+4. **Execute** — `executeWithdrawal(<XVS address>, 0)` sends the unlocked XVS back to your wallet.
 
-Reward payments come from that network's XVS Store. If the store's balance is short, the vault pays what it can and records the remainder, which you can read with `pendingRewardTransfers(<XVS address>, <your address>)`; the amount stays claimable and is paid on a later claim once the store is funded. Unstaking itself is not affected. Venus Prime is paused on these networks and no Prime tokens are issued there, so withdrawing a stake does not affect a Prime position.
+If the vault cannot pay a reward in full it records the remainder, which stays claimable and can be read with `pendingRewardTransfers(<XVS address>, <your address>)`. Unstaking itself is not affected.
 
-## Step 7 — Move XVS to another network
+## Step 6 — Bridge XVS to BNB Chain
 
-XVS on these networks is omnichain XVS and can be bridged back to BNB Chain. Use the [XVS Bridge](xvs-bridge.md) in the Venus app while the network is still offered there.
-
-If the app no longer lists the network, the bridge contract can be called directly. This is an advanced flow: an incorrect recipient encoding sends tokens to an unrecoverable address.
+XVS on these networks can be bridged back to BNB Chain. Since the networks are no longer in the app, the bridge contract has to be called directly. Take care with the recipient encoding: an incorrect value sends tokens to an address nobody can recover.
 
 | Network  | XVSProxyOFTDest                                                                                                |
 | -------- | -------------------------------------------------------------------------------------------------------------- |
@@ -171,16 +136,27 @@ If the app no longer lists the network, the bridge contract can be called direct
 | Optimism | [`0xbBe46bAec851355c3FC4856914c47eB6Cea0B8B4`](https://optimistic.etherscan.io/address/0xbBe46bAec851355c3FC4856914c47eB6Cea0B8B4) |
 | Unichain | [`0x9c95f8aa28fFEB7ECdC0c407B9F632419c5daAF8`](https://uniscan.xyz/address/0x9c95f8aa28fFEB7ECdC0c407B9F632419c5daAF8) |
 
-The destination is a LayerZero V1 endpoint ID, not a chain ID: BNB Chain is `102`. Amounts are in XVS base units (18 decimals), and the recipient is your address left-padded to 32 bytes, for example `0x000000000000000000000000` followed by your 20-byte address without its `0x`.
+Three values are the same for every transfer:
 
-1. Approve the bridge as spender on the XVS token for the amount you are sending.
-2. Adapter parameters are required; an empty value is rejected. Use version 1 with the configured minimum destination gas of 300,000: `0x000100000000000000000000000000000000000000000000000000000000000493e0`.
-3. Under **Read as Proxy**, call `estimateSendFee(102, <padded recipient>, <amount>, false, <adapter params>)`. The first returned value is the native fee.
-4. Under **Write as Proxy**, call `sendFrom(<your address>, 102, <padded recipient>, <amount>, <your address>, 0x0000000000000000000000000000000000000000, <adapter params>)` and set `payableAmount` to the estimated native fee. Quotes move with gas prices, so add a small margin; excess is refunded to the refund address.
-5. Single-transaction limits apply per source network and destination, and a daily limit applies as well. Split larger amounts across transactions.
+* Destination — `102`, the LayerZero endpoint ID for BNB Chain. This is not the chain ID.
+* Recipient — your address left-padded to 32 bytes: `0x000000000000000000000000` followed by your address without its `0x`.
+* Adapter parameters — `0x000100000000000000000000000000000000000000000000000000000000000493e0`. An empty value is rejected.
 
-Delivery is asynchronous. Track the source transaction and its LayerZero message, and do not resend a transfer that appears delayed: a pending message can still execute, and a duplicate would send a second amount.
+1. On the XVS token, `approve` the bridge address for the amount you are sending.
+2. Bridge → **Read as Proxy** → `estimateSendFee(102, <padded recipient>, <amount>, false, <adapter params>)`. The first returned value is the native fee.
+3. Bridge → **Write as Proxy** → `sendFrom(<your address>, 102, <padded recipient>, <amount>, <your address>, 0x0000000000000000000000000000000000000000, <adapter params>)`, with `payableAmount` set to that fee plus a small margin. Anything unused is refunded.
+
+Per-transaction and daily limits apply, so split larger amounts across several transfers. Delivery is asynchronous — if a transfer looks delayed, wait rather than resending, because the pending message can still execute and a second transaction would send a second amount.
 
 ## If a transaction fails
 
-Stop rather than repeatedly spending gas on a reverting call. Re-check the market's listing and pause state, your balances and allowances, and the account's shortfall. If it still fails, ask for help through the [Venus community forum](https://community.venus.io/) with the network, wallet address, contract address and the transaction hash or revert data. Never share your seed phrase or private key.
+Do not keep resubmitting. Open your network's Comptroller under **Read as Proxy** and check:
+
+* `isMarketListed(<vToken address>)` returns `true`.
+* `actionPaused(<vToken address>, 3)` returns `false` — repayment is allowed.
+* `actionPaused(<vToken address>, 1)` returns `false` — withdrawal is allowed.
+* `getAccountLiquidity(<your address>)` returns no shortfall. If it does, repay before trying to withdraw again.
+
+Also confirm that you hold enough of the underlying token and that your allowance covers the repayment.
+
+If it still fails, ask for help on the [Venus community forum](https://community.venus.io/) with the network, your wallet address, the contract address and the transaction hash or revert data. Never share your seed phrase or private key.
