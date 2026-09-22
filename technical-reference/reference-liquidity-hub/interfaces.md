@@ -99,6 +99,7 @@ function maxDeposit(address resource) external view returns (uint256 capacity);
 function maxWithdraw(address resource, address holder) external view returns (uint256 liquid);
 function spotAPYBps(address resource, uint256 blocksPerYear) external view returns (uint64 apyBps);
 function receiptBalance(address resource, address holder) external view returns (uint256 shares);
+function resourceName(address resource) external view returns (string memory name);
 function validateRegistration(address resource) external view;
 ```
 
@@ -108,4 +109,5 @@ function validateRegistration(address resource) external view;
 * **`maxWithdraw`** — underlying `holder` can withdraw right now, net of any redeem-time protocol fee, bounded by the lesser of the position value and the resource's available cash.
 * **`spotAPYBps`** — spot supply-side APY in BPS; annualization uses the `blocksPerYear` the YieldGroup passes (chain-dependent).
 * **`receiptBalance`** — raw receipt-token balance (vToken / fToken / FRV shares), NOT underlying value. Used by `removeResource` as a share-based emptiness gate so a value-based check can't round a small balance to zero and orphan tokens.
+* **`resourceName`**: display name of `resource`, for off-chain consumers. Each adapter reads it from wherever its protocol exposes it, since not every resource is an ERC-20 with its own `name()`.
 * **`validateRegistration`** — reverts if `resource` fails a protocol-specific precondition. `AdapterCoreV1` rejects a vToken whose Comptroller charges a non-zero `treasuryPercent`; `AdapterFlux` and `AdapterFRV` implement it as a no-op.

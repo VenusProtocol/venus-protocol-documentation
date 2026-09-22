@@ -14,17 +14,20 @@ Today a lender has to choose between independent products — Venus Core lending
 
 The Hub is purely a routing layer. It does **not** modify the parameters or governance of the underlying Core / Flux / FRV products — it only moves capital into and out of them.
 
-### The three yield families (Sources)
+### The yield families (Sources)
 
-A **Source** groups downstream products of the same kind behind one uniform interface. v1 ships three:
+A **Source** groups downstream products of the same kind behind one uniform interface. v1 shipped three, and a fourth, Centrifuge, has been added since:
 
 | Source   | Underlying protocol      | What the Hub holds                         |
 | -------- | ------------------------ | ------------------------------------------ |
 | **Core** | Venus Core lending       | vTokens (Compound-style receipt tokens)    |
 | **Flux** | Fluid Lending (third-party) | fTokens (ERC-4626 shares)               |
 | **FRV**  | Venus Fixed-Rate Vaults  | Fixed-Rate Vault shares (ERC-4626)         |
+| **Centrifuge** | Centrifuge tokenized funds (third-party) | Positions in ERC-7540 fund vaults (JTRSY, JAAA) |
 
 At launch only **Core** and **Flux** hold a live product. The FRV Source is registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for these assets on BNB Chain yet, so it is wired to nothing and receives no capital until a follow-up proposal adds one. That follow-up, [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56), has since wired the Solv (Ceffu custody) fixed-rate vault into the USDT Hub and the Asseto CASH+ vault into the U Hub; the USDC Hub's FRV Source is still unwired.
+
+**Centrifuge** was added to the USDT Hub by [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56), with two Janus Henderson funds: JTRSY (a US Treasury fund) and JAAA (a AAA CLO fund). It is the first **asynchronous** Source: a deposit or redemption is a request that the fund manager settles later at a published price, and the Hub collects the result afterwards. Capital routed there is exposed to Centrifuge's contracts and to the funds themselves, not only to Venus's. The proposal moved no capital, and Centrifuge still has to add the Source to both funds' investor lists before any can be allocated.
 
 The Source set is **governance-extensible**: new yield families can be added later without changing the Hub or the share token, because every Source is reached through the same interface.
 
@@ -35,7 +38,7 @@ The Hub holds two independent, governance-configured ordered queues — a **depo
 * **Deposit** — capital cascades down the deposit queue. Each Source absorbs up to its available capacity (bounded by its cap), and any remainder overflows to the next Source. If the total deposit is larger than the combined free capacity of every Source, the **entire transaction reverts** — there is no partial fill.
 * **Withdraw** — the Hub serves the request from its own idle balance first, then walks the withdraw queue, pulling liquidity in order until the request is filled. If the request exceeds total available liquidity, or exceeds the per-transaction withdrawal cap, the **entire transaction reverts**.
 
-At launch the queues are configured **Core-first in, Flux-first out** — deposit `[Core, Flux]`, withdraw `[Flux, Core, FRV]`. Core absorbs everyday inflows, so new capital lands in the deepest and most liquid market first; withdrawals are served from Flux ahead of Core, which keeps Core's balance intact as a buffer. FRV is out of the deposit queue entirely (nothing to route into) and sits last on the withdraw side, where an empty Source costs nothing to walk past. The two orders are set independently and governance can reorder either.
+At launch the queues are configured **Core-first in, Flux-first out**: deposit `[Core, Flux]`, withdraw `[Flux, Core, FRV]`. Core absorbs everyday inflows, so new capital lands in the deepest and most liquid market first; withdrawals are served from Flux ahead of Core, which keeps Core's balance intact as a buffer. FRV is out of the deposit queue entirely (nothing to route into) and sits last on the withdraw side, where an empty Source costs nothing to walk past. On the USDT Hub, Centrifuge is also out of the deposit queue and sits after FRV on the withdraw side. The two orders are set independently and governance can reorder either.
 
 ### Operator rebalancing
 
@@ -43,7 +46,7 @@ Beyond user-driven flow, a privileged **Operator** can proactively rebalance cap
 
 ### Safety envelope
 
-* **Atomic-or-revert** — deposits, withdrawals, and rebalances either complete in full or revert. No partial fills, no stranded remainder.
+* **Atomic-or-revert** — deposits, withdrawals, and rebalances either complete in full or revert. No partial fills, no stranded remainder. A deposit larger than the remaining room reverts rather than filling part of it, and the revert itself reports how much would have fit.
 * **Dual caps per Source** — each Source carries both an absolute cap and a percentage-of-Hub cap; the stricter one binds. A large Source can never quietly exceed its share of the Hub.
 * **Per-transaction withdrawal cap** — bounds any single withdrawal so one transaction cannot drain a downstream product's liquidity.
 * **Multi-level pause** — the Hub, an individual Source, or a single product can each be paused independently. A broader pause blocks everything beneath it; unaffected siblings keep operating, and the underlying products themselves keep running normally even while the Hub is paused.

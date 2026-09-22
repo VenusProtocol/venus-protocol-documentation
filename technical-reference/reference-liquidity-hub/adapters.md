@@ -40,6 +40,7 @@ Verified at audit for every adapter:
 * **`maxWithdraw(address resource, address holder)` → `uint256`** — underlying `holder` can withdraw right now, net of any redeem-time protocol fee.
 * **`spotAPYBps(address resource, uint256 blocksPerYear)` → `uint64`** — spot supply-side APY in BPS.
 * **`receiptBalance(address resource, address holder)` → `uint256`** — raw receipt-token balance (vToken / fToken / FRV shares), in receipt-token units — used by `removeResource` as a share-based emptiness gate.
+* **`resourceName(address resource)` → `string`**: display name of `resource`, for off-chain consumers. Not every resource keeps its name on itself (an ERC-7540 vault keeps it on its share token), so each adapter reads it from wherever its protocol exposes it. `AdapterCoreV1`, `AdapterFlux` and `AdapterFRV` return the resource's ERC-20 `name()`.
 * **`accrue(address resource)`** — settle `resource`'s own global interest state so a following `totalAssets` read prices the position at a fresh rate. Invoked via normal `call`, **not** delegatecall, and therefore carries no `onlyDelegateCall` guard: it mutates the resource's global index, not the holder's position. Only block-lazy adapters do real work — `AdapterCoreV1` calls the vToken's `accrueInterest()`; `AdapterFlux` and `AdapterFRV` are no-ops.
 * **`validateRegistration(address resource)`** — reverts if `resource` fails a protocol-specific registration precondition.
 
@@ -77,11 +78,25 @@ Wraps Fluid Lending fTokens (ERC-4626 shares). The adapter holds the Fluid `Lend
 Wraps Venus Fixed-Rate Vault shares (ERC-4626).
 
 * **`deposit` / `withdraw`** — uses the vault's ERC-4626 `deposit` / `withdraw`. There is no redeem-time pool fee (the reserve factor is taken once at settlement).
-* **`spotAPYBps`** — reads the vault's `state()` and returns the vault's `fixedAPY` **only while `Fundraising` or `Lock`**; in any other state it contributes no APY (the rate is not meaningful outside the active window).
+* **`spotAPYBps`**: reads the vault's `state()` and returns the vault's `fixedAPY` net of its `reserveFactor` **only while `Fundraising` or `Lock`**. `fixedAPY` is what the institution pays, and the vault keeps `reserveFactor` of the interest for the protocol, so a supplier earns the rest: a 600 BPS vault with a 10% reserve factor reports 540 BPS. In any other state it contributes no APY (the rate is not meaningful outside the active window).
 * **State machine** — the adapter does **not** call `updateVaultState()`; `YieldGroupFRV` pokes it before every routing decision so the adapter always reads a current state (see the [FRV lifecycle](yield-groups.md#frv-lifecycle)).
 * **`validateRegistration`** — a no-op (`pure`); FRV has no per-redeem pool fee.
 
 **Errors:** `NotDelegateCall`.
+
+## AdapterCentrifuge
+
+Wraps Centrifuge ERC-7540 fund vaults, such as JTRSY and JAAA. Under delegatecall, the YieldGroup is the controller, owner and claim receiver of every request.
+
+* **`deposit`**: sends the assets to the vault as an asynchronous `requestDeposit`. The shares are collected later with `claimDeposit`.
+* **`withdraw`**: pays out only assets whose redemption has already settled (the vault's `maxWithdraw`). It claims to the group first and then transfers to `to`, because the vault only pays out to addresses on its investor list.
+* **`totalAssets`**: held shares plus six request amounts. `pendingDepositRequest`, `claimableCancelDepositRequest` and `maxWithdraw` count at face; held shares, `maxMint`, `pendingRedeemRequest` and `claimableCancelRedeemRequest` are converted at the vault's share price. Reverts `ZeroSharePrice` if the position holds shares and the price is zero. `YieldGroupCentrifuge` then clamps the figure to the vault's [NAV band](yield-groups.md#nav-band).
+* **`maxWithdraw`**: the vault's own `maxWithdraw` for the group, so its investor-list checks show up in reported liquidity.
+* **`spotAPYBps`**: the rate governance published on the calling group with `setSpotAPYBps`. Any other caller gets 0.
+* **`maxDeposit`**: not used for Centrifuge. The group sizes deposits itself, because it has to see whether its own deposit cancel is pending.
+* **`validateRegistration`**: checks the vault exposes the share token, request manager, investment state and price reads the adapter needs.
+
+**Errors:** `NotDelegateCall`, `ZeroSharePrice`.
 
 ## Adding a new protocol family
 
