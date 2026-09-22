@@ -18,6 +18,61 @@ The catalog is an evidence index, not a claim of complete coverage. Historical f
 
 ## Audits
 
+### Liquidity Hub: Centrifuge yield group
+
+**Scope**: the [Centrifuge yield group](technical-reference/reference-liquidity-hub/yield-groups.md#centrifuge-lifecycle) of the Liquidity Hub, which connects a Hub to Centrifuge ERC-7540 fund vaults. Enabled on the USDT Hub in [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56).
+
+* [HashDit audit report (2026/09/04)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/45ff6bb94e8625aa23771a2efd3d6e3eced61df7/audits/201_CentrifugeYieldGroup_Hashdit_20260904.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#21](https://github.com/VenusProtocol/venus-liquidity-hub/pull/21) in the `venus-liquidity-hub` repository, with the fixes in pull request [#25](https://github.com/VenusProtocol/venus-liquidity-hub/pull/25):
+  - contracts/YieldGroup/YieldGroupCentrifuge.sol
+  - contracts/YieldGroup/base/NavGuard.sol
+  - contracts/YieldGroup/base/YieldGroupBase.sol
+  - contracts/adapters/AdapterCentrifuge.sol
+  - contracts/interfaces/IAdapterCentrifuge.sol
+  - contracts/interfaces/INavGuard.sol
+  - contracts/interfaces/IYieldGroupCentrifuge.sol
+  - contracts/interfaces/external/ICentrifugeAsyncRequestManager.sol
+  - contracts/interfaces/external/ICentrifugeAsyncVault.sol
+
+</details>
+
+### Liquidity Hub
+
+**Scope**: the [Liquidity Hub](technical-reference/reference-liquidity-hub/README.md): the Hub, the Core, Flux and FRV yield groups and their adapters, `HubRegistry` and `Migrator`.
+
+* [HashDit audit report (2026/07/07)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/ff50013ee07f261c37b2cb6d266696f28d02f9fc/audits/HashDit_LiquidityHub_20260707.pdf)
+* [Cantina audit report (2026/08/11)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/c05d100ae0d7b73f21cae376a9fd32fac9349502/audits/cantina_LiquidityHub_20260811.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#2](https://github.com/VenusProtocol/venus-liquidity-hub/pull/2) in the `venus-liquidity-hub` repository, with the fixes in pull request [#4](https://github.com/VenusProtocol/venus-liquidity-hub/pull/4):
+  - contracts/Hub/Hub.sol
+  - contracts/Hub/HubStorage.sol
+  - contracts/Hub/lib/HubAdminLib.sol
+  - contracts/YieldGroup/YieldGroup.sol
+  - contracts/YieldGroup/YieldGroupFRV.sol
+  - contracts/YieldGroup/base/YieldGroupBase.sol
+  - contracts/YieldGroup/base/YieldGroupBaseStorage.sol
+  - contracts/adapters/AdapterCoreV1.sol
+  - contracts/adapters/AdapterFlux.sol
+  - contracts/adapters/AdapterFRV.sol
+  - contracts/migrator/Migrator.sol
+  - contracts/registry/HubRegistry.sol
+  - contracts/interfaces/IHub.sol
+  - contracts/interfaces/IHubRegistry.sol
+  - contracts/interfaces/IMigrator.sol
+  - contracts/interfaces/IResourceAdapter.sol
+  - contracts/interfaces/IYieldGroup.sol
+  - contracts/interfaces/IYieldGroupBase.sol
+  - contracts/interfaces/IYieldGroupFRV.sol
+
+</details>
+
 ### E-Mode
 
 **Scope**: E-Mode support in the Core pool on BNB Chain.

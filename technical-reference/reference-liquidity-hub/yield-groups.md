@@ -2,15 +2,16 @@
 
 A **YieldGroup** is a Source implementation: it aggregates one or more *resources* of a single protocol family behind the uniform [`IYieldGroupBase`](interfaces.md) boundary the Hub depends on. Each YieldGroup is deployed per asset as a beacon proxy and owns its own inner deposit / withdraw queues, per-resource registry, and per-resource pause flags.
 
-There are **two YieldGroup contracts**, deployed as three families in v1:
+There are **three YieldGroup contracts**, deployed as four families:
 
 * **Core** — the generic `YieldGroup` contract behind the Core beacon, registering Venus Core-pool vTokens (`mint` / `redeemUnderlying`) via `AdapterCoreV1`, initialised with the chain's `blocksPerYear`.
 * **Flux** — the *same* `YieldGroup` contract behind the Flux beacon, registering Fluid Lending fTokens (ERC-4626 shares) via `AdapterFlux`, initialised with `blocksPerYear = 0`.
 * **`YieldGroupFRV`** — a separate contract, for Venus Fixed-Rate Vaults (ERC-4626 with an 11-state lifecycle).
+* **`YieldGroupCentrifuge`**: a separate contract, for Centrifuge ERC-7540 fund vaults, where deposits and redemptions are requests settled later. Added by [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56), on the USDT Hub only.
 
 "Core" and "Flux" are **deployment identities, not contract names** — which adapter, resources, caps and `blocksPerYear` governance wires into the proxy is the only difference. There is no `YieldGroupCore` or `YieldGroupFlux` type to import.
 
-All three share the same Hub-facing surface and the same registry / queue / pause admin surface; they differ only in the protocol-specific behavior delegated to their [adapter](adapters.md) and in a few family-specific rules noted below.
+All four share the same Hub-facing surface and the same registry / queue / pause admin surface; they differ only in the protocol-specific behavior delegated to their [adapter](adapters.md) and in a few family-specific rules noted below.
 
 > **Terminology.** The PRD calls this layer a *Source*; the code names the contract a *YieldGroup* and the Hub-facing interface `IYieldGroupBase`. There is no `ISource` type — "Source" survives in the Solidity only as deployment-artifact aliases (`CoreSource_USDT`, `FluxSource_USDC`, `FRVSource_U`). A registered resource is the PRD's *Product / Vault*.
 
@@ -113,6 +114,45 @@ The full `FRVVaultState` enum (values 0–10): `WaitingForMargin`, `MarginDeposi
 * **Withdrawals** are possible **only in the terminal states** `Matured`, `Failed`, or `Liquidated` — capital is locked through `Lock` and `PendingSettlement`. `Matured` adds the fixed-rate yield; `Failed` / `Liquidated` can return **less than principal**, which marks down both `maxWithdraw` and `totalAssets`.
 * **Mark-to-model gap.** `AdapterFRV` values a locked position at principal plus the coupon accrued straight-line over the lock, and holds the **full** term coupon flat through `PendingSettlement` and `SettlementDeadlineExceeded` — while `maxWithdraw` stays `0` throughout. That accrued coupon therefore enters `Hub.totalAssets()` and the ERC-4626 share price before it is realized or withdrawable, and it is written down only if the vault settles `Failed` / `Liquidated`. Depositors minting during a lock buy in at a price that includes it; redeemers cannot exit against it until a terminal state.
 * Because `maxDeposit()` is a view it cannot advance state, so it can report stale non-zero capacity for a vault that is time-due to leave `Fundraising`; a permissionless `updateVaultState()` poke resolves it. In practice ordinary Hub traffic supplies that poke — every `deposit` / `mint` / `withdraw` / `redeem` / `reallocate` / `accrueFees` runs `YieldGroupFRV.accrue()`, which calls `updateVaultState()` on **every** registered vault, not just the one being routed to. This is a documented honesty-contract caveat, not a fund-safety issue.
+
+## Centrifuge lifecycle
+
+A Centrifuge vault is **asynchronous**: the Hub moves assets straight away, but the fund manager fills a deposit or a redemption later, at a price Centrifuge publishes. `YieldGroupCentrifuge` adds the steps that sit between the request and the result.
+
+1. **Deposit.** The Hub's deposit becomes a `requestDeposit` to the vault. While it is pending, its value counts at face.
+2. **Claim the shares.** Once the fund manager fills the request, a Keeper calls `claimDeposit(resource)` to collect the issued shares into the group.
+3. **Redeem.** The Operator calls `requestRedeem(resource, shares)` to put shares up for redemption. Nothing becomes withdrawable until it is filled.
+4. **Claim the assets.** A Keeper calls `claimRedeem(resource)` to collect the settled assets into the group as idle balance. A targeted `withdrawResource` can also pull settled assets directly.
+
+A pending request can be cancelled with `cancelDepositRequest` or `cancelRedeemRequest` (Operator), and its result collected with `claimCancelDeposit` or `claimCancelRedeem` (Keeper). While a deposit cancel is pending, Centrifuge accepts no new deposit from the group, so the group reports zero deposit room until the cancel settles.
+
+What the group holds in a vault is valued as the held shares, plus every pending and claimable amount: amounts in assets at face, amounts in shares at the vault's share price. `accrue()` claims nothing; it only re-anchors the NAV band below.
+
+* **APY is published, not read.** Centrifuge puts no rate on chain, so governance sets each vault's rate with `setSpotAPYBps(resource, apyBps)` (Operator or governance). Left unset, the vault reports zero.
+* **Writing off a vault.** If a position can never be claimed, `forceRemoveResource(resource)` drops the vault and writes its value off. It is governance-only and reverts `HubNotPaused` unless the Hub is paused.
+* **Investor lists.** Each fund only accepts addresses on its investor list, so Centrifuge has to add the group before any capital can be allocated.
+
+### NAV band
+
+Every term of a Centrifuge position's value is computed off chain and published on BNB Chain, and the Hub's share price is built on it. A zero share price always reverts. On top of that, each vault can have a **NAV band** (`NavGuard`), which holds the value the group reports inside a range around an expected value:
+
+* The band's centre starts at the last value accepted from Centrifuge, grows at `driftBps` a year, and moves by exactly the amount of every deposit and withdrawal the group makes.
+* The reported value is clamped to between `centre − downGapBps` and `centre + upGapBps`. It never reverts.
+* At most once per `interval`, the band re-anchors on the clamped reading. A wrong value can therefore move the reported value by at most one gap per interval, which gives time to notice it.
+* Above the band, an inflated value is reported lower, so nobody withdraws against value that is not there. Below the band, a real loss is reported higher at first, and is marked down one gap per interval rather than all at once.
+
+Governance configures it with `setNavGuardRate(resource, driftBps, upGapBps, downGapBps, interval, capEnabled, floorEnabled)`, switches either side on or off with `setNavGuardEnabled(resource, capEnabled, floorEnabled)`, and forces a new centre with `setNavGuardSnapshot(resource, snapshot, timestamp)`, for example to accept a real markdown. Read the band with `navGuard(resource)` and its live state with `navGuardStatus(resource)`.
+
+The band only limits how fast a wrong value moves the share price. A separate keeper check, not deployed yet, is planned to pause the whole Hub when the value moves past a set threshold: see [Automatic pause on a NAV break](hub.md#automatic-pause-on-a-nav-break).
+
+Values set by VIP-661 on the USDT Hub:
+
+| Vault | Drift | Band up | Band down | Re-anchor | Published APY |
+| --- | --- | --- | --- | --- | --- |
+| JTRSY (Janus Henderson Treasury Fund) | 5.00% | 2% | 5% | daily | 3.37% |
+| JAAA (Janus Henderson AAA CLO Fund) | 5.50% | 2% | 5% | daily | 5.29% |
+
+Events: `RedeemRequested`, `DepositCancelRequested`, `RedeemCancelRequested`, `DepositClaimed`, `RedeemClaimed`, `DepositCancelClaimed`, `RedeemCancelClaimed`, `ResourceForceRemoved`, `SpotAPYBpsSet`, and for the band `NavGuardConfigured`, `NavGuardEnabledSet`, `NavGuardReanchored`, `NavGuardCentreMoved`, `NavGuardClamped` and `NavGuardClosed`. Alert on `NavGuardClosed`: every armed side then values the position at zero until a deposit or `setNavGuardSnapshot` reopens it.
 
 ## Events
 

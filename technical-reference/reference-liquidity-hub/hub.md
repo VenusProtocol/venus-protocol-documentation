@@ -53,7 +53,7 @@ All user-facing mutating operations are **atomic-or-revert** — they complete i
 Reallocate moves assets between Sources — and, optionally, between specific resources within a Source — without funds entering or leaving the Hub. Both legs share the [`ReallocateLeg`](#structs) struct. The Hub treats `resource` as an **opaque pass-through**: it holds no resource registry and never reads resource state — it relays the address to the owning Source, which validates it against its own registry.
 
 1. The Operator calls `reallocate(withdraws, deposits)`.
-2. The Hub accrues fees (skipped while paused).
+2. The Hub accrues fees. While paused (the `emergencyReallocate` path) it charges no fee but still settles every Source's resources, and that settlement is **fail-open**: a Source whose `accrue()` reverts is skipped and emits `YieldGroupAccrualFailed`, so it cannot block the wind-down of the healthy ones. A leg that then pulls from an unsettled Source still has to deliver its full amount or it reverts.
 3. **Pull phase** — every withdraw leg runs first: `Source.withdraw` (queue) or `Source.withdrawResource` (targeted). Underlying returns to the Hub as idle. Pulling from a *paused* resource is allowed (wind-down). Every leg on both sides must carry a non-zero `amount` — a zero-amount leg reverts `ZeroAmount` rather than being skipped, which matters when the plan is generated programmatically and a no-op leg is a natural artifact.
 4. The Hub takes a single TVL snapshot after all pulls — the cap reference for every push (valid because a balanced reallocate conserves TVL). While unpaused this is the strict, fail-closed `totalAssets()`. While paused (the `emergencyReallocate` path) it is a **fail-open** sum that skips any Source whose `totalAssets()` reverts, so a single bricked Source cannot block a rebalance among the healthy ones.
 5. **Push phase** — each deposit leg checks the Source is registered, unpaused, and within its effective cap, then `Source.deposit` (queue) or `Source.depositResource` (targeted). Depositing into a paused resource reverts.
@@ -133,6 +133,19 @@ Three independent scopes — a broader scope blocks everything beneath it; sibli
 * **Hub paused** — all deposits / withdrawals / mints / redeems, `reallocate`, and fee accrual and the fee setters are blocked; `emergencyReallocate` and `sweep` stay callable; views stay readable, though `maxWithdraw` / `maxRedeem` return `0` and `HubLens.maxDeposit` reports `0` (`maxDeposit` / `maxMint` on the Hub are not overridden, so they keep returning `type(uint256).max` even while paused). Underlying products keep operating. Only the **time-based management fee** is excluded from the pause window — `unpauseHub` advances the accrual cursor by the pause duration, so LPs are not charged rent for frozen time. The performance fee is *not* excluded: the high-water mark is deliberately left unchanged, so per-share gains the underlying products earn during the freeze are charged on the first post-resume accrual.
 * **Source paused** — the Hub-level flag makes routing skip the Source **silently in both directions**: a user `deposit` / `mint` cascades to the next Source and a user `withdraw` / `redeem` pulls from elsewhere, with no `YieldGroupPaused` revert (only `HubCapacityExceeded` / `HubInsufficientLiquidity` fire if the rest of the queue cannot cover the amount). Its balance still counts in `totalAssets()` but is excluded from `maxWithdraw()` and from the `HubLens` deposit figure. Funds remain reachable via `reallocate` / `emergencyReallocate` — a **pull** leg from a paused Source is allowed, while a **push** leg into one reverts `YieldGroupPaused`.
 * **Resource paused** — set on the YieldGroup, not the Hub; see [Yield Groups](yield-groups.md#pause-asymmetric).
+
+### Automatic pause on a NAV break
+
+{% hint style="info" %}
+**Not deployed yet.** The automatic pause described here is under review ([venus-periphery#75](https://github.com/VenusProtocol/venus-periphery/pull/75)) and is not live on any network.
+{% endhint %}
+
+For a resource whose value is published by a counterparty, such as a Centrifuge vault, a keeper can pause the **whole Hub** when that value moves too far from the centre of the resource's [NAV band](yield-groups.md#nav-band). The check lives in [`DeviationSentinel`](../reference-periphery/deviation-sentinel.md) and the pause goes through [`EBrake`](../reference-periphery/ebrake.md), the same path as the existing price-deviation check.
+
+* Governance sets a threshold per resource, in basis points above and below the band's centre (`setHubNavConfig`), and switches monitoring on separately (`setNavMonitoringEnabled`). A threshold of zero leaves that side unwatched.
+* Anyone can read whether a pause is due with `checkNavGuardDeviation(yieldGroup, resource)`. The keeper acts with `handleNavGuardDeviation`, which reverts when no action is due.
+* The Hub is paused, not only the resource, because the Hub's `totalAssets()` still counts a paused resource, so the wrong value would stay in the share price.
+* The pause only tightens. Unpausing stays a governance action.
 
 ## Permissions
 
@@ -356,6 +369,7 @@ The Hub exposes no deposit-capacity view. That figure comes from `HubLens` — s
 | `HighWaterMarkUpdated`    | `oldHwm`, `newHwm`                                          | Performance HWM changed — ratcheted up on a new PPS high, incremented by the retained exit-fee uplift on withdraw, or **re-anchored (possibly downward)** to the entry PPS on a refill from an empty vault. Do not assume `newHwm >= oldHwm` |
 | `RedeemFeeBpsSet`         | `oldBps`, `newBps`                                          | Redeem (exit) fee rate changed                    |
 | `YieldGroupSkipped`       | `yieldGroup`, `isDeposit`                                   | A YieldGroup's mutating `deposit` / `withdraw` call **reverted** and routing routed around it. A healthy system emits this zero times — paused, at-cap and dry YieldGroups are skipped silently with no event |
+| `YieldGroupAccrualFailed` | `yieldGroup` (indexed)                                      | An `emergencyReallocate` could not settle a YieldGroup's resources because its `accrue()` reverted, and the call continued without it. A healthy system emits this zero times |
 | `ConsentRecorded`         | `supplier`, `receiver`, `consentHash`                       | A consent-gated deposit or mint recorded its hash |
 | `Swept`                   | `token`, `to`, `amount`                                     | Stray-token balance rescued                       |
 | `OwnershipTransferStarted`| `previousOwner`, `newOwner`                                 | Ownership transfer nominated                      |
