@@ -19,6 +19,7 @@
 * [TokenBuyback Contract](whats-new/token-converter.md)
 * [Venus Prime](whats-new/prime-yield.md)
 * [Liquidity Hub](whats-new/liquidity-hub.md)
+* [Hub-Funded Spoke Pools](whats-new/hub-funded-spoke-pools.md)
 
 ## Governance
 
@@ -71,6 +72,7 @@
 * [Technical articles](technical-reference/reference-technical-articles/README.md)
   * [Automatic income allocation](technical-reference/reference-technical-articles/automatic-income-allocation.md)
   * [Capped Oracles](technical-reference/reference-technical-articles/capped-oracles.md)
+  * [Collateral Gateway](technical-reference/reference-technical-articles/collateral-gateway.md)
   * [Contributing](technical-reference/reference-technical-articles/contributing.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
   * [E-Mode](technical-reference/reference-technical-articles/emode.md)
@@ -123,6 +125,7 @@
     * [WhitePaperModel](technical-reference/reference-core-pool/interestratemodels/whitepapermodel.md)
     * [InterestRateModelLens](technical-reference/reference-core-pool/interestratemodels/interestratemodellens.md)
   * [Liquidator](technical-reference/reference-core-pool/liquidator.md)
+  * [BStockLiquidator](technical-reference/reference-core-pool/bstock-liquidator.md)
   * [VTreasury](technical-reference/reference-core-pool/vtreasury.md)
   * [VenusLens](technical-reference/reference-core-pool/venus-lens.md)
   * [PSM](technical-reference/reference-core-pool/psm/peg-stability.md)
@@ -131,6 +134,9 @@
   * [Comptroller](technical-reference/reference-isolated-pools/comptroller/README.md)
     * [Comptroller](technical-reference/reference-isolated-pools/comptroller/comptroller.md)
     * [ComptrollerStorage](technical-reference/reference-isolated-pools/comptroller/comptroller-storage.md)
+  * [Hub-Funded Spoke Pools](technical-reference/reference-isolated-pools/spoke/README.md)
+    * [SpokeComptroller](technical-reference/reference-isolated-pools/spoke/spoke-comptroller.md)
+    * [SpokeComptrollerStorage](technical-reference/reference-isolated-pools/spoke/spoke-comptroller-storage.md)
   * [VenusERC4626](technical-reference/reference-isolated-pools/erc4626/venus-erc4626.md)
     * [VenusERC4626Factory](technical-reference/reference-isolated-pools/erc4626/venus-erc4626-factory.md)
   * [VToken](technical-reference/reference-isolated-pools/vtoken/README.md)
@@ -239,6 +245,7 @@
 * [Periphery](deployed-contracts/periphery.md)
 * [Fixed Term Vaults](deployed-contracts/fixed-rate-vaults.md)
 * [Liquidity Hub](deployed-contracts/liquidity-hub.md)
+* [Hub-Funded Spoke Pools](deployed-contracts/spoke-pools.md)
 
 ## Services
 
