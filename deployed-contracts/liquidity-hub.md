@@ -44,7 +44,7 @@ U Hub
 
 #### Wired resources
 
-Each Core YieldGroup routes to the corresponding Core pool vToken (vUSDT, vUSDC, vU) and each Flux YieldGroup to the corresponding Fluid fToken (fUSDT, fUSDC, fU). **The FRV YieldGroups carry no resource**: they are registered on every Hub with their caps set, but no Fixed-Rate Vault instance exists for USDT, USDC or U on BNB Chain yet, so no capital routes to FRV until a follow-up proposal wires a vault. Read the live set with `resources()` on a YieldGroup, and its per-resource adapter with `resourceConfig(resource)`.
+Each Core YieldGroup routes to the corresponding Core pool vToken (vUSDT, vUSDC, vU) and each Flux YieldGroup to the corresponding Fluid fToken (fUSDT, fUSDC, fU). The FRV YieldGroups were registered unwired at launch; [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) then registered the **Solv (Ceffu custody) vault** [`0x086fd7972510dF9d9cFdc4efB8677fc72d290103`](https://bscscan.com/address/0x086fd7972510dF9d9cFdc4efB8677fc72d290103) as the resource of FRVSource\_USDT and the **Asseto CASH+ vault** [`0x41179fc6ff878b7795B900888E0B61fd8029bceA`](https://bscscan.com/address/0x41179fc6ff878b7795B900888E0B61fd8029bceA) as the resource of FRVSource\_U, and raised the FRV percentage cap on those two Hubs from 30% to 50% of TVL. **FRVSource\_USDC still carries no resource.** The FRV sources stay out of the outer deposit queue, so lender deposits continue to land in Core/Flux and FRV is filled only by the Operator's `reallocate`. Read the live set with `resources()` on a YieldGroup, and its per-resource adapter with `resourceConfig(resource)`.
 
 ### Beacons
 
@@ -61,7 +61,7 @@ Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach 
 
 * AdapterCoreV1: [`0x4E514a0C7aB9d140eE204dfA0017574270D92944`](https://bscscan.com/address/0x4E514a0C7aB9d140eE204dfA0017574270D92944)
 * AdapterFlux: [`0xA81bDf813A428053E764C34Bc679b3E4d0807be3`](https://bscscan.com/address/0xA81bDf813A428053E764C34Bc679b3E4d0807be3)
-* AdapterFRV: [`0x1FA0365bDd603452CE96BE3c0e12Db5515a35902`](https://bscscan.com/address/0x1FA0365bDd603452CE96BE3c0e12Db5515a35902) — deployed but not referenced by any resource yet
+* AdapterFRV: [`0x1FA0365bDd603452CE96BE3c0e12Db5515a35902`](https://bscscan.com/address/0x1FA0365bDd603452CE96BE3c0e12Db5515a35902) — the adapter behind the two FRV resources wired by VIP-657 (Solv on the USDT Hub, Asseto CASH+ on the U Hub)
 
 ### Periphery
 

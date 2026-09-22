@@ -32,7 +32,7 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 
 **Spoke is built but not deployed.** `AdapterSpokeV1` and the Spoke YieldGroup family exist in the codebase, but no `SpokeComptroller` is deployed on any network and no spoke market has been listed, so there is nothing to register. Onboarding one is a two-step governance action, in this order: `setAllowedSupplier(vToken, <SpokeSource>, true)` on the spoke pool, **then** `addResource` on the Hub — the adapter rejects a registration the market would not accept, and also rejects a market its own Comptroller does not list.
 
-**FRV carries no resource at launch.** An FRV Source is deployed and registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for USDT / USDC / U on BNB Chain yet, so the onboarding proposal calls `addResource` on the Core and Flux Sources only. FRV is therefore kept out of the outer deposit queue entirely and placed **last** in the outer withdraw queue — not because it can serve withdrawals, but because `setOuterWithdrawQueue` rejects a queue that omits a registered Source with non-zero `totalAssets()`, and that total counts idle balance: omitting FRV would let a 1-wei donation permanently block the Operator from reordering the queue. No capital routes to FRV until a follow-up proposal wires a vault.
+**FRV carries no resource at launch.** An FRV Source is deployed and registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for USDT / USDC / U on BNB Chain yet, so the onboarding proposal calls `addResource` on the Core and Flux Sources only. FRV is therefore kept out of the outer deposit queue entirely and placed **last** in the outer withdraw queue — not because it can serve withdrawals, but because `setOuterWithdrawQueue` rejects a queue that omits a registered Source with non-zero `totalAssets()`, and that total counts idle balance: omitting FRV would let a 1-wei donation permanently block the Operator from reordering the queue. That follow-up was [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56): it registered the Solv (Ceffu custody) vault on the USDT Hub's FRV Source and the Asseto CASH+ vault on the U Hub's FRV Source, and raised their FRV percentage caps from 30% to 50% of TVL; the USDC Hub's FRV Source remains unwired. FRV is still absent from the outer deposit queue, so it is filled only by the Operator's `reallocate`.
 
 ## Contracts
 
@@ -100,7 +100,7 @@ Each asset also has three YieldGroup proxies (`CoreSource_*`, `FluxSource_*`, `F
 | `maxWithdrawalSize` (per tx) | 10,000,000 | 10,000,000 | 10,000,000 |
 | Core cap (absolute / %) | 2,000,000,000 / disabled | same | same |
 | Flux cap (absolute / %) | 7,000,000 / 20% | same | same |
-| FRV cap (absolute / %) | 5,000,000 / 30% | same | same |
+| FRV cap (absolute / %) | 5,000,000 / 50% | 5,000,000 / 30% | 5,000,000 / 50% |
 | Management / performance / redeem fee | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
 
 `feeRecipient` is `0xF322942f644A996A617BD29c16bd7d231d9F35E9` on all three. Core's percentage dimension uses the `10_000` BPS sentinel, so only its absolute cap binds; Flux is held to 20% of TVL, which at launch sits well under its absolute cap, so it fills through Operator `reallocate` rather than from the deposit queue. Each Hub is seeded with a 10-token bootstrap deposit from the Treasury whose shares are minted to the burn address, so `totalSupply` is never zero and the refill-from-empty branch cannot be re-opened.
