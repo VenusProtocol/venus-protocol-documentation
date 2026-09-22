@@ -72,6 +72,7 @@
 * [Technical articles](technical-reference/reference-technical-articles/README.md)
   * [Automatic income allocation](technical-reference/reference-technical-articles/automatic-income-allocation.md)
   * [Capped Oracles](technical-reference/reference-technical-articles/capped-oracles.md)
+  * [Collateral Gateway](technical-reference/reference-technical-articles/collateral-gateway.md)
   * [Contributing](technical-reference/reference-technical-articles/contributing.md)
   * [Diamond Comptroller in the Core pool](technical-reference/reference-technical-articles/diamond-comptroller.md)
   * [E-Mode](technical-reference/reference-technical-articles/emode.md)
@@ -230,7 +231,6 @@
   * [vhToken](technical-reference/reference-liquidity-hub/vhtoken.md)
   * [Yield Groups](technical-reference/reference-liquidity-hub/yield-groups.md)
   * [Adapters](technical-reference/reference-liquidity-hub/adapters.md)
-  * [HubRouter](technical-reference/reference-liquidity-hub/hub-router.md)
   * [Interfaces](technical-reference/reference-liquidity-hub/interfaces.md)
 
 ## Deployed Contracts
@@ -245,6 +245,7 @@
 * [Periphery](deployed-contracts/periphery.md)
 * [Fixed Term Vaults](deployed-contracts/fixed-rate-vaults.md)
 * [Liquidity Hub](deployed-contracts/liquidity-hub.md)
+* [Hub-Funded Spoke Pools](deployed-contracts/spoke-pools.md)
 
 ## Services
 

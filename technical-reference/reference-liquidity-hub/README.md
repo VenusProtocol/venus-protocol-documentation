@@ -39,7 +39,6 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 * [**Hub**](hub.md) — the ERC-4626 entry point: routing flows, dual caps, per-tx withdrawal cap, fees, multi-level pause, Operator reallocation, and the full Solidity API.
 * [**Yield Groups**](yield-groups.md) — `YieldGroup` (the generic router, deployed once per family: Core, Flux, and Spoke) and `YieldGroupFRV`: the `IYieldGroupBase` implementations, per-resource registry / queues / caps, and the FRV lifecycle.
 * [**Adapters**](adapters.md) — `AdapterCoreV1`, `AdapterFlux`, `AdapterFRV`, `AdapterSpokeV1`: the stateless, delegatecall-dispatched protocol translators.
-* [**HubRouter**](hub-router.md) — permissionless, immutable periphery that turns an underlying balance into collateral in one call: a Hub deposit supplied into its Core market, or a spoke market supplied and entered together.
 * [**Interfaces**](interfaces.md) — `IYieldGroupBase` (with its family extensions `IYieldGroup` and `IYieldGroupFRV`) and `IResourceAdapter`, the boundary contracts.
 * **`Migrator`** — a stateless, permissionless, non-upgradeable helper for one-click migration of a Venus Core position into a Hub (`migrateFromCore` / `migrateFromCoreBNB`).
 

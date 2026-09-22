@@ -13,7 +13,7 @@ Read [Hub-Funded Spoke Pools](README.md) first for why the fork exists and how a
 | Liquidation incentive | one pool-wide value | **per collateral market**, falling back to the pool-wide value |
 | Batch-liquidation routing | `totalCollateral` vs `borrows × incentive` | `borrows` vs `maxClearableDebt = Σ Cᵢ / incentiveᵢ` |
 | Borrow-power pricing | `ResilientOracle` spot | [`DeviationBoundedOracle`](../../reference-oracle/deviation-bounded-oracle.md) bounded prices |
-| Entering a market | `enterMarkets` only, always for `msg.sender` | adds ACM-gated **`enterMarketBehalf`**, so a router can enable collateral for the supplier it minted to |
+| Entering a market | `enterMarkets` only, always for `msg.sender` | adds ACM-gated **`enterMarketForAccount`**, so a gateway contract can enable collateral for the supplier it minted to |
 | Prime | `prime` + `setPrimeToken`, seven `*Verify` hooks update Prime scores | removed; the seven hooks are no-ops |
 | Revert reasons | mixture of custom errors and `require` strings | every revert is a custom error |
 
@@ -44,17 +44,17 @@ On the liquidity side of a hub-funded pool the single allowlisted account is the
 
 ## Entering a market for a supplier
 
-`enterMarkets` reads `msg.sender`, so a router that supplies through `VToken.mintBehalf` enters *itself* rather than the account it credited. On the collateral side of a spoke pool the user supplies and the Hub lends, so that left a first-time supplier needing two transactions: one to supply, one to enable the market as collateral.
+`enterMarkets` reads `msg.sender`, so a contract that supplies through `VToken.mintBehalf` enters *itself* rather than the account it credited. On the collateral side of a spoke pool the user supplies and the Hub lends, so that left a first-time supplier needing two transactions: one to supply, one to enable the market as collateral.
 
-`enterMarketBehalf` takes the account as an argument instead:
+`enterMarketForAccount` takes the account as an argument instead:
 
 ```solidity
-function enterMarketBehalf(address vToken, address account) external;
+function enterMarketForAccount(address account, address vToken) external;
 ```
 
 It takes a single market rather than an array, which is what keeps the fork inside the EIP-170 limit; a caller that needs several markets loops over it. `enterMarkets` is untouched, so entering a market for yourself stays permissionless.
 
-The function is gated by the [AccessControlManager](../../reference-governance/access-control-manager.md) under the role string `enterMarketBehalf(address,address)`. **Grant it only to a contract that passes its own caller as `account`** — a holder of this permission can enable a market as collateral for any address, and entering a market is what makes a balance eligible to be seized in a liquidation. The [`HubRouter`](../../reference-liquidity-hub/hub-router.md) is the intended holder; both of its spoke paths revert until the listing VIP grants it this role on the pool.
+The function is gated by the [AccessControlManager](../../reference-governance/access-control-manager.md) under the role string `enterMarketForAccount(address,address)`. It takes the same arguments in the same order as the Core pool's `enterMarketForAccount`. **Grant it only to a contract that passes its own caller as `account`.** A holder of this permission can enable a market as collateral for any address, and entering a market is what makes a balance eligible to be seized in a liquidation. The [Collateral Gateway](../../reference-technical-articles/collateral-gateway.md) is the intended holder. Its spoke functions revert until governance grants it this role on the pool.
 
 ## Liquidation allowlist
 
@@ -308,20 +308,20 @@ function setAllowedLiquidator(address liquidator, bool allowed) external
 
 ---
 
-### enterMarketBehalf
+### enterMarketForAccount
 
 Adds a market to another account's liquidity calculation, enabling it as collateral for that account.
 
 ```solidity
-function enterMarketBehalf(address vToken, address account) external
+function enterMarketForAccount(address account, address vToken) external
 ```
 
 #### Parameters
 
 | Name | Type | Description |
 | --- | --- | --- |
-| vToken | address | The market to enable |
 | account | address | The account to enable it for |
+| vToken | address | The market to enable |
 
 #### 📅 Events
 

@@ -42,12 +42,13 @@ At launch the queues are configured **Core-first in, Flux-first out** — deposi
 
 ### Getting in and out in one transaction
 
-Depositing into the Hub and putting the resulting [vhToken](../technical-reference/reference-liquidity-hub/vhtoken.md) to work as Core collateral are two separate actions, and doing them by hand means four transactions. The **[HubRouter](../technical-reference/reference-liquidity-hub/hub-router.md)** collapses that into one call, and covers two cases a user cannot easily do themselves:
+Depositing into the Hub and putting the resulting [vhToken](../technical-reference/reference-liquidity-hub/vhtoken.md) to work as Core collateral are two separate actions, and doing them by hand means four transactions. The **[Collateral Gateway](../technical-reference/reference-technical-articles/collateral-gateway.md)** collapses that into one call, and covers two cases a user cannot easily do themselves:
 
-* **Moving an existing Core position into the Hub.** A position with borrows against it cannot simply be redeemed — removing the collateral first would leave the account under water. The router borrows the position's worth from Core, supplies the replacement collateral *before* the old collateral leaves, and repays inside the same transaction, so a leveraged position migrates in full rather than in slices.
-* **Supplying collateral to a spoke pool.** In a [hub-funded spoke pool](hub-funded-spoke-pools.md) the protocol lends and users post the collateral, and enabling a market as collateral is a second transaction of its own. The router does both at once, across several markets and even several pools in one call.
+* **Moving an existing Core position into the Hub.** A position with borrows against it cannot simply be redeemed, because removing the collateral first would leave the account under water. The gateway borrows the position's worth from Core, supplies the replacement collateral *before* the old collateral leaves, and repays inside the same transaction, so a leveraged position migrates in full rather than in slices.
+* **Supplying collateral to a spoke pool.** In a [hub-funded spoke pool](hub-funded-spoke-pools.md) the protocol lends and users post the collateral, and enabling a market as collateral is a second transaction of its own. The gateway does both at once, across several markets and even several pools in one call.
+* **Withdrawing back to the wallet.** A Hub position can sit partly in the wallet and partly in the Core market. The gateway takes the wallet shares first, frees the rest from Core, and pays out the underlying in one call.
 
-The router is permissionless and immutable, holds no funds between calls, and can only ever act for the account that called it. It is written but not yet deployed, and its spoke paths additionally wait on a governance grant.
+The gateway has no proxy, holds no funds between calls, and can only ever act for the account that called it. It is written but not yet deployed, and each of its functions waits on a governance grant.
 
 ### Operator rebalancing
 
