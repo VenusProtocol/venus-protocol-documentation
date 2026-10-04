@@ -28,7 +28,7 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 | Lifecycle constraint     | none                                | none                                  | 11-state machine                       |
 | Wired at launch          | ✅ vToken registered                 | ✅ fToken registered                   | ❌ Source registered, no resource       |
 
-**FRV carries no resource at launch.** An FRV Source is deployed and registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for USDT / USDC / U on BNB Chain yet, so the onboarding proposal calls `addResource` on the Core and Flux Sources only. FRV is therefore kept out of the outer deposit queue entirely and placed **last** in the outer withdraw queue — not because it can serve withdrawals, but because `setOuterWithdrawQueue` rejects a queue that omits a registered Source with non-zero `totalAssets()`, and that total counts idle balance: omitting FRV would let a 1-wei donation permanently block the Operator from reordering the queue. That follow-up was [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56): it registered the Solv (Ceffu custody) vault on the USDT Hub's FRV Source and the Asseto CASH+ vault on the U Hub's FRV Source, and raised their FRV percentage caps from 30% to 50% of TVL; the USDC Hub's FRV Source remains unwired. FRV is still absent from the outer deposit queue, so it is filled only by the Operator's `reallocate`.
+**FRV carries no resource at launch.** An FRV Source is deployed and registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for USDT / USDC / U on BNB Chain yet, so the onboarding proposal calls `addResource` on the Core and Flux Sources only. FRV is therefore kept out of the outer deposit queue entirely and placed **last** in the outer withdraw queue — not because it can serve withdrawals, but because `setOuterWithdrawQueue` rejects a queue that omits a registered Source with non-zero `totalAssets()`, and that total counts idle balance: omitting FRV would let a 1-wei donation permanently block the Operator from reordering the queue. That follow-up was [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56): it registered the Solv (Ceffu custody) vault on the USDT Hub's FRV Source and the Asseto CASH+ vault on the U Hub's FRV Source, and raised their FRV percentage caps from 30% to 50% of TVL; the USDC Hub's FRV Source remains unwired. [VIP-664](https://app.venus.io/#/governance/proposal/664?chainId=56) later raised the U Hub's FRV percentage cap to 90%. FRV is still absent from the outer deposit queue, so it is filled only by the Operator's `reallocate`.
 
 ## Contracts
 
@@ -79,12 +79,14 @@ Supporting contracts:
 | `CoreBeacon` | `0x195a0F1BCF73C3Beb609a1271E8E08b8E4c098C6` | Core-family YieldGroups |
 | `FluxBeacon` | `0x9bb6a3Ac5955fA8dc236560CA9D51483d1d79f15` | Flux-family YieldGroups |
 | `FRVBeacon` | `0x8A5EceDD726246682402430b9B24c19bF61B7f1d` | FRV-family YieldGroups |
+| `CentrifugeBeacon` | `0xAe90Cfb3E2Bc97508F58E7e076Acf38f3bfC820f` | Centrifuge-family YieldGroups (added by VIP-661) |
 | `AdapterCoreV1` | `0x4E514a0C7aB9d140eE204dfA0017574270D92944` | Shared singleton |
 | `AdapterFlux` | `0xA81bDf813A428053E764C34Bc679b3E4d0807be3` | Shared singleton |
 | `AdapterFRV` | `0x1FA0365bDd603452CE96BE3c0e12Db5515a35902` | Shared singleton |
+| `AdapterCentrifuge` | `0x680cE4422264ecDAd3590cB50FE254D4c153f427` | Shared singleton (added by VIP-661) |
 | `DefaultProxyAdmin` | `0x6beb6D2695B67FEb73ad4f172E8E2975497187e4` | Venus's shared `ProxyAdmin`, administering the registry's `TransparentUpgradeableProxy`; governance-owned |
 
-Each asset also has three YieldGroup proxies (`CoreSource_*`, `FluxSource_*`, `FRVSource_*`); resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding.
+Each asset also has three YieldGroup proxies (`CoreSource_*`, `FluxSource_*`, `FRVSource_*`), and the USDT Hub has a fourth, `CentrifugeSource_USDT` (`0xDA5AFfeb43719f517676E031a727071c7D400983`), added by [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56); resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding.
 
 **Launch parameters.** Identical across all three assets, which are all 18-decimal:
 
@@ -95,7 +97,8 @@ Each asset also has three YieldGroup proxies (`CoreSource_*`, `FluxSource_*`, `F
 | `maxWithdrawalSize` (per tx) | 10,000,000 | 10,000,000 | 10,000,000 |
 | Core cap (absolute / %) | 2,000,000,000 / disabled | same | same |
 | Flux cap (absolute / %) | 7,000,000 / 20% | same | same |
-| FRV cap (absolute / %) | 5,000,000 / 50% | 5,000,000 / 30% | 5,000,000 / 50% |
+| FRV cap (absolute / %) | 5,000,000 / 50% | 5,000,000 / 30% | 5,000,000 / 90% |
+| Centrifuge cap (absolute / %) | 5,000,000 / 25% | — | — |
 | Management / performance / redeem fee | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
 
 `feeRecipient` is `0xF322942f644A996A617BD29c16bd7d231d9F35E9` on all three. Core's percentage dimension uses the `10_000` BPS sentinel, so only its absolute cap binds; Flux is held to 20% of TVL, which at launch sits well under its absolute cap, so it fills through Operator `reallocate` rather than from the deposit queue. Each Hub is seeded with a 10-token bootstrap deposit from the Treasury whose shares are minted to the burn address, so `totalSupply` is never zero and the refill-from-empty branch cannot be re-opened.
