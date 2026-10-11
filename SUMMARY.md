@@ -59,6 +59,7 @@
 * [Enable E-mode](guides/enable-e-mode.md)
 * [Isolated E-mode](guides/isolated-e-mode.md)
 * [Withdrawing from deprecated isolated pools](guides/isolated-pools-deprecation.md)
+* [Withdrawing from opBNB, Optimism and Unichain](guides/sunset-networks.md)
 * [Boost and Repay with Collateral](guides/leveraged-positions.md)
 * [Trade](guides/trade.md)
 * [Fixed Term Vaults](guides/fixed-rate-vaults/README.md)
