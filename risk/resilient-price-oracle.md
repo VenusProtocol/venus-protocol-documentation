@@ -67,7 +67,7 @@ The current list of correlated token oracles in Venus is:
 ### Current configuration
 
 {% hint style="warning" %}
-The tables below are a documentation snapshot, last updated for BNB Chain oracle changes in VIP-662 on September 21, 2026. They cover only the listed Core markets and networks and are not an exhaustive deployment registry or a live status feed. A `(Paused)` label is also only a snapshot of market lifecycle state. For live verification, resolve the Comptroller's active oracle, then read `getTokenConfig(asset)`, `getOracle(asset, role)`, the relevant `BoundValidator` bounds, and the latest governance execution. See [deployed oracle addresses](../deployed-contracts/oracles.md).
+The tables below are a documentation snapshot, last updated for BNB Chain oracle changes in VIP-663 on September 28, 2026. They cover only the listed Core markets and networks and are not an exhaustive deployment registry or a live status feed. A `(Paused)` label is also only a snapshot of market lifecycle state. For live verification, resolve the Comptroller's active oracle, then read `getTokenConfig(asset)`, `getOracle(asset, role)`, the relevant `BoundValidator` bounds, and the latest governance execution. See [deployed oracle addresses](../deployed-contracts/oracles.md).
 {% endhint %}
 
 #### BNB chain
@@ -99,7 +99,7 @@ The tables below are a documentation snapshot, last updated for BNB Chain oracle
 | Core | solvBTC | [SolvBTCOneJumpChainlinkOracle](https://bscscan.com/address/0x3f4bC081E749032cffF29dcA2E8408Ec375e745A) | [SolvBTCOneJumpFundamentalOracle](https://bscscan.com/address/0x1f785B1AFE0808d69d1188db9e47b7B9Dd95ab09) | - | Upper bound: 1.02. Lower bound: 0.98. MAIN reads the Chainlink SolvBTC/BTC exchange rate feed |
 | Core | sUSDe | [sUSDeOneJumpRedstoneOracle](https://bscscan.com/address/0x2B2895104f958E1EC042E6Ba5cbfeCbAD3C5beDb) | [sUSDeOneJumpChainlinkOracle](https://bscscan.com/address/0xA67F01322AF8EBa444D788Ee398775b446de51a0) | - | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | SXP (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | - | - | [Price fixed to $0.00046](https://venus.io/governance/proposal/631?chainId=56) |
-| Core | THE | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | Upper bound: 1.05. Lower bound: 0.95 |
+| Core | THE | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | TRX | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | Upper bound: 1.01. Lower bound: 0.99 |
 | Core | TUSD | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [Atlas](https://bscscan.com/address/0x9E6928Ec418948ceb9f1cd9872fD312b13D841D0) | - | Upper bound: 1.05. Lower bound: 0.95 |
 | Core | TRXOLD (Paused) | [Chainlink](https://bscscan.com/address/0x1B2103441A0A108daD8848D8F5d790e4D402921F) | [RedStone](https://bscscan.com/address/0x8455EFA4D7Ff63b8BFD96AdD889483Ea7d39B70a) | - | Upper bound: 1.01. Lower bound: 0.99 |
