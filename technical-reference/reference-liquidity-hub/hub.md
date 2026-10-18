@@ -122,13 +122,14 @@ Three holders in v1: governance (a VIP, behind the Normal Timelock), the **Opera
 operations multisig acting as the routine keeper, distinct from the Guardian), and the **Guardian**
 (a multisig that acts with no timelock delay, so it can contain an incident immediately). The
 Guardian is granted containment only — it can tighten but never loosen, and holds no unpause, so it
-can never undo a governance-ordered pause. Both role holders are addresses granted by the onboarding
-VIP, not roles baked into the bytecode; the granted addresses are listed under
+can never undo a governance-ordered pause. The Centrifuge Sources add a fourth holder, a Keeper limited to the four claim functions. All role holders are addresses granted by
+proposal, not roles baked into the bytecode; the granted addresses are listed under
 [Deployment](README.md#deployment).
 
 | Action class                                                                        | Governance (VIP) | Operator | Guardian |
 | ------------------------------------------------------------------------------------ | :--------------: | :------: | :------: |
-| Add / remove YieldGroup, add / remove / re-adapter a resource                          | ✅               | ❌       | ❌       |
+| Add / remove YieldGroup, add / remove a resource                                       | ✅               | ❌       | ❌       |
+| Re-adapter a resource (`updateResourceAdapter`)                                        | ✅               | ❌       | ✅       |
 | Set fees and fee recipient, `sweep`, `setBlocksPerYear`                                | ✅               | ❌       | ❌       |
 | **Raise** the per-transaction withdrawal cap                                           | ✅               | ❌       | ❌       |
 | **Unpause** at any level (Hub, YieldGroup, resource)                                   | ✅               | ❌       | ❌       |
@@ -146,7 +147,7 @@ Two rows are worth reading carefully, because both depart from a naive loosening
 * **`raiseYieldGroupCap` is Operator-accessible.** It is the one loosening lever the Operator holds, granted so it can open headroom immediately before a `reallocate` without waiting for a governance round. Raising the *per-transaction withdrawal cap* is still governance-only.
 * **Governance does not hold `reallocate`.** It is Operator-only. Governance's equivalent lever is `emergencyReallocate`, which has the same net-zero semantics and additionally works while the Hub is paused.
 
-The Guardian's grant is a strict subset of governance's: pause at all three levels, `emergencyReallocate`, and `forceRemoveResource`. It holds no unpause, so it can contain an incident but never undo a governance-ordered pause.
+The Guardian's grant is a strict subset of governance's: pause at all three levels, `emergencyReallocate`, `forceRemoveResource`, and — since [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) — `updateResourceAdapter` on every YieldGroup, which the same proposal revoked from the Operator. It holds no unpause, so it can contain an incident but never undo a governance-ordered pause.
 
 Nothing in the contracts hard-codes these three. The split is entirely a matter of which addresses
 governance grants each role to — the asymmetry is a deployment decision, not a code branch.
