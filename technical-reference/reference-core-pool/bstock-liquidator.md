@@ -26,7 +26,7 @@ Only the repay differs between pools. Redeem, sale, `minOut` enforcement and `sw
 
 ### Liquidating in a spoke pool
 
-Three things differ from the Core path.
+Four things differ from the Core path.
 
 **The pool is checked against *our* registry, then both legs against the pool.** `_resolvePool` reads the collateral market's `comptroller()`; anything other than the Core Comptroller has to round-trip through the configured registry — `getPoolByComptroller(pool).comptroller` must equal `pool`, since an unregistered pool reads back as a zero-filled struct rather than reverting. The registry consulted is the one the owner configured here, never one the pool names for itself: a hostile contract can claim any registry, but it cannot get itself into this one. A pool that is not there reverts `PoolNotRegistered`.
 
@@ -35,6 +35,8 @@ Core then has a `Comptroller.liquidatorContract` gate that validates the markets
 **The flash source is configured, not derived.** Isolated pools have no flash lender of their own, but a Core flash loan is not tied to the liquidation target: `FlashLoanFacet` hands over a Core market's underlying and wants it back in the same transaction. So a spoke USDT debt is funded from the **Core** USDT market, named per debt token by `setCoreFlashSource`. Without an entry, `flashLiquidate` reverts `FlashSourceNotSet` and the position has to go through `liquidate` instead. The configured source's `underlying()` is re-asserted at call time, not just at configuration time, because the market is upgradeable.
 
 **The pool's liquidation allowlist gates *this contract*, not the operator.** If the spoke pool has [`isLiquidationAllowlistEnabled`](../reference-isolated-pools/spoke/spoke-comptroller.md#liquidation-allowlist) turned on, `BStockLiquidator`'s own address must be on it — it is the account that receives the seized collateral.
+
+**A different cut comes off the seize.** Core routes the repay through the gate, which keeps a treasury cut. An isolated pool has no gate, so the repay goes straight to the debt market and the *collateral* market withholds its own `protocolSeizeShare` to the ProtocolShareReserve instead. Neither cut is handled in this contract: the seize is read as a balance delta either way.
 
 Isolated pools are ERC20-only, so the vBNB and VAI branches described below are Core-only.
 
@@ -60,7 +62,7 @@ If a hop pulls less than was approved (a partially filled RFQ quote), the uncons
 ## Loss floors differ by mode
 
 * **FLASH** — `executeOperation` requires the swap proceeds **alone** to cover principal plus premium (`InsufficientOut`). Without that check, any debt-asset inventory the contract happens to hold would silently backfill an underwater swap, since the flash repayment is pulled from the total balance rather than from the swap output.
-* **INVENTORY** — there is no built-in floor tying proceeds to the repay, and that asymmetry is deliberate: a repay can legitimately out-cost its proceeds, for example because the Venus Liquidator keeps a treasury cut of the seized collateral. **`minOut` is the operator's chosen loss floor in this mode** — set it to the lowest acceptable debt-asset return.
+* **INVENTORY** — there is no built-in floor tying proceeds to the repay, and that asymmetry is deliberate: a repay can legitimately out-cost its proceeds, because a cut comes off the seized collateral. In Core that is the Venus Liquidator's treasury cut; in an isolated pool it is the collateral market's own `protocolSeizeShare`. **`minOut` is the operator's chosen loss floor in this mode** — set it to the lowest acceptable debt-asset return.
 
 ## Security model
 
@@ -206,8 +208,8 @@ function setCoreFlashSource(address debtToken, IVBep20 vToken) external
 | Function | Purpose |
 | --- | --- |
 | `setOperator(address operator, bool allowed)` | allowlist an address to trigger liquidations |
-| `setRouter(address router, bool allowed)` | allowlist a swap target |
-| `setRouterSpender(address router, address spender)` | set the approval target for a router whose puller differs from the call target; `address(0)` restores the default |
+| `setRouter(address router, bool allowed)` | allowlist a swap target; removing one also clears its `routerSpender` entry, so re-allowlisting needs `setRouterSpender` again |
+| `setRouterSpender(address router, address spender)` | set the approval target for a router whose puller differs from the call target; `address(0)` restores the default. The router must already be allowlisted, or the call reverts `RouterNotAllowed` |
 | `sweep(address token, address to, uint256 amount)` | withdraw profit, leftover inventory, or stuck dust |
 | `sweepNative(address to, uint256 amount)` | withdraw stuck native BNB |
 
@@ -234,10 +236,10 @@ All are `onlyOwner`.
 | `RouterNotAllowed(address router)` | the supplied swap router is not allowlisted |
 | `SpenderNotContract(address spender)` | the router spender being set is not a deployed contract |
 | `RedeemFailed(uint256 errCode)` | `vBStock.redeem` returned a non-zero error code |
-| `SwapFailed()` | the low-level call to the router reverted |
+| `SwapFailed()` | the low-level call to the router reverted with no revert data; a router that does give a reason has its own error bubbled up instead |
 | `InsufficientOut(uint256 got, uint256 minOut)` | proceeds are below `minOut`, or below principal + premium in FLASH mode |
 | `ZeroMinOut()` | `minOut` was zero, which would silently accept any proceeds |
-| `InvalidIntermediate()` | a two-hop `intermediateToken` is zero, or equals the debt or bStock token |
+| `InvalidIntermediate()` | a two-hop `intermediateToken` is zero, or equals the debt or bStock token; also a BNB or VAI debt submitted single-hop, with `router2` zero |
 | `OnlyComptroller()` | `executeOperation` was called by something other than the Core Comptroller |
 | `BadInitiator(address initiator)` | the flash-loan initiator is not this contract |
 | `WrongFlashAsset()` | the flashed asset does not match the debt market |
@@ -249,11 +251,16 @@ All are `onlyOwner`.
 | `MarketNotInPool(address comptroller, address market)` | a market is not listed in the registered pool it claims to belong to |
 | `FlashSourceNotSet(address debtToken)` | `flashLiquidate` for a non-Core pool whose debt token has no configured Core flash source |
 | `FlashSourceMismatch(address flashSource, address debtToken)` | the configured flash source's underlying is not the debt token |
+| `NativeTransferFailed()` | the native BNB payout in `sweepNative` failed |
+| `ZeroAddressNotAllowed()` | a zero address was passed to an admin setter, or the Core pool's `liquidatorContract` gate is unset at call time |
 
 ## Deployment
 
-| Network | Address |
-| --- | --- |
-| BNB Chain mainnet | `0x5974Badab6911a78Ba15229045514C2C1bD42343` (transparent proxy) |
+This page matches the [`BStockLiquidator` source on `develop`](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/BStock/BStockLiquidator.sol).
 
-The spoke-pool support described on this page is **not yet deployed**: it requires an implementation upgrade, and no `PoolRegistry` has been configured through `setPoolRegistry`, so no spoke pool can be resolved yet.
+| Network | Transparent proxy | Implementation |
+| --- | --- | --- |
+| BNB Chain mainnet | `0x5974Badab6911a78Ba15229045514C2C1bD42343` | `0x122E8f16a6cab6549075fa0b102c01E1b2dD63B6` |
+| BNB Chain testnet | `0x62B5EE2074dF7F5B027d829adF5EC7B69eead569` | `0xCE0cBAfcf39B6eCF83f3A60c0ae212D3714B8F16` |
+
+Read at BNB Chain block `130265265` and BNB Chain testnet block `139405584`. The proxy and implementation do not establish the configured `poolRegistry`, the flash sources, the router allowlist or the ACM permissions. Read those values at the block an operator or integration uses.
