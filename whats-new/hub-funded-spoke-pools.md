@@ -11,8 +11,6 @@ Borrowing is **open-term and variable-rate**: there is no maturity, and every ma
 
 Every market is capped and every pool is isolated. A depeg, an oracle problem, or bad debt on an exotic collateral asset is contained inside that pool's capped exposure and cannot reach the Core pool.
 
-> **Not live yet.** The contracts are written and tested; no spoke pool has been deployed, listed, or wired to a Liquidity Hub. This page describes the design, not something you can use on-chain today.
-
 ### Why
 
 Venus has two products for a borrower today: the Core pool, which is shared, mainstream and deliberately conservative, and [Fixed Term Vaults](fixed-rate-vaults.md), which are fixed-rate and fixed-term. Between them there is a gap: **flexible, open-term borrowing in a special scenario, with real customization and bounded exposure**.
@@ -110,9 +108,13 @@ Add a second liquidity asset, U, and the picture does not change: the same $17,7
 
 The Liquidity Hub is the lender, so a loss in a spoke pool lands on the Hub.
 
-An isolated-pools market keeps written-off debt inside its exchange rate — when an account is healed, the shortfall moves from `totalBorrows` into `badDebt` and the numerator does not change — so the rate does not fall when a loss is booked, and the loss would otherwise surface only as redemptions failing for lack of cash. Inside the Hub that would mean the loss lands by exit order: early lenders redeem at the pre-loss share price and whoever is last out absorbs everything.
+An isolated-pools market keeps written-off debt inside its exchange rate: when an account is healed, the shortfall moves from `totalBorrows` into `badDebt` and the numerator does not change, so the share price does not fall when a loss is booked.
 
-The Hub's Spoke adapter therefore values a spoke position with written-off debt **excluded**, so the loss hits every Hub lender at the same instant instead of becoming a race for the exit. If a [Shortfall](../technical-reference/reference-isolated-pools/risk-fund-and-shortfall/shortfall.md) auction later recovers the debt, the mark recovers on its own.
+The Hub's Spoke adapter values the position at that same rate, so the Hub's share price does not move either. What a write-off removes is cash, not value: lenders who exit first are paid in full out of the cash that is left, and what the Hub can withdraw is bounded by it. Paying the debt down raises cash and lowers `badDebt` by the same amount, so more becomes withdrawable without the share price moving.
+
+### Status
+
+The first hub-funded spoke pool is live on BNB Chain, registered as `bStock index`. QQQB and SPYB are on the collateral side; USDT, USDC and U are on the liquidity side, supplied by the Liquidity Hub. [VIP-668](https://app.venus.io/#/governance/proposal/668?chainId=56) deployed the pool infrastructure, [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) wired the Liquidity Hub to it, and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56) listed the markets. Addresses are in [deployed contracts](../deployed-contracts/spoke-pools.md).
 
 ### Learn more
 

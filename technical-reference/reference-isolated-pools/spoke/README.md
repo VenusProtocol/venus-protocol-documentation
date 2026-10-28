@@ -1,6 +1,6 @@
 # Hub-Funded Spoke Pools
 
-A **spoke pool** is an isolated pool whose Comptroller is `SpokeComptroller` instead of the shared [`Comptroller`](../comptroller/comptroller.md), listed in a [`PoolRegistry`](../pool-registry/pool-registry.md) instance of its own. The rest of the machinery is unchanged: the same [`VToken`](../vtoken/vtoken.md) markets behind the same `VTokenBeacon`, the same [`RewardsDistributor`](../rewards/rewards-distributor.md), the same [Shortfall](../risk-fund-and-shortfall/shortfall.md) and [ProtocolShareReserve](../risk-fund-and-shortfall/protocol-share-reserve.md) plumbing.
+A **spoke pool** is an isolated pool whose Comptroller is `SpokeComptroller` instead of the shared [`Comptroller`](../comptroller/comptroller.md), listed in a [`PoolRegistry`](../pool-registry/pool-registry.md) instance of its own. The rest of the machinery is unchanged: the same [`VToken`](../vtoken/vtoken.md) implementation, the same [`RewardsDistributor`](../rewards/rewards-distributor.md), and the same [ProtocolShareReserve](../risk-fund-and-shortfall/protocol-share-reserve.md) plumbing once the spoke registry is added to it. The markets sit behind a `SpokeVTokenBeacon` of their own, so upgrading one family never touches the other. [Shortfall](../risk-fund-and-shortfall/shortfall.md) is the exception: it only finds pools in the registry it is configured with, so it cannot auction a spoke pool's bad debt.
 
 What the fork adds is policy that only makes sense for a pool the protocol funds itself:
 
@@ -10,8 +10,6 @@ What the fork adds is policy that only makes sense for a pool the protocol funds
 * **deviation-bounded collateral pricing** on the borrow-power path, using the [`DeviationBoundedOracle`](../../reference-oracle/deviation-bounded-oracle.md).
 
 For the product-level introduction — why the pool is shaped this way, and the retail / bulk scenarios it serves — see [Hub-Funded Spoke Pools](../../../whats-new/hub-funded-spoke-pools.md) under *What's New*.
-
-> **Not deployed.** At the time of writing `SpokeComptroller` is not deployed on any network and no spoke pool has been listed. There are no addresses to publish, and no VIP has wired the Liquidity Hub to a spoke market.
 
 ## The two sides of a spoke pool
 
@@ -52,7 +50,7 @@ The registry is the directory every consumer reads to answer which pools exist: 
 
 It also separates permissions. An [AccessControlManager](../../reference-governance/access-control-manager.md) role is `keccak256(contractAddress, roleString)`, so a grant on one registry cannot reach the other's pools, and the two products stay independently upgradeable.
 
-> **ProtocolShareReserve holds a single `poolRegistry` address.** It rejects any non-core pool whose vToken that one registry does not know, so pointing it at the spoke registry would break `reduceReserves` and every liquidation in the existing isolated pools, while leaving it where it is starves the spoke pool of income routing. Multi-registry support ships from the `protocol-reserve` repo and has to be live before the spoke registry is wired in. This is a hard prerequisite for listing, not a follow-up.
+> **ProtocolShareReserve now holds more than one registry.** It rejects any non-core pool whose vToken none of its registries knows, so repointing the single `poolRegistry` at the spoke registry would have broken `reduceReserves` and every liquidation in the existing isolated pools. `addPoolRegistry` adds a second registry instead, leaving the first one in place, and the spoke registry was added through it before the pool was listed.
 
 ## Deployment shape
 
