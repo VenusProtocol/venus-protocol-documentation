@@ -1,8 +1,12 @@
 # Liquidity Hub
 
-The **Venus Liquidity Hub** is a per-asset ERC-4626 allocator vault. A lender deposits a single asset, the Hub routes it across Venus yield families (**Core**, **Flux**, **FRV**) under a governance-set policy, and returns a yield-bearing share token. Yield accrues through a **rising exchange rate** (one share = X underlying), never by rebasing. There is one Hub per asset, with no cross-asset coupling.
+The **Venus Liquidity Hub** is a per-asset ERC-4626 allocator vault. A lender deposits a single asset, the Hub routes it across the yield families governance has wired behind it, and returns a yield-bearing share token. Yield accrues through a **rising exchange rate** (one share = X underlying), never by rebasing. There is one Hub per asset, with no cross-asset coupling.
 
 For the user-facing introduction, see [Liquidity Hub](../../whats-new/liquidity-hub.md) under *What's New*.
+
+{% hint style="info" %}
+**Which source this documents.** The Hub, the Core / Flux / FRV families and `Migrator` are in release `v2.1.0-dev.4` of [venus-liquidity-hub](https://github.com/VenusProtocol/venus-liquidity-hub); the Centrifuge family is on `develop` and in that same release, but not on `main`. `HubLens`, the removal of the Hub's `maxDeposit` / `maxMint` overrides, `IResourceAdapter.resourceName` and `YieldGroupAccrualFailed` are only on branch `fix/hub-maxDeposit` ([PR #20](https://github.com/VenusProtocol/venus-liquidity-hub/pull/20)), which is open. All of it is deployed and live on BNB Chain regardless, so match the deployed bytecode or the verified source before decoding anything.
+{% endhint %}
 
 ## Architecture
 
@@ -10,10 +14,10 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 
 <figure><img src="../../.gitbook/assets/liquidity-hub-architecture.svg" alt="Liquidity Hub architecture: the Hub routes through Core, Flux, and FRV YieldGroups (Sources) via stateless delegatecall adapters into the underlying vToken, fToken, and FRV-vault resources"><figcaption></figcaption></figure>
 
-* **Hub** — the ERC-4626 entry point (one beacon proxy per asset). Holds the Source registry, the two outer routing queues, dual caps, the per-transaction withdrawal cap, the fee parameters, and the multi-level pause flags. It exposes **no APY view** — spot APY is read per-Source from `YieldGroup.spotAPYBps()` and must be aggregated off-chain.
+* **Hub** — the ERC-4626 entry point (one beacon proxy per asset). Holds the Source registry, the two outer routing queues, dual caps, the per-transaction withdrawal cap, the fee parameters, and the multi-level pause flags. It exposes **no APY view** of its own — spot APY is read per-Source from `YieldGroup.spotAPYBps()`, and `HubLens.spotAPYBps(hub)` is what blends those into one figure.
 * **YieldGroup (Source)** — aggregates one or more *resources* of a single protocol family behind the uniform `IYieldGroupBase` boundary, and owns its own inner deposit / withdraw queues and per-resource registry.
 * **Adapter** — a stateless singleton translating between a YieldGroup and one protocol ABI. Mutating calls run via **delegatecall** so receipt tokens land on the YieldGroup; one deployment per ABI family serves every YieldGroup.
-* **Resource** — the underlying market or vault that holds the capital (a Venus Core vToken, a Fluid fToken, or a Fixed-Rate Vault share).
+* **Resource** — the underlying market or vault that holds the capital (a Venus Core vToken, a Fluid fToken, a Fixed-Rate Vault share, a Centrifuge fund vault).
 
 > **Terminology.** The PRD calls the grouping layer a *Source*; the code names the contract a *YieldGroup* and the Hub-facing interface `IYieldGroupBase`. There is no `ISource` type in the Solidity — "Source" survives only in deployment-artifact aliases (`CoreSource_USDT`, `FluxSource_USDC`, `FRVSource_U`). PRD *Product / Vault* = code *Resource*.
 
@@ -26,11 +30,11 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 | Deposit / withdraw call  | `mint` / `redeemUnderlying`         | `deposit` / `withdraw`                | `deposit` / `withdraw`                 | `requestDeposit` / `requestRedeem`, then claim |
 | Spot APY source          | `supplyRatePerBlock` × `blocksPerYear` | Fluid `LendingResolver`            | vault `fixedAPY` (Fundraising / Lock)  | published by governance (`setSpotAPYBps`) |
 | Lifecycle constraint     | none                                | none                                  | 11-state machine                       | asynchronous requests, settled by the fund manager |
-| Wired at launch          | ✅ vToken registered                 | ✅ fToken registered                   | ❌ Source registered, no resource       | added later, USDT Hub only |
+| Wired at launch          | ✅ vToken registered                 | ✅ fToken registered                   | ❌ Source registered, no resource       | added later, USDT and USDC Hubs |
 
 **FRV carries no resource at launch.** An FRV Source is deployed and registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for USDT / USDC / U on BNB Chain yet, so the onboarding proposal calls `addResource` on the Core and Flux Sources only. FRV is therefore kept out of the outer deposit queue entirely and placed **last** in the outer withdraw queue — not because it can serve withdrawals, but because `setOuterWithdrawQueue` rejects a queue that omits a registered Source with non-zero `totalAssets()`, and that total counts idle balance: omitting FRV would let a 1-wei donation permanently block the Operator from reordering the queue. That follow-up was [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56): it registered the Solv (Ceffu custody) vault on the USDT Hub's FRV Source and the Asseto CASH+ vault on the U Hub's FRV Source, and raised their FRV percentage caps from 30% to 50% of TVL; the USDC Hub's FRV Source remains unwired. FRV is still absent from the outer deposit queue, so it is filled only by the Operator's `reallocate`.
 
-**Centrifuge was added later, on the USDT Hub only.** [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) deployed the Centrifuge family, registered the JTRSY and JAAA vaults behind `AdapterCentrifuge`, armed a NAV band on each, published a starting APY, and added the Source to the Hub with a 5,000,000 USDT absolute cap and a 25% percentage cap. Like FRV, it is out of the outer deposit queue and last in the outer withdraw queue, so it is filled only by `reallocate`. See [Centrifuge lifecycle](yield-groups.md#centrifuge-lifecycle).
+**Centrifuge was added later, on the USDT and USDC Hubs.** [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) deployed the Centrifuge family and brought up the USDT Source; [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) added the USDC one and refreshed both published APYs. Each registered the JTRSY and JAAA vaults for its own asset behind `AdapterCentrifuge`, armed a NAV band on each, published an APY, and added the Source with a 5,000,000 absolute cap and a 25% percentage cap. Like FRV, Centrifuge is out of the outer deposit queue and last in the outer withdraw queue, so it is filled only by `reallocate`. The U Hub has no Centrifuge Source. See [Centrifuge lifecycle](yield-groups.md#centrifuge-lifecycle).
 
 ## Contracts
 
@@ -83,13 +87,13 @@ Supporting contracts:
 | `FluxBeacon` | `0x9bb6a3Ac5955fA8dc236560CA9D51483d1d79f15` | Flux-family YieldGroups |
 | `FRVBeacon` | `0x8A5EceDD726246682402430b9B24c19bF61B7f1d` | FRV-family YieldGroups |
 | `CentrifugeBeacon` | `0xAe90Cfb3E2Bc97508F58E7e076Acf38f3bfC820f` | Centrifuge-family YieldGroups |
-| `AdapterCoreV1` | `0x4E514a0C7aB9d140eE204dfA0017574270D92944` | Shared singleton |
-| `AdapterFlux` | `0xA81bDf813A428053E764C34Bc679b3E4d0807be3` | Shared singleton |
-| `AdapterFRV` | `0x1FA0365bDd603452CE96BE3c0e12Db5515a35902` | Shared singleton |
-| `AdapterCentrifuge` | `0x680cE4422264ecDAd3590cB50FE254D4c153f427` | Shared singleton |
+| `AdapterCoreV1` | `0xa061cC2F62BDa2D6bA53Fb98847aD9822DA085dd` | Shared singleton; replaced its predecessor in VIP-669 |
+| `AdapterFlux` | `0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404` | Shared singleton; replaced its predecessor in VIP-669 |
+| `AdapterFRV` | `0x1824caA965Ac05ae5C9C2819e045337e2cF5657c` | Shared singleton; replaced its predecessor in VIP-669 |
+| `AdapterCentrifuge` | `0xaa9D52758890997D91950E595886FF9CDEca81ae` | Shared singleton; replaced its predecessor in VIP-669 |
 | `DefaultProxyAdmin` | `0x6beb6D2695B67FEb73ad4f172E8E2975497187e4` | Venus's shared `ProxyAdmin`, administering the registry's `TransparentUpgradeableProxy`; governance-owned |
 
-Each asset also has three YieldGroup proxies (`CoreSource_*`, `FluxSource_*`, `FRVSource_*`), and the USDT Hub a fourth (`CentrifugeSource_USDT`); resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding.
+Each asset also has one YieldGroup proxy per family it is wired to (`CoreSource_*`, `FluxSource_*`, `FRVSource_*`, `CentrifugeSource_*`), and the set differs per Hub; resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding.
 
 **Launch parameters.** Identical across all three assets, which are all 18-decimal:
 
@@ -126,19 +130,19 @@ A parallel deployment exists for integration testing. The USDT Hub below is the 
 | `FluxSource_USDT` | `0x044E572144bc08ed2D90E081EeEd7b5b6Cb01016` |
 | `FRVSource_USDT` | `0xA0Fb0fFeBdcB7F45A3Ec841cCE7F78B7CeBD0f82` |
 | `CentrifugeSource_USDT` | `0x8DFF12277C44E73cbF551ceB6E5Ae1eD4CC85542` |
-| `AdapterCoreV1` | `0xDf669957448eCB23309eEFda4de230c62d22AE33` |
-| `AdapterFlux` | `0x15Dca35ae0b16BeceabAEC9Dea49630e8C601730` |
-| `AdapterFRV` | `0xeF0E85ab9A23F50EB4595CF7e2F5461feF7E7fc5` |
-| `AdapterCentrifuge` | `0x8219375B48a9fcca0F9E5eA1c1B171524aa347E1` |
+| `AdapterCoreV1` | `0x07c80ed1F928913ab68E1fABB2fe0439CdC99F88` |
+| `AdapterFlux` | `0x51d8cAdc16Df3F8Cd0D1B536e943FbDcE77AC523` |
+| `AdapterFRV` | `0xcdd9cf27C388dAc9e89De257505aff9290183537` |
+| `AdapterCentrifuge` | `0x63Ce07c3F1500B283B6d3451BdC3E3C6211a6c7F` |
 | `HubRegistryProxyAdmin` | `0x9f8413eEE33D434F6D4f40C83181f32A831c9ef7` |
 
 **Testnet is not a faithful mirror of mainnet.** Four differences will break assumptions carried over from a testnet harness:
 
 * The share token is named `Vault Share` / **`vSHARE`**, a placeholder — not the `Venus Hub <asset>` / `vh<asset>` pair mainnet uses.
-* **FRV is fully wired on testnet**: a Fixed-Rate Vault instance exists and is registered as a resource, and all three Sources sit in both outer queues. On mainnet the FRV Source has no resource at all.
+* **FRV is fully wired on testnet**: eight Fixed-Rate Vault instances are registered as resources, and the FRV Source sits in both outer queues. On mainnet only the USDC Hub's FRV Source has no resource. Testnet Centrifuge carries one mock vault rather than the two real funds, and like mainnet it sits in the withdraw queue only.
 * Caps are effectively unbounded (`type(uint128).max` absolute, percentage dimension disabled) rather than the tiered mainnet values, and the per-transaction withdrawal cap is lower.
 * The registry proxy is administered by a registry-specific `HubRegistryProxyAdmin`, not the shared `DefaultProxyAdmin` mainnet uses.
 
 ## Audits
 
-The Liquidity Hub was audited by HashDit (2026/07/07) and Cantina (2026/08/11), and the Centrifuge yield group by HashDit (2026/09/04). The reports are in the [venus-liquidity-hub repository](https://github.com/VenusProtocol/venus-liquidity-hub/tree/develop/audits) and indexed, with their scope, on the [Security & Audits](../../security-and-audits.md#liquidity-hub) page.
+The Liquidity Hub was audited by HashDit (2026/07/07) and Cantina (2026/08/11), the Centrifuge yield group by HashDit (2026/09/04), and `HubLens` and the capacity maths behind it by HashDit (2026/09/24). The reports are in the [venus-liquidity-hub repository](https://github.com/VenusProtocol/venus-liquidity-hub/tree/develop/audits) and indexed, with their scope, on the [Security & Audits](../../security-and-audits.md#liquidity-hub) page.

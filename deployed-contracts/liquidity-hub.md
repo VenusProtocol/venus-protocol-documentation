@@ -1,6 +1,6 @@
 # Liquidity Hub - Deployed Contracts
 
-Contracts for the [Liquidity Hub](../technical-reference/reference-liquidity-hub/README.md) — one per-asset ERC-4626 allocator vault per asset, routing deposits across the Core, Flux and FRV yield families.
+Contracts for the [Liquidity Hub](../technical-reference/reference-liquidity-hub/README.md) — one per-asset ERC-4626 allocator vault per asset, routing deposits across the yield families each Hub is wired to.
 
 The canonical, always-current list of deployed Hubs lives on-chain: query `getHubs()` or `hubForAsset(asset)` on the `HubRegistry` below rather than hard-coding a Hub address. The addresses known at the time of writing are listed here for convenience.
 
@@ -22,7 +22,7 @@ Each Hub is a beacon proxy over `HubBeacon`, holds exactly one asset, and issues
 
 ### Yield Groups
 
-Every Hub owns one YieldGroup proxy per yield family it uses: three on the USDC and U Hubs, four on the USDT Hub. Resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding; the current set is:
+Every Hub owns one YieldGroup proxy per yield family it is wired to, and the set differs per Hub. Resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding; the current set is:
 
 USDT Hub
 
@@ -36,6 +36,7 @@ USDC Hub
 * CoreSource\_USDC: [`0x299D9Be7CEfff91c68F13F267d525CFC18e965ef`](https://bscscan.com/address/0x299D9Be7CEfff91c68F13F267d525CFC18e965ef)
 * FluxSource\_USDC: [`0xA65bB4b20542268B64CF08871a98D75342AFE927`](https://bscscan.com/address/0xA65bB4b20542268B64CF08871a98D75342AFE927)
 * FRVSource\_USDC: [`0x438388847eE16850Ab4f5b82dc7954c0d043B716`](https://bscscan.com/address/0x438388847eE16850Ab4f5b82dc7954c0d043B716)
+* CentrifugeSource\_USDC: [`0x84bAeCF7Ac76039f731a0780EB59A03b2C7B593c`](https://bscscan.com/address/0x84bAeCF7Ac76039f731a0780EB59A03b2C7B593c)
 
 U Hub
 
@@ -47,11 +48,18 @@ U Hub
 
 Each Core YieldGroup routes to the corresponding Core pool vToken (vUSDT, vUSDC, vU) and each Flux YieldGroup to the corresponding Fluid fToken (fUSDT, fUSDC, fU). The FRV YieldGroups were registered unwired at launch; [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) then registered the **Solv (Ceffu custody) vault** [`0x086fd7972510dF9d9cFdc4efB8677fc72d290103`](https://bscscan.com/address/0x086fd7972510dF9d9cFdc4efB8677fc72d290103) as the resource of FRVSource\_USDT and the **Asseto CASH+ vault** [`0x41179fc6ff878b7795B900888E0B61fd8029bceA`](https://bscscan.com/address/0x41179fc6ff878b7795B900888E0B61fd8029bceA) as the resource of FRVSource\_U, and raised the FRV percentage cap on those two Hubs from 30% to 50% of TVL. **FRVSource\_USDC still carries no resource.** The FRV sources stay out of the outer deposit queue, so lender deposits continue to land in Core/Flux and FRV is filled only by the Operator's `reallocate`. Read the live set with `resources()` on a YieldGroup, and its per-resource adapter with `resourceConfig(resource)`.
 
-CentrifugeSource\_USDT was added by [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) with two resources behind `AdapterCentrifuge`: the **JTRSY** vault [`0x6e6B8498415083a4386BE83DD59Edd4366402FFa`](https://bscscan.com/address/0x6e6B8498415083a4386BE83DD59Edd4366402FFa) (Janus Henderson Treasury Fund) and the **JAAA** vault [`0xcbAfe61d84C6Fb88252a6Adf1C9CB0B9D029cb99`](https://bscscan.com/address/0xcbAfe61d84C6Fb88252a6Adf1C9CB0B9D029cb99) (Janus Henderson AAA CLO Fund). Its caps on the USDT Hub are 5,000,000 USDT and 25% of TVL. It is not in the outer deposit queue.
+The Centrifuge sources each carry two resources behind `AdapterCentrifuge`, the same two Janus Henderson funds in the Hub's own asset: **JTRSY** (Janus Henderson Treasury Fund) and **JAAA** (Janus Henderson AAA CLO Fund). The funds share their share classes, NAV and request manager across the two assets, but each asset has its own vault contract.
+
+| Source | Added by | JTRSY vault | JAAA vault |
+| --- | --- | --- | --- |
+| CentrifugeSource\_USDT | [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) | [`0x6e6B8498415083a4386BE83DD59Edd4366402FFa`](https://bscscan.com/address/0x6e6B8498415083a4386BE83DD59Edd4366402FFa) | [`0xcbAfe61d84C6Fb88252a6Adf1C9CB0B9D029cb99`](https://bscscan.com/address/0xcbAfe61d84C6Fb88252a6Adf1C9CB0B9D029cb99) |
+| CentrifugeSource\_USDC | [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) | [`0x5aa84705a2CB2054ed303565336F188e6bfFbAF5`](https://bscscan.com/address/0x5aa84705a2CB2054ed303565336F188e6bfFbAF5) | [`0x9effaa5614c689fA12892379e097b3ACaD239961`](https://bscscan.com/address/0x9effaa5614c689fA12892379e097b3ACaD239961) |
+
+Both sources carry the same caps, 5,000,000 of the Hub's asset and 25% of TVL, and neither is in the outer deposit queue. **The U Hub has no Centrifuge source.**
 
 ### Beacons
 
-One `UpgradeableBeacon` per family; upgrading a beacon upgrades every vault of that family atomically. All five are owned by the [Normal Timelock](governance.md) [`0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396`](https://bscscan.com/address/0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396).
+One `UpgradeableBeacon` per family; upgrading a beacon upgrades every vault of that family atomically. All of them are owned by the [Normal Timelock](governance.md) [`0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396`](https://bscscan.com/address/0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396).
 
 * HubBeacon: [`0x0f20e1004962e2DF16c16FC15460Dc6480626321`](https://bscscan.com/address/0x0f20e1004962e2DF16c16FC15460Dc6480626321)
 * CoreBeacon: [`0x195a0F1BCF73C3Beb609a1271E8E08b8E4c098C6`](https://bscscan.com/address/0x195a0F1BCF73C3Beb609a1271E8E08b8E4c098C6)
@@ -63,10 +71,12 @@ One `UpgradeableBeacon` per family; upgrading a beacon upgrades every vault of t
 
 Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach them by `delegatecall`, so receipt tokens land on the calling YieldGroup.
 
-* AdapterCoreV1: [`0x4E514a0C7aB9d140eE204dfA0017574270D92944`](https://bscscan.com/address/0x4E514a0C7aB9d140eE204dfA0017574270D92944)
-* AdapterFlux: [`0xA81bDf813A428053E764C34Bc679b3E4d0807be3`](https://bscscan.com/address/0xA81bDf813A428053E764C34Bc679b3E4d0807be3)
-* AdapterFRV: [`0x1FA0365bDd603452CE96BE3c0e12Db5515a35902`](https://bscscan.com/address/0x1FA0365bDd603452CE96BE3c0e12Db5515a35902) — the adapter behind the two FRV resources wired by VIP-657 (Solv on the USDT Hub, Asseto CASH+ on the U Hub)
-* AdapterCentrifuge: [`0x680cE4422264ecDAd3590cB50FE254D4c153f427`](https://bscscan.com/address/0x680cE4422264ecDAd3590cB50FE254D4c153f427)
+* AdapterCoreV1: [`0xa061cC2F62BDa2D6bA53Fb98847aD9822DA085dd`](https://bscscan.com/address/0xa061cC2F62BDa2D6bA53Fb98847aD9822DA085dd)
+* AdapterFlux: [`0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404`](https://bscscan.com/address/0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404)
+* AdapterFRV: [`0x1824caA965Ac05ae5C9C2819e045337e2cF5657c`](https://bscscan.com/address/0x1824caA965Ac05ae5C9C2819e045337e2cF5657c) — the adapter behind the two FRV resources wired by VIP-657 (Solv on the USDT Hub, Asseto CASH+ on the U Hub)
+* AdapterCentrifuge: [`0xaa9D52758890997D91950E595886FF9CDEca81ae`](https://bscscan.com/address/0xaa9D52758890997D91950E595886FF9CDEca81ae)
+
+Every one of these replaced an earlier deployment in [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56), which repointed each live resource with `updateResourceAdapter`. An adapter address read from an older proposal or an older revision of this page is the pre-replacement one; read `resourceConfig(resource)` on the YieldGroup for the live value.
 
 ### Periphery
 
@@ -74,7 +84,7 @@ Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach 
 
 Stateless, permissionless and non-upgradeable; one-click migration of a Venus Core position into a Hub via `migrateFromCore` / `migrateFromCoreBNB` (plus the `*WithConsent` variants).
 
-* HubLens: `TBD` — not yet deployed
+* HubLens: [`0xE5d8A002A794CcDba248ba774a359eF2B9E4Ba8B`](https://bscscan.com/address/0xE5d8A002A794CcDba248ba774a359eF2B9E4Ba8B)
 
 Stateless, unowned and non-upgradeable; read-only. The Hub itself computes no deposit ceiling, so this is where a frontend or an integrator reads one: `maxDeposit(hub)`, `maxMint(hub)`, `depositCapacityBreakdown(hub)` and `spotAPYBps(hub)`. The Hub is a call parameter, so this single deployment serves every Hub. It is **not** registered in the `HubRegistry` and no Hub exposes its address, so this entry is the only place to find it — see [Sizing a deposit](../technical-reference/reference-liquidity-hub/hub.md#sizing-a-deposit).
 
@@ -120,7 +130,7 @@ The USDT Hub's share token is named `Vault Share` / `vSHARE`, a placeholder pred
 * FRVSource\_USDT: [`0xA0Fb0fFeBdcB7F45A3Ec841cCE7F78B7CeBD0f82`](https://testnet.bscscan.com/address/0xA0Fb0fFeBdcB7F45A3Ec841cCE7F78B7CeBD0f82)
 * CentrifugeSource\_USDT: [`0x8DFF12277C44E73cbF551ceB6E5Ae1eD4CC85542`](https://testnet.bscscan.com/address/0x8DFF12277C44E73cbF551ceB6E5Ae1eD4CC85542)
 
-Unlike mainnet, **FRV is fully wired on testnet**: the FRV YieldGroup has a Fixed-Rate Vault registered as a resource, so all three families route capital.
+Unlike mainnet, **FRV is fully wired on testnet**: the FRV YieldGroup has eight Fixed-Rate Vaults registered as resources. The Centrifuge group carries one resource, a mock `Testnet JTRSY (USDT)` vault [`0x8a3C1f806B635230b74741066DE9B0Aa902F83dC`](https://testnet.bscscan.com/address/0x8a3C1f806B635230b74741066DE9B0Aa902F83dC), not the two real funds mainnet carries.
 
 ### Beacons
 
@@ -132,12 +142,12 @@ Unlike mainnet, **FRV is fully wired on testnet**: the FRV YieldGroup has a Fixe
 
 ### Adapters
 
-* AdapterCoreV1: [`0xDf669957448eCB23309eEFda4de230c62d22AE33`](https://testnet.bscscan.com/address/0xDf669957448eCB23309eEFda4de230c62d22AE33)
-* AdapterFlux: [`0x15Dca35ae0b16BeceabAEC9Dea49630e8C601730`](https://testnet.bscscan.com/address/0x15Dca35ae0b16BeceabAEC9Dea49630e8C601730)
-* AdapterFRV: [`0xeF0E85ab9A23F50EB4595CF7e2F5461feF7E7fc5`](https://testnet.bscscan.com/address/0xeF0E85ab9A23F50EB4595CF7e2F5461feF7E7fc5)
-* AdapterCentrifuge: [`0x8219375B48a9fcca0F9E5eA1c1B171524aa347E1`](https://testnet.bscscan.com/address/0x8219375B48a9fcca0F9E5eA1c1B171524aa347E1)
+* AdapterCoreV1: [`0x07c80ed1F928913ab68E1fABB2fe0439CdC99F88`](https://testnet.bscscan.com/address/0x07c80ed1F928913ab68E1fABB2fe0439CdC99F88)
+* AdapterFlux: [`0x51d8cAdc16Df3F8Cd0D1B536e943FbDcE77AC523`](https://testnet.bscscan.com/address/0x51d8cAdc16Df3F8Cd0D1B536e943FbDcE77AC523)
+* AdapterFRV: [`0xcdd9cf27C388dAc9e89De257505aff9290183537`](https://testnet.bscscan.com/address/0xcdd9cf27C388dAc9e89De257505aff9290183537)
+* AdapterCentrifuge: [`0x63Ce07c3F1500B283B6d3451BdC3E3C6211a6c7F`](https://testnet.bscscan.com/address/0x63Ce07c3F1500B283B6d3451BdC3E3C6211a6c7F)
 
 ### Periphery
 
 * Migrator: [`0x343D518d8C89f9B5D770000F1ed80f45bF1419f5`](https://testnet.bscscan.com/address/0x343D518d8C89f9B5D770000F1ed80f45bF1419f5)
-* HubLens: `TBD` — not yet deployed
+* HubLens: [`0x0D0C640AA4da71cE610EFD6a04acCE6e3Ae419C2`](https://testnet.bscscan.com/address/0x0D0C640AA4da71cE610EFD6a04acCE6e3Ae419C2)
