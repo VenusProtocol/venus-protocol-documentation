@@ -124,7 +124,7 @@ where `Cᵢ` is the account's collateral value in market `i` and `incentiveᵢ` 
 
 The two batch operations are the two sides of that one benchmark, so every under-threshold account routes to exactly one of them — no gap, no overlap:
 
-| | Condition | Reverts with |
+| | Applies when | Otherwise reverts with |
 | --- | --- | --- |
 | `liquidateAccount` | `borrows < maxClearableDebt` | `DebtExceedsClearableAmount(borrows, maxClearableDebt)` |
 | `healAccount` | `maxClearableDebt ≤ borrows` | `CollateralCoversDebt(borrows, maxClearableDebt)` |
@@ -441,7 +441,7 @@ function liquidationIncentiveMantissa() external view returns (uint256)
 
 ### healAccount
 
-Seizes all of a given account's collateral, requiring the caller to repay `maxClearableDebt / borrows` of its debt in every market. The shortfall is recorded as `badDebt` on each market. `Shortfall` cannot auction it: it only finds pools in the pool registry it is configured with, and that registry does not hold spoke pools.
+Seizes all of a given account's collateral, requiring the caller to repay `maxClearableDebt / borrows` of its debt in every market. The shortfall is recorded as `badDebt` on each market. `Shortfall` cannot auction it: it only finds pools in the pool registry it is configured with, and that registry does not hold spoke pools. Recovery is a governance action instead. `badDebtRecovered` is gated on `msg.sender == shortfall`, and on BNB Chain each market's `shortfall` is the Normal Timelock, so a proposal sends the underlying to the market and calls it to write the recovered amount off `badDebt`.
 
 The heal is all or nothing: every seizure and repayment runs in this one call, so a pause that blocks any of them reverts the whole heal.
 

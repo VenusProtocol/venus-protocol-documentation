@@ -1,6 +1,6 @@
 # Hub-Funded Spoke Pools
 
-A **spoke pool** is an isolated pool whose Comptroller is `SpokeComptroller` instead of the shared [`Comptroller`](../comptroller/comptroller.md), listed in a [`PoolRegistry`](../pool-registry/pool-registry.md) instance of its own. The rest of the machinery is unchanged: the same [`VToken`](../vtoken/vtoken.md) implementation, the same [`RewardsDistributor`](../rewards/rewards-distributor.md), and the same [ProtocolShareReserve](../risk-fund-and-shortfall/protocol-share-reserve.md) plumbing once the spoke registry is added to it. The markets sit behind a `SpokeVTokenBeacon` of their own, so upgrading one family never touches the other. [Shortfall](../risk-fund-and-shortfall/shortfall.md) is the exception: it only finds pools in the registry it is configured with, so it cannot auction a spoke pool's bad debt.
+A **spoke pool** is an isolated pool whose Comptroller is `SpokeComptroller` instead of the shared [`Comptroller`](../comptroller/comptroller.md), listed in a [`PoolRegistry`](../pool-registry/pool-registry.md) instance of its own. The rest of the machinery is unchanged: the same [`VToken`](../vtoken/vtoken.md) implementation, the same [`RewardsDistributor`](../rewards/rewards-distributor.md), and the same [ProtocolShareReserve](../risk-fund-and-shortfall/protocol-share-reserve.md) plumbing once the spoke registry is added to it. The markets sit behind a `SpokeVTokenBeacon` of their own, so upgrading one family never touches the other. [Shortfall](../risk-fund-and-shortfall/shortfall.md) is the exception: it only finds pools in the registry it is configured with, so it cannot auction a spoke pool's bad debt. Governance recovers it directly instead, as each market's `shortfall` address.
 
 What the fork adds is policy that only makes sense for a pool the protocol funds itself:
 
@@ -73,14 +73,10 @@ Everything else is governance action, and the order matters:
 
 ### Roles the VIP has to grant
 
-None of the isolated pools' existing grants carry over, because each names the isolated-pools registry as the account.
+The registry's own grants do not carry over from the isolated pools, because each names the isolated-pools registry as the account. Governance needs nothing new on the registry itself: the Normal Timelock already holds `addPool`, `addMarket`, `setPoolName` and `updatePoolMetadata` as wildcards, and a wildcard reaches any contract that checks the same string, a registry deployed later included.
 
 | On | Role string | Granted to |
 | --- | --- | --- |
-| `SpokePoolRegistry` | `addPool(string,address,uint256,uint256,uint256)` | governance |
-| `SpokePoolRegistry` | `addMarket(AddMarketInput)` | governance |
-| `SpokePoolRegistry` | `setPoolName(address,string)` | governance |
-| `SpokePoolRegistry` | `updatePoolMetadata(address,VenusPoolMetaData)` | governance |
 | `SpokeComptroller` | `setCloseFactor(uint256)` | `SpokePoolRegistry` |
 | `SpokeComptroller` | `setLiquidationIncentive(uint256)` | `SpokePoolRegistry` |
 | `SpokeComptroller` | `setMinLiquidatableCollateral(uint256)` | `SpokePoolRegistry` |
@@ -88,7 +84,7 @@ None of the isolated pools' existing grants carry over, because each names the i
 | `SpokeComptroller` | `setMarketSupplyCaps(address[],uint256[])` | `SpokePoolRegistry` |
 | `SpokeComptroller` | `setMarketBorrowCaps(address[],uint256[])` | `SpokePoolRegistry` |
 
-The bottom six are the setters `addPool` and `addMarket` drive with the registry as the caller; without them `addPool` reverts at execution. The pool's own policy setters (the allowlists, the per-market incentive) and `enterMarketForAccount` are separate grants on top of these. See [SpokeComptroller](spoke-comptroller.md#solidity-api).
+These six are the setters `addPool` and `addMarket` drive with the registry as the caller; without them `addPool` reverts at execution. The pool's own policy setters (the allowlists, the per-market incentive) and `enterMarketForAccount` are separate grants on top of these. See [SpokeComptroller](spoke-comptroller.md#solidity-api).
 
 ## Integration notes
 
