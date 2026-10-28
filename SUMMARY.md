@@ -148,6 +148,7 @@
     * [PoolRegistryInterface](technical-reference/reference-isolated-pools/pool-registry/pool-registry-interface.md)
   * [RewardsDistributor](technical-reference/reference-isolated-pools/rewards/rewards-distributor.md)
   * [PoolLens](technical-reference/reference-isolated-pools/lens/pool-lens.md)
+  * [SpokePoolLens](technical-reference/reference-isolated-pools/lens/spoke-pool-lens.md)
   * [Interest Rate Models](technical-reference/reference-isolated-pools/interest-rate-models/README.md)
     * [InterestRateModel](technical-reference/reference-isolated-pools/interest-rate-models/interest-rate-model.md)
     * [BaseJumpRateModelV2](technical-reference/reference-isolated-pools/interest-rate-models/base-jump-rate-model-v2.md)
