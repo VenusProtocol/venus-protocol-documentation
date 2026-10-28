@@ -1,6 +1,6 @@
 # Liquidity Hub - Deployed Contracts
 
-Contracts for the [Liquidity Hub](../technical-reference/reference-liquidity-hub/README.md) — one per-asset ERC-4626 allocator vault per asset, routing deposits across the Core, Flux and FRV yield families.
+Contracts for the [Liquidity Hub](../technical-reference/reference-liquidity-hub/README.md): one per-asset ERC-4626 allocator vault per asset, routing deposits across the Core, Flux, FRV and Spoke yield families.
 
 The canonical, always-current list of deployed Hubs lives on-chain: query `getHubs()` or `hubForAsset(asset)` on the `HubRegistry` below rather than hard-coding a Hub address. The addresses known at the time of writing are listed here for convenience.
 
@@ -47,7 +47,7 @@ U Hub
 
 #### Wired resources
 
-Each Core YieldGroup routes to the corresponding Core pool vToken (vUSDT, vUSDC, vU) and each Flux YieldGroup to the corresponding Fluid fToken (fUSDT, fUSDC, fU). The FRV YieldGroups were registered unwired at launch; [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) then registered the **Solv (Ceffu custody) vault** [`0x086fd7972510dF9d9cFdc4efB8677fc72d290103`](https://bscscan.com/address/0x086fd7972510dF9d9cFdc4efB8677fc72d290103) as the resource of FRVSource\_USDT and the **Asseto CASH+ vault** [`0x41179fc6ff878b7795B900888E0B61fd8029bceA`](https://bscscan.com/address/0x41179fc6ff878b7795B900888E0B61fd8029bceA) as the resource of FRVSource\_U, and raised the FRV percentage cap on those two Hubs from 30% to 50% of TVL. **FRVSource\_USDC still carries no resource.** The FRV sources stay out of the outer deposit queue, so lender deposits continue to land in Core/Flux and FRV is filled only by the Operator's `reallocate`. Each Spoke YieldGroup routes to its asset's liquidity market in the `bStock index` spoke pool (vUSDT\_bStockIndex, vUSDC\_bStockIndex, vU\_bStockIndex), wired by [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56); the pool's addresses are on the [spoke pools](spoke-pools.md) page. Read the live set with `resources()` on a YieldGroup, and its per-resource adapter with `resourceConfig(resource)`.
+Each Core YieldGroup routes to the corresponding Core pool vToken (vUSDT, vUSDC, vU) and each Flux YieldGroup to the corresponding Fluid fToken (fUSDT, fUSDC, fU). The FRV YieldGroups were registered unwired at launch; [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) then registered the **Solv (Ceffu custody) vault** [`0x086fd7972510dF9d9cFdc4efB8677fc72d290103`](https://bscscan.com/address/0x086fd7972510dF9d9cFdc4efB8677fc72d290103) as the resource of FRVSource\_USDT and the **Asseto CASH+ vault** [`0x41179fc6ff878b7795B900888E0B61fd8029bceA`](https://bscscan.com/address/0x41179fc6ff878b7795B900888E0B61fd8029bceA) as the resource of FRVSource\_U, and raised the FRV percentage cap on those two Hubs from 30% to 50% of TVL. [VIP-667](https://app.venus.io/#/governance/proposal/667?chainId=56) later added a second resource to FRVSource\_U, the **Hash Global hBNB vault** [`0xfE419E150d63ff288b9802533f6Fe2f886DB6FED`](https://bscscan.com/address/0xfE419E150d63ff288b9802533f6Fe2f886DB6FED). **FRVSource\_USDC still carries no resource.** The FRV sources stay out of the outer deposit queue, so lender deposits continue to land in Core/Flux and FRV is filled only by the Operator's `reallocate`. Each Spoke YieldGroup routes to its asset's liquidity market in the `bStock index` spoke pool (vUSDT\_bStockIndex, vUSDC\_bStockIndex, vU\_bStockIndex), wired by [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56); the pool's addresses are on the [spoke pools](spoke-pools.md) page. Read the live set with `resources()` on a YieldGroup, and its per-resource adapter with `resourceConfig(resource)`.
 
 ### Beacons
 
@@ -61,11 +61,11 @@ One `UpgradeableBeacon` per family; upgrading a beacon upgrades every vault of t
 
 ### Adapters
 
-Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach them by `delegatecall`, so receipt tokens land on the calling YieldGroup.
+Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach them by `delegatecall`, so receipt tokens land on the calling YieldGroup. [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) moved every live resource to the addresses below; read a resource's adapter with `resourceConfig(resource)` on its YieldGroup.
 
-* AdapterCoreV1: [`0x4E514a0C7aB9d140eE204dfA0017574270D92944`](https://bscscan.com/address/0x4E514a0C7aB9d140eE204dfA0017574270D92944)
-* AdapterFlux: [`0xA81bDf813A428053E764C34Bc679b3E4d0807be3`](https://bscscan.com/address/0xA81bDf813A428053E764C34Bc679b3E4d0807be3)
-* AdapterFRV: [`0x1FA0365bDd603452CE96BE3c0e12Db5515a35902`](https://bscscan.com/address/0x1FA0365bDd603452CE96BE3c0e12Db5515a35902) — the adapter behind the two FRV resources wired by VIP-657 (Solv on the USDT Hub, Asseto CASH+ on the U Hub)
+* AdapterCoreV1: [`0xa061cC2F62BDa2D6bA53Fb98847aD9822DA085dd`](https://bscscan.com/address/0xa061cC2F62BDa2D6bA53Fb98847aD9822DA085dd)
+* AdapterFlux: [`0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404`](https://bscscan.com/address/0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404)
+* AdapterFRV: [`0x1824caA965Ac05ae5C9C2819e045337e2cF5657c`](https://bscscan.com/address/0x1824caA965Ac05ae5C9C2819e045337e2cF5657c): the adapter behind the two FRV resources wired by VIP-657 (Solv on the USDT Hub, Asseto CASH+ on the U Hub)
 * AdapterSpokeV1: [`0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69`](https://bscscan.com/address/0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69)
 
 ### Periphery
@@ -78,7 +78,7 @@ Stateless, permissionless and non-upgradeable; one-click migration of a Venus Co
 
 Every gated function on the Hubs and YieldGroups is checked against `AccessControlManagerV8` [`0x4788629ABc6cFCA10F9f969efdEAa1cF70c23555`](https://bscscan.com/address/0x4788629ABc6cFCA10F9f969efdEAa1cF70c23555). Role holders (governance, Operator, Guardian) are granted by proposal rather than baked into the bytecode — see [Permissions](../technical-reference/reference-liquidity-hub/hub.md#permissions).
 
-## BNB Chain Testnet
+## BNB Chain Testnet (Test-only)
 
 A parallel deployment exists for integration testing. It is **not a faithful mirror of mainnet** — share-token naming, FRV wiring, caps and the registry's proxy admin all differ; see the [technical reference](../technical-reference/reference-liquidity-hub/README.md#bsc-testnet-chain-id-97) for the full list of differences.
 
@@ -91,7 +91,7 @@ The testnet registry predates the decision to use the shared `DefaultProxyAdmin`
 
 ### Hubs
 
-The testnet registry lists thirteen Hubs, all over mock assets. The USDT Hub is the reference deployment documented in the technical reference; the rest were stood up for QA scenarios and their wiring varies per Hub — some carry all three families, some only part of them, and one carries none. Read `registeredYieldGroups()` on a Hub, then `resources()` on each group, rather than assuming the mainnet shape.
+The testnet registry lists seventeen Hubs, all over mock assets or, in one case, another Hub's share token. The USDT Hub is the reference deployment documented in the technical reference; the rest were stood up for QA scenarios and their wiring varies per Hub: some carry every family, some only part of them, and one carries none. Read `registeredYieldGroups()` on a Hub, then `resources()` on each group, rather than assuming the mainnet shape.
 
 * Hub USDT (`vSHARE`): [`0x7cE6ADF754D0eC81A6CF8ACd9C7454F45077dc61`](https://testnet.bscscan.com/address/0x7cE6ADF754D0eC81A6CF8ACd9C7454F45077dc61)
 * Hub WBNB (`vhBNB`): [`0xAB0E89896740A9ABe3fd7905317adBA9D780F06e`](https://testnet.bscscan.com/address/0xAB0E89896740A9ABe3fd7905317adBA9D780F06e)
@@ -106,6 +106,10 @@ The testnet registry lists thirteen Hubs, all over mock assets. The USDT Hub is 
 * Hub LTC (`vhLTC`): [`0x47A932e0e27a8E95a6EE8987D6b3d46C8EFE074d`](https://testnet.bscscan.com/address/0x47A932e0e27a8E95a6EE8987D6b3d46C8EFE074d)
 * Hub SOL (`vhSOL`): [`0xf7fa2dCCB4e96a5CEFb595bF2eB4cE764145680e`](https://testnet.bscscan.com/address/0xf7fa2dCCB4e96a5CEFb595bF2eB4cE764145680e)
 * Hub SXP (`vhSXP`): [`0x3871d162921C4B707C879461d469a858a64B6D8c`](https://testnet.bscscan.com/address/0x3871d162921C4B707C879461d469a858a64B6D8c)
+* Hub BUSD (`vhBUSD`): [`0x4d5f84313EC675A37DD0c325Ab5490B3F029C177`](https://testnet.bscscan.com/address/0x4d5f84313EC675A37DD0c325Ab5490B3F029C177)
+* Hub TUSD (`vhTUSD`): [`0x1fdD7eAFC771DA154B67Ca372FB80Ff78D7774D2`](https://testnet.bscscan.com/address/0x1fdD7eAFC771DA154B67Ca372FB80Ff78D7774D2)
+* Hub TRX (`vhTRX`): [`0x69d4BE625A930Ac86D860E69c022830dfC20ab00`](https://testnet.bscscan.com/address/0x69d4BE625A930Ac86D860E69c022830dfC20ab00)
+* Hub over vhTUSD (`vhH24`): [`0x466a383e2dc824FBD249b1a5F5aeD27C0Cf08D45`](https://testnet.bscscan.com/address/0x466a383e2dc824FBD249b1a5F5aeD27C0Cf08D45)
 
 The USDT Hub's share token is named `Vault Share` / `vSHARE`, a placeholder predating the `Venus Hub <asset>` / `vh<asset>` convention the later Hubs and all of mainnet use.
 

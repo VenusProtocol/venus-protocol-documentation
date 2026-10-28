@@ -12,22 +12,23 @@ Yield accrues through a **rising exchange rate** — one share becomes redeemabl
 
 Today a lender has to choose between independent products — Venus Core lending, Fluid-backed Flux markets, and Venus Fixed-Rate Vaults — allocate manually, and monitor each separately. Large and institutional lenders especially want a single, transparent entry point rather than onboarding to each vault individually. The Liquidity Hub shifts the lender experience from *"pick a vault per product"* to *"one-click deposit per asset,"* while giving governance a curated, transparent allocation layer on top of products it already runs.
 
-The Hub is purely a routing layer. It does **not** modify the parameters or governance of the underlying Core / Flux / FRV products — it only moves capital into and out of them.
+The Hub is purely a routing layer. It does **not** modify the parameters or governance of the underlying products; it only moves capital into and out of them.
 
 ### The yield families (Sources)
 
-A **Source** groups downstream products of the same kind behind one uniform interface. v1 shipped three, and the fourth is live as well:
+A **Source** groups downstream products of the same kind behind one uniform interface. v1 shipped three, and two more have been added since:
 
 | Source    | Underlying protocol         | What the Hub holds                      |
 | --------- | --------------------------- | --------------------------------------- |
 | **Core**  | Venus Core lending          | vTokens (Compound-style receipt tokens) |
 | **Flux**  | Fluid Lending (third-party) | fTokens (ERC-4626 shares)               |
 | **FRV**   | Venus Fixed-Rate Vaults     | Fixed-Rate Vault shares (ERC-4626)      |
+| **Centrifuge** | Centrifuge tokenized funds (JTRSY, JAAA) | Centrifuge vault shares (ERC-7540) |
 | **Spoke** | Venus [hub-funded spoke pools](hub-funded-spoke-pools.md) | vTokens of the pool's liquidity side |
 
 The **Spoke** Source is what makes the Hub the funder of a hub-funded spoke pool: it supplies the borrowable side of an isolated pool that only the Hub is allowed to supply. It is live on BNB Chain, funding the `bStock index` spoke pool.
 
-At launch only **Core** and **Flux** hold a live product. The FRV Source is registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for these assets on BNB Chain yet, so it is wired to nothing and receives no capital until a follow-up proposal adds one. That follow-up, [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56), has since wired the Solv (Ceffu custody) fixed-rate vault into the USDT Hub and the Asseto CASH+ vault into the U Hub; the USDC Hub's FRV Source is still unwired. Spoke has since gone live as well: [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56) wired it to the `bStock index` spoke pool, so the Spoke Source now carries a live product as well.
+At launch only **Core** and **Flux** hold a live product. The FRV Source is registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for these assets on BNB Chain yet, so it is wired to nothing and receives no capital until a follow-up proposal adds one. That follow-up, [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56), has since wired the Solv (Ceffu custody) fixed-rate vault into the USDT Hub and the Asseto CASH+ vault into the U Hub; the USDC Hub's FRV Source is still unwired. Centrifuge is live on the USDT and USDC Hubs. [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56) wired Spoke to the `bStock index` spoke pool, so it also carries a live product.
 
 The Source set is **governance-extensible**: new yield families can be added later without changing the Hub or the share token, because every Source is reached through the same interface.
 
@@ -38,17 +39,27 @@ The Hub holds two independent, governance-configured ordered queues — a **depo
 * **Deposit** — capital cascades down the deposit queue. Each Source absorbs up to its available capacity (bounded by its cap), and any remainder overflows to the next Source. If the total deposit is larger than the combined free capacity of every Source, the **entire transaction reverts** — there is no partial fill.
 * **Withdraw** — the Hub serves the request from its own idle balance first, then walks the withdraw queue, pulling liquidity in order until the request is filled. If the request exceeds total available liquidity, or exceeds the per-transaction withdrawal cap, the **entire transaction reverts**.
 
-At launch the queues are configured **Core-first in, Flux-first out** — deposit `[Core, Flux]`, withdraw `[Flux, Core, FRV]`. Core absorbs everyday inflows, so new capital lands in the deepest and most liquid market first; withdrawals are served from Flux ahead of Core, which keeps Core's balance intact as a buffer. FRV is out of the deposit queue entirely (nothing to route into) and sits last on the withdraw side, where an empty Source costs nothing to walk past. The two orders are set independently and governance can reorder either.
+At launch the queues were configured **Core-first in, Flux-first out**: deposit `[Core, Flux]`, withdraw `[Flux, Core, FRV]`. Core absorbs everyday inflows, so new capital lands in the deepest and most liquid market first; withdrawals are served from Flux ahead of Core, which keeps Core's balance intact as a buffer. FRV is out of the deposit queue entirely (nothing to route into) and sits last on the withdraw side, where an empty Source costs nothing to walk past. The two orders are set independently and governance can reorder either.
+
+Both queues have grown since launch. The live order on BNB Chain, read with `outerDepositQueue()` and `outerWithdrawQueue()` on each Hub:
+
+| Hub | Deposit queue | Withdraw queue |
+| --- | --- | --- |
+| USDT | Core, Spoke, Flux | Flux, Core, FRV, Centrifuge, Spoke |
+| USDC | Core, Spoke, Flux | Flux, Core, FRV, Centrifuge, Spoke |
+| U | Core, Spoke, Flux | Flux, Core, FRV, Spoke |
+
+A deposit Core cannot absorb therefore goes to the spoke pool before Flux. Centrifuge is out of the deposit queue, and the U Hub has no Centrifuge Source. On BNB Chain testnet the order differs: the USDT Hub's deposit queue is `[Spoke, FRV, Flux, Core]`.
 
 ### Getting in and out in one transaction
 
-Depositing into the Hub and putting the resulting [vhToken](../technical-reference/reference-liquidity-hub/vhtoken.md) to work as Core collateral are two separate actions, and doing them by hand means four transactions. The **[Collateral Gateway](../technical-reference/reference-technical-articles/collateral-gateway.md)** collapses that into one call, and covers the cases that otherwise take several transactions in the right order:
+Depositing into the Hub and putting the resulting [vhToken](../technical-reference/reference-liquidity-hub/vhtoken.md) to work as Core collateral are two separate actions, and doing them by hand means five transactions. The **[Collateral Gateway](../technical-reference/reference-technical-articles/collateral-gateway.md)** collapses that into one call, and covers the cases that otherwise take several transactions in the right order:
 
-* **Moving an existing Core position into the Hub.** A position with borrows against it cannot simply be redeemed, because removing the collateral first would leave the account under water. The gateway borrows the position's worth from Core, supplies the replacement collateral *before* the old collateral leaves, and repays inside the same transaction, so a leveraged position migrates in full rather than in slices.
+* **Moving an existing Core position into the Hub.** If redeeming the old collateral leaves no shortfall, the gateway redeems it directly. If it would leave the account under water, the gateway borrows the position's worth from Core, supplies the replacement collateral *before* the old collateral leaves, and repays inside the same transaction, so a leveraged position migrates in full rather than in slices.
 * **Supplying collateral to a spoke pool.** In a [hub-funded spoke pool](hub-funded-spoke-pools.md) the protocol lends and users post the collateral, and enabling a market as collateral is a second transaction of its own. The gateway does both at once, across several markets and even several pools in one call.
 * **Withdrawing back to the wallet.** A Hub position can sit partly in the wallet and partly in the Core market. The gateway takes the wallet shares first, frees the rest from Core, and pays out the underlying in one call.
 
-The gateway has no proxy, holds no funds between calls, and can only ever act for the account that called it. It is live on BNB Chain, and [VIP-672](https://app.venus.io/#/governance/proposal/672?chainId=56) made the governance grants its functions need.
+The gateway has no proxy, holds no funds between calls, and can only ever act for the account that called it. It is live on BNB Chain. [VIP-672](https://app.venus.io/#/governance/proposal/672?chainId=56) made the Core pool grants its functions need, and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56) the spoke pool grant.
 
 ### Operator rebalancing
 
@@ -74,6 +85,6 @@ At launch all three are set to **0%**. The machinery exists for governance to en
 
 ### Status
 
-The Liquidity Hub launches on **BNB Chain** with three supported assets — **USDT**, **USDC** and **U** — and more to follow. All fees are set to `0` at launch, the Operator role is held by a Venus operations multisig (the routine keeper), and a separate Guardian multisig holds pause rights with no timelock delay. Only **Core** and **Flux** carry a live product at launch: an FRV Source is registered on every Hub, but no Fixed-Rate Vault exists for these assets yet, so no capital routes to it until a follow-up proposal wires one. [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) has since wired fixed-rate vaults into the USDT and U Hubs (see above), and VIP-669 and VIP-670 have since wired the Spoke Source into the `bStock index` spoke pool. Contract addresses are listed in the [technical reference](../technical-reference/reference-liquidity-hub/README.md#deployment).
+The Liquidity Hub launches on **BNB Chain** with three supported assets, **USDT**, **USDC** and **U**, and more to follow. All fees are set to `0` at launch, the Operator role is held by a Venus operations multisig (the routine keeper), and a separate Guardian multisig holds pause rights with no timelock delay. Only **Core** and **Flux** carry a live product at launch: an FRV Source is registered on every Hub, but no Fixed-Rate Vault exists for these assets yet, so no capital routes to it until a follow-up proposal wires one. [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) has since wired fixed-rate vaults into the USDT and U Hubs (see above), and VIP-669 and VIP-670 have since wired the Spoke Source into the `bStock index` spoke pool. Contract addresses are listed in the [technical reference](../technical-reference/reference-liquidity-hub/README.md#deployment).
 
 For the contract-level architecture, flows, and full API, see the [Liquidity Hub technical reference](../technical-reference/reference-liquidity-hub/README.md).

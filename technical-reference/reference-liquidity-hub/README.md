@@ -8,12 +8,12 @@ For the user-facing introduction, see [Liquidity Hub](../../whats-new/liquidity-
 
 Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface and never reaches past a Source into the underlying market.
 
-<figure><img src="../../.gitbook/assets/liquidity-hub-architecture.svg" alt="Liquidity Hub architecture: the Hub routes through Core, Flux, and FRV YieldGroups (Sources) via stateless delegatecall adapters into the underlying vToken, fToken, and FRV-vault resources"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/liquidity-hub-architecture.svg" alt="Liquidity Hub architecture: the Hub routes through its YieldGroups (Sources) via stateless delegatecall adapters into the underlying resources"><figcaption></figcaption></figure>
 
 * **Hub** — the ERC-4626 entry point (one beacon proxy per asset). Holds the Source registry, the two outer routing queues, dual caps, the per-transaction withdrawal cap, the fee parameters, and the multi-level pause flags. It exposes **no APY view** — spot APY is read per-Source from `YieldGroup.spotAPYBps()` and must be aggregated off-chain.
 * **YieldGroup (Source)** — aggregates one or more *resources* of a single protocol family behind the uniform `IYieldGroupBase` boundary, and owns its own inner deposit / withdraw queues and per-resource registry.
 * **Adapter** — a stateless singleton translating between a YieldGroup and one protocol ABI. Mutating calls run via **delegatecall** so receipt tokens land on the YieldGroup; one deployment per ABI family serves every YieldGroup.
-* **Resource** — the underlying market or vault that holds the capital (a Venus Core vToken, a Fluid fToken, a Fixed-Rate Vault share, or a spoke-pool vToken).
+* **Resource**: the underlying market or vault that holds the capital (a Venus Core vToken, a Fluid fToken, a Fixed-Rate Vault share, or a spoke-pool vToken).
 
 > **Terminology.** The PRD calls the grouping layer a *Source*; the code names the contract a *YieldGroup* and the Hub-facing interface `IYieldGroupBase`. There is no `ISource` type in the Solidity — "Source" survives only in deployment-artifact aliases (`CoreSource_USDT`, `FluxSource_USDC`, `FRVSource_U`). PRD *Product / Vault* = code *Resource*.
 
@@ -25,20 +25,27 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 | Resource / receipt token | vToken (Compound-style)             | fToken (ERC-4626 share)               | FRV vault share (ERC-4626)             | vToken (isolated-pools)                          |
 | Deposit / withdraw call  | `mint` / `redeemUnderlying`         | `deposit` / `withdraw`                | `deposit` / `withdraw`                 | `mint` / `redeem` (by vToken count)              |
 | Spot APY source          | `supplyRatePerBlock` × `blocksPerYear` | Fluid `LendingResolver`            | vault `fixedAPY` (Fundraising / Lock)  | `supplyRatePerBlock` × the market's own `blocksOrSecondsPerYear` |
-| Who may supply           | anyone                              | anyone                                | anyone                                 | **allowlisted only** — the pool grants the YieldGroup address |
+| Who may supply           | anyone                              | anyone                                | anyone                                 | **allowlisted only**: the pool grants the YieldGroup address |
 | Valuation basis          | balance × exchange rate             | `previewRedeem`                       | lifecycle-aware linear accrual         | balance × exchange rate, `badDebt` included      |
 | Lifecycle constraint     | none                                | none                                  | 11-state machine                       | none                                             |
-| Wired at launch          | ✅ vToken registered                 | ✅ fToken registered                   | ❌ Source registered, no resource       | ✅ deployed and funding a live spoke pool         |
+| Wired at launch          | ✅ vToken registered                 | ✅ fToken registered                   | ❌ Source registered, no resource       | added later by VIP-669 and VIP-670, funding a live spoke pool |
 
-**Spoke is deployed and live.** `AdapterSpokeV1`, the Spoke beacon and the three per-asset Spoke Sources are deployed on BNB Chain, and the `bStock index` spoke pool has been funded since [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56). Onboarding a further market is a two-step governance action, in this order: `setAllowedSupplier(vToken, <SpokeSource>, true)` on the spoke pool, **then** `addResource` on the Hub — the adapter rejects a registration the market would not accept, and also rejects a market its own Comptroller does not list.
+**Spoke is deployed and live.** `AdapterSpokeV1`, the Spoke beacon and the three per-asset Spoke Sources are deployed on BNB Chain, and the `bStock index` spoke pool has been funded since [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56). Onboarding a further market is a governance action, in this order:
+
+1. `setAllowedSupplier(vToken, <SpokeSource>, true)` on the spoke pool.
+2. `addResource(vToken, AdapterSpokeV1)` on the Spoke Source. The adapter rejects a registration the market would not accept, and also rejects a market its own Comptroller does not list.
+3. `setInnerDepositQueue` and `setInnerWithdrawQueue` on the Spoke Source, so the new market is routed to.
+4. On the Hub, place the Spoke Source in the outer deposit queue if it is not there yet.
+
+On BNB Chain the Spoke Source of every Hub is second in the outer deposit queue, `[Core, Spoke, Flux]`, and last in the outer withdraw queue. See [How deposits and withdrawals are routed](../../whats-new/liquidity-hub.md#how-deposits-and-withdrawals-are-routed) for the full order per Hub.
 
 **FRV carries no resource at launch.** An FRV Source is deployed and registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for USDT / USDC / U on BNB Chain yet, so the onboarding proposal calls `addResource` on the Core and Flux Sources only. FRV is therefore kept out of the outer deposit queue entirely and placed **last** in the outer withdraw queue — not because it can serve withdrawals, but because `setOuterWithdrawQueue` rejects a queue that omits a registered Source with non-zero `totalAssets()`, and that total counts idle balance: omitting FRV would let a 1-wei donation permanently block the Operator from reordering the queue. That follow-up was [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56): it registered the Solv (Ceffu custody) vault on the USDT Hub's FRV Source and the Asseto CASH+ vault on the U Hub's FRV Source, and raised their FRV percentage caps from 30% to 50% of TVL; the USDC Hub's FRV Source remains unwired. FRV is still absent from the outer deposit queue, so it is filled only by the Operator's `reallocate`.
 
 ## Contracts
 
 * [**Hub**](hub.md) — the ERC-4626 entry point: routing flows, dual caps, per-tx withdrawal cap, fees, multi-level pause, Operator reallocation, and the full Solidity API.
-* [**Yield Groups**](yield-groups.md) — `YieldGroup` (the generic router, deployed once per family: Core, Flux, and Spoke) and `YieldGroupFRV`: the `IYieldGroupBase` implementations, per-resource registry / queues / caps, and the FRV lifecycle.
-* [**Adapters**](adapters.md) — `AdapterCoreV1`, `AdapterFlux`, `AdapterFRV`, `AdapterSpokeV1`: the stateless, delegatecall-dispatched protocol translators.
+* [**Yield Groups**](yield-groups.md): `YieldGroup` (the generic router, deployed once per family: Core, Flux and Spoke) and `YieldGroupFRV`: the `IYieldGroupBase` implementations, per-resource registry / queues / caps, and the FRV lifecycle.
+* [**Adapters**](adapters.md): `AdapterCoreV1`, `AdapterFlux`, `AdapterFRV`, `AdapterSpokeV1`: the stateless, delegatecall-dispatched protocol translators.
 * [**Interfaces**](interfaces.md) — `IYieldGroupBase` (with its family extensions `IYieldGroup` and `IYieldGroupFRV`) and `IResourceAdapter`, the boundary contracts.
 * **`Migrator`** — a stateless, permissionless, non-upgradeable helper for one-click migration of a Venus Core position into a Hub (`migrateFromCore` / `migrateFromCoreBNB`).
 
@@ -56,7 +63,7 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 
 ## Deployment
 
-The Hub uses a **beacon-proxy model**: one `UpgradeableBeacon` per family per chain (Hub, Core, FRV, Flux and Spoke), each owned by governance — upgrading a beacon upgrades every vault of that family atomically; per-asset instances are beacon proxies. Deploy scripts only deploy and initialize the proxies; **ACM wiring, `addYieldGroup` / `addResource`, and queue configuration are separate governance (ACM-gated) actions**.
+The Hub uses a **beacon-proxy model**: one `UpgradeableBeacon` per family per chain (Hub, Core, FRV, Flux and Spoke), each owned by governance: upgrading a beacon upgrades every vault of that family atomically; per-asset instances are beacon proxies. Deploy scripts only deploy and initialize the proxies; **ACM wiring, `addYieldGroup` / `addResource`, and queue configuration are separate governance (ACM-gated) actions**.
 
 `HubRegistry` is the exception: it is a chain-level singleton behind a **`TransparentUpgradeableProxy`**, not a beacon proxy, so it is upgraded independently of every Hub. On BNB Chain mainnet that proxy is administered by Venus's shared `DefaultProxyAdmin`, the same one that administers the core pool and isolated pools; the BSC testnet deployment predates that decision and still carries a registry-specific `ProxyAdmin`.
 
@@ -101,7 +108,8 @@ Each asset also has one YieldGroup proxy per family wired to it, named `<Family>
 | `maxWithdrawalSize` (per tx) | 10,000,000 | 10,000,000 | 10,000,000 |
 | Core cap (absolute / %) | 2,000,000,000 / disabled | same | same |
 | Flux cap (absolute / %) | 7,000,000 / 20% | same | same |
-| FRV cap (absolute / %) | 5,000,000 / 50% | 5,000,000 / 30% | 5,000,000 / 50% |
+| FRV cap (absolute / %) | 5,000,000 / 50% | 5,000,000 / 30% | 5,000,000 / 90% |
+| Spoke cap (absolute / %) | 300,000,000 / 50% | 90,000,000 / 50% | 30,000,000 / 50% |
 | Management / performance / redeem fee | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
 
 `feeRecipient` is `0xF322942f644A996A617BD29c16bd7d231d9F35E9` on all three. Core's percentage dimension uses the `10_000` BPS sentinel, so only its absolute cap binds; Flux is held to 20% of TVL, which at launch sits well under its absolute cap, so it fills through Operator `reallocate` rather than from the deposit queue. Each Hub is seeded with a 10-token bootstrap deposit from the Treasury whose shares are minted to the burn address, so `totalSupply` is never zero and the refill-from-empty branch cannot be re-opened.
@@ -116,7 +124,7 @@ Each asset also has one YieldGroup proxy per family wired to it, named `<Family>
 
 #### BSC testnet (chain ID 97)
 
-A parallel deployment exists for integration testing. The USDT Hub below is the reference deployment, but the testnet registry now lists **thirteen Hubs** over mock assets (USDT, WBNB, USDC, FDUSD, BTCB, ADA, AAVE, CAKE, ETH, DOGE, LTC, SOL and SXP), stood up for QA scenarios with per-Hub wiring that does not follow the mainnet shape — the full list is on the [Deployed Contracts](../../deployed-contracts/liquidity-hub.md#bnb-chain-testnet) page. Either way the mainnet asset trio does not map onto testnet, so a harness written against the mainnet asset list will not carry over.
+A parallel deployment exists for integration testing. The USDT Hub below is the reference deployment, but the testnet registry now lists **seventeen Hubs** over mock assets (USDT, WBNB, USDC, FDUSD, BTCB, ADA, AAVE, CAKE, ETH, DOGE, LTC, SOL, SXP, BUSD, TUSD and TRX, plus one Hub over the vhTUSD share token), stood up for QA scenarios with per-Hub wiring that does not follow the mainnet shape. The full list is on the [Deployed Contracts](../../deployed-contracts/liquidity-hub.md#bnb-chain-testnet-test-only) page. Either way the mainnet asset trio does not map onto testnet, so a harness written against the mainnet asset list will not carry over.
 
 | Contract | Address |
 | -------- | ------- |
@@ -126,16 +134,19 @@ A parallel deployment exists for integration testing. The USDT Hub below is the 
 | `CoreSource_USDT` | `0x11e39DC7b8b16BBDA8D9C2903dF741Ae9341Ec88` |
 | `FluxSource_USDT` | `0x044E572144bc08ed2D90E081EeEd7b5b6Cb01016` |
 | `FRVSource_USDT` | `0xA0Fb0fFeBdcB7F45A3Ec841cCE7F78B7CeBD0f82` |
+| `SpokeSource_USDT` | `0xb9Bf8232474aF0A18BbA0CbCc3bA10efD51542e2` |
 | `AdapterCoreV1` | `0xDf669957448eCB23309eEFda4de230c62d22AE33` |
 | `AdapterFlux` | `0x15Dca35ae0b16BeceabAEC9Dea49630e8C601730` |
 | `AdapterFRV` | `0xeF0E85ab9A23F50EB4595CF7e2F5461feF7E7fc5` |
+| `AdapterSpokeV1` | `0x439034668f201B9f2D45286b4518e6DB122B5e17` |
+| `SpokeBeacon` | `0x58099BEaa6A00F493eF67fF953866DDA4a502389` |
 | `HubRegistryProxyAdmin` | `0x9f8413eEE33D434F6D4f40C83181f32A831c9ef7` |
 
 **Testnet is not a faithful mirror of mainnet.** Four differences will break assumptions carried over from a testnet harness:
 
 * The share token is named `Vault Share` / **`vSHARE`**, a placeholder — not the `Venus Hub <asset>` / `vh<asset>` pair mainnet uses.
-* **FRV is fully wired on testnet**: a Fixed-Rate Vault instance exists and is registered as a resource, and the FRV Source sits in both outer queues. On mainnet only the USDC Hub's FRV Source has no resource.
-* Caps are effectively unbounded (`type(uint128).max` absolute, percentage dimension disabled) rather than the tiered mainnet values, and the per-transaction withdrawal cap is lower.
+* **FRV is fully wired on testnet**: eight Fixed-Rate Vaults are registered as resources on the USDT Hub's FRV Source, and the FRV Source sits in both outer queues. On mainnet only the USDC Hub's FRV Source has no resource.
+* On the USDT Hub, Core, FRV and Spoke are effectively uncapped (`type(uint128).max` absolute, percentage dimension disabled) and Flux is capped at about 750 USDT, rather than the tiered mainnet values. The per-transaction withdrawal cap is also lower.
 * The registry proxy is administered by a registry-specific `HubRegistryProxyAdmin`, not the shared `DefaultProxyAdmin` mainnet uses.
 
 ## Audits
