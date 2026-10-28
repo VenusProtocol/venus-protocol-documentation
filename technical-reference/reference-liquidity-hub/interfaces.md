@@ -9,11 +9,11 @@ The Hub's own external interface, `IHub`, is documented on the [Hub](hub.md) pag
 
 ## IYieldGroupBase
 
-The boundary between the Hub and the concrete typed YieldGroups: the generic `YieldGroup` (which serves both the Core-vToken and Fluid-fToken deployments) and `YieldGroupFRV`. The Hub depends only on this interface; adding a new Source family never touches the Hub.
+The boundary between the Hub and the concrete typed YieldGroups: the generic `YieldGroup` (which serves the Core-vToken, Fluid-fToken and Spoke-vToken deployments) and `YieldGroupFRV`. The Hub depends only on this interface; adding a new Source family never touches the Hub.
 
 Two leaf interfaces extend it with family-specific surface:
 
-* **`IYieldGroup`** — the per-resource deposit cap setters and `setBlocksPerYear`, implemented by the Core and Flux deployments.
+* **`IYieldGroup`** — the per-resource deposit cap setters and `setBlocksPerYear`, implemented by the Core, Flux and Spoke deployments.
 * **`IYieldGroupFRV`** — `forceRemoveResource`, implemented by the FRV deployment.
 
 > There is no `ISource` type in the code. Earlier drafts of this page used that name; the Solidity uses *YieldGroup* end to end.
@@ -41,7 +41,7 @@ function accrue() external;
 * **`deposit`** — move `amount` from the caller into the Source's resources via the inner deposit queue. `deposited` may be less than `amount` whenever the inner queue cannot absorb the full amount (per-resource caps, protocol supply caps, or paused / rejecting resources). The Source refunds the unplaced remainder to the Hub, which routes it onward; the Hub does **not** revert on a short return here.
 * **`withdraw`** — pull `amount` via the inner withdraw queue and send it to `to`; must deliver exactly `amount` or revert (no partial fill).
 * **`depositResource` / `withdrawResource`** — target one specific resource, bypassing the inner queue. They exist solely for Hub-orchestrated `reallocate`. The Hub treats `resource` as an opaque address it does not interpret; the Source validates it against its own registry. The full `amount` moves into / out of that one resource or the call reverts. `withdrawResource` does not consume idle first and does not cascade; pulling from a paused resource is permitted (wind-down).
-* **`accrue`** — `onlyHub`. The Hub calls it on every registered Source before reading NAV, so the management fee is charged on interest-current value. All three families override the base no-op: Core and Flux share the `YieldGroup` loop that calls `IResourceAdapter.accrue` per resource (real work only for Core), while `YieldGroupFRV` pokes each vault's `updateVaultState()`. The poke is best-effort per resource — one whose accrual reverts is skipped and reported via `ResourceAccrualFailed` rather than bubbling. A Source implementing only the four asset-moving functions would revert the Hub's fee accrual and therefore brick deposits and withdrawals.
+* **`accrue`** — `onlyHub`. The Hub calls it on every registered Source before reading NAV, so the management fee is charged on interest-current value. All three families override the base no-op: Core, Flux and Spoke share the `YieldGroup` loop that calls `IResourceAdapter.accrue` per resource (real work for Core and Spoke), while `YieldGroupFRV` pokes each vault's `updateVaultState()`. The poke is best-effort per resource — one whose accrual reverts is skipped and reported via `ResourceAccrualFailed` rather than bubbling. A Source implementing only the four asset-moving functions would revert the Hub's fee accrual and therefore brick deposits and withdrawals.
 
 ### Views
 

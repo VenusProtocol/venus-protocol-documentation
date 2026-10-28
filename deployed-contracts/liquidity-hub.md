@@ -47,7 +47,7 @@ U Hub
 
 #### Wired resources
 
-Each Core YieldGroup routes to the corresponding Core pool vToken (vUSDT, vUSDC, vU) and each Flux YieldGroup to the corresponding Fluid fToken (fUSDT, fUSDC, fU). The FRV YieldGroups were registered unwired at launch; [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) then registered the **Solv (Ceffu custody) vault** [`0x086fd7972510dF9d9cFdc4efB8677fc72d290103`](https://bscscan.com/address/0x086fd7972510dF9d9cFdc4efB8677fc72d290103) as the resource of FRVSource\_USDT and the **Asseto CASH+ vault** [`0x41179fc6ff878b7795B900888E0B61fd8029bceA`](https://bscscan.com/address/0x41179fc6ff878b7795B900888E0B61fd8029bceA) as the resource of FRVSource\_U, and raised the FRV percentage cap on those two Hubs from 30% to 50% of TVL. [VIP-667](https://app.venus.io/#/governance/proposal/667?chainId=56) later added a second resource to FRVSource\_U, the **Hash Global hBNB vault** [`0xfE419E150d63ff288b9802533f6Fe2f886DB6FED`](https://bscscan.com/address/0xfE419E150d63ff288b9802533f6Fe2f886DB6FED). **FRVSource\_USDC still carries no resource.** The FRV sources stay out of the outer deposit queue, so lender deposits continue to land in Core/Flux and FRV is filled only by the Operator's `reallocate`. Each Spoke YieldGroup routes to its asset's liquidity market in the `bStock index` spoke pool (vUSDT\_bStockIndex, vUSDC\_bStockIndex, vU\_bStockIndex), wired by [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56); the pool's addresses are on the [spoke pools](spoke-pools.md) page. Read the live set with `resources()` on a YieldGroup, and its per-resource adapter with `resourceConfig(resource)`.
+Each Core YieldGroup routes to the corresponding Core pool vToken (vUSDT, vUSDC, vU) and each Flux YieldGroup to the corresponding Fluid fToken (fUSDT, fUSDC, fU). The FRV YieldGroups were registered unwired at launch; [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) then registered the **Solv (Ceffu custody) vault** [`0x086fd7972510dF9d9cFdc4efB8677fc72d290103`](https://bscscan.com/address/0x086fd7972510dF9d9cFdc4efB8677fc72d290103) as the resource of FRVSource\_USDT and the **Asseto CASH+ vault** [`0x41179fc6ff878b7795B900888E0B61fd8029bceA`](https://bscscan.com/address/0x41179fc6ff878b7795B900888E0B61fd8029bceA) as the resource of FRVSource\_U, and raised the FRV percentage cap on those two Hubs from 30% to 50% of TVL. [VIP-667](https://app.venus.io/#/governance/proposal/667?chainId=56) later added a second resource to FRVSource\_U, the **Hash Global hBNB vault** [`0xfE419E150d63ff288b9802533f6Fe2f886DB6FED`](https://bscscan.com/address/0xfE419E150d63ff288b9802533f6Fe2f886DB6FED). **FRVSource\_USDC still carries no resource.** The FRV sources stay out of the outer deposit queue, so lender deposits land in Core, Spoke and Flux (the outer deposit queue, in that order) and FRV is filled only by the Operator's `reallocate`. Each Spoke YieldGroup routes to its asset's liquidity market in the `bStock index` spoke pool (vUSDT\_bStockIndex, vUSDC\_bStockIndex, vU\_bStockIndex), wired by [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56); the pool's addresses are on the [spoke pools](spoke-pools.md) page. Read the live set with `resources()` on a YieldGroup, and its per-resource adapter with `resourceConfig(resource)`.
 
 ### Beacons
 
@@ -65,7 +65,7 @@ Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach 
 
 * AdapterCoreV1: [`0xa061cC2F62BDa2D6bA53Fb98847aD9822DA085dd`](https://bscscan.com/address/0xa061cC2F62BDa2D6bA53Fb98847aD9822DA085dd)
 * AdapterFlux: [`0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404`](https://bscscan.com/address/0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404)
-* AdapterFRV: [`0x1824caA965Ac05ae5C9C2819e045337e2cF5657c`](https://bscscan.com/address/0x1824caA965Ac05ae5C9C2819e045337e2cF5657c): the adapter behind the two FRV resources wired by VIP-657 (Solv on the USDT Hub, Asseto CASH+ on the U Hub)
+* AdapterFRV: [`0x1824caA965Ac05ae5C9C2819e045337e2cF5657c`](https://bscscan.com/address/0x1824caA965Ac05ae5C9C2819e045337e2cF5657c): the adapter behind every live FRV resource (Solv on the USDT Hub, Asseto CASH+ and Hash Global hBNB on the U Hub)
 * AdapterSpokeV1: [`0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69`](https://bscscan.com/address/0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69)
 
 ### Periphery
@@ -120,7 +120,7 @@ The USDT Hub's share token is named `Vault Share` / `vSHARE`, a placeholder pred
 * FRVSource\_USDT: [`0xA0Fb0fFeBdcB7F45A3Ec841cCE7F78B7CeBD0f82`](https://testnet.bscscan.com/address/0xA0Fb0fFeBdcB7F45A3Ec841cCE7F78B7CeBD0f82)
 * SpokeSource\_USDT: [`0xb9Bf8232474aF0A18BbA0CbCc3bA10efD51542e2`](https://testnet.bscscan.com/address/0xb9Bf8232474aF0A18BbA0CbCc3bA10efD51542e2)
 
-Unlike mainnet, **FRV is fully wired on testnet**: the FRV YieldGroup has a Fixed-Rate Vault registered as a resource.
+Unlike mainnet, **FRV is fully wired on testnet**: the FRV YieldGroup has eight Fixed-Rate Vaults registered as resources.
 
 ### Beacons
 
@@ -132,9 +132,9 @@ Unlike mainnet, **FRV is fully wired on testnet**: the FRV YieldGroup has a Fixe
 
 ### Adapters
 
-* AdapterCoreV1: [`0xDf669957448eCB23309eEFda4de230c62d22AE33`](https://testnet.bscscan.com/address/0xDf669957448eCB23309eEFda4de230c62d22AE33)
-* AdapterFlux: [`0x15Dca35ae0b16BeceabAEC9Dea49630e8C601730`](https://testnet.bscscan.com/address/0x15Dca35ae0b16BeceabAEC9Dea49630e8C601730)
-* AdapterFRV: [`0xeF0E85ab9A23F50EB4595CF7e2F5461feF7E7fc5`](https://testnet.bscscan.com/address/0xeF0E85ab9A23F50EB4595CF7e2F5461feF7E7fc5)
+* AdapterCoreV1: [`0x07c80ed1F928913ab68E1fABB2fe0439CdC99F88`](https://testnet.bscscan.com/address/0x07c80ed1F928913ab68E1fABB2fe0439CdC99F88)
+* AdapterFlux: [`0x51d8cAdc16Df3F8Cd0D1B536e943FbDcE77AC523`](https://testnet.bscscan.com/address/0x51d8cAdc16Df3F8Cd0D1B536e943FbDcE77AC523)
+* AdapterFRV: [`0xcdd9cf27C388dAc9e89De257505aff9290183537`](https://testnet.bscscan.com/address/0xcdd9cf27C388dAc9e89De257505aff9290183537)
 * AdapterSpokeV1: [`0x439034668f201B9f2D45286b4518e6DB122B5e17`](https://testnet.bscscan.com/address/0x439034668f201B9f2D45286b4518e6DB122B5e17)
 
 ### Periphery

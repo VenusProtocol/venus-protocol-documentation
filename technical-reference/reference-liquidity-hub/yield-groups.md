@@ -42,7 +42,7 @@ struct ResourceConfig {
 
 The public accessor **`resourceConfig(address resource)`** returns the three fields as separate values `(bool registered, bool paused, address adapter)`, not as a struct.
 
-The optional per-resource deposit cap (Core & Flux only) lives in a separate `resourceCap` mapping so it does not disturb the struct's single-slot packing.
+The optional per-resource deposit cap (Core, Flux and Spoke only) lives in a separate `resourceCap` mapping so it does not disturb the struct's single-slot packing.
 
 ## Initialization
 
@@ -83,7 +83,7 @@ The same stateless adapter address may be reused across any number of resources 
 
 There is no global YieldGroup pause — the only granularity inside a YieldGroup is per-resource. (A whole YieldGroup is paused at the Hub level via `pauseYieldGroup`.)
 
-## Resource caps (Core & Flux only)
+## Resource caps (Core, Flux and Spoke only)
 
 An optional per-resource deposit cap limits how much underlying *this YieldGroup* holds in one market, independent of the market's own protocol supply cap. Effective room is `min(protocolHeadroom, resourceCap − ourBalance)`.
 
@@ -94,13 +94,13 @@ An optional per-resource deposit cap limits how much underlying *this YieldGroup
 
 ## Family-specific behavior
 
-|                          | **Core** (`YieldGroup`)                                  | **Flux** (`YieldGroup`)                  | **`YieldGroupFRV`**                            |
-| ------------------------ | -------------------------------------------------------- | ---------------------------------------- | ---------------------------------------------- |
-| Resource                 | Venus Core vToken                                        | Fluid fToken                             | Fixed-Rate Vault share                         |
-| Redeem-time pool fee     | grossed-up for Comptroller `treasuryPercent` if enabled; registration blocked while non-zero | none | none |
-| Spot APY source          | `supplyRatePerBlock` × `blocksPerYear`                   | Fluid `LendingResolver` (pre-annualised) | vault `fixedAPY` (Fundraising / Lock only)     |
-| Per-resource deposit cap | optional                                                 | optional (primary control — Fluid `maxDeposit` is effectively unbounded) | not applicable |
-| Lifecycle                | none                                                     | none                                     | 11-state machine (below)                       |
+|                          | **Core** (`YieldGroup`)                                  | **Flux** (`YieldGroup`)                  | **`YieldGroupFRV`**                            | **Spoke** (`YieldGroup`)                       |
+| ------------------------ | -------------------------------------------------------- | ---------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| Resource                 | Venus Core vToken                                        | Fluid fToken                             | Fixed-Rate Vault share                         | spoke-pool vToken (isolated-pools)             |
+| Redeem-time pool fee     | grossed-up for Comptroller `treasuryPercent` if enabled; registration blocked while non-zero | none | none | none (isolated pools have no `treasuryPercent`) |
+| Spot APY source          | `supplyRatePerBlock` × `blocksPerYear`                   | Fluid `LendingResolver` (pre-annualised) | vault `fixedAPY` (Fundraising / Lock only)     | `supplyRatePerBlock` × the market's `blocksOrSecondsPerYear` |
+| Per-resource deposit cap | optional                                                 | optional (primary control — Fluid `maxDeposit` is effectively unbounded) | not applicable | optional, under the pool's `supplyCaps` |
+| Lifecycle                | none                                                     | none                                     | 11-state machine (below)                       | none                                           |
 
 ## FRV lifecycle
 

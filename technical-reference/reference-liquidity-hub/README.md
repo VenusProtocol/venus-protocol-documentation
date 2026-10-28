@@ -39,7 +39,7 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 
 On BNB Chain the Spoke Source of every Hub is second in the outer deposit queue, `[Core, Spoke, Flux]`, and last in the outer withdraw queue. See [How deposits and withdrawals are routed](../../whats-new/liquidity-hub.md#how-deposits-and-withdrawals-are-routed) for the full order per Hub.
 
-**FRV carries no resource at launch.** An FRV Source is deployed and registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for USDT / USDC / U on BNB Chain yet, so the onboarding proposal calls `addResource` on the Core and Flux Sources only. FRV is therefore kept out of the outer deposit queue entirely and placed **last** in the outer withdraw queue — not because it can serve withdrawals, but because `setOuterWithdrawQueue` rejects a queue that omits a registered Source with non-zero `totalAssets()`, and that total counts idle balance: omitting FRV would let a 1-wei donation permanently block the Operator from reordering the queue. That follow-up was [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56): it registered the Solv (Ceffu custody) vault on the USDT Hub's FRV Source and the Asseto CASH+ vault on the U Hub's FRV Source, and raised their FRV percentage caps from 30% to 50% of TVL; the USDC Hub's FRV Source remains unwired. FRV is still absent from the outer deposit queue, so it is filled only by the Operator's `reallocate`.
+**FRV carries no resource at launch.** An FRV Source is deployed and registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for USDT / USDC / U on BNB Chain yet, so the onboarding proposal calls `addResource` on the Core and Flux Sources only. FRV is therefore kept out of the outer deposit queue entirely and, at launch, placed **last** in the outer withdraw queue — not because it can serve withdrawals, but because `setOuterWithdrawQueue` rejects a queue that omits a registered Source with non-zero `totalAssets()`, and that total counts idle balance: omitting FRV would let a 1-wei donation permanently block the Operator from reordering the queue. That follow-up was [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56): it registered the Solv (Ceffu custody) vault on the USDT Hub's FRV Source and the Asseto CASH+ vault on the U Hub's FRV Source, and raised their FRV percentage caps from 30% to 50% of TVL ([VIP-664](https://app.venus.io/#/governance/proposal/664?chainId=56) later raised the U Hub's to 90%); the USDC Hub's FRV Source remains unwired. FRV is still absent from the outer deposit queue, so it is filled only by the Operator's `reallocate`.
 
 ## Contracts
 
@@ -99,7 +99,7 @@ Supporting contracts:
 
 Each asset also has one YieldGroup proxy per family wired to it, named `<Family>Source_<asset>`; resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding.
 
-**Launch parameters.** Identical across all three assets, which are all 18-decimal:
+**Hub parameters.** Live values; all three assets are 18-decimal. Only the FRV and Spoke caps differ per Hub, and the FRV row includes VIP-657 and VIP-664:
 
 | Parameter | USDT | USDC | U |
 | --------- | ---- | ---- | - |
@@ -111,6 +111,8 @@ Each asset also has one YieldGroup proxy per family wired to it, named `<Family>
 | FRV cap (absolute / %) | 5,000,000 / 50% | 5,000,000 / 30% | 5,000,000 / 90% |
 | Spoke cap (absolute / %) | 300,000,000 / 50% | 90,000,000 / 50% | 30,000,000 / 50% |
 | Management / performance / redeem fee | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
+
+The Spoke caps are not what binds today. The spoke pool caps each liquidity market's supply at 5,000,000 (`supplyCaps` on the `SpokeComptroller`), so a Spoke Source holds at most that much, whatever the Hub cap. See [spoke pools](../../deployed-contracts/spoke-pools.md).
 
 `feeRecipient` is `0xF322942f644A996A617BD29c16bd7d231d9F35E9` on all three. Core's percentage dimension uses the `10_000` BPS sentinel, so only its absolute cap binds; Flux is held to 20% of TVL, which at launch sits well under its absolute cap, so it fills through Operator `reallocate` rather than from the deposit queue. Each Hub is seeded with a 10-token bootstrap deposit from the Treasury whose shares are minted to the burn address, so `totalSupply` is never zero and the refill-from-empty branch cannot be re-opened.
 
@@ -135,9 +137,9 @@ A parallel deployment exists for integration testing. The USDT Hub below is the 
 | `FluxSource_USDT` | `0x044E572144bc08ed2D90E081EeEd7b5b6Cb01016` |
 | `FRVSource_USDT` | `0xA0Fb0fFeBdcB7F45A3Ec841cCE7F78B7CeBD0f82` |
 | `SpokeSource_USDT` | `0xb9Bf8232474aF0A18BbA0CbCc3bA10efD51542e2` |
-| `AdapterCoreV1` | `0xDf669957448eCB23309eEFda4de230c62d22AE33` |
-| `AdapterFlux` | `0x15Dca35ae0b16BeceabAEC9Dea49630e8C601730` |
-| `AdapterFRV` | `0xeF0E85ab9A23F50EB4595CF7e2F5461feF7E7fc5` |
+| `AdapterCoreV1` | `0x07c80ed1F928913ab68E1fABB2fe0439CdC99F88` |
+| `AdapterFlux` | `0x51d8cAdc16Df3F8Cd0D1B536e943FbDcE77AC523` |
+| `AdapterFRV` | `0xcdd9cf27C388dAc9e89De257505aff9290183537` |
 | `AdapterSpokeV1` | `0x439034668f201B9f2D45286b4518e6DB122B5e17` |
 | `SpokeBeacon` | `0x58099BEaa6A00F493eF67fF953866DDA4a502389` |
 | `HubRegistryProxyAdmin` | `0x9f8413eEE33D434F6D4f40C83181f32A831c9ef7` |
