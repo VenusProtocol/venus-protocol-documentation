@@ -1,12 +1,12 @@
 # Collateral Gateway
 
-The `CollateralGateway` contract turns an underlying balance into collateral in one call. It works on the BNB Chain Core pool, through a [Liquidity Hub](../reference-liquidity-hub/README.md) and its vh market, and on [hub-funded spoke pools](../reference-isolated-pools/spoke/README.md). It also withdraws a Hub position back to the wallet in one call.
+The `CollateralGateway` contract turns an underlying balance into collateral in one call. It works on the BNB Chain Core pool, through a [Liquidity Hub](../reference-liquidity-hub/README.md) and its vh market (the Core market that lists the Hub's share token, such as vvhUSDT), and on [hub-funded spoke pools](../reference-isolated-pools/spoke/README.md). It also withdraws a Hub position back to the wallet in one call.
 
 ## Deployment scope
 
 This page matches the [`CollateralGateway` source on `develop`](https://github.com/VenusProtocol/venus-periphery/blob/develop/contracts/CollateralGateway/CollateralGateway.sol). The gateway is deployed without a proxy, at [`0xd0F7B94BF06675D13e8bA9a2546835a1c32a80b8`](https://bscscan.com/address/0xd0F7B94BF06675D13e8bA9a2546835a1c32a80b8) on BNB Chain and [`0x1B6D1ff76beb57CF7C9B2e05BE16cb9529DCa2F9`](https://testnet.bscscan.com/address/0x1B6D1ff76beb57CF7C9B2e05BE16cb9529DCa2F9) on BNB Chain testnet.
 
-The grants the gateway needs are AccessControlManager and Comptroller state, not bytecode: read them at the block an integration uses. [VIP-672](https://app.venus.io/#/governance/proposal/672?chainId=56) made the BNB Chain grants.
+The grants the gateway needs are AccessControlManager and Comptroller state, not bytecode: read them at the block an integration uses. On BNB Chain, [VIP-672](https://app.venus.io/#/governance/proposal/672?chainId=56) made the Core pool grants and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56) the spoke pool grant.
 
 ## Overview
 
@@ -14,7 +14,7 @@ A Liquidity Hub share token (for example vhUSDT) is listed as its own Core marke
 
 The gateway does all of it in one call, and the market is entered as collateral in the same call. It also covers two cases a user cannot easily do alone:
 
-* **Moving an existing Core position into the Hub.** A position with borrows against it cannot simply be redeemed, because removing the collateral first would leave the account in shortfall. The gateway supplies the replacement collateral before the old collateral leaves, so a leveraged position moves in full.
+* **Moving an existing Core position into the Hub.** If redeeming the old collateral leaves no shortfall, the gateway redeems it directly. If it would leave the account in shortfall, the gateway supplies the replacement collateral before the old collateral leaves, so a leveraged position moves in full.
 * **Supplying collateral to a spoke pool.** In a spoke pool, entering a market as collateral is a separate transaction. The gateway supplies and enters in one call, across several markets and several pools.
 
 The gateway is a single shared deployment per chain. It holds no funds between calls. The owner (the Normal Timelock on a live network) can only sweep tokens sent to the contract by mistake. The Core Comptroller and the [`SpokePoolRegistry`](../reference-isolated-pools/spoke/README.md#a-registry-of-its-own) are fixed at construction.
@@ -27,7 +27,7 @@ Before the first call, the user grants the gateway what that call needs:
 | --- | --- |
 | `supplyFromWallet` | `asset.approve(gateway, assets)` |
 | `supplyFromCollateral` | `comptroller.updateDelegate(gateway, true)` |
-| `withdrawPosition` | `hub.approve(gateway, shares)` for shares in the wallet, and `comptroller.updateDelegate(gateway, true)` to have any shares come out of the vh market. Without the grant the vh market is left alone and only the wallet shares are paid out |
+| `withdrawPosition` | `hub.approve(gateway, shares)` for shares in the wallet, and `comptroller.updateDelegate(gateway, true)` to have any shares come out of the vh market. Without the grant the vh market is left alone and only the wallet shares are paid out; with no wallet shares either, the call reverts `NothingReceived` |
 | `supplyAndEnterSpokeMarkets` | `underlying.approve(gateway, amount)` for each market |
 
 {% hint style="warning" %}
@@ -45,9 +45,9 @@ function supplyFromWallet(uint256 assets, address vhMarket, uint256 minShares) e
 * The user approves the gateway for `assets` of the Hub's underlying.
 * `supplyFromWallet` is called, and the execution proceeds as follows:
   * The Hub is read from `vhMarket.underlying()`, and `vhMarket` must be listed on the Core Comptroller.
+  * `vhMarket` is entered as the user's collateral.
   * The underlying is deposited into the Hub, which mints Hub shares.
   * The shares are supplied to `vhMarket`, with the market tokens credited to the user.
-  * `vhMarket` is entered as the user's collateral.
 * `minShares` is the slippage guard on the Hub deposit. A full supply cap on `vhMarket` reverts the whole call, and the user keeps their underlying.
 
 ### Move a Core position into the Hub (**supplyFromCollateral**)
@@ -64,10 +64,10 @@ function supplyFromCollateral(address vToken, uint256 vTokenAmount, address vhMa
 
 | Path | When | What happens |
 | --- | --- | --- |
-| **Direct** | `vToken` is not entered as collateral, or removing it leaves no shortfall | redeem the old position, deposit into the Hub, supply to `vhMarket`, enter it |
-| **Flash loan** | `vToken` is entered and removing it would leave a shortfall | borrow the position's value from Core, supply the replacement collateral first, then redeem the old position and repay the loan |
+| **Direct** | `vToken` is not entered as collateral, or removing it leaves no shortfall | enter `vhMarket`, redeem the old position, deposit into the Hub, supply to `vhMarket` |
+| **Flash loan** | `vToken` is entered and removing it would leave a shortfall | enter `vhMarket`, borrow the position's value from Core, supply the replacement collateral first, then redeem the old position and repay the loan |
 
-* The flash loan path needs the gateway to be allow-listed for Core flash loans.
+* The flash loan path needs the gateway to be allowlisted for Core flash loans, flash loans not paused system wide, and `vToken` flash-enabled. The flash loan premium is paid by the user: the loan is sized so the redeemed collateral covers principal plus premium, so the user's position moves in slightly smaller than it left.
 * `minShares` means slightly different things on the two paths. The direct path deposits the redeem proceeds. The flash loan path deposits a lower bound on them and returns the difference to the user as underlying.
 
 ### Withdraw to the wallet (**withdrawPosition**)
@@ -81,9 +81,9 @@ function withdrawPosition(address vhMarket, uint256 shares, uint256 minAssets) e
   * Shares in the wallet are used first. A withdraw the wallet covers alone never touches Core, so the user's borrow position is not affected.
   * The rest is freed out of `vhMarket` on the user's behalf, but only when the user holds market tokens there and has granted the delegate. Without either, the Core leg is skipped and the wallet leg alone pays out. When it does run, the Comptroller runs its usual liquidity check against the user, so a withdraw that would leave them in shortfall reverts.
   * All shares are redeemed from the Hub, and the underlying is sent to the user.
-* The Core leg frees at most the market tokens the user holds, so a market that cannot free the full amount pays out less rather than reverting. `minAssets` is the floor on that payout.
+* The Core leg frees at most the market tokens the user holds. A market that charges a redeem fee frees fewer shares than asked, and the payout is smaller. A market without enough cash for the redeem reverts `VTokenRedeemFailed`.
 * Holding market tokens is not on its own enough to run the Core leg, because `mintBehalf` is permissionless: anyone can mint a dust amount to another account, and that must not be able to force a Core redeem on a user who never granted the delegate.
-* `shares = type(uint256).max` redeems the whole wallet balance, plus every `vhMarket` market token when the delegate grant is set. `minAssets` is the slippage guard on the payout.
+* `shares = type(uint256).max` redeems the whole wallet balance, plus every `vhMarket` market token when the delegate grant is set. `minAssets` is the floor on the assets the Hub pays out, whichever legs ran.
 
 ### Supply to a spoke pool (**supplyAndEnterSpokeMarkets**, **enterSpokeMarkets**)
 
@@ -122,7 +122,7 @@ Each function reverts until the grant it needs has been made.
 
 * **The gateway only acts for its caller.** Every `mintBehalf` and `enterMarketForAccount` is passed `msg.sender`. Holding the `enterMarketForAccount` role does not let the gateway enter a market for anyone else.
 * **Nothing is held between calls.** Market tokens go straight to the user, and each call either completes or reverts in full. On `supplyFromCollateral`, a call that ends with less of the underlying in the gateway than it started with reverts (`BalanceSpent`), so a hostile market or Hub cannot spend a stray balance awaiting a sweep.
-* **Amounts are measured, not assumed.** Shares minted and market tokens credited are read as balance changes.
+* **Amounts are measured, not assumed.** Market tokens credited and shares freed from `vhMarket` are read as balance changes. Shares minted and assets paid out are the return values of `IHub.deposit` and `IHub.redeem`.
 * **Markets are checked, not trusted.** Core markets must be listed on the fixed Core Comptroller, and spoke markets must match the `SpokePoolRegistry`.
 
 ## Events
