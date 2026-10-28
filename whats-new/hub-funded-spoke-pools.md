@@ -116,6 +116,8 @@ The Hub's Spoke adapter values the position at that same rate, so the Hub's shar
 
 The first hub-funded spoke pool is live on BNB Chain, registered as `bStock index`. QQQB and SPYB are on the collateral side; USDT, USDC and U are on the liquidity side, supplied by the Liquidity Hub. [VIP-668](https://app.venus.io/#/governance/proposal/668?chainId=56) deployed the pool infrastructure, [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) wired the Liquidity Hub to it, and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56) listed the markets. Addresses are in [deployed contracts](../deployed-contracts/spoke-pools.md).
 
+The pool is not in the Venus app's pool list. The app resolves pools through the isolated-pools `PoolRegistry`, and spoke pools are registered in a `SpokePoolRegistry` of their own, so they do not appear alongside the isolated pools. Supplying collateral and borrowing against it go through the markets directly, or through the [Collateral Gateway](../technical-reference/reference-technical-articles/collateral-gateway.md), which supplies and enables a market as collateral in one call.
+
 ### Learn more
 
 * [Hub-Funded Spoke Pools technical reference](../technical-reference/reference-isolated-pools/spoke/README.md) — the `SpokeComptroller` fork, its allowlists, liquidation routing and bounded pricing.
