@@ -4,7 +4,9 @@
 
 This page describes the source on [`protocol-reserve` `develop`](https://github.com/VenusProtocol/protocol-reserve/blob/develop/contracts/ProtocolReserve/ProtocolShareReserve.sol), which carries the multiple pool registry support from [protocol-reserve#168](https://github.com/VenusProtocol/protocol-reserve/pull/168). That change is deployed on BNB Chain but is not in the `v3.5.0` release or on `main`, so a deployment on another chain may still run the single-registry implementation. Constructor immutables, proxy implementations, PoolRegistry addresses, distribution targets, and accumulated balances are deployment-specific and must be verified on the relevant chain.
 
-At BNB Chain mainnet block `118349571` (August 27, 2026, 08:12:46 UTC), the PSR proxy was [`0xCa01D5A9A248a830E9D93231e791B1afFed7c446`](https://bscscan.com/address/0xCa01D5A9A248a830E9D93231e791B1afFed7c446), its implementation was [`0x4eC6D748a2647000895b455c408f85602A144Ed6`](https://bscscan.com/address/0x4eC6D748a2647000895b455c408f85602A144Ed6), and `totalDistributions()` returned 18. Treat these as a dated snapshot, not permanent configuration. [VIP-668](https://app.venus.io/#/governance/proposal/668?chainId=56) has since upgraded that proxy to the multiple-registry implementation [`0x842B9774eeff04b0497fA52d5F235A79D144764b`](https://bscscan.com/address/0x842B9774eeff04b0497fA52d5F235A79D144764b) and registered the [hub-funded spoke pools](../spoke/README.md) registry alongside the isolated pools one: at block `130272555`, `getPoolRegistries()` returned [`0x9F7b01A536aFA00EF10310A162877fd792cD0666`](https://bscscan.com/address/0x9F7b01A536aFA00EF10310A162877fd792cD0666) and [`0x372D0eE44993B5c6eb641364BAB939311e8e5B4c`](https://bscscan.com/address/0x372D0eE44993B5c6eb641364BAB939311e8e5B4c).
+At BNB Chain mainnet block `118349571` (August 27, 2026, 08:12:46 UTC), the PSR proxy was [`0xCa01D5A9A248a830E9D93231e791B1afFed7c446`](https://bscscan.com/address/0xCa01D5A9A248a830E9D93231e791B1afFed7c446), its implementation was [`0x4eC6D748a2647000895b455c408f85602A144Ed6`](https://bscscan.com/address/0x4eC6D748a2647000895b455c408f85602A144Ed6), and `totalDistributions()` returned 18. Treat these as a dated snapshot, not permanent configuration.
+
+[VIP-668](https://app.venus.io/#/governance/proposal/668?chainId=56) has since upgraded that proxy to the multiple-registry implementation [`0x842B9774eeff04b0497fA52d5F235A79D144764b`](https://bscscan.com/address/0x842B9774eeff04b0497fA52d5F235A79D144764b) and registered the [hub-funded spoke pools](../spoke/README.md) registry alongside the isolated pools one. At block `130272555`, `getPoolRegistries()` returned [`0x9F7b01A536aFA00EF10310A162877fd792cD0666`](https://bscscan.com/address/0x9F7b01A536aFA00EF10310A162877fd792cD0666) and [`0x372D0eE44993B5c6eb641364BAB939311e8e5B4c`](https://bscscan.com/address/0x372D0eE44993B5c6eb641364BAB939311e8e5B4c).
 
 ## Income and distribution types
 
@@ -55,10 +57,18 @@ function poolRegistry() external view returns (address);
 
 function getPoolRegistries() external view returns (address[] memory registries);
 
+function additionalPoolRegistries(uint256 index) external view returns (address);
+
+function totalAdditionalPoolRegistries() external view returns (uint256);
+
+function isAdditionalPoolRegistry(address poolRegistry) external view returns (bool);
+
+function isMarketRegistered(address comptroller, address asset) external view returns (bool);
+
 function maxLoopsLimit() external view returns (uint256);
 ```
 
-`poolRegistry` is the primary registry. `getPoolRegistries` returns every registry the PSR resolves markets through, primary first, and is the read to use: the PSR can hold additional registries beyond the primary one, and `poolRegistry` alone does not show them.
+`poolRegistry` is the primary registry. `getPoolRegistries` returns every registry the PSR resolves markets through, primary first, and is the read to use: the PSR can hold additional registries beyond the primary one, and `poolRegistry` alone does not show them. A zero primary is left out of the result rather than returned as a zero entry. `additionalPoolRegistries`, `totalAdditionalPoolRegistries` and `isAdditionalPoolRegistry` read the additional set alone. `isMarketRegistered` answers the same membership question `updateAssetsState` asks for a non-Core market (see [updateAssetsState](#updateassetsstate)).
 
 `maxLoopsLimit` bounds both the number of distribution targets accepted by configuration updates and the number of additional registries. The target array itself is dynamic governance state.
 
@@ -99,7 +109,7 @@ Initializes the proxy's ACM, reentrancy guard, and maximum loop limit. It can ru
 function setPoolRegistry(address poolRegistry_) external;
 ```
 
-Only the contract owner can call this function. The new PoolRegistry address must be nonzero, and must not already be one of the additional registries (`PoolRegistryAlreadyAdded`). It **replaces** the primary registry rather than adding to it, so every market of the outgoing registry stops resolving and `updateAssetsState` begins reverting for them. To bring a second registry's pools in, use `addPoolRegistry`.
+Only the contract owner can call this function, and it emits `PoolRegistryUpdated`. The new PoolRegistry address must be nonzero, and must not already be one of the additional registries (`PoolRegistryAlreadyAdded`). It **replaces** the primary registry rather than adding to it, so every market of the outgoing registry stops resolving and `updateAssetsState` begins reverting for them. To bring a second registry's pools in, use `addPoolRegistry`.
 
 ### addPoolRegistry
 
@@ -119,7 +129,7 @@ function removePoolRegistry(address poolRegistry_) external;
 
 Only the contract owner can call this function. Removes an additional registry and emits `PoolRegistryRemoved`; the address must be in the additional set (`PoolRegistryNotFound`). The primary registry cannot be removed this way.
 
-Markets that no remaining registry lists stop working rather than merely stop reporting income. `updateAssetsState` reverts for them, from the protocol seize during liquidation and from `accrueInterest` once `reduceReservesBlockDelta` passes, so supply, withdraw, borrow, repay and liquidate all revert from that point. Adding the registry back restores them.
+Markets that no remaining registry lists stop working rather than merely stop reporting income. `updateAssetsState` reverts for them, from the protocol seize during liquidation and from `accrueInterest` once `reduceReservesBlockDelta` passes and the market has reserves to send. From that point supply, withdraw, borrow, repay and liquidate all revert. A market with zero reserves skips the call and keeps working until reserves build up. Adding the registry back restores them.
 
 ### setMaxLoopsLimit
 
@@ -127,7 +137,7 @@ Markets that no remaining registry lists stop working rather than merely stop re
 function setMaxLoopsLimit(uint256 limit) external;
 ```
 
-Only the contract owner can call this function. Emits `MaxLoopsLimitUpdated`. A limit of `type(uint128).max` or more is rejected (`InvalidMaxLoopsLimit`), since it would be no cap at all.
+Only the contract owner can call this function. Emits `MaxLoopsLimitUpdated`. A limit of `type(uint128).max` or more is rejected (`InvalidMaxLoopsLimit`), since it would be no cap at all. The new limit must also be above the current one, so it can only be raised; a lower or equal value reverts with the string `"Comptroller: Invalid maxLoopsLimit"` from the shared `MaxLoopsLimitHelper`, not a custom error.
 
 ## Distribution configuration
 
@@ -174,7 +184,7 @@ This function is permissionless but validates its attribution inputs:
 
 * `comptroller.isComptroller()` must return true;
 * `asset` must be nonzero; and
-* for a non-Core Comptroller, one of the registries in `getPoolRegistries()` must return a vToken for that `(comptroller, asset)` pair. The primary registry is probed first and the additional ones in registration order; the first hit passes.
+* for a non-Core Comptroller, one of the registries in `getPoolRegistries()` must return a vToken for that `(comptroller, asset)` pair. The primary registry is probed first, then the additional ones in `additionalPoolRegistries` order; the first hit passes. That order is registration order only until a removal: `removePoolRegistry` moves the last entry into the removed one's place.
 
 The function does not receive an amount. It reads the current ERC-20 balance and compares it with `totalAssetReserve[asset]`. If the balance is higher, the entire positive difference is attributed to the supplied Comptroller and the schema derived from `incomeType`.
 
