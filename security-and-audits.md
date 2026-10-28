@@ -39,7 +39,7 @@ The one Medium finding concerned the pause materiality gate being a share of a l
 
 ### Liquidity Hub: capacity lens
 
-**Scope**: `HubLens` and the capacity maths behind it, plus the removal of the Hub's own `maxDeposit` / `maxMint` overrides. See [Sizing a deposit](technical-reference/reference-liquidity-hub/hub.md#sizing-a-deposit).
+**Scope**: `HubLens` and the capacity math behind it, plus the removal of the Hub's own `maxDeposit` / `maxMint` overrides. Pull request #20 is not merged yet, so the audited code is on branch `fix/hub-maxDeposit`, not `develop`; it is the code deployed on BNB Chain. See [Sizing a deposit](technical-reference/reference-liquidity-hub/hub.md#sizing-a-deposit).
 
 * [HashDit audit report (2026/09/24)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/01fac4af437da36efcb7d80fb261e2e9437f5d57/audits/HashDit_LiquidityHub_Capacity_Lens_20260924.pdf)
 
@@ -57,14 +57,14 @@ The one Medium finding concerned the pause materiality gate being a share of a l
 
 ### Liquidity Hub: Centrifuge yield group
 
-**Scope**: the [Centrifuge yield group](technical-reference/reference-liquidity-hub/yield-groups.md#centrifuge-lifecycle) of the Liquidity Hub, which connects a Hub to Centrifuge ERC-7540 fund vaults. Enabled on the USDT Hub in [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) and on the USDC Hub in [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56).
+**Scope**: the [Centrifuge yield group](technical-reference/reference-liquidity-hub/yield-groups.md#centrifuge-lifecycle) of the Liquidity Hub, which connects a Hub to Centrifuge ERC-7540 fund vaults. Enabled on the USDT Hub in [VIP-661](https://venus.io/governance/proposal/661?chainId=56) and on the USDC Hub in [VIP-666](https://venus.io/governance/proposal/666?chainId=56).
 
 * [HashDit audit report (2026/09/04)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/45ff6bb94e8625aa23771a2efd3d6e3eced61df7/audits/201_CentrifugeYieldGroup_Hashdit_20260904.pdf)
 
 <details>
 <summary>Detailed scope</summary>
 
-- Pull request [#21](https://github.com/VenusProtocol/venus-liquidity-hub/pull/21) in the `venus-liquidity-hub` repository, with the fixes in pull request [#25](https://github.com/VenusProtocol/venus-liquidity-hub/pull/25):
+- Pull request [#21](https://github.com/VenusProtocol/venus-liquidity-hub/pull/21) in the `venus-liquidity-hub` repository, at commit `3450b9dc41dbdef1655965f21395bab20d982565`, with the fixes in pull request [#25](https://github.com/VenusProtocol/venus-liquidity-hub/pull/25). The report reviewed the band as `PriceGuards.sol`; the fixes renamed it to `NavGuard.sol` and changed `YieldGroupBase.sol`. The files after the fixes:
   - contracts/YieldGroup/YieldGroupCentrifuge.sol
   - contracts/YieldGroup/base/NavGuard.sol
   - contracts/YieldGroup/base/YieldGroupBase.sol
@@ -79,7 +79,7 @@ The one Medium finding concerned the pause materiality gate being a share of a l
 
 ### Liquidity Hub
 
-**Scope**: the [Liquidity Hub](technical-reference/reference-liquidity-hub/README.md): the Hub, the Core, Flux and FRV yield groups and their adapters, `HubRegistry` and `Migrator`.
+**Scope**: the [Liquidity Hub](technical-reference/reference-liquidity-hub/README.md): the Hub, the Core, Flux and FRV yield groups and their adapters, and `Migrator`. `HubRegistry` arrived with the fixes in pull request #4, outside both reports' original scope; Cantina looked at it only while reviewing the fixes.
 
 * [HashDit audit report (2026/07/07)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/ff50013ee07f261c37b2cb6d266696f28d02f9fc/audits/HashDit_LiquidityHub_20260707.pdf)
 * [Cantina audit report (2026/08/11)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/c05d100ae0d7b73f21cae376a9fd32fac9349502/audits/cantina_LiquidityHub_20260811.pdf)
