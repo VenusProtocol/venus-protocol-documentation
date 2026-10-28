@@ -2,7 +2,7 @@
 
 EBrake (Emergency Brake) is a Venus periphery contract that acts as an emergency action router for the protocol. It exposes a curated set of Comptroller emergency functions behind Access Control Manager (ACM) permissions, allowing the multisig, automated monitoring contracts, and trusted third-party services to rapidly tighten protocol parameters during an incident — without waiting for a governance VIP.
 
-> **Version scope:** This API reference follows [`venus-periphery` v1.2.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/contracts/EmergencyBrake). EBrake is deployed behind upgradeable proxies. Its effective behavior depends on the current implementation, immutable Comptroller/type pair, ACM grants, and the Comptroller version on each network; verify those values from the [deployment registry](../../deployed-contracts/periphery.md) and explorer before incident use.
+> **Version scope:** This API reference follows [`venus-periphery` v1.3.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.3.0/contracts/EmergencyBrake). EBrake is deployed behind upgradeable proxies. Its effective behavior depends on the current implementation, immutable Comptroller/type pair, ACM grants, and the Comptroller version on each network; verify those values from the [deployment registry](../../deployed-contracts/periphery.md) and explorer before incident use.
 
 ## Overview
 
@@ -340,6 +340,98 @@ Calls `setWhiteListFlashLoanAccount(account, false)` on the Diamond comptroller.
 
 ---
 
+### pauseHub
+
+Pause an entire Liquidity Hub.
+
+**Not in the deployed implementations.** This function and the two below shipped in v1.3.0. The live BNB Chain implementation [`0x2D36677EcA318c9536011D53aa752F042dd01DE8`](https://bscscan.com/address/0x2D36677EcA318c9536011D53aa752F042dd01DE8) predates them and carries none of their selectors, so no Hub can be paused through EBrake until the proxy is upgraded.
+
+```solidity
+function pauseHub(address hub) external
+```
+
+#### Parameters
+
+| Name  | Type      | Description            |
+| ----- | --------- | ---------------------- |
+| hub   | `address` | The Hub to pause.      |
+
+#### Behavior
+
+Calls `pauseHub()` on the [Hub](../reference-liquidity-hub/hub.md), which blocks deposits, withdrawals and reallocation across every Source it owns. Idempotent: returns without emitting when `hubPaused()` is already true. Reverts `ZeroAddress` on a zero address.
+
+#### Access Requirements
+
+- ACM permission required: `pauseHub(address)`
+- EBrake must additionally hold the Hub's own `pauseHub()` role, granted per Hub address
+
+#### Events
+
+- `HubPaused` emitted on state change (not emitted if already paused)
+
+---
+
+### pauseHubYieldGroup
+
+Pause one Source on the Hub that owns it, leaving the rest of the Hub running.
+
+```solidity
+function pauseHubYieldGroup(address yieldGroup) external
+```
+
+#### Parameters
+
+| Name       | Type      | Description                  |
+| ---------- | --------- | ---------------------------- |
+| yieldGroup | `address` | The Source to pause.         |
+
+#### Behavior
+
+Reads the owning Hub from `yieldGroup.hub()`, so the caller does not pass it. Calls `pauseYieldGroup(yieldGroup)` on that Hub. Idempotent: returns without emitting when the Hub's `yieldGroupConfig(yieldGroup).paused` is already true. Reverts `ZeroAddress` on a zero address.
+
+#### Access Requirements
+
+- ACM permission required: `pauseHubYieldGroup(address)`
+- EBrake must additionally hold the Hub's own `pauseYieldGroup(address)` role
+
+#### Events
+
+- `HubYieldGroupPaused` emitted on state change (not emitted if already paused)
+
+---
+
+### pauseHubResource
+
+Pause one resource inside a Source, the narrowest of the three.
+
+```solidity
+function pauseHubResource(address yieldGroup, address resource) external
+```
+
+#### Parameters
+
+| Name       | Type      | Description                                    |
+| ---------- | --------- | ---------------------------------------------- |
+| yieldGroup | `address` | The Source holding the resource.               |
+| resource   | `address` | The resource to pause.                         |
+
+#### Behavior
+
+Reads the resource's `paused` flag from `yieldGroup.resourceConfig(resource)` and returns without emitting when it is already set. Otherwise calls `pauseResource(resource)` on the [Source](../reference-liquidity-hub/yield-groups.md). Reverts `ZeroAddress` if either address is zero.
+
+Note the Hub's `totalAssets()` still counts a paused resource, so pausing a resource stops new flow through it without removing its value from the share price.
+
+#### Access Requirements
+
+- ACM permission required: `pauseHubResource(address,address)`
+- EBrake must additionally hold the Source's own `pauseResource(address)` role
+
+#### Events
+
+- `HubResourcePaused` emitted on state change (not emitted if already paused)
+
+---
+
 ### decreaseCF (batch)
 
 Decrease collateral factor to `newCF` for a market across all relevant pools. Liquidation threshold is left unchanged.
@@ -603,6 +695,9 @@ function getMarketCFSnapshot(address market, uint96 poolId) external view return
 | `FlashLoanPaused`      | `caller`                                                      | Emitted when flash loans are paused (BSC only).               |
 | `PoolBorrowDisabled`   | `caller`, `poolId`, `market`                                  | Emitted when pool-level borrow is disabled (BSC only).        |
 | `FlashLoanAccessRevoked`| `caller`, `account`                                          | Emitted when an account's flash loan access is revoked (BSC only). |
+| `HubPaused`            | `caller`, `hub`                                               | Emitted when a Liquidity Hub is paused.                       |
+| `HubYieldGroupPaused`  | `caller`, `hub`, `yieldGroup`                                 | Emitted when one Hub Source is paused.                        |
+| `HubResourcePaused`    | `caller`, `yieldGroup`, `resource`                            | Emitted when one resource inside a Source is paused.          |
 | `CollateralFactorDecreased` | `caller`, `market`, `poolId`, `newCF`                   | Emitted per pool where CF was actually decreased.             |
 | `BorrowCapsDecreased`  | `caller`, `markets[]`, `newBorrowCaps[]`                      | Emitted when at least one borrow cap was decreased.           |
 | `SupplyCapsDecreased`  | `caller`, `markets[]`, `newSupplyCaps[]`                      | Emitted when at least one supply cap was decreased.           |
@@ -628,7 +723,7 @@ function getMarketCFSnapshot(address market, uint96 poolId) external view return
 
 ### Access Control
 
-Privileged EBrake mutators require an explicit Venus ACM grant for their exact signature. Public view functions such as `getMarketCFSnapshot` are ungated, and `initialize` is protected by one-time initialization rather than ACM. The set of mutator grants differs between BSC and non-BSC chains — Diamond-only functions (`pauseFlashLoan`, `disablePoolBorrow`, `revokeFlashLoanAccess`, `decreaseCF(address,uint96,uint256)`) are not intended for IL chains.
+Privileged EBrake mutators require an explicit Venus ACM grant for their exact signature. Public view functions such as `getMarketCFSnapshot` are ungated, and `initialize` is protected by one-time initialization rather than ACM. The set of mutator grants differs between BSC and non-BSC chains: Diamond-only functions (`pauseFlashLoan`, `disablePoolBorrow`, `revokeFlashLoanAccess`, `decreaseCF(address,uint96,uint256)`) are not intended for IL chains. The three Hub forwarders need two grants, not one: the caller's grant on EBrake, and EBrake's own grant on the target, which is `pauseHub()` or `pauseYieldGroup(address)` on the Hub and `pauseResource(address)` on the Source. Liquidity Hubs exist only on BNB Chain.
 
 ### Snapshot Integrity
 
