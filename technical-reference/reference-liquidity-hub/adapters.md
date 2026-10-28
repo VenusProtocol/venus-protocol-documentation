@@ -28,7 +28,7 @@ Verified at audit for every adapter:
 
 1. **Zero storage variables** — only `immutable` and `constant` values are declared; the contract never `sstore`s.
 2. **No inline assembly performs `sstore`.**
-3. **No arbitrary call targets** — external calls go only to the supplied `resource` and its trusted, chain-fixed dependencies, never a user-supplied address. (`AdapterCoreV1` calls the vToken's `underlying()` and `comptroller()`; `AdapterFlux` calls the fToken's `asset()` and the Fluid `LendingResolver`; `AdapterFRV` calls the vault's `asset()`.)
+3. **No arbitrary call targets** — external calls go only to the supplied `resource` and its trusted, chain-fixed dependencies, never a user-supplied address. (`AdapterCoreV1` calls the vToken's `underlying()` and `comptroller()`; `AdapterFlux` calls the fToken's `asset()` and the Fluid `LendingResolver`; `AdapterFRV` calls the vault's `asset()`; `AdapterCentrifuge` calls the vault, its `share()` token and its `baseManager()`, and reads the published APY from the calling YieldGroup.)
 4. **Mutating functions revert outside a delegatecall context** (the `onlyDelegateCall` guard).
 
 ## `IResourceAdapter` surface
@@ -36,13 +36,13 @@ Verified at audit for every adapter:
 * **`deposit(address resource, uint256 amount)` → `uint256 deposited`** — deposit `amount` of underlying into `resource`; receipt tokens are credited to the YieldGroup.
 * **`withdraw(address resource, uint256 amount, address to)`** — redeem exactly `amount` of underlying from `resource` and deliver it to `to`.
 * **`asset(address resource)` → `address`** — the underlying ERC-20 accepted by `resource`.
-* **`totalAssets(address resource, address holder)` → `uint256`** — underlying value `holder` holds via `resource`. The basis is per-adapter: `AdapterCoreV1` uses the stale (non-accruing) `exchangeRateStored` net of any Comptroller `treasuryPercent`; `AdapterFlux` uses the fToken's live `previewRedeem`; `AdapterFRV` uses a time-based linear coupon accrual.
+* **`totalAssets(address resource, address holder)` → `uint256`** — underlying value `holder` holds via `resource`. The basis is per-adapter: `AdapterCoreV1` uses the stale (non-accruing) `exchangeRateStored` net of any Comptroller `treasuryPercent`; `AdapterFlux` uses the fToken's live `previewRedeem`; `AdapterFRV` uses a time-based linear coupon accrual; `AdapterCentrifuge` adds the held shares and every pending or claimable request, assets at face and shares at the vault's share price.
 * **`maxDeposit(address resource)` → `uint256`** — spare deposit headroom on `resource` right now.
 * **`maxWithdraw(address resource, address holder)` → `uint256`** — underlying `holder` can withdraw right now, net of any redeem-time protocol fee.
 * **`spotAPYBps(address resource, uint256 blocksPerYear)` → `uint64`** — spot supply-side APY in BPS.
-* **`receiptBalance(address resource, address holder)` → `uint256`** — raw receipt-token balance (vToken / fToken / FRV shares), in receipt-token units — used by `removeResource` as a share-based emptiness gate.
+* **`receiptBalance(address resource, address holder)` → `uint256`** — raw receipt-token balance (vToken / fToken / FRV shares), in receipt-token units — used by `removeResource` as a share-based emptiness gate. `AdapterCentrifuge` returns held shares plus its six request counters, which mix share and asset units, so read it only as zero or non-zero.
 * **`resourceName(address resource)` → `string`**: display name of `resource`, for off-chain consumers. Not every resource keeps its name on itself (an ERC-7540 vault keeps it on its share token), so each adapter reads it from wherever its protocol exposes it. `AdapterCoreV1`, `AdapterFlux` and `AdapterFRV` return the resource's own ERC-20 `name()`; `AdapterCentrifuge` returns its share token's.
-* **`accrue(address resource)`** — settle `resource`'s own global interest state so a following `totalAssets` read prices the position at a fresh rate. Invoked via normal `call`, **not** delegatecall, and therefore carries no `onlyDelegateCall` guard: it mutates the resource's global index, not the holder's position. Only block-lazy adapters do real work — `AdapterCoreV1` calls the vToken's `accrueInterest()`; `AdapterFlux` and `AdapterFRV` are no-ops.
+* **`accrue(address resource)`** — settle `resource`'s own global interest state so a following `totalAssets` read prices the position at a fresh rate. Invoked via normal `call`, **not** delegatecall, and therefore carries no `onlyDelegateCall` guard: it mutates the resource's global index, not the holder's position. Only block-lazy adapters do real work — `AdapterCoreV1` calls the vToken's `accrueInterest()`; `AdapterFlux`, `AdapterFRV` and `AdapterCentrifuge` are no-ops.
 * **`validateRegistration(address resource)`** — reverts if `resource` fails a protocol-specific registration precondition.
 
 See [Interfaces](interfaces.md) for the full `IResourceAdapter` contract and its pre/post-conditions.

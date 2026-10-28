@@ -48,11 +48,12 @@ The optional per-resource deposit cap (Core & Flux only) lives in a separate `re
 
 Called once via the proxy:
 
-Core and Flux are the **same `YieldGroup` contract** behind different beacons, so they share one initializer; only the argument they pass for `blocksPerYear` differs. FRV is a separate contract with its own.
+Core and Flux are the **same `YieldGroup` contract** behind different beacons, so they share one initializer; only the argument they pass for `blocksPerYear` differs. FRV and Centrifuge are separate contracts with an initializer of their own.
 
 * **Core** — `initialize(address hub_, address asset_, uint256 blocksPerYear_, address acm_)`. Core annualises per-block supply rates, so it is deployed with the chain's `blocksPerYear` (**70,080,000** on BNB Chain, at roughly 0.45s per block).
 * **Flux** — the same `initialize(address hub_, address asset_, uint256 blocksPerYear_, address acm_)`, deployed with `blocksPerYear_ = 0`: `AdapterFlux` reads a pre-annualised APR from the Fluid `LendingResolver` and ignores the argument.
 * **FRV** — `initialize(address hub_, address asset_, address acm_)`. `YieldGroupFRV` passes `0` through to the shared base internally.
+* **Centrifuge** — `initialize(address hub_, address asset_, address acm_)`, the same shape as FRV.
 
 Each validates `asset_ == Hub.asset()` (`HubAssetMismatch` otherwise).
 
@@ -62,7 +63,7 @@ Each validates `asset_ == Hub.asset()` (`HubAssetMismatch` otherwise).
 * **`removeResource(address resource)`** — remove a resource. Requires a zero *raw receipt-token* balance (`ResourceHasBalance` otherwise) — the share-based check prevents a sub-unit residual from being rounded to zero and orphaning tokens. Also removes it from both inner queues via swap-and-pop, **and clears its per-resource cap**: `addResource` never writes that mapping and the cap setters are registered-only, so leaving it set would let a later re-add of the same address silently inherit a stale value. A remove / re-add cycle therefore starts from *unbounded*, and the cap must be set again. Emits `ResourceRemoved`.
 
 * **`updateResourceAdapter(address resource, address adapter)`** — repoint a registered resource at a different adapter, without unwinding the position. Revalidates the new adapter the same way `addResource` does. Emits `ResourceAdapterUpdated`.
-* **`forceRemoveResource(address resource)`** — FRV only. Evict a resource whose vault has become unusable, abandoning any shares still held rather than blocking on the balance gate. Reverts `ResourceHasValue` if the position is still worth recovering. Emits `ResourceForceRemoved`.
+* **`forceRemoveResource(address resource)`** — FRV and Centrifuge only. On FRV, evict a resource whose vault has become unusable, abandoning any shares still held rather than blocking on the balance gate. Reverts `ResourceHasValue` if the position is still worth recovering. Emits `ResourceForceRemoved`.
 
 The same stateless adapter address may be reused across any number of resources in the same protocol family.
 
@@ -90,17 +91,17 @@ An optional per-resource deposit cap limits how much underlying *this YieldGroup
 * **`raiseResourceCap(address resource, uint256 newCap)`** — loosen (Operator-accessible, like `lowerResourceCap`, so the Operator can open headroom ahead of a rebalance without a governance round). `newCap == 0` means unbounded, so raising to `0` removes the cap; the new value must be strictly looser (`NotIncreasing` otherwise). Emits `ResourceCapRaised`.
 * **`lowerResourceCap(address resource, uint256 newCap)`** — tighten (Operator-accessible). Must be strictly tighter and non-zero (`NotDecreasing` otherwise). Lowering below the current balance simply stops new deposits; it never forces a withdrawal. Emits `ResourceCapLowered`.
 
-`YieldGroupFRV` does not expose these — FRV capacity comes entirely from the vault's own cap and its Fundraising-only rule.
+`YieldGroupFRV` and `YieldGroupCentrifuge` do not expose these. FRV capacity comes entirely from the vault's own cap and its Fundraising-only rule; Centrifuge capacity comes from the vault, and is zero while a deposit cancel is pending.
 
 ## Family-specific behavior
 
-|                          | **Core** (`YieldGroup`)                                  | **Flux** (`YieldGroup`)                  | **`YieldGroupFRV`**                            |
-| ------------------------ | -------------------------------------------------------- | ---------------------------------------- | ---------------------------------------------- |
-| Resource                 | Venus Core vToken                                        | Fluid fToken                             | Fixed-Rate Vault share                         |
-| Redeem-time pool fee     | grossed-up for Comptroller `treasuryPercent` if enabled; registration blocked while non-zero | none | none |
-| Spot APY source          | `supplyRatePerBlock` × `blocksPerYear`                   | Fluid `LendingResolver` (pre-annualised) | vault `fixedAPY` (Fundraising / Lock only)     |
-| Per-resource deposit cap | optional                                                 | optional (primary control — Fluid `maxDeposit` is effectively unbounded) | not applicable |
-| Lifecycle                | none                                                     | none                                     | 11-state machine (below)                       |
+|                          | **Core** (`YieldGroup`)                                  | **Flux** (`YieldGroup`)                  | **`YieldGroupFRV`**                            | **`YieldGroupCentrifuge`**                     |
+| ------------------------ | -------------------------------------------------------- | ---------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| Resource                 | Venus Core vToken                                        | Fluid fToken                             | Fixed-Rate Vault share                         | Centrifuge ERC-7540 vault share                |
+| Redeem-time pool fee     | grossed-up for Comptroller `treasuryPercent` if enabled; registration blocked while non-zero | none | none | none |
+| Spot APY source          | `supplyRatePerBlock` × `blocksPerYear`                   | Fluid `LendingResolver` (pre-annualised) | vault `fixedAPY` net of `reserveFactor` (Fundraising / Lock only) | published with `setSpotAPYBps`                 |
+| Per-resource deposit cap | optional                                                 | optional (primary control — Fluid `maxDeposit` is effectively unbounded) | not applicable | not applicable |
+| Lifecycle                | none                                                     | none                                     | 11-state machine (below)                       | async request and claim (below)                |
 
 ## FRV lifecycle
 
@@ -119,7 +120,7 @@ The full `FRVVaultState` enum (values 0–10): `WaitingForMargin`, `MarginDeposi
 
 A Centrifuge vault is **asynchronous**: the Hub moves assets straight away, but the fund manager fills a deposit or a redemption later, at a price Centrifuge publishes. `YieldGroupCentrifuge` adds the steps that sit between the request and the result.
 
-1. **Deposit.** The Hub's deposit becomes a `requestDeposit` to the vault. While it is pending, its value counts at face.
+1. **Deposit.** The Operator moves capital in with a reallocation into the group (`depositResource`), which becomes a `requestDeposit` to the vault. A lender deposit never lands here: no Centrifuge Source is in an outer deposit queue, and both have an empty inner deposit queue. While a request is pending, its value counts at face.
 2. **Claim the shares.** Once the fund manager fills the request, a Keeper calls `claimDeposit(resource)` to collect the issued shares into the group.
 3. **Redeem.** The Operator calls `requestRedeem(resource, shares)` to put shares up for redemption. Nothing becomes withdrawable until it is filled.
 4. **Claim the assets.** A Keeper calls `claimRedeem(resource)` to collect the settled assets into the group as idle balance. A targeted `withdrawResource` can also pull settled assets directly.
@@ -128,8 +129,8 @@ A pending request can be cancelled with `cancelDepositRequest` or `cancelRedeemR
 
 What the group holds in a vault is valued as the held shares, plus every pending and claimable amount: amounts in assets at face, amounts in shares at the vault's share price. `accrue()` claims nothing; it only re-anchors the NAV band below.
 
-* **APY is published, not read.** Centrifuge puts no rate on chain, so governance sets each vault's rate with `setSpotAPYBps(resource, apyBps)` (Operator or governance). Left unset, the vault reports zero.
-* **Writing off a vault.** If a position can never be claimed, `forceRemoveResource(resource)` drops the vault and writes its value off. It is governance-only and reverts `HubNotPaused` unless the Hub is paused.
+* **APY is published, not read.** Centrifuge puts no rate on chain, so each vault's rate is set with `setSpotAPYBps(resource, apyBps)`, by governance, the Operator or the Guardian. Left unset, the vault reports zero.
+* **Writing off a vault.** If a position can never be claimed, `forceRemoveResource(resource)` drops the vault and writes its value off. Governance and the Guardian hold it, and it reverts `HubNotPaused` unless the Hub is paused.
 * **Investor lists.** Each fund only accepts addresses on its investor list, so Centrifuge has to add a Source before any capital can be allocated to it. Both live Sources have been added and both hold capital.
 
 ### NAV band
@@ -141,11 +142,11 @@ Every term of a Centrifuge position's value is computed off chain and published 
 * At most once per `interval`, the band re-anchors on the clamped reading. A wrong value can therefore move the reported value by at most one gap per interval, which gives time to notice it.
 * Above the band, an inflated value is reported lower, so nobody withdraws against value that is not there. Below the band, a real loss is reported higher at first, and is marked down one gap per interval rather than all at once.
 
-Governance configures it with `setNavGuardRate(resource, driftBps, upGapBps, downGapBps, interval, capEnabled, floorEnabled)`, switches either side on or off with `setNavGuardEnabled(resource, capEnabled, floorEnabled)`, and forces a new centre with `setNavGuardSnapshot(resource, snapshot, timestamp)`, for example to accept a real markdown. Read the band with `navGuard(resource)` and its live state with `navGuardStatus(resource)`.
+Governance, the Operator and the Guardian configure it with `setNavGuardRate(resource, driftBps, upGapBps, downGapBps, interval, capEnabled, floorEnabled)`, switches either side on or off with `setNavGuardEnabled(resource, capEnabled, floorEnabled)`, and forces a new centre with `setNavGuardSnapshot(resource, snapshot, timestamp)`, for example to accept a real markdown. Read the band with `navGuard(resource)` and its live state with `navGuardStatus(resource)`.
 
 The band only limits how fast a wrong value moves the share price. A separate keeper check pauses the whole Hub when the value moves past a set threshold. Its contract is deployed on BNB Chain but not yet armed: see [Automatic pause on a NAV break](hub.md#automatic-pause-on-a-nav-break).
 
-Live values, identical on the USDT and USDC Sources. VIP-661 set the bands and a first pair of APYs on USDT; VIP-666 set the USDC bands and moved both Sources to the APYs below, down from 3.37% and 5.29%.
+Live values, identical on the USDT and USDC Sources. VIP-661 set the bands and a first pair of APYs on USDT; VIP-666 set the USDC bands and APYs, and moved the USDT Source down to the same APYs from 3.37% and 5.29%.
 
 | Vault | Drift | Band up | Band down | Re-anchor | Published APY |
 | --- | --- | --- | --- | --- | --- |
@@ -203,7 +204,7 @@ Every YieldGroup emits the shared set below. FRV and Centrifuge omit the three `
 | `HubNotPaused`                 | A Centrifuge `forceRemoveResource` was called while the Hub was unpaused (Centrifuge only) |
 | `NavGuardNotConfigured`        | `setNavGuardEnabled` was asked to arm a side of a band `setNavGuardRate` never configured (Centrifuge only) |
 | `InvalidNavGuardRate`          | `setNavGuardRate` got a zero `interval`, or a gap of 100% or more (Centrifuge only) |
-| `InvalidNavGuardSnapshot`      | A `setNavGuardSnapshot` argument was out of range (Centrifuge only) |
+| `InvalidNavGuardSnapshot`      | `setNavGuardSnapshot` was called on a band never configured, or with a zero snapshot, or a zero or future timestamp (Centrifuge only) |
 | `NavGuardUnreadable`           | `setNavGuardRate` could not read what the resource is worth, so arming would centre the band at zero (Centrifuge only) |
 | `NavGuardCentreOverflow`       | A deposit would push a band's centre past `uint128`, so the deposit reverted (Centrifuge only) |
 | `ResourceHasValue`             | A force-removal target still holds value that would be abandoned      |
