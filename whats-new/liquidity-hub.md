@@ -16,7 +16,7 @@ The Hub is purely a routing layer. It does **not** modify the parameters or gove
 
 ### The yield families (Sources)
 
-A **Source** groups downstream products of the same kind behind one uniform interface. v1 ships three, with a fourth built:
+A **Source** groups downstream products of the same kind behind one uniform interface. v1 shipped three, and the fourth is live as well:
 
 | Source    | Underlying protocol         | What the Hub holds                      |
 | --------- | --------------------------- | --------------------------------------- |
@@ -25,9 +25,9 @@ A **Source** groups downstream products of the same kind behind one uniform inte
 | **FRV**   | Venus Fixed-Rate Vaults     | Fixed-Rate Vault shares (ERC-4626)      |
 | **Spoke** | Venus [hub-funded spoke pools](hub-funded-spoke-pools.md) | vTokens of the pool's liquidity side |
 
-The **Spoke** Source is what makes the Hub the funder of a hub-funded spoke pool: it supplies the borrowable side of an isolated pool that only the Hub is allowed to supply. It is written and tested but **not deployed** — no spoke pool exists yet for it to route into.
+The **Spoke** Source is what makes the Hub the funder of a hub-funded spoke pool: it supplies the borrowable side of an isolated pool that only the Hub is allowed to supply. It is live on BNB Chain, funding the `bStock index` spoke pool.
 
-At launch only **Core** and **Flux** hold a live product. The FRV Source is registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for these assets on BNB Chain yet, so it is wired to nothing and receives no capital until a follow-up proposal adds one. That follow-up, [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56), has since wired the Solv (Ceffu custody) fixed-rate vault into the USDT Hub and the Asseto CASH+ vault into the U Hub; the USDC Hub's FRV Source is still unwired.
+At launch only **Core** and **Flux** hold a live product. The FRV Source is registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for these assets on BNB Chain yet, so it is wired to nothing and receives no capital until a follow-up proposal adds one. That follow-up, [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56), has since wired the Solv (Ceffu custody) fixed-rate vault into the USDT Hub and the Asseto CASH+ vault into the U Hub; the USDC Hub's FRV Source is still unwired. Spoke has since gone live as well: [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56) wired it to the `bStock index` spoke pool, so the Spoke Source now carries a live product as well.
 
 The Source set is **governance-extensible**: new yield families can be added later without changing the Hub or the share token, because every Source is reached through the same interface.
 
@@ -48,7 +48,7 @@ Depositing into the Hub and putting the resulting [vhToken](../technical-referen
 * **Supplying collateral to a spoke pool.** In a [hub-funded spoke pool](hub-funded-spoke-pools.md) the protocol lends and users post the collateral, and enabling a market as collateral is a second transaction of its own. The gateway does both at once, across several markets and even several pools in one call.
 * **Withdrawing back to the wallet.** A Hub position can sit partly in the wallet and partly in the Core market. The gateway takes the wallet shares first, frees the rest from Core, and pays out the underlying in one call.
 
-The gateway has no proxy, holds no funds between calls, and can only ever act for the account that called it. It is written but not yet deployed, and each of its functions waits on a governance grant.
+The gateway has no proxy, holds no funds between calls, and can only ever act for the account that called it. It is live on BNB Chain, and [VIP-672](https://app.venus.io/#/governance/proposal/672?chainId=56) made the governance grants its functions need.
 
 ### Operator rebalancing
 
@@ -74,6 +74,6 @@ At launch all three are set to **0%**. The machinery exists for governance to en
 
 ### Status
 
-The Liquidity Hub launches on **BNB Chain** with three supported assets — **USDT**, **USDC** and **U** — and more to follow. All fees are set to `0` at launch, the Operator role is held by a Venus operations multisig (the routine keeper), and a separate Guardian multisig holds pause rights with no timelock delay. Only **Core** and **Flux** carry a live product at launch: an FRV Source is registered on every Hub, but no Fixed-Rate Vault exists for these assets yet, so no capital routes to it until a follow-up proposal wires one. [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) has since wired fixed-rate vaults into the USDT and U Hubs (see above). Contract addresses are listed in the [technical reference](../technical-reference/reference-liquidity-hub/README.md#deployment).
+The Liquidity Hub launches on **BNB Chain** with three supported assets — **USDT**, **USDC** and **U** — and more to follow. All fees are set to `0` at launch, the Operator role is held by a Venus operations multisig (the routine keeper), and a separate Guardian multisig holds pause rights with no timelock delay. Only **Core** and **Flux** carry a live product at launch: an FRV Source is registered on every Hub, but no Fixed-Rate Vault exists for these assets yet, so no capital routes to it until a follow-up proposal wires one. [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) has since wired fixed-rate vaults into the USDT and U Hubs (see above), and VIP-669 and VIP-670 have since wired the Spoke Source into the `bStock index` spoke pool. Contract addresses are listed in the [technical reference](../technical-reference/reference-liquidity-hub/README.md#deployment).
 
 For the contract-level architecture, flows, and full API, see the [Liquidity Hub technical reference](../technical-reference/reference-liquidity-hub/README.md).

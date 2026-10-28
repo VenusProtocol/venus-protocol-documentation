@@ -26,11 +26,11 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 | Deposit / withdraw call  | `mint` / `redeemUnderlying`         | `deposit` / `withdraw`                | `deposit` / `withdraw`                 | `mint` / `redeem` (by vToken count)              |
 | Spot APY source          | `supplyRatePerBlock` × `blocksPerYear` | Fluid `LendingResolver`            | vault `fixedAPY` (Fundraising / Lock)  | `supplyRatePerBlock` × the market's own `blocksOrSecondsPerYear` |
 | Who may supply           | anyone                              | anyone                                | anyone                                 | **allowlisted only** — the pool grants the YieldGroup address |
-| Valuation basis          | balance × exchange rate             | `previewRedeem`                       | lifecycle-aware linear accrual         | balance × exchange rate **excluding `badDebt`**  |
+| Valuation basis          | balance × exchange rate             | `previewRedeem`                       | lifecycle-aware linear accrual         | balance × exchange rate, `badDebt` included      |
 | Lifecycle constraint     | none                                | none                                  | 11-state machine                       | none                                             |
-| Wired at launch          | ✅ vToken registered                 | ✅ fToken registered                   | ❌ Source registered, no resource       | ❌ not deployed                                   |
+| Wired at launch          | ✅ vToken registered                 | ✅ fToken registered                   | ❌ Source registered, no resource       | ✅ deployed and funding a live spoke pool         |
 
-**Spoke is built but not deployed.** `AdapterSpokeV1` and the Spoke YieldGroup family exist in the codebase, but no `SpokeComptroller` is deployed on any network and no spoke market has been listed, so there is nothing to register. Onboarding one is a two-step governance action, in this order: `setAllowedSupplier(vToken, <SpokeSource>, true)` on the spoke pool, **then** `addResource` on the Hub — the adapter rejects a registration the market would not accept, and also rejects a market its own Comptroller does not list.
+**Spoke is deployed and live.** `AdapterSpokeV1`, the Spoke beacon and the three per-asset Spoke Sources are deployed on BNB Chain, and the `bStock index` spoke pool has been funded since [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56). Onboarding a further market is a two-step governance action, in this order: `setAllowedSupplier(vToken, <SpokeSource>, true)` on the spoke pool, **then** `addResource` on the Hub — the adapter rejects a registration the market would not accept, and also rejects a market its own Comptroller does not list.
 
 **FRV carries no resource at launch.** An FRV Source is deployed and registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for USDT / USDC / U on BNB Chain yet, so the onboarding proposal calls `addResource` on the Core and Flux Sources only. FRV is therefore kept out of the outer deposit queue entirely and placed **last** in the outer withdraw queue — not because it can serve withdrawals, but because `setOuterWithdrawQueue` rejects a queue that omits a registered Source with non-zero `totalAssets()`, and that total counts idle balance: omitting FRV would let a 1-wei donation permanently block the Operator from reordering the queue. That follow-up was [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56): it registered the Solv (Ceffu custody) vault on the USDT Hub's FRV Source and the Asseto CASH+ vault on the U Hub's FRV Source, and raised their FRV percentage caps from 30% to 50% of TVL; the USDC Hub's FRV Source remains unwired. FRV is still absent from the outer deposit queue, so it is filled only by the Operator's `reallocate`.
 
@@ -83,12 +83,14 @@ Supporting contracts:
 | `CoreBeacon` | `0x195a0F1BCF73C3Beb609a1271E8E08b8E4c098C6` | Core-family YieldGroups |
 | `FluxBeacon` | `0x9bb6a3Ac5955fA8dc236560CA9D51483d1d79f15` | Flux-family YieldGroups |
 | `FRVBeacon` | `0x8A5EceDD726246682402430b9B24c19bF61B7f1d` | FRV-family YieldGroups |
+| `SpokeBeacon` | `0x652AAa1CD21f47a92D04680C1d9Bf99cC1Fb8975` | Spoke-family YieldGroups |
 | `AdapterCoreV1` | `0x4E514a0C7aB9d140eE204dfA0017574270D92944` | Shared singleton |
 | `AdapterFlux` | `0xA81bDf813A428053E764C34Bc679b3E4d0807be3` | Shared singleton |
 | `AdapterFRV` | `0x1FA0365bDd603452CE96BE3c0e12Db5515a35902` | Shared singleton |
+| `AdapterSpokeV1` | `0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69` | Shared singleton |
 | `DefaultProxyAdmin` | `0x6beb6D2695B67FEb73ad4f172E8E2975497187e4` | Venus's shared `ProxyAdmin`, administering the registry's `TransparentUpgradeableProxy`; governance-owned |
 
-Each asset also has three YieldGroup proxies (`CoreSource_*`, `FluxSource_*`, `FRVSource_*`); resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding.
+Each asset also has one YieldGroup proxy per family wired to it, named `<Family>Source_<asset>`; resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding.
 
 **Launch parameters.** Identical across all three assets, which are all 18-decimal:
 

@@ -2,18 +2,18 @@
 
 A **YieldGroup** is a Source implementation: it aggregates one or more *resources* of a single protocol family behind the uniform [`IYieldGroupBase`](interfaces.md) boundary the Hub depends on. Each YieldGroup is deployed per asset as a beacon proxy and owns its own inner deposit / withdraw queues, per-resource registry, and per-resource pause flags.
 
-There are **two YieldGroup contracts**, deployed as four families:
+The YieldGroup layer is deployed as one family per protocol type:
 
 * **Core** — the generic `YieldGroup` contract behind the Core beacon, registering Venus Core-pool vTokens (`mint` / `redeemUnderlying`) via `AdapterCoreV1`, initialised with the chain's `blocksPerYear`.
 * **Flux** — the *same* `YieldGroup` contract behind the Flux beacon, registering Fluid Lending fTokens (ERC-4626 shares) via `AdapterFlux`, initialised with `blocksPerYear = 0`.
-* **Spoke** — the *same* `YieldGroup` contract behind the Spoke beacon, registering the liquidity side of [hub-funded spoke pools](../reference-isolated-pools/spoke/README.md) via `AdapterSpokeV1`, also initialised with `blocksPerYear = 0` (each market carries its own annualiser). Built but **not yet deployed**.
+* **Spoke** — the *same* `YieldGroup` contract behind the Spoke beacon, registering the liquidity side of [hub-funded spoke pools](../reference-isolated-pools/spoke/README.md) via `AdapterSpokeV1`, also initialised with `blocksPerYear = 0` (each market carries its own annualiser).
 * **`YieldGroupFRV`** — a separate contract, for Venus Fixed-Rate Vaults (ERC-4626 with an 11-state lifecycle).
 
 "Core", "Flux" and "Spoke" are **deployment identities, not contract names** — which adapter, resources, caps and `blocksPerYear` governance wires into the proxy is the only difference. There is no `YieldGroupCore`, `YieldGroupFlux` or `YieldGroupSpoke` type to import.
 
-All four share the same Hub-facing surface and the same registry / queue / pause admin surface; they differ only in the protocol-specific behavior delegated to their [adapter](adapters.md) and in a few family-specific rules noted below.
+All of them share the same Hub-facing surface and the same registry / queue / pause admin surface; they differ only in the protocol-specific behavior delegated to their [adapter](adapters.md) and in a few family-specific rules noted below.
 
-> **Terminology.** The PRD calls this layer a *Source*; the code names the contract a *YieldGroup* and the Hub-facing interface `IYieldGroupBase`. There is no `ISource` type — "Source" survives in the Solidity only as deployment-artifact aliases (`CoreSource_USDT`, `FluxSource_USDC`, `FRVSource_U`). A registered resource is the PRD's *Product / Vault*.
+> **Terminology.** The PRD calls this layer a *Source*; the code names the contract a *YieldGroup* and the Hub-facing interface `IYieldGroupBase`. There is no `ISource` type — "Source" survives in the Solidity only as deployment-artifact aliases (`CoreSource_USDT`, `FluxSource_USDC`, `FRVSource_U`, `SpokeSource_USDT`). A registered resource is the PRD's *Product / Vault*.
 
 ## Hub-facing surface (`IYieldGroupBase`)
 
@@ -58,7 +58,7 @@ Each validates `asset_ == Hub.asset()` (`HubAssetMismatch` otherwise).
 
 ## Registry (governance)
 
-* **`addResource(address resource, address adapter)`** — register a resource alongside the stateless adapter that handles its ABI. Validates that both are contracts (`ResourceNotContract` / `AdapterNotContract`) and that `adapter.asset(resource)` matches the YieldGroup's underlying (`ResourceAssetMismatch`). It then calls `adapter.validateRegistration(resource)`, which is where family-specific preconditions live: `AdapterCoreV1` rejects a vToken whose Comptroller charges a non-zero `treasuryPercent`, while `AdapterFlux` and `AdapterFRV` implement it as a no-op. Does not auto-append to either inner queue. Reverts `ResourceAlreadyRegistered` if present. Emits `ResourceAdded`.
+* **`addResource(address resource, address adapter)`** — register a resource alongside the stateless adapter that handles its ABI. Validates that both are contracts (`ResourceNotContract` / `AdapterNotContract`) and that `adapter.asset(resource)` matches the YieldGroup's underlying (`ResourceAssetMismatch`). It then calls `adapter.validateRegistration(resource)`, which is where family-specific preconditions live: `AdapterCoreV1` rejects a vToken whose Comptroller charges a non-zero `treasuryPercent`, and `AdapterSpokeV1` rejects a market its own Comptroller does not list (`MarketNotListed`) or a market whose supply allowlist is enabled without this YieldGroup on it (`SupplyNotAllowed`), while `AdapterFlux` and `AdapterFRV` implement it as a no-op. Does not auto-append to either inner queue. Reverts `ResourceAlreadyRegistered` if present. Emits `ResourceAdded`.
 * **`removeResource(address resource)`** — remove a resource. Requires a zero *raw receipt-token* balance (`ResourceHasBalance` otherwise) — the share-based check prevents a sub-unit residual from being rounded to zero and orphaning tokens. Also removes it from both inner queues via swap-and-pop, **and clears its per-resource cap**: `addResource` never writes that mapping and the cap setters are registered-only, so leaving it set would let a later re-add of the same address silently inherit a stale value. A remove / re-add cycle therefore starts from *unbounded*, and the cap must be set again. Emits `ResourceRemoved`.
 
 * **`updateResourceAdapter(address resource, address adapter)`** — repoint a registered resource at a different adapter, without unwinding the position. Revalidates the new adapter the same way `addResource` does. Emits `ResourceAdapterUpdated`.
@@ -117,7 +117,7 @@ The full `FRVVaultState` enum (values 0–10): `WaitingForMargin`, `MarginDeposi
 
 ## Events
 
-All three YieldGroups emit the shared set below. FRV omits the three `IYieldGroup`-only events (`ResourceCapRaised`, `ResourceCapLowered`, `BlocksPerYearSet`) and is the only one that emits `ResourceForceRemoved`:
+Every YieldGroup emits the shared set below. FRV omits the three `IYieldGroup`-only events (`ResourceCapRaised`, `ResourceCapLowered`, `BlocksPerYearSet`) and is the only one that emits `ResourceForceRemoved`:
 
 | Event                  | Parameters             | Description                                       |
 | ---------------------- | ---------------------- | ------------------------------------------------- |
@@ -168,11 +168,11 @@ All three YieldGroups emit the shared set below. FRV omits the three `IYieldGrou
 
 Per YieldGroup, the role is `keccak256(yieldGroupAddress, roleString)`.
 
-Shared by all three families (8):
+Shared by all families (8):
 
 `addResource(address,address)`, `removeResource(address)`, `updateResourceAdapter(address,address)`, `setInnerDepositQueue(address[])`, `setInnerWithdrawQueue(address[])`, `pauseResource(address)`, `unpauseResource(address)`, `sweep(address,address)`.
 
-Core and Flux add three, for **11** in total:
+Core, Flux and Spoke add three, for **11** in total:
 
 `raiseResourceCap(address,uint256)`, `lowerResourceCap(address,uint256)`, `setBlocksPerYear(uint256)`.
 
