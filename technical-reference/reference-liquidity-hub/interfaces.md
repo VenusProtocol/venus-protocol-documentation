@@ -15,6 +15,7 @@ Two leaf interfaces extend it with family-specific surface:
 
 * **`IYieldGroup`** — the per-resource deposit cap setters and `setBlocksPerYear`, implemented by the Core and Flux deployments.
 * **`IYieldGroupFRV`** — `forceRemoveResource`, implemented by the FRV deployment.
+* **`IYieldGroupCentrifuge`** (`IYieldGroupBase, INavGuard`): the asynchronous request and claim surface (`requestRedeem`, `cancelDepositRequest`, `cancelRedeemRequest`, the four claims), `forceRemoveResource` with its own payload, and `setSpotAPYBps` / `resourceSpotAPYBps` because a fund publishes its yield rather than exposing a rate to read. See [Centrifuge lifecycle](yield-groups.md#centrifuge-lifecycle).
 
 > There is no `ISource` type in the code. Earlier drafts of this page used that name; the Solidity uses *YieldGroup* end to end.
 
@@ -62,6 +63,8 @@ function spotAPYBps() external view returns (uint64 apyBps);
 ## IResourceAdapter
 
 The boundary between a YieldGroup and a specific yield-protocol ABI. A single deployment of each implementation is shared across every YieldGroup that registers a resource of the matching family.
+
+`IAdapterCentrifuge is IResourceAdapter` extends it for the async family: the request and claim calls the YieldGroup forwards, plus `depositRoom` and `pricePerShare`. The adapters themselves are on the [Adapters](adapters.md) page.
 
 ### Dispatch model
 
@@ -111,3 +114,19 @@ function validateRegistration(address resource) external view;
 * **`receiptBalance`** — raw receipt-token balance (vToken / fToken / FRV shares), NOT underlying value. Used by `removeResource` as a share-based emptiness gate so a value-based check can't round a small balance to zero and orphan tokens.
 * **`resourceName`**: display name of `resource`, for off-chain consumers. Each adapter reads it from wherever its protocol exposes it, since not every resource is an ERC-20 with its own `name()`.
 * **`validateRegistration`** — reverts if `resource` fails a protocol-specific precondition. `AdapterCoreV1` rejects a vToken whose Comptroller charges a non-zero `treasuryPercent`; `AdapterCentrifuge` rejects a vault that does not expose the share token, request manager, investment state and price reads it needs; `AdapterFlux` and `AdapterFRV` implement it as a no-op.
+
+## Interfaces documented elsewhere
+
+Two more interfaces ship with the package but describe contracts outside the Hub ↔ YieldGroup ↔ adapter chain, so they are documented where that contract is:
+
+* **`INavGuard`**: the per-resource NAV band, with the `NavBand` struct, `setNavGuardRate` / `setNavGuardSnapshot` / `setNavGuardEnabled`, and the `navGuard` / `navGuardStatus` views. Folded into `IYieldGroupCentrifuge` and described under [NAV band](yield-groups.md#nav-band).
+* **`IHubLens`**: the read-only capacity and APY lens. It is not a boundary: `HubLens` is a standalone periphery contract that takes the Hub as a parameter, and nothing on chain points at it.
+
+```solidity
+function maxDeposit(address hub) external view returns (uint256 assets);
+function maxMint(address hub) external view returns (uint256 shares);
+function depositCapacityBreakdown(address hub) external view returns (address[] memory sources, uint256[] memory capacities);
+function spotAPYBps(address hub) external view returns (uint64 apyBps);
+```
+
+What each one returns, and how the accrual margin and the paused cases behave, is on [Sizing a deposit](hub.md#sizing-a-deposit). `IHubLens.sol` is not in a published `@venusprotocol/liquidity-hub` release yet.

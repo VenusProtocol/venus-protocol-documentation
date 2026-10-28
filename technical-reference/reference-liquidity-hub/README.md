@@ -41,7 +41,7 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 * [**Hub**](hub.md) — the ERC-4626 entry point: routing flows, dual caps, per-tx withdrawal cap, fees, multi-level pause, Operator reallocation, and the full Solidity API.
 * [**Yield Groups**](yield-groups.md): `YieldGroup` (the generic router, deployed twice: once as the Core family, once as Flux) `YieldGroupFRV` and `YieldGroupCentrifuge`: the `IYieldGroupBase` implementations, per-resource registry / queues / caps, the FRV lifecycle, and the Centrifuge lifecycle and NAV band.
 * [**Adapters**](adapters.md): `AdapterCoreV1`, `AdapterFlux`, `AdapterFRV`, `AdapterCentrifuge`, the stateless, delegatecall-dispatched protocol translators.
-* [**Interfaces**](interfaces.md) — `IYieldGroupBase` (with its family extensions `IYieldGroup` and `IYieldGroupFRV`) and `IResourceAdapter`, the boundary contracts.
+* [**Interfaces**](interfaces.md) — `IYieldGroupBase` (with its family extensions `IYieldGroup`, `IYieldGroupFRV` and `IYieldGroupCentrifuge`) and `IResourceAdapter`, the boundary contracts, plus where `INavGuard` and `IHubLens` are documented.
 * **`Migrator`** — a stateless, permissionless, non-upgradeable helper for one-click migration of a Venus Core position into a Hub (`migrateFromCore` / `migrateFromCoreBNB`).
 * **`HubLens`** — a stateless, unowned, non-upgradeable read-only helper. The Hub does not compute a deposit ceiling, so `HubLens` is where a frontend or an integrator reads one: `maxDeposit(hub)`, `maxMint(hub)`, `depositCapacityBreakdown(hub)` and the blended `spotAPYBps(hub)`. Every function takes the Hub as a parameter, so one deployment serves every Hub — see [Sizing a deposit](hub.md#sizing-a-deposit).
 
