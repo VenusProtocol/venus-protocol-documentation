@@ -33,7 +33,7 @@ USDT, USDC and U are the liquidity side, with collateral factor `0`. QQQB and SP
 
 * SpokePoolLens: [`0x475f6A963BDE18fD579F50598c514aE082405A9b`](https://bscscan.com/address/0x475f6A963BDE18fD579F50598c514aE082405A9b)
 
-## BNB Chain Testnet
+## BNB Chain Testnet (Test-only)
 
 A parallel deployment exists for integration testing. It is **not a faithful mirror of mainnet**: the pool names, the market set and the collateral configuration all differ. Query `getAllPools()` on the registry rather than assuming the mainnet shape.
 
@@ -50,7 +50,7 @@ The second pool was stood up for QA scenarios and has no deployment artifact in 
 
 ### Markets
 
-The markets below belong to the Hub-funded spoke pool.
+The markets below belong to the hub-funded spoke pool. Only vUSDT\_HubSpoke and vUSDC\_HubSpoke have a deployment artifact in the repo; vTSLAB\_HubSpoke, vSPCXB\_HubSpoke and vNVDAB\_HubSpoke do not, so their addresses come from the chain.
 
 * vUSDT_HubSpoke: [`0xC88bAF0bA49a98F15A00182752f6d10bd3932F6a`](https://testnet.bscscan.com/address/0xC88bAF0bA49a98F15A00182752f6d10bd3932F6a)
 * vUSDC_HubSpoke: [`0xD05514217FD359659aE7da7740e79C11947eBB32`](https://testnet.bscscan.com/address/0xD05514217FD359659aE7da7740e79C11947eBB32)
