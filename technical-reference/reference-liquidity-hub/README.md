@@ -56,7 +56,7 @@ Routing is three-tiered. The Hub depends only on the `IYieldGroupBase` interface
 
 ## Deployment
 
-The Hub uses a **beacon-proxy model**: one `UpgradeableBeacon` per family per chain (Hub, Core, FRV, Flux, and Spoke once deployed), each owned by governance — upgrading a beacon upgrades every vault of that family atomically; per-asset instances are beacon proxies. Deploy scripts only deploy and initialize the proxies; **ACM wiring, `addYieldGroup` / `addResource`, and queue configuration are separate governance (ACM-gated) actions**.
+The Hub uses a **beacon-proxy model**: one `UpgradeableBeacon` per family per chain (Hub, Core, FRV, Flux and Spoke), each owned by governance — upgrading a beacon upgrades every vault of that family atomically; per-asset instances are beacon proxies. Deploy scripts only deploy and initialize the proxies; **ACM wiring, `addYieldGroup` / `addResource`, and queue configuration are separate governance (ACM-gated) actions**.
 
 `HubRegistry` is the exception: it is a chain-level singleton behind a **`TransparentUpgradeableProxy`**, not a beacon proxy, so it is upgraded independently of every Hub. On BNB Chain mainnet that proxy is administered by Venus's shared `DefaultProxyAdmin`, the same one that administers the core pool and isolated pools; the BSC testnet deployment predates that decision and still carries a registry-specific `ProxyAdmin`.
 
@@ -84,9 +84,9 @@ Supporting contracts:
 | `FluxBeacon` | `0x9bb6a3Ac5955fA8dc236560CA9D51483d1d79f15` | Flux-family YieldGroups |
 | `FRVBeacon` | `0x8A5EceDD726246682402430b9B24c19bF61B7f1d` | FRV-family YieldGroups |
 | `SpokeBeacon` | `0x652AAa1CD21f47a92D04680C1d9Bf99cC1Fb8975` | Spoke-family YieldGroups |
-| `AdapterCoreV1` | `0x4E514a0C7aB9d140eE204dfA0017574270D92944` | Shared singleton |
-| `AdapterFlux` | `0xA81bDf813A428053E764C34Bc679b3E4d0807be3` | Shared singleton |
-| `AdapterFRV` | `0x1FA0365bDd603452CE96BE3c0e12Db5515a35902` | Shared singleton |
+| `AdapterCoreV1` | `0xa061cC2F62BDa2D6bA53Fb98847aD9822DA085dd` | Shared singleton |
+| `AdapterFlux` | `0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404` | Shared singleton |
+| `AdapterFRV` | `0x1824caA965Ac05ae5C9C2819e045337e2cF5657c` | Shared singleton |
 | `AdapterSpokeV1` | `0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69` | Shared singleton |
 | `DefaultProxyAdmin` | `0x6beb6D2695B67FEb73ad4f172E8E2975497187e4` | Venus's shared `ProxyAdmin`, administering the registry's `TransparentUpgradeableProxy`; governance-owned |
 
@@ -134,7 +134,7 @@ A parallel deployment exists for integration testing. The USDT Hub below is the 
 **Testnet is not a faithful mirror of mainnet.** Four differences will break assumptions carried over from a testnet harness:
 
 * The share token is named `Vault Share` / **`vSHARE`**, a placeholder — not the `Venus Hub <asset>` / `vh<asset>` pair mainnet uses.
-* **FRV is fully wired on testnet**: a Fixed-Rate Vault instance exists and is registered as a resource, and all three Sources sit in both outer queues. On mainnet the FRV Source has no resource at all.
+* **FRV is fully wired on testnet**: a Fixed-Rate Vault instance exists and is registered as a resource, and the FRV Source sits in both outer queues. On mainnet only the USDC Hub's FRV Source has no resource.
 * Caps are effectively unbounded (`type(uint128).max` absolute, percentage dimension disabled) rather than the tiered mainnet values, and the per-transaction withdrawal cap is lower.
 * The registry proxy is administered by a registry-specific `HubRegistryProxyAdmin`, not the shared `DefaultProxyAdmin` mainnet uses.
 
