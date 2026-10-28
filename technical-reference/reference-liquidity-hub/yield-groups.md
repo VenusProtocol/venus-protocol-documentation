@@ -201,10 +201,10 @@ Every YieldGroup emits the shared set below. FRV and Centrifuge omit the three `
 | `ResourceBelowMinimumDeposit`  | An FRV targeted deposit was below `minSupplierDeposit` and not the residual tail (FRV only) |
 | `ZeroShares`                   | A Centrifuge `requestRedeem` was called with zero shares (Centrifuge only) |
 | `HubNotPaused`                 | A Centrifuge `forceRemoveResource` was called while the Hub was unpaused (Centrifuge only) |
-| `NavGuardNotConfigured`        | A band operation named a resource with no band set (Centrifuge only) |
-| `InvalidNavGuardRate`          | A `setNavGuardRate` argument was out of range (Centrifuge only) |
+| `NavGuardNotConfigured`        | `setNavGuardEnabled` was asked to arm a side of a band `setNavGuardRate` never configured (Centrifuge only) |
+| `InvalidNavGuardRate`          | `setNavGuardRate` got a zero `interval`, or a gap of 100% or more (Centrifuge only) |
 | `InvalidNavGuardSnapshot`      | A `setNavGuardSnapshot` argument was out of range (Centrifuge only) |
-| `NavGuardUnreadable`           | The band could not read the resource's value (Centrifuge only) |
+| `NavGuardUnreadable`           | `setNavGuardRate` could not read what the resource is worth, so arming would centre the band at zero (Centrifuge only) |
 | `NavGuardCentreOverflow`       | A deposit would push a band's centre past `uint128`, so the deposit reverted (Centrifuge only) |
 | `ResourceHasValue`             | A force-removal target still holds value that would be abandoned      |
 | `SweepProtectedAsset`          | `sweep` called with the YieldGroup's own underlying                   |
