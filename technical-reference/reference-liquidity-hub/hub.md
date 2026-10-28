@@ -100,18 +100,24 @@ The optional **per-resource deposit cap** (Core & Flux) binds one level down, in
 The real ceiling lives on **`HubLens`**, a stateless, unowned, non-upgradeable periphery contract. It takes the Hub as a parameter, so a single deployment serves every Hub:
 
 ```solidity
-import { IHubLens } from "@venusprotocol/liquidity-hub/contracts/interfaces/IHubLens.sol";
+// IHubLens is not in a published @venusprotocol/liquidity-hub release yet.
+// Declare what you call, or take the full interface from the deployed contract.
+interface IHubLens {
+    function maxDeposit(address hub) external view returns (uint256 assets);
+}
 
 uint256 room = IHubLens(lens).maxDeposit(hub);   // 0 while the Hub is paused
 ```
 
 The figure is priced against the TVL the deposit itself produces, because the cascade prices the percentage caps there too. Each Source's room is then trimmed by **0.01% of its mark**, to cover the interest the deposit settles on its way in before caps are priced. So `hub.deposit(room, receiver)` fits in the ordinary case, but it is a margin and not a proof: an accrual larger than 0.01% between the read and the deposit reverts rather than over-filling a cap. `maxMint` carries that margin twice, once through `maxDeposit` and once on the share price the mint is charged at.
 
+A floor changes how the figure is produced. When any resource in a Source's inner deposit queue carries a minimum deposit, today only an FRV vault's `minSupplierDeposit`, `HubLens` stops solving in closed form and dry-runs the cascade instead, offering each floored Source its room candidates largest first and keeping the first amount that routes in full. That answer can sit well below the cap room, and it is `0` when every candidate leaves a leg under its floor, since such a deposit would revert rather than part-fill. `depositCapacityBreakdown` splits the same solved figure and `maxMint` runs the solve against the double-trimmed budget. Every FRV vault live on either network sets `minSupplierDeposit` to `0`, so the closed-form path is what answers today.
+
 `depositCapacityBreakdown(hub)` returns that same total split by the Source that would receive it, in deposit-queue order, so the parts sum to `maxDeposit`. It answers "where would my deposit land", not "how much could this Source take on its own" — a Source late in the queue reads `0` whenever the ones ahead of it absorb everything. Both arrays come back empty while the Hub is paused, and a Source that is paused, unregistered, view-reverting, or registered but absent from the deposit queue is left out of them entirely.
 
 `spotAPYBps(hub)` is on the same contract: a blended spot APY in BPS, the weighted average of each Source's own `spotAPYBps()` over the Hub's whole `totalAssets()`. It is not a sum. Idle assets are counted at 0% rather than dropped, whether they sit on the Hub or on a Source, so the figure is what a lender actually earns. A Source whose views revert contributes 0.
 
-If a deposit is sent anyway and does not fit, it reverts `HubCapacityExceeded(assets, placed)`, whose second argument is how much **would** have fit.
+If a deposit is sent anyway and does not fit, it reverts `HubCapacityExceeded(uint256 requested, uint256 maxAvailable)`, whose second argument is how much **would** have fit.
 
 `HubLens` inherits the Hub's fault split rather than escaping it. A Source whose quantity views revert contributes `0` and the rest of the figure still comes back; a Source whose `totalAssets()` reverts halts every `HubLens` function too, because `Hub.totalAssets()` halts first and a figure priced against a wrong NAV is worse than no figure.
 
@@ -141,7 +147,7 @@ Three independent scopes — a broader scope blocks everything beneath it; sibli
 ### Automatic pause on a NAV break
 
 {% hint style="info" %}
-**Deployed, not yet armed.** `HubNavDeviationSentinel` is live on BNB Chain at [`0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB`](https://bscscan.com/address/0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB) ([venus-periphery#75](https://github.com/VenusProtocol/venus-periphery/pull/75)), and on no other network. Nothing is watched yet: no resource is configured, no keeper is trusted, no ACM role has been granted on it, it is `Ownable2Step` with the Normal Timelock nominated but not yet accepted, and `EBrake` does not hold `pauseHub()` on any Hub. Every step below therefore describes the contract, not a live guard.
+**Deployed, not yet armed.** `HubNavDeviationSentinel` is live on BNB Chain at [`0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB`](https://bscscan.com/address/0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB) ([venus-periphery#75](https://github.com/VenusProtocol/venus-periphery/pull/75)), and on no other network. Nothing is watched yet: no resource is configured, no keeper is trusted, no ACM role has been granted on it, it is `Ownable2Step` with the Normal Timelock nominated but not yet accepted, and the pause itself cannot land yet: the live `EBrake` implementation [`0x2D36677EcA318c9536011D53aa752F042dd01DE8`](https://bscscan.com/address/0x2D36677EcA318c9536011D53aa752F042dd01DE8) predates the `pauseHub(address)` forwarder the sentinel calls, which shipped in `venus-periphery` v1.3.0. Every step below therefore describes the contract, not a live guard.
 {% endhint %}
 
 For a resource whose value is published by a counterparty, such as a Centrifuge vault, a keeper can pause the **whole Hub** when that value moves too far from the centre of the resource's [NAV band](yield-groups.md#nav-band). The check lives in `HubNavDeviationSentinel`, a contract of its own rather than part of [`DeviationSentinel`](../reference-periphery/deviation-sentinel.md), and the pause goes through [`EBrake`](../reference-periphery/ebrake.md), the same path as the existing price-deviation check.
