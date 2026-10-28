@@ -6,11 +6,11 @@ Storage layout for the [`SpokeComptroller`](spoke-comptroller.md) contract. A fo
 
 The two layouts are **not** interchangeable, in either direction.
 
-`SpokeComptroller` drops Prime, and rather than leaving a hole where `prime` sat, the fork reclaims that slot into the storage gap. Every variable declared after it therefore moves up by one: `approvedDelegates` here occupies the slot `ComptrollerStorage` gives to `prime`. Neither implementation can be swapped in under a pool running the other.
+`SpokeComptroller` drops Prime, and rather than leaving a hole where `prime` sat, the fork reclaims that slot into the storage gap. Every variable declared after it therefore moves up by one: `approvedDelegates` here occupies slot 214, the slot `ComptrollerStorage` gives to `prime`. Neither implementation can be swapped in under a pool running the other.
 
 That is fine in practice, because a spoke pool upgrades through its **own beacon** and never shares an implementation with a pooled `Comptroller`. `tests/hardhat/Spoke/storageLayout.ts` pins the slot list, the divergence, and the gap size.
 
-The contract occupies the same total number of slots as the one it was forked from: the 47 slots `ComptrollerStorage` reserves, plus the reclaimed Prime slot, minus the six slots the additions below take, leaves a `uint256[42]` gap.
+The contract occupies the same total number of slots as the one it was forked from: the 47 slots `ComptrollerStorage` reserves, plus the reclaimed Prime slot, minus the six slots the additions below take, leaves a `uint256[42]` gap. The six additions sit in slots 215 to 220 and the gap starts at slot 221 (`tests/hardhat/Spoke/storageLayout.ts`).
 
 ## What the fork adds
 
@@ -26,7 +26,7 @@ The contract occupies the same total number of slots as the one it was forked fr
 ## What the fork removes or renames
 
 * **`prime`** and its `NewPrimeToken` machinery are gone.
-* **`liquidationIncentiveMantissa`** is renamed to `_poolLiquidationIncentiveMantissa` and made `internal`. The public getter of the same name cannot be a plain public variable any more: it has to resolve the caller's market before answering, because `VToken` reads it on itself and needs the discount that prices its own collateral, not the pool-wide default. See [Per-market liquidation incentive](spoke-comptroller.md#per-market-liquidation-incentive).
+* **`liquidationIncentiveMantissa`** is renamed to `_poolLiquidationIncentiveMantissa` and made `internal`. The public getter of the same name cannot be a plain public variable any more: it has to resolve the caller's market before answering, because a `VToken` reads it on its Comptroller and needs the discount that prices its own collateral, not the pool-wide default. See [Per-market liquidation incentive](spoke-comptroller.md#per-market-liquidation-incentive).
 
 ## Solidity API
 
@@ -50,9 +50,11 @@ struct AccountLiquiditySnapshot {
 }
 ```
 
-`maxClearableDebt` is the field this fork adds: the largest borrow value the account's collateral can clear without leaving bad debt behind, computed as the sum over the account's collateral markets of `collateralValue / liquidationIncentive`, each market at its own incentive. It routes an under-threshold account between `liquidateAccount` and `healAccount`.
+`maxClearableDebt` is the field this fork adds: the largest borrow value the account's collateral can clear without leaving bad debt behind, computed as the sum over the account's collateral markets of `collateralValue / liquidationIncentive`, each market at its own incentive. It routes an account that is in shortfall and whose collateral is at or below `minLiquidatableCollateral` between `liquidateAccount` and `healAccount`.
 
-> `totalCollateral` and `maxClearableDebt` are only meaningful under the **liquidation-threshold** weighting, which is what every caller that reads them passes. Under the collateral factor, `totalCollateral` is derived from the deviation-bounded collateral price rather than spot, and `maxClearableDebt` is not accumulated at all and stays zero — and a zero `maxClearableDebt` would put `healAccount` on a repayment percentage of zero, forgiving the whole position as bad debt.
+> `totalCollateral` and `maxClearableDebt` are only meaningful under the **liquidation-threshold** weighting, which is what every caller that reads them passes.
+>
+> Under the collateral factor, `totalCollateral` is derived from the deviation-bounded collateral price rather than spot, and `maxClearableDebt` is not accumulated at all and stays zero. A zero `maxClearableDebt` would put `healAccount` on a repayment percentage of zero, forgiving the whole position as bad debt.
 
 ```solidity
 struct RewardSpeeds {
@@ -129,7 +131,7 @@ mapping(address => bool) isAllowedLiquidator
 
 ### liquidationIncentives
 
-Per-market discount a liquidator receives on the collateral it seizes, scaled by 1e18. Keyed by the collateral market, since that is what the discount prices. `0` means no market value has been set, in which case the pool-wide value applies — which is always at least `1e18` for a listed market, so callers may divide by the effective value.
+Per-market discount a liquidator receives on the collateral it seizes, scaled by 1e18. Keyed by the collateral market, since that is what the discount prices. `0` means no market value has been set, in which case the pool-wide value applies. That value is at least `MIN_POOL_LIQUIDATION_INCENTIVE_MANTISSA` (`1.05e18`) once the pool is registered, so callers may divide by the effective value.
 
 ```solidity
 mapping(address => uint256) liquidationIncentives
@@ -139,7 +141,7 @@ mapping(address => uint256) liquidationIncentives
 
 ### deviationBoundedOracle
 
-Oracle that bounds an asset's price against a recent window, so a deviating print cannot inflate borrowing capacity. Read only where the collateral factor weights the position; the liquidation-threshold paths stay on `oracle`, because they route liquidations. Zero until governance sets it, and while it is zero borrowing and redeeming fail closed.
+Oracle that bounds an asset's price against a recent window, so a deviating print cannot inflate borrowing capacity. Read only where the collateral factor weights the position; the liquidation-threshold paths stay on `oracle`, because they route liquidations. Zero until governance sets it, and while it is zero borrowing, redeeming, transferring and exiting a market fail closed.
 
 ```solidity
 contract IDeviationBoundedOracle deviationBoundedOracle
@@ -149,9 +151,12 @@ contract IDeviationBoundedOracle deviationBoundedOracle
 
 ### Constants
 
+All are `internal`.
+
 | Constant | Value | Purpose |
 | --- | --- | --- |
+| `NO_ERROR` | `0` | the success code in every `uint256` error return kept for Venus core tooling compatibility (`enterMarkets`, `exitMarket`, `unlistMarket`, the account liquidity getters) |
 | `MIN_CLOSE_FACTOR_MANTISSA` | `0.05e18` | lower bound on the close factor |
 | `MAX_CLOSE_FACTOR_MANTISSA` | `0.9e18` | upper bound on the close factor |
 | `MAX_COLLATERAL_FACTOR_MANTISSA` | `0.95e18` | upper bound on any market's collateral factor |
-| `MIN_POOL_LIQUIDATION_INCENTIVE_MANTISSA` | `1.05e18` | lower bound on the pool-wide liquidation incentive — `1e18` plus `VToken`'s `DEFAULT_PROTOCOL_SEIZE_SHARE_MANTISSA`, restated here because that constant is internal to `VToken`. This is the one constant the shared `ComptrollerStorage` does not have. |
+| `MIN_POOL_LIQUIDATION_INCENTIVE_MANTISSA` | `1.05e18` | lower bound on the pool-wide liquidation incentive: `1e18` plus `VToken`'s `DEFAULT_PROTOCOL_SEIZE_SHARE_MANTISSA`, restated here because that constant is internal to `VToken`. This is the one constant the shared `ComptrollerStorage` does not have. |

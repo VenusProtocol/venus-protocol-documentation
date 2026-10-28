@@ -16,9 +16,10 @@ Read [Hub-Funded Spoke Pools](README.md) first for why the fork exists and how a
 | Borrow-power pricing | `ResilientOracle` spot | [`DeviationBoundedOracle`](../../reference-oracle/deviation-bounded-oracle.md) bounded prices |
 | Entering a market | `enterMarkets` only, always for `msg.sender` | adds ACM-gated **`enterMarketForAccount`**, so a gateway contract can enable collateral for the supplier it minted to |
 | Prime | `prime` + `setPrimeToken`, seven `*Verify` hooks update Prime scores | removed; the seven hooks are no-ops |
+| `healAccount` pause checks | `SEIZE` (through `preSeizeHook`) and `REPAY` (through `healBorrow`) | adds `LIQUIDATE` in every market the account owes a nonzero balance in |
 | Revert reasons | mixture of custom errors and `require` strings | every revert is a custom error |
 
-Exit is never gated, in either implementation. Redeem, repay, withdraw and transfer are not access-controlled, and an account removed from an allowlist keeps the position it already holds and can still leave. Governance retains the usual market-level pause.
+Exit is never gated, in either implementation. Redeem, repay and transfer are not access-controlled, and an account removed from an allowlist keeps the position it already holds and can still leave. Governance retains the usual market-level pause.
 
 ## Supply allowlist
 
@@ -29,7 +30,7 @@ mapping(address vToken => bool) public isSupplyAllowlistEnabled;
 mapping(address vToken => mapping(address account => bool)) public isAllowedSupplier;
 ```
 
-It is enforced in exactly one place — `preMintHook`:
+It is enforced in exactly one place, `preMintHook`:
 
 ```solidity
 if (isSupplyAllowlistEnabled[vToken] && !isAllowedSupplier[vToken][minter]) {
@@ -37,15 +38,15 @@ if (isSupplyAllowlistEnabled[vToken] && !isAllowedSupplier[vToken][minter]) {
 }
 ```
 
-**The account metered is the one credited with the vTokens, not the one paying for them.** `VToken.mintBehalf` lets a third party fund a mint attributed to someone else, and only the recipient is checked. This is deliberate: metering the recipient is what bounds a market's supply, and a third party funding a mint credited to the Hub is a donation to the pool, not a way around the restriction.
+**The account metered is the one credited with the vTokens, not the one paying for them.** `VToken.mintBehalf` lets a third party fund a mint attributed to someone else, and only the recipient is checked. This is deliberate: metering the recipient is what bounds a market's supply, and a third party funding a mint credited to the Hub's YieldGroup is a donation to the Hub, not a way around the restriction.
 
-Only minting is metered. Transfers and seizures do not check the list, so vTokens can still reach an account that is not on it: the allowlist bounds who can create supply, not who can hold it. Redeeming is never restricted. Enabling the allowlist on a market that is already serving supply cuts off every account that is not on the list, including whoever seeded it — that is the intended effect, but it is worth knowing before flipping it on a live market.
+Only minting is metered. Transfers and seizures do not check the list, so vTokens can still reach an account that is not on it: the allowlist bounds who can create supply, not who can hold it. Redeeming is never restricted. Enabling the allowlist on a market that is already serving supply cuts off every account that is not on the list, including whoever seeded it. That is the intended effect, but it is worth knowing before flipping it on a live market.
 
 On the liquidity side of a hub-funded pool the single allowlisted account is the Liquidity Hub's Spoke YieldGroup. The listing VIP must call `setAllowedSupplier` **before** the Hub registers the market as a resource: `AdapterSpokeV1.validateRegistration` rejects a market that will not accept the registering YieldGroup.
 
 ## Entering a market for a supplier
 
-`enterMarkets` reads `msg.sender`, so a contract that supplies through `VToken.mintBehalf` enters *itself* rather than the account it credited. On the collateral side of a spoke pool the user supplies and the Hub lends, so that left a first-time supplier needing two transactions: one to supply, one to enable the market as collateral.
+`enterMarkets` reads `msg.sender`, so a contract that supplies through `VToken.mintBehalf` enters *itself* rather than the account it credited. On the collateral side of a spoke pool the user supplies and the Hub lends, so without help a first-time supplier needs two transactions: one to supply, one to enable the market as collateral.
 
 `enterMarketForAccount` takes the account as an argument instead:
 
@@ -55,7 +56,7 @@ function enterMarketForAccount(address account, address vToken) external;
 
 It takes a single market rather than an array, which is what keeps the fork inside the EIP-170 limit; a caller that needs several markets loops over it. `enterMarkets` is untouched, so entering a market for yourself stays permissionless.
 
-The function is gated by the [AccessControlManager](../../reference-governance/access-control-manager.md) under the role string `enterMarketForAccount(address,address)`. It takes the same arguments in the same order as the Core pool's `enterMarketForAccount`. **Grant it only to a contract that passes its own caller as `account`.** A holder of this permission can enable a market as collateral for any address, and entering a market is what makes a balance eligible to be seized in a liquidation. The [Collateral Gateway](../../reference-technical-articles/collateral-gateway.md) is the intended holder. Its spoke functions revert until governance grants it this role on the pool.
+The function is gated by the [AccessControlManager](../../reference-governance/access-control-manager.md) under the role string `enterMarketForAccount(address,address)`. It takes the same arguments in the same order as the Core pool's `enterMarketForAccount`, but returns nothing where the Core version returns a `uint256` error code. A caller written for the Core version that decodes that return value reverts here. **Grant it only to a contract that passes its own caller as `account`.** A holder of this permission can enable a market as collateral for any address, and entering a market is what makes a balance eligible to be seized in a liquidation. The [Collateral Gateway](../../reference-technical-articles/collateral-gateway.md) is the intended holder. Its spoke functions revert until governance grants it this role on the pool.
 
 ## Liquidation allowlist
 
@@ -70,14 +71,14 @@ It is pool-wide rather than per market because `healAccount` seizes across every
 
 Two call sites enforce it:
 
-* **`preSeizeHook`** — every seizure reaches this hook carrying the account that receives the collateral, whichever entry point it came from, so this is the check that actually enforces the list.
-* **`healAccount`**, at the entry — a borrower holding no vTokens at all takes a branch that only calls `healBorrow` and never reaches a hook carrying the caller. Without this check anyone could move the whole remaining principal into bad debt at no cost.
+* **`preSeizeHook`**: every seizure reaches this hook carrying the account that receives the collateral, whichever entry point it came from, so this is the check that actually enforces the list.
+* **`healAccount`**, at the entry: a borrower holding no vTokens at all takes a branch that only calls `healBorrow` and never reaches a hook carrying the caller. Without this check anyone could move the whole remaining principal into bad debt at no cost.
 
 `liquidateAccount` has no entry check of its own. Every one of its orders ends in a seizure, so `preSeizeHook` rejects a caller that is not on the list while the first order is being processed.
 
 Enabling the list also restricts `healAccount`, so any keeper relied on to record bad debt has to be allowlisted too.
 
-Note that when the collateral is a tokenized stock liquidated through [`BStockLiquidator`](../../reference-core-pool/bstock-liquidator.md), it is **that contract's** address that has to be on the list, not the operator's — the liquidator contract is the account that receives the seized collateral.
+Note that when the collateral is a tokenized stock liquidated through [`BStockLiquidator`](../../reference-core-pool/bstock-liquidator.md), it is **that contract's** address that has to be on the list, not the operator's. The liquidator contract is the account that receives the seized collateral.
 
 ## Per-market liquidation incentive
 
@@ -93,20 +94,20 @@ effectiveLiquidationIncentive(vToken) = liquidationIncentives[vToken] != 0
     : poolLiquidationIncentive
 ```
 
-The motivation is risk steering: a higher incentive on high-volatility collateral pushes liquidators to seize the riskiest collateral first, which de-risks an account faster. A borrow-only market (collateral factor `0`, never seizable) never has its incentive read at all, so it does not need a meaningful value.
+The motivation is risk steering: a higher incentive on high-volatility collateral pushes liquidators to seize the riskiest collateral first, which de-risks an account faster. A borrow-only market (collateral factor `0`) is never seized in normal operation, so its incentive is not used to price a liquidation. It is still read by `setCollateralFactor`, and vTokens transferred into the market by an entered account can be seized, so it should still hold a valid value.
 
 **Two getters, deliberately different.**
 
-* `effectiveLiquidationIncentive(address vToken)` — takes the market as an argument. This is what a lens, a keeper or a liquidation bot should read.
-* `liquidationIncentiveMantissa()` — takes no argument and answers **for `msg.sender`**. This is the getter `ComptrollerViewInterface` declares and the one `VToken` calls on itself: `VToken._seize` divides the protocol seize share by it and `VToken.setProtocolSeizeShare` bounds that share against it, and both need the discount that prices the calling market's own collateral. Any caller that is not a market of this pool reads the pool-wide value from it.
+* `effectiveLiquidationIncentive(address vToken)`: takes the market as an argument. This is what a lens, a keeper or a liquidation bot should read.
+* `liquidationIncentiveMantissa()`: takes no argument and answers **for `msg.sender`**. This is the getter `ComptrollerViewInterface` declares and the one a `VToken` calls on its Comptroller: `VToken._seize` divides the protocol seize share by it and `VToken.setProtocolSeizeShare` bounds that share against it, and both need the discount that prices the calling market's own collateral. Any caller with no per-market value stored reads the pool-wide value from it, including any caller that is not a market of this pool. A market that was unlisted after setting its own value still reads that value.
 
 **Floors.** An incentive is a multiplier on the debt repaid, and `VToken._seize` hands the protocol `protocolSeizeShareMantissa` of that debt out of the seized collateral. An incentive below `1e18 + protocolSeizeShareMantissa` therefore pays the liquidator less collateral than it repaid, and nobody liquidates that market.
 
 * `setMarketLiquidationIncentive` enforces `≥ 1e18 + vToken.protocolSeizeShareMantissa()` against the market's live share.
-* `setLiquidationIncentive` (the pool-wide value) enforces `≥ MIN_POOL_LIQUIDATION_INCENTIVE_MANTISSA = 1.05e18`, which is `1e18` plus `VToken`'s default seize share. That covers a freshly listed market carrying the default share and no incentive of its own. This is stricter than the shared `Comptroller`, which stops at `1e18` and would let a pool be registered with a value that pays every default-share market's liquidator less than it repaid.
+* `setLiquidationIncentive` (the pool-wide value) enforces `≥ MIN_POOL_LIQUIDATION_INCENTIVE_MANTISSA = 1.05e18`, which is `1e18` plus `VToken`'s default seize share. That covers a newly listed market carrying the default share and no incentive of its own. This is stricter than the shared `Comptroller`, which stops at `1e18` and would let a pool be registered with a value that pays every default-share market's liquidator less than it repaid.
 * `VToken.setProtocolSeizeShare` holds the same bound from the other side, reading the incentive back through `liquidationIncentiveMantissa()`.
 
-A market whose seize share is later raised above the default still needs an incentive of its own; the pool-wide floor is a backstop for the freshly-listed case, not a full guarantee.
+A market whose seize share is later raised above the default still needs an incentive of its own; the pool-wide floor is a backstop for the newly listed case, not a full guarantee.
 
 There is **no way back to "unset"** once a per-market value is stored: `setMarketLiquidationIncentive` rejects `0`, so a mistaken zero cannot silently move a market back onto the pool-wide value. Passing the current pool-wide value is not the same as unsetting either: the market is pinned at that number and stops following later `setLiquidationIncentive` changes, so a pool-wide change has to update those markets too.
 
@@ -114,7 +115,7 @@ There is **no way back to "unset"** once a per-market value is stored: `setMarke
 
 ## Batch-liquidation routing
 
-The shared `Comptroller` routes an under-threshold account between `liquidateAccount` and `healAccount` using one pool-wide incentive. With per-market incentives that no longer works, so the account snapshot carries a new field:
+The shared `Comptroller` routes an account that is in shortfall and whose collateral is at or below `minLiquidatableCollateral` between `liquidateAccount` and `healAccount` using one pool-wide incentive. With per-market incentives that no longer works, so the account snapshot carries a new field:
 
 ```
 maxClearableDebt = Σ over the account's collateral markets of ( Cᵢ / incentiveᵢ )
@@ -122,7 +123,7 @@ maxClearableDebt = Σ over the account's collateral markets of ( Cᵢ / incentiv
 
 where `Cᵢ` is the account's collateral value in market `i` and `incentiveᵢ` is that market's own effective incentive. It is the largest borrow value the account's collateral can clear without leaving bad debt behind.
 
-The two batch operations are the two sides of that one benchmark, so every under-threshold account routes to exactly one of them — no gap, no overlap:
+The two batch operations are the two sides of that one benchmark, so every such account routes to exactly one of them, with no gap and no overlap:
 
 | | Applies when | Otherwise reverts with |
 | --- | --- | --- |
@@ -139,9 +140,9 @@ One blended share applies to every borrow, so what the caller pays in total is t
 
 Each market's repayment is rounded up, so the rounding falls on the caller rather than on the market's suppliers. It can never exceed the borrow balance, because the routing gate keeps `maxClearableDebt` at or below `borrows`.
 
-`liquidateAccount` needs no change beyond its gate — each order is a `(debt, collateral)` pair, and `liquidateCalculateSeizeTokens` already prices it at the collateral market's own incentive.
+`liquidateAccount` keeps its order loop unchanged: each order is a `(debt, collateral)` pair, and `liquidateCalculateSeizeTokens` prices it at the collateral market's own incentive. What changed is the gate above and the market refresh described below.
 
-`maxClearableDebt` is only accumulated on liquidation-threshold snapshots. A collateral-factor snapshot leaves it at zero, and reading it there would put `healAccount` on a repayment percentage of zero — forgiving the whole position as bad debt.
+`maxClearableDebt` is only accumulated on liquidation-threshold snapshots. A collateral-factor snapshot leaves it at zero, and reading it there would put `healAccount` on a repayment percentage of zero, forgiving the whole position as bad debt.
 
 Both batch operations still require the account's total collateral to be at or below `minLiquidatableCollateral`; above that threshold they revert `CollateralExceedsThreshold` and the position must go through the regular `VToken.liquidateBorrow` path.
 
@@ -149,7 +150,7 @@ Both also accrue interest and push an oracle update for every market the borrowe
 
 ## Bounded collateral pricing
 
-A spoke pool values **borrowing capacity** through the [`DeviationBoundedOracle`](../../reference-oracle/deviation-bounded-oracle.md) rather than at spot. This is the same mechanism the Core pool uses; see the [DeviationBoundedOracle article](../../reference-technical-articles/deviation-bounded-oracle.md) for the window, trigger and exit logic, and [Protection Mode](../../../risk/protection-mode.md) for the user-facing behaviour.
+A spoke pool values **borrowing capacity** through the [`DeviationBoundedOracle`](../../reference-oracle/deviation-bounded-oracle.md) rather than at spot. This is the same mechanism the Core pool uses; see the [DeviationBoundedOracle article](../../reference-technical-articles/deviation-bounded-oracle.md) for the window, trigger and exit logic, and [Protection Mode](../../../risk/protection-mode.md) for the user-facing behavior.
 
 Which oracle is read depends on which risk parameter weights the snapshot:
 
@@ -162,13 +163,13 @@ While protection is active for an asset the bounded oracle values collateral at 
 
 The liquidation paths stay on spot because they route liquidations and set how much of a position healing repays, which has to track the live price. `liquidateCalculateSeizeTokens` is likewise priced at spot.
 
-Both collateral-factor liquidity checks call `deviationBoundedOracle.updateProtectionState(vToken)` for every market the account is in before pricing, so a deviating print latches protection and starts its cooldown instead of evaporating once the price returns to the window.
+Both `preBorrowHook` and `_checkRedeemAllowed` (which serves redeem, transfer and exit) call `deviationBoundedOracle.updateProtectionState(vToken)` for every market the account is in before pricing, so a deviating print latches protection and starts its cooldown instead of evaporating once the price returns to the window.
 
-> **`deviationBoundedOracle` must be set before the pool serves any borrow, redeem, transfer or market exit.** Nothing falls back to spot when it is unset: both calls into the zero address revert, so all four fail closed rather than running unbounded. Minting and repaying are unaffected, they never read a price, and so is any redeem, transfer or exit that moves zero tokens or is made by an account that is not a member of the market, since the check returns before pricing in both cases. A supply-only account such as the Liquidity Hub's YieldGroup never becomes a market member, so it can still exit a market whose pool has no bounded oracle set.
+> **`deviationBoundedOracle` must be set before the pool serves any borrow, redeem, transfer or market exit.** Nothing falls back to spot when it is unset: the `updateProtectionState` and `getBoundedPricesView` calls go to the zero address and revert, so all four fail closed rather than running unbounded. Minting and repaying are unaffected because neither calls the bounded oracle. So is any redeem, transfer or exit that moves zero tokens or is made by an account that is not a member of the market, since the check returns before pricing in both cases. A supply-only account such as the Liquidity Hub's YieldGroup never becomes a market member, so it can still exit a market whose pool has no bounded oracle set.
 
 ## Solidity API
 
-Only the surface this fork adds or changes is listed here. Everything else matches the shared [`Comptroller`](../comptroller/comptroller.md).
+Only the surface this fork adds or changes is listed here. Everything else matches the shared [`Comptroller`](../comptroller/comptroller.md). Three changed functions are covered by sections above rather than entries of their own: `setCollateralFactor` (also throws `UnsafeLiquidationParams`, see [Floors](#per-market-liquidation-incentive)), `preSeizeHook` (also throws `LiquidationNotAllowed`, see [Liquidation allowlist](#liquidation-allowlist)) and `liquidateCalculateSeizeTokens` (prices at the collateral market's own incentive, see [Batch-liquidation routing](#batch-liquidation-routing)).
 
 ### setMarketLiquidationIncentive
 
@@ -331,7 +332,7 @@ function enterMarketForAccount(address account, address vToken) external
 
 #### 📅 Events
 
-* Emits `MarketEntered` on success
+* Emits `MarketEntered` when the account was not already a member; nothing is emitted otherwise
 
 #### ⛔️ Access Requirements
 
@@ -425,7 +426,7 @@ function effectiveLiquidationIncentive(address vToken) external view returns (ui
 
 ### liquidationIncentiveMantissa
 
-The discount a liquidator receives on the collateral it seizes **from the calling market**. Answers for `msg.sender` rather than taking the market as an argument — see [Per-market liquidation incentive](#per-market-liquidation-incentive).
+The discount a liquidator receives on the collateral it seizes **from the calling market**. Answers for `msg.sender` rather than taking the market as an argument. See [Per-market liquidation incentive](#per-market-liquidation-incentive).
 
 ```solidity
 function liquidationIncentiveMantissa() external view returns (uint256)
@@ -441,7 +442,7 @@ function liquidationIncentiveMantissa() external view returns (uint256)
 
 ### healAccount
 
-Seizes all of a given account's collateral, requiring the caller to repay `maxClearableDebt / borrows` of its debt in every market. The shortfall is recorded as `badDebt` on each market. `Shortfall` cannot auction it: it only finds pools in the pool registry it is configured with, and that registry does not hold spoke pools. Recovery is a governance action instead. `badDebtRecovered` is gated on `msg.sender == shortfall`, and on BNB Chain each market's `shortfall` is the Normal Timelock, so a proposal sends the underlying to the market and calls it to write the recovered amount off `badDebt`.
+Seizes all of a given account's collateral, requiring the caller to repay `maxClearableDebt / borrows` of its debt in every market. The unpaid debt is recorded as `badDebt` on each market. The `Shortfall` auction contract cannot auction it: it only finds pools in the pool registry it is configured with, and that registry does not hold spoke pools. Recovery is a governance action instead. `badDebtRecovered` can only be called by the address stored in the market's `shortfall` variable, and on BNB Chain that address is the Normal Timelock, so a proposal sends the underlying to the market and calls it to write the recovered amount off `badDebt`.
 
 The heal is all or nothing: every seizure and repayment runs in this one call, so a pause that blocks any of them reverts the whole heal.
 
@@ -463,9 +464,11 @@ function healAccount(address user) external
 
 * `LiquidationNotAllowed` is thrown if the liquidation allowlist is enabled and the caller is not on it
 * `CollateralExceedsThreshold` is thrown when the account's collateral is above `minLiquidatableCollateral`
-* `CollateralCoversDebt` is thrown when the collateral can clear the whole debt at each market's own incentive, which leaves nothing to heal — use `liquidateAccount`
+* `CollateralCoversDebt` is thrown when the collateral can clear the whole debt at each market's own incentive, which leaves nothing to heal; use `liquidateAccount`
 * `InsufficientShortfall` is thrown when the account is not liquidatable
-* `ActionPaused` is thrown if `SEIZE` is paused in a market the account holds collateral in, or `LIQUIDATE` is paused in a market it owes a nonzero balance in
+* `ActionPaused` is thrown if `SEIZE` is paused in a market the account holds collateral in, or `LIQUIDATE` or `REPAY` is paused in a market it owes a nonzero balance in (`REPAY` only when the repay amount is not zero)
+* `SnapshotError` is thrown if a market fails to return the account's snapshot
+* `PriceError` is thrown if the oracle returns a zero price for a market the account is in
 
 ---
 
@@ -492,10 +495,14 @@ function liquidateAccount(address borrower, struct LiquidationOrder[] orders) ex
 
 * `LiquidationNotAllowed` is thrown if the liquidation allowlist is enabled and the caller is not on it
 * `CollateralExceedsThreshold` is thrown when the account's collateral is above `minLiquidatableCollateral`
-* `DebtExceedsClearableAmount` is thrown when the debt is too large for the collateral to clear — use `healAccount`
+* `DebtExceedsClearableAmount` is thrown when the debt is too large for the collateral to clear; use `healAccount`
 * `MarketNotListed` is thrown if either market in any order is not listed
 * `NonzeroBorrowBalanceAfterLiquidation` is thrown if a debt remains in any of the borrower's markets once every order has executed
 * `InsufficientShortfall` is thrown when the account is not liquidatable
+* `MaxLoopsLimitExceeded` is thrown if the number of orders exceeds the loop limit
+* `ActionPaused` is thrown if `LIQUIDATE` or `REPAY` is paused in a borrowed market, or `SEIZE` in a collateral market, of any order
+* `TooMuchRepay` is thrown if an order repays more than the borrow balance
+* `MarketNotCollateral` is thrown if the borrower has not entered the collateral market of an order
 
 ---
 
@@ -509,7 +516,7 @@ function preMintHook(address vToken, address minter, uint256 mintAmount) externa
 
 #### ❌ Errors
 
-* `SupplyNotAllowed` is thrown if the market's supply allowlist is enabled and the **minter** — the account credited with the vTokens, not necessarily the payer — is not on it
+* `SupplyNotAllowed` is thrown if the market's supply allowlist is enabled and the **minter** (the account credited with the vTokens, not necessarily the payer) is not on it
 * plus every error the shared `Comptroller` throws here
 
 ---
@@ -526,12 +533,12 @@ Everything the shared `Comptroller` emits, plus:
 | --- | --- |
 | `NewMarketLiquidationIncentive(address indexed vToken, uint256 oldLiquidationIncentiveMantissa, uint256 newLiquidationIncentiveMantissa)` | a single market's liquidation incentive changes |
 | `NewDeviationBoundedOracle(IDeviationBoundedOracle oldBoundedOracle, IDeviationBoundedOracle newBoundedOracle)` | the deviation-bounded oracle changes |
-| `SupplyAllowlistEnabledUpdated(address indexed vToken, bool enabled)` | a market's supply allowlist is armed or disarmed |
+| `SupplyAllowlistEnabledUpdated(address indexed vToken, bool enabled)` | a market's supply allowlist is enabled or disabled |
 | `AllowedSupplierUpdated(address indexed vToken, address indexed supplier, bool allowed)` | an account is added to or removed from a market's supply allowlist |
-| `LiquidationAllowlistEnabledUpdated(bool enabled)` | the pool's liquidation allowlist is armed or disarmed |
+| `LiquidationAllowlistEnabledUpdated(bool enabled)` | the pool's liquidation allowlist is enabled or disabled |
 | `AllowedLiquidatorUpdated(address indexed liquidator, bool allowed)` | an account is added to or removed from the liquidation allowlist |
 
-`NewPrimeToken` is **not** emitted — Prime is not part of a spoke pool.
+`NewPrimeToken` is **not** emitted. Prime is not part of a spoke pool.
 
 ## Errors
 
@@ -545,7 +552,7 @@ Everything the shared `Comptroller` emits, plus:
 | `CollateralCoversDebt(uint256 borrows, uint256 maxClearableDebt)` | `healAccount` on an account whose collateral can clear the whole debt |
 | `DebtExceedsClearableAmount(uint256 borrows, uint256 maxClearableDebt)` | `liquidateAccount` on an account whose debt the collateral cannot clear |
 | `NonzeroBorrowBalanceAfterLiquidation()` | the orders passed to `liquidateAccount` did not cover the whole position |
-| `UnsafeLiquidationParams(uint256 liquidationThresholdMantissa, uint256 liquidationIncentiveMantissa)` | a market's liquidation threshold times its liquidation incentive would reach `1`, the point past which a liquidation stops reducing the account's shortfall |
+| `UnsafeLiquidationParams(uint256 liquidationThresholdMantissa, uint256 liquidationIncentiveMantissa)` | a market's liquidation threshold times its liquidation incentive would reach `1`, the point from which a liquidation stops reducing the account's shortfall |
 
 ### Replacing `require` strings
 
@@ -559,8 +566,9 @@ The fork converts every remaining revert string to a custom error:
 | `RewardsDistributorAlreadyExists()` | `"already exists"` |
 | `MarketNotListed(address)` | `"cannot pause a market that is not listed"` |
 | `NonzeroBorrowBalanceAfterLiquidation()` | `"Nonzero borrow balance after liquidation"` |
+| `InvalidLiquidationIncentive()` | `"liquidation incentive should be greater than 1e18"` |
 
 ### Changed meaning
 
 * **`CollateralExceedsThreshold(uint256 expectedLessThanOrEqualTo, uint256 actual)`** keeps the shared `Comptroller`'s name, arguments and selector, and is thrown by both batch operations when the account's collateral is above `minLiquidatableCollateral`. In the shared `Comptroller` `healAccount` also uses it for the "collateral covers the debt" case; here that case is `CollateralCoversDebt`.
-* **`InsufficientCollateral`** does not exist in this fork. `liquidateAccount` throws `DebtExceedsClearableAmount` instead — both of its arguments are debt values rather than collateral values, and reusing the old name would leave two incompatible versions sharing one selector.
+* **`InsufficientCollateral`** does not exist in this fork. `liquidateAccount` throws `DebtExceedsClearableAmount` instead. Both of its arguments are debt values rather than collateral values, and reusing the old name would leave two incompatible versions sharing one selector.
