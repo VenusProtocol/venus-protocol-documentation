@@ -105,11 +105,15 @@ import { IHubLens } from "@venusprotocol/liquidity-hub/contracts/interfaces/IHub
 uint256 room = IHubLens(lens).maxDeposit(hub);   // 0 while the Hub is paused
 ```
 
-The figure is priced against the TVL the deposit itself produces, because the cascade prices the percentage caps there too. It is never overstated, so `hub.deposit(room, receiver)` fits.
+The figure is priced against the TVL the deposit itself produces, because the cascade prices the percentage caps there too. Each Source's room is then trimmed by **0.01% of its mark**, to cover the interest the deposit settles on its way in before caps are priced. So `hub.deposit(room, receiver)` fits in the ordinary case, but it is a margin and not a proof: an accrual larger than 0.01% between the read and the deposit reverts rather than over-filling a cap. `maxMint` carries that margin twice, once through `maxDeposit` and once on the share price the mint is charged at.
 
-`depositCapacityBreakdown(hub)` returns that same total split by the Source that would receive it, in deposit-queue order, so the parts sum to `maxDeposit`. It answers "where would my deposit land", not "how much could this Source take on its own" — a Source late in the queue reads `0` whenever the ones ahead of it absorb everything.
+`depositCapacityBreakdown(hub)` returns that same total split by the Source that would receive it, in deposit-queue order, so the parts sum to `maxDeposit`. It answers "where would my deposit land", not "how much could this Source take on its own" — a Source late in the queue reads `0` whenever the ones ahead of it absorb everything. Both arrays come back empty while the Hub is paused, and a Source that is paused, unregistered, view-reverting, or registered but absent from the deposit queue is left out of them entirely.
+
+`spotAPYBps(hub)` is on the same contract: a blended spot APY in BPS, the weighted average of each Source's own `spotAPYBps()` over the Hub's whole `totalAssets()`. It is not a sum. Idle assets are counted at 0% rather than dropped, whether they sit on the Hub or on a Source, so the figure is what a lender actually earns. A Source whose views revert contributes 0.
 
 If a deposit is sent anyway and does not fit, it reverts `HubCapacityExceeded(assets, placed)`, whose second argument is how much **would** have fit.
+
+`HubLens` inherits the Hub's fault split rather than escaping it. A Source whose quantity views revert contributes `0` and the rest of the figure still comes back; a Source whose `totalAssets()` reverts halts every `HubLens` function too, because `Hub.totalAssets()` halts first and a figure priced against a wrong NAV is worse than no figure.
 
 Nothing on chain points at `HubLens`: it is not registered in the `HubRegistry` and no Hub exposes its address. Take it from [Deployed contracts](../../deployed-contracts/liquidity-hub.md).
 
@@ -137,13 +141,14 @@ Three independent scopes — a broader scope blocks everything beneath it; sibli
 ### Automatic pause on a NAV break
 
 {% hint style="info" %}
-**Not deployed yet.** The automatic pause described here is under review ([venus-periphery#75](https://github.com/VenusProtocol/venus-periphery/pull/75)) and is not live on any network.
+**Deployed, not yet armed.** `HubNavDeviationSentinel` is live on BNB Chain at [`0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB`](https://bscscan.com/address/0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB) ([venus-periphery#75](https://github.com/VenusProtocol/venus-periphery/pull/75)), and on no other network. Nothing is watched yet: no resource is configured, no keeper is trusted, no ACM role has been granted on it, it is still owned by its deployer rather than the Normal Timelock, and `EBrake` does not hold `pauseHub()` on any Hub. Every step below therefore describes the contract, not a live guard.
 {% endhint %}
 
-For a resource whose value is published by a counterparty, such as a Centrifuge vault, a keeper can pause the **whole Hub** when that value moves too far from the centre of the resource's [NAV band](yield-groups.md#nav-band). The check lives in [`DeviationSentinel`](../reference-periphery/deviation-sentinel.md) and the pause goes through [`EBrake`](../reference-periphery/ebrake.md), the same path as the existing price-deviation check.
+For a resource whose value is published by a counterparty, such as a Centrifuge vault, a keeper can pause the **whole Hub** when that value moves too far from the centre of the resource's [NAV band](yield-groups.md#nav-band). The check lives in `HubNavDeviationSentinel`, a contract of its own rather than part of [`DeviationSentinel`](../reference-periphery/deviation-sentinel.md), and the pause goes through [`EBrake`](../reference-periphery/ebrake.md), the same path as the existing price-deviation check.
 
-* Governance sets a threshold per resource, in basis points above and below the band's centre (`setHubNavConfig`), and switches monitoring on separately (`setNavMonitoringEnabled`). A threshold of zero leaves that side unwatched.
-* Anyone can read whether a pause is due with `checkNavGuardDeviation(yieldGroup, resource)`. The keeper acts with `handleNavGuardDeviation`, which reverts when no action is due.
+* Governance sets a threshold per (YieldGroup, resource) pair with `setHubNavConfig`, in basis points above and below the band's centre, and switches monitoring on separately with `setNavMonitoringEnabled`. A threshold of zero leaves that side unwatched; both at zero is rejected.
+* The same call takes a `minPauseGap` in asset units, which has to be above zero. A band's anchor is zero from a resource's first deposit until its first re-anchor, which puts both trip points on the centre, so without that floor a routine gap would pause the Hub.
+* Anyone can read whether a pause is due with `checkNavGuardDeviation(yieldGroup, resource)`, which returns a status rather than reverting. The keeper acts with `handleNavGuardDeviation`, which reverts when no action is due.
 * The Hub is paused, not only the resource, because the Hub's `totalAssets()` still counts a paused resource, so the wrong value would stay in the share price.
 * The pause only tightens. Unpausing stays a governance action.
 
