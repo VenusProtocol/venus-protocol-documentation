@@ -16,7 +16,7 @@ The registry holds one pool, named `bStock index`.
 
 ### Markets
 
-USDT, USDC and U are the liquidity side, with collateral factor `0`. QQQB and SPYB are the collateral side, at a `0.8` collateral factor and a `0.85` liquidation threshold.
+USDT, USDC and U are the liquidity side, with collateral factor `0` and a supply cap and borrow cap of 5,000,000 each. QQQB and SPYB are the collateral side, at a `0.8` collateral factor, a `0.85` liquidation threshold, a supply cap of 10,000 and a borrow cap of `0`. The pool's liquidation incentive is `1.1` and its close factor `0.5`; both collateral markets use the pool value. These are live values on 2026-10-28; read `supplyCaps`, `borrowCaps`, `effectiveLiquidationIncentive` and `closeFactorMantissa` on the `SpokeComptroller` for current ones.
 
 * vUSDT_bStockIndex: [`0xEA0096142fBB56AAc0F594ED1D4de3E4De638f22`](https://bscscan.com/address/0xEA0096142fBB56AAc0F594ED1D4de3E4De638f22)
 * vUSDC_bStockIndex: [`0x6adb5e462ac6eA880246F24E3C47D23f70FCCbF6`](https://bscscan.com/address/0x6adb5e462ac6eA880246F24E3C47D23f70FCCbF6)
