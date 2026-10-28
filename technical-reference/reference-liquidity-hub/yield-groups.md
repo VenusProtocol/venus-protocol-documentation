@@ -2,16 +2,16 @@
 
 A **YieldGroup** is a Source implementation: it aggregates one or more *resources* of a single protocol family behind the uniform [`IYieldGroupBase`](interfaces.md) boundary the Hub depends on. Each YieldGroup is deployed per asset as a beacon proxy and owns its own inner deposit / withdraw queues, per-resource registry, and per-resource pause flags.
 
-There are **three YieldGroup contracts**, deployed as four families:
+One YieldGroup contract can back more than one family, so there are fewer contracts than families:
 
 * **Core** — the generic `YieldGroup` contract behind the Core beacon, registering Venus Core-pool vTokens (`mint` / `redeemUnderlying`) via `AdapterCoreV1`, initialised with the chain's `blocksPerYear`.
 * **Flux** — the *same* `YieldGroup` contract behind the Flux beacon, registering Fluid Lending fTokens (ERC-4626 shares) via `AdapterFlux`, initialised with `blocksPerYear = 0`.
 * **`YieldGroupFRV`** — a separate contract, for Venus Fixed-Rate Vaults (ERC-4626 with an 11-state lifecycle).
-* **`YieldGroupCentrifuge`**: a separate contract, for Centrifuge ERC-7540 fund vaults, where deposits and redemptions are requests settled later. Added by [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56), on the USDT Hub only.
+* **`YieldGroupCentrifuge`**: a separate contract, for Centrifuge ERC-7540 fund vaults, where deposits and redemptions are requests settled later. Added by [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) on the USDT Hub and by [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) on the USDC Hub. The U Hub has none.
 
 "Core" and "Flux" are **deployment identities, not contract names** — which adapter, resources, caps and `blocksPerYear` governance wires into the proxy is the only difference. There is no `YieldGroupCore` or `YieldGroupFlux` type to import.
 
-All four share the same Hub-facing surface and the same registry / queue / pause admin surface; they differ only in the protocol-specific behavior delegated to their [adapter](adapters.md) and in a few family-specific rules noted below.
+They all share the same Hub-facing surface and the same registry / queue / pause admin surface; they differ only in the protocol-specific behavior delegated to their [adapter](adapters.md) and in a few family-specific rules noted below.
 
 > **Terminology.** The PRD calls this layer a *Source*; the code names the contract a *YieldGroup* and the Hub-facing interface `IYieldGroupBase`. There is no `ISource` type — "Source" survives in the Solidity only as deployment-artifact aliases (`CoreSource_USDT`, `FluxSource_USDC`, `FRVSource_U`). A registered resource is the PRD's *Product / Vault*.
 
@@ -23,7 +23,7 @@ Every YieldGroup implements `IYieldGroupBase`. The Hub depends only on these fun
 * **`withdraw(uint256 amount, address to)`** — pull `amount` from resources via the inner withdraw queue (idle-first) and deliver exactly `amount` to `to`, or revert.
 * **`depositResource(address resource, uint256 amount)` → `uint256 deposited`** — deposit the full `amount` into one specific resource, bypassing the inner queue (for Operator reallocation). Reverts if that resource cannot accept exactly `amount`.
 * **`withdrawResource(address resource, uint256 amount, address to)`** — redeem exactly `amount` from one specific resource (no idle-first, no cascade); pulling from a paused resource is permitted (wind-down).
-* **`accrue()`** — `onlyHub`; the Hub pokes every registered Source before reading NAV so the management fee is charged on interest-current value. **All three families override the base no-op**, so it is unreachable in deployed code. Core and Flux share the `YieldGroup` loop, which calls `IResourceAdapter.accrue` on every registered resource — real work only for Core (`AdapterCoreV1` calls the vToken's `accrueInterest()`), an empty body for Flux. `YieldGroupFRV` instead pokes each vault's `updateVaultState()`, advancing its lifecycle. Every poke is best-effort per resource: one that reverts is isolated and reported via `ResourceAccrualFailed` rather than bubbling.
+* **`accrue()`** — `onlyHub`; the Hub pokes every registered Source before reading NAV so the management fee is charged on interest-current value. **Every family overrides the base no-op**, so it is unreachable in deployed code. Core and Flux share the `YieldGroup` loop, which calls `IResourceAdapter.accrue` on every registered resource — real work only for Core (`AdapterCoreV1` calls the vToken's `accrueInterest()`), an empty body for Flux. `YieldGroupFRV` instead pokes each vault's `updateVaultState()`, advancing its lifecycle. Every poke is best-effort per resource: one that reverts is isolated and reported via `ResourceAccrualFailed` rather than bubbling.
 * **Views** — `asset()`, `totalAssets()`, `maxDeposit()`, `maxWithdraw()`, `spotAPYBps()`.
 
 See [Interfaces](interfaces.md) for the full `IYieldGroupBase` contract and its conventions.
@@ -130,7 +130,7 @@ What the group holds in a vault is valued as the held shares, plus every pending
 
 * **APY is published, not read.** Centrifuge puts no rate on chain, so governance sets each vault's rate with `setSpotAPYBps(resource, apyBps)` (Operator or governance). Left unset, the vault reports zero.
 * **Writing off a vault.** If a position can never be claimed, `forceRemoveResource(resource)` drops the vault and writes its value off. It is governance-only and reverts `HubNotPaused` unless the Hub is paused.
-* **Investor lists.** Each fund only accepts addresses on its investor list, so Centrifuge has to add the group before any capital can be allocated.
+* **Investor lists.** Each fund only accepts addresses on its investor list, so Centrifuge has to add a Source before any capital can be allocated to it. Both live Sources have been added and both hold capital.
 
 ### NAV band
 
@@ -143,20 +143,22 @@ Every term of a Centrifuge position's value is computed off chain and published 
 
 Governance configures it with `setNavGuardRate(resource, driftBps, upGapBps, downGapBps, interval, capEnabled, floorEnabled)`, switches either side on or off with `setNavGuardEnabled(resource, capEnabled, floorEnabled)`, and forces a new centre with `setNavGuardSnapshot(resource, snapshot, timestamp)`, for example to accept a real markdown. Read the band with `navGuard(resource)` and its live state with `navGuardStatus(resource)`.
 
-The band only limits how fast a wrong value moves the share price. A separate keeper check, not deployed yet, is planned to pause the whole Hub when the value moves past a set threshold: see [Automatic pause on a NAV break](hub.md#automatic-pause-on-a-nav-break).
+The band only limits how fast a wrong value moves the share price. A separate keeper check pauses the whole Hub when the value moves past a set threshold. Its contract is deployed on BNB Chain but not yet armed: see [Automatic pause on a NAV break](hub.md#automatic-pause-on-a-nav-break).
 
-Values set by VIP-661 on the USDT Hub:
+Live values, identical on the USDT and USDC Sources. VIP-661 set the bands and a first pair of APYs on USDT; VIP-666 set the USDC bands and moved both Sources to the APYs below, down from 3.37% and 5.29%.
 
 | Vault | Drift | Band up | Band down | Re-anchor | Published APY |
 | --- | --- | --- | --- | --- | --- |
-| JTRSY (Janus Henderson Treasury Fund) | 5.00% | 2% | 5% | daily | 3.37% |
-| JAAA (Janus Henderson AAA CLO Fund) | 5.50% | 2% | 5% | daily | 5.29% |
+| JTRSY (Janus Henderson Treasury Fund) | 5.00% | 2% | 5% | daily | 3.16% |
+| JAAA (Janus Henderson AAA CLO Fund) | 5.50% | 2% | 5% | daily | 4.78% |
+
+The two assets have separate vault contracts and therefore separate bands and separate request state, even though the funds share their share classes and NAV.
 
 Events: `RedeemRequested`, `DepositCancelRequested`, `RedeemCancelRequested`, `DepositClaimed`, `RedeemClaimed`, `DepositCancelClaimed`, `RedeemCancelClaimed`, `ResourceForceRemoved`, `SpotAPYBpsSet`, and for the band `NavGuardConfigured`, `NavGuardEnabledSet`, `NavGuardReanchored`, `NavGuardCentreMoved`, `NavGuardClamped` and `NavGuardClosed`. Alert on `NavGuardClosed`: every armed side then values the position at zero until a deposit or `setNavGuardSnapshot` reopens it.
 
 ## Events
 
-All three YieldGroups emit the shared set below. FRV omits the three `IYieldGroup`-only events (`ResourceCapRaised`, `ResourceCapLowered`, `BlocksPerYearSet`) and is the only one that emits `ResourceForceRemoved`:
+Every YieldGroup emits the shared set below. FRV and Centrifuge omit the three `IYieldGroup`-only events (`ResourceCapRaised`, `ResourceCapLowered`, `BlocksPerYearSet`), and they are the two that emit `ResourceForceRemoved`, with a different payload each: `(resource, orphanedShares)` on FRV, `(resource, writtenOffValue, orphanedReceipt)` on Centrifuge:
 
 | Event                  | Parameters             | Description                                       |
 | ---------------------- | ---------------------- | ------------------------------------------------- |
@@ -197,6 +199,13 @@ All three YieldGroups emit the shared set below. FRV omits the three `IYieldGrou
 | `InvalidQueue`                 | A queue contains a **duplicate** entry (an *unregistered* entry reverts `ResourceNotRegistered` instead) |
 | `NotIncreasing` / `NotDecreasing` | A `raiseResourceCap` / `lowerResourceCap` call was not strictly looser / tighter (Core / Flux) |
 | `ResourceBelowMinimumDeposit`  | An FRV targeted deposit was below `minSupplierDeposit` and not the residual tail (FRV only) |
+| `ZeroShares`                   | A Centrifuge `requestRedeem` was called with zero shares (Centrifuge only) |
+| `HubNotPaused`                 | A Centrifuge `forceRemoveResource` was called while the Hub was unpaused (Centrifuge only) |
+| `NavGuardNotConfigured`        | A band operation named a resource with no band set (Centrifuge only) |
+| `InvalidNavGuardRate`          | A `setNavGuardRate` argument was out of range (Centrifuge only) |
+| `InvalidNavGuardSnapshot`      | A `setNavGuardSnapshot` argument was out of range (Centrifuge only) |
+| `NavGuardUnreadable`           | The band could not read the resource's value (Centrifuge only) |
+| `NavGuardCentreOverflow`       | A deposit would push a band's centre past `uint128`, so the deposit reverted (Centrifuge only) |
 | `ResourceHasValue`             | A force-removal target still holds value that would be abandoned      |
 | `SweepProtectedAsset`          | `sweep` called with the YieldGroup's own underlying                   |
 | `SweepProtectedResource`       | `sweep` called with a registered resource's receipt token             |
@@ -207,7 +216,7 @@ All three YieldGroups emit the shared set below. FRV omits the three `IYieldGrou
 
 Per YieldGroup, the role is `keccak256(yieldGroupAddress, roleString)`.
 
-Shared by all three families (8):
+Shared by every family (8):
 
 `addResource(address,address)`, `removeResource(address)`, `updateResourceAdapter(address,address)`, `setInnerDepositQueue(address[])`, `setInnerWithdrawQueue(address[])`, `pauseResource(address)`, `unpauseResource(address)`, `sweep(address,address)`.
 
@@ -218,3 +227,9 @@ Core and Flux add three, for **11** in total:
 FRV adds one instead, for **9** in total:
 
 `forceRemoveResource(address)`.
+
+Centrifuge adds twelve, for **20** in total:
+
+`requestRedeem(address,uint256)`, `cancelDepositRequest(address)`, `cancelRedeemRequest(address)`, `claimDeposit(address)`, `claimRedeem(address)`, `claimCancelDeposit(address)`, `claimCancelRedeem(address)`, `forceRemoveResource(address)`, `setSpotAPYBps(address,uint64)`, `setNavGuardRate(address,uint16,uint16,uint16,uint32,bool,bool)`, `setNavGuardSnapshot(address,uint128,uint64)`, `setNavGuardEnabled(address,bool,bool)`.
+
+On the live Sources the Normal Timelock holds all twenty, the Operator holds the queues, the async lifecycle, the four claims, the pause pair, the band and `setSpotAPYBps`, a Keeper holds only the four claims, and the Guardian holds the pause pair, `forceRemoveResource`, the band and `setSpotAPYBps`. VIP-666 additionally took `updateResourceAdapter(address,address)` off the Operator on every BNB Chain YieldGroup, leaving it with the Guardian and the Normal Timelock.

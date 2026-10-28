@@ -2,13 +2,14 @@
 
 An **adapter** translates between a [YieldGroup](yield-groups.md) and one protocol-specific ABI. Each adapter is a **stateless singleton**: a single deployment per ABI family serves every YieldGroup that registers a matching resource — there is no per-(YieldGroup, resource) instance, no proxy, and no clone factory.
 
-There are three adapters in v1:
+One adapter per protocol family:
 
 * **`AdapterCoreV1`** — Venus Core V1 vTokens (Compound-style `mint` / `redeemUnderlying`).
 * **`AdapterFlux`** — Fluid Lending fTokens (ERC-4626).
 * **`AdapterFRV`** — Venus Fixed-Rate Vault shares (ERC-4626).
+* **`AdapterCentrifuge`**: Centrifuge ERC-7540 fund vaults, where a deposit or a redemption is a request settled later.
 
-All three implement [`IResourceAdapter`](interfaces.md).
+Each one implements [`IResourceAdapter`](interfaces.md). Addresses are on the [Deployed Contracts](../../deployed-contracts/liquidity-hub.md#adapters) page; every live one was redeployed and repointed in VIP-669, so read `resourceConfig(resource)` on a YieldGroup rather than an older proposal.
 
 ## Dispatch model
 
@@ -40,7 +41,7 @@ Verified at audit for every adapter:
 * **`maxWithdraw(address resource, address holder)` → `uint256`** — underlying `holder` can withdraw right now, net of any redeem-time protocol fee.
 * **`spotAPYBps(address resource, uint256 blocksPerYear)` → `uint64`** — spot supply-side APY in BPS.
 * **`receiptBalance(address resource, address holder)` → `uint256`** — raw receipt-token balance (vToken / fToken / FRV shares), in receipt-token units — used by `removeResource` as a share-based emptiness gate.
-* **`resourceName(address resource)` → `string`**: display name of `resource`, for off-chain consumers. Not every resource keeps its name on itself (an ERC-7540 vault keeps it on its share token), so each adapter reads it from wherever its protocol exposes it. `AdapterCoreV1`, `AdapterFlux` and `AdapterFRV` return the resource's ERC-20 `name()`.
+* **`resourceName(address resource)` → `string`**: display name of `resource`, for off-chain consumers. Not every resource keeps its name on itself (an ERC-7540 vault keeps it on its share token), so each adapter reads it from wherever its protocol exposes it. `AdapterCoreV1`, `AdapterFlux` and `AdapterFRV` return the resource's own ERC-20 `name()`; `AdapterCentrifuge` returns its share token's.
 * **`accrue(address resource)`** — settle `resource`'s own global interest state so a following `totalAssets` read prices the position at a fresh rate. Invoked via normal `call`, **not** delegatecall, and therefore carries no `onlyDelegateCall` guard: it mutates the resource's global index, not the holder's position. Only block-lazy adapters do real work — `AdapterCoreV1` calls the vToken's `accrueInterest()`; `AdapterFlux` and `AdapterFRV` are no-ops.
 * **`validateRegistration(address resource)`** — reverts if `resource` fails a protocol-specific registration precondition.
 
@@ -94,9 +95,9 @@ Wraps Centrifuge ERC-7540 fund vaults, such as JTRSY and JAAA. Under delegatecal
 * **`maxWithdraw`**: the vault's own `maxWithdraw` for the group, so its investor-list checks show up in reported liquidity.
 * **`spotAPYBps`**: the rate governance published on the calling group with `setSpotAPYBps`. Any other caller gets 0.
 * **`maxDeposit`**: not used for Centrifuge. The group sizes deposits itself, because it has to see whether its own deposit cancel is pending.
-* **`validateRegistration`**: checks the vault exposes the share token, request manager, investment state and price reads the adapter needs.
+* **`validateRegistration`**: checks the vault exposes the share token, request manager, investment state and price reads the adapter needs, reverting `NoShareToken` or `NoManager`.
 
-**Errors:** `NotDelegateCall`, `ZeroSharePrice`.
+**Errors:** `NotDelegateCall`, `ZeroSharePrice`, `NoShareToken`, `NoManager`.
 
 ## Adding a new protocol family
 
