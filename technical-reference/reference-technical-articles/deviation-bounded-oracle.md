@@ -97,7 +97,7 @@ The borrow-power path uses `WeightFunction.USE_COLLATERAL_FACTOR` and is the onl
 
 A [hub-funded spoke pool](../reference-isolated-pools/spoke/README.md) wires the DBO the same way, through its own `SpokeComptroller.setDeviationBoundedOracle`. The split is identical: the collateral-factor path prices borrowing capacity through the DBO and calls `updateProtectionState` for every market the account is in, while the liquidation-threshold path and `liquidateCalculateSeizeTokens` stay on the ResilientOracle's spot price.
 
-One difference is worth knowing: in a spoke pool the DBO is **not optional**. Nothing falls back to spot when `deviationBoundedOracle` is unset — both calls into the zero address revert, so borrowing and redeeming fail closed until governance sets it. Minting and repaying are unaffected, since neither reads a price.
+One difference is worth knowing: in a spoke pool the DBO is **not optional**. Nothing falls back to spot when `deviationBoundedOracle` is unset — both calls into the zero address revert, so borrowing, redeeming, transferring and leaving a market all fail closed until governance sets it. Minting and repaying are unaffected, since neither reads a price, and so is any redeem, transfer or exit that moves zero tokens or is made by an account that is not a member of the market.
 
 ## Off-chain components
 
