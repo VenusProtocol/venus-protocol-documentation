@@ -176,7 +176,7 @@ Every YieldGroup emits the shared set below. FRV and Centrifuge omit the three `
 | `ResourceSkipped`       | `resource`, `isDeposit`                  | A cascade leg's adapter dispatch **reverted** and was routed around; a healthy system emits this zero times (paused / at-cap / dry resources are skipped silently, with no event) |
 | `ResourceAccrualFailed` | `resource`, `adapter`                    | An adapter's accrual call reverted and was isolated |
 | `BlocksPerYearSet`      | `oldBlocksPerYear`, `newBlocksPerYear`   | Annualisation factor retuned (Core / Flux)       |
-| `ResourceForceRemoved`  | `resource`, `orphanedShares`             | Bricked resource evicted, abandoning its shares (FRV) |
+| `ResourceForceRemoved`  | `resource`, `orphanedShares`             | Bricked resource evicted, abandoning its shares (FRV; Centrifuge emits its own payload, see above) |
 | `Swept`                 | `token`, `to`, `amount`                  | Stray-token balance rescued                      |
 
 ## Errors
