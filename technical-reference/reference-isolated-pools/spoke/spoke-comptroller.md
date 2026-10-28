@@ -419,7 +419,7 @@ function effectiveLiquidationIncentive(address vToken) external view returns (ui
 
 | Name | Type | Description |
 | --- | --- | --- |
-| [0] | uint256 | The discount that prices this market's collateral, scaled by 1e18 |
+| \[0\] | uint256 | The discount that prices this market's collateral, scaled by 1e18 |
 
 ---
 
@@ -435,7 +435,7 @@ function liquidationIncentiveMantissa() external view returns (uint256)
 
 | Name | Type | Description |
 | --- | --- | --- |
-| [0] | uint256 | The discount that applies to the caller, scaled by 1e18 |
+| \[0\] | uint256 | The discount that applies to the caller, scaled by 1e18 |
 
 ---
 
