@@ -2,6 +2,8 @@
 
 [`PoolLens`](https://github.com/VenusProtocol/isolated-pools/blob/v4.4.0/contracts/Lens/PoolLens.sol) aggregates pool, market, account, reward, price, and bad-debt reads for offchain consumers.
 
+PoolLens does not report the extra state a [hub-funded spoke pool](../spoke/README.md) carries, such as liquidation thresholds, per-market liquidation incentives, the supply and liquidation allowlists and the bounded prices. [`SpokePoolLens`](spoke-pool-lens.md) covers those, and keeps these reads under the same names and struct shapes.
+
 PoolLens is a standalone immutable deployment, not a proxy. Multiple generations can remain deployed on the same network, including historical `PoolLensR1` and `PoolLensR2` instances. Match the bytecode or verified source before decoding tuples; the structs below describe the v4.4.0 source family only.
 
 ## Clock
