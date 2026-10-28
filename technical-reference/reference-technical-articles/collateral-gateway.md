@@ -2,9 +2,11 @@
 
 The `CollateralGateway` contract turns an underlying balance into collateral in one call. It works on the BNB Chain Core pool, through a [Liquidity Hub](../reference-liquidity-hub/README.md) and its vh market, and on [hub-funded spoke pools](../reference-isolated-pools/spoke/README.md). It also withdraws a Hub position back to the wallet in one call.
 
-{% hint style="info" %}
-**Not deployed yet.** The contract is written, reviewed and tested, but it has no deployment on any network, and the governance grants it needs have not been made. Nothing on this page is live.
-{% endhint %}
+## Deployment scope
+
+This page matches the [`CollateralGateway` source on `develop`](https://github.com/VenusProtocol/venus-periphery/blob/develop/contracts/CollateralGateway/CollateralGateway.sol). The gateway is deployed without a proxy, at [`0xd0F7B94BF06675D13e8bA9a2546835a1c32a80b8`](https://bscscan.com/address/0xd0F7B94BF06675D13e8bA9a2546835a1c32a80b8) on BNB Chain and [`0x1B6D1ff76beb57CF7C9B2e05BE16cb9529DCa2F9`](https://testnet.bscscan.com/address/0x1B6D1ff76beb57CF7C9B2e05BE16cb9529DCa2F9) on BNB Chain testnet.
+
+The grants the gateway needs are AccessControlManager and Comptroller state, not bytecode: read them at the block an integration uses. [VIP-672](https://app.venus.io/#/governance/proposal/672?chainId=56) made the BNB Chain grants.
 
 ## Overview
 
@@ -15,7 +17,7 @@ The gateway does all of it in one call, and the market is entered as collateral 
 * **Moving an existing Core position into the Hub.** A position with borrows against it cannot simply be redeemed, because removing the collateral first would leave the account in shortfall. The gateway supplies the replacement collateral before the old collateral leaves, so a leveraged position moves in full.
 * **Supplying collateral to a spoke pool.** In a spoke pool, entering a market as collateral is a separate transaction. The gateway supplies and enters in one call, across several markets and several pools.
 
-The gateway is a single shared deployment per chain, with no proxy. It holds no funds between calls. The owner (the Normal Timelock on a live network) can only sweep tokens sent to the contract by mistake. The Core Comptroller and the Isolated Pools `PoolRegistry` are fixed at construction.
+The gateway is a single shared deployment per chain. It holds no funds between calls. The owner (the Normal Timelock on a live network) can only sweep tokens sent to the contract by mistake. The Core Comptroller and the [`SpokePoolRegistry`](../reference-isolated-pools/spoke/README.md#a-registry-of-its-own) are fixed at construction.
 
 ## User Journey
 
@@ -25,7 +27,7 @@ Before the first call, the user grants the gateway what that call needs:
 | --- | --- |
 | `supplyFromWallet` | `asset.approve(gateway, assets)` |
 | `supplyFromCollateral` | `comptroller.updateDelegate(gateway, true)` |
-| `withdrawPosition` | `hub.approve(gateway, shares)` for shares in the wallet, and `comptroller.updateDelegate(gateway, true)` if some shares have to come out of the vh market |
+| `withdrawPosition` | `hub.approve(gateway, shares)` for shares in the wallet, and `comptroller.updateDelegate(gateway, true)` to have any shares come out of the vh market. Without the grant the vh market is left alone and only the wallet shares are paid out |
 | `supplyAndEnterSpokeMarkets` | `underlying.approve(gateway, amount)` for each market |
 
 {% hint style="warning" %}
@@ -77,9 +79,11 @@ function withdrawPosition(address vhMarket, uint256 shares, uint256 minAssets) e
 * A Hub position can sit in two places: Hub shares in the wallet, and market tokens in `vhMarket`.
 * `withdrawPosition` takes one total share amount, and the execution proceeds as follows:
   * Shares in the wallet are used first. A withdraw the wallet covers alone never touches Core, so the user's borrow position is not affected.
-  * The rest is freed out of `vhMarket` on the user's behalf. The Comptroller runs its usual liquidity check against the user, so a withdraw that would leave them in shortfall reverts.
+  * The rest is freed out of `vhMarket` on the user's behalf, but only when the user holds market tokens there and has granted the delegate. Without either, the Core leg is skipped and the wallet leg alone pays out. When it does run, the Comptroller runs its usual liquidity check against the user, so a withdraw that would leave them in shortfall reverts.
   * All shares are redeemed from the Hub, and the underlying is sent to the user.
-* `shares = type(uint256).max` withdraws the whole position. `minAssets` is the slippage guard on the payout.
+* The Core leg frees at most the market tokens the user holds, so a market that cannot free the full amount pays out less rather than reverting. `minAssets` is the floor on that payout.
+* Holding market tokens is not on its own enough to run the Core leg, because `mintBehalf` is permissionless: anyone can mint a dust amount to another account, and that must not be able to force a Core redeem on a user who never granted the delegate.
+* `shares = type(uint256).max` redeems the whole wallet balance, plus every `vhMarket` market token when the delegate grant is set. `minAssets` is the slippage guard on the payout.
 
 ### Supply to a spoke pool (**supplyAndEnterSpokeMarkets**, **enterSpokeMarkets**)
 
@@ -90,9 +94,18 @@ function enterSpokeMarkets(address[] calldata vTokens) external;
 
 * `supplyAndEnterSpokeMarkets` supplies each amount to the matching spoke market, credits the market tokens to the user, and enters every market as the user's collateral.
 * `enterSpokeMarkets` only enters the markets, for a user who already holds the market tokens. Entering a market the user is already in does nothing and does not revert.
-* Each market's Comptroller is read from the market itself, so one call can cover several spoke pools. Each market must be the one `PoolRegistry` holds for its pool and underlying, and still listed.
+* Each market's Comptroller is read from the market itself, so one call can cover several spoke pools. Each market must be the one `SpokePoolRegistry` holds for its pool and underlying, and still listed.
 * Every market is supplied and entered, or the whole call reverts.
 * The amount supplied is measured from the balance that actually arrived, so a token with a transfer fee supplies only what arrived.
+
+### Sweep tokens sent by mistake (**sweepToken**)
+
+```solidity
+function sweepToken(IERC20 token) external;
+```
+
+* Owner only. It sends the whole balance of `token` to the owner, and takes no recipient argument.
+* No leg of the gateway leaves a balance behind, so this only recovers tokens sent to the contract by mistake. A zero balance reverts `ZeroAmount`.
 
 ## Governance setup
 
@@ -108,9 +121,9 @@ Each function reverts until the grant it needs has been made.
 ## Safety model
 
 * **The gateway only acts for its caller.** Every `mintBehalf` and `enterMarketForAccount` is passed `msg.sender`. Holding the `enterMarketForAccount` role does not let the gateway enter a market for anyone else.
-* **Nothing is held between calls.** Market tokens go straight to the user, and each call either completes or reverts in full. A call that ends with less of the underlying in the gateway than it started with reverts (`BalanceSpent`).
+* **Nothing is held between calls.** Market tokens go straight to the user, and each call either completes or reverts in full. On `supplyFromCollateral`, a call that ends with less of the underlying in the gateway than it started with reverts (`BalanceSpent`), so a hostile market or Hub cannot spend a stray balance awaiting a sweep.
 * **Amounts are measured, not assumed.** Shares minted and market tokens credited are read as balance changes.
-* **Markets are checked, not trusted.** Core markets must be listed on the fixed Core Comptroller, and spoke markets must match `PoolRegistry`.
+* **Markets are checked, not trusted.** Core markets must be listed on the fixed Core Comptroller, and spoke markets must match the `SpokePoolRegistry`.
 
 ## Events
 
@@ -129,20 +142,21 @@ Each function reverts until the grant it needs has been made.
 | `ZeroAddress()` / `ZeroAmount()` | a required address or amount was zero |
 | `InvalidArrayLength()` | an empty market list, or `vTokens` and `amounts` of different lengths |
 | `MarketNotListed(market)` | the market is not listed on its Comptroller |
-| `MarketNotRegistered(vToken)` | the spoke market is not the one `PoolRegistry` holds for its pool and underlying |
+| `MarketNotRegistered(vToken)` | the spoke market is not the one `SpokePoolRegistry` holds for its pool and underlying |
 | `AssetMismatch(vTokenUnderlying, hubAsset)` | the source market's underlying is not the Hub's asset |
 | `InsufficientShares(shares, minShares)` | the Hub deposit minted fewer shares than `minShares` |
 | `InsufficientAssets(assets, minAssets)` | the withdraw paid out less than `minAssets` |
 | `InsufficientReceipts(held, requested)` | the user holds fewer market tokens than they asked to move |
 | `VTokenMintFailed(market, errorCode)` / `VTokenRedeemFailed(vToken, errorCode)` | a market returned a failure code |
 | `EnterMarketFailed(vhMarket, errorCode)` | the Comptroller refused to enter `vhMarket` as collateral |
-| `NothingMinted()` / `NothingReceived()` | a step completed but credited nothing |
+| `NothingMinted()` | a mint credited no market tokens |
+| `NothingReceived()` | a redeem produced no underlying, or a withdraw freed nothing from either leg |
 | `LiquidityCheckFailed(errorCode)` | the Comptroller could not price the user's position |
-| `UnexpectedCallback()` | the flash loan callback did not match the move in progress |
+| `UnexpectedCallback()` | the flash loan callback did not match the move in progress, or the callback credited no market tokens |
 | `BalanceSpent(balanceBefore, balanceAfter)` | the call ended with less underlying in the gateway than it started with |
 
 ## Further reading
 
 * [Hub](../reference-liquidity-hub/hub.md) and [vhToken](../reference-liquidity-hub/vhtoken.md): what the Core functions deposit into and supply.
 * [SpokeComptroller](../reference-isolated-pools/spoke/spoke-comptroller.md): the `enterMarketForAccount` the spoke functions depend on.
-* [Source code](https://github.com/VenusProtocol/venus-periphery/tree/feat/VPD-1982/contracts/CollateralGateway) in the `venus-periphery` repo.
+* [Source code](https://github.com/VenusProtocol/venus-periphery/tree/develop/contracts/CollateralGateway) in the `venus-periphery` repo.
