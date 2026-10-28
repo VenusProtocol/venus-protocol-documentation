@@ -18,6 +18,7 @@ BNB Trade contracts are money-moving. `PositionAccount` below is the implementat
 - UniswapOracle: [`0x8FD05458faf220B2324c4BFbb29DBC4B3CF6f23f`](https://bscscan.com/address/0x8FD05458faf220B2324c4BFbb29DBC4B3CF6f23f)
 - PancakeSwapOracle: [`0x44B72078240A3509979faF450085Fa818401D32E`](https://bscscan.com/address/0x44B72078240A3509979faF450085Fa818401D32E)
 - EBrake: [`0x35eBaBB99c7Fb7ba0C90bCc26e5d55Cdf89C23Ec`](https://bscscan.com/address/0x35eBaBB99c7Fb7ba0C90bCc26e5d55Cdf89C23Ec)
+- CollateralGateway: [`0xd0F7B94BF06675D13e8bA9a2546835a1c32a80b8`](https://bscscan.com/address/0xd0F7B94BF06675D13e8bA9a2546835a1c32a80b8) (no proxy; outside the v1.2.0 baseline, source on `develop`)
 
 ## BNB Chain Testnet (Test-only)
 
@@ -29,6 +30,7 @@ BNB Trade contracts are money-moving. `PositionAccount` below is the implementat
 - DeviationSentinel: [`0x9245d72712548707809D66848e63B8E2B169F3c1`](https://testnet.bscscan.com/address/0x9245d72712548707809D66848e63B8E2B169F3c1)
 - SentinelOracle: [`0xa4f2B03919BAAdCA80C31406412C7Ee059A579D3`](https://testnet.bscscan.com/address/0xa4f2B03919BAAdCA80C31406412C7Ee059A579D3)
 - EBrake: [`0x957c09e3Ac3d9e689244DC74307c94111FBa8B42`](https://testnet.bscscan.com/address/0x957c09e3Ac3d9e689244DC74307c94111FBa8B42)
+- CollateralGateway: [`0x1B6D1ff76beb57CF7C9B2e05BE16cb9529DCa2F9`](https://testnet.bscscan.com/address/0x1B6D1ff76beb57CF7C9B2e05BE16cb9529DCa2F9) (no proxy)
 
 ## Ethereum
 

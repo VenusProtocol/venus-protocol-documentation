@@ -22,38 +22,42 @@ Each Hub is a beacon proxy over `HubBeacon`, holds exactly one asset, and issues
 
 ### Yield Groups
 
-Every Hub owns three YieldGroup proxies — one per yield family. Resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding; the current set is:
+Every Hub owns one YieldGroup proxy per yield family. Resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding; the current set is:
 
 USDT Hub
 
 * CoreSource\_USDT: [`0xC9E6ceD9589363f8dC5695Be2C79AB4dDaECC94B`](https://bscscan.com/address/0xC9E6ceD9589363f8dC5695Be2C79AB4dDaECC94B)
 * FluxSource\_USDT: [`0xe3df38E12E37ED80E1b3ccf2bdf84F9e1527ce14`](https://bscscan.com/address/0xe3df38E12E37ED80E1b3ccf2bdf84F9e1527ce14)
 * FRVSource\_USDT: [`0x621eF38cE0C4e7060fF0bF3D609E3D46EC144bE7`](https://bscscan.com/address/0x621eF38cE0C4e7060fF0bF3D609E3D46EC144bE7)
+* SpokeSource\_USDT: [`0x3cC1eDE91419dC7EC199a06704EC8ECAb665a684`](https://bscscan.com/address/0x3cC1eDE91419dC7EC199a06704EC8ECAb665a684)
 
 USDC Hub
 
 * CoreSource\_USDC: [`0x299D9Be7CEfff91c68F13F267d525CFC18e965ef`](https://bscscan.com/address/0x299D9Be7CEfff91c68F13F267d525CFC18e965ef)
 * FluxSource\_USDC: [`0xA65bB4b20542268B64CF08871a98D75342AFE927`](https://bscscan.com/address/0xA65bB4b20542268B64CF08871a98D75342AFE927)
 * FRVSource\_USDC: [`0x438388847eE16850Ab4f5b82dc7954c0d043B716`](https://bscscan.com/address/0x438388847eE16850Ab4f5b82dc7954c0d043B716)
+* SpokeSource\_USDC: [`0x4cd4aB2F88E39D3F3e481bb2555EcdF00266f717`](https://bscscan.com/address/0x4cd4aB2F88E39D3F3e481bb2555EcdF00266f717)
 
 U Hub
 
 * CoreSource\_U: [`0x8A680F77A5367FA7cD33a02f51896Cb1d55159c3`](https://bscscan.com/address/0x8A680F77A5367FA7cD33a02f51896Cb1d55159c3)
 * FluxSource\_U: [`0xe31B8851c3fa9B3dD39a04a2ed9493869A410616`](https://bscscan.com/address/0xe31B8851c3fa9B3dD39a04a2ed9493869A410616)
 * FRVSource\_U: [`0x30908eddB9E94add7AC9944a0adda66d80B89143`](https://bscscan.com/address/0x30908eddB9E94add7AC9944a0adda66d80B89143)
+* SpokeSource\_U: [`0xcA3f9AFD7C4c1022E4A37a12671Ef57B8A7bfc51`](https://bscscan.com/address/0xcA3f9AFD7C4c1022E4A37a12671Ef57B8A7bfc51)
 
 #### Wired resources
 
-Each Core YieldGroup routes to the corresponding Core pool vToken (vUSDT, vUSDC, vU) and each Flux YieldGroup to the corresponding Fluid fToken (fUSDT, fUSDC, fU). The FRV YieldGroups were registered unwired at launch; [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) then registered the **Solv (Ceffu custody) vault** [`0x086fd7972510dF9d9cFdc4efB8677fc72d290103`](https://bscscan.com/address/0x086fd7972510dF9d9cFdc4efB8677fc72d290103) as the resource of FRVSource\_USDT and the **Asseto CASH+ vault** [`0x41179fc6ff878b7795B900888E0B61fd8029bceA`](https://bscscan.com/address/0x41179fc6ff878b7795B900888E0B61fd8029bceA) as the resource of FRVSource\_U, and raised the FRV percentage cap on those two Hubs from 30% to 50% of TVL. **FRVSource\_USDC still carries no resource.** The FRV sources stay out of the outer deposit queue, so lender deposits continue to land in Core/Flux and FRV is filled only by the Operator's `reallocate`. Read the live set with `resources()` on a YieldGroup, and its per-resource adapter with `resourceConfig(resource)`.
+Each Core YieldGroup routes to the corresponding Core pool vToken (vUSDT, vUSDC, vU) and each Flux YieldGroup to the corresponding Fluid fToken (fUSDT, fUSDC, fU). The FRV YieldGroups were registered unwired at launch; [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) then registered the **Solv (Ceffu custody) vault** [`0x086fd7972510dF9d9cFdc4efB8677fc72d290103`](https://bscscan.com/address/0x086fd7972510dF9d9cFdc4efB8677fc72d290103) as the resource of FRVSource\_USDT and the **Asseto CASH+ vault** [`0x41179fc6ff878b7795B900888E0B61fd8029bceA`](https://bscscan.com/address/0x41179fc6ff878b7795B900888E0B61fd8029bceA) as the resource of FRVSource\_U, and raised the FRV percentage cap on those two Hubs from 30% to 50% of TVL. **FRVSource\_USDC still carries no resource.** The FRV sources stay out of the outer deposit queue, so lender deposits continue to land in Core/Flux and FRV is filled only by the Operator's `reallocate`. Each Spoke YieldGroup routes to its asset's liquidity market in the `bStock index` spoke pool (vUSDT\_bStockIndex, vUSDC\_bStockIndex, vU\_bStockIndex), wired by [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56); the pool's addresses are on the [spoke pools](spoke-pools.md) page. Read the live set with `resources()` on a YieldGroup, and its per-resource adapter with `resourceConfig(resource)`.
 
 ### Beacons
 
-One `UpgradeableBeacon` per family; upgrading a beacon upgrades every vault of that family atomically. All four are owned by the [Normal Timelock](governance.md) [`0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396`](https://bscscan.com/address/0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396).
+One `UpgradeableBeacon` per family; upgrading a beacon upgrades every vault of that family atomically. All of them are owned by the [Normal Timelock](governance.md) [`0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396`](https://bscscan.com/address/0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396).
 
 * HubBeacon: [`0x0f20e1004962e2DF16c16FC15460Dc6480626321`](https://bscscan.com/address/0x0f20e1004962e2DF16c16FC15460Dc6480626321)
 * CoreBeacon: [`0x195a0F1BCF73C3Beb609a1271E8E08b8E4c098C6`](https://bscscan.com/address/0x195a0F1BCF73C3Beb609a1271E8E08b8E4c098C6)
 * FluxBeacon: [`0x9bb6a3Ac5955fA8dc236560CA9D51483d1d79f15`](https://bscscan.com/address/0x9bb6a3Ac5955fA8dc236560CA9D51483d1d79f15)
 * FRVBeacon: [`0x8A5EceDD726246682402430b9B24c19bF61B7f1d`](https://bscscan.com/address/0x8A5EceDD726246682402430b9B24c19bF61B7f1d)
+* SpokeBeacon: [`0x652AAa1CD21f47a92D04680C1d9Bf99cC1Fb8975`](https://bscscan.com/address/0x652AAa1CD21f47a92D04680C1d9Bf99cC1Fb8975)
 
 ### Adapters
 
@@ -62,6 +66,7 @@ Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach 
 * AdapterCoreV1: [`0x4E514a0C7aB9d140eE204dfA0017574270D92944`](https://bscscan.com/address/0x4E514a0C7aB9d140eE204dfA0017574270D92944)
 * AdapterFlux: [`0xA81bDf813A428053E764C34Bc679b3E4d0807be3`](https://bscscan.com/address/0xA81bDf813A428053E764C34Bc679b3E4d0807be3)
 * AdapterFRV: [`0x1FA0365bDd603452CE96BE3c0e12Db5515a35902`](https://bscscan.com/address/0x1FA0365bDd603452CE96BE3c0e12Db5515a35902) — the adapter behind the two FRV resources wired by VIP-657 (Solv on the USDT Hub, Asseto CASH+ on the U Hub)
+* AdapterSpokeV1: [`0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69`](https://bscscan.com/address/0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69)
 
 ### Periphery
 
@@ -109,8 +114,9 @@ The USDT Hub's share token is named `Vault Share` / `vSHARE`, a placeholder pred
 * CoreSource\_USDT: [`0x11e39DC7b8b16BBDA8D9C2903dF741Ae9341Ec88`](https://testnet.bscscan.com/address/0x11e39DC7b8b16BBDA8D9C2903dF741Ae9341Ec88)
 * FluxSource\_USDT: [`0x044E572144bc08ed2D90E081EeEd7b5b6Cb01016`](https://testnet.bscscan.com/address/0x044E572144bc08ed2D90E081EeEd7b5b6Cb01016)
 * FRVSource\_USDT: [`0xA0Fb0fFeBdcB7F45A3Ec841cCE7F78B7CeBD0f82`](https://testnet.bscscan.com/address/0xA0Fb0fFeBdcB7F45A3Ec841cCE7F78B7CeBD0f82)
+* SpokeSource\_USDT: [`0xb9Bf8232474aF0A18BbA0CbCc3bA10efD51542e2`](https://testnet.bscscan.com/address/0xb9Bf8232474aF0A18BbA0CbCc3bA10efD51542e2)
 
-Unlike mainnet, **FRV is fully wired on testnet**: the FRV YieldGroup has a Fixed-Rate Vault registered as a resource, so all three families route capital.
+Unlike mainnet, **FRV is fully wired on testnet**: the FRV YieldGroup has a Fixed-Rate Vault registered as a resource.
 
 ### Beacons
 
@@ -118,12 +124,14 @@ Unlike mainnet, **FRV is fully wired on testnet**: the FRV YieldGroup has a Fixe
 * CoreBeacon: [`0xbBEe25aE7d2Db035Afc327fb0096fC88FDfF3170`](https://testnet.bscscan.com/address/0xbBEe25aE7d2Db035Afc327fb0096fC88FDfF3170)
 * FluxBeacon: [`0x6b9CA74F82848668EA04D56E0A8396A816ba5330`](https://testnet.bscscan.com/address/0x6b9CA74F82848668EA04D56E0A8396A816ba5330)
 * FRVBeacon: [`0x6196Ec22133610132563B03b6Fad5aa766A9C037`](https://testnet.bscscan.com/address/0x6196Ec22133610132563B03b6Fad5aa766A9C037)
+* SpokeBeacon: [`0x58099BEaa6A00F493eF67fF953866DDA4a502389`](https://testnet.bscscan.com/address/0x58099BEaa6A00F493eF67fF953866DDA4a502389)
 
 ### Adapters
 
 * AdapterCoreV1: [`0xDf669957448eCB23309eEFda4de230c62d22AE33`](https://testnet.bscscan.com/address/0xDf669957448eCB23309eEFda4de230c62d22AE33)
 * AdapterFlux: [`0x15Dca35ae0b16BeceabAEC9Dea49630e8C601730`](https://testnet.bscscan.com/address/0x15Dca35ae0b16BeceabAEC9Dea49630e8C601730)
 * AdapterFRV: [`0xeF0E85ab9A23F50EB4595CF7e2F5461feF7E7fc5`](https://testnet.bscscan.com/address/0xeF0E85ab9A23F50EB4595CF7e2F5461feF7E7fc5)
+* AdapterSpokeV1: [`0x439034668f201B9f2D45286b4518e6DB122B5e17`](https://testnet.bscscan.com/address/0x439034668f201B9f2D45286b4518e6DB122B5e17)
 
 ### Periphery
 
