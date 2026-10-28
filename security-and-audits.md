@@ -18,9 +18,46 @@ The catalog is an evidence index, not a claim of complete coverage. Historical f
 
 ## Audits
 
+### Liquidity Hub: NAV deviation pause
+
+**Scope**: `HubNavDeviationSentinel`, the keeper check that pauses a whole Hub when a counterparty-published value leaves its [NAV band](technical-reference/reference-liquidity-hub/yield-groups.md#nav-band), and the `EBrake` extension the pause routes through. See [Automatic pause on a NAV break](technical-reference/reference-liquidity-hub/hub.md#automatic-pause-on-a-nav-break). The contract is deployed on BNB Chain but not armed.
+
+* [HashDit audit report (2026/10/16)](https://github.com/VenusProtocol/venus-periphery/blob/e285f701f98562dcce6250e21ef7c59622afb2cf/audits/210_HubNavDeviationSentinel_Hashdit_20261016.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#75](https://github.com/VenusProtocol/venus-periphery/pull/75) in the `venus-periphery` repository, at commit `ecf8d8f93a440110fa8cd8f23b908cd5ef454004`:
+  - contracts/DeviationSentinel/HubNavDeviationSentinel.sol
+  - contracts/EmergencyBrake/EBrake.sol
+  - contracts/EmergencyBrake/IEBrake.sol
+  - contracts/Interfaces/IHubLiquidity.sol
+
+The one Medium finding concerned the pause materiality gate being a share of a live `Hub.totalAssets()`, which Hub flow could move. It was fixed by replacing that with `minPauseGap`, an absolute amount in asset units.
+
+</details>
+
+### Liquidity Hub: capacity lens
+
+**Scope**: `HubLens` and the capacity maths behind it, plus the removal of the Hub's own `maxDeposit` / `maxMint` overrides. See [Sizing a deposit](technical-reference/reference-liquidity-hub/hub.md#sizing-a-deposit).
+
+* [HashDit audit report (2026/09/24)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/01fac4af437da36efcb7d80fb261e2e9437f5d57/audits/HashDit_LiquidityHub_Capacity_Lens_20260924.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#20](https://github.com/VenusProtocol/venus-liquidity-hub/pull/20) in the `venus-liquidity-hub` repository, at commit `6715424bd06c93ab6f63170ed407431d64374845`:
+  - contracts/lens/HubLens.sol
+  - contracts/lens/HubCapacityMath.sol
+  - contracts/Hub/Hub.sol
+  - contracts/adapters/AdapterCoreV1.sol
+  - contracts/adapters/AdapterFRV.sol
+
+</details>
+
 ### Liquidity Hub: Centrifuge yield group
 
-**Scope**: the [Centrifuge yield group](technical-reference/reference-liquidity-hub/yield-groups.md#centrifuge-lifecycle) of the Liquidity Hub, which connects a Hub to Centrifuge ERC-7540 fund vaults. Enabled on the USDT Hub in [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56).
+**Scope**: the [Centrifuge yield group](technical-reference/reference-liquidity-hub/yield-groups.md#centrifuge-lifecycle) of the Liquidity Hub, which connects a Hub to Centrifuge ERC-7540 fund vaults. Enabled on the USDT Hub in [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) and on the USDC Hub in [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56).
 
 * [HashDit audit report (2026/09/04)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/45ff6bb94e8625aa23771a2efd3d6e3eced61df7/audits/201_CentrifugeYieldGroup_Hashdit_20260904.pdf)
 
