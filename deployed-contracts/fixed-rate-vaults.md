@@ -5,7 +5,7 @@ Core contracts for the Fixed Term Vaults system. Each institution's vault is dep
 The stable implementation and deployment baseline is [`fixed-rate-vaults` v1.0.0](https://github.com/VenusProtocol/fixed-rate-vaults/tree/v1.0.0). Proxy implementations, vault state, terms, balances, pause levels, owners, permissions, and liquidation whitelists can change. Verify the live controller, vault, and adapter before interacting.
 
 {% hint style="warning" %}
-The mainnet vault list and states below are a checkpoint at BNB block `118374393` (August 27, 2026), not an offer. `allVaultsLength()` returned three. State `Matured` means the original term has ended; state `Fundraising` can change as time and governance actions advance the state machine. The testnet section is **Test-only**.
+The mainnet vault list and states below are a checkpoint at BNB block `128278956` (October 18, 2026), not an offer. `allVaultsLength()` returned four. State `Matured` means the original term has ended; state `Fundraising` can change as time and governance actions advance the state machine. The testnet section is **Test-only**.
 {% endhint %}
 
 ## BNB Chain Mainnet
@@ -19,8 +19,9 @@ The mainnet vault list and states below are a checkpoint at BNB block `118374393
 #### Deployed vaults
 
 * Matrixdock vault, position token ID `1` (**Matured** at the checkpoint): [`0x7D80A10bEdD13638888e7A946B82878E21fbB820`](https://bscscan.com/address/0x7D80A10bEdD13638888e7A946B82878E21fbB820) — its original terms were USDT supplied against XAUM collateral over 30 days at a 6% fixed borrow rate and 10% reserve factor; this is not a current 5.4% supplier offer.
-* Asseto vault, position token ID `2` (**Fundraising** at the checkpoint): [`0x41179fc6ff878b7795B900888E0B61fd8029bceA`](https://bscscan.com/address/0x41179fc6ff878b7795B900888E0B61fd8029bceA)
-* Solv (Ceffu custody) vault, position token ID `3` (**Fundraising** at the checkpoint): [`0x086fd7972510dF9d9cFdc4efB8677fc72d290103`](https://bscscan.com/address/0x086fd7972510dF9d9cFdc4efB8677fc72d290103)
+* Asseto vault, position token ID `2` (**Matured** at the checkpoint): [`0x41179fc6ff878b7795B900888E0B61fd8029bceA`](https://bscscan.com/address/0x41179fc6ff878b7795B900888E0B61fd8029bceA)
+* Solv (Ceffu custody) vault, position token ID `3` (**Matured** at the checkpoint): [`0x086fd7972510dF9d9cFdc4efB8677fc72d290103`](https://bscscan.com/address/0x086fd7972510dF9d9cFdc4efB8677fc72d290103)
+* Hash Global vault, position token ID `4` (**Fundraising** at the checkpoint): [`0xfE419E150d63ff288b9802533f6Fe2f886DB6FED`](https://bscscan.com/address/0xfE419E150d63ff288b9802533f6Fe2f886DB6FED) — created by [VIP-667](https://app.venus.io/#/governance/proposal/667?chainId=56); U supplied against hBNB collateral, up to 150,000 U over a 30-day term at a 2.7% fixed borrow rate and 10% reserve factor.
 
 #### Liquidation whitelist
 

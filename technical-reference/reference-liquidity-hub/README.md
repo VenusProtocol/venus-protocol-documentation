@@ -64,7 +64,7 @@ On BNB Chain the Spoke Source of every Hub is second in the outer deposit queue,
 * **Dual caps per Source** (absolute amount and percentage of Hub TVL; the stricter binds) plus an optional per-resource cap and a per-transaction withdrawal cap.
 * **Multi-level pause** — Hub, Source, or single resource, each independent.
 * **Reentrancy-guarded value paths** — every entry point that moves assets is `nonReentrant`: `deposit` / `mint` / `withdraw` / `redeem` / `reallocate` / `emergencyReallocate` / `accrueFees` / `sweep` on the Hub, and `deposit` / `withdraw` / `depositResource` / `withdrawResource` / `sweep` on each YieldGroup. The ACM-gated admin setters are not individually guarded; they rely on ACM gating instead.
-* **Asymmetric permissions** — governance holds every gated function except `reallocate`; tightening (pause, lower a cap) is additionally Operator-accessible, and pausing is delegated further to a no-delay Guardian multisig, while loosening (unpause, register a route, raise the withdrawal cap, set fees) stays governance-only. The exceptions are `raiseYieldGroupCap` and `raiseResourceCap`, which the Operator also holds so it can open headroom ahead of a rebalance. All gated by `AccessControlManagerV8`.
+* **Asymmetric permissions** — governance holds every gated function except `reallocate`. The Operator can pause and raise or lower Source and resource caps; the Guardian can also pause and replace a resource adapter. Both can unpause individual resources. Unpausing a Hub or YieldGroup, registering a route, raising the withdrawal cap and setting fees remain governance-only. Every permission is granted through `AccessControlManagerV8`; see [Permissions](hub.md#permissions).
 * **Stateless shared adapters** — zero storage, delegatecall dispatch; a new protocol family needs only a new adapter, not a Hub change.
 * **Fees off at launch** — management and performance fee machinery exists but ships at `0/0`.
 
@@ -134,6 +134,7 @@ A Spoke Source can hold at most the lower of two limits: the Hub's effective cap
 | Governance | `0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396` — the [Normal Timelock](../../deployed-contracts/governance.md) |
 | Operator | `0x83f426233B358A36953F6951161E76FB7c866a7A` — the routine keeper multisig |
 | Guardian | `0x1C2CAc6ec528c20800B2fe734820D87b581eAA6B` — no-delay containment multisig |
+| Keeper | `0x194b1F6c57d023Fa59497ee5A7976dB47f183929` — Centrifuge Sources only: `claimDeposit`, `claimRedeem`, `claimCancelDeposit`, `claimCancelRedeem` (VIP-661, VIP-666) |
 
 #### BSC testnet (chain ID 97)
 

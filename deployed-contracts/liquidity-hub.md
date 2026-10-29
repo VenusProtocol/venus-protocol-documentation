@@ -97,7 +97,7 @@ A [venus-periphery](https://github.com/VenusProtocol/venus-periphery) contract t
 
 ### Access control
 
-Every gated function on the Hubs and YieldGroups is checked against `AccessControlManagerV8` [`0x4788629ABc6cFCA10F9f969efdEAa1cF70c23555`](https://bscscan.com/address/0x4788629ABc6cFCA10F9f969efdEAa1cF70c23555). Role holders (governance, Operator, Guardian) are granted by proposal rather than baked into the bytecode — see [Permissions](../technical-reference/reference-liquidity-hub/hub.md#permissions).
+Every gated function on the Hubs and YieldGroups is checked against `AccessControlManagerV8` [`0x4788629ABc6cFCA10F9f969efdEAa1cF70c23555`](https://bscscan.com/address/0x4788629ABc6cFCA10F9f969efdEAa1cF70c23555). Role holders (governance, Operator, Guardian, and a Keeper limited to the Centrifuge claims) are granted by proposal rather than baked into the bytecode — see [Permissions](../technical-reference/reference-liquidity-hub/hub.md#permissions).
 
 ## BNB Chain Testnet (Test-only)
 

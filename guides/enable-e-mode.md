@@ -18,4 +18,4 @@ Click “Enable” in the e-mode group you would like to enable. Just like that,
 
 When e-mode is enabled, you can only borrow assets listed in that group. These assets will be marked in the “borrowable” column for your reference.
 
-Currently, only the Stablecoins e-mode group is enabled. We plan to release BTC and BNB e-mode groups within the next few weeks. Keep following us on X or join our Telegram and Discord groups to be the first to know!
+On the BNB Chain Core Pool, the Stablecoins, BTC, BNB and ETH e-mode groups are enabled (the ETH group was added by [VIP-664](https://app.venus.io/#/governance/proposal/664?chainId=56)), alongside single-asset isolation groups — see [Isolated E-Mode](isolated-e-mode.md).
