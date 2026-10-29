@@ -2,6 +2,8 @@
 
 [`PoolRegistry`](https://github.com/VenusProtocol/isolated-pools/blob/v4.4.0/contracts/Pool/PoolRegistry.sol) is an upgradeable directory and administration entry point. It registers an already deployed Comptroller proxy; it does not expose a `createRegistryPool` function.
 
+[Hub-funded spoke pools](../spoke/README.md) are not registered here. They use a separate `SpokePoolRegistry` instance of this same contract, so `getAllPools` on this registry does not return them, and a consumer reading it sees only the isolated pools. The [ProtocolShareReserve](../risk-fund-and-shortfall/protocol-share-reserve.md) is the exception: it resolves markets through every registry in `getPoolRegistries()`, so it covers both.
+
 See the [engine version map](../README.md#mainnet-implementation-map) for current mainnet proxy and implementation addresses.
 
 ## Initialization

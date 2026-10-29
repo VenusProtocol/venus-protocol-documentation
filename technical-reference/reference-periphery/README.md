@@ -2,7 +2,7 @@
 
 Venus Protocol periphery contracts extend the lending markets with product workflows, swap execution, price-deviation monitoring, and emergency controls. They are separate contracts with their own upgrade, ownership, signer, or Access Control Manager (ACM) trust boundaries.
 
-> **Version scope:** These references follow the stable [`venus-periphery` v1.2.0 release](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0). Most deployed components are upgradeable proxies, while `SwapHelper` and PositionAccount implementations use different deployment patterns. Use the [deployed-contract registry](../../deployed-contracts/periphery.md) to find an address, then verify its current implementation and configuration on the relevant explorer before integrating or granting approvals.
+> **Version scope:** These references follow the stable [`venus-periphery` v1.2.0 release](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0), except [EBrake](ebrake.md), which follows v1.3.0. Most deployed components are upgradeable proxies, while `SwapHelper` and PositionAccount implementations use different deployment patterns. Use the [deployed-contract registry](../../deployed-contracts/periphery.md) to find an address, then verify its current implementation and configuration on the relevant explorer before integrating or granting approvals.
 
 ## Overview
 
@@ -13,7 +13,7 @@ The public references cover the following systems:
 - **[SwapHelper](swap-helper.md)** — executes backend-signed batches of approvals, arbitrary calls, and token sweeps for BNB trading flows.
 - **[SwapRouter](swap-router.md)** — swaps an input token and supplies or repays through BNB Core Pool markets.
 - **[DeviationSentinel](deviation-sentinel.md)** — compares configured oracle and DEX prices and routes qualifying incidents to EBrake on the networks listed in the registry.
-- **[EBrake](ebrake.md)** — exposes selected tighten-only Comptroller actions to explicitly authorized incident-response callers.
+- **[EBrake](ebrake.md)** — exposes selected tighten-only Comptroller actions, and from v1.3.0 Liquidity Hub pauses, to explicitly authorized incident-response callers.
 
 ## Key Features
 
