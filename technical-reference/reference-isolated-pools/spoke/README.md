@@ -68,9 +68,9 @@ Everything else is governance action, and the order matters:
 
 1. `acceptOwnership()` on both the registry and the Comptroller, before any owner-gated setter.
 2. The ACM grants in [Roles the VIP has to grant](#roles-the-vip-has-to-grant). Without them `addPool` reverts.
-3. `setPriceOracle` and `setDeviationBoundedOracle` on the Comptroller. The bounded oracle is dereferenced without a zero check, so borrowing, redeeming, transferring and exiting a market fail closed until it is set (the last three only for an account that has entered the market). See [Bounded collateral pricing](spoke-comptroller.md#bounded-collateral-pricing).
+3. `setPriceOracle` and `setDeviationBoundedOracle` on the Comptroller. The bounded oracle is dereferenced without a zero check, so borrowing, redeeming, transferring and exiting a market fail closed until it is set (the last three only for an account that has entered the market and moves a nonzero amount). See [Bounded collateral pricing](spoke-comptroller.md#bounded-collateral-pricing).
 4. `SpokePoolRegistry.addPool`, which requires a non-zero oracle and is also what sets the pool-wide liquidation incentive for the first time.
-5. `SpokePoolRegistry.addMarket` per market, which lists the market and sets its collateral factor, liquidation threshold and both caps in the same call (the IRM is fixed when the market is deployed). The per-market liquidation incentive and the allowlists are separate steps after it.
+5. `SpokePoolRegistry.addMarket` per market, which lists the market and sets its collateral factor, liquidation threshold and both caps in the same call. The IRM is set when the market is deployed and can be changed later through the ACM-gated `setInterestRateModel`. The per-market liquidation incentive and the allowlists are separate steps after it.
 
 ### Roles the VIP has to grant
 

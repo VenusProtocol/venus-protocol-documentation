@@ -17,7 +17,7 @@ Read [Hub-Funded Spoke Pools](README.md) first for why the fork exists and how a
 | Entering a market | `enterMarkets` only, always for `msg.sender` | adds ACM-gated **`enterMarketForAccount`**, so a gateway contract can enable collateral for the supplier it minted to |
 | Prime | `prime` + `setPrimeToken`, seven `*Verify` hooks update Prime scores | removed; the seven hooks are no-ops |
 | `healAccount` pause checks | `SEIZE` (through `preSeizeHook`) and `REPAY` (through `healBorrow`) | adds `LIQUIDATE` in every market the account owes a nonzero balance in |
-| Revert reasons | mixture of custom errors and `require` strings | custom errors throughout, except inherited checks: `setMaxLoopsLimit` and `initialize` still revert with `MaxLoopsLimitHelper`'s `"Comptroller: Invalid maxLoopsLimit"`, and the `onlyOwner` setters (`setPriceOracle`, `setDeviationBoundedOracle`, `addRewardsDistributor`, `setMaxLoopsLimit`) and `acceptOwnership` with OpenZeppelin's `Ownable` strings |
+| Revert reasons | mixture of custom errors and `require` strings | custom errors throughout, except inherited checks: `setMaxLoopsLimit` and `initialize` still revert with `MaxLoopsLimitHelper`'s `"Comptroller: Invalid maxLoopsLimit"`, and the `onlyOwner` setters (`setPriceOracle`, `setDeviationBoundedOracle`, `addRewardsDistributor`, `setMaxLoopsLimit`) with OpenZeppelin's `Ownable` strings, and `acceptOwnership` with its `Ownable2Step` string |
 
 Exit is never gated, in either implementation. Redeem, repay and transfer are not access-controlled, and an account removed from an allowlist keeps the position it already holds and can still leave. Governance retains the usual market-level pause.
 
@@ -556,7 +556,7 @@ Everything the shared `Comptroller` emits, plus:
 
 ### Replacing `require` strings
 
-The fork converts every revert string of its own to a custom error. The inherited `MaxLoopsLimitHelper` and OpenZeppelin `Ownable` strings are left as they are.
+The fork converts every revert string of its own to a custom error. The inherited `MaxLoopsLimitHelper` and OpenZeppelin `Ownable` / `Ownable2Step` strings are left as they are.
 
 | Error | Replaces |
 | --- | --- |
