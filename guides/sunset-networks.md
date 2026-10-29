@@ -15,7 +15,7 @@ Positions on BNB Chain, Ethereum, Arbitrum, Base and ZKsync Era are separate dep
   * Optimism (chain ID 10) — [Optimistic Etherscan](https://optimistic.etherscan.io)
   * Unichain (chain ID 130) — [Uniscan](https://uniscan.xyz)
 * On each contract page, open the **Contract** tab. Use **Read as Proxy** / **Write as Proxy** for vTokens, the Comptroller and XVS Vault; use **Read Contract** / **Write Contract** for the NativeTokenGateway and XVS bridge. For an underlying token, use the verified read/write interface shown by the explorer. If the required functions are unavailable, stop and ask for help — do not transact against an implementation address.
-* Token function arguments use base units. Check `decimals()` on the token: 1 USDC with 6 decimals is `1000000`. A transaction's native **Value** or `payableAmount` field may instead use BNB/ETH; check its unit before entering a value.
+* Token function arguments use base units. Check `decimals()` on the token: 1 USDC with 6 decimals is `1000000`. The explorer's native-value field labelled `payableAmount (OPBNB)` or `payableAmount (ether)` uses whole BNB/ETH, not wei: `0.01` means 0.01 BNB/ETH. Divide a wei amount by `10^18` before entering it there.
 * Keep some native BNB or ETH for gas.
 * Only use the addresses in the tables below. Token names and symbols can be imitated, and Venus will never ask for your seed phrase or private key.
 
@@ -78,7 +78,7 @@ Skip to Step 3 if `borrowBalanceStored` is zero in every market. Otherwise, for 
 1. Open the underlying token from the table and call `approve(spender, amount)`. `spender` is the vToken address, and `amount` should be slightly above your debt so it still covers the interest accrued by the time the next transaction lands.
 2. Open the vToken → **Write as Proxy** → `repayBorrow(repayAmount)`. To repay in full, enter `115792089237316195423570985008687907853269984665640564039457584007913129639935`. The contract takes only what you actually owe.
 
-**If you owe WBNB or WETH and hold native BNB or ETH:** open your network's NativeTokenGateway → **Write Contract** → `wrapAndRepay()`, and enter the amount in the `payableAmount` field. Send enough to cover accrued interest, keeping gas separate. It wraps your native token, repays the debt and refunds any excess; check the explorer's native-value unit.
+**If you owe WBNB or WETH and hold native BNB or ETH:** open your network's NativeTokenGateway → **Write Contract** → `wrapAndRepay()`, and enter the amount in whole BNB/ETH in the `payableAmount (OPBNB)` / `payableAmount (ether)` field. Send enough to cover accrued interest, keeping gas separate. It wraps your native token, repays the debt and refunds any excess.
 
 Anyone can repay on your behalf with `repayBorrowBehalf(borrower, repayAmount)` after approving the vToken from their own wallet.
 
@@ -120,7 +120,7 @@ XVS staked in the XVS Vault is separate from your market positions. There is a *
 Each network has one pool, so every call below takes that network's XVS address as the reward token and `0` as the pool id.
 
 1. **Check your stake** — **Read as Proxy** → `getUserInfo(<XVS address>, 0, <your address>)`.
-2. **Request the withdrawal** — **Write as Proxy** → `requestWithdrawal(<XVS address>, 0, <amount>)`, with the amount in XVS base units (18 decimals). This also pays out pending rewards and starts the 7-day lock.
+2. **Request the withdrawal** — **Write as Proxy** → `requestWithdrawal(<XVS address>, 0, <amount>)`, with the amount in XVS base units (18 decimals). Request no more than `amount − pendingWithdrawals` from `getUserInfo`; tokens already requested do not need another request. This also pays out pending rewards and starts the 7-day lock.
 3. **After 7 days, check eligibility** — `getEligibleWithdrawalAmount(<XVS address>, 0, <your address>)`.
 4. **Execute** — `executeWithdrawal(<XVS address>, 0)` sends the unlocked XVS back to your wallet.
 
@@ -138,7 +138,7 @@ The app no longer lists these source networks. Their non-upgradeable XVS bridge 
 
 The destination is **`102`**, BNB Chain's LayerZero ID, not its EVM chain ID `56`. The BNB receiving bridge is [`0xf8F46791E3dB29a029Ec6c9d946226f3c613e854`](https://bscscan.com/address/0xf8F46791E3dB29a029Ec6c9d946226f3c613e854).
 
-1. **Check availability first.** On the source bridge, `paused()` must be `false`, `token()` must match the XVS token above, and `isEligibleToSend(<your address>, 102, <amount>)` must return `true`. If the read reverts or returns `false`, stop. On October 29, 2026 the opBNB eligibility read reverted with `invalid resilient oracle price` even though its bridge was unpaused; a fee quote alone does not establish that a transfer can succeed.
+1. **Check availability first.** On the source bridge, `paused()` must be `false`, `token()` must match the XVS token above, and the first of the seven values returned by `isEligibleToSend(<your address>, 102, <amount>)` must be `true`. If the read reverts or that first value is `false`, stop. On October 29, 2026 the opBNB eligibility read reverted with `invalid resilient oracle price` even though its bridge was unpaused; a fee quote alone does not establish that a transfer can succeed.
 2. **Check the receiving side.** On the BNB bridge, `paused()` must be `false`. Read `chainIdToMaxSingleReceiveTransactionLimit(<source ID>)`, `chainIdToMaxDailyReceiveLimit(<source ID>)`, `chainIdToLast24HourReceived(<source ID>)` and `chainIdToLast24HourReceiveWindowStart(<source ID>)`. These limits are in USD with 18 decimals, shared by all users of the route, and can be tighter than the source limits. The receiving side uses its own XVS price: read `oracle()` and `token()` on the BNB bridge, then `getPrice(<token address>)` on that oracle. For XVS, the transfer value in the limits' units is `amount × price / 10^18`. Stop if the price read fails, and leave headroom for price changes and other transfers. A 24-hour window resets on the next transfer after it expires. If either side lacks capacity, wait; splitting a transfer does not bypass the daily cap. Exceeding a receive limit can leave a message awaiting recovery after the source transaction has succeeded.
 3. **Prepare the fields.** `amount` is in XVS base units (18 decimals); bridge precision is 8 decimals, so use a multiple of `10000000000` base units. Smaller dust remains on the source chain. `recipient` is your 20-byte address left-padded with 12 zero bytes: `0x000000000000000000000000` followed by your address without its `0x`.
 4. **Quote the fee.** Read `minDstGasLookup(102, 0)`. At the October 29 check it was `300000` on all three bridges, giving version-1 adapter parameters `0x000100000000000000000000000000000000000000000000000000000000000493e0`. Use this value only while that minimum is unchanged; if it changes, obtain updated parameters before continuing. Call `estimateSendFee(102, <recipient>, <amount>, false, <adapter params>)`; the first result is the native fee in wei.
@@ -154,7 +154,15 @@ The destination is **`102`**, BNB Chain's LayerZero ID, not its EVM chain ID `56
 | `_callParams.zroPaymentAddress` | `0x0000000000000000000000000000000000000000` |
 | `_callParams.adapterParams` | The adapter parameters used for the quote |
 
-`_callParams` is **one tuple containing the last three fields**, not three additional top-level arguments. Use the explorer's tuple inputs; if it cannot encode them, stop and ask for help. Set the transaction's native value to a fresh fee quote with a small buffer. If the explorer field is in BNB/ETH, divide the wei quote by `10^18`; excess is refunded. Keep additional native currency for transaction gas.
+`_callParams` is **one tuple containing the last three fields**, not three additional top-level arguments. For a single `_callParams (tuple)` text box, paste the following JSON array, replacing `<your address>` with your connected wallet address. This example uses the 300000-gas adapter parameters verified in step 4; if those change, replace the third value with the parameters used for your new quote.
+
+```json
+["<your address>","0x0000000000000000000000000000000000000000","0x000100000000000000000000000000000000000000000000000000000000000493e0"]
+```
+
+If the explorer instead expands the tuple into three fields, enter each value separately in the order shown above. If the input is rejected, stop and ask for help.
+
+Set `payableAmount (OPBNB)` / `payableAmount (ether)` in **whole BNB/ETH**: divide the fresh wei fee quote by `10^18` and add a small buffer. For example, a quote of `1000000000000000` wei is `0.001` BNB/ETH before the buffer. Excess is refunded. Keep additional native currency for transaction gas.
 
 Delivery is asynchronous. Track the source transaction on [LayerZero Scan](https://layerzeroscan.com/) and check your XVS balance on BNB Chain. If delivery is delayed or fails, retain the source transaction hash and seek help; do not send the same amount again, because the original message can still execute.
 
