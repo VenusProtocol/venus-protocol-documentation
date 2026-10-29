@@ -8,6 +8,7 @@ The adapters are:
 * **`AdapterFlux`** — Fluid Lending fTokens (ERC-4626).
 * **`AdapterFRV`** — Venus Fixed-Rate Vault shares (ERC-4626).
 * **`AdapterSpokeV1`**: the liquidity side of a [hub-funded spoke pool](../reference-isolated-pools/spoke/README.md): an isolated-pools `VToken` governed by a `SpokeComptroller`.
+* **`AdapterCentrifuge`**: Centrifuge tokenized-fund vaults (ERC-7540 asynchronous requests), used for the JTRSY and JAAA funds on the USDT and USDC Hubs.
 
 Each implements [`IResourceAdapter`](interfaces.md).
 

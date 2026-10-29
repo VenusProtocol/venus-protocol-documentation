@@ -1,6 +1,6 @@
 # Liquidity Hub - Deployed Contracts
 
-Contracts for the [Liquidity Hub](../technical-reference/reference-liquidity-hub/README.md): one per-asset ERC-4626 allocator vault per asset, routing deposits across the Core, Flux, FRV and Spoke yield families.
+Contracts for the [Liquidity Hub](../technical-reference/reference-liquidity-hub/README.md): one per-asset ERC-4626 allocator vault per asset, routing deposits across the Core, Flux, FRV, Spoke and Centrifuge yield families.
 
 The canonical, always-current list of deployed Hubs lives on-chain: query `getHubs()` or `hubForAsset(asset)` on the `HubRegistry` below rather than hard-coding a Hub address. The addresses known at the time of writing are listed here for convenience.
 
@@ -22,13 +22,14 @@ Each Hub is a beacon proxy over `HubBeacon`, holds exactly one asset, and issues
 
 ### Yield Groups
 
-Every Hub owns one YieldGroup proxy per yield family. Resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding; the current set is:
+Every Hub owns one YieldGroup proxy per yield family it is wired to, and the set differs per Hub: the U Hub has no Centrifuge Source. Resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding; the current set is:
 
 USDT Hub
 
 * CoreSource\_USDT: [`0xC9E6ceD9589363f8dC5695Be2C79AB4dDaECC94B`](https://bscscan.com/address/0xC9E6ceD9589363f8dC5695Be2C79AB4dDaECC94B)
 * FluxSource\_USDT: [`0xe3df38E12E37ED80E1b3ccf2bdf84F9e1527ce14`](https://bscscan.com/address/0xe3df38E12E37ED80E1b3ccf2bdf84F9e1527ce14)
 * FRVSource\_USDT: [`0x621eF38cE0C4e7060fF0bF3D609E3D46EC144bE7`](https://bscscan.com/address/0x621eF38cE0C4e7060fF0bF3D609E3D46EC144bE7)
+* CentrifugeSource\_USDT: [`0xDA5AFfeb43719f517676E031a727071c7D400983`](https://bscscan.com/address/0xDA5AFfeb43719f517676E031a727071c7D400983)
 * SpokeSource\_USDT: [`0x3cC1eDE91419dC7EC199a06704EC8ECAb665a684`](https://bscscan.com/address/0x3cC1eDE91419dC7EC199a06704EC8ECAb665a684)
 
 USDC Hub
@@ -36,6 +37,7 @@ USDC Hub
 * CoreSource\_USDC: [`0x299D9Be7CEfff91c68F13F267d525CFC18e965ef`](https://bscscan.com/address/0x299D9Be7CEfff91c68F13F267d525CFC18e965ef)
 * FluxSource\_USDC: [`0xA65bB4b20542268B64CF08871a98D75342AFE927`](https://bscscan.com/address/0xA65bB4b20542268B64CF08871a98D75342AFE927)
 * FRVSource\_USDC: [`0x438388847eE16850Ab4f5b82dc7954c0d043B716`](https://bscscan.com/address/0x438388847eE16850Ab4f5b82dc7954c0d043B716)
+* CentrifugeSource\_USDC: [`0x84bAeCF7Ac76039f731a0780EB59A03b2C7B593c`](https://bscscan.com/address/0x84bAeCF7Ac76039f731a0780EB59A03b2C7B593c)
 * SpokeSource\_USDC: [`0x4cd4aB2F88E39D3F3e481bb2555EcdF00266f717`](https://bscscan.com/address/0x4cd4aB2F88E39D3F3e481bb2555EcdF00266f717)
 
 U Hub
@@ -47,7 +49,7 @@ U Hub
 
 #### Wired resources
 
-Each Core YieldGroup routes to the corresponding Core pool vToken (vUSDT, vUSDC, vU) and each Flux YieldGroup to the corresponding Fluid fToken (fUSDT, fUSDC, fU). The FRV YieldGroups were registered unwired at launch; [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) then registered the **Solv (Ceffu custody) vault** [`0x086fd7972510dF9d9cFdc4efB8677fc72d290103`](https://bscscan.com/address/0x086fd7972510dF9d9cFdc4efB8677fc72d290103) as the resource of FRVSource\_USDT and the **Asseto CASH+ vault** [`0x41179fc6ff878b7795B900888E0B61fd8029bceA`](https://bscscan.com/address/0x41179fc6ff878b7795B900888E0B61fd8029bceA) as the resource of FRVSource\_U, and raised the FRV percentage cap on those two Hubs from 30% to 50% of TVL. [VIP-667](https://app.venus.io/#/governance/proposal/667?chainId=56) later added a second resource to FRVSource\_U, the **Hash Global hBNB vault** [`0xfE419E150d63ff288b9802533f6Fe2f886DB6FED`](https://bscscan.com/address/0xfE419E150d63ff288b9802533f6Fe2f886DB6FED). **FRVSource\_USDC still carries no resource.** The FRV sources stay out of the outer deposit queue, so lender deposits land in Core, Spoke and Flux (the outer deposit queue, in that order) and FRV is filled only by the Operator's `reallocate`. Each Spoke YieldGroup routes to its asset's liquidity market in the `bStock index` spoke pool (vUSDT\_bStockIndex, vUSDC\_bStockIndex, vU\_bStockIndex), wired by [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56); the pool's addresses are on the [spoke pools](spoke-pools.md) page. Read the live set with `resources()` on a YieldGroup, and its per-resource adapter with `resourceConfig(resource)`.
+Each Core YieldGroup routes to the corresponding Core pool vToken (vUSDT, vUSDC, vU) and each Flux YieldGroup to the corresponding Fluid fToken (fUSDT, fUSDC, fU). The FRV YieldGroups were registered unwired at launch; [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) then registered the **Solv (Ceffu custody) vault** [`0x086fd7972510dF9d9cFdc4efB8677fc72d290103`](https://bscscan.com/address/0x086fd7972510dF9d9cFdc4efB8677fc72d290103) as the resource of FRVSource\_USDT and the **Asseto CASH+ vault** [`0x41179fc6ff878b7795B900888E0B61fd8029bceA`](https://bscscan.com/address/0x41179fc6ff878b7795B900888E0B61fd8029bceA) as the resource of FRVSource\_U, and raised the FRV percentage cap on those two Hubs from 30% to 50% of TVL. [VIP-667](https://app.venus.io/#/governance/proposal/667?chainId=56) later added a second resource to FRVSource\_U, the **Hash Global hBNB vault** [`0xfE419E150d63ff288b9802533f6Fe2f886DB6FED`](https://bscscan.com/address/0xfE419E150d63ff288b9802533f6Fe2f886DB6FED). **FRVSource\_USDC still carries no resource.** The FRV sources stay out of the outer deposit queue, so lender deposits land in Core, Spoke and Flux (the outer deposit queue, in that order) and FRV is filled only by the Operator's `reallocate`. Each Spoke YieldGroup routes to its asset's liquidity market in the `bStock index` spoke pool (vUSDT\_bStockIndex, vUSDC\_bStockIndex, vU\_bStockIndex), wired by [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56); the pool's addresses are on the [spoke pools](spoke-pools.md) page. Each Centrifuge YieldGroup carries the JTRSY and JAAA fund vaults for its own asset, registered by [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) (USDT) and [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) (USDC); like FRV, Centrifuge is out of the outer deposit queue. Read the live set with `resources()` on a YieldGroup, and its per-resource adapter with `resourceConfig(resource)`.
 
 ### Beacons
 
@@ -58,6 +60,7 @@ One `UpgradeableBeacon` per family; upgrading a beacon upgrades every vault of t
 * FluxBeacon: [`0x9bb6a3Ac5955fA8dc236560CA9D51483d1d79f15`](https://bscscan.com/address/0x9bb6a3Ac5955fA8dc236560CA9D51483d1d79f15)
 * FRVBeacon: [`0x8A5EceDD726246682402430b9B24c19bF61B7f1d`](https://bscscan.com/address/0x8A5EceDD726246682402430b9B24c19bF61B7f1d)
 * SpokeBeacon: [`0x652AAa1CD21f47a92D04680C1d9Bf99cC1Fb8975`](https://bscscan.com/address/0x652AAa1CD21f47a92D04680C1d9Bf99cC1Fb8975)
+* CentrifugeBeacon: [`0xAe90Cfb3E2Bc97508F58E7e076Acf38f3bfC820f`](https://bscscan.com/address/0xAe90Cfb3E2Bc97508F58E7e076Acf38f3bfC820f)
 
 ### Adapters
 
@@ -67,6 +70,7 @@ Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach 
 * AdapterFlux: [`0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404`](https://bscscan.com/address/0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404)
 * AdapterFRV: [`0x1824caA965Ac05ae5C9C2819e045337e2cF5657c`](https://bscscan.com/address/0x1824caA965Ac05ae5C9C2819e045337e2cF5657c): the adapter behind every live FRV resource (Solv on the USDT Hub, Asseto CASH+ and Hash Global hBNB on the U Hub)
 * AdapterSpokeV1: [`0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69`](https://bscscan.com/address/0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69)
+* AdapterCentrifuge: [`0xaa9D52758890997D91950E595886FF9CDEca81ae`](https://bscscan.com/address/0xaa9D52758890997D91950E595886FF9CDEca81ae): the adapter behind all four Centrifuge resources (JTRSY and JAAA on the USDT and USDC Hubs)
 
 ### Periphery
 

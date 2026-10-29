@@ -18,7 +18,7 @@ BNB Trade contracts are money-moving. `PositionAccount` below is the implementat
 - UniswapOracle: [`0x8FD05458faf220B2324c4BFbb29DBC4B3CF6f23f`](https://bscscan.com/address/0x8FD05458faf220B2324c4BFbb29DBC4B3CF6f23f)
 - PancakeSwapOracle: [`0x44B72078240A3509979faF450085Fa818401D32E`](https://bscscan.com/address/0x44B72078240A3509979faF450085Fa818401D32E)
 - EBrake: [`0x35eBaBB99c7Fb7ba0C90bCc26e5d55Cdf89C23Ec`](https://bscscan.com/address/0x35eBaBB99c7Fb7ba0C90bCc26e5d55Cdf89C23Ec)
-- CollateralGateway: [`0xd0F7B94BF06675D13e8bA9a2546835a1c32a80b8`](https://bscscan.com/address/0xd0F7B94BF06675D13e8bA9a2546835a1c32a80b8) (no proxy; outside the v1.2.0 baseline, source on `develop`)
+- CollateralGateway: [`0xd0F7B94BF06675D13e8bA9a2546835a1c32a80b8`](https://bscscan.com/address/0xd0F7B94BF06675D13e8bA9a2546835a1c32a80b8) (no proxy; source in venus-periphery [v1.3.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.3.0/contracts/CollateralGateway) and on `main`)
 
 ## BNB Chain Testnet (Test-only)
 

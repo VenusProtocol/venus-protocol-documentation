@@ -17,7 +17,7 @@ Read [Hub-Funded Spoke Pools](README.md) first for why the fork exists and how a
 | Entering a market | `enterMarkets` only, always for `msg.sender` | adds ACM-gated **`enterMarketForAccount`**, so a gateway contract can enable collateral for the supplier it minted to |
 | Prime | `prime` + `setPrimeToken`, seven `*Verify` hooks update Prime scores | removed; the seven hooks are no-ops |
 | `healAccount` pause checks | `SEIZE` (through `preSeizeHook`) and `REPAY` (through `healBorrow`) | adds `LIQUIDATE` in every market the account owes a nonzero balance in |
-| Revert reasons | mixture of custom errors and `require` strings | every revert is a custom error |
+| Revert reasons | mixture of custom errors and `require` strings | custom errors throughout, except `setMaxLoopsLimit`, whose inherited `MaxLoopsLimitHelper` check still reverts with the string `"Comptroller: Invalid maxLoopsLimit"` |
 
 Exit is never gated, in either implementation. Redeem, repay and transfer are not access-controlled, and an account removed from an allowlist keeps the position it already holds and can still leave. Governance retains the usual market-level pause.
 
@@ -499,7 +499,7 @@ function liquidateAccount(address borrower, struct LiquidationOrder[] orders) ex
 * `MarketNotListed` is thrown if either market in any order is not listed
 * `NonzeroBorrowBalanceAfterLiquidation` is thrown if a debt remains in any of the borrower's markets once every order has executed
 * `InsufficientShortfall` is thrown when the account is not liquidatable
-* `MaxLoopsLimitExceeded` is thrown if the number of orders exceeds the loop limit
+* `MaxLoopsLimitExceeded` is thrown if half the number of orders exceeds the loop limit (the check is `_ensureMaxLoops(ordersCount / 2)`)
 * `ActionPaused` is thrown if `LIQUIDATE` or `REPAY` is paused in a borrowed market, or `SEIZE` in a collateral market, of any order
 * `TooMuchRepay` is thrown if an order repays more than the borrow balance
 * `MarketNotCollateral` is thrown if the borrower has not entered the collateral market of an order

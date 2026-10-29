@@ -1,6 +1,6 @@
 # Liquidity Hub
 
-The **Venus Liquidity Hub** is a per-asset ERC-4626 allocator vault. A lender deposits a single asset, the Hub routes it across Venus yield families (**Core**, **Flux**, **FRV** and **Spoke**) under a governance-set policy, and returns a yield-bearing share token. Yield accrues through a **rising exchange rate** (one share = X underlying), never by rebasing. There is one Hub per asset, with no cross-asset coupling.
+The **Venus Liquidity Hub** is a per-asset ERC-4626 allocator vault. A lender deposits a single asset, the Hub routes it across Venus yield families (**Core**, **Flux**, **FRV**, **Spoke** and, on the USDT and USDC Hubs, **Centrifuge**) under a governance-set policy, and returns a yield-bearing share token. Yield accrues through a **rising exchange rate** (one share = X underlying), never by rebasing. There is one Hub per asset, with no cross-asset coupling.
 
 For the user-facing introduction, see [Liquidity Hub](../../whats-new/liquidity-hub.md) under *What's New*.
 
@@ -44,8 +44,8 @@ On BNB Chain the Spoke Source of every Hub is second in the outer deposit queue,
 ## Contracts
 
 * [**Hub**](hub.md) — the ERC-4626 entry point: routing flows, dual caps, per-tx withdrawal cap, fees, multi-level pause, Operator reallocation, and the full Solidity API.
-* [**Yield Groups**](yield-groups.md): `YieldGroup` (the generic router, deployed once per family: Core, Flux and Spoke) and `YieldGroupFRV`: the `IYieldGroupBase` implementations, per-resource registry / queues / caps, and the FRV lifecycle.
-* [**Adapters**](adapters.md): `AdapterCoreV1`, `AdapterFlux`, `AdapterFRV`, `AdapterSpokeV1`: the stateless, delegatecall-dispatched protocol translators.
+* [**Yield Groups**](yield-groups.md): `YieldGroup` (the generic router, deployed once per family: Core, Flux and Spoke), `YieldGroupFRV` and `YieldGroupCentrifuge`: the `IYieldGroupBase` implementations, per-resource registry / queues / caps, and the FRV lifecycle.
+* [**Adapters**](adapters.md): `AdapterCoreV1`, `AdapterFlux`, `AdapterFRV`, `AdapterSpokeV1`, `AdapterCentrifuge`: the stateless, delegatecall-dispatched protocol translators.
 * [**Interfaces**](interfaces.md) — `IYieldGroupBase` (with its family extensions `IYieldGroup` and `IYieldGroupFRV`) and `IResourceAdapter`, the boundary contracts.
 * **`Migrator`** — a stateless, permissionless, non-upgradeable helper for one-click migration of a Venus Core position into a Hub (`migrateFromCore` / `migrateFromCoreBNB`).
 
@@ -91,15 +91,17 @@ Supporting contracts:
 | `FluxBeacon` | `0x9bb6a3Ac5955fA8dc236560CA9D51483d1d79f15` | Flux-family YieldGroups |
 | `FRVBeacon` | `0x8A5EceDD726246682402430b9B24c19bF61B7f1d` | FRV-family YieldGroups |
 | `SpokeBeacon` | `0x652AAa1CD21f47a92D04680C1d9Bf99cC1Fb8975` | Spoke-family YieldGroups |
+| `CentrifugeBeacon` | `0xAe90Cfb3E2Bc97508F58E7e076Acf38f3bfC820f` | Centrifuge-family YieldGroups |
 | `AdapterCoreV1` | `0xa061cC2F62BDa2D6bA53Fb98847aD9822DA085dd` | Shared singleton |
 | `AdapterFlux` | `0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404` | Shared singleton |
 | `AdapterFRV` | `0x1824caA965Ac05ae5C9C2819e045337e2cF5657c` | Shared singleton |
 | `AdapterSpokeV1` | `0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69` | Shared singleton |
+| `AdapterCentrifuge` | `0xaa9D52758890997D91950E595886FF9CDEca81ae` | Shared singleton; replaced its predecessor in VIP-669 |
 | `DefaultProxyAdmin` | `0x6beb6D2695B67FEb73ad4f172E8E2975497187e4` | Venus's shared `ProxyAdmin`, administering the registry's `TransparentUpgradeableProxy`; governance-owned |
 
 Each asset also has one YieldGroup proxy per family wired to it, named `<Family>Source_<asset>`; resolve them from the Hub's `registeredYieldGroups()` rather than hard-coding.
 
-**Hub parameters.** Live values; all three assets are 18-decimal. Only the FRV and Spoke caps differ per Hub, and the FRV row includes VIP-657 and VIP-664:
+**Hub parameters.** Live values; all three assets are 18-decimal. Only the FRV and Spoke caps differ per Hub, the FRV row includes VIP-657 and VIP-664, and only the USDT and USDC Hubs have a Centrifuge Source:
 
 | Parameter | USDT | USDC | U |
 | --------- | ---- | ---- | - |
@@ -110,9 +112,10 @@ Each asset also has one YieldGroup proxy per family wired to it, named `<Family>
 | Flux cap (absolute / %) | 7,000,000 / 20% | same | same |
 | FRV cap (absolute / %) | 5,000,000 / 50% | 5,000,000 / 30% | 5,000,000 / 90% |
 | Spoke cap (absolute / %) | 300,000,000 / 50% | 90,000,000 / 50% | 30,000,000 / 50% |
+| Centrifuge cap (absolute / %) | 5,000,000 / 25% | 5,000,000 / 25% | no Centrifuge Source |
 | Management / performance / redeem fee | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
 
-The Spoke caps are not what binds today. The spoke pool caps each liquidity market's supply at 5,000,000 (`supplyCaps` on the `SpokeComptroller`), so a Spoke Source holds at most that much, whatever the Hub cap. See [spoke pools](../../deployed-contracts/spoke-pools.md).
+A Spoke Source can hold at most the lower of two limits: the Hub's effective cap for it, which is the stricter of the absolute and the percentage cap and is read with `yieldGroupEffectiveCap(source)` on the Hub, and the liquidity market's supply cap in the spoke pool, 5,000,000 (`supplyCaps` on the `SpokeComptroller`). On 2026-10-29 the 50%-of-TVL cap is the one that binds on the USDT Hub (about 2.64M of a 5.27M TVL) and the USDC Hub (about 0.64M of 1.27M). On the U Hub the effective cap is about 5.5M, so the 5,000,000 market supply cap binds instead. Both limits move with TVL and governance, so read them live. See [spoke pools](../../deployed-contracts/spoke-pools.md).
 
 `feeRecipient` is `0xF322942f644A996A617BD29c16bd7d231d9F35E9` on all three. Core's percentage dimension uses the `10_000` BPS sentinel, so only its absolute cap binds; Flux is held to 20% of TVL, which at launch sits well under its absolute cap, so it fills through Operator `reallocate` rather than from the deposit queue. Each Hub is seeded with a 10-token bootstrap deposit from the Treasury whose shares are minted to the burn address, so `totalSupply` is never zero and the refill-from-empty branch cannot be re-opened.
 

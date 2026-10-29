@@ -81,7 +81,7 @@ function withdrawPosition(address vhMarket, uint256 shares, uint256 minAssets) e
   * Shares in the wallet are used first. A withdraw the wallet covers alone never touches Core, so the user's borrow position is not affected.
   * The rest is freed out of `vhMarket` on the user's behalf, but only when the user holds market tokens there and has granted the delegate. Without either, the Core leg is skipped and the wallet leg alone pays out. When it does run, the Comptroller runs its usual liquidity check against the user, so a withdraw that would leave them in shortfall reverts.
   * All shares are redeemed from the Hub, and the underlying is sent to the user.
-* The Core leg frees at most the market tokens the user holds. A market that charges a redeem fee frees fewer shares than asked, and the payout is smaller. A market without enough cash for the redeem reverts `VTokenRedeemFailed`.
+* The Core leg frees at most the market tokens the user holds. A market that charges a redeem fee frees fewer shares than asked, and the payout is smaller. A Core market without enough cash for the redeem reverts inside the market with the string `"math error"`, as it does when the redeem would leave the user in shortfall; the error-code path that would surface `VTokenRedeemFailed` does not run for either case.
 * Holding market tokens is not on its own enough to run the Core leg, because `mintBehalf` is permissionless: anyone can mint a dust amount to another account, and that must not be able to force a Core redeem on a user who never granted the delegate.
 * `shares = type(uint256).max` redeems the whole wallet balance, plus every `vhMarket` market token when the delegate grant is set. `minAssets` is the floor on the assets the Hub pays out, whichever legs ran.
 

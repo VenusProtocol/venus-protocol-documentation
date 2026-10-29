@@ -23,7 +23,7 @@ A spoke pool separates the asset that gets borrowed from the assets that back th
 | Borrowable | yes | no (borrow cap `0`) |
 | Interest rate model | its own IRM per market | not applicable |
 | Caps | own supply cap and borrow cap | own supply cap |
-| Liquidation incentive | never read (never seized) | its own, per market |
+| Liquidation incentive | normally unused for the Hub's supply-only position; still applies if balances are seized | its own, per market |
 
 Nothing in the contract labels a market as one side or the other. A market is on the liquidity side because its supply allowlist is enabled and its collateral factor is zero; it is on the collateral side because its borrow cap is zero and its collateral factor is not. Both are governance settings, and a market can carry a mix.
 
