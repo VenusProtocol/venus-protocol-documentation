@@ -24,7 +24,7 @@ Every YieldGroup implements `IYieldGroupBase`. The Hub depends only on these fun
 * **`withdraw(uint256 amount, address to)`** — pull `amount` from resources via the inner withdraw queue (idle-first) and deliver exactly `amount` to `to`, or revert.
 * **`depositResource(address resource, uint256 amount)` → `uint256 deposited`** — deposit the full `amount` into one specific resource, bypassing the inner queue (for Operator reallocation). Reverts if that resource cannot accept exactly `amount`.
 * **`withdrawResource(address resource, uint256 amount, address to)`** — redeem exactly `amount` from one specific resource (no idle-first, no cascade); pulling from a paused resource is permitted (wind-down).
-* **`accrue()`**: `onlyHub`; the Hub pokes every registered Source before reading NAV so the management fee is charged on interest-current value. **Every family overrides the base no-op**, so it is unreachable in deployed code. Core, Flux and Spoke share the `YieldGroup` loop, which calls `IResourceAdapter.accrue` on every registered resource: real work for Core and Spoke (both call their vToken's `accrueInterest()`), an empty body for Flux. `YieldGroupFRV` instead pokes each vault's `updateVaultState()`, advancing its lifecycle, and `YieldGroupCentrifuge` only re-anchors each vault's NAV band. Every poke is best-effort per resource: one that reverts is isolated and reported via `ResourceAccrualFailed` rather than bubbling.
+* **`accrue()`**: `onlyHub`; the Hub pokes every registered Source before reading NAV so the management fee is charged on interest-current value. **Every family overrides the base no-op**, so it is unreachable in deployed code. Core, Flux and Spoke share the `YieldGroup` loop, which calls `IResourceAdapter.accrue` on every registered resource: real work for Core and Spoke (both call their vToken's `accrueInterest()`), an empty body for Flux. `YieldGroupFRV` instead pokes each vault's `updateVaultState()`, advancing its lifecycle, and `YieldGroupCentrifuge` only re-anchors each vault's NAV band. On the `YieldGroup` loop and `YieldGroupFRV` every poke is best-effort per resource: one that reverts is isolated and reported via `ResourceAccrualFailed` rather than bubbling. `YieldGroupCentrifuge` never emits it; an unreadable vault value is swallowed by the band update.
 * **Views** — `asset()`, `totalAssets()`, `maxDeposit()`, `maxWithdraw()`, `spotAPYBps()`.
 
 See [Interfaces](interfaces.md) for the full `IYieldGroupBase` contract and its conventions.
@@ -92,7 +92,7 @@ An optional per-resource deposit cap limits how much underlying *this YieldGroup
 * **`raiseResourceCap(address resource, uint256 newCap)`** — loosen (Operator-accessible, like `lowerResourceCap`, so the Operator can open headroom ahead of a rebalance without a governance round). `newCap == 0` means unbounded, so raising to `0` removes the cap; the new value must be strictly looser (`NotIncreasing` otherwise). Emits `ResourceCapRaised`.
 * **`lowerResourceCap(address resource, uint256 newCap)`** — tighten (Operator-accessible). Must be strictly tighter and non-zero (`NotDecreasing` otherwise). Lowering below the current balance simply stops new deposits; it never forces a withdrawal. Emits `ResourceCapLowered`.
 
-`YieldGroupFRV` and `YieldGroupCentrifuge` do not expose these. FRV capacity comes entirely from the vault's own cap and its Fundraising-only rule; Centrifuge capacity comes from the vault, and is zero while a deposit cancel is pending.
+`YieldGroupFRV` and `YieldGroupCentrifuge` do not expose these. FRV capacity comes entirely from the vault's own cap and its Fundraising-only rule; Centrifuge does not read the vault for capacity: the adapter reports `type(uint128).max` less the pending deposit request, zero while a deposit cancel is pending, so in practice the Hub's cap for the Source is the bound.
 
 ## Family-specific behavior
 
@@ -139,7 +139,7 @@ What the group holds in a vault is valued as the held shares, plus every pending
 Every term of a Centrifuge position's value is computed off chain and published on BNB Chain, and the Hub's share price is built on it. A zero share price always reverts. On top of that, each vault can have a **NAV band** (`NavGuard`), which holds the value the group reports inside a range around an expected value:
 
 * The band's centre starts at the last value accepted from Centrifuge, grows at `driftBps` a year, and moves by exactly the amount of every deposit and withdrawal the group makes.
-* The reported value is clamped to between `centre − downGapBps` and `centre + upGapBps`. It never reverts.
+* The reported value is clamped to between `centre − anchor × downGapBps / 10000` and `centre + anchor × upGapBps / 10000`: the gaps are sized to the anchor, not the centre. It never reverts.
 * At most once per `interval`, the band re-anchors on the clamped reading. A wrong value can therefore move the reported value by at most one gap per interval, which gives time to notice it.
 * Above the band, an inflated value is reported lower, so nobody withdraws against value that is not there. Below the band, a real loss is reported higher at first, and is marked down one gap per interval rather than all at once.
 
@@ -156,7 +156,7 @@ Live values, identical on the USDT and USDC Sources. VIP-661 set the bands and a
 
 The two assets have separate vault contracts and therefore separate bands and separate request state, even though the funds share their share classes and NAV.
 
-Events: `RedeemRequested`, `DepositCancelRequested`, `RedeemCancelRequested`, `DepositClaimed`, `RedeemClaimed`, `DepositCancelClaimed`, `RedeemCancelClaimed`, `ResourceForceRemoved`, `SpotAPYBpsSet`, and for the band `NavGuardConfigured`, `NavGuardEnabledSet`, `NavGuardReanchored`, `NavGuardCentreMoved`, `NavGuardClamped` and `NavGuardClosed`. Alert on `NavGuardClosed`: every armed side then values the position at zero until a deposit or `setNavGuardSnapshot` reopens it.
+Events: `RedeemRequested`, `DepositCancelRequested`, `RedeemCancelRequested`, `DepositClaimed`, `RedeemClaimed`, `DepositCancelClaimed`, `RedeemCancelClaimed`, `ResourceForceRemoved`, `SpotAPYBpsSet`, and for the band `NavGuardConfigured`, `NavGuardEnabledSet`, `NavGuardReanchored`, `NavGuardCentreMoved`, `NavGuardClamped` and `NavGuardClosed`. Alert on `NavGuardClosed`: with the cap armed the position is then valued at zero (a floor-only band stops binding instead) until a deposit or `setNavGuardSnapshot` reopens it.
 
 ## Events
 
@@ -208,7 +208,7 @@ Every YieldGroup emits the shared set below. FRV and Centrifuge omit the three `
 | `InvalidNavGuardSnapshot`      | `setNavGuardSnapshot` was called on a band never configured, or with a zero snapshot, or a zero or future timestamp (Centrifuge only) |
 | `NavGuardUnreadable`           | `setNavGuardRate` could not read what the resource is worth, so arming would centre the band at zero (Centrifuge only) |
 | `NavGuardCentreOverflow`       | A deposit would push a band's centre past `uint128`, so the deposit reverted (Centrifuge only) |
-| `ResourceHasValue`             | A force-removal target still holds value that would be abandoned      |
+| `ResourceHasValue`             | (FRV only) A force-removal target still holds value that would be abandoned |
 | `SweepProtectedAsset`          | `sweep` called with the YieldGroup's own underlying                   |
 | `SweepProtectedResource`       | `sweep` called with a registered resource's receipt token             |
 | `WithdrawQueueOmitsFundedResource` | An inner withdraw-queue replacement drops a funded resource       |

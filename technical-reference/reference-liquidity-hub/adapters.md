@@ -10,7 +10,7 @@ One adapter per protocol family:
 * **`AdapterSpokeV1`**: the liquidity side of a [hub-funded spoke pool](../reference-isolated-pools/spoke/README.md): an isolated-pools `VToken` governed by a `SpokeComptroller`.
 * **`AdapterCentrifuge`**: Centrifuge ERC-7540 fund vaults, where a deposit or a redemption is a request settled later.
 
-Each one implements [`IResourceAdapter`](interfaces.md). Addresses are on the [Deployed Contracts](../../deployed-contracts/liquidity-hub.md#adapters) page; every live one was redeployed and repointed in VIP-669, so read `resourceConfig(resource)` on a YieldGroup rather than an older proposal.
+Each one implements [`IResourceAdapter`](interfaces.md). Addresses are on the [Deployed Contracts](../../deployed-contracts/liquidity-hub.md#adapters) page; the Core, Flux, FRV and Centrifuge resources were repointed to redeployed adapters in VIP-669 and the Spoke resources registered on `AdapterSpokeV1` in VIP-670, so read `resourceConfig(resource)` on a YieldGroup rather than an older proposal.
 
 ## Dispatch model
 
@@ -142,7 +142,7 @@ Wraps Centrifuge ERC-7540 fund vaults, such as JTRSY and JAAA. Under delegatecal
 * **`withdraw`**: pays out only assets whose redemption has already settled (the vault's `maxWithdraw`). It claims to the group first and then transfers to `to`, because the vault only pays out to addresses on its investor list.
 * **`totalAssets`**: held shares plus six request amounts. `pendingDepositRequest`, `claimableCancelDepositRequest` and `maxWithdraw` count at face; held shares, `maxMint`, `pendingRedeemRequest` and `claimableCancelRedeemRequest` are converted at the vault's share price. Reverts `ZeroSharePrice` if the position holds shares and the price is zero. `YieldGroupCentrifuge` then clamps the figure to the vault's [NAV band](yield-groups.md#nav-band).
 * **`maxWithdraw`**: the vault's own `maxWithdraw` for the group, so its investor-list checks show up in reported liquidity.
-* **`spotAPYBps`**: the rate governance published on the calling group with `setSpotAPYBps`. Any other caller gets 0.
+* **`spotAPYBps`**: the rate published on the calling group with `setSpotAPYBps` (governance, the Operator or the Guardian). Any other caller gets 0.
 * **`maxDeposit`**: not used for Centrifuge. The group sizes deposits itself, because it has to see whether its own deposit cancel is pending.
 * **`validateRegistration`**: checks the vault exposes the share token, request manager, investment state and price reads the adapter needs, reverting `NoShareToken` or `NoManager`.
 

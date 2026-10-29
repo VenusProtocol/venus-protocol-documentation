@@ -67,7 +67,7 @@ function supplyFromCollateral(address vToken, uint256 vTokenAmount, address vhMa
 | **Direct** | `vToken` is not entered as collateral, or removing it leaves no shortfall | enter `vhMarket`, redeem the old position, deposit into the Hub, supply to `vhMarket` |
 | **Flash loan** | `vToken` is entered and removing it would leave a shortfall | enter `vhMarket`, borrow the position's value from Core, supply the replacement collateral first, then redeem the old position and repay the loan |
 
-* The flash loan path needs the gateway to be allowlisted for Core flash loans, flash loans not paused system wide, and `vToken` flash-enabled. The flash loan premium is paid by the user: the loan is sized so the redeemed collateral covers principal plus premium, so the user's position moves in slightly smaller than it left.
+* The flash loan path needs the gateway to be allowlisted for Core flash loans, flash loans not paused system wide, and `vToken` flash-enabled. The loan is taken from `vToken` itself and the old position is redeemed from the same market while the loan is out, so `vToken` needs cash for both at once, roughly twice the position's value. With less, the migration reverts. The flash loan premium is paid by the user: the loan is sized so the redeemed collateral covers principal plus premium, so the user's position moves in slightly smaller than it left.
 * `minShares` means slightly different things on the two paths. The direct path deposits the redeem proceeds. The flash loan path deposits a lower bound on them and returns the difference to the user as underlying.
 
 ### Withdraw to the wallet (**withdrawPosition**)
@@ -92,8 +92,8 @@ function supplyAndEnterSpokeMarkets(address[] calldata vTokens, uint256[] callda
 function enterSpokeMarkets(address[] calldata vTokens) external;
 ```
 
-* `supplyAndEnterSpokeMarkets` supplies each amount to the matching spoke market, credits the market tokens to the user, and enters every market as the user's collateral.
-* `enterSpokeMarkets` only enters the markets, for a user who already holds the market tokens. Entering a market the user is already in does nothing and does not revert.
+* `supplyAndEnterSpokeMarkets` supplies each amount to the matching spoke market, credits the market tokens to the user, and enters every market as the user's collateral. The market's supply allowlist applies to the user, not the gateway, because the allowlist checks the account the market tokens are minted to. In the BNB Chain `bStock index` pool the USDT, USDC and U markets have it on, with the Liquidity Hub's Spoke Sources on the list, so an ordinary user's supply there reverts with `SupplyNotAllowed`; the bStock collateral markets have no allowlist.
+* `enterSpokeMarkets` only enters the markets, for a user who already holds the market tokens. Entering a market the user is already in does nothing and does not revert, unless `ENTER_MARKET` is paused on it: the pause is checked before membership.
 * Each market's Comptroller is read from the market itself, so one call can cover several spoke pools. Each market must be the one `SpokePoolRegistry` holds for its pool and underlying, and still listed.
 * Every market is supplied and entered, or the whole call reverts.
 * The amount supplied is measured from the balance that actually arrived, so a token with a transfer fee supplies only what arrived.
