@@ -30,7 +30,7 @@ All user-facing mutating operations are **atomic-or-revert** — they complete i
 2. The Hub accrues fees, then pulls `assets` from the user — so the caller trades against the post-accrual share price.
 3. The Hub snapshots `totalAssets()` (which already includes the just-transferred idle) and walks the **outer deposit queue**.
 4. For each Source: skip if unregistered or paused; compute `capRoom = max(0, effectiveCap − source.totalAssets())`; send `min(remaining, capRoom, source.maxDeposit())`. A **partial fill is accepted here** — the Source places what its inner queue can absorb, refunds the unplaced remainder to the Hub, and returns the placed amount; the cascade routes that remainder to the next Source. A Source whose `deposit` call reverts outright is caught, skipped (`YieldGroupSkipped`), and routing continues. `YieldGroupUnderfilled` is a `reallocate`-only error, not a deposit-cascade one.
-5. Each Source walks its **inner deposit queue**, delegatecalling its adapter per resource (respecting any per-resource cap), and mints receipt tokens into the YieldGroup.
+5. Each Source walks its **inner deposit queue**, delegatecalling its adapter per resource (respecting any per-resource cap), and credits receipt tokens to the YieldGroup for synchronous families. A Centrifuge allocation instead creates an asynchronous deposit request, with shares collected after settlement; live Centrifuge Sources are funded through targeted reallocation rather than the lender deposit queue.
 6. The Hub mints share tokens to the receiver.
 7. If capacity across the whole queue is short, the **entire transaction reverts** (`HubCapacityExceeded`).
 
@@ -53,7 +53,7 @@ All user-facing mutating operations are **atomic-or-revert** — they complete i
 Reallocate moves assets between Sources — and, optionally, between specific resources within a Source — without funds entering or leaving the Hub. Both legs share the [`ReallocateLeg`](#structs) struct. The Hub treats `resource` as an **opaque pass-through**: it holds no resource registry and never reads resource state — it relays the address to the owning Source, which validates it against its own registry.
 
 1. The Operator calls `reallocate(withdraws, deposits)`.
-2. The Hub accrues fees (skipped while paused).
+2. The Hub accrues fees. While paused (the `emergencyReallocate` path) it charges no fee but still settles every Source's resources, and that settlement is **fail-open**: a Source whose `accrue()` reverts is skipped and emits `YieldGroupAccrualFailed`, so it cannot block the wind-down of the healthy ones. A leg that then pulls from an unsettled Source still has to deliver its full amount or it reverts.
 3. **Pull phase** — every withdraw leg runs first: `Source.withdraw` (queue) or `Source.withdrawResource` (targeted). Underlying returns to the Hub as idle. Pulling from a *paused* resource is allowed (wind-down). Every leg on both sides must carry a non-zero `amount` — a zero-amount leg reverts `ZeroAmount` rather than being skipped, which matters when the plan is generated programmatically and a no-op leg is a natural artifact.
 4. The Hub takes a single TVL snapshot after all pulls — the cap reference for every push (valid because a balanced reallocate conserves TVL). While unpaused this is the strict, fail-closed `totalAssets()`. While paused (the `emergencyReallocate` path) it is a **fail-open** sum that skips any Source whose `totalAssets()` reverts, so a single bricked Source cannot block a rebalance among the healthy ones.
 5. **Push phase** — each deposit leg checks the Source is registered, unpaused, and within its effective cap, then `Source.deposit` (queue) or `Source.depositResource` (targeted). Depositing into a paused resource reverts.
@@ -73,7 +73,7 @@ Hub.totalAssets()
              = Σ adapter.totalAssets(resource, yieldGroup)  +  Source idle balance
 ```
 
-* `totalAssets()` **fails closed**. It sums every registered Source with no error isolation, so a Source whose `totalAssets()` view reverts makes the whole NAV read revert — and with it every `convertTo*` / `preview*` view and every deposit / mint / withdraw / redeem / `accrueFees` / `reallocate` — until the Source is fixed or evicted. This is deliberate: NAV is the share-price denominator, so silently counting a live Source as 0 would under-pay redeemers and over-credit depositors. Fault isolation applies only one level out, to the quantity-gate views (`maxDeposit` / `maxWithdraw`) and the deposit / withdraw routing, which do skip a faulting Source. Recovery is the emergency path of `removeYieldGroup`, which permits removal precisely when the view reverts.
+* `totalAssets()` **fails closed**. It sums every registered Source with no error isolation, so a Source whose `totalAssets()` view reverts makes the whole NAV read revert — and with it every `convertTo*` / `preview*` view and every deposit / mint / withdraw / redeem / `accrueFees` / `reallocate` — until the Source is fixed or evicted. This is deliberate: NAV is the share-price denominator, so silently counting a live Source as 0 would under-pay redeemers and over-credit depositors. Fault isolation covers the other failures only: `maxWithdraw` and the withdraw routing skip a Source whose own `maxWithdraw()` reverts, and the deposit routing skips a Source whose `deposit` reverts. The deposit-side view lives on `HubLens` rather than the Hub, see [Sizing a deposit](#sizing-a-deposit). Recovery is the emergency path of `removeYieldGroup`, which permits removal precisely when the view reverts.
 * Hub idle is normally zero (deposits route out atomically, withdrawals pull exact amounts, reallocate is balanced). A direct token donation persists and is intentionally counted into NAV — it accrues to LPs and is consumed first on withdraw; the underlying cannot be swept.
 * View paths use the **stored** exchange rate (`exchangeRateStored`, stale up to one accrual cycle, no state mutation). Mutating paths trigger interest accrual on the resource during mint / redeem, so the rate is current by the time the operation completes.
 
@@ -84,14 +84,44 @@ Hub.totalAssets()
 ```
 effectiveCap = (percentageCapBps == 10_000)
              ? absoluteCap
-             : min(absoluteCap, percentageCapBps × hubTVL / 10_000)
+             : min(absoluteCap, ceil(percentageCapBps × hubTVL / 10_000))
 ```
 
 `percentageCapBps == 10_000` (100%) is a sentinel that **disables** the percentage component — required so a fresh Hub at TVL = 0 can take its first deposit (otherwise `pct × 0` collapses the cap to zero). `absoluteCap == type(uint256).max` is rejected; use the sentinel to disable the percentage dimension instead.
 
 **Per-transaction withdrawal cap.** `maxWithdrawalSize` (asset units) bounds every single withdraw / redeem so one transaction cannot drain a downstream product's liquidity; exceeding it reverts `HubWithdrawCapExceeded`.
 
-The optional **per-resource deposit cap** (Core & Flux) binds one level down, inside the YieldGroup — see [Yield Groups](yield-groups.md#resource-caps-core--flux-only).
+The optional **per-resource deposit cap** (Core, Flux and Spoke) binds one level down, inside the YieldGroup — see [Yield Groups](yield-groups.md#resource-caps-core-flux-and-spoke-only).
+
+## Sizing a deposit
+
+`Hub.maxDeposit` and `Hub.maxMint` are **not** limits. They return `type(uint256).max` and reflect neither the caps nor the pause state. Sizing a deposit off either one gives no signal that the deposit will revert, exactly as with `previewDeposit`.
+
+The real ceiling lives on **`HubLens`**, a stateless, unowned, non-upgradeable periphery contract. It takes the Hub as a parameter, so a single deployment serves every Hub:
+
+```solidity
+// IHubLens is not in a published @venusprotocol/liquidity-hub release yet.
+// Declare what you call, or take the full interface from the deployed contract.
+interface IHubLens {
+    function maxDeposit(address hub) external view returns (uint256 assets);
+}
+
+uint256 room = IHubLens(lens).maxDeposit(hub);   // 0 while the Hub is paused
+```
+
+The figure is priced against the TVL the deposit itself produces, because the cascade prices the percentage caps there too. Each Source's room is then trimmed by **0.01% of its mark**, to cover the interest the deposit settles on its way in before caps are priced. So `hub.deposit(room, receiver)` fits in the ordinary case, but it is a margin and not a proof: an accrual larger than 0.01% between the read and the deposit reverts rather than over-filling a cap. `maxMint` carries that margin twice, once through `maxDeposit` and once on the share price the mint is charged at.
+
+A floor changes how the figure is produced. When any resource in a Source's inner deposit queue carries a minimum deposit, today only an FRV vault's `minSupplierDeposit`, `HubLens` stops solving in closed form and dry-runs the cascade instead, offering each floored Source its room candidates largest first and keeping the first amount that routes in full. That answer can sit well below the cap room, and it is `0` when every candidate leaves a leg under its floor, since such a deposit would revert rather than part-fill. `depositCapacityBreakdown` splits the same solved figure and `maxMint` runs the solve against the double-trimmed budget. Every FRV vault live on either network sets `minSupplierDeposit` to `0`, so the closed-form path is what answers today.
+
+`depositCapacityBreakdown(hub)` returns that same total split by the Source that would receive it, in deposit-queue order, so the parts sum to `maxDeposit`. It answers "where would my deposit land", not "how much could this Source take on its own": a Source late in the queue reads `0` whenever the ones ahead of it absorb everything. Both arrays come back empty while the Hub is paused, and a Source that is paused, unregistered, view-reverting, or registered but absent from the deposit queue is left out of them entirely.
+
+`spotAPYBps(hub)` is on the same contract: a blended spot APY in BPS, the weighted average of each Source's own `spotAPYBps()` over the Hub's whole `totalAssets()`. It is not a sum. Idle assets are counted at 0% rather than dropped, whether they sit on the Hub or on a Source, so the figure is what a lender actually earns. A Source whose `spotAPYBps()` reverts contributes 0.
+
+If a deposit is sent anyway and does not fit, it reverts `HubCapacityExceeded(uint256 requested, uint256 maxAvailable)`. On a deposit the second argument is the amount the failed attempt routed before reverting. **It is not a safe size to retry with.** The cascade priced every percentage cap against a TVL that included the whole attempted deposit, so a smaller retry lowers that TVL and the caps with it, and can revert again. For example, ignoring fees and interest: the Hub's NAV is 100, and the only Source that can take deposits holds 40 under a 50% cap. Depositing 100 prices that cap at 100 and places 60, so it reverts with `(100, 60)`. Retrying 60 prices the cap at 80 and places only 40, so it reverts too; 20 succeeds. Size a deposit with `HubLens` and simulate the transaction rather than retrying with the reported figure.
+
+`HubLens` inherits the Hub's fault split rather than escaping it. A Source whose quantity views revert contributes `0` and the rest of the figure still comes back; a Source whose `totalAssets()` reverts halts every `HubLens` function too, because `Hub.totalAssets()` halts first and a figure priced against a wrong NAV is worse than no figure.
+
+Nothing on chain points at `HubLens`: it is not registered in the `HubRegistry` and no Hub exposes its address. Take it from [Deployed contracts](../../deployed-contracts/liquidity-hub.md).
 
 ## Fees
 
@@ -110,9 +140,23 @@ Three independent scopes — a broader scope blocks everything beneath it; sibli
 
 <figure><img src="../../.gitbook/assets/liquidity-hub-multi-level-pause.svg" alt="Multi-level pause: a Hub pause blocks all user operations; a paused Source is skipped in routing while sibling Sources keep operating; a paused resource is skipped in its YieldGroup's inner queue"><figcaption></figcaption></figure>
 
-* **Hub paused** — all deposits / withdrawals / mints / redeems, `reallocate`, and fee accrual and the fee setters are blocked; `emergencyReallocate` and `sweep` stay callable; views stay readable, though all four `max*` views return `0`. Underlying products keep operating. Only the **time-based management fee** is excluded from the pause window — `unpauseHub` advances the accrual cursor by the pause duration, so LPs are not charged rent for frozen time. The performance fee is *not* excluded: the high-water mark is deliberately left unchanged, so per-share gains the underlying products earn during the freeze are charged on the first post-resume accrual.
-* **Source paused** — the Hub-level flag makes routing skip the Source **silently in both directions**: a user `deposit` / `mint` cascades to the next Source and a user `withdraw` / `redeem` pulls from elsewhere, with no `YieldGroupPaused` revert (only `HubCapacityExceeded` / `HubInsufficientLiquidity` fire if the rest of the queue cannot cover the amount). Its balance still counts in `totalAssets()` but is excluded from `maxDeposit()` / `maxWithdraw()`. Funds remain reachable via `reallocate` / `emergencyReallocate` — a **pull** leg from a paused Source is allowed, while a **push** leg into one reverts `YieldGroupPaused`.
+* **Hub paused** — all deposits / withdrawals / mints / redeems, `reallocate`, and fee accrual and the fee setters are blocked; `emergencyReallocate` and `sweep` stay callable; views stay readable, though `maxWithdraw` / `maxRedeem` return `0` and `HubLens.maxDeposit` reports `0` (`maxDeposit` / `maxMint` on the Hub are not overridden, so they keep returning `type(uint256).max` even while paused). Underlying products keep operating. Only the **time-based management fee** is excluded from the pause window — `unpauseHub` advances the accrual cursor by the pause duration, so LPs are not charged rent for frozen time. The performance fee is *not* excluded: the high-water mark is deliberately left unchanged, so per-share gains the underlying products earn during the freeze are charged on the first post-resume accrual.
+* **Source paused** — the Hub-level flag makes routing skip the Source **silently in both directions**: a user `deposit` / `mint` cascades to the next Source and a user `withdraw` / `redeem` pulls from elsewhere, with no `YieldGroupPaused` revert (only `HubCapacityExceeded` / `HubInsufficientLiquidity` fire if the rest of the queue cannot cover the amount). Its balance still counts in `totalAssets()` but is excluded from `maxWithdraw()` and from the `HubLens` deposit figure. Funds remain reachable via `reallocate` / `emergencyReallocate` — a **pull** leg from a paused Source is allowed, while a **push** leg into one reverts `YieldGroupPaused`.
 * **Resource paused** — set on the YieldGroup, not the Hub; see [Yield Groups](yield-groups.md#pause-asymmetric).
+
+### Automatic pause on a NAV break
+
+{% hint style="info" %}
+**Deployed; armed by VIP-673.** `HubNavDeviationSentinel` is deployed on BNB Chain at [`0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB`](https://bscscan.com/address/0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB) ([venus-periphery#75](https://github.com/VenusProtocol/venus-periphery/pull/75)) and on BNB Chain testnet at [`0x347fBbC71C07496fbBb2fEc5D2a036605F14089D`](https://testnet.bscscan.com/address/0x347fBbC71C07496fbBb2fEc5D2a036605F14089D), where it points at the testnet `EBrake` `0x957c09e3Ac3d9e689244DC74307c94111FBa8B42` and `HubRegistry` `0x5346f648029d1D1d1034e09e8AD7a115f5D7A159`. [VIP-673](https://app.venus.io/#/governance/proposal/673?chainId=56), queued with an ETA of 2026-10-30, arms the mainnet one: it upgrades `EBrake` to an implementation with the `pauseHub(address)` forwarder, accepts ownership of the sentinel, trusts its keeper, grants it `EBrake.pauseHub` and configures the Centrifuge resources. Until it executes, nothing is watched on mainnet: no resource is configured, no keeper is trusted, no ACM role has been granted on it, it is `Ownable2Step` with the Normal Timelock nominated but not yet accepted, and the pause itself cannot land yet: the live `EBrake` implementation [`0x2D36677EcA318c9536011D53aa752F042dd01DE8`](https://bscscan.com/address/0x2D36677EcA318c9536011D53aa752F042dd01DE8) predates the `pauseHub(address)` forwarder the sentinel calls, which shipped in `venus-periphery` v1.3.0. Every step below therefore describes the contract, not a live guard.
+{% endhint %}
+
+For a resource whose value is published by a counterparty, such as a Centrifuge vault, a trusted keeper (set with `setTrustedKeeper`, and separate from the Centrifuge Keeper role) can pause the **whole Hub** when that value moves too far from the centre of the resource's [NAV band](yield-groups.md#nav-band). The check lives in `HubNavDeviationSentinel`, a contract of its own rather than part of [`DeviationSentinel`](../reference-periphery/deviation-sentinel.md), and the pause goes through [`EBrake`](../reference-periphery/ebrake.md), the same path as the existing price-deviation check.
+
+* Governance sets a threshold per (YieldGroup, resource) pair with `setHubNavConfig`, in basis points of the band's anchor, measured above and below the band's centre (a pause is due past `centre ± anchor × bps / 10_000`), and switches monitoring on separately with `setNavMonitoringEnabled`. A threshold of zero leaves that side unwatched; both at zero is rejected.
+* The same call takes a `minPauseGap` in asset units, which has to be above zero. A band's anchor is zero from a resource's first deposit until its first re-anchor, which puts both trip points on the centre, so without that floor a routine gap would pause the Hub.
+* Anyone can read whether a pause is due with `checkNavGuardDeviation(yieldGroup, resource)`, which returns a status rather than reverting. The keeper acts with `handleNavGuardDeviation`, which reverts when no action is due.
+* The Hub is paused, not only the resource, because the Hub's `totalAssets()` still counts a paused resource, so the wrong value would stay in the share price.
+* The pause only tightens. Unpausing stays a governance action.
 
 ## Permissions
 
@@ -121,8 +165,8 @@ Every ACM-gated call is authorised through `AccessControlManagerV8` — the role
 Three holders in v1: governance (a VIP, behind the Normal Timelock), the **Operator** (a Venus
 operations multisig acting as the routine keeper, distinct from the Guardian), and the **Guardian**
 (a multisig that acts with no timelock delay, so it can contain an incident immediately). The
-Guardian is granted containment only — it can tighten but never loosen, and holds no unpause, so it
-can never undo a governance-ordered pause. The Centrifuge Sources add a fourth holder, a Keeper limited to the four claim functions. All role holders are addresses granted by
+Guardian can pause, perform emergency reallocation and replace resource adapters. It can also
+unpause resources, but cannot unpause a Hub or YieldGroup. The Centrifuge Sources add a fourth holder, a Keeper limited to the four claim functions. All role holders are addresses granted by
 proposal, not roles baked into the bytecode; the granted addresses are listed under
 [Deployment](README.md#deployment).
 
@@ -132,7 +176,8 @@ proposal, not roles baked into the bytecode; the granted addresses are listed un
 | Re-adapter a resource (`updateResourceAdapter`)                                        | ✅               | ❌       | ✅       |
 | Set fees and fee recipient, `sweep`, `setBlocksPerYear`                                | ✅               | ❌       | ❌       |
 | **Raise** the per-transaction withdrawal cap                                           | ✅               | ❌       | ❌       |
-| **Unpause** at any level (Hub, YieldGroup, resource)                                   | ✅               | ❌       | ❌       |
+| **Unpause** a Hub or YieldGroup                                                      | ✅               | ❌       | ❌       |
+| **Unpause** a resource                                                               | ✅               | ✅       | ✅       |
 | **Raise or lower** YieldGroup caps and per-resource caps                               | ✅               | ✅       | ❌       |
 | **Lower** the per-transaction withdrawal cap, reorder outer / inner queues             | ✅               | ✅       | ❌       |
 | **Pause** — Hub, YieldGroup, or resource                                               | ✅               | ✅       | ✅       |
@@ -147,7 +192,7 @@ Two rows are worth reading carefully, because both depart from a naive loosening
 * **`raiseYieldGroupCap` is Operator-accessible.** It is the one loosening lever the Operator holds, granted so it can open headroom immediately before a `reallocate` without waiting for a governance round. Raising the *per-transaction withdrawal cap* is still governance-only.
 * **Governance does not hold `reallocate`.** It is Operator-only. Governance's equivalent lever is `emergencyReallocate`, which has the same net-zero semantics and additionally works while the Hub is paused.
 
-The Guardian's grant is a strict subset of governance's: pause at all three levels, `emergencyReallocate`, `forceRemoveResource`, and — since [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) — `updateResourceAdapter` on every YieldGroup, which the same proposal revoked from the Operator. It holds no unpause, so it can contain an incident but never undo a governance-ordered pause.
+The Guardian holds pause at all three levels, `emergencyReallocate`, `forceRemoveResource`, `unpauseResource` and `updateResourceAdapter`. [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) granted resource unpause and adapter replacement to both the Operator and Guardian on the existing Sources; [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) revoked adapter replacement from the Operator. Resource unpause does not clear a Hub-level or YieldGroup-level pause.
 
 Nothing in the contracts hard-codes these three. The split is entirely a matter of which addresses
 governance grants each role to — the asymmetry is a deployment decision, not a code branch.
@@ -157,7 +202,7 @@ governance grants each role to — the asymmetry is a deployment decision, not a
 * **Atomic-or-revert.** Deposits, withdrawals, and reallocate fully complete or revert with a named error — no partial fills, no remainder returned.
 * **Net-zero reallocate.** `Σ withdraws == Σ deposits`; the Operator can only move funds among registered routes, never in or out.
 * **Reentrancy-guarded value paths.** Every entry point that moves assets is `nonReentrant` (`ReentrancyGuardUpgradeable`) — `deposit` / `mint` / `withdraw` / `redeem`, `reallocate`, `emergencyReallocate`, `accrueFees`, `sweep` on the Hub, and `deposit` / `withdraw` / `depositResource` / `withdrawResource` / `sweep` on each YieldGroup — since each makes external calls into Sources, delegatecalls into adapters, and reaches into the underlying Core / Flux / FRV protocols. The ACM-gated admin setters and the `onlyHub` `accrue()` poke are **not** individually guarded; they rely on ACM gating and `onlyHub` instead.
-* **Fault isolation on the quantity gates, fail-closed on price.** A Source with a reverting `totalAssets()` view contributes 0 to `maxDeposit()` / `maxWithdraw()` and is skipped by the deposit / withdraw routing — but `Hub.totalAssets()` itself is deliberately **fail-closed** and reverts with it, halting share pricing rather than understating NAV. Such a Source can still be removed as an emergency eviction: `removeYieldGroup` catches the reverting view and permits removal.
+* **Fault isolation on the quantity gates, fail-closed on price.** A Source whose `maxWithdraw()` view reverts contributes 0 to `maxWithdraw()` and is skipped by the withdraw routing, and one whose `deposit` reverts is skipped by the deposit routing. A Source whose `totalAssets()` view reverts is not isolated: `Hub.totalAssets()` is deliberately **fail-closed** and reverts with it, halting share pricing and every path that reads it rather than understating NAV. Such a Source can still be removed as an emergency eviction: `removeYieldGroup` catches the reverting view and permits removal.
 * **Removal safety.** `removeYieldGroup` gates on the Source's balance so a funded Source can't be silently dropped; YieldGroups apply the same gate on a raw receipt-token balance.
 * **Inflation defense.** The ERC-4626 decimals offset is set per asset at `initialize` and enforced **on-chain in both directions**: `0` and anything above `MAX_DECIMALS_OFFSET` (12) revert `InvalidDecimalsOffset`, so a Hub can never be deployed with the offset disabled. A non-zero offset is required for every asset regardless of its decimals — offset 0 would let a donation attack zero a first depositor's shares.
 * **Standard ERC-20 only.** Fee-on-transfer, deflationary, and rebasing underlyings are unsupported (deposits fail closed if a token delivers less than requested).
@@ -245,7 +290,8 @@ Two consent-gated variants take an extra `bytes32 consentHash` and emit it in th
 Not all the standard ERC-4626 views behave identically to the OpenZeppelin base:
 
 * `convertToShares` / `convertToAssets` / `previewDeposit` / `previewMint` are **inherited unmodified**. They are pure share math and reflect *none* of the caps, liquidity, pause state or fees — sizing a deposit off `previewDeposit` gives no signal that the deposit will revert.
-* `maxDeposit` / `maxMint` / `maxWithdraw` / `maxRedeem` are **overridden** and do reflect live effective caps, aggregate liquidity, the per-transaction withdrawal cap and the redeem fee. All four return `0` while the Hub is paused.
+* `maxDeposit` / `maxMint` are **inherited unmodified** and return `type(uint256).max`, ERC-4626's "no limit" value. The Hub does not compute a deposit ceiling: OpenZeppelin's `deposit` / `mint` call these two views on every call, and solving every Source's dual cap against the TVL the deposit itself creates does not belong on that path. Caps are still enforced, by the routing cascade. Read the real figure from `HubLens`, see [Sizing a deposit](#sizing-a-deposit).
+* `maxWithdraw` / `maxRedeem` are **overridden** and do reflect aggregate liquidity, the per-transaction withdrawal cap and the redeem fee. Both return `0` while the Hub is paused.
 * `previewWithdraw` / `previewRedeem` are **overridden** to account for the redeem (exit) fee, so they diverge from `convertToAssets` / `convertToShares` whenever that fee is non-zero.
 
 ### Source registry (governance)
@@ -311,6 +357,8 @@ call everything else. Both sit with governance in v1.
 * **`redeemFeeBps()` → `uint16`** — current exit fee rate.
 * **`highWaterMarkPerShare()` → `uint256`** — performance HWM in share-price units.
 
+The Hub exposes no deposit-capacity view. That figure comes from `HubLens`, see [Sizing a deposit](#sizing-a-deposit).
+
 ## Events
 
 | Event                     | Parameters                                                  | Description                                       |
@@ -334,6 +382,7 @@ call everything else. Both sit with governance in v1.
 | `HighWaterMarkUpdated`    | `oldHwm`, `newHwm`                                          | Performance HWM changed — ratcheted up on a new PPS high, incremented by the retained exit-fee uplift on withdraw, or **re-anchored (possibly downward)** to the entry PPS on a refill from an empty vault. Do not assume `newHwm >= oldHwm` |
 | `RedeemFeeBpsSet`         | `oldBps`, `newBps`                                          | Redeem (exit) fee rate changed                    |
 | `YieldGroupSkipped`       | `yieldGroup`, `isDeposit`                                   | A YieldGroup's mutating `deposit` / `withdraw` call **reverted** and routing routed around it. A healthy system emits this zero times — paused, at-cap and dry YieldGroups are skipped silently with no event |
+| `YieldGroupAccrualFailed` | `yieldGroup` (indexed)                                      | An `emergencyReallocate` could not settle a YieldGroup's resources because its `accrue()` reverted, and the call continued without it. A healthy system emits this zero times |
 | `ConsentRecorded`         | `supplier`, `receiver`, `consentHash`                       | A consent-gated deposit or mint recorded its hash |
 | `Swept`                   | `token`, `to`, `amount`                                     | Stray-token balance rescued                       |
 | `OwnershipTransferStarted`| `previousOwner`, `newOwner`                                 | Ownership transfer nominated                      |
@@ -345,7 +394,7 @@ call everything else. Both sit with governance in v1.
 | Error                          | When                                                                       |
 | ------------------------------ | -------------------------------------------------------------------------- |
 | `Unauthorized`                 | Caller lacked the ACM role for the called function                        |
-| `HubCapacityExceeded`          | Deposit / mint exceeds aggregate spare cap across unpaused Sources, **or** a `reallocate` / `emergencyReallocate` push leg exceeds the destination Source's own effective cap |
+| `HubCapacityExceeded`          | Deposit / mint exceeds aggregate spare cap across unpaused Sources, **or** a `reallocate` / `emergencyReallocate` push leg exceeds the destination Source's own effective cap. Carries `(requested, maxAvailable)`: on a deposit, `maxAvailable` is the amount the failed attempt routed before reverting, which is not a safe retry size (see [Sizing a deposit](#sizing-a-deposit)); on a push leg, it is the destination's remaining cap room |
 | `HubInsufficientLiquidity`     | Withdraw / redeem exceeds liquid funds (withdraw queue + Hub idle)         |
 | `YieldGroupUnderfilled`            | A Source delivered an amount **not exactly equal** to the amount requested — under- *or* over-delivery, since the check is `!=` — on a user withdraw / redeem cascade step or on a `reallocate` leg. Not raised by the deposit cascade, which accepts partial fills |
 | `HubWithdrawCapExceeded`       | Withdraw / redeem exceeds `maxWithdrawalSize()`                            |
