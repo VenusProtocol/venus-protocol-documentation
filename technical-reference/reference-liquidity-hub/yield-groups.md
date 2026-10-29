@@ -24,7 +24,7 @@ Every YieldGroup implements `IYieldGroupBase`. The Hub depends only on these fun
 * **`withdraw(uint256 amount, address to)`** — pull `amount` from resources via the inner withdraw queue (idle-first) and deliver exactly `amount` to `to`, or revert.
 * **`depositResource(address resource, uint256 amount)` → `uint256 deposited`** — deposit the full `amount` into one specific resource, bypassing the inner queue (for Operator reallocation). Reverts if that resource cannot accept exactly `amount`.
 * **`withdrawResource(address resource, uint256 amount, address to)`** — redeem exactly `amount` from one specific resource (no idle-first, no cascade); pulling from a paused resource is permitted (wind-down).
-* **`accrue()`**: `onlyHub`; the Hub pokes every registered Source before reading NAV so the management fee is charged on interest-current value. **Every family overrides the base no-op**, so it is unreachable in deployed code. Core, Flux and Spoke share the `YieldGroup` loop, which calls `IResourceAdapter.accrue` on every registered resource: real work for Core and Spoke (both call their vToken's `accrueInterest()`), an empty body for Flux. `YieldGroupFRV` instead pokes each vault's `updateVaultState()`, advancing its lifecycle, and `YieldGroupCentrifuge` only re-anchors each vault's NAV band. Every poke is best-effort per resource: one that reverts is isolated and reported via `ResourceAccrualFailed` rather than bubbling.
+* **`accrue()`**: `onlyHub`; the Hub pokes every registered Source before reading NAV so the management fee is charged on interest-current value. **Every family overrides the base no-op**, so it is unreachable in deployed code. Core, Flux and Spoke share the `YieldGroup` loop, which calls `IResourceAdapter.accrue` on every registered resource: real work for Core and Spoke (both call their vToken's `accrueInterest()`), an empty body for Flux. `YieldGroupFRV` instead pokes each vault's `updateVaultState()`, advancing its lifecycle, and `YieldGroupCentrifuge` only re-anchors each vault's NAV band. The generic `YieldGroup` and FRV isolate a failed resource poke and emit `ResourceAccrualFailed`. Centrifuge handles an unreadable NAV observation silently: it keeps the existing band anchor and emits no `ResourceAccrualFailed`. This does not make valuation fail-open: a subsequent `totalAssets()` read still reverts if the adapter cannot value the resource.
 * **Views** — `asset()`, `totalAssets()`, `maxDeposit()`, `maxWithdraw()`, `spotAPYBps()`.
 
 See [Interfaces](interfaces.md) for the full `IYieldGroupBase` contract and its conventions.
@@ -71,7 +71,7 @@ The same stateless adapter address may be reused across any number of resources 
 ## Other governance functions
 
 * **`setBlocksPerYear(uint256 blocksPerYear)`**: Core, Flux and Spoke only. Retune the annualisation factor if the chain's block cadence changes. Emits `BlocksPerYearSet`.
-* **`sweep(address token, address to)`** — forward a stray ERC-20 balance out of the YieldGroup. Cannot take the underlying (`SweepProtectedAsset`) or any registered resource's receipt token (`SweepProtectedResource`).
+* **`sweep(address token, address to)`** — forward the full balance of an allowed ERC-20 out of the YieldGroup. Cannot take the underlying (`SweepProtectedAsset`) or a token whose own address is registered as a resource (`SweepProtectedResource`). For Core, Flux, FRV and Spoke, the resource address is also the receipt token. Centrifuge is the exception: its registered vault and its `share()` token have different addresses, so the share token can be swept by an account holding the sweep permission. See [Centrifuge lifecycle](#centrifuge-lifecycle).
 
 ## Inner queues (Operator)
 
@@ -132,6 +132,7 @@ What the group holds in a vault is valued as the held shares, plus every pending
 
 * **APY is published, not read.** Centrifuge puts no rate on chain, so each vault's rate is set with `setSpotAPYBps(resource, apyBps)`, by governance, the Operator or the Guardian. Left unset, the vault reports zero.
 * **Writing off a vault.** If a position can never be claimed, `forceRemoveResource(resource)` drops the vault and writes its value off. Governance and the Guardian hold it, and it reverts `HubNotPaused` unless the Hub is paused.
+* **Sweeping fund shares.** `sweep` can transfer the Centrifuge share-token balance, including the backing of a live position. It does not adjust the NAV band. If exposure remains, the floor can continue reporting value that was swept out; re-anchor with `setNavGuardSnapshot` in the same transaction. This is a privileged position transfer, not just recovery of stray tokens.
 * **Investor lists.** Each fund only accepts addresses on its investor list, so Centrifuge has to add a Source before any capital can be allocated to it. Both live Sources have been added and both hold capital.
 
 ### NAV band
@@ -160,7 +161,7 @@ Events: `RedeemRequested`, `DepositCancelRequested`, `RedeemCancelRequested`, `D
 
 ## Events
 
-Every YieldGroup emits the shared set below. FRV and Centrifuge omit the three `IYieldGroup`-only events (`ResourceCapRaised`, `ResourceCapLowered`, `BlocksPerYearSet`), and they are the two that emit `ResourceForceRemoved`, with a different payload each: `(resource, orphanedShares)` on FRV, `(resource, writtenOffValue, orphanedReceipt)` on Centrifuge:
+The table below covers the YieldGroup events. Centrifuge does not emit `ResourceAccrualFailed`. FRV and Centrifuge omit the three `IYieldGroup`-only events (`ResourceCapRaised`, `ResourceCapLowered`, `BlocksPerYearSet`), and they are the two that emit `ResourceForceRemoved`, with a different payload each: `(resource, orphanedShares)` on FRV, `(resource, writtenOffValue, orphanedReceipt)` on Centrifuge:
 
 | Event                  | Parameters             | Description                                       |
 | ---------------------- | ---------------------- | ------------------------------------------------- |
@@ -175,10 +176,10 @@ Every YieldGroup emits the shared set below. FRV and Centrifuge omit the three `
 | `ResourceCapLowered`    | `resource`, `newCap`                     | Per-resource deposit cap tightened (Core / Flux / Spoke) |
 | `ResourceAdapterUpdated`| `resource`, `oldAdapter`, `newAdapter`   | A resource's adapter was swapped                 |
 | `ResourceSkipped`       | `resource`, `isDeposit`                  | A cascade leg's adapter dispatch **reverted** and was routed around; a healthy system emits this zero times (paused / at-cap / dry resources are skipped silently, with no event) |
-| `ResourceAccrualFailed` | `resource`, `adapter`                    | An adapter's accrual call reverted and was isolated |
+| `ResourceAccrualFailed` | `resource`, `adapter`                    | A resource poke failed and was isolated (generic YieldGroup and FRV only) |
 | `BlocksPerYearSet`      | `oldBlocksPerYear`, `newBlocksPerYear`   | Annualisation factor retuned (Core / Flux / Spoke) |
 | `ResourceForceRemoved`  | `resource`, `orphanedShares`             | Bricked resource evicted, abandoning its shares (FRV; Centrifuge emits its own payload, see above) |
-| `Swept`                 | `token`, `to`, `amount`                  | Stray-token balance rescued                      |
+| `Swept`                 | `token`, `to`, `amount`                  | Token balance transferred by an authorized sweep                      |
 
 ## Errors
 
@@ -210,7 +211,7 @@ Every YieldGroup emits the shared set below. FRV and Centrifuge omit the three `
 | `NavGuardCentreOverflow`       | A deposit would push a band's centre past `uint128`, so the deposit reverted (Centrifuge only) |
 | `ResourceHasValue`             | A force-removal target still holds value that would be abandoned      |
 | `SweepProtectedAsset`          | `sweep` called with the YieldGroup's own underlying                   |
-| `SweepProtectedResource`       | `sweep` called with a registered resource's receipt token             |
+| `SweepProtectedResource`       | `sweep` called with a token address that is itself a registered resource             |
 | `WithdrawQueueOmitsFundedResource` | An inner withdraw-queue replacement drops a funded resource       |
 | `OnlySelf`                     | An internal dispatch entry point was called externally                |
 

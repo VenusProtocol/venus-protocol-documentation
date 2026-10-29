@@ -42,7 +42,7 @@ function accrue() external;
 * **`deposit`** — move `amount` from the caller into the Source's resources via the inner deposit queue. `deposited` may be less than `amount` whenever the inner queue cannot absorb the full amount (per-resource caps, protocol supply caps, or paused / rejecting resources). The Source refunds the unplaced remainder to the Hub, which routes it onward; the Hub does **not** revert on a short return here.
 * **`withdraw`** — pull `amount` via the inner withdraw queue and send it to `to`; must deliver exactly `amount` or revert (no partial fill).
 * **`depositResource` / `withdrawResource`** — target one specific resource, bypassing the inner queue. They exist solely for Hub-orchestrated `reallocate`. The Hub treats `resource` as an opaque address it does not interpret; the Source validates it against its own registry. The full `amount` moves into / out of that one resource or the call reverts. `withdrawResource` does not consume idle first and does not cascade; pulling from a paused resource is permitted (wind-down).
-* **`accrue`** — `onlyHub`. The Hub calls it on every registered Source before reading NAV, so the management fee is charged on interest-current value. Every family overrides the base no-op: Core, Flux and Spoke share the `YieldGroup` loop that calls `IResourceAdapter.accrue` per resource (real work for Core and Spoke), `YieldGroupFRV` pokes each vault's `updateVaultState()`, and `YieldGroupCentrifuge` only re-anchors each vault's NAV band. The poke is best-effort per resource — one whose accrual reverts is skipped and reported via `ResourceAccrualFailed` rather than bubbling. A Source implementing only the four asset-moving functions would revert the Hub's fee accrual and therefore brick deposits and withdrawals.
+* **`accrue`** — `onlyHub`. The Hub calls it on every registered Source before reading NAV, so the management fee is charged on interest-current value. Every family overrides the base no-op: Core, Flux and Spoke share the `YieldGroup` loop that calls `IResourceAdapter.accrue` per resource (real work for Core and Spoke), `YieldGroupFRV` pokes each vault's `updateVaultState()`, and `YieldGroupCentrifuge` only re-anchors each vault's NAV band. The generic `YieldGroup` and FRV skip a failed resource poke and emit `ResourceAccrualFailed`. Centrifuge instead keeps its band anchor unchanged when a NAV observation is unreadable, without emitting that event; a subsequent `totalAssets()` read still fails closed if the adapter cannot value the resource. A Source implementing only the four asset-moving functions would revert the Hub's fee accrual and therefore brick deposits and withdrawals.
 
 ### Views
 
@@ -74,7 +74,7 @@ The boundary between a YieldGroup and a specific yield-protocol ABI. A single de
 
 ### Implementation invariants
 
-Verified at audit:
+The adapters follow these implementation constraints. Audit coverage depends on the report and reviewed revision; see [Security and audits](../../security-and-audits.md) for published scopes.
 
 1. The contract declares zero storage variables; only `immutable` and `constant` values are permitted (both live in bytecode, not storage slots).
 2. No inline assembly performs `sstore`.
@@ -89,9 +89,9 @@ function withdraw(address resource, uint256 amount, address to) external;
 function accrue(address resource) external;
 ```
 
-* **`deposit`** — delegatecalled; the YieldGroup already holds `amount` of underlying. Post-conditions: receipt tokens are credited to the YieldGroup, and the full `amount` of underlying leaves the YieldGroup into `resource`. Because the code runs in the YieldGroup's storage context, the adapter contract itself never custodies funds.
+* **`deposit`** — delegatecalled; the YieldGroup already holds `amount` of underlying. The full `amount` of underlying leaves the YieldGroup into `resource`. Synchronous families credit receipt tokens immediately; Centrifuge creates a pending deposit request for the YieldGroup, with shares collected only after settlement through `claimDeposit`. A successful Centrifuge deposit therefore does not imply an immediate increase in its share-token balance. Because the code runs in the YieldGroup's storage context, the adapter contract itself never custodies funds.
 * **`withdraw`** — delegatecalled; redeems **at least** `amount` and transfers exactly `amount` to `to`. Any surplus stays as idle on the YieldGroup, counted in `totalAssets` and consumed idle-first on the next withdrawal. `AdapterCoreV1` produces surplus from two sources: the sub-one-vToken dust bump, and — only if Venus governance later enables it — the Comptroller `treasuryPercent` gross-up.
-* **`accrue`** — invoked via normal `call`, NOT delegatecall; settles `resource`'s own global interest state so a following `totalAssets` read prices the position at a fresh rate. Only block-lazy adapters do real work: `AdapterCoreV1` calls the vToken's `accrueInterest()`, while `AdapterFlux`, `AdapterFRV` and `AdapterCentrifuge` are no-ops.
+* **`accrue`** — invoked via normal `call`, NOT delegatecall; settles `resource`'s own global interest state so a following `totalAssets` read prices the position at a fresh rate. Only block-lazy adapters do real work: `AdapterCoreV1` and `AdapterSpokeV1` call their vToken's `accrueInterest()`, while `AdapterFlux`, `AdapterFRV` and `AdapterCentrifuge` are no-ops.
 
 ### Views
 
@@ -107,13 +107,13 @@ function validateRegistration(address resource) external view;
 ```
 
 * **`asset`** — the underlying accepted by `resource`; the YieldGroup uses it to validate a resource matches its own asset at registration.
-* **`totalAssets`** — underlying value `holder` holds via `resource`, valued at **realizable** terms. The basis is per-adapter: `AdapterCoreV1` uses the stale (non-accruing) `exchangeRateStored`, net of any Comptroller `treasuryPercent`; `AdapterFlux` uses the fToken's live `previewRedeem`; `AdapterFRV` uses a time-based linear accrual (principal plus the coupon accrued so far over the lock); `AdapterCentrifuge` adds held shares and every pending or claimable request, assets at face and shares at the vault's share price. Cheap and safe for Hub-level aggregation.
+* **`totalAssets`** — the adapter's accounting value of `holder`'s position in `resource`, in underlying units; this is not a guarantee of recoverable or immediately withdrawable assets. The basis is per-adapter: `AdapterCoreV1` uses the stale (non-accruing) `exchangeRateStored`, net of any Comptroller `treasuryPercent`; `AdapterFlux` uses the fToken's live `previewRedeem`; `AdapterFRV` uses a time-based linear accrual (principal plus the coupon accrued so far over the lock); `AdapterSpokeV1` uses `balance × exchangeRateStored`, including the market's `badDebt` in the exchange rate; `AdapterCentrifuge` adds held shares and every pending or claimable request, assets at face and shares at the vault's share price. The Hub aggregates these marks into NAV; use `maxWithdraw` for current liquidity.
 * **`maxDeposit`** — spare deposit headroom on `resource` right now (before its own caps or pause reject a mint).
 * **`maxWithdraw`** — underlying `holder` can withdraw right now, net of any redeem-time protocol fee, bounded by the lesser of the position value and the resource's available cash.
 * **`spotAPYBps`** — spot supply-side APY in BPS; annualization uses the `blocksPerYear` the YieldGroup passes (chain-dependent).
 * **`receiptBalance`** — raw receipt-token balance (vToken / fToken / FRV shares), NOT underlying value. Used by `removeResource` as a share-based emptiness gate so a value-based check can't round a small balance to zero and orphan tokens. `AdapterCentrifuge` returns held shares plus its six request counters, which mix share and asset units, so it is read only as zero or non-zero.
 * **`resourceName`**: display name of `resource`, for off-chain consumers. Each adapter reads it from wherever its protocol exposes it, since not every resource is an ERC-20 with its own `name()`.
-* **`validateRegistration`** — reverts if `resource` fails a protocol-specific precondition. `AdapterCoreV1` rejects a vToken whose Comptroller charges a non-zero `treasuryPercent`; `AdapterCentrifuge` rejects a vault that does not expose the share token, request manager, investment state and price reads it needs; `AdapterFlux` and `AdapterFRV` implement it as a no-op.
+* **`validateRegistration`** — reverts if `resource` fails a protocol-specific precondition. `AdapterCoreV1` rejects a vToken whose Comptroller charges a non-zero `treasuryPercent`; `AdapterSpokeV1` rejects a market not listed by its Comptroller or one whose supply allowlist excludes the calling YieldGroup; `AdapterCentrifuge` rejects a vault that does not expose the share token, request manager, investment state and price reads it needs; `AdapterFlux` and `AdapterFRV` implement it as a no-op.
 
 ## Interfaces documented elsewhere
 
