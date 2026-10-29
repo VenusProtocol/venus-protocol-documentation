@@ -6,6 +6,8 @@
 Do not approve tokens to Shortfall or call `startAuction`, `restartAuction`, or `placeBid` based on this reference. The pause is governance-controlled rather than an irreversible contract retirement. A historical user should consider only the separately verified `claimTokenDebt` recovery path described below.
 {% endhint %}
 
+[Hub-funded spoke pools](../spoke/README.md) are out of scope here. `Shortfall` resolves markets through the single `PoolRegistry` it is configured with, [`0x9F7b01A536aFA00EF10310A162877fd792cD0666`](https://bscscan.com/address/0x9F7b01A536aFA00EF10310A162877fd792cD0666) on BNB Chain, and spoke pools are registered in a `SpokePoolRegistry` of their own. It cannot auction their bad debt. Recovery there is a governance call to `badDebtRecovered` on the market, which is gated on each market's `shortfall` address.
+
 The BNB Chain mainnet contracts at the snapshot were:
 
 | Contract | Address |
