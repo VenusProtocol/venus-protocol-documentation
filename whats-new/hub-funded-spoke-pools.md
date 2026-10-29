@@ -1,0 +1,127 @@
+# Hub-Funded Spoke Pools
+
+### Overview
+
+A **hub-funded spoke pool** is an isolated lending market that splits the *liquidity side* (what gets borrowed) from the *collateral side* (what backs the borrow).
+
+* The **liquidity side** is supplied only by an allowlist, by default the [Liquidity Hub](liquidity-hub.md). Because the protocol is the sole lender, it controls exactly how much liquidity a market holds and therefore where its utilization and rate sit.
+* The **collateral side** is permissionless by default. Anyone can deposit a listed asset, use it as collateral, and borrow the liquidity asset against it.
+
+Borrowing is **open-term and variable-rate**: there is no maturity, and every market plugs in its own interest rate model, so the rate curve is customizable per asset.
+
+Every market is capped and every pool is isolated. A depeg, an oracle problem, or bad debt on an exotic collateral asset stays inside that pool's accounting and is bounded by its caps. It is not removed: the loss lands on the Liquidity Hub that funds the pool, and Hub share tokens such as vhUSDT are also Core pool collateral.
+
+### Why
+
+Venus has two products for a borrower today: the Core pool, which is shared, mainstream and deliberately conservative, and [Fixed Term Vaults](fixed-rate-vaults.md), which are fixed-rate and fixed-term. Between them there is a gap: **flexible, open-term borrowing in a special scenario, with real customization and bounded exposure**.
+
+Listing a trending or exotic asset in the Core pool means putting the whole shared pool behind it, so listings are slow and conservative. A large counterparty that wants a market shaped around the collateral it actually holds cannot get one. Spoke pools close both gaps by making the blast radius of a listing equal to that one pool's caps.
+
+The Liquidity Hub is what makes it work: it gives Venus a metered, protocol-controlled source of liquidity to fund the borrowable side, instead of waiting for third-party suppliers to show up.
+
+### How a pool is shaped
+
+| | Liquidity side | Collateral side |
+| --- | --- | --- |
+| Typical asset | stablecoins such as USDT, USDC and U | tokenized stock, trending or exotic assets |
+| Who may supply | allowlist only (default: the Liquidity Hub) | anyone; an allowlist exists but is off by default |
+| Borrowable | yes | no |
+| Usable as collateral | no | yes |
+| Interest rate model | its own, per asset | not applicable |
+| Caps | own supply cap and borrow cap | own supply cap |
+
+Both sides are ordinary markets in the same pool; which side a market is on is a governance setting, not a contract type.
+
+A pool can carry **more than one liquidity asset**. Borrow power is a single shared USD budget across all of them: borrowing USDT and borrowing U draw on the same capacity, and one health factor covers all of an account's collateral and all of its debt within the pool.
+
+### Access and permissions
+
+| Action | Who | Default | Optional |
+| --- | --- | --- | --- |
+| Supply the liquidity asset | allowlist (default: the Hub) | allowlist off in the contract; on for every live liquidity market | can be turned off |
+| Deposit collateral | anyone | permissionless | per-market supply allowlist (off) |
+| Enable as collateral | anyone | permissionless | none |
+| Borrow the liquidity asset | anyone with collateral | permissionless | none |
+| Repay | anyone, for any borrower | **never gated** | none (governance can still pause a market) |
+| Redeem / transfer | position owner | **never gated** | none (governance can still pause a market) |
+| Liquidate | anyone | permissionless | pool-wide allowlist (off) |
+
+**Exit is never restricted.** No allowlist gates repaying, redeeming or transferring, and an account removed from an allowlist keeps the position it already holds and can still leave. Governance retains the same market-level pause it has everywhere else.
+
+There is no on-chain KYC and no external list sync. Any allowlist is written on-chain by an account the [AccessControlManager](../technical-reference/reference-governance/access-control-manager.md) permits: the supply allowlist by governance through a VIP, the liquidation allowlist also by the Pause Guardian.
+
+### Two go-to-market shapes
+
+The same primitive expresses both; they are ends of a spectrum, not separate products.
+
+| | **Retail** | **Bulk** |
+| --- | --- | --- |
+| Goal | list trending assets quickly and competitively | tailored borrowing for a large or institutional counterparty |
+| Collateral side | trending / exotic assets, permissionless | the specific collateral the counterparty posts |
+| Liquidity side | Hub-funded blue-chip or stable | Hub-funded, sized to the deal |
+| Exposure | many small, tightly capped markets | sized per deal, ring-fenced |
+| Rate model | standard IRM | custom IRM curve |
+
+### Worked example
+
+A hypothetical pool with USDT on the liquidity side and five tokenized-stock markets on the collateral side. The assets and figures are illustrative; the live pool is described under [Status](#status).
+
+**Liquidity side**
+
+| Asset | Supplied | Available | Utilization | Borrow APY | Collateral factor |
+| --- | --- | --- | --- | --- | --- |
+| USDT | 10M | 3M | 70% | 5.6% | 0 |
+
+**Collateral side**
+
+| Asset | Collateral factor | Liquidation threshold | Price |
+| --- | --- | --- | --- |
+| SPCXB | 70% | 75% | $200 |
+| NVDAB | 75% | 80% | $210 |
+| MUB | 75% | 80% | $1,000 |
+| SNDKB | 70% | 75% | $1,900 |
+| TSLAB | 75% | 80% | $375 |
+
+**A position**
+
+| Collateral | Amount | Value | Borrow power | Value at liquidation threshold |
+| --- | --- | --- | --- | --- |
+| SPCXB | 10 | $2,000 | $1,400 | $1,500 |
+| NVDAB | 20 | $4,200 | $3,150 | $3,360 |
+| MUB | 5 | $5,000 | $3,750 | $4,000 |
+| SNDKB | 5 | $9,500 | $6,650 | $7,125 |
+| TSLAB | 10 | $3,750 | $2,812.50 | $3,000 |
+| **Total** | | **$24,450** | **$17,762.50** | **$18,985** |
+
+With $24,450 of collateral the account can borrow up to **17,762.50 USDT**. That is bounded by borrow power, far below the 3M of available liquidity. The account becomes liquidatable once its debt exceeds the $18,985 liquidation-threshold value.
+
+Add a second liquidity asset, U, and the picture does not change: the same $17,762.50 of borrow power is shared across USDT and U, and each borrow consumes it.
+
+### Risk controls
+
+* **Isolation.** Each pool has its own Comptroller. No shared collateral with the Core pool and no cross-margin. A loss still reaches the Liquidity Hub that funds the pool (see [Where bad debt lands](#where-bad-debt-lands)), and Hub share tokens are Core pool collateral.
+* **Per-market caps.** Supply cap, borrow cap, collateral factor and liquidation threshold are set per market, so exposure to any one asset is bounded before it is listed.
+* **Per-market liquidation incentive.** The discount a liquidator earns can be set per *collateral* market. A market with no value of its own uses the pool-wide incentive. Setting a higher incentive on more volatile collateral steers liquidators to seize the riskiest assets first, which de-risks an account faster.
+* **Bounded collateral pricing.** Borrowing capacity is priced through the [DeviationBoundedOracle](../technical-reference/reference-technical-articles/deviation-bounded-oracle.md), the same mechanism [Protection Mode](../risk/protection-mode.md) uses in the Core pool: while an asset's price is deviating from its recent window, collateral is valued at the low end of that window and debt at the high end. A pumped print can only shrink an account's borrowing capacity, never inflate it. Liquidations themselves stay on live spot prices.
+* **Oracle quality is part of the listing decision.** Every listed asset, exotic collateral above all, needs a reliable feed, and that review is part of per-market risk sign-off.
+* **Every setting is gated by the [AccessControlManager](../technical-reference/reference-governance/access-control-manager.md) or the owner (the Normal Timelock).** `setPriceOracle`, `setDeviationBoundedOracle` and `setMaxLoopsLimit` are owner-only; the rest are ACM-gated. Listing and the supply allowlist go through a VIP. Some settings have faster paths: the Pause Guardian controls the liquidation allowlist, the Critical Guardian the liquidation incentives and close factor, and the Risk Stewards apply collateral factor, cap and interest rate model updates from the Risk Oracle.
+
+### Where bad debt lands
+
+The Liquidity Hub is the lender, so a loss in a spoke pool lands on the Hub.
+
+An isolated-pools market keeps written-off debt inside its exchange rate: when an account is healed, the shortfall moves from `totalBorrows` into `badDebt` and the numerator does not change, so the share price does not fall when a loss is booked.
+
+The Hub's Spoke adapter values the position at that same rate, so the Hub's share price does not move either. The loss is still real. `badDebt` stays counted in the exchange rate, so the share price keeps valuing debt that may never be repaid. Lenders who exit first are paid in full out of the cash that is left, and the loss falls on whoever cannot withdraw once that cash runs out. What the Hub can withdraw is bounded by the same cash. Paying the debt down raises cash and lowers `badDebt` by the same amount, so more becomes withdrawable without the share price moving.
+
+### Status
+
+The first hub-funded spoke pool is live on BNB Chain, registered as `bStock index`. QQQB and SPYB are on the collateral side; USDT, USDC and U are on the liquidity side, supplied by the Liquidity Hub. The contracts were deployed by the repository deploy scripts. [VIP-668](https://app.venus.io/#/governance/proposal/668?chainId=56) set the pool up: it accepted ownership of the pool and its registry, set the `ResilientOracle` and the `DeviationBoundedOracle` on the pool, upgraded the `ProtocolShareReserve` and registered the spoke registry with it through `addPoolRegistry`, registered the pool through `addPool` (close factor `0.5`, liquidation incentive `1.1`, minimum liquidatable collateral $100), upgraded `BStockLiquidator`, and granted the pool's permissions, including the Risk Steward wildcards. [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) registered an empty Spoke yield group on each Hub, and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56) listed the markets and connected each liquidity market to its Hub's Spoke yield group. [VIP-672](https://app.venus.io/#/governance/proposal/672?chainId=56) wired the [Collateral Gateway](../technical-reference/reference-technical-articles/collateral-gateway.md) into the Core pool: a Comptroller facet upgrade with a new `ComptrollerLens`, the Core `enterMarketForAccount` permission and a flash-loan whitelist entry for the gateway, and a `Prime` upgrade. Addresses are in [deployed contracts](../deployed-contracts/spoke-pools.md).
+
+The pool is not in the Venus app's pool list. The app resolves pools through the Isolated Pools `PoolRegistry`, and spoke pools are registered in a `SpokePoolRegistry` of their own, so they do not appear alongside the isolated pools. Supplying collateral and borrowing against it go through the markets directly, or through the [Collateral Gateway](../technical-reference/reference-technical-articles/collateral-gateway.md), which supplies and enables a market as collateral in one call.
+
+### Learn more
+
+* [Hub-Funded Spoke Pools technical reference](../technical-reference/reference-isolated-pools/spoke/README.md): the `SpokeComptroller` fork, its allowlists, liquidation routing and bounded pricing.
+* [Liquidity Hub](liquidity-hub.md): the vault that funds the liquidity side.
+* [DeviationBoundedOracle](../technical-reference/reference-technical-articles/deviation-bounded-oracle.md): how bounded pricing works.

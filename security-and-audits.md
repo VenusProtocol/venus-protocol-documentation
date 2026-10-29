@@ -18,6 +18,69 @@ The catalog is an evidence index, not a claim of complete coverage. Historical f
 
 ## Audits
 
+### Hub-funded spoke pools
+
+**Scope**: [hub-funded spoke pools](technical-reference/reference-isolated-pools/spoke/README.md): `SpokeComptroller` and its storage and interface, `SpokePoolLens`, the `Shortfall` change for spoke pools, and the `ProtocolShareReserve` change that accepts income from more than one pool registry. The Liquidity Hub and the DeviationBoundedOracle are outside the Sherlock scope.
+
+* [Bailsec audit report (2026/10/23)](https://github.com/VenusProtocol/isolated-pools/blob/d3ad32b852cba843cd839c4004d36cf03de9aa79/audits/Bailsec_SpokePools_20261023.pdf)
+* [Sherlock audit report (2026/10/23)](https://github.com/VenusProtocol/isolated-pools/blob/546ec6668b983ac818d444b1c6c6aac4d155cc74/audits/Sherlock_SpokePools_20261023.pdf)
+* [HashDit audit report (2026/09/11)](https://github.com/VenusProtocol/isolated-pools/blob/7291b4b9b4f0691414de357172ecf8fb5b87e0c6/audits/HashDit_SpokeHub_20260911.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Bailsec: the `isolated-pools` repository at commit `5b73f3cbb022a0b34bbf701c017ebac51e4ba8d8`, resolutions reviewed at commit `fcbecf35c5465b0ae48d534c3421f3f22e4a4fbb`.
+- Sherlock: the `isolated-pools` repository at commit `7b02a6082d213c01dc51614baba47f520eedf193` (final `01714a3b8a47383d87bea329c090b0b8affa3bd6`), and the `protocol-reserve` repository at commit `a7b8f12de27657378d4173432852c70b000339e2` (final `4e589e25b99dcdf65bd72e63be06271d828da560`):
+  - contracts/Spoke/SpokeComptrollerInterface.sol
+  - contracts/Spoke/SpokeComptroller.sol
+  - contracts/Spoke/SpokeComptrollerStorage.sol
+  - contracts/ProtocolReserve/ProtocolShareReserve.sol (protocol-reserve)
+- HashDit: pull request [#559](https://github.com/VenusProtocol/isolated-pools/pull/559) in the `isolated-pools` repository at commit `7e3c344d5dcc60e5829ff583f6a1e2218112cb6b`, and pull request [#168](https://github.com/VenusProtocol/protocol-reserve/pull/168) in the `protocol-reserve` repository at commit `a7b8f12de27657378d4173432852c70b000339e2`:
+  - contracts/Spoke/SpokeComptroller.sol
+  - contracts/Spoke/SpokeComptrollerInterface.sol
+  - contracts/Spoke/SpokeComptrollerStorage.sol
+  - contracts/Lens/SpokePoolLens.sol
+  - contracts/Shortfall/Shortfall.sol
+  - the spoke deploy scripts 024 to 028 and helpers/spokeDeploymentConfig.ts
+  - contracts/ProtocolReserve/ProtocolShareReserve.sol (protocol-reserve)
+
+Sherlock found no High and one Medium issue.
+
+</details>
+
+### CollateralGateway
+
+**Scope**: [`CollateralGateway`](technical-reference/reference-technical-articles/collateral-gateway.md), which turns an underlying balance into collateral in one call on the Core pool, through a Liquidity Hub, and on hub-funded spoke pools, and the Core pool changes it needs.
+
+* [HashDit audit report (2026/09/29)](https://github.com/VenusProtocol/venus-periphery/blob/2bd06b458dacd11434d333232a200662f5f4f0b9/audits/HashDit_CollateralGateway_Hub_Precision_20260929.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#74](https://github.com/VenusProtocol/venus-periphery/pull/74) in the `venus-periphery` repository:
+  - CollateralGateway.sol
+- Pull requests [#710](https://github.com/VenusProtocol/venus-protocol/pull/710) and [#714](https://github.com/VenusProtocol/venus-protocol/pull/714) in the `venus-protocol` repository:
+  - MarketFacet.sol, PrimeV2.sol, PrimeLens.sol (#710)
+  - ComptrollerLens.sol (#714)
+
+</details>
+
+### BStockLiquidator
+
+**Scope**: [`BStockLiquidator`](technical-reference/reference-core-pool/bstock-liquidator.md), the liquidation contract for bStock collateral.
+
+* [HashDit audit report (2026/07/20)](https://github.com/VenusProtocol/venus-protocol/blob/4ba70aa492bd58d2363c20b25f98f960fe7539f9/audits/160_BStockLiquidator_Hashdit_20260720.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#683](https://github.com/VenusProtocol/venus-protocol/pull/683) in the `venus-protocol` repository, with the fixes in pull request [#696](https://github.com/VenusProtocol/venus-protocol/pull/696):
+  - BStockLiquidator.sol
+
+The one Medium finding, that a borrower with VAI debt above the threshold could not be liquidated, was fixed by adding VAI-debt repayment.
+
+</details>
+
 ### Liquidity Hub: NAV deviation pause
 
 **Scope**: `HubNavDeviationSentinel`, the keeper check that pauses a whole Hub when a counterparty-published value leaves its [NAV band](technical-reference/reference-liquidity-hub/yield-groups.md#nav-band), and the `EBrake` extension the pause routes through. See [Automatic pause on a NAV break](technical-reference/reference-liquidity-hub/hub.md#automatic-pause-on-a-nav-break). The contract is deployed on BNB Chain but not armed.

@@ -6,14 +6,15 @@ One YieldGroup contract can back more than one family, so there are fewer contra
 
 * **Core** — the generic `YieldGroup` contract behind the Core beacon, registering Venus Core-pool vTokens (`mint` / `redeemUnderlying`) via `AdapterCoreV1`, initialised with the chain's `blocksPerYear`.
 * **Flux** — the *same* `YieldGroup` contract behind the Flux beacon, registering Fluid Lending fTokens (ERC-4626 shares) via `AdapterFlux`, initialised with `blocksPerYear = 0`.
+* **Spoke**: the *same* `YieldGroup` contract behind the Spoke beacon, registering the liquidity side of [hub-funded spoke pools](../reference-isolated-pools/spoke/README.md) via `AdapterSpokeV1`, also initialized with `blocksPerYear = 0` (each market carries its own annualizer).
 * **`YieldGroupFRV`** — a separate contract, for Venus Fixed-Rate Vaults (ERC-4626 with an 11-state lifecycle).
 * **`YieldGroupCentrifuge`**: a separate contract, for Centrifuge ERC-7540 fund vaults, where deposits and redemptions are requests settled later. Added by [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) on the USDT Hub and by [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) on the USDC Hub. The U Hub has none.
 
-"Core" and "Flux" are **deployment identities, not contract names** — which adapter, resources, caps and `blocksPerYear` governance wires into the proxy is the only difference. There is no `YieldGroupCore` or `YieldGroupFlux` type to import.
+"Core", "Flux" and "Spoke" are **deployment identities, not contract names**: which adapter, resources, caps and `blocksPerYear` governance wires into the proxy is the only difference. There is no `YieldGroupCore`, `YieldGroupFlux` or `YieldGroupSpoke` type to import.
 
-They all share the same Hub-facing surface and the same registry / queue / pause admin surface; they differ only in the protocol-specific behavior delegated to their [adapter](adapters.md) and in a few family-specific rules noted below.
+All of them share the same Hub-facing surface and the same registry / queue / pause admin surface; they differ only in the protocol-specific behavior delegated to their [adapter](adapters.md) and in a few family-specific rules noted below.
 
-> **Terminology.** The PRD calls this layer a *Source*; the code names the contract a *YieldGroup* and the Hub-facing interface `IYieldGroupBase`. There is no `ISource` type — "Source" survives in the Solidity only as deployment-artifact aliases (`CoreSource_USDT`, `FluxSource_USDC`, `FRVSource_U`). A registered resource is the PRD's *Product / Vault*.
+> **Terminology.** The PRD calls this layer a *Source*; the code names the contract a *YieldGroup* and the Hub-facing interface `IYieldGroupBase`. There is no `ISource` type: "Source" survives in the Solidity only as deployment-artifact aliases (`CoreSource_USDT`, `FluxSource_USDC`, `FRVSource_U`, `SpokeSource_USDT`). A registered resource is the PRD's *Product / Vault*.
 
 ## Hub-facing surface (`IYieldGroupBase`)
 
@@ -23,7 +24,7 @@ Every YieldGroup implements `IYieldGroupBase`. The Hub depends only on these fun
 * **`withdraw(uint256 amount, address to)`** — pull `amount` from resources via the inner withdraw queue (idle-first) and deliver exactly `amount` to `to`, or revert.
 * **`depositResource(address resource, uint256 amount)` → `uint256 deposited`** — deposit the full `amount` into one specific resource, bypassing the inner queue (for Operator reallocation). Reverts if that resource cannot accept exactly `amount`.
 * **`withdrawResource(address resource, uint256 amount, address to)`** — redeem exactly `amount` from one specific resource (no idle-first, no cascade); pulling from a paused resource is permitted (wind-down).
-* **`accrue()`** — `onlyHub`; the Hub pokes every registered Source before reading NAV so the management fee is charged on interest-current value. **Every family overrides the base no-op**, so it is unreachable in deployed code. Core and Flux share the `YieldGroup` loop, which calls `IResourceAdapter.accrue` on every registered resource — real work only for Core (`AdapterCoreV1` calls the vToken's `accrueInterest()`), an empty body for Flux. `YieldGroupFRV` instead pokes each vault's `updateVaultState()`, advancing its lifecycle. Every poke is best-effort per resource: one that reverts is isolated and reported via `ResourceAccrualFailed` rather than bubbling.
+* **`accrue()`**: `onlyHub`; the Hub pokes every registered Source before reading NAV so the management fee is charged on interest-current value. **Every family overrides the base no-op**, so it is unreachable in deployed code. Core, Flux and Spoke share the `YieldGroup` loop, which calls `IResourceAdapter.accrue` on every registered resource: real work for Core and Spoke (both call their vToken's `accrueInterest()`), an empty body for Flux. `YieldGroupFRV` instead pokes each vault's `updateVaultState()`, advancing its lifecycle, and `YieldGroupCentrifuge` only re-anchors each vault's NAV band. Every poke is best-effort per resource: one that reverts is isolated and reported via `ResourceAccrualFailed` rather than bubbling.
 * **Views** — `asset()`, `totalAssets()`, `maxDeposit()`, `maxWithdraw()`, `spotAPYBps()`.
 
 See [Interfaces](interfaces.md) for the full `IYieldGroupBase` contract and its conventions.
@@ -42,13 +43,13 @@ struct ResourceConfig {
 
 The public accessor **`resourceConfig(address resource)`** returns the three fields as separate values `(bool registered, bool paused, address adapter)`, not as a struct.
 
-The optional per-resource deposit cap (Core & Flux only) lives in a separate `resourceCap` mapping so it does not disturb the struct's single-slot packing.
+The optional per-resource deposit cap (Core, Flux and Spoke only) lives in a separate `resourceCap` mapping so it does not disturb the struct's single-slot packing.
 
 ## Initialization
 
 Called once via the proxy:
 
-Core and Flux are the **same `YieldGroup` contract** behind different beacons, so they share one initializer; only the argument they pass for `blocksPerYear` differs. FRV and Centrifuge are separate contracts with an initializer of their own.
+Core, Flux and Spoke are the **same `YieldGroup` contract** behind different beacons, so they share one initializer; only the argument they pass for `blocksPerYear` differs. FRV and Centrifuge are separate contracts with an initializer of their own.
 
 * **Core** — `initialize(address hub_, address asset_, uint256 blocksPerYear_, address acm_)`. Core annualises per-block supply rates, so it is deployed with the chain's `blocksPerYear` (**70,080,000** on BNB Chain, at roughly 0.45s per block).
 * **Flux** — the same `initialize(address hub_, address asset_, uint256 blocksPerYear_, address acm_)`, deployed with `blocksPerYear_ = 0`: `AdapterFlux` reads a pre-annualised APR from the Fluid `LendingResolver` and ignores the argument.
@@ -59,7 +60,7 @@ Each validates `asset_ == Hub.asset()` (`HubAssetMismatch` otherwise).
 
 ## Registry (governance)
 
-* **`addResource(address resource, address adapter)`** — register a resource alongside the stateless adapter that handles its ABI. Validates that both are contracts (`ResourceNotContract` / `AdapterNotContract`) and that `adapter.asset(resource)` matches the YieldGroup's underlying (`ResourceAssetMismatch`). It then calls `adapter.validateRegistration(resource)`, which is where family-specific preconditions live: `AdapterCoreV1` rejects a vToken whose Comptroller charges a non-zero `treasuryPercent`, while `AdapterFlux` and `AdapterFRV` implement it as a no-op. Does not auto-append to either inner queue. Reverts `ResourceAlreadyRegistered` if present. Emits `ResourceAdded`.
+* **`addResource(address resource, address adapter)`**: register a resource alongside the stateless adapter that handles its ABI. Validates that both are contracts (`ResourceNotContract` / `AdapterNotContract`) and that `adapter.asset(resource)` matches the YieldGroup's underlying (`ResourceAssetMismatch`). It then calls `adapter.validateRegistration(resource)`, which is where family-specific preconditions live: `AdapterCoreV1` rejects a vToken whose Comptroller charges a non-zero `treasuryPercent`, and `AdapterSpokeV1` rejects a market its own Comptroller does not list (`MarketNotListed`) or a market whose supply allowlist is enabled without this YieldGroup on it (`SupplyNotAllowed`), while `AdapterFlux` and `AdapterFRV` implement it as a no-op. Does not auto-append to either inner queue. Reverts `ResourceAlreadyRegistered` if present. Emits `ResourceAdded`.
 * **`removeResource(address resource)`** — remove a resource. Requires a zero *raw receipt-token* balance (`ResourceHasBalance` otherwise) — the share-based check prevents a sub-unit residual from being rounded to zero and orphaning tokens. Also removes it from both inner queues via swap-and-pop, **and clears its per-resource cap**: `addResource` never writes that mapping and the cap setters are registered-only, so leaving it set would let a later re-add of the same address silently inherit a stale value. A remove / re-add cycle therefore starts from *unbounded*, and the cap must be set again. Emits `ResourceRemoved`.
 
 * **`updateResourceAdapter(address resource, address adapter)`** — repoint a registered resource at a different adapter, without unwinding the position. Revalidates the new adapter the same way `addResource` does. Emits `ResourceAdapterUpdated`.
@@ -69,7 +70,7 @@ The same stateless adapter address may be reused across any number of resources 
 
 ## Other governance functions
 
-* **`setBlocksPerYear(uint256 blocksPerYear)`** — Core and Flux only. Retune the annualisation factor if the chain's block cadence changes. Emits `BlocksPerYearSet`.
+* **`setBlocksPerYear(uint256 blocksPerYear)`**: Core, Flux and Spoke only. Retune the annualisation factor if the chain's block cadence changes. Emits `BlocksPerYearSet`.
 * **`sweep(address token, address to)`** — forward a stray ERC-20 balance out of the YieldGroup. Cannot take the underlying (`SweepProtectedAsset`) or any registered resource's receipt token (`SweepProtectedResource`).
 
 ## Inner queues (Operator)
@@ -84,7 +85,7 @@ The same stateless adapter address may be reused across any number of resources 
 
 There is no global YieldGroup pause — the only granularity inside a YieldGroup is per-resource. (A whole YieldGroup is paused at the Hub level via `pauseYieldGroup`.)
 
-## Resource caps (Core & Flux only)
+## Resource caps (Core, Flux and Spoke only)
 
 An optional per-resource deposit cap limits how much underlying *this YieldGroup* holds in one market, independent of the market's own protocol supply cap. Effective room is `min(protocolHeadroom, resourceCap − ourBalance)`.
 
@@ -95,13 +96,13 @@ An optional per-resource deposit cap limits how much underlying *this YieldGroup
 
 ## Family-specific behavior
 
-|                          | **Core** (`YieldGroup`)                                  | **Flux** (`YieldGroup`)                  | **`YieldGroupFRV`**                            | **`YieldGroupCentrifuge`**                     |
-| ------------------------ | -------------------------------------------------------- | ---------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| Resource                 | Venus Core vToken                                        | Fluid fToken                             | Fixed-Rate Vault share                         | Centrifuge ERC-7540 vault share                |
-| Redeem-time pool fee     | grossed-up for Comptroller `treasuryPercent` if enabled; registration blocked while non-zero | none | none | none |
-| Spot APY source          | `supplyRatePerBlock` × `blocksPerYear`                   | Fluid `LendingResolver` (pre-annualised) | vault `fixedAPY` net of `reserveFactor` (Fundraising / Lock only) | published with `setSpotAPYBps`                 |
-| Per-resource deposit cap | optional                                                 | optional (primary control — Fluid `maxDeposit` is effectively unbounded) | not applicable | not applicable |
-| Lifecycle                | none                                                     | none                                     | 11-state machine (below)                       | async request and claim (below)                |
+|                          | **Core** (`YieldGroup`)                                  | **Flux** (`YieldGroup`)                  | **`YieldGroupFRV`**                            | **Spoke** (`YieldGroup`)                       | **`YieldGroupCentrifuge`**                     |
+| ------------------------ | -------------------------------------------------------- | ---------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| Resource                 | Venus Core vToken                                        | Fluid fToken                             | Fixed-Rate Vault share                         | spoke-pool vToken (isolated-pools)             | Centrifuge ERC-7540 vault share |
+| Redeem-time pool fee     | grossed-up for Comptroller `treasuryPercent` if enabled; registration blocked while non-zero | none | none | none (isolated pools have no `treasuryPercent`) | none |
+| Spot APY source          | `supplyRatePerBlock` × `blocksPerYear`                   | Fluid `LendingResolver` (pre-annualised) | vault `fixedAPY` net of `reserveFactor` (Fundraising / Lock only)| `supplyRatePerBlock` × the market's `blocksOrSecondsPerYear` | published with `setSpotAPYBps` |
+| Per-resource deposit cap | optional                                                 | optional (primary control — Fluid `maxDeposit` is effectively unbounded) | not applicable | optional, under the pool's `supplyCaps` | not applicable |
+| Lifecycle                | none                                                     | none                                     | 11-state machine (below)                       | none                                           | async request and claim (below) |
 
 ## FRV lifecycle
 
@@ -170,12 +171,12 @@ Every YieldGroup emits the shared set below. FRV and Centrifuge omit the three `
 | `InnerWithdrawQueueSet`| `queue`                | Inner withdraw-routing order replaced             |
 | `DepositRouted`        | `resource`, `amount`   | Underlying placed into a resource                 |
 | `WithdrawRouted`       | `resource`, `amount`   | Underlying pulled from a resource                 |
-| `ResourceCapRaised`     | `resource`, `newCap`                     | Per-resource deposit cap loosened (Core / Flux)  |
-| `ResourceCapLowered`    | `resource`, `newCap`                     | Per-resource deposit cap tightened (Core / Flux) |
+| `ResourceCapRaised`     | `resource`, `newCap`                     | Per-resource deposit cap loosened (Core / Flux / Spoke)  |
+| `ResourceCapLowered`    | `resource`, `newCap`                     | Per-resource deposit cap tightened (Core / Flux / Spoke) |
 | `ResourceAdapterUpdated`| `resource`, `oldAdapter`, `newAdapter`   | A resource's adapter was swapped                 |
 | `ResourceSkipped`       | `resource`, `isDeposit`                  | A cascade leg's adapter dispatch **reverted** and was routed around; a healthy system emits this zero times (paused / at-cap / dry resources are skipped silently, with no event) |
 | `ResourceAccrualFailed` | `resource`, `adapter`                    | An adapter's accrual call reverted and was isolated |
-| `BlocksPerYearSet`      | `oldBlocksPerYear`, `newBlocksPerYear`   | Annualisation factor retuned (Core / Flux)       |
+| `BlocksPerYearSet`      | `oldBlocksPerYear`, `newBlocksPerYear`   | Annualisation factor retuned (Core / Flux / Spoke) |
 | `ResourceForceRemoved`  | `resource`, `orphanedShares`             | Bricked resource evicted, abandoning its shares (FRV; Centrifuge emits its own payload, see above) |
 | `Swept`                 | `token`, `to`, `amount`                  | Stray-token balance rescued                      |
 
@@ -198,7 +199,7 @@ Every YieldGroup emits the shared set below. FRV and Centrifuge omit the three `
 | `AdapterNotContract`           | The supplied adapter address has no code                             |
 | `AdapterUnderfilled`           | An adapter delegatecall's observed effect did not match the request   |
 | `InvalidQueue`                 | A queue contains a **duplicate** entry (an *unregistered* entry reverts `ResourceNotRegistered` instead) |
-| `NotIncreasing` / `NotDecreasing` | A `raiseResourceCap` / `lowerResourceCap` call was not strictly looser / tighter (Core / Flux) |
+| `NotIncreasing` / `NotDecreasing` | A `raiseResourceCap` / `lowerResourceCap` call was not strictly looser / tighter (Core / Flux / Spoke) |
 | `ResourceBelowMinimumDeposit`  | An FRV targeted deposit was below `minSupplierDeposit` and not the residual tail (FRV only) |
 | `ZeroShares`                   | A Centrifuge `requestRedeem` was called with zero shares (Centrifuge only) |
 | `HubNotPaused`                 | A Centrifuge `forceRemoveResource` was called while the Hub was unpaused (Centrifuge only) |
@@ -221,7 +222,7 @@ Shared by every family (8):
 
 `addResource(address,address)`, `removeResource(address)`, `updateResourceAdapter(address,address)`, `setInnerDepositQueue(address[])`, `setInnerWithdrawQueue(address[])`, `pauseResource(address)`, `unpauseResource(address)`, `sweep(address,address)`.
 
-Core and Flux add three, for **11** in total:
+Core, Flux and Spoke add three, for **11** in total:
 
 `raiseResourceCap(address,uint256)`, `lowerResourceCap(address,uint256)`, `setBlocksPerYear(uint256)`.
 
