@@ -81,7 +81,7 @@ The same stateless adapter address may be reused across any number of resources 
 ## Pause (asymmetric)
 
 * **`pauseResource(address resource)`** — make the inner queue skip a resource. Operator-accessible. Balance still counts; `depositResource` into it reverts; `withdrawResource` from it is allowed. Emits `ResourcePauseToggled`.
-* **`unpauseResource(address resource)`** — governance-only. Emits `ResourcePauseToggled`.
+* **`unpauseResource(address resource)`** — governance-, Operator- and Guardian-accessible. Does not clear a Hub-level or YieldGroup-level pause. Emits `ResourcePauseToggled`.
 
 There is no global YieldGroup pause — the only granularity inside a YieldGroup is per-resource. (A whole YieldGroup is paused at the Hub level via `pauseYieldGroup`.)
 

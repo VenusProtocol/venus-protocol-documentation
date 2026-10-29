@@ -136,7 +136,7 @@ v1 launches with all three set to `0`; the machinery exists for governance to en
 
 ## Multi-level pause
 
-Three independent scopes — a broader scope blocks everything beneath it; siblings keep operating. Pause is **asymmetric**: tightening (pause) is Operator-accessible, loosening (unpause) is governance-only.
+Three independent scopes — a broader scope blocks everything beneath it; siblings keep operating. The Operator and Guardian can pause at every scope and unpause individual resources. Only governance can unpause a Hub or YieldGroup; unpausing a resource does not clear either broader pause.
 
 <figure><img src="../../.gitbook/assets/liquidity-hub-multi-level-pause.svg" alt="Multi-level pause: a Hub pause blocks all user operations; a paused Source is skipped in routing while sibling Sources keep operating; a paused resource is skipped in its YieldGroup's inner queue"><figcaption></figcaption></figure>
 
@@ -162,7 +162,7 @@ For a resource whose value is published by a counterparty, such as a Centrifuge 
 
 Every ACM-gated call is authorised through `AccessControlManagerV8` — the role is `keccak256(abi.encodePacked(targetContract, roleString))`, where `roleString` is the literal function signature. The ownership functions (`transferOwnership` / `acceptOwnership` / `setAccessControlManager`) sit outside the ACM and are owner-only; see [Ownership and access control](#ownership-and-access-control). The contracts do not hard-code an Operator-vs-governance branch; the asymmetry is entirely a matter of which addresses governance grants each role to.
 
-Three holders in v1: governance (a VIP, behind the Normal Timelock), the **Operator** (a Venus
+The main role holders are governance (a VIP, behind the Normal Timelock), the **Operator** (a Venus
 operations multisig acting as the routine keeper, distinct from the Guardian), and the **Guardian**
 (a multisig that acts with no timelock delay, so it can contain an incident immediately). The
 Guardian can pause, perform emergency reallocation and replace resource adapters. It can also
@@ -182,19 +182,19 @@ proposal, not roles baked into the bytecode; the granted addresses are listed un
 | **Lower** the per-transaction withdrawal cap, reorder outer / inner queues             | ✅               | ✅       | ❌       |
 | **Pause** — Hub, YieldGroup, or resource                                               | ✅               | ✅       | ✅       |
 | `emergencyReallocate` (works while paused)                                             | ✅               | ❌       | ✅       |
-| `forceRemoveResource` (FRV)                                                            | ✅               | ❌       | ✅       |
+| `forceRemoveResource` (FRV and Centrifuge)                                                            | ✅               | ❌       | ✅       |
 | `reallocate` between YieldGroups / resources                                           | ❌               | ✅       | ❌       |
 | `addHub` / `removeHub` on the `HubRegistry`                                            | ✅               | ❌       | ❌       |
 | `deposit` / `mint` / `withdraw` / `redeem`, `accrueFees`, views                        | permissionless   | permissionless | permissionless |
 
 Two rows are worth reading carefully, because both depart from a naive loosening-vs-tightening split:
 
-* **`raiseYieldGroupCap` is Operator-accessible.** It is the one loosening lever the Operator holds, granted so it can open headroom immediately before a `reallocate` without waiting for a governance round. Raising the *per-transaction withdrawal cap* is still governance-only.
+* **`raiseYieldGroupCap` and `raiseResourceCap` are Operator-accessible.** They let the Operator open headroom immediately before a `reallocate` without waiting for a governance round. The Operator can also unpause individual resources. Raising the *per-transaction withdrawal cap* and unpausing a Hub or YieldGroup remain governance-only.
 * **Governance does not hold `reallocate`.** It is Operator-only. Governance's equivalent lever is `emergencyReallocate`, which has the same net-zero semantics and additionally works while the Hub is paused.
 
-The Guardian holds pause at all three levels, `emergencyReallocate`, `forceRemoveResource`, `unpauseResource` and `updateResourceAdapter`. [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) granted resource unpause and adapter replacement to both the Operator and Guardian on the existing Sources; [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) revoked adapter replacement from the Operator. Resource unpause does not clear a Hub-level or YieldGroup-level pause.
+The Guardian holds pause at all three levels, `emergencyReallocate`, `forceRemoveResource`, `unpauseResource` and `updateResourceAdapter`. [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) granted resource unpause and adapter replacement to both the Operator and Guardian on the existing Sources; [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) revoked adapter replacement from the Operator. [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) granted the same resource-unpause and adapter-replacement split on the new Spoke Sources. Resource unpause does not clear a Hub-level or YieldGroup-level pause.
 
-Nothing in the contracts hard-codes these three. The split is entirely a matter of which addresses
+Nothing in the contracts hard-codes these role holders. The split is entirely a matter of which addresses
 governance grants each role to — the asymmetry is a deployment decision, not a code branch.
 
 ## Invariants and safety
