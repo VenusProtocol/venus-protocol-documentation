@@ -25,16 +25,16 @@ Each adapter captures its own address into an `immutable` (`_ADAPTER_SELF`) at c
 
 ### Storage-safety invariants
 
-Verified at audit for every adapter:
+The adapters follow these implementation constraints. Audit coverage depends on the report and reviewed revision; see [Security and audits](../../security-and-audits.md) for published scopes.
 
 1. **Zero storage variables** — only `immutable` and `constant` values are declared; the contract never `sstore`s.
 2. **No inline assembly performs `sstore`.**
 3. **No arbitrary call targets** — external calls go only to the supplied `resource` and its trusted, chain-fixed dependencies, never a user-supplied address. (`AdapterCoreV1` calls the vToken's `underlying()` and `comptroller()`; `AdapterFlux` calls the fToken's `asset()` and the Fluid `LendingResolver`; `AdapterFRV` calls the vault's `asset()`; `AdapterSpokeV1` calls the vToken's `underlying()` and `comptroller()`; `AdapterCentrifuge` calls the vault, its `share()` token and its `baseManager()`, and reads the published APY from the calling YieldGroup.)
-4. **Mutating functions revert outside a delegatecall context** (the `onlyDelegateCall` guard).
+4. **Delegatecall-dispatched `deposit` and `withdraw` revert outside a delegatecall context** (the `onlyDelegateCall` guard). `accrue` uses a plain call and has no such guard.
 
 ## `IResourceAdapter` surface
 
-* **`deposit(address resource, uint256 amount)` → `uint256 deposited`** — deposit `amount` of underlying into `resource`; receipt tokens are credited to the YieldGroup.
+* **`deposit(address resource, uint256 amount)` → `uint256 deposited`** — deposit `amount` of underlying into `resource`. Synchronous families credit receipt tokens to the YieldGroup immediately; Centrifuge submits a deposit request, with shares collected after settlement through `claimDeposit`.
 * **`withdraw(address resource, uint256 amount, address to)`** — redeem exactly `amount` of underlying from `resource` and deliver it to `to`.
 * **`asset(address resource)` → `address`** — the underlying ERC-20 accepted by `resource`.
 * **`totalAssets(address resource, address holder)` → `uint256`** — underlying value `holder` holds via `resource`. The basis is per-adapter: `AdapterCoreV1` uses the stale (non-accruing) `exchangeRateStored` net of any Comptroller `treasuryPercent`; `AdapterFlux` uses the fToken's live `previewRedeem`; `AdapterFRV` uses a time-based linear coupon accrual; `AdapterSpokeV1` uses the market's own `exchangeRateStored`, which keeps `badDebt` in its numerator; `AdapterCentrifuge` adds the held shares and every pending or claimable request, assets at face and shares at the vault's share price.

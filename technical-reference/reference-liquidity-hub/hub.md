@@ -30,7 +30,7 @@ All user-facing mutating operations are **atomic-or-revert** — they complete i
 2. The Hub accrues fees, then pulls `assets` from the user — so the caller trades against the post-accrual share price.
 3. The Hub snapshots `totalAssets()` (which already includes the just-transferred idle) and walks the **outer deposit queue**.
 4. For each Source: skip if unregistered or paused; compute `capRoom = max(0, effectiveCap − source.totalAssets())`; send `min(remaining, capRoom, source.maxDeposit())`. A **partial fill is accepted here** — the Source places what its inner queue can absorb, refunds the unplaced remainder to the Hub, and returns the placed amount; the cascade routes that remainder to the next Source. A Source whose `deposit` call reverts outright is caught, skipped (`YieldGroupSkipped`), and routing continues. `YieldGroupUnderfilled` is a `reallocate`-only error, not a deposit-cascade one.
-5. Each Source walks its **inner deposit queue**, delegatecalling its adapter per resource (respecting any per-resource cap), and mints receipt tokens into the YieldGroup.
+5. Each Source walks its **inner deposit queue**, delegatecalling its adapter per resource (respecting any per-resource cap), and credits receipt tokens to the YieldGroup for synchronous families. A Centrifuge allocation instead creates an asynchronous deposit request, with shares collected after settlement; live Centrifuge Sources are funded through targeted reallocation rather than the lender deposit queue.
 6. The Hub mints share tokens to the receiver.
 7. If capacity across the whole queue is short, the **entire transaction reverts** (`HubCapacityExceeded`).
 
@@ -91,7 +91,7 @@ effectiveCap = (percentageCapBps == 10_000)
 
 **Per-transaction withdrawal cap.** `maxWithdrawalSize` (asset units) bounds every single withdraw / redeem so one transaction cannot drain a downstream product's liquidity; exceeding it reverts `HubWithdrawCapExceeded`.
 
-The optional **per-resource deposit cap** (Core & Flux) binds one level down, inside the YieldGroup — see [Yield Groups](yield-groups.md#resource-caps-core--flux-only).
+The optional **per-resource deposit cap** (Core, Flux and Spoke) binds one level down, inside the YieldGroup — see [Yield Groups](yield-groups.md#resource-caps-core-flux-and-spoke-only).
 
 ## Sizing a deposit
 
