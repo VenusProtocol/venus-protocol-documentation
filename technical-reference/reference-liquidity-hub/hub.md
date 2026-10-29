@@ -91,7 +91,7 @@ effectiveCap = (percentageCapBps == 10_000)
 
 **Per-transaction withdrawal cap.** `maxWithdrawalSize` (asset units) bounds every single withdraw / redeem so one transaction cannot drain a downstream product's liquidity; exceeding it reverts `HubWithdrawCapExceeded`.
 
-The optional **per-resource deposit cap** (Core, Flux and Spoke) binds one level down, inside the YieldGroup — see [Yield Groups](yield-groups.md#resource-caps-core-flux-and-spoke-only).
+The optional **per-resource deposit cap** (Core & Flux) binds one level down, inside the YieldGroup — see [Yield Groups](yield-groups.md#resource-caps-core--flux-only).
 
 ## Sizing a deposit
 
