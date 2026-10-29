@@ -69,7 +69,7 @@ Beyond user-driven flow, a privileged **Operator** can proactively rebalance cap
 
 ### Safety envelope
 
-* **Atomic-or-revert** — deposits, withdrawals, and rebalances either complete in full or revert. No partial fills, no stranded remainder. A deposit larger than the remaining room reverts rather than filling part of it, and the revert itself reports how much would have fit.
+* **Atomic-or-revert** — deposits, withdrawals, and rebalances either complete in full or revert. No partial fills, no stranded remainder. A deposit larger than the remaining room reverts rather than filling part of it. The revert reports how much the failed attempt placed, but that is not a safe size to retry with, because the percentage caps were priced against a TVL that included the whole attempt; size a deposit with `HubLens` instead.
 * **Dual caps per Source** — each Source carries both an absolute cap and a percentage-of-Hub cap; the stricter one binds. A large Source can never quietly exceed its share of the Hub.
 * **Per-transaction withdrawal cap** — bounds any single withdrawal so one transaction cannot drain a downstream product's liquidity.
 * **Multi-level pause** — the Hub, an individual Source, or a single product can each be paused independently. A broader pause blocks everything beneath it; unaffected siblings keep operating, and the underlying products themselves keep running normally even while the Hub is paused.

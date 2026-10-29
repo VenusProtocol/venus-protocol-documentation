@@ -83,7 +83,7 @@ The one Medium finding, that a borrower with VAI debt above the threshold could 
 
 ### Liquidity Hub: NAV deviation pause
 
-**Scope**: `HubNavDeviationSentinel`, the keeper check that pauses a whole Hub when a counterparty-published value leaves its [NAV band](technical-reference/reference-liquidity-hub/yield-groups.md#nav-band), and the `EBrake` extension the pause routes through. See [Automatic pause on a NAV break](technical-reference/reference-liquidity-hub/hub.md#automatic-pause-on-a-nav-break). The contract is deployed on BNB Chain but not armed.
+**Scope**: `HubNavDeviationSentinel`, the keeper check that pauses a whole Hub when a counterparty-published value leaves its [NAV band](technical-reference/reference-liquidity-hub/yield-groups.md#nav-band), and the `EBrake` extension the pause routes through. See [Automatic pause on a NAV break](technical-reference/reference-liquidity-hub/hub.md#automatic-pause-on-a-nav-break). The contract is deployed on BNB Chain; [VIP-673](https://app.venus.io/#/governance/proposal/673?chainId=56), queued with an ETA of 2026-10-30, arms it.
 
 * [HashDit audit report (2026/10/16)](https://github.com/VenusProtocol/venus-periphery/blob/e285f701f98562dcce6250e21ef7c59622afb2cf/audits/210_HubNavDeviationSentinel_Hashdit_20261016.pdf)
 

@@ -41,7 +41,8 @@ EBrake can only tighten restrictions, never loosen them. This means it intention
 - Zeroing supply/borrow caps, which blocks additional exposure and can affect later account actions
 - Decreasing collateral factor, which does not directly change liquidation eligibility while liquidation threshold is preserved, but can restrict later borrows or redemptions
 - Pausing flash loans, which can block integrations that depend on that facility
-- Pausing a Liquidity Hub, one of its YieldGroups, or a resource, which blocks lender deposits and withdrawals on that Hub until it is unpaused
+- Pausing a whole Liquidity Hub (`pauseHub`), which blocks every lender deposit and withdrawal on that Hub until it is unpaused
+- Pausing one of a Hub's YieldGroups or a single resource, which closes only that route: the Hub's outer queues skip a paused YieldGroup and its inner queues skip a paused resource, so deposits and withdrawals continue through healthy sibling routes while they have the capacity and liquidity. A paused resource is still counted in the Hub's NAV, and shares still trade against that NAV, which is why the NAV sentinel pauses the whole Hub rather than the resource
 
 Recovery requires a governance VIP that restores the affected parameters and clears the corresponding snapshots. Operational and economic consequences depend on the affected markets and recovery time.
 
