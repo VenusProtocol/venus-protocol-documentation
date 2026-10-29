@@ -155,7 +155,7 @@ All are `internal`.
 
 | Constant | Value | Purpose |
 | --- | --- | --- |
-| `NO_ERROR` | `0` | the success code in every `uint256` error return kept for Venus core tooling compatibility (`enterMarkets`, `exitMarket`, `unlistMarket`, the account liquidity getters) |
+| `NO_ERROR` | `0` | the success code in every `uint256` error return kept for Venus core tooling compatibility (`enterMarkets`, `exitMarket`, `unlistMarket`, `liquidateCalculateSeizeTokens`, the account liquidity getters) |
 | `MIN_CLOSE_FACTOR_MANTISSA` | `0.05e18` | lower bound on the close factor |
 | `MAX_CLOSE_FACTOR_MANTISSA` | `0.9e18` | upper bound on the close factor |
 | `MAX_COLLATERAL_FACTOR_MANTISSA` | `0.95e18` | upper bound on any market's collateral factor |

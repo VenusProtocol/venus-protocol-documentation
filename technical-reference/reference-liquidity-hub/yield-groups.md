@@ -92,7 +92,7 @@ An optional per-resource deposit cap limits how much underlying *this YieldGroup
 * **`raiseResourceCap(address resource, uint256 newCap)`** — loosen (Operator-accessible, like `lowerResourceCap`, so the Operator can open headroom ahead of a rebalance without a governance round). `newCap == 0` means unbounded, so raising to `0` removes the cap; the new value must be strictly looser (`NotIncreasing` otherwise). Emits `ResourceCapRaised`.
 * **`lowerResourceCap(address resource, uint256 newCap)`** — tighten (Operator-accessible). Must be strictly tighter and non-zero (`NotDecreasing` otherwise). Lowering below the current balance simply stops new deposits; it never forces a withdrawal. Emits `ResourceCapLowered`.
 
-`YieldGroupFRV` and `YieldGroupCentrifuge` do not expose these. FRV capacity comes entirely from the vault's own cap and its Fundraising-only rule; Centrifuge capacity comes from the vault, and is zero while a deposit cancel is pending.
+`YieldGroupFRV` and `YieldGroupCentrifuge` do not expose these. FRV capacity comes entirely from the vault's own cap and its Fundraising-only rule; Centrifuge does not read the vault for capacity: the adapter reports `type(uint128).max` less the pending deposit request, zero while a deposit cancel is pending, so in practice the Hub's cap for the Source is the bound.
 
 ## Family-specific behavior
 
@@ -140,7 +140,7 @@ What the group holds in a vault is valued as the held shares, plus every pending
 Every term of a Centrifuge position's value is computed off chain and published on BNB Chain, and the Hub's share price is built on it. A zero share price always reverts. On top of that, each vault can have a **NAV band** (`NavGuard`), which holds the value the group reports inside a range around an expected value:
 
 * The band's centre starts at the last value accepted from Centrifuge, grows at `driftBps` a year, and moves by exactly the amount of every deposit and withdrawal the group makes.
-* The reported value is clamped to between `centre − downGapBps` and `centre + upGapBps`. It never reverts.
+* The reported value is clamped to between `centre − anchor × downGapBps / 10000` and `centre + anchor × upGapBps / 10000`: the gaps are sized to the anchor, not the centre. It never reverts.
 * At most once per `interval`, the band re-anchors on the clamped reading. A wrong value can therefore move the reported value by at most one gap per interval, which gives time to notice it.
 * Above the band, an inflated value is reported lower, so nobody withdraws against value that is not there. Below the band, a real loss is reported higher at first, and is marked down one gap per interval rather than all at once.
 
@@ -157,7 +157,7 @@ Live values, identical on the USDT and USDC Sources. VIP-661 set the bands and a
 
 The two assets have separate vault contracts and therefore separate bands and separate request state, even though the funds share their share classes and NAV.
 
-Events: `RedeemRequested`, `DepositCancelRequested`, `RedeemCancelRequested`, `DepositClaimed`, `RedeemClaimed`, `DepositCancelClaimed`, `RedeemCancelClaimed`, `ResourceForceRemoved`, `SpotAPYBpsSet`, and for the band `NavGuardConfigured`, `NavGuardEnabledSet`, `NavGuardReanchored`, `NavGuardCentreMoved`, `NavGuardClamped` and `NavGuardClosed`. Alert on `NavGuardClosed`: every armed side then values the position at zero until a deposit or `setNavGuardSnapshot` reopens it.
+Events: `RedeemRequested`, `DepositCancelRequested`, `RedeemCancelRequested`, `DepositClaimed`, `RedeemClaimed`, `DepositCancelClaimed`, `RedeemCancelClaimed`, `ResourceForceRemoved`, `SpotAPYBpsSet`, and for the band `NavGuardConfigured`, `NavGuardEnabledSet`, `NavGuardReanchored`, `NavGuardCentreMoved`, `NavGuardClamped` and `NavGuardClosed`. Alert on `NavGuardClosed`: with the cap armed the position is then valued at zero (a floor-only band stops binding instead) until a deposit or `setNavGuardSnapshot` reopens it.
 
 ## Events
 
@@ -209,7 +209,7 @@ The table below covers the YieldGroup events. Centrifuge does not emit `Resource
 | `InvalidNavGuardSnapshot`      | `setNavGuardSnapshot` was called on a band never configured, or with a zero snapshot, or a zero or future timestamp (Centrifuge only) |
 | `NavGuardUnreadable`           | `setNavGuardRate` could not read what the resource is worth, so arming would centre the band at zero (Centrifuge only) |
 | `NavGuardCentreOverflow`       | A deposit would push a band's centre past `uint128`, so the deposit reverted (Centrifuge only) |
-| `ResourceHasValue`             | A force-removal target still holds value that would be abandoned      |
+| `ResourceHasValue`             | (FRV only) A force-removal target still holds value that would be abandoned |
 | `SweepProtectedAsset`          | `sweep` called with the YieldGroup's own underlying                   |
 | `SweepProtectedResource`       | `sweep` called with a token address that is itself a registered resource             |
 | `WithdrawQueueOmitsFundedResource` | An inner withdraw-queue replacement drops a funded resource       |

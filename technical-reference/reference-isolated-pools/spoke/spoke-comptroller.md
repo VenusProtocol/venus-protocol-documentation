@@ -17,7 +17,7 @@ Read [Hub-Funded Spoke Pools](README.md) first for why the fork exists and how a
 | Entering a market | `enterMarkets` only, always for `msg.sender` | adds ACM-gated **`enterMarketForAccount`**, so a gateway contract can enable collateral for the supplier it minted to |
 | Prime | `prime` + `setPrimeToken`, seven `*Verify` hooks update Prime scores | removed; the seven hooks are no-ops |
 | `healAccount` pause checks | `SEIZE` (through `preSeizeHook`) and `REPAY` (through `healBorrow`) | adds `LIQUIDATE` in every market the account owes a nonzero balance in |
-| Revert reasons | mixture of custom errors and `require` strings | custom errors throughout, except `setMaxLoopsLimit`, whose inherited `MaxLoopsLimitHelper` check still reverts with the string `"Comptroller: Invalid maxLoopsLimit"` |
+| Revert reasons | mixture of custom errors and `require` strings | custom errors throughout, except inherited checks: `setMaxLoopsLimit` and `initialize` still revert with `MaxLoopsLimitHelper`'s `"Comptroller: Invalid maxLoopsLimit"`, and the `onlyOwner` setters (`setPriceOracle`, `setDeviationBoundedOracle`, `addRewardsDistributor`, `setMaxLoopsLimit`) with OpenZeppelin's `Ownable` strings, and `acceptOwnership` with its `Ownable2Step` string |
 
 Exit is never gated, in either implementation. Redeem, repay and transfer are not access-controlled, and an account removed from an allowlist keeps the position it already holds and can still leave. Governance retains the usual market-level pause.
 
@@ -56,7 +56,7 @@ function enterMarketForAccount(address account, address vToken) external;
 
 It takes a single market rather than an array, which is what keeps the fork inside the EIP-170 limit; a caller that needs several markets loops over it. `enterMarkets` is untouched, so entering a market for yourself stays permissionless.
 
-The function is gated by the [AccessControlManager](../../reference-governance/access-control-manager.md) under the role string `enterMarketForAccount(address,address)`. It takes the same arguments in the same order as the Core pool's `enterMarketForAccount`, but returns nothing where the Core version returns a `uint256` error code. A caller written for the Core version that decodes that return value reverts here. **Grant it only to a contract that passes its own caller as `account`.** A holder of this permission can enable a market as collateral for any address, and entering a market is what makes a balance eligible to be seized in a liquidation. The [Collateral Gateway](../../reference-technical-articles/collateral-gateway.md) is the intended holder. Its spoke functions revert until governance grants it this role on the pool.
+The function is gated by the [AccessControlManager](../../reference-governance/access-control-manager.md) under the role string `enterMarketForAccount(address,address)`. It takes the same arguments in the same order as the Core pool's `enterMarketForAccount`, but returns nothing where the Core version returns a `uint256` error code. A caller written for the Core version that decodes that return value reverts here. **Grant it only to a contract that passes its own caller as `account`.** A holder of this permission can enable a market as collateral for any address, and entering a market is what makes a balance eligible to be seized in a liquidation. The [Collateral Gateway](../../reference-technical-articles/collateral-gateway.md) is the intended holder. Its spoke functions need this role on the pool; on BNB Chain it is granted for the `bStock index` pool.
 
 ## Liquidation allowlist
 
@@ -556,7 +556,7 @@ Everything the shared `Comptroller` emits, plus:
 
 ### Replacing `require` strings
 
-The fork converts every remaining revert string to a custom error:
+The fork converts every revert string of its own to a custom error. The inherited `MaxLoopsLimitHelper` and OpenZeppelin `Ownable` / `Ownable2Step` strings are left as they are.
 
 | Error | Replaces |
 | --- | --- |

@@ -2,7 +2,7 @@
 
 `BStockLiquidator` is Venus's **atomic backstop liquidator for bStock collateral**: tokenized stock markets such as vTSLAB, vNVDAB or vSPCXB, whose underlying trades on request-for-quote venues rather than on an AMM.
 
-In one transaction it repays an undercollateralized borrow, seizes the bStock vToken, redeems it to the raw bStock, and sells that bStock to the debt asset. Because seizing and selling happen in the same transaction there is no price-drift window, and the realized proceeds must clear a caller-supplied floor or the whole call reverts. The protocol does not take on the price risk of holding the RFQ-only asset; the one exception is a partially filled quote, which leaves the unsold bStock in this contract (see [The swap](#the-swap)).
+In one transaction it repays an undercollateralized borrow, seizes the bStock vToken, redeems it to the raw bStock, and sells that bStock to the debt asset. Because seizing and selling happen in the same transaction there is no price-drift window, and the realized proceeds must clear a caller-supplied floor or the whole call reverts. The protocol does not take on the price risk of holding the RFQ-only asset; the one exception is a partially filled quote, which leaves the unsold input of that hop (the bStock, or the intermediate token on a two-hop route) in this contract (see [The swap](#the-swap)).
 
 It is **not** a public utility. `liquidate` and `flashLiquidate` are operator-gated, because the contract custodies protocol capital and forwards a caller-supplied calldata blob to an external router. Anyone may still liquidate bStock through the ordinary permissionless Venus path with their own funds and their own offload; this contract exists so Venus itself can act as a backstop.
 
@@ -281,7 +281,7 @@ All are `onlyOwner`.
 | `BadInitiator(address initiator)` | the flash-loan initiator is not this contract |
 | `WrongFlashAsset()` | the flashed asset does not match the expected flash source |
 | `FlashNotSupportedForVai()` | `flashLiquidate` was called with a VAI debt |
-| `DeadlineExpired(uint256 deadline, uint256 nowTs)` | the call was submitted after `params.deadline` |
+| `DeadlineExpired(uint256 deadline, uint256 nowTs)` | the call executed (was mined) after `params.deadline`; `block.timestamp > deadline` |
 | `PoolRegistryNotSet()` | the position is in a non-Core pool and no `PoolRegistry` is configured |
 | `PoolNotRegistered(address comptroller)` | the pool owning the position has no entry in the configured `PoolRegistry` |
 | `PoolRegistryNotContract(address poolRegistry)` | the address being set as the registry has no code |
