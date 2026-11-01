@@ -3,7 +3,7 @@
 This facet contract contains functions regarding markets
 
 {% hint style="warning" %}
-BNB Core Pool only. At block `118,363,255`, this facet was routed to `0x21f8E1471b153f49BE1d645A008E4a57434eEd23`. Call its selectors through the Unitroller and query the live selector map before use. The [v10.3.0 source](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Comptroller/Diamond/facets/MarketFacet.sol) includes newer pool, delegation, and protection-mode behavior that may not be fully represented in this generated page.
+BNB Core Pool only. At block `130,965,689`, this facet was routed to `0x935905A58E91a406eead60cd9AAbC7a64EDAe264`, installed by [VIP-672](https://venus.io/governance/proposal/672?chainId=56). Call its selectors through the Unitroller and query the live selector map before use. The [v10.3.0 source](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Comptroller/Diamond/facets/MarketFacet.sol) includes newer pool, delegation, and protection-mode behavior that may not be fully represented in this generated page.
 {% endhint %}
 
 # Solidity API
@@ -222,6 +222,35 @@ function enterMarketBehalf(address onBehalf, address vToken) external returns (u
 #### ❌ Errors
 
 * NotAnApprovedDelegate thrown if `msg.sender` is not the account itself or an approved delegate
+
+---
+
+### enterMarketForAccount
+
+Add an asset to be included in an account's liquidity calculation, on that account's behalf
+
+Entering a market makes the account's balance in it count as collateral, which also makes it seizable in a liquidation.
+
+```solidity
+function enterMarketForAccount(address account, address vToken) external returns (uint256)
+```
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| account | address | The address of the account entering the market |
+| vToken | address | The address of the vToken market to enable for the account |
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| \[0] | uint256 | 0=success, otherwise a failure (See enum Error for details) |
+
+#### ⛔️ Access Requirements
+
+* Controlled by ACM. On BNB Chain, [VIP-672](https://venus.io/governance/proposal/672?chainId=56) granted it to the [CollateralGateway](../../../../reference-technical-articles/collateral-gateway.md).
 
 ---
 

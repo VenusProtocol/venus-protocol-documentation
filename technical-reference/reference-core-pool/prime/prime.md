@@ -557,7 +557,7 @@ function addMarket(address market, uint256 supplyMultiplier, uint256 borrowMulti
 * Throw InvalidVToken if market is not listed
 * Throw AssetAlreadyExists if asset already has a market
 * Throw MaxLoopsLimitExceeded if listing this market would exceed loopsLimit
-* Throw UnsupportedUnderlyingDecimals if underlying token has decimals > 18
+* Throw UnsupportedUnderlyingDecimals if underlying token has decimals > 24
 
 ---
 

@@ -23,7 +23,7 @@ Stable implementation baselines are available in [`venus-protocol` v10.3.0](http
 {% endhint %}
 
 * Comptroller: [`0xfD36E2c2a6789Db23113685031d7F16329158384`](https://bscscan.com/address/0xfD36E2c2a6789Db23113685031d7F16329158384)
-* Comptroller Lens: [`0xd5DEb631cB6c6a667e926a482aadc95a471b120c`](https://bscscan.com/address/0xd5DEb631cB6c6a667e926a482aadc95a471b120c)
+* Comptroller Lens: [`0x989DaAa33b9557EacB2AF9885d7f3cd28eD52749`](https://bscscan.com/address/0x989DaAa33b9557EacB2AF9885d7f3cd28eD52749)
 * Venus Lens: [`0xe797804c5d4410777c70EF8769c4eB9C39BEF662`](https://bscscan.com/address/0xe797804c5d4410777c70EF8769c4eB9C39BEF662)
 * SwapRouter: [`0xde7E4f67Af577F29e5F3B995f9e67FD425F73621`](https://bscscan.com/address/0xde7E4f67Af577F29e5F3B995f9e67FD425F73621)
 * Underlying tokens:
