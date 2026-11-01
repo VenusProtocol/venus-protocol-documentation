@@ -2,7 +2,7 @@
 
 Facets contain the BNB Core Pool Comptroller's application logic. They are reached through chained delegate calls from the Unitroller and Diamond.
 
-At BNB Chain block `118,363,255`, the selector map installed by [VIP-640](https://venus.io/governance/proposal/640?chainId=56) was:
+At BNB Chain block `130,965,689`, the selector map was as follows. [VIP-640](https://venus.io/governance/proposal/640?chainId=56) installed the PolicyFacet, RewardFacet, SetterFacet and FlashLoanFacet; [VIP-672](https://venus.io/governance/proposal/672?chainId=56) replaced the MarketFacet.
 
 | Facet | Responsibility | Live address | Reference |
 | --- | --- | --- | --- |
