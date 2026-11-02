@@ -24,11 +24,11 @@ The child PrimeV2 and PrimeLeaderboard pages apply only to BNB Chain. Do not use
 
 ## BNB PrimeV2 components
 
-At BNB Chain block `118,364,540`, PrimeV2 was unpaused and resolved to:
+At BNB Chain block `131,230,397`, PrimeV2 was unpaused and resolved to:
 
 | Component | Proxy or address | Implementation |
 | --- | --- | --- |
-| [PrimeV2](prime.md) | `0x059EabA8676b03e4e8f009eFb7F587C28450F50f` | `0x18cb7198cbb6d6e94001458cf3cf47c106d83a1b` |
+| [PrimeV2](prime.md) | `0x059EabA8676b03e4e8f009eFb7F587C28450F50f` | `0xb61137934C9D52cF3ebe9BCe92586DcA048b5F88` |
 | [PrimeLeaderboard](prime-leaderboard.md) | `0x55e2ccF68B7A276dc28AfA107997b8B1Be932c0b` | `0xd80de9ecb6596df95dd67af73b67122054c2d1a1` |
 | [PrimeLiquidityProvider](prime-liquidity-provider.md) | `0x23c4F844ffDdC6161174eB32c770D4D8C07833F2` | `0x46bed43b29d73835ff075bba1a0002a1ed1e4de8` |
 | [PrimeLens](prime-lens.md) | `0x2f8c5e4562E22DB7908C56Bf99961C053436473c` | Non-proxy lens |

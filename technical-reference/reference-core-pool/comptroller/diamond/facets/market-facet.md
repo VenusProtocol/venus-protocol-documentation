@@ -3,7 +3,7 @@
 This facet contract contains functions regarding markets
 
 {% hint style="warning" %}
-BNB Core Pool only. At block `130,965,689`, this facet was routed to `0x935905A58E91a406eead60cd9AAbC7a64EDAe264`, installed by [VIP-672](https://venus.io/governance/proposal/672?chainId=56). Call its selectors through the Unitroller and query the live selector map before use. The [v10.3.0 source](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Comptroller/Diamond/facets/MarketFacet.sol) includes newer pool, delegation, and protection-mode behavior that may not be fully represented in this generated page.
+BNB Core Pool only. At block `130,965,689`, this facet was routed to `0x935905A58E91a406eead60cd9AAbC7a64EDAe264`, installed by [VIP-672](https://venus.io/governance/proposal/672?chainId=56). Call its selectors through the Unitroller and query the live selector map before use. The [v10.4.0 source](https://github.com/VenusProtocol/venus-protocol/blob/v10.4.0/contracts/Comptroller/Diamond/facets/MarketFacet.sol) includes newer pool, delegation, and protection-mode behavior that may not be fully represented in this generated page.
 {% endhint %}
 
 # Solidity API
