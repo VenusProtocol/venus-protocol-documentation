@@ -2,7 +2,7 @@
 
 This page is an address registry, not a guarantee that a fund path, reward program, transfer, auction, or claim is currently enabled. Proxy implementations, owners, permissions, balances, pause flags, and recipients can change through governance. Verify live state before interacting.
 
-Stable implementation and deployment baselines are available in [`venus-protocol` v10.3.0](https://github.com/VenusProtocol/venus-protocol/tree/v10.3.0) for Prime and the BNB vault family, and [`protocol-reserve` v3.5.0](https://github.com/VenusProtocol/protocol-reserve/tree/v3.5.0) for reserve and XVSVaultTreasury families. The on-chain proxy implementation and configuration remain authoritative.
+Stable implementation and deployment baselines are available in [`venus-protocol` v10.4.0](https://github.com/VenusProtocol/venus-protocol/tree/v10.4.0) for Prime and the BNB vault family, and [`protocol-reserve` v3.5.0](https://github.com/VenusProtocol/protocol-reserve/tree/v3.5.0) for reserve and XVSVaultTreasury families. The on-chain proxy implementation and configuration remain authoritative.
 
 {% hint style="warning" %}
 **Lifecycle legend:** **Active** means the address has a current role or remaining custody duty, not that every action is unpaused. **Paused** is reversible governance state, not proof that a contract can be discarded. **Legacy / recovery-only** means a superseded path is retained for existing balances or recovery. Every testnet section is **Test-only**.
