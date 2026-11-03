@@ -45,7 +45,7 @@ An integration can inspect the current routing through:
 * `facetFunctionSelectors(address)` for one facet;
 * `facetAddresses()` or `facets()` for the full map.
 
-At BNB Chain block `118,363,255`, the Unitroller used the Diamond and five facets installed by [VIP-640](https://venus.io/governance/proposal/640?chainId=56). See the [live component map](../reference-core-pool/comptroller/README.md) for the snapshot addresses.
+At BNB Chain block `130,965,689`, the Unitroller used five facets. [VIP-640](https://venus.io/governance/proposal/640?chainId=56) installed the Diamond and the PolicyFacet, RewardFacet, SetterFacet and FlashLoanFacet; [VIP-672](https://venus.io/governance/proposal/672?chainId=56) replaced the MarketFacet. See the [live component map](../reference-core-pool/comptroller/README.md) for the snapshot addresses.
 
 {% hint style="warning" %}
 The repository's `DiamondConsolidated` contract exists only to generate a combined ABI and TypeChain type. It is not deployed, and its inherited functions are not proof that the corresponding selectors are live.

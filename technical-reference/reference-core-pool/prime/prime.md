@@ -2,7 +2,7 @@
 PrimeV2 is the Prime token contract with leaderboard-based distribution. Prime status is decided by the `PrimeLeaderboard` contract based on time-weighted XVS staking, and boosted rewards are distributed to Prime holders across supported markets.
 
 {% hint style="warning" %}
-BNB Chain only. At block `118,364,540`, proxy `0x059EabA8676b03e4e8f009eFb7F587C28450F50f` used implementation `0x18cb7198cbb6d6e94001458cf3cf47c106d83a1b` and was unpaused. Other mainnets currently use Prime V1; see [Prime Contract Versions](README.md).
+BNB Chain only. At block `131,230,397`, proxy `0x059EabA8676b03e4e8f009eFb7F587C28450F50f` used implementation `0xb61137934C9D52cF3ebe9BCe92586DcA048b5F88`, installed by [VIP-672](https://venus.io/governance/proposal/672?chainId=56), and was unpaused. Other mainnets currently use Prime V1; see [Prime Contract Versions](README.md).
 {% endhint %}
 
 # Solidity API
@@ -557,7 +557,7 @@ function addMarket(address market, uint256 supplyMultiplier, uint256 borrowMulti
 * Throw InvalidVToken if market is not listed
 * Throw AssetAlreadyExists if asset already has a market
 * Throw MaxLoopsLimitExceeded if listing this market would exceed loopsLimit
-* Throw UnsupportedUnderlyingDecimals if underlying token has decimals > 18
+* Throw UnsupportedUnderlyingDecimals if underlying token has decimals > 24
 
 ---
 

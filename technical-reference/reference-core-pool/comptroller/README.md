@@ -12,26 +12,26 @@ State remains in the Unitroller context throughout the chained delegate calls. I
 
 ## Live version map
 
-At BNB Chain block `118,363,255`, the Unitroller reported:
+At BNB Chain block `130,965,689`, the Unitroller reported:
 
 | Component | Address |
 | --- | --- |
 | Unitroller entry point | `0xfD36E2c2a6789Db23113685031d7F16329158384` |
 | Diamond implementation | `0xA66B2b5D50ce68A125bBad6B2265b637868c6E66` |
-| ComptrollerLens | `0xd5DEb631cB6c6a667e926a482aadc95a471b120c` |
+| ComptrollerLens | `0x989DaAa33b9557EacB2AF9885d7f3cd28eD52749` |
 | Admin | `0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396` |
 
 The live Diamond selector map contained five facets:
 
 | Facet | Address |
 | --- | --- |
-| MarketFacet | `0x21f8E1471b153f49BE1d645A008E4a57434eEd23` |
+| MarketFacet | `0x935905A58E91a406eead60cd9AAbC7a64EDAe264` |
 | PolicyFacet | `0x8930B02c69EDd37464B50991680D306Bb9B8FDBD` |
 | RewardFacet | `0x9e0CCD70b5E0030472D5013bbBd37B6E868d416f` |
 | SetterFacet | `0xbc4885e5A27050E321d094503597aC6734AB1871` |
 | FlashLoanFacet | `0xAC54A4D148690b7FDA22B1D29c4439aCBF668fb2` |
 
-These implementations were installed by [VIP-640](https://venus.io/governance/proposal/640?chainId=56). The matching stable repository release is [venus-protocol v10.3.0](https://github.com/VenusProtocol/venus-protocol/releases/tag/v10.3.0), which uses `ComptrollerV19Storage`.
+The Diamond implementation and the PolicyFacet, RewardFacet, SetterFacet and FlashLoanFacet were installed by [VIP-640](https://venus.io/governance/proposal/640?chainId=56); their matching stable repository release is [venus-protocol v10.3.0](https://github.com/VenusProtocol/venus-protocol/releases/tag/v10.3.0), which uses `ComptrollerV19Storage`. [VIP-672](https://venus.io/governance/proposal/672?chainId=56) replaced the MarketFacet, adding `enterMarketForAccount(address,address)`, and the ComptrollerLens, which now computes liquidation seize amounts with a single division. The first stable release containing the new MarketFacet code is [venus-protocol v10.4.0](https://github.com/VenusProtocol/venus-protocol/releases/tag/v10.4.0).
 
 {% hint style="warning" %}
 The addresses and selector routing are upgradeable. Before encoding a call, read `comptrollerImplementation`, `facetAddress(bytes4)`, or `facets()` through the Unitroller. A function present in a repository or generated page is not necessarily installed at the live proxy.
