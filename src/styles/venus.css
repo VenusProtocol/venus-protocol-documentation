@@ -3,6 +3,8 @@
   --sl-color-accent-low: #0d1d3d;
   --sl-color-accent: #3a78ff;
   --sl-color-accent-high: #b8cdff;
+  /* Wider text column: Starlight gives all leftover width to the right-hand nav. */
+  --sl-content-width: 54rem;
 }
 :root[data-theme='light'] {
   --sl-color-accent-low: #d6e2ff;
