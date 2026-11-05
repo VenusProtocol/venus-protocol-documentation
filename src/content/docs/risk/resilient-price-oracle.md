@@ -192,7 +192,7 @@ For more detailed information, refer to the following resources:
 #### Audit reports
 
 * [Resilient Price Oracle](/links/security-and-audits#oracles)
-* [Resilient Price Oracle upgrade](/links/security-and-audits#oracles-upgrade-2023-07-24)
+* [Resilient Price Oracle upgrade](/links/security-and-audits#oracles-upgrade-20230724)
 * [WstETH oracle](/links/security-and-audits#oracle-for-wsteth)
 * [Correlated token oracles](/links/security-and-audits#correlated-token-oracles)
 
