@@ -34,3 +34,7 @@ figcaption { text-align: center; font-size: var(--sl-text-sm); color: var(--sl-c
 @layer starlight.core {
   .right-sidebar-panel nav > ul > li > a { color: var(--sl-color-gray-2); }
 }
+/* Right-hand nav: same sizes and row rhythm as the left sidebar, and room under the list. */
+.right-sidebar-panel { padding-bottom: 3rem; }
+.right-sidebar-panel h2 { font-size: var(--sl-text-base); margin-bottom: 0.75rem; }
+.right-sidebar-panel nav a { font-size: var(--sl-text-sm); padding-block: 0.3em; line-height: 1.4; }
