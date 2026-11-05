@@ -1,13 +1,13 @@
 ---
 title: "Leveraged Positions"
 ---
-### **Leveraged Positions (Boost & Repay with Collateral)**
+### Leveraged Positions (Boost & Repay with Collateral)
 
 The Leveraged Positions feature allows users to significantly amplify their exposure in the protocol using a single-click workflow powered by flash loans. Instead of manually looping borrow → swap → supply multiple times, users can instantly achieve their desired leverage level in one atomic transaction, while maintaining full control and precision.
 
 The feature consists of two complementary tools:
 
-#### **1\. Boost**
+#### 1\. Boost
 
 The Boost tab enables users to open a leveraged position by fully utilizing their available (unused) borrowing power.
 
@@ -23,7 +23,7 @@ The Boost tab enables users to open a leveraged position by fully utilizing thei
 
 With only a modest amount of unused borrowing power, users can open positions that are multiple times larger than what would be possible through ordinary borrowing — achieving high leverage efficiently and effortlessly.
 
-#### **2\. Repay with Collateral**
+#### 2\. Repay with Collateral
 
 Repaying debt or reducing a leveraged position is equally straightforward.
 

@@ -2,11 +2,11 @@
 title: "Isolated E-mode"
 ---
 
-## **Overview**
+## Overview
 
 Isolation Mode enables the safe addition of new or highly volatile assets to the protocol, preventing any potential risks from spreading system-wide. Assets listed in this mode can serve as collateral exclusively for borrowing a predefined set of assets—usually stablecoins—subject to a fixed debt ceiling. This approach effectively isolates risk while broadening the range of supported assets.
 
-## **Why is it important**
+## Why is it important
 
 When a user chooses to enable an Isolated asset as a collateral
 

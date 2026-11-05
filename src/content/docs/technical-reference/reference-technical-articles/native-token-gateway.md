@@ -24,7 +24,7 @@ This mechanism provides flexibility and control over borrowing and redeeming act
 
 ## Interaction with the NativeTokenGateway contract
 
-### Supply (**wrapAndSupply**)
+### Supply (`wrapAndSupply`)
 
 * The `wrapAndSupply` function is invoked sending the native currency, and the execution proceeds as follows:
   * Native currency is wrapped, providing the wrapped token.
@@ -46,7 +46,7 @@ This mechanism provides flexibility and control over borrowing and redeeming act
      * Received wrapped native tokens are unwrapped to obtain native currency.
      * Native currency is transferred to the user.
 
-### Borrow (**borrowAndUnwrap**)
+### Borrow (`borrowAndUnwrap`)
 
 * The user approves the NativeTokenGateway contract as the delegate.
 * The `borrowAndUnwrap` function is invoked, and the execution proceeds as follows:
@@ -54,7 +54,7 @@ This mechanism provides flexibility and control over borrowing and redeeming act
   * The borrowed wrapped native tokens are unwrapped to obtain native currency.
   * Native currency is transferred to the user.
 
-### Repay (**wrapAndRepay**)
+### Repay (`wrapAndRepay`)
 
 * The `wrapAndRepay` function is invoked sending the native currency, and the execution proceeds as follows:
   * The native currency sent is wrapped, providing the wrapped native.

@@ -25,13 +25,13 @@ In essence, ERC-4626 makes it easier for users to earn yield on their assets and
 
 ## The implementation of the Venus ERC-4626 vaults consists of two core smart contracts:
 
-#### **1\. VenusERC4626Factory.sol - The factory contract for deploying standardized vaults**
+#### 1\. VenusERC4626Factory.sol - The factory contract for deploying standardized vaults
 
 - Deploys individual vaults for individual vTokens via **BeaconProxy**
 - Ensures deterministic addresses using **CREATE2**
 - Managed by Venus Governance
 
-#### **2\. VenusERC4626.sol - The vault logic implementing ERC-4626 functionality**
+#### 2\. VenusERC4626.sol - The vault logic implementing ERC-4626 functionality
 
 - ERC-4626-compliant mint, deposit, redeem, and withdraw functions
 - Integrates with Venus **vToken** interest accrual
@@ -41,9 +41,9 @@ In essence, ERC-4626 makes it easier for users to earn yield on their assets and
 
 <figure><img src="/assets/erc4626-flow-diagram.svg" alt="Flow of funds related to ERC4626 wrappers"></figure>
 
-## **VenusERC4626Factory.sol: The Vault Factory**
+## VenusERC4626Factory.sol: The Vault Factory
 
-### **Architecture Overview**
+### Architecture Overview
 
 The factory contract implements a sophisticated deployment system using OpenZeppelin's upgradeability patterns:
 
@@ -58,9 +58,9 @@ contract VenusERC4626Factory is AccessControlledV8, MaxLoopsLimitHelper {
 }
 ```
 
-### **Core Components**
+### Core Components
 
-### **Beacon Proxy System**
+### Beacon Proxy System
 
 - **UpgradeableBeacon**: Stores the current implementation address.
 - **BeaconProxy**: Proxy delegates to beacon implementation.
@@ -72,7 +72,7 @@ contract VenusERC4626Factory is AccessControlledV8, MaxLoopsLimitHelper {
 - Gas-efficient deployments.
 - Centralized upgrade capability.
 
-### **PoolRegistry Integration**
+### PoolRegistry Integration
 
 ```jsx
 function createERC4626(address vToken) external {
@@ -122,9 +122,9 @@ This ensures:
 - **`setRewardRecipient(address newRecipient)`**: Updates the address receiving reward distributions (ACM-restricted).
 - **`setMaxLoopsLimit(uint256 loopsLimit)`**: Configures the maximum allowed loop iterations (ACM-restricted).
 
-### **Security Considerations**
+### Security Considerations
 
-### **1\. Access Controls**
+### 1\. Access Controls
 
 - **Admin-Only Functions** (via **AccessControlledV8**):
 
@@ -132,11 +132,11 @@ This ensures:
   - **setMaxLoopsLimit()**
   - **upgradeBeacon()** (for emergency fixes)
 
-### **2\. Input Validation**
+### 2\. Input Validation
 
 - **ensureNonzeroAddress()** prevents invalid configurations.
 
-### **Attack Surface Mitigation**
+### Attack Surface Mitigation
 
 | **Threat Vector**  | **Mitigation Strategy**   |
 | ------------------ | ------------------------- |
@@ -226,7 +226,7 @@ contract VenusERC4626 is
 - **`ERC4626__WithdrawMoreThanMax()`**: Error triggered when a withdrawal exceeds the maximum limit.
 - **`ERC4626__RedeemMoreThanMax()`**: Error triggered when a redeem exceeds the maximum limit.
 
-### **Deposit Flow**
+### Deposit Flow
 
 ```jsx
 function deposit(uint256 assets, address receiver)
@@ -264,7 +264,7 @@ function deposit(uint256 assets, address receiver)
 - Alice gets 100 vault shares.
 - Vault holds 100 vUSDC (earning yield).
 
-### **Withdrawal Flow**
+### Withdrawal Flow
 
 ```jsx
 function withdraw(uint256 assets, address receiver, address owner)
@@ -304,7 +304,7 @@ Alice receives 50 USDC.
 
 - Vault burns shares adjusted for interest (e.g., 48.54 shares at a 1.03 exchange rate).
 
-### **Security Features**
+### Security Features
 
 1.  **Reentrancy Protection**:
 

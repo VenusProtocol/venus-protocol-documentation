@@ -2,7 +2,7 @@
 title: "Venus Prime"
 ---
 
-### **Overview**
+### Overview
 
 Venus Prime is the protocol's flagship incentive program, designed to reward long-term, committed users by boosting their yield across selected markets. It focuses on the core markets USDT, USDC, BTC, ETH and BNB, and promotes sustained $XVS staking.
 
@@ -11,7 +11,7 @@ Venus Prime is powered by two contracts:
 * **PrimeV2** — the boost engine. It holds each user's non-transferable (Soulbound) Prime token, tracks per-market scores, and distributes boosted rewards funded by protocol revenue.
 * **PrimeLeaderboard** — the eligibility engine. It measures how much $XVS each user has staked and for how long, producing a time-weighted **Prime Score** that ranks users for Prime eligibility.
 
-### **Venus Prime Essentials**
+### Venus Prime Essentials
 
 Venus Prime's uniqueness lies in its self-sustaining rewards system: instead of relying on external sources or token emissions, rewards are derived from the protocol's revenue, fostering a sustainable and ever-growing program.
 
@@ -46,7 +46,7 @@ A **permissionless minting** window is available as a fallback and is **disabled
 
 There is no separate "revocable" vs. "irrevocable" token — there is a single Prime token whose lifecycle is managed by governance based on the leaderboard.
 
-### **Expected Impact**
+### Expected Impact
 
 Venus Prime incentivizes larger stake sizes and, through the time-weighted leaderboard, rewards users who keep their XVS staked. This is expected to increase XVS staking, Total Value Locked (TVL), and market growth, while discouraging premature withdrawals.
 

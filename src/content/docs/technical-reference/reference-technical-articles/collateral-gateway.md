@@ -38,7 +38,7 @@ The delegate grant covers the whole Core pool. It lets the gateway redeem and bo
 
 ## Interaction with the CollateralGateway contract
 
-### Supply from the wallet (**supplyFromWallet**)
+### Supply from the wallet (`supplyFromWallet`)
 
 ```solidity
 function supplyFromWallet(uint256 assets, address vhMarket, uint256 minShares) external returns (uint256 shares);
@@ -52,7 +52,7 @@ function supplyFromWallet(uint256 assets, address vhMarket, uint256 minShares) e
   * The shares are supplied to `vhMarket`, with the market tokens credited to the user.
 * `minShares` is the slippage guard on the Hub deposit. A full supply cap on `vhMarket` reverts the whole call, and the user keeps their underlying.
 
-### Move a Core position into the Hub (**supplyFromCollateral**)
+### Move a Core position into the Hub (`supplyFromCollateral`)
 
 ```solidity
 function supplyFromCollateral(address vToken, uint256 vTokenAmount, address vhMarket, uint256 minShares)
@@ -72,7 +72,7 @@ function supplyFromCollateral(address vToken, uint256 vTokenAmount, address vhMa
 * The flash loan path needs the gateway to be allowlisted for Core flash loans, flash loans not paused system wide, and `vToken` flash-enabled. The loan is taken from `vToken` itself. Before redeeming the old position from that market, the gateway deposits the borrowed funds into the Hub. Cash needed therefore depends on where the Hub routes that deposit: if it returns to the same Core market, it replenishes the cash available for redemption, so roughly one position's value can suffice. If it goes entirely elsewhere, the market needs cash for both the loan and the redemption, roughly twice the position's value. Partial routing back falls between those cases; queue order, capacity and pauses determine the route, so simulate the full migration against current state. The flash loan premium is paid by the user: the loan is sized so the redeemed collateral covers principal plus premium, so the user's position moves in slightly smaller than it left.
 * `minShares` means slightly different things on the two paths. The direct path deposits the redeem proceeds. The flash loan path deposits a lower bound on them and returns the difference to the user as underlying.
 
-### Withdraw to the wallet (**withdrawPosition**)
+### Withdraw to the wallet (`withdrawPosition`)
 
 ```solidity
 function withdrawPosition(address vhMarket, uint256 shares, uint256 minAssets) external returns (uint256 assets);
@@ -87,7 +87,7 @@ function withdrawPosition(address vhMarket, uint256 shares, uint256 minAssets) e
 * Holding market tokens is not on its own enough to run the Core leg, because `mintBehalf` is permissionless: anyone can mint a dust amount to another account, and that must not be able to force a Core redeem on a user who never granted the delegate.
 * `shares = type(uint256).max` redeems the whole wallet balance, plus every `vhMarket` market token when the delegate grant is set. `minAssets` is the floor on the assets the Hub pays out, whichever legs ran.
 
-### Supply to a spoke pool (**supplyAndEnterSpokeMarkets**, **enterSpokeMarkets**)
+### Supply to a spoke pool (`supplyAndEnterSpokeMarkets`, `enterSpokeMarkets`)
 
 ```solidity
 function supplyAndEnterSpokeMarkets(address[] calldata vTokens, uint256[] calldata amounts) external;
@@ -100,7 +100,7 @@ function enterSpokeMarkets(address[] calldata vTokens) external;
 * Every market is supplied and entered, or the whole call reverts.
 * The amount supplied is measured from the balance that actually arrived, so a token with a transfer fee supplies only what arrived.
 
-### Sweep tokens sent by mistake (**sweepToken**)
+### Sweep tokens sent by mistake (`sweepToken`)
 
 ```solidity
 function sweepToken(IERC20 token) external;
