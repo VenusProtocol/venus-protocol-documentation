@@ -2,7 +2,7 @@
 title: "Community Resources"
 ---
 
-The links on this page were reviewed on August 27, 2026. Channel ownership, availability, and data coverage can change.
+The links on this page were reviewed on November 5, 2026. Channel ownership, availability, and data coverage can change.
 
 :::danger
 Community bots and third-party dashboards are not sources of truth for balances, positions, market parameters, governance state, or contract addresses. Cross-check important data against the live contracts and official Venus interfaces. Never connect a wallet, reveal a recovery phrase, or sign a transaction requested by a Telegram bot or direct message.
@@ -20,10 +20,10 @@ Community bots and third-party dashboards are not sources of truth for balances,
 
 These services are operated outside the Venus documentation and can be delayed, incomplete, or use different accounting definitions.
 
-* [Chaos Labs risk analytics](https://community.chaoslabs.xyz/venus/risk/overview)
+* [Allez Labs Venus risk dashboard](https://allez.xyz/dashboards/venus/risk)
 * [DeFiLlama Venus dashboard](https://defillama.com/protocol/venus)
 * [Community-created Dune dashboard](https://dune.com/xvslove_team/venus-protocol-dashboard)
-* [Messari Venus profile](https://messari.io/project/venus)
+* [Blockworks Intel Venus profile](https://app.blockworks.com/projects/venus) — formerly the Messari profile
 
 ## Community-maintained Telegram feeds
 
