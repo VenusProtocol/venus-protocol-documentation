@@ -1,9 +1,5 @@
 node_modules
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-
+dist
+.astro
+.vercel
 .DS_Store

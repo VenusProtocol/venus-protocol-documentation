@@ -1,0 +1,95 @@
+---
+title: "Liquidity Hub"
+---
+
+### Overview
+
+The **Venus Liquidity Hub** is a per-asset *allocator vault*. A lender deposits a single asset (USDT, for example) and receives a yield-bearing share token. Under a governance-set policy, the Hub automatically spreads that capital across the yield families it is wired to — **Core** (Venus Core lending), **Flux** (Fluid Lending, a third-party protocol), **FRV** (Venus Fixed-Rate Vaults) and new yield sources as they come online — blending the underlying returns into a single yield, removing the need for lenders to pick a product, allocate across it, and assess each one's risk on their own. Capital routed to Flux is exposed to Fluid's contracts, not only to Venus's.
+
+There is **one Hub per asset**, with no cross-asset coupling: a USDT Hub only ever holds and routes USDT. Each Hub is a standard [ERC-4626](https://eips.ethereum.org/EIPS/eip-4626) vault, so any wallet, aggregator, or partner that already speaks ERC-4626 can integrate it once and automatically benefit as Venus adds new yield products behind it.
+
+Yield accrues through a **rising exchange rate** — one share becomes redeemable for more underlying over time — never by rebasing. The number of shares in a wallet does not change; their redemption value does.
+
+### Why a Liquidity Hub
+
+Today a lender has to choose between independent products — Venus Core lending, Fluid-backed Flux markets, and Venus Fixed-Rate Vaults — allocate manually, and monitor each separately. Large and institutional lenders especially want a single, transparent entry point rather than onboarding to each vault individually. The Liquidity Hub shifts the lender experience from *"pick a vault per product"* to *"one-click deposit per asset,"* while giving governance a curated, transparent allocation layer on top of products it already runs.
+
+The Hub is purely a routing layer. It does **not** modify the parameters or governance of the underlying products; it only moves capital into and out of them.
+
+### The yield families (Sources)
+
+A **Source** groups downstream products of the same kind behind one uniform interface. v1 shipped three, and two more have been added since:
+
+| Source    | Underlying protocol         | What the Hub holds                      |
+| --------- | --------------------------- | --------------------------------------- |
+| **Core**  | Venus Core lending          | vTokens (Compound-style receipt tokens) |
+| **Flux**  | Fluid Lending (third-party) | fTokens (ERC-4626 shares)               |
+| **FRV**   | Venus Fixed-Rate Vaults     | Fixed-Rate Vault shares (ERC-4626)      |
+| **Centrifuge** | Centrifuge tokenized funds (JTRSY, JAAA) | Centrifuge vault shares (ERC-7540) |
+| **Spoke** | Venus [hub-funded spoke pools](/whats-new/hub-funded-spoke-pools) | vTokens of the pool's liquidity side |
+
+The **Spoke** Source is what makes the Hub the funder of a hub-funded spoke pool: it supplies the borrowable side of an isolated pool that only the Hub is allowed to supply. It is live on BNB Chain, funding the `bStock index` spoke pool.
+
+At launch only **Core** and **Flux** hold a live product. The FRV Source is registered on every Hub with its caps set, but no Fixed-Rate Vault instance exists for these assets on BNB Chain yet, so it is wired to nothing and receives no capital until a follow-up proposal adds one. That follow-up, [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56), has since wired the Solv (Ceffu custody) fixed-rate vault into the USDT Hub and the Asseto CASH+ vault into the U Hub; the USDC Hub's FRV Source is still unwired. [VIP-667](https://app.venus.io/#/governance/proposal/667?chainId=56) then added a second vault to the U Hub, the Hash Global hBNB fixed-rate vault. [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56) wired Spoke to the `bStock index` spoke pool, so it also carries a live product.
+
+**Centrifuge** was added to the USDT Hub by [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) and to the USDC Hub by [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56), with two Janus Henderson funds on each: JTRSY (a US Treasury fund) and JAAA (a AAA CLO fund). The U Hub has no Centrifuge Source. It is the first **asynchronous** Source: a deposit or redemption is a request that the fund manager settles later at a published price, and the Hub collects the result afterwards. Capital routed there is exposed to Centrifuge's contracts and to the funds themselves, not only to Venus's. Neither proposal moved capital itself, because each fund only accepts addresses on its own investor list; Centrifuge has since added both Sources and both now hold capital.
+
+The Source set is **governance-extensible**: new yield families can be added later without changing the Hub or the share token, because every Source is reached through the same interface.
+
+### How deposits and withdrawals are routed
+
+The Hub holds two independent, governance-configured ordered queues — a **deposit queue** and a **withdraw queue**. Neither is derived from the other.
+
+* **Deposit** — capital cascades down the deposit queue. Each Source absorbs up to its available capacity (bounded by its cap), and any remainder overflows to the next Source. If the total deposit is larger than the combined free capacity of every Source, the **entire transaction reverts** — there is no partial fill.
+* **Withdraw** — the Hub serves the request from its own idle balance first, then walks the withdraw queue, pulling liquidity in order until the request is filled. If the request exceeds total available liquidity, or exceeds the per-transaction withdrawal cap, the **entire transaction reverts**.
+
+At launch the queues were configured **Core-first in, Flux-first out**: deposit `[Core, Flux]`, withdraw `[Flux, Core, FRV]`. Core absorbs everyday inflows, so new capital lands in the deepest and most liquid market first; withdrawals are served from Flux ahead of Core, which keeps Core's balance intact as a buffer. FRV is out of the deposit queue entirely (nothing to route into) and sits last on the withdraw side, where an empty Source costs nothing to walk past. Where Centrifuge is wired it is also out of the deposit queue, and sits after FRV on the withdraw side. The two orders are set independently and governance can reorder either.
+
+Both queues have grown since launch. The live order on BNB Chain, read with `outerDepositQueue()` and `outerWithdrawQueue()` on each Hub:
+
+| Hub | Deposit queue | Withdraw queue |
+| --- | --- | --- |
+| USDT | Core, Spoke, Flux | Flux, Core, FRV, Centrifuge, Spoke |
+| USDC | Core, Spoke, Flux | Flux, Core, FRV, Centrifuge, Spoke |
+| U | Core, Spoke, Flux | Flux, Core, FRV, Spoke |
+
+A deposit Core cannot absorb therefore goes to the spoke pool before Flux. Centrifuge is out of the deposit queue, and the U Hub has no Centrifuge Source. On BNB Chain testnet the order differs: the USDT Hub's deposit queue is `[Spoke, FRV, Flux, Core]`.
+
+### Getting in and out in one transaction
+
+Depositing into the Hub and putting the resulting [vhToken](/technical-reference/reference-liquidity-hub/vhtoken) to work as Core collateral are two separate actions, and doing them by hand means five transactions. The **[Collateral Gateway](/technical-reference/reference-technical-articles/collateral-gateway)** collapses that into one call, and covers the cases that otherwise take several transactions in the right order:
+
+* **Moving an existing Core position into the Hub.** If redeeming the old collateral leaves no shortfall, the gateway redeems it directly. If it would leave the account under water, the gateway borrows the position's worth from Core, supplies the replacement collateral *before* the old collateral leaves, and repays inside the same transaction, so a leveraged position migrates in full rather than in slices.
+* **Supplying collateral to a spoke pool.** In a [hub-funded spoke pool](/whats-new/hub-funded-spoke-pools) the protocol lends and users post the collateral, and enabling a market as collateral is a second transaction of its own. The gateway does both at once, across several markets and even several pools in one call.
+* **Withdrawing back to the wallet.** A Hub position can sit partly in the wallet and partly in the Core market. The gateway takes the wallet shares first, frees the rest from Core, and pays out the underlying in one call.
+
+The gateway has no proxy, holds no funds between calls, and can only ever act for the account that called it. It is live on BNB Chain. [VIP-672](https://app.venus.io/#/governance/proposal/672?chainId=56) made the Core pool grants its functions need, and [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56) the spoke pool grant.
+
+### Operator rebalancing
+
+Beyond user-driven flow, a privileged **Operator** can proactively rebalance capital between *already-registered* Sources and products — for example, pulling funds back to Core when general-market utilization tightens, or seeding a newly onboarded product. Rebalancing is **net-zero** (the amount pulled equals the amount pushed; nothing enters or leaves the Hub) and is bounded by the same caps governance sets. The Operator can never create a new route or move funds outside the registered set.
+
+### Safety envelope
+
+* **Atomic-or-revert** — deposits, withdrawals, and rebalances either complete in full or revert. No partial fills, no stranded remainder. A deposit larger than the remaining room reverts rather than filling part of it. The revert reports how much the failed attempt placed, but that is not a safe size to retry with, because the percentage caps were priced against a TVL that included the whole attempt; size a deposit with `HubLens` instead.
+* **Dual caps per Source** — each Source carries both an absolute cap and a percentage-of-Hub cap; the stricter one binds. A large Source can never quietly exceed its share of the Hub.
+* **Per-transaction withdrawal cap** — bounds any single withdrawal so one transaction cannot drain a downstream product's liquidity.
+* **Multi-level pause** — the Hub, an individual Source, or a single product can each be paused independently. A broader pause blocks everything beneath it; unaffected siblings keep operating, and the underlying products themselves keep running normally even while the Hub is paused.
+* **NAV band on a published value**: Centrifuge is the first Source whose value is published by the fund rather than read from a market, so the Hub holds the value it accepts inside a band around what it expects. A reading above the band is reported lower, so nobody withdraws against value that is not there; a reading below it is marked down a step at a time rather than all at once. It bounds how fast a wrong number can move the share price, it does not make the number right. See [NAV band](/technical-reference/reference-liquidity-hub/yield-groups#nav-band).
+* **Asymmetric permissions** — every privileged function is a separate role. Governance alone can unpause a Hub or Source, register a new route, raise the per-transaction withdrawal cap or set fees. The **Operator** can raise or lower Source and resource caps to prepare a rebalance, and can pause at every level. The **Guardian** multisig can also pause at every level with no timelock delay and replace a resource adapter. Both the Operator and Guardian can unpause an individual resource; this does not clear a broader Hub or Source pause. See [Permissions](/technical-reference/reference-liquidity-hub/hub#permissions) for the full split.
+
+### Fees
+
+The Hub supports three governance-controlled fees:
+
+* **Management fee** — a time-based fee on assets under management, minted as dilution shares to a fee recipient.
+* **Performance fee** — charged only on gains above a high-water mark, so a fee can never be claimed twice on the same gain. The mark ratchets upward on every accrual and is re-anchored to the entry price only when the vault is refilled after emptying completely, so a new cohort is neither shielded by nor charged for a prior cohort's high. Also minted as dilution shares.
+* **Redeem fee** — an exit fee applied when a lender withdraws or redeems. Unlike the other two it is **not protocol revenue** and is never paid to the fee recipient: it stays in the vault and is socialised to the remaining lenders as a price-per-share uplift. Its purpose is anti-sandwich friction — it discourages racing out ahead of a downward repricing at a Fixed-Rate Vault settlement.
+
+At launch all three are set to **0%**. The machinery exists for governance to enable them later; the management and performance fees are capped at 50%, and the redeem fee at 5%.
+
+### Status
+
+The Liquidity Hub launches on **BNB Chain** with three supported assets, **USDT**, **USDC** and **U**, and more to follow. All fees are set to `0` at launch, the Operator role is held by a Venus operations multisig (the routine keeper), and a separate Guardian multisig holds pause rights with no timelock delay. Only **Core** and **Flux** carry a live product at launch: an FRV Source is registered on every Hub, but no Fixed-Rate Vault exists for these assets yet, so no capital routes to it until a follow-up proposal wires one. [VIP-657](https://app.venus.io/#/governance/proposal/657?chainId=56) has since wired fixed-rate vaults into the USDT and U Hubs (see above), and VIP-669 and VIP-670 have since wired the Spoke Source into the `bStock index` spoke pool. Contract addresses are listed in the [technical reference](/technical-reference/reference-liquidity-hub#deployment).
+
+For the contract-level architecture, flows, and full API, see the [Liquidity Hub technical reference](/technical-reference/reference-liquidity-hub).
