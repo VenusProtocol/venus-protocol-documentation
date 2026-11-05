@@ -1,0 +1,276 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/getting-started/contracts-overview",
+      "destination": "/technical-reference/contracts-overview",
+      "permanent": true
+    },
+    {
+      "source": "/guides/contributing",
+      "destination": "/technical-reference/reference-technical-articles/contributing",
+      "permanent": true
+    },
+    {
+      "source": "/guides/governance-guide/delegating",
+      "destination": "/guides/governance/delegating",
+      "permanent": true
+    },
+    {
+      "source": "/guides/governance-guide/vip",
+      "destination": "/guides/governance/vip",
+      "permanent": true
+    },
+    {
+      "source": "/links/api-beta",
+      "destination": "/services/api",
+      "permanent": true
+    },
+    {
+      "source": "/services/api-beta",
+      "destination": "/services/api",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/governance",
+      "destination": "/technical-reference/reference-governance",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/governance/accesscontrolledv5",
+      "destination": "/technical-reference/reference-governance/access-controlled-v5",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/governance/governorbravodelegator",
+      "destination": "/technical-reference/reference-governance/governor-bravo-delegator",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/governance/governorbravointerfaces",
+      "destination": "/technical-reference/reference-governance/governor-bravo-interfaces",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/governance/timelock",
+      "destination": "/technical-reference/reference-governance/timelock",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/isolated-pools",
+      "destination": "/technical-reference/reference-isolated-pools",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/isolated-pools/comptroller",
+      "destination": "/technical-reference/reference-core-pool/comptroller",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/isolated-pools/comptroller/comptrollerstorage",
+      "destination": "/technical-reference/reference-isolated-pools/comptroller/comptroller-storage",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/isolated-pools/interest-rate-models",
+      "destination": "/technical-reference/reference-isolated-pools/interest-rate-models",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/isolated-pools/pool-registry",
+      "destination": "/technical-reference/reference-isolated-pools/pool-registry",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/isolated-pools/risk-fund-and-shortfall",
+      "destination": "/technical-reference/reference-isolated-pools/risk-fund-and-shortfall",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/isolated-pools/utility",
+      "destination": "/technical-reference/reference-isolated-pools/utility",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/isolated-pools/utility/errorreporter",
+      "destination": "/technical-reference/reference-isolated-pools/utility/error-reporter",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/isolated-pools/utility/exponentialnoerror",
+      "destination": "/technical-reference/reference-isolated-pools/utility/exponential-no-error",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/isolated-pools/utility/maxloopslimithelper",
+      "destination": "/technical-reference/reference-isolated-pools/utility/max-loops-limit-helper",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/isolated-pools/vtoken",
+      "destination": "/technical-reference/reference-isolated-pools/vtoken",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/oracle",
+      "destination": "/technical-reference/reference-oracle",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/oracle/sources",
+      "destination": "/technical-reference/reference-oracle/oracles",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-governance/accesscontrolledv5",
+      "destination": "/technical-reference/reference-governance/access-controlled-v5",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-governance/accesscontrolledv8",
+      "destination": "/technical-reference/reference-governance/access-controlled-v8",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-governance/accesscontrolmanager",
+      "destination": "/technical-reference/reference-governance/access-control-manager",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-governance/deviation-sentinel",
+      "destination": "/technical-reference/reference-periphery/deviation-sentinel",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-governance/governorbravodelegate",
+      "destination": "/technical-reference/reference-governance/governor-bravo-delegate",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-governance/governorbravodelegator",
+      "destination": "/technical-reference/reference-governance/governor-bravo-delegator",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-governance/governorbravointerfaces",
+      "destination": "/technical-reference/reference-governance/governor-bravo-interfaces",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-isolated-pools/comptroller/comptrollerstorage",
+      "destination": "/technical-reference/reference-isolated-pools/comptroller/comptroller-storage",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-isolated-pools/erc4626",
+      "destination": "/technical-reference/reference-isolated-pools/venus-erc4626",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-isolated-pools/erc4626/venus-erc4626",
+      "destination": "/technical-reference/reference-isolated-pools/venus-erc4626",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-isolated-pools/erc4626/venus-erc4626-factory",
+      "destination": "/technical-reference/reference-isolated-pools/venus-erc4626/venus-erc4626-factory",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-isolated-pools/interest-rate-models/basejumpratemodelv2",
+      "destination": "/technical-reference/reference-isolated-pools/interest-rate-models/base-jump-rate-model-v2",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-isolated-pools/interest-rate-models/interestratemodel",
+      "destination": "/technical-reference/reference-isolated-pools/interest-rate-models/interest-rate-model",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-isolated-pools/utility/errorreporter",
+      "destination": "/technical-reference/reference-isolated-pools/utility/error-reporter",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-isolated-pools/utility/exponentialnoerror",
+      "destination": "/technical-reference/reference-isolated-pools/utility/exponential-no-error",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-isolated-pools/utility/maxloopslimithelper",
+      "destination": "/technical-reference/reference-isolated-pools/utility/max-loops-limit-helper",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-isolated-pools/vtoken/vtokeninterfaces",
+      "destination": "/technical-reference/reference-isolated-pools/vtoken/vtoken-interfaces",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-oracle/oracles/wstethoracle",
+      "destination": "/technical-reference/reference-oracle/correlated-token-oracles/wst-eth-oracle",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-technical-articles/e-mode",
+      "destination": "/technical-reference/reference-technical-articles/emode",
+      "permanent": true
+    },
+    {
+      "source": "/whats-new/governance",
+      "destination": "/governance/decentralization",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap\\.xml",
+      "destination": "/sitemap-index.xml",
+      "permanent": true
+    },
+    {
+      "source": "/getting-started/readme\\.md",
+      "destination": "/index.md",
+      "permanent": true
+    },
+    {
+      "source": "/readme\\.md",
+      "destination": "/index.md",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+        }
+      ]
+    }
+  ]
+}
