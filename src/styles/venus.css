@@ -14,3 +14,12 @@ figcaption { text-align: center; font-size: var(--sl-text-sm); color: var(--sl-c
 /* Starlight spaces adjacent content blocks; that rule must not reach inside MathML. */
 .sl-markdown-content math * { margin-top: 0 !important; }
 .sl-markdown-content math[display='block'] { margin-block: 1rem; overflow-x: auto; }
+/* Nested sidebar groups read like the links beside them; only top-level groups are headings. */
+.sidebar-content ul ul .group-label .large {
+  font-size: inherit;
+  font-weight: inherit;
+  color: var(--sl-color-gray-2);
+}
+@media (min-width: 50rem) {
+  .sidebar-content ul ul .group-label .large { font-size: var(--sl-text-sm); }
+}
