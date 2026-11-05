@@ -5,6 +5,10 @@
   --sl-color-accent-high: #b8cdff;
   /* Wider text column: Starlight gives all leftover width to the right-hand nav. */
   --sl-content-width: 54rem;
+  /* Headings: keep the mobile scale on desktop so sections sit clearly below the title. */
+  --sl-text-h2: var(--sl-text-3xl);
+  --sl-text-h3: var(--sl-text-2xl);
+  --sl-text-h4: var(--sl-text-xl);
 }
 :root[data-theme='light'] {
   --sl-color-accent-low: #d6e2ff;
