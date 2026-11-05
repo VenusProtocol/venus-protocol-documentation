@@ -30,7 +30,6 @@ export default defineConfig({
         { icon: 'telegram', label: 'Telegram', href: 'https://t.me/venusprotocol' },
       ],
       editLink: { baseUrl: 'https://github.com/VenusProtocol/venus-protocol-documentation/edit/main/' },
-      lastUpdated: true,
       sidebar,
       plugins: [starlightLinksValidator({ errorOnRelativeLinks: false, errorOnInvalidHashes: false })],
     }),
