@@ -1,11 +1,12 @@
 ---
 title: "NativeTokenGateway"
 ---
+## NativeTokenGateway
 NativeTokenGateway contract facilitates interactions with a vToken market for native tokens (Native or wNativeToken)
 
-# Solidity API
+## Solidity API
 
-### wNativeToken
+#### wNativeToken
 
 Address of wrapped native token contract
 
@@ -15,7 +16,7 @@ contract IWrappedNative wNativeToken
 
 - - -
 
-### vWNativeToken
+#### vWNativeToken
 
 Address of wrapped native token market
 
@@ -25,7 +26,7 @@ contract IVToken vWNativeToken
 
 - - -
 
-### constructor
+#### constructor
 
 Constructor for NativeTokenGateway
 
@@ -33,14 +34,14 @@ Constructor for NativeTokenGateway
 constructor(contract IVToken vWrappedNativeToken) public
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vWrappedNativeToken | contract IVToken | Address of wrapped native token market |
 
 - - -
 
-### receive
+#### receive
 
 To receive Native when msg.data is empty
 
@@ -50,7 +51,7 @@ receive() external payable
 
 - - -
 
-### fallback
+#### fallback
 
 To receive Native when msg.data is not empty
 
@@ -60,7 +61,7 @@ fallback() external payable
 
 - - -
 
-### wrapAndSupply
+#### wrapAndSupply
 
 Wrap Native, get wNativeToken, mint vWNativeToken, and supply to the market.
 
@@ -68,21 +69,21 @@ Wrap Native, get wNativeToken, mint vWNativeToken, and supply to the market.
 function wrapAndSupply(address minter) external payable
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | minter | address | The address on behalf of whom the supply is performed. |
 
-#### 📅 Events
+##### 📅 Events
 * TokensWrappedAndSupplied is emitted when assets are supplied to the market
 
-#### ❌ Errors
+##### ❌ Errors
 * ZeroAddressNotAllowed is thrown if address of minter is zero address
 * ZeroValueNotAllowed is thrown if mintAmount is zero
 
 - - -
 
-### redeemUnderlyingAndUnwrap
+#### redeemUnderlyingAndUnwrap
 
 Redeem vWNativeToken, unwrap to Native Token, and send to the user
 
@@ -90,20 +91,20 @@ Redeem vWNativeToken, unwrap to Native Token, and send to the user
 function redeemUnderlyingAndUnwrap(uint256 redeemAmount) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | redeemAmount | uint256 | The amount of underlying tokens to redeem |
 
-#### 📅 Events
+##### 📅 Events
 * TokensRedeemedAndUnwrapped is emitted when assets are redeemed from a market and unwrapped
 
-#### ❌ Errors
+##### ❌ Errors
 * ZeroValueNotAllowed is thrown if redeemAmount is zero
 
 - - -
 
-### redeemAndUnwrap
+#### redeemAndUnwrap
 
 Redeem vWNativeToken, unwrap to Native Token, and send to the user
 
@@ -111,20 +112,20 @@ Redeem vWNativeToken, unwrap to Native Token, and send to the user
 function redeemAndUnwrap(uint256 redeemTokens) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | redeemTokens | uint256 | The amount of vWNative tokens to redeem |
 
-#### 📅 Events
+##### 📅 Events
 * TokensRedeemedAndUnwrapped is emitted when assets are redeemed from a market and unwrapped
 
-#### ❌ Errors
+##### ❌ Errors
 * ZeroValueNotAllowed is thrown if redeemTokens is zero
 
 - - -
 
-### wrapAndRepay
+#### wrapAndRepay
 
 Wrap Native, repay borrow in the market, and send remaining Native to the user
 
@@ -132,15 +133,15 @@ Wrap Native, repay borrow in the market, and send remaining Native to the user
 function wrapAndRepay() external payable
 ```
 
-#### 📅 Events
+##### 📅 Events
 * TokensWrappedAndRepaid is emitted when assets are repaid to a market and unwrapped
 
-#### ❌ Errors
+##### ❌ Errors
 * ZeroValueNotAllowed is thrown if repayAmount is zero
 
 - - -
 
-### sweepNative
+#### sweepNative
 
 Sweeps native assets (Native) from the contract and sends them to the owner
 
@@ -148,15 +149,15 @@ Sweeps native assets (Native) from the contract and sends them to the owner
 function sweepNative() external
 ```
 
-#### 📅 Events
+##### 📅 Events
 * SweepNative is emitted when assets are swept from the contract
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by Governance
 
 - - -
 
-### sweepToken
+#### sweepToken
 
 Sweeps the input token address tokens from the contract and sends them to the owner
 
@@ -164,15 +165,15 @@ Sweeps the input token address tokens from the contract and sends them to the ow
 function sweepToken(contract IERC20 token) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | token | contract IERC20 | Address of the token |
 
-#### 📅 Events
+##### 📅 Events
 * SweepToken emits on success
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by Governance
 
 - - -

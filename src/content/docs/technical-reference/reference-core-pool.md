@@ -1,5 +1,5 @@
 ---
-title: "Core Pool Technical Reference"
+title: "Core Pool"
 ---
 
 “Core Pool” is a product label, not a single contract architecture. Select the reference for the deployment you are integrating with.

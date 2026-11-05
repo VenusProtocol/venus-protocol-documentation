@@ -1,5 +1,5 @@
 ---
-title: "InterestRateModel Interface"
+title: "InterestRateModel"
 ---
 
 The current [`InterestRateModel`](https://github.com/VenusProtocol/isolated-pools/blob/v4.4.0/contracts/InterestRateModel.sol) interface exposes three functions. Rates are mantissas scaled by `1e18` and are returned per slot, where the implementation defines a slot as a block or one second.

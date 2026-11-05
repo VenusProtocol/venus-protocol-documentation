@@ -1,12 +1,13 @@
 ---
 title: "SwapHelper"
 ---
+## SwapHelper
 
 The SwapHelper is a Venus periphery contract for backend-authorized token operations. It provides an atomic multicall interface with EIP-712 signature verification, allowing the configured backend signer to authorize a specific batch of approvals, arbitrary external calls, and token sweeps.
 
 > **Version scope:** This API reference follows the standalone [`SwapHelper` in `venus-periphery` v1.2.0](https://github.com/VenusProtocol/venus-periphery/blob/v1.2.0/contracts/SwapHelper/SwapHelper.sol). It is not a proxy. Its current owner, pending owner, backend signer, EIP-712 domain/address, and consuming manager/router versions are live trust inputs that must be checked before use.
 
-## Overview
+### Overview
 
 Token swaps in leverage operations require interaction with external DEX protocols. The SwapHelper provides a controlled execution environment where:
 
@@ -17,7 +18,7 @@ Token swaps in leverage operations require interaction with external DEX protoco
 
 The contract is designed to be called by the LeverageStrategiesManager during flash loan callbacks, though it can also be used independently for authorized token operations.
 
-## Architecture
+### Architecture
 
 ```
 ┌─────────────────────────┐
@@ -51,29 +52,29 @@ The contract is designed to be called by the LeverageStrategiesManager during fl
 └─────────────────────────┘
 ```
 
-## Inheritance
+### Inheritance
 
 - `EIP712` - EIP-712 typed data hashing for signature verification
 - `Ownable2Step` - Two-step ownership transfer and owner access for admin functions
 - `ReentrancyGuard` - Reentrancy protection
 
-## State Variables
+### State Variables
 
 | Variable        | Type                       | Description                                     |
 | --------------- | -------------------------- | ----------------------------------------------- |
 | `backendSigner` | `address`                  | Address authorized to sign multicall operations |
 | `usedSalts`     | `mapping(bytes32 => bool)` | Tracks used salts for replay protection         |
 
-## Constants
+### Constants
 
 ```solidity
 bytes32 internal constant MULTICALL_TYPEHASH =
     keccak256("Multicall(address caller,bytes[] calls,uint256 deadline,bytes32 salt)");
 ```
 
-# Solidity API
+## Solidity API
 
-### multicall
+#### multicall
 
 Executes multiple calls atomically with backend signature verification.
 
@@ -86,7 +87,7 @@ function multicall(
 ) external nonReentrant
 ```
 
-#### Parameters
+##### Parameters
 
 | Name      | Type    | Description                                                    |
 | --------- | ------- | -------------------------------------------------------------- |
@@ -95,7 +96,7 @@ function multicall(
 | salt      | bytes32 | Unique value ensuring this multicall can only be executed once |
 | signature | bytes   | EIP-712 signature from the backend signer                      |
 
-#### Execution Flow
+##### Execution Flow
 
 1. Validate `calls` array is not empty
 2. Check `block.timestamp <= deadline`
@@ -106,7 +107,7 @@ function multicall(
 7. Execute each call atomically
 8. Emit `MulticallExecuted` event
 
-#### Typical Call Structure
+##### Typical Call Structure
 
 A multicall for a swap operation typically contains:
 
@@ -118,11 +119,11 @@ calls = [
 ]
 ```
 
-#### Events
+##### Events
 
 - `MulticallExecuted(caller, callsCount, deadline, salt)` on success
 
-#### Errors
+##### Errors
 
 - `NoCallsProvided` if calls array is empty
 - `DeadlineReached` if `block.timestamp > deadline`
@@ -132,7 +133,7 @@ calls = [
 
 ---
 
-### genericCall
+#### genericCall
 
 Executes an arbitrary call to an external contract. Only callable via multicall or by the owner.
 
@@ -140,28 +141,28 @@ Executes an arbitrary call to an external contract. Only callable via multicall 
 function genericCall(address target, bytes calldata data) external onlyOwnerOrSelf
 ```
 
-#### Parameters
+##### Parameters
 
 | Name   | Type    | Description                     |
 | ------ | ------- | ------------------------------- |
 | target | address | Address of the contract to call |
 | data   | bytes   | Encoded function call data      |
 
-#### Events
+##### Events
 
 - `GenericCallExecuted(target, data)` on success
 
-#### Access Requirements
+##### Access Requirements
 
 - Only callable by owner or contract itself (via multicall)
 
-#### Errors
+##### Errors
 
 - `CallerNotAuthorized` if caller is not owner or contract itself
 
 ---
 
-### sweep
+#### sweep
 
 Transfers the entire balance of an ERC-20 token to a specified recipient.
 
@@ -169,28 +170,28 @@ Transfers the entire balance of an ERC-20 token to a specified recipient.
 function sweep(IERC20Upgradeable token, address to) external onlyOwnerOrSelf
 ```
 
-#### Parameters
+##### Parameters
 
 | Name  | Type              | Description                            |
 | ----- | ----------------- | -------------------------------------- |
 | token | IERC20Upgradeable | ERC-20 token contract to sweep         |
 | to    | address           | Recipient address for the swept tokens |
 
-#### Events
+##### Events
 
 - `Swept(token, to, amount)` on execution (emits even if amount is 0)
 
-#### Access Requirements
+##### Access Requirements
 
 - Only callable by owner or contract itself (via multicall)
 
-#### Errors
+##### Errors
 
 - `CallerNotAuthorized` if caller is not authorized
 
 ---
 
-### approveMax
+#### approveMax
 
 Grants maximum approval of an ERC-20 token to a spender.
 
@@ -198,28 +199,28 @@ Grants maximum approval of an ERC-20 token to a spender.
 function approveMax(IERC20Upgradeable token, address spender) external onlyOwnerOrSelf
 ```
 
-#### Parameters
+##### Parameters
 
 | Name    | Type              | Description                      |
 | ------- | ----------------- | -------------------------------- |
 | token   | IERC20Upgradeable | ERC-20 token contract to approve |
 | spender | address           | Address to grant approval to     |
 
-#### Events
+##### Events
 
 - `ApprovedMax(token, spender)` on success
 
-#### Access Requirements
+##### Access Requirements
 
 - Only callable by owner or contract itself (via multicall)
 
-#### Errors
+##### Errors
 
 - `CallerNotAuthorized` if caller is not authorized
 
 ---
 
-### setBackendSigner
+#### setBackendSigner
 
 Updates the authorized backend signer address.
 
@@ -227,25 +228,25 @@ Updates the authorized backend signer address.
 function setBackendSigner(address newSigner) external onlyOwner
 ```
 
-#### Parameters
+##### Parameters
 
 | Name      | Type    | Description                |
 | --------- | ------- | -------------------------- |
 | newSigner | address | New backend signer address |
 
-#### Events
+##### Events
 
 - `BackendSignerUpdated(oldSigner, newSigner)` on success
 
-#### Access Requirements
+##### Access Requirements
 
 - Only callable by contract owner
 
-#### Errors
+##### Errors
 
 - `ZeroAddress` if newSigner is address(0)
 
-## Events
+### Events
 
 | Event                  | Parameters                         | Description                        |
 | ---------------------- | ---------------------------------- | ---------------------------------- |
@@ -255,7 +256,7 @@ function setBackendSigner(address newSigner) external onlyOwner
 | `ApprovedMax`          | token, spender                     | Maximum approval granted           |
 | `GenericCallExecuted`  | target, data                       | External call executed             |
 
-## Custom Errors
+### Custom Errors
 
 | Error                 | Description                                    |
 | --------------------- | ---------------------------------------------- |
@@ -267,9 +268,9 @@ function setBackendSigner(address newSigner) external onlyOwner
 | `NoCallsProvided`     | Empty calls array in multicall                 |
 | `MissingSignature`    | Signature is required but empty                |
 
-## Security Considerations
+### Security Considerations
 
-### Signature Verification
+#### Signature Verification
 
 All multicall operations require a valid EIP-712 signature from the `backendSigner`. The signature covers:
 
@@ -287,7 +288,7 @@ Assuming the backend signer and owner remain trusted, these checks prevent:
 
 They do not constrain what a valid signed batch may call. The signer can authorize `approveMax`, `genericCall`, and `sweep`, and the owner can call those functions directly. Integrations must validate the complete encoded call list and output conditions, not only the signature and deadline.
 
-### Access Control
+#### Access Control
 
 Functions that interact with external contracts (`genericCall`, `sweep`, `approveMax`) are protected by `onlyOwnerOrSelf`:
 
@@ -296,11 +297,11 @@ Functions that interact with external contracts (`genericCall`, `sweep`, `approv
 
 `approveMax` grants an unlimited allowance and `sweep` transfers the helper's full balance of the selected token. End users should not approve SwapHelper or leave tokens in it; callers such as LeverageStrategiesManager should transfer only the amount needed for an atomic operation and validate the returned output.
 
-### Reentrancy Protection
+#### Reentrancy Protection
 
 The `multicall` function is protected by OpenZeppelin's `nonReentrant` modifier, preventing reentrant calls during execution.
 
-### EIP-712 Domain
+#### EIP-712 Domain
 
 The contract initializes with:
 
@@ -309,13 +310,13 @@ The contract initializes with:
 
 This domain separation ensures signatures are specific to this contract and version.
 
-## Deployment
+### Deployment
 
 SwapHelper is currently published for BNB Chain Mainnet and testnet. See [Deployed Contracts](/deployed-contracts/periphery) for current addresses. Source portability does not establish a deployment on another network.
 
-## Integration
+### Integration
 
-### With LeverageStrategiesManager
+#### With LeverageStrategiesManager
 
 The SwapHelper is the designated swap executor for the LeverageStrategiesManager. During leverage operations:
 
@@ -326,7 +327,7 @@ The SwapHelper is the designated swap executor for the LeverageStrategiesManager
 5. SwapHelper executes the swap and sweeps output tokens back to LSM
 6. LSM validates received amount against slippage protection
 
-### For Developers
+#### For Developers
 
 SwapHelper exposes a clear interface for integration:
 
@@ -349,7 +350,7 @@ interface ISwapHelper {
 }
 ```
 
-#### Signature Generation
+##### Signature Generation
 
 When generating signatures for the `multicall` function, the backend must include the caller address in the EIP-712 digest:
 
@@ -365,7 +366,7 @@ bytes32 digest = keccak256(abi.encode(
 
 This ensures signatures are specific to the address calling `multicall` and cannot be replayed from a different address.
 
-### Swap API Request
+#### Swap API Request
 
 When integrating with the Venus Swap API, include:
 
@@ -380,6 +381,6 @@ When integrating with the Venus Swap API, include:
 
 The API returns encoded `multicall` parameters with the backend signature that includes the caller address.
 
-## Audits
+### Audits
 
 Published SwapHelper audit reports are indexed in the [`venus-periphery` v1.2.0 release](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/audits). Check each report's scope and reviewed commit against the deployed standalone bytecode.

@@ -1,12 +1,13 @@
 ---
-title: "FacetBase"
+title: "FacetBase (inherited API)"
 ---
+## FacetBase
 
 `FacetBase` is shared inherited code for the BNB Core Pool facets, not a separately deployed runtime facet. The public getters below are reached through whichever installed facet exposes their selectors. Resolve each selector through the live Diamond before calling it.
 
-# Solidity API
+## Solidity API
 
-### venusInitialIndex
+#### venusInitialIndex
 
 The initial Venus index for a market
 
@@ -16,7 +17,7 @@ uint224 venusInitialIndex
 
 ---
 
-### corePoolId
+#### corePoolId
 
 Returns the Core Pool identifier used by the shared facet storage.
 
@@ -26,7 +27,7 @@ function corePoolId() external pure returns (uint96)
 
 ---
 
-### actionPaused
+#### actionPaused
 
 Checks if a certain action is paused on a market
 
@@ -34,7 +35,7 @@ Checks if a certain action is paused on a market
 function actionPaused(address market, enum Action action) public view returns (bool)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -43,7 +44,7 @@ function actionPaused(address market, enum Action action) public view returns (b
 
 ---
 
-### getXVSAddress
+#### getXVSAddress
 
 Returns the XVS address
 
@@ -51,7 +52,7 @@ Returns the XVS address
 function getXVSAddress() external view returns (address)
 ```
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -59,7 +60,7 @@ function getXVSAddress() external view returns (address)
 
 ---
 
-### getPoolMarketIndex
+#### getPoolMarketIndex
 
 Returns the unique market index for the given poolId and vToken pair
 
@@ -67,14 +68,14 @@ Returns the unique market index for the given poolId and vToken pair
 function getPoolMarketIndex(uint96 poolId, address vToken) public pure returns (PoolMarketId)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | poolId | uint96 | The ID of the pool |
 | vToken | address | The address of the market (vToken) |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |

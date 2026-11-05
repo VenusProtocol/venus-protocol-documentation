@@ -1,5 +1,5 @@
 ---
-title: "Prime Contract Versions"
+title: "Prime"
 ---
 
 Venus Prime has two deployed contract generations. BNB Chain uses PrimeV2 with a leaderboard; the other current mainnet rows still use Prime V1.

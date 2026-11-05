@@ -1,15 +1,16 @@
 ---
-title: "Risk Oracle"
+title: "RiskOracle"
 ---
+## Risk Oracle
 Contract for managing and publishing risk parameter updates for Risk-Steward Updates
 
 This API is pinned to [`RiskOracle.sol` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/RiskSteward/RiskOracle.sol). On BNB mainnet at block `118369568`, proxy `0x0E3E51958b0Daa8C57c949675975CBEDd7b5a1a1` used implementation `0x34045517284cB1Ac2806Fe3298a39886DA29De48`, matching the tagged artifact.
 
 The proxy surface also includes inherited two-step ownership, AccessControlManager, and upgrade selectors. Publishing authorization is determined by `authorizedSenders` and active update types; ABI presence alone does not authorize a caller.
 
-# Solidity API
+## Solidity API
 
-### updateCounter
+#### updateCounter
 
 Counter to keep track of the total number of updates
 
@@ -19,7 +20,7 @@ uint256 updateCounter
 
 - - -
 
-### allUpdateTypes
+#### allUpdateTypes
 
 Array to store all update types
 
@@ -29,7 +30,7 @@ string[] allUpdateTypes
 
 - - -
 
-### activeUpdateTypes
+#### activeUpdateTypes
 
 Whitelist of valid update type identifiers, keyed by updateType hash
 
@@ -39,7 +40,7 @@ mapping(bytes32 => bool) activeUpdateTypes
 
 - - -
 
-### updatesById
+#### updatesById
 
 Mapping from unique update ID to the update details
 
@@ -49,7 +50,7 @@ mapping(uint256 => struct RiskParameterUpdate) updatesById
 
 - - -
 
-### authorizedSenders
+#### authorizedSenders
 
 Authorized accounts capable of proposing updates
 
@@ -59,7 +60,7 @@ mapping(address => bool) authorizedSenders
 
 - - -
 
-### latestUpdateIdByMarketAndType
+#### latestUpdateIdByMarketAndType
 
 Mapping to store the latest update ID for each combination of update type key and market
 
@@ -69,7 +70,7 @@ mapping(bytes32 => mapping(address => uint256)) latestUpdateIdByMarketAndType
 
 - - -
 
-### constructor
+#### constructor
 
 Disables initializers
 
@@ -79,7 +80,7 @@ constructor() public
 
 - - -
 
-### initialize
+#### initialize
 
 Initializes the contract with access control manager
 
@@ -87,17 +88,17 @@ Initializes the contract with access control manager
 function initialize(address accessControlManager_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | accessControlManager_ | address | Address of the access control manager |
 
-#### ❌ Errors
+##### ❌ Errors
 * Reverts with "invalid acess control manager address" if accessControlManager_ is zero address
 
 - - -
 
-### addAuthorizedSender
+#### addAuthorizedSender
 
 Adds a new sender to the list of addresses authorized to perform updates
 
@@ -105,25 +106,25 @@ Adds a new sender to the list of addresses authorized to perform updates
 function addAuthorizedSender(address sender) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | sender | address | Address to be authorized |
 
-#### 📅 Events
+##### 📅 Events
 * Emits AuthorizedSenderAdded when sender is successfully added
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by AccessControlManager
 
-#### ❌ Errors
+##### ❌ Errors
 * Throws ZeroAddressNotAllowed if sender is zero address
 * Throws SenderAlreadyAuthorized if sender is already authorized
 * Throws Unauthorized if caller is not allowed by AccessControlManager
 
 - - -
 
-### removeAuthorizedSender
+#### removeAuthorizedSender
 
 Removes an address from the list of authorized senders
 
@@ -131,24 +132,24 @@ Removes an address from the list of authorized senders
 function removeAuthorizedSender(address sender) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | sender | address | Address to be unauthorized |
 
-#### 📅 Events
+##### 📅 Events
 * Emits AuthorizedSenderRemoved when sender is successfully removed
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by AccessControlManager
 
-#### ❌ Errors
+##### ❌ Errors
 * Throws SenderNotAuthorized if sender is not currently authorized
 * Throws Unauthorized if caller is not allowed by AccessControlManager
 
 - - -
 
-### addUpdateType
+#### addUpdateType
 
 Adds a new type of update to the list of authorized update types
 
@@ -156,25 +157,25 @@ Adds a new type of update to the list of authorized update types
 function addUpdateType(string newUpdateType) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | newUpdateType | string | New type of update to allow |
 
-#### 📅 Events
+##### 📅 Events
 * Emits UpdateTypeAdded when update type is successfully added
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by AccessControlManager
 
-#### ❌ Errors
+##### ❌ Errors
 * Throws InvalidUpdateTypeString if update type string is empty or exceeds 64 characters
 * Throws UpdateTypeAlreadyExists if update type already exists
 * Throws Unauthorized if caller is not allowed by AccessControlManager
 
 - - -
 
-### setUpdateTypeActive
+#### setUpdateTypeActive
 
 Sets the active status of an existing update type
 
@@ -182,26 +183,26 @@ Sets the active status of an existing update type
 function setUpdateTypeActive(string updateType, bool active) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | updateType | string | The update type to set active status for |
 | active | bool | True to activate, false to deactivate |
 
-#### 📅 Events
+##### 📅 Events
 * Emits UpdateTypeActiveStatusChanged when status is successfully changed
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by AccessControlManager
 
-#### ❌ Errors
+##### ❌ Errors
 * Throws UpdateTypeNotFound if update type doesn't exist
 * Throws UpdateTypeStatusUnchanged if status is already set to the desired value
 * Throws Unauthorized if caller is not allowed by AccessControlManager
 
 - - -
 
-### publishRiskParameterUpdate
+#### publishRiskParameterUpdate
 
 Publishes a new risk parameter update
 
@@ -209,7 +210,7 @@ Publishes a new risk parameter update
 function publishRiskParameterUpdate(string referenceId, bytes newValue, string updateType, address market, uint96 poolId, uint32 dstEid, bytes additionalData) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | referenceId | string | An external reference ID associated with the update |
@@ -220,17 +221,17 @@ function publishRiskParameterUpdate(string referenceId, bytes newValue, string u
 | dstEid | uint32 | Destination endpoint ID for cross-chain routing |
 | additionalData | bytes | Additional data for the update |
 
-#### 📅 Events
+##### 📅 Events
 * Emits UpdatePublished when update is successfully published
 
-#### ❌ Errors
+##### ❌ Errors
 * Throws SenderNotAuthorized if caller is not an authorized sender
 * Throws UpdateTypeNotActive if update type is not active
 * Throws ZeroAddressNotAllowed if market is zero address
 
 - - -
 
-### publishBulkRiskParameterUpdates
+#### publishBulkRiskParameterUpdates
 
 Publishes multiple risk parameter updates in a single transaction
 
@@ -238,7 +239,7 @@ Publishes multiple risk parameter updates in a single transaction
 function publishBulkRiskParameterUpdates(string[] referenceIds, bytes[] newValues, string[] updateTypes, address[] markets, uint96[] poolIds, uint32[] dstEid, bytes[] additionalData) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | referenceIds | string[] | Array of external reference IDs |
@@ -249,10 +250,10 @@ function publishBulkRiskParameterUpdates(string[] referenceIds, bytes[] newValue
 | dstEid | uint32[] | Array of destination endpoint IDs for cross-chain routing |
 | additionalData | bytes[] | Array of additional data for the updates |
 
-#### 📅 Events
+##### 📅 Events
 * Emits UpdatePublished for each successfully published update
 
-#### ❌ Errors
+##### ❌ Errors
 * Throws SenderNotAuthorized if caller is not an authorized sender
 * Throws ArrayLengthMismatch if the array lengths do not match or if no updates are provided
 * Throws UpdateTypeNotActive if any update type is not active
@@ -260,7 +261,7 @@ function publishBulkRiskParameterUpdates(string[] referenceIds, bytes[] newValue
 
 - - -
 
-### getLatestUpdateByTypeAndMarket
+#### getLatestUpdateByTypeAndMarket
 
 Fetches the most recent update for a specific parameter in a specific market
 
@@ -268,23 +269,23 @@ Fetches the most recent update for a specific parameter in a specific market
 function getLatestUpdateByTypeAndMarket(string updateType, address market) external view returns (struct RiskParameterUpdate)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | updateType | string | The identifier for the parameter |
 | market | address | The market identifier |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | struct RiskParameterUpdate | The most recent RiskParameterUpdate for the specified parameter and market |
 
-#### ❌ Errors
+##### ❌ Errors
 * Throws NoUpdateFound if no update exists for the specified parameter and market
 
 - - -
 
-### getUpdateById
+#### getUpdateById
 
 Fetches the update for a provided updateId
 
@@ -292,22 +293,22 @@ Fetches the update for a provided updateId
 function getUpdateById(uint256 updateId) external view returns (struct RiskParameterUpdate)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | updateId | uint256 | Update ID |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | struct RiskParameterUpdate | The RiskParameterUpdate for the specified id |
 
-#### ❌ Errors
+##### ❌ Errors
 * Throws InvalidUpdateId if updateId is 0 or greater than updateCounter
 
 - - -
 
-### allUpdateTypesLength
+#### allUpdateTypesLength
 
 Returns the total number of update types in the allUpdateTypes array
 
@@ -315,14 +316,14 @@ Returns the total number of update types in the allUpdateTypes array
 function allUpdateTypesLength() external view returns (uint256)
 ```
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | uint256 | The length of the allUpdateTypes array |
 
 - - -
 
-### getLatestUpdateIdByTypeAndMarket
+#### getLatestUpdateIdByTypeAndMarket
 
 Gets the latest update ID for a specific market and update type (string) combination
 
@@ -330,20 +331,20 @@ Gets the latest update ID for a specific market and update type (string) combina
 function getLatestUpdateIdByTypeAndMarket(string updateType, address market) external view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | updateType | string | The update type string |
 | market | address | The market address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | uint256 | The latest update ID for the given market and update type, or 0 if none exists |
 
 - - -
 
-### getActiveUpdateTypes
+#### getActiveUpdateTypes
 
 Checks if a given update type is currently active.
 
@@ -351,19 +352,19 @@ Checks if a given update type is currently active.
 function getActiveUpdateTypes(string updateType) external view returns (bool)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | updateType | string | The update type string to check |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | bool | True if the update type is active, false otherwise |
 
 - - -
 
-### getAllUpdateTypes
+#### getAllUpdateTypes
 
 Returns all update types in the allUpdateTypes array
 
@@ -371,14 +372,14 @@ Returns all update types in the allUpdateTypes array
 function getAllUpdateTypes() external view returns (string[])
 ```
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | string[] | An array of all update type strings |
 
 - - -
 
-### renounceOwnership
+#### renounceOwnership
 
 Disables renounceOwnership function
 
@@ -386,7 +387,7 @@ Disables renounceOwnership function
 function renounceOwnership() public pure
 ```
 
-#### ❌ Errors
+##### ❌ Errors
 * Throws RenounceOwnershipNotAllowed
 
 - - -

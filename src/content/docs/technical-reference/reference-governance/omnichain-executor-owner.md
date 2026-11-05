@@ -1,14 +1,15 @@
 ---
 title: "OmnichainExecutorOwner"
 ---
+## OmnichainExecutorOwner
 
 [`OmnichainExecutorOwner` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Cross-chain/OmnichainExecutorOwner.sol) is the upgradeable access-controlled owner of a destination OmnichainGovernanceExecutor. The previous description incorrectly called this contract `OmnichainProposalSender`.
 
 Known selectors are registered by their full function-signature strings. The fallback resolves `msg.sig`, checks the corresponding AccessControlManager permission, and forwards the original calldata to the executor. `upsertSignature` is owner-only; `setTrustedRemoteAddress` and `transferBridgeOwnership` use exact ACM signatures. Ownership renunciation is disabled.
 
-# Solidity API
+## Solidity API
 
-### OMNICHAIN_GOVERNANCE_EXECUTOR
+#### OMNICHAIN_GOVERNANCE_EXECUTOR
 
 @custom:oz-upgrades-unsafe-allow state-variable-immutable
 
@@ -18,7 +19,7 @@ contract IOmnichainGovernanceExecutor OMNICHAIN_GOVERNANCE_EXECUTOR
 
 ---
 
-### functionRegistry
+#### functionRegistry
 
 Stores function signature corresponding to their 4 bytes hash value
 
@@ -28,7 +29,7 @@ mapping(bytes4 => string) functionRegistry
 
 ---
 
-### initialize
+#### initialize
 
 Initialize the contract
 
@@ -36,7 +37,7 @@ Initialize the contract
 function initialize(address accessControlManager_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                   | Type    | Description                       |
 | ---------------------- | ------- | --------------------------------- |
@@ -44,7 +45,7 @@ function initialize(address accessControlManager_) external
 
 ---
 
-### setTrustedRemoteAddress
+#### setTrustedRemoteAddress
 
 Sets the source message sender address
 
@@ -52,24 +53,24 @@ Sets the source message sender address
 function setTrustedRemoteAddress(uint16 srcChainId_, bytes srcAddress_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type   | Description                                     |
 | ------------ | ------ | ----------------------------------------------- |
 | srcChainId\_ | uint16 | The LayerZero id of a source chain              |
 | srcAddress\_ | bytes  | The address of the contract on the source chain |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits SetTrustedRemoteAddress with source chain Id and source address
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Controlled by AccessControlManager
 
 ---
 
-### fallback
+#### fallback
 
 Invoked when called function does not exist in the contract
 
@@ -77,25 +78,25 @@ Invoked when called function does not exist in the contract
 fallback(bytes data_) external returns (bytes)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name   | Type  | Description                                   |
 | ------ | ----- | --------------------------------------------- |
 | data\_ | bytes | Calldata containing the encoded function call |
 
-#### Return Values
+##### Return Values
 
 | Name | Type  | Description             |
 | ---- | ----- | ----------------------- |
 | \[0]  | bytes | Result of function call |
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Controlled by Access Control Manager
 
 ---
 
-### upsertSignature
+#### upsertSignature
 
 A registry of functions that are allowed to be executed from proposals
 
@@ -103,20 +104,20 @@ A registry of functions that are allowed to be executed from proposals
 function upsertSignature(string[] signatures_, bool[] active_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type     | Description                                |
 | ------------ | -------- | ------------------------------------------ |
 | signatures\_ | string[] | Function signature to be added or removed  |
 | active\_     | bool[]   | bool value, should be true to add function |
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Only owner
 
 ---
 
-### transferBridgeOwnership
+#### transferBridgeOwnership
 
 This function transfer the ownership of the executor from this contract to new owner
 
@@ -124,19 +125,19 @@ This function transfer the ownership of the executor from this contract to new o
 function transferBridgeOwnership(address newOwner_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name       | Type    | Description                         |
 | ---------- | ------- | ----------------------------------- |
 | newOwner\_ | address | New owner of the governanceExecutor |
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Controlled by AccessControlManager
 
 ---
 
-### renounceOwnership
+#### renounceOwnership
 
 @notice Empty implementation of renounce ownership to avoid any mishappening
 

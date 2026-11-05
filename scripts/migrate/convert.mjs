@@ -84,7 +84,8 @@ function swagger(file, attrs) {
   if (params.length) {
     out.push('| Parameter | In | Type | Required | Description |', '| --- | --- | --- | --- | --- |');
     for (const x of params) {
-      const t = x.schema?.enum ? x.schema.enum.map((e) => `\`${e}\``).join(' \\| ') : x.schema?.type ?? '';
+      // cell() escapes the separators; escaping here too would leave `\\|`, which splits the cell.
+      const t = x.schema?.enum ? x.schema.enum.map((e) => `\`${e}\``).join(' | ') : x.schema?.type ?? '';
       out.push(`| \`${x.name}\` | ${x.in} | ${cell(t)} | ${x.required ? 'yes' : 'no'} | ${cell(x.description)} |`);
     }
     out.push('');
@@ -107,18 +108,63 @@ function splitFrontmatter(src) {
 
 const yamlStr = (s) => JSON.stringify(s);
 
+// Title and heading levels the way GitBook rendered a git-synced page (matches the heading
+// structure of all 229 live pages). The page title is always the SUMMARY label. If the page
+// opens with the only heading at its shallowest level m, GitBook used that heading as the
+// title: it is dropped and a level-L heading renders at L - m + 1. Otherwise every heading
+// stays and renders one level deeper. Either way no body heading becomes a second <h1>.
+function headings(body) {
+  const lines = body.split('\n');
+  const first = lines.findIndex((l) => l.trim() !== '');
+  const found = [];
+  let fence = false;
+  lines.forEach((l, i) => {
+    if (/^\s*```/.test(l)) { fence = !fence; return; }
+    if (fence) return;
+    const atx = l.match(/^(#{1,6})\s+(.*)$/);
+    if (atx) found.push({ i, level: atx[1].length, text: atx[2] });
+    else if (l.trim() && /^(=+|-+)\s*$/.test(lines[i + 1] ?? '') && !/^\s*(\||[-*+] |\d+\. )/.test(l)) {
+      found.push({ i, level: lines[i + 1].trim()[0] === '=' ? 1 : 2, text: l.trim(), setext: true });
+    }
+  });
+  return { lines, first, found };
+}
+
+function retitle(body) {
+  const { lines, first, found } = headings(body);
+  if (!found.length) return body;
+  const m = Math.min(...found.map((h) => h.level));
+  const lead = found[0];
+  const isTitle = lead.i === first && lead.level === m && found.filter((h) => h.level === m).length === 1;
+  const shift = isTitle ? 1 - m : 1;
+  const drop = new Set();
+  for (const h of found) {
+    if (h.setext) drop.add(h.i + 1); // underline; re-emitted as ATX below
+    if (isTitle && h === lead) { drop.add(h.i); continue; }
+    lines[h.i] = '#'.repeat(Math.min(6, h.level + shift)) + ' ' + h.text;
+  }
+  return lines.filter((_, i) => !drop.has(i)).join('\n');
+}
+
+// GitBook omitted figures whose image file is missing; a figure linking to no file would
+// render as an empty frame with a caption.
+function dropBrokenFigures(file, body) {
+  return body.replace(/<figure>(?:(?!<\/figure>)[\s\S])*?<\/figure>/g, (fig) => {
+    const src = fig.match(/<img\b[^>]*?\ssrc="([^"]+)"/)?.[1];
+    if (!src || /^[a-z]+:/i.test(src) || src.startsWith('/')) return fig;
+    const asset = path.posix.normalize(path.posix.join(path.posix.dirname(file), decodeURI(src))).split('.gitbook/assets/')[1];
+    if (asset === undefined || fs.existsSync(path.join(ASSETS_SRC, asset))) return fig;
+    note(file, `dropped figure, image not in the repo (GitBook did not render it either): ${src}`);
+    return '';
+  });
+}
+
 function convert(page) {
   const file = page.file;
   let [fm, body] = splitFrontmatter(fs.readFileSync(path.join(SRC, file), 'utf8'));
 
-  // Title: the leading H1 (ATX or setext), else the SUMMARY label. Starlight renders it.
-  let title = page.label;
-  body = body.replace(/^\s*/, '');
-  const atx = body.match(/^# (.+)\n/);
-  const setext = body.match(/^([^\n]+)\n=+\s*\n/);
-  if (atx) { title = atx[1].trim(); body = body.slice(atx[0].length); }
-  else if (setext) { title = setext[1].trim(); body = body.slice(setext[0].length); }
-  else note(file, 'no H1; title taken from SUMMARY');
+  const title = page.label;
+  body = dropBrokenFigures(file, retitle(body.replace(/^\s*/, '')));
 
   const outside = (fn) => body.split(/(^```[\s\S]*?^```)/m).map((chunk, i) => (i % 2 ? chunk : fn(chunk))).join('');
 

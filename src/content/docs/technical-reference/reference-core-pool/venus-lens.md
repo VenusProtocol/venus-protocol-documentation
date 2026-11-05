@@ -1,14 +1,15 @@
 ---
 title: "VenusLens"
 ---
+## VenusLens
 
-## Introduction
+### Introduction
 
 The read only functions on the VenusLens contract provide a view into: - metadata of vToken - daily XVS rewards for an account - account balance for a single vToken - account balances for all vTokens in an account - underlying price of a vToken - underlying prices for a set of vTokens - get liquidity and shortfall of an account - get user's vote history - get proposal details for a set of proposals - get account XVS balance, total votes, and delegated votes - get historical voting balance for a user - get pending XVS Rewards for an account
 
-# Solidity API
+## Solidity API
 
-### BLOCKS\_PER\_DAY
+#### BLOCKS\_PER\_DAY
 
 Blocks Per Day
 
@@ -18,7 +19,7 @@ uint256 BLOCKS_PER_DAY
 
 ---
 
-### VTOKEN\_ACTIONS
+#### VTOKEN\_ACTIONS
 
 Total actions available on VToken
 
@@ -135,7 +136,7 @@ struct RewardSummary {
 }
 ```
 
-### MarketData
+#### MarketData
 
 Holds full market information for a single vToken within a specific pool (excluding the Core Pool)
 
@@ -155,7 +156,7 @@ struct MarketData {
 }
 ```
 
-### PoolWithMarkets
+#### PoolWithMarkets
 
 Struct representing a pool (excluding the Core Pool) and its associated markets
 
@@ -169,7 +170,7 @@ struct PoolWithMarkets {
 }
 ```
 
-### vTokenMetadata
+#### vTokenMetadata
 
 Query the metadata of a vToken by its address
 
@@ -177,13 +178,13 @@ Query the metadata of a vToken by its address
 function vTokenMetadata(contract VToken vToken) public returns (struct VenusLens.VTokenMetadata)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | contract VToken | The address of the vToken to fetch VTokenMetadata |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -191,7 +192,7 @@ function vTokenMetadata(contract VToken vToken) public returns (struct VenusLens
 
 ---
 
-### vTokenMetadataAll
+#### vTokenMetadataAll
 
 Get VTokenMetadata for an array of vToken addresses
 
@@ -199,13 +200,13 @@ Get VTokenMetadata for an array of vToken addresses
 function vTokenMetadataAll(contract VToken[] vTokens) external returns (struct VenusLens.VTokenMetadata[])
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vTokens | contract VToken\[] | Array of vToken addresses to fetch VTokenMetadata |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -213,7 +214,7 @@ function vTokenMetadataAll(contract VToken[] vTokens) external returns (struct V
 
 ---
 
-### getDailyXVS
+#### getDailyXVS
 
 Get amount of XVS distributed daily to an account
 
@@ -221,14 +222,14 @@ Get amount of XVS distributed daily to an account
 function getDailyXVS(address payable account, address comptrollerAddress) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | account | address payable | Address of account to fetch the daily XVS distribution |
 | comptrollerAddress | address | Address of the comptroller proxy |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -236,7 +237,7 @@ function getDailyXVS(address payable account, address comptrollerAddress) extern
 
 ---
 
-### vTokenBalances
+#### vTokenBalances
 
 Get the current vToken balance (outstanding borrows) for an account
 
@@ -244,14 +245,14 @@ Get the current vToken balance (outstanding borrows) for an account
 function vTokenBalances(contract VToken vToken, address payable account) public returns (struct VenusLens.VTokenBalances)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | contract VToken | Address of the token to check the balance of |
 | account | address payable | Account address to fetch the balance of |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -259,7 +260,7 @@ function vTokenBalances(contract VToken vToken, address payable account) public 
 
 ---
 
-### vTokenBalancesAll
+#### vTokenBalancesAll
 
 Get the current vToken balances (outstanding borrows) for all vTokens on an account
 
@@ -267,14 +268,14 @@ Get the current vToken balances (outstanding borrows) for all vTokens on an acco
 function vTokenBalancesAll(contract VToken[] vTokens, address payable account) external returns (struct VenusLens.VTokenBalances[])
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vTokens | contract VToken\[] | Addresses of the tokens to check the balance of |
 | account | address payable | Account address to fetch the balance of |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -282,7 +283,7 @@ function vTokenBalancesAll(contract VToken[] vTokens, address payable account) e
 
 ---
 
-### vTokenUnderlyingPrice
+#### vTokenUnderlyingPrice
 
 Get the price for the underlying asset of a vToken
 
@@ -290,13 +291,13 @@ Get the price for the underlying asset of a vToken
 function vTokenUnderlyingPrice(contract VToken vToken) public view returns (struct VenusLens.VTokenUnderlyingPrice)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | contract VToken | address of the vToken |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -304,7 +305,7 @@ function vTokenUnderlyingPrice(contract VToken vToken) public view returns (stru
 
 ---
 
-### vTokenUnderlyingPriceAll
+#### vTokenUnderlyingPriceAll
 
 Query the underlyingPrice of an array of vTokens
 
@@ -312,13 +313,13 @@ Query the underlyingPrice of an array of vTokens
 function vTokenUnderlyingPriceAll(contract VToken[] vTokens) external view returns (struct VenusLens.VTokenUnderlyingPrice[])
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vTokens | contract VToken\[] | Array of vToken addresses |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -326,7 +327,7 @@ function vTokenUnderlyingPriceAll(contract VToken[] vTokens) external view retur
 
 ---
 
-### getAccountLimits
+#### getAccountLimits
 
 Query the account liquidity and shortfall of an account
 
@@ -334,14 +335,14 @@ Query the account liquidity and shortfall of an account
 function getAccountLimits(contract ComptrollerInterface comptroller, address account) public view returns (struct VenusLens.AccountLimits)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | comptroller | contract ComptrollerInterface | Address of comptroller proxy |
 | account | address | Address of the account to query |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -349,7 +350,7 @@ function getAccountLimits(contract ComptrollerInterface comptroller, address acc
 
 ---
 
-### getXVSBalanceMetadata
+#### getXVSBalanceMetadata
 
 Query the XVSBalance info of an account
 
@@ -357,14 +358,14 @@ Query the XVSBalance info of an account
 function getXVSBalanceMetadata(contract IXVS xvs, address account) external view returns (struct VenusLens.XVSBalanceMetadata)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | xvs | contract IXVS | XVS contract address |
 | account | address | Account address |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -372,7 +373,7 @@ function getXVSBalanceMetadata(contract IXVS xvs, address account) external view
 
 ---
 
-### getXVSBalanceMetadataExt
+#### getXVSBalanceMetadataExt
 
 Query the XVSBalance extended info of an account
 
@@ -380,7 +381,7 @@ Query the XVSBalance extended info of an account
 function getXVSBalanceMetadataExt(contract IXVS xvs, contract ComptrollerInterface comptroller, address account) external returns (struct VenusLens.XVSBalanceMetadataExt)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -388,7 +389,7 @@ function getXVSBalanceMetadataExt(contract IXVS xvs, contract ComptrollerInterfa
 | comptroller | contract ComptrollerInterface | Comptroller proxy contract address |
 | account | address | Account address |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -396,7 +397,7 @@ function getXVSBalanceMetadataExt(contract IXVS xvs, contract ComptrollerInterfa
 
 ---
 
-### getVenusVotes
+#### getVenusVotes
 
 Query the voting power for an account at a specific list of block numbers
 
@@ -404,7 +405,7 @@ Query the voting power for an account at a specific list of block numbers
 function getVenusVotes(contract IXVS xvs, address account, uint32[] blockNumbers) external view returns (struct VenusLens.VenusVotes[])
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -412,7 +413,7 @@ function getVenusVotes(contract IXVS xvs, address account, uint32[] blockNumbers
 | account | address | Address of the account |
 | blockNumbers | uint32\[] | Array of blocks to query |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -420,7 +421,7 @@ function getVenusVotes(contract IXVS xvs, address account, uint32[] blockNumbers
 
 ---
 
-### pendingRewards
+#### pendingRewards
 
 Calculate the total XVS tokens pending and accrued by a user account
 
@@ -428,14 +429,14 @@ Calculate the total XVS tokens pending and accrued by a user account
 function pendingRewards(address holder, contract ComptrollerInterface comptroller) external view returns (struct VenusLens.RewardSummary)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | holder | address | Account to query pending XVS |
 | comptroller | contract ComptrollerInterface | Address of the comptroller |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -443,7 +444,7 @@ function pendingRewards(address holder, contract ComptrollerInterface comptrolle
 
 ---
 
-### getAllPoolsData
+#### getAllPoolsData
 
 Returns all pools (excluding the Core Pool) along with their associated market data
 
@@ -451,13 +452,13 @@ Returns all pools (excluding the Core Pool) along with their associated market d
 function getAllPoolsData(contract ComptrollerInterface comptroller) external view returns (struct VenusLens.PoolWithMarkets[] poolsData)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | comptroller | contract ComptrollerInterface | The Comptroller contract to query |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -465,7 +466,7 @@ function getAllPoolsData(contract ComptrollerInterface comptroller) external vie
 
 ---
 
-### getMarketsDataByPool
+#### getMarketsDataByPool
 
 Retrieves full market data for all vTokens in a specific pool (excluding the Core Pool)
 
@@ -473,20 +474,20 @@ Retrieves full market data for all vTokens in a specific pool (excluding the Cor
 function getMarketsDataByPool(uint96 poolId, contract ComptrollerInterface comptroller) public view returns (struct VenusLens.MarketData[] result)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | poolId | uint96 | The pool ID to fetch data for |
 | comptroller | contract ComptrollerInterface | The address of the Comptroller contract |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | result | struct VenusLens.MarketData\[] | An array of MarketData structs containing detailed market info for the given pool |
 
-#### ❌ Errors
+##### ❌ Errors
 
 * PoolDoesNotExist Reverts if the given pool ID does not exist
 * InvalidOperationForCorePool Reverts if called on the Core Pool (`poolId = 0`)

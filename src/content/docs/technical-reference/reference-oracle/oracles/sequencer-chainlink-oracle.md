@@ -1,8 +1,9 @@
 ---
 title: "SequencerChainlinkOracle"
 ---
+## SequencerChainlinkOracle
 
-## Mainnet versions
+### Mainnet versions
 
 The following proxy implementations were read on August 27, 2026 and match the [`SequencerChainlinkOracle` v2.16.0 source](https://github.com/VenusProtocol/oracle/blob/v2.16.0/contracts/oracles/SequencerChainlinkOracle.sol):
 
@@ -17,9 +18,9 @@ This contract inherits the complete [ChainlinkOracle API](/technical-reference/r
 
 Oracle to fetch price using chainlink oracles on L2s with sequencer
 
-# Solidity API
+## Solidity API
 
-### sequencer
+#### sequencer
 
 L2 Sequencer feed
 
@@ -29,7 +30,7 @@ contract AggregatorV3Interface sequencer
 
 - - -
 
-### GRACE_PERIOD_TIME
+#### GRACE_PERIOD_TIME
 
 L2 Sequencer grace period
 
@@ -39,7 +40,7 @@ uint256 GRACE_PERIOD_TIME
 
 - - -
 
-### constructor
+#### constructor
 
 Contract constructor
         @param _sequencer L2 sequencer
@@ -51,7 +52,7 @@ constructor(contract AggregatorV3Interface _sequencer) public
 
 - - -
 
-### getPrice
+#### getPrice
 
 Gets the price of a asset from the chainlink oracle
 
@@ -59,12 +60,12 @@ Gets the price of a asset from the chainlink oracle
 function getPrice(address asset) public view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | Address of the asset |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | uint256 | Price in USD from Chainlink or a manually set price for the asset |

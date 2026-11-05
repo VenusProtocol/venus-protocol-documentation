@@ -1,6 +1,7 @@
 ---
-title: "PrimeLiquidityProvider"
+title: "Prime liquidity provider"
 ---
+## PrimeLiquidityProvider
 PrimeLiquidityProvider is used to fund Prime
 
 PrimeLiquidityProvider deployments can accrue per block or per second and can fund either Prime V1 or PrimeV2. See the [Prime version map](/technical-reference/reference-core-pool/prime) for current consumer, clock, and pause state by network.
@@ -9,9 +10,9 @@ PrimeLiquidityProvider deployments can accrue per block or per second and can fu
 Distribution speeds use the deployment's `isTimeBased()` clock. Read `blocksOrSecondsPerYear()` and `paused()` from the exact proxy before annualizing a speed or assuming funds can be released.
 :::
 
-# Solidity API
+## Solidity API
 
-### constructor
+#### constructor
 
 Configures the immutable time basis on the implementation.
 
@@ -23,7 +24,7 @@ When `timeBased_` is true, the contract uses seconds and the annualization const
 
 ---
 
-### DEFAULT_MAX_DISTRIBUTION_SPEED
+#### DEFAULT_MAX_DISTRIBUTION_SPEED
 
 The default max token distribution speed
 
@@ -33,7 +34,7 @@ uint256 DEFAULT_MAX_DISTRIBUTION_SPEED
 
 ---
 
-### prime
+#### prime
 
 Address of the Prime contract
 
@@ -43,7 +44,7 @@ address prime
 
 ---
 
-### tokenDistributionSpeeds
+#### tokenDistributionSpeeds
 
 The rate at which a token is distributed per block or second
 
@@ -53,7 +54,7 @@ mapping(address => uint256) tokenDistributionSpeeds
 
 ---
 
-### maxTokenDistributionSpeeds
+#### maxTokenDistributionSpeeds
 
 The max token distribution speed for token
 
@@ -63,7 +64,7 @@ mapping(address => uint256) maxTokenDistributionSpeeds
 
 ---
 
-### lastAccruedBlock
+#### lastAccruedBlock
 
 The last block or second up to which rewards were accrued for the token (view getter over the `lastAccruedBlockOrSecond` storage mapping)
 
@@ -73,7 +74,7 @@ function lastAccruedBlock(address token_) external view returns (uint256)
 
 ---
 
-### tokenAmountAccrued
+#### tokenAmountAccrued
 
 The token accrued but not yet transferred to prime contract (view getter over the internal `_tokenAmountAccrued` mapping)
 
@@ -83,7 +84,7 @@ function tokenAmountAccrued(address token_) external view returns (uint256)
 
 ---
 
-### initialize
+#### initialize
 
 PrimeLiquidityProvider initializer
 
@@ -91,7 +92,7 @@ PrimeLiquidityProvider initializer
 function initialize(address accessControlManager_, address[] tokens_, uint256[] distributionSpeeds_, uint256[] maxDistributionSpeeds_, uint256 loopsLimit_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | accessControlManager_ | address | AccessControlManager contract address |
@@ -100,12 +101,12 @@ function initialize(address accessControlManager_, address[] tokens_, uint256[] 
 | maxDistributionSpeeds_ | uint256[] |  |
 | loopsLimit_ | uint256 | Maximum number of loops allowed in a single transaction |
 
-#### ❌ Errors
+##### ❌ Errors
 * Throw InvalidArguments on different length of tokens and speeds array
 
 ---
 
-### initializeTokens
+#### initializeTokens
 
 Initialize the distribution of the token
 
@@ -113,17 +114,17 @@ Initialize the distribution of the token
 function initializeTokens(address[] tokens_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | tokens_ | address[] | Array of addresses of the tokens to be intialized |
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Governance
 
 ---
 
-### pauseFundsTransfer
+#### pauseFundsTransfer
 
 Pause fund transfer of tokens to Prime contract
 
@@ -131,12 +132,12 @@ Pause fund transfer of tokens to Prime contract
 function pauseFundsTransfer() external
 ```
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by ACM
 
 ---
 
-### resumeFundsTransfer
+#### resumeFundsTransfer
 
 Resume fund transfer of tokens to Prime contract
 
@@ -144,12 +145,12 @@ Resume fund transfer of tokens to Prime contract
 function resumeFundsTransfer() external
 ```
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by ACM
 
 ---
 
-### setTokensDistributionSpeed
+#### setTokensDistributionSpeed
 
 Set distribution speed per block or second
 
@@ -157,21 +158,21 @@ Set distribution speed per block or second
 function setTokensDistributionSpeed(address[] tokens_, uint256[] distributionSpeeds_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | tokens_ | address[] | Array of addresses of the tokens |
 | distributionSpeeds_ | uint256[] | New distribution speeds for tokens |
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by ACM
 
-#### ❌ Errors
+##### ❌ Errors
 * Throw InvalidArguments on different length of tokens and speeds array
 
 ---
 
-### setMaxTokensDistributionSpeed
+#### setMaxTokensDistributionSpeed
 
 Set maximum distribution speed per block or second
 
@@ -179,21 +180,21 @@ Set maximum distribution speed per block or second
 function setMaxTokensDistributionSpeed(address[] tokens_, uint256[] maxDistributionSpeeds_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | tokens_ | address[] | Array of addresses of the tokens |
 | maxDistributionSpeeds_ | uint256[] | New distribution speeds for tokens |
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by ACM
 
-#### ❌ Errors
+##### ❌ Errors
 * Throw InvalidArguments on different length of tokens and speeds array
 
 ---
 
-### setPrimeToken
+#### setPrimeToken
 
 Set the prime token contract address
 
@@ -201,20 +202,20 @@ Set the prime token contract address
 function setPrimeToken(address prime_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | prime_ | address | The new address of the prime token contract |
 
-#### 📅 Events
+##### 📅 Events
 * Emits PrimeTokenUpdated event
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only owner
 
 ---
 
-### setMaxLoopsLimit
+#### setMaxLoopsLimit
 
 Set the limit for the loops can iterate to avoid the DOS
 
@@ -222,20 +223,20 @@ Set the limit for the loops can iterate to avoid the DOS
 function setMaxLoopsLimit(uint256 loopsLimit) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | loopsLimit | uint256 | Limit for the max loops can execute at a time |
 
-#### 📅 Events
+##### 📅 Events
 * Emits MaxLoopsLimitUpdated event on success
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by ACM
 
 ---
 
-### releaseFunds
+#### releaseFunds
 
 Release the token amount accrued through the latest block or second
 
@@ -243,22 +244,22 @@ Release the token amount accrued through the latest block or second
 function releaseFunds(address token_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | token_ | address | The token to release to the Prime contract |
 
-#### 📅 Events
+##### 📅 Events
 * Emits TokenTransferredToPrime event
 
-#### ❌ Errors
+##### ❌ Errors
 * Throw InvalidArguments on Zero address(token)
 * Throw FundsTransferIsPaused is paused
 * Throw InvalidCaller if the sender is not the Prime contract
 
 ---
 
-### sweepToken
+#### sweepToken
 
 A public function to sweep accidental ERC-20 transfers to this contract. Tokens are sent to user
 
@@ -266,25 +267,25 @@ A public function to sweep accidental ERC-20 transfers to this contract. Tokens 
 function sweepToken(contract IERC20Upgradeable token_, address to_, uint256 amount_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | token_ | contract IERC20Upgradeable | The address of the ERC-20 token to sweep |
 | to_ | address | The address of the recipient |
 | amount_ | uint256 | The amount of tokens needs to transfer |
 
-#### 📅 Events
+##### 📅 Events
 * Emits SweepToken event
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Governance
 
-#### ❌ Errors
+##### ❌ Errors
 * Throw InsufficientBalance if amount_ is greater than the available balance of the token in the contract
 
 ---
 
-### getEffectiveDistributionSpeed
+#### getEffectiveDistributionSpeed
 
 Get the effective reward speed per block or second for a token
 
@@ -292,19 +293,19 @@ Get the effective reward speed per block or second for a token
 function getEffectiveDistributionSpeed(address token_) external view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | token_ | address | Address of the token |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | uint256 | Effective reward speed in the deployment's configured time unit |
 
 ---
 
-### accrueTokens
+#### accrueTokens
 
 Accrue token by updating the distribution state
 
@@ -312,17 +313,17 @@ Accrue token by updating the distribution state
 function accrueTokens(address token_) public
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | token_ | address | Address of the token |
 
-#### 📅 Events
+##### 📅 Events
 * Emits TokensAccrued event
 
 ---
 
-### getBlockNumberOrTimestamp
+#### getBlockNumberOrTimestamp
 
 Get the current block number (block-based chains) or timestamp (time-based chains). Inherited from `TimeManagerV8`.
 
@@ -330,7 +331,7 @@ Get the current block number (block-based chains) or timestamp (time-based chain
 function getBlockNumberOrTimestamp() public view virtual returns (uint256)
 ```
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | uint256 | blockNumberOrSecond returns the current block number or timestamp |

@@ -1,5 +1,5 @@
 ---
-title: "Funds - Deployed Contracts"
+title: "Funds"
 ---
 
 This page is an address registry, not a guarantee that a fund path, reward program, transfer, auction, or claim is currently enabled. Proxy implementations, owners, permissions, balances, pause flags, and recipients can change through governance. Verify live state before interacting.

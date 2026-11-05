@@ -1,5 +1,5 @@
 ---
-title: "BNB Core Pool Diamond Comptroller"
+title: "Diamond Comptroller in the Core pool"
 ---
 
 The BNB Chain Core Pool Comptroller uses a Unitroller proxy followed by a Diamond selector router. This architecture is specific to the BNB Core Pool; Core Pools on other networks use BeaconProxy Comptrollers from the `isolated-pools` repository.

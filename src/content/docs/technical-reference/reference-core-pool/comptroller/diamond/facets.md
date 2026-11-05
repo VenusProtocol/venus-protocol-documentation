@@ -1,5 +1,5 @@
 ---
-title: "BNB Core Pool Facets"
+title: "Facets"
 ---
 
 Facets contain the BNB Core Pool Comptroller's application logic. They are reached through chained delegate calls from the Unitroller and Diamond.

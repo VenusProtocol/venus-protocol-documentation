@@ -1,13 +1,14 @@
 ---
-title: "PrimeLeaderboardStorageV1"
+title: "Prime leaderboard storage"
 ---
+## PrimeLeaderboardStorageV1
 Storage layout for the PrimeLeaderboard contract
 
 :::caution
 BNB PrimeLeaderboard only. Upgrade review must include inherited storage and the proxy's exact implementation. Source: [PrimeLeaderboardStorage.sol](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Tokens/Prime/PrimeLeaderboardStorage.sol).
 :::
 
-# Solidity API
+## Solidity API
 
 ```solidity
 // Individual deposit record for LIFO tracking (declared in IPrimeLeaderboard)
@@ -18,7 +19,7 @@ struct Deposit {
 }
 ```
 
-### BASE_MULTIPLIER
+#### BASE_MULTIPLIER
 
 Base multiplier (1.0x) scaled by 1e18
 
@@ -28,7 +29,7 @@ uint256 BASE_MULTIPLIER
 
 - - -
 
-### MAX_DEPOSITS_PER_USER
+#### MAX_DEPOSITS_PER_USER
 
 Maximum deposits per user (DoS protection). Constant, set to 30.
 
@@ -38,7 +39,7 @@ uint256 MAX_DEPOSITS_PER_USER
 
 - - -
 
-### EXP_SCALE
+#### EXP_SCALE
 
 Scaling factor for calculations (1e18)
 
@@ -48,7 +49,7 @@ uint256 EXP_SCALE
 
 - - -
 
-### _depositStacks
+#### _depositStacks
 
 User's deposit stack (LIFO order, index 0 = oldest). Holds the `Deposit` records described above.
 
@@ -58,7 +59,7 @@ mapping(address => IPrimeLeaderboard.Deposit[]) _depositStacks
 
 - - -
 
-### totalStaked
+#### totalStaked
 
 User's total staked XVS
 
@@ -68,7 +69,7 @@ mapping(address => uint256) totalStaked
 
 - - -
 
-### _multiplierDurations
+#### _multiplierDurations
 
 Multiplier tier duration thresholds, in seconds. Default `[30 days, 60 days, 90 days]`.
 
@@ -78,7 +79,7 @@ uint256[] _multiplierDurations
 
 - - -
 
-### _multiplierValues
+#### _multiplierValues
 
 Multiplier values corresponding to each tier (scaled by 1e18). Default `[1.3e18, 1.6e18, 2.0e18]`.
 
@@ -88,7 +89,7 @@ uint256[] _multiplierValues
 
 - - -
 
-### primeV2
+#### primeV2
 
 Address of the PrimeV2 contract
 
@@ -98,7 +99,7 @@ address primeV2
 
 - - -
 
-### stakersInitialized
+#### stakersInitialized
 
 Whether staker initialization is complete (prevents further initialization calls)
 
@@ -108,7 +109,7 @@ bool stakersInitialized
 
 - - -
 
-### __gap
+#### __gap
 
 Reserved storage for future upgrades.
 

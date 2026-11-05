@@ -1,5 +1,5 @@
 ---
-title: "Venus Improvement Proposals"
+title: "VIPs"
 ---
 
 Venus Protocol is governed through Venus Improvement Proposals (VIPs). On BNB Chain, the Governor reads voting power from the XVS Vault and executes successful proposals through route-specific timelocks. Cross-chain VIPs use the [omnichain governance system](/technical-reference/reference-technical-articles/omnichain-governance) to deliver approved actions to other networks.

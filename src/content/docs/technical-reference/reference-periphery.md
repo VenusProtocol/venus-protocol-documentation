@@ -1,5 +1,5 @@
 ---
-title: "Periphery Contracts"
+title: "Periphery"
 ---
 
 Venus Protocol periphery contracts extend the lending markets with product workflows, swap execution, price-deviation monitoring, and emergency controls. They are separate contracts with their own upgrade, ownership, signer, or Access Control Manager (ACM) trust boundaries.

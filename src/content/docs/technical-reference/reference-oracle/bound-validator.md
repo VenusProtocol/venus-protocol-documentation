@@ -1,8 +1,9 @@
 ---
 title: "BoundValidator"
 ---
+## BoundValidator
 
-## Mainnet versions
+### Mainnet versions
 
 The current transparent-proxy implementations below were read on August 27, 2026 and match the [`BoundValidator` v2.16.0 source](https://github.com/VenusProtocol/oracle/blob/v2.16.0/contracts/oracles/BoundValidator.sol):
 
@@ -25,7 +26,7 @@ The BoundValidator contract is used to validate prices fetched from two differen
 Each asset has an upper and lower bound ratio set in the config. In order for a price to be valid
 it must fall within this range of the validator price.
 
-# Solidity API
+## Solidity API
 
 ```solidity
 struct ValidateConfig {
@@ -35,7 +36,7 @@ struct ValidateConfig {
 }
 ```
 
-### validateConfigs
+#### validateConfigs
 
 validation configs by asset
 
@@ -45,7 +46,7 @@ mapping(address => struct BoundValidator.ValidateConfig) validateConfigs
 
 - - -
 
-### constructor
+#### constructor
 
 Constructor for the implementation contract. Sets immutable variables.
 
@@ -55,7 +56,7 @@ constructor() public
 
 - - -
 
-### initialize
+#### initialize
 
 Initializes the owner of the contract
 
@@ -63,14 +64,14 @@ Initializes the owner of the contract
 function initialize(address accessControlManager_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | accessControlManager_ | address | Address of the access control manager contract |
 
 - - -
 
-### setValidateConfigs
+#### setValidateConfigs
 
 Add multiple validation configs at the same time
 
@@ -78,23 +79,23 @@ Add multiple validation configs at the same time
 function setValidateConfigs(struct BoundValidator.ValidateConfig[] configs) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | configs | struct BoundValidator.ValidateConfig[] | Array of validation configs |
 
-#### 📅 Events
+##### 📅 Events
 * Emits ValidateConfigAdded for each validation config that is successfully set
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Governance
 
-#### ❌ Errors
+##### ❌ Errors
 * Zero length error is thrown if length of the config array is 0
 
 - - -
 
-### setValidateConfig
+#### setValidateConfig
 
 Add a single validation config
 
@@ -102,25 +103,25 @@ Add a single validation config
 function setValidateConfig(struct BoundValidator.ValidateConfig config) public
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | config | struct BoundValidator.ValidateConfig | Validation config struct |
 
-#### 📅 Events
+##### 📅 Events
 * Emits ValidateConfigAdded when a validation config is successfully set
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Governance
 
-#### ❌ Errors
+##### ❌ Errors
 * Null address error is thrown if asset address is null
 * Range error thrown if bound ratio is not positive
 * Range error thrown if lower bound is greater than or equal to upper bound
 
 - - -
 
-### validatePriceWithAnchorPrice
+#### validatePriceWithAnchorPrice
 
 Test reported asset price against anchor price
 
@@ -128,14 +129,14 @@ Test reported asset price against anchor price
 function validatePriceWithAnchorPrice(address asset, uint256 reportedPrice, uint256 anchorPrice) public view virtual returns (bool)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | asset address |
 | reportedPrice | uint256 | The price to be tested |
 | anchorPrice | uint256 |  |
 
-#### ❌ Errors
+##### ❌ Errors
 * Missing error thrown if asset config is not set
 * Price error thrown if anchor price is not valid
 

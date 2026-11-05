@@ -1,5 +1,5 @@
 ---
-title: "Shortfall"
+title: "Shortfall (legacy/recovery; BNB mainnet paused)"
 ---
 
 :::caution

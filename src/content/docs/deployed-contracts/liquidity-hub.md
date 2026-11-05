@@ -1,5 +1,5 @@
 ---
-title: "Liquidity Hub - Deployed Contracts"
+title: "Liquidity Hub"
 ---
 
 Contracts for the [Liquidity Hub](/technical-reference/reference-liquidity-hub): one per-asset ERC-4626 allocator vault per asset, routing deposits across the Core, Flux, FRV, Spoke and Centrifuge yield families.

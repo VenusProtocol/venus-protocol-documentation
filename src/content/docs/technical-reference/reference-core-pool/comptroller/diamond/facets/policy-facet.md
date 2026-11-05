@@ -1,15 +1,16 @@
 ---
 title: "PolicyFacet"
 ---
+## PolicyFacet
 This facet contract contains all the external pre-hook functions related to vToken
 
 :::caution
 BNB Core Pool only. At block `118,363,255`, this facet was routed to `0x8930B02c69EDd37464B50991680D306Bb9B8FDBD`. vTokens call policy selectors through the Unitroller. Verify the live selector assignment and use the [v10.3.0 source](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Comptroller/Diamond/facets/PolicyFacet.sol) for the exact pool, liquidity, Prime, and protection-mode behavior.
 :::
 
-# Solidity API
+## Solidity API
 
-### mintAllowed
+#### mintAllowed
 
 Checks if the account should be allowed to mint tokens in the given market
 
@@ -17,21 +18,21 @@ Checks if the account should be allowed to mint tokens in the given market
 function mintAllowed(address vToken, address minter, uint256 mintAmount) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | The market to verify the mint against |
 | minter | address | The account which would get the minted tokens |
 | mintAmount | uint256 | The amount of underlying being supplied to the market in exchange for tokens |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | uint256 | 0 if the mint is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
 
 - - -
 
-### mintVerify
+#### mintVerify
 
 Validates mint, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
@@ -39,7 +40,7 @@ Validates mint, accrues interest and updates score in prime. Reverts on rejectio
 function mintVerify(address vToken, address minter, uint256 actualMintAmount, uint256 mintTokens) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | Asset being minted |
@@ -49,7 +50,7 @@ function mintVerify(address vToken, address minter, uint256 actualMintAmount, ui
 
 - - -
 
-### redeemAllowed
+#### redeemAllowed
 
 Checks if the account should be allowed to redeem tokens in the given market
 
@@ -57,21 +58,21 @@ Checks if the account should be allowed to redeem tokens in the given market
 function redeemAllowed(address vToken, address redeemer, uint256 redeemTokens) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | The market to verify the redeem against |
 | redeemer | address | The account which would redeem the tokens |
 | redeemTokens | uint256 | The number of vTokens to exchange for the underlying asset in the market |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | uint256 | 0 if the redeem is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
 
 - - -
 
-### redeemVerify
+#### redeemVerify
 
 Validates redeem, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
@@ -79,7 +80,7 @@ Validates redeem, accrues interest and updates score in prime. Reverts on reject
 function redeemVerify(address vToken, address redeemer, uint256 redeemAmount, uint256 redeemTokens) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | Asset being redeemed |
@@ -89,7 +90,7 @@ function redeemVerify(address vToken, address redeemer, uint256 redeemAmount, ui
 
 - - -
 
-### borrowAllowed
+#### borrowAllowed
 
 Checks if the account should be allowed to borrow the underlying asset of the given market
 
@@ -97,21 +98,21 @@ Checks if the account should be allowed to borrow the underlying asset of the gi
 function borrowAllowed(address vToken, address borrower, uint256 borrowAmount) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | The market to verify the borrow against |
 | borrower | address | The account which would borrow the asset |
 | borrowAmount | uint256 | The amount of underlying the account would borrow |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | uint256 | 0 if the borrow is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
 
 - - -
 
-### borrowVerify
+#### borrowVerify
 
 Validates borrow, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
@@ -119,7 +120,7 @@ Validates borrow, accrues interest and updates score in prime. Reverts on reject
 function borrowVerify(address vToken, address borrower, uint256 borrowAmount) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | Asset whose underlying is being borrowed |
@@ -128,7 +129,7 @@ function borrowVerify(address vToken, address borrower, uint256 borrowAmount) ex
 
 - - -
 
-### repayBorrowAllowed
+#### repayBorrowAllowed
 
 Checks if the account should be allowed to repay a borrow in the given market
 
@@ -136,7 +137,7 @@ Checks if the account should be allowed to repay a borrow in the given market
 function repayBorrowAllowed(address vToken, address payer, address borrower, uint256 repayAmount) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | The market to verify the repay against |
@@ -144,14 +145,14 @@ function repayBorrowAllowed(address vToken, address payer, address borrower, uin
 | borrower | address | The account which borrowed the asset |
 | repayAmount | uint256 | The amount of the underlying asset the account would repay |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | uint256 | 0 if the repay is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
 
 - - -
 
-### repayBorrowVerify
+#### repayBorrowVerify
 
 Validates repayBorrow, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
@@ -159,7 +160,7 @@ Validates repayBorrow, accrues interest and updates score in prime. Reverts on r
 function repayBorrowVerify(address vToken, address payer, address borrower, uint256 actualRepayAmount, uint256 borrowerIndex) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | Asset being repaid |
@@ -170,7 +171,7 @@ function repayBorrowVerify(address vToken, address payer, address borrower, uint
 
 - - -
 
-### liquidateBorrowAllowed
+#### liquidateBorrowAllowed
 
 Checks if the liquidation should be allowed to occur
 
@@ -178,7 +179,7 @@ Checks if the liquidation should be allowed to occur
 function liquidateBorrowAllowed(address vTokenBorrowed, address vTokenCollateral, address liquidator, address borrower, uint256 repayAmount) external view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vTokenBorrowed | address | Asset which was borrowed by the borrower |
@@ -189,7 +190,7 @@ function liquidateBorrowAllowed(address vTokenBorrowed, address vTokenCollateral
 
 - - -
 
-### liquidateBorrowVerify
+#### liquidateBorrowVerify
 
 Validates liquidateBorrow, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
@@ -197,7 +198,7 @@ Validates liquidateBorrow, accrues interest and updates score in prime. Reverts 
 function liquidateBorrowVerify(address vTokenBorrowed, address vTokenCollateral, address liquidator, address borrower, uint256 actualRepayAmount, uint256 seizeTokens) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vTokenBorrowed | address | Asset which was borrowed by the borrower |
@@ -209,7 +210,7 @@ function liquidateBorrowVerify(address vTokenBorrowed, address vTokenCollateral,
 
 - - -
 
-### seizeAllowed
+#### seizeAllowed
 
 Checks if the seizing of assets should be allowed to occur
 
@@ -217,7 +218,7 @@ Checks if the seizing of assets should be allowed to occur
 function seizeAllowed(address vTokenCollateral, address vTokenBorrowed, address liquidator, address borrower, uint256 seizeTokens) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vTokenCollateral | address | Asset which was used as collateral and will be seized |
@@ -228,7 +229,7 @@ function seizeAllowed(address vTokenCollateral, address vTokenBorrowed, address 
 
 - - -
 
-### seizeVerify
+#### seizeVerify
 
 Validates seize, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
@@ -236,7 +237,7 @@ Validates seize, accrues interest and updates score in prime. Reverts on rejecti
 function seizeVerify(address vTokenCollateral, address vTokenBorrowed, address liquidator, address borrower, uint256 seizeTokens) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vTokenCollateral | address | Asset which was used as collateral and will be seized |
@@ -247,7 +248,7 @@ function seizeVerify(address vTokenCollateral, address vTokenBorrowed, address l
 
 - - -
 
-### transferAllowed
+#### transferAllowed
 
 Checks if the account should be allowed to transfer tokens in the given market
 
@@ -255,7 +256,7 @@ Checks if the account should be allowed to transfer tokens in the given market
 function transferAllowed(address vToken, address src, address dst, uint256 transferTokens) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | The market to verify the transfer against |
@@ -263,14 +264,14 @@ function transferAllowed(address vToken, address src, address dst, uint256 trans
 | dst | address | The account which receives the tokens |
 | transferTokens | uint256 | The number of vTokens to transfer |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | uint256 | 0 if the transfer is allowed, otherwise a semi-opaque error code (See ErrorReporter.sol) |
 
 - - -
 
-### transferVerify
+#### transferVerify
 
 Validates transfer, accrues interest and updates score in prime. Reverts on rejection. May emit logs.
 
@@ -278,7 +279,7 @@ Validates transfer, accrues interest and updates score in prime. Reverts on reje
 function transferVerify(address vToken, address src, address dst, uint256 transferTokens) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | Asset being transferred |
@@ -288,7 +289,7 @@ function transferVerify(address vToken, address src, address dst, uint256 transf
 
 - - -
 
-### getBorrowingPower
+#### getBorrowingPower
 
 Alias to getAccountLiquidity to support the Isolated Lending Comptroller Interface
 
@@ -296,12 +297,12 @@ Alias to getAccountLiquidity to support the Isolated Lending Comptroller Interfa
 function getBorrowingPower(address account) external view returns (uint256, uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | account | address | The account get liquidity for |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | uint256 | (possible error code (semi-opaque),                 account liquidity in excess of collateral requirements,          account shortfall below collateral requirements) |
@@ -310,7 +311,7 @@ function getBorrowingPower(address account) external view returns (uint256, uint
 
 - - -
 
-### getAccountLiquidity
+#### getAccountLiquidity
 
 Determine the current account liquidity wrt liquidation threshold requirements
 
@@ -318,12 +319,12 @@ Determine the current account liquidity wrt liquidation threshold requirements
 function getAccountLiquidity(address account) external view returns (uint256, uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | account | address | The account get liquidity for |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | uint256 | (possible error code (semi-opaque),                 account liquidity in excess of liquidation threshold requirements,          account shortfall below liquidation threshold requirements) |
@@ -332,7 +333,7 @@ function getAccountLiquidity(address account) external view returns (uint256, ui
 
 - - -
 
-### getHypotheticalAccountLiquidity
+#### getHypotheticalAccountLiquidity
 
 Determine what the account liquidity would be if the given amounts were redeemed/borrowed
 
@@ -340,7 +341,7 @@ Determine what the account liquidity would be if the given amounts were redeemed
 function getHypotheticalAccountLiquidity(address account, address vTokenModify, uint256 redeemTokens, uint256 borrowAmount) external view returns (uint256, uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | account | address | The account to determine liquidity for |
@@ -348,7 +349,7 @@ function getHypotheticalAccountLiquidity(address account, address vTokenModify, 
 | redeemTokens | uint256 | The number of tokens to hypothetically redeem |
 | borrowAmount | uint256 | The amount of underlying to hypothetically borrow |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | uint256 | (possible error code (semi-opaque),                 hypothetical account liquidity in excess of collateral requirements,          hypothetical account shortfall below collateral requirements) |
@@ -357,7 +358,7 @@ function getHypotheticalAccountLiquidity(address account, address vTokenModify, 
 
 - - -
 
-### _setVenusSpeeds
+#### _setVenusSpeeds
 
 Set XVS speed for a single market
 
@@ -365,7 +366,7 @@ Set XVS speed for a single market
 function _setVenusSpeeds(contract VToken[] vTokens, uint256[] supplySpeeds, uint256[] borrowSpeeds) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vTokens | contract VToken[] | The market whose XVS speed to update |

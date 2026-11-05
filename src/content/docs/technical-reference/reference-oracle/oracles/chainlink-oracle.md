@@ -1,8 +1,9 @@
 ---
 title: "ChainlinkOracle"
 ---
+## ChainlinkOracle
 
-## Mainnet versions
+### Mainnet versions
 
 The following proxy implementations were read on August 27, 2026 and match the [`ChainlinkOracle` v2.16.0 source](https://github.com/VenusProtocol/oracle/blob/v2.16.0/contracts/oracles/ChainlinkOracle.sol):
 
@@ -19,7 +20,7 @@ The proxy API inherits `owner`, `pendingOwner`, `transferOwnership`, `acceptOwne
 
 This oracle fetches prices of assets from the Chainlink oracle.
 
-# Solidity API
+## Solidity API
 
 ```solidity
 struct TokenConfig {
@@ -29,7 +30,7 @@ struct TokenConfig {
 }
 ```
 
-### NATIVE_TOKEN_ADDR
+#### NATIVE_TOKEN_ADDR
 
 Set this as asset address for native token on each chain.
 This is the underlying address for vBNB on BNB chain or an underlying asset for a native market on any chain.
@@ -40,7 +41,7 @@ address NATIVE_TOKEN_ADDR
 
 - - -
 
-### prices
+#### prices
 
 Manually set an override price, useful under extenuating conditions such as price feed failure
 
@@ -50,7 +51,7 @@ mapping(address => uint256) prices
 
 - - -
 
-### tokenConfigs
+#### tokenConfigs
 
 Token config by assets
 
@@ -60,7 +61,7 @@ mapping(address => struct ChainlinkOracle.TokenConfig) tokenConfigs
 
 - - -
 
-### constructor
+#### constructor
 
 Constructor for the implementation contract.
 
@@ -70,7 +71,7 @@ constructor() public
 
 - - -
 
-### initialize
+#### initialize
 
 Initializes the owner of the contract
 
@@ -78,14 +79,14 @@ Initializes the owner of the contract
 function initialize(address accessControlManager_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | accessControlManager_ | address | Address of the access control manager contract |
 
 - - -
 
-### setDirectPrice
+#### setDirectPrice
 
 Manually set the price of a given asset
 
@@ -93,21 +94,21 @@ Manually set the price of a given asset
 function setDirectPrice(address asset, uint256 price) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | Asset address |
 | price | uint256 | Asset price in 18 decimals |
 
-#### 📅 Events
+##### 📅 Events
 * Emits PricePosted event on succesfully setup of asset price
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Governance
 
 - - -
 
-### setTokenConfigs
+#### setTokenConfigs
 
 Add multiple token configs at the same time
 
@@ -115,20 +116,20 @@ Add multiple token configs at the same time
 function setTokenConfigs(struct ChainlinkOracle.TokenConfig[] tokenConfigs_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | tokenConfigs_ | struct ChainlinkOracle.TokenConfig[] | config array |
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Governance
 
-#### ❌ Errors
+##### ❌ Errors
 * Zero length error thrown, if length of the array in parameter is 0
 
 - - -
 
-### setTokenConfig
+#### setTokenConfig
 
 Add single token config. asset & feed cannot be null addresses and maxStalePeriod must be positive
 
@@ -136,25 +137,25 @@ Add single token config. asset & feed cannot be null addresses and maxStalePerio
 function setTokenConfig(struct ChainlinkOracle.TokenConfig tokenConfig) public
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | tokenConfig | struct ChainlinkOracle.TokenConfig | Token config struct |
 
-#### 📅 Events
+##### 📅 Events
 * Emits TokenConfigAdded event on succesfully setting of the token config
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Governance
 
-#### ❌ Errors
+##### ❌ Errors
 * NotNullAddress error is thrown if asset address is null
 * NotNullAddress error is thrown if token feed address is null
 * Range error is thrown if maxStale period of token is not greater than zero
 
 - - -
 
-### getPrice
+#### getPrice
 
 Gets the price of a asset from the chainlink oracle
 
@@ -162,12 +163,12 @@ Gets the price of a asset from the chainlink oracle
 function getPrice(address asset) public view virtual returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | Address of the asset |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | uint256 | Price in USD from Chainlink or a manually set price for the asset |

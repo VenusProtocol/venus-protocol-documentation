@@ -1,5 +1,5 @@
 ---
-title: "Protocol math"
+title: "Protocol Math"
 ---
 
 :::caution

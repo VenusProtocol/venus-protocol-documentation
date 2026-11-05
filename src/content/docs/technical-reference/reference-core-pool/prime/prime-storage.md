@@ -1,13 +1,14 @@
 ---
-title: "PrimeV2StorageV1"
+title: "Prime storage"
 ---
+## PrimeV2StorageV1
 Storage layout for the PrimeV2 contract with leaderboard-based Prime token distribution
 
 :::caution
 BNB PrimeV2 only. This is the direct `PrimeV2StorageV1` layout from the implementation used at block `118,364,540`; upgrade review must also include inherited storage and the proxy's exact implementation. Source: [PrimeV2Storage.sol](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Tokens/Prime/PrimeV2Storage.sol).
 :::
 
-# Solidity API
+## Solidity API
 
 ```solidity
 struct Market {
@@ -39,7 +40,7 @@ struct PendingReward {
 }
 ```
 
-### isPrimeHolder
+#### isPrimeHolder
 
 Whether a user holds a Prime token
 
@@ -49,7 +50,7 @@ mapping(address => bool) isPrimeHolder
 
 - - -
 
-### totalTokens
+#### totalTokens
 
 Total count of Prime tokens
 
@@ -59,7 +60,7 @@ uint256 totalTokens
 
 - - -
 
-### tokenLimit
+#### tokenLimit
 
 Maximum number of Prime tokens allowed
 
@@ -69,7 +70,7 @@ uint256 tokenLimit
 
 - - -
 
-### markets
+#### markets
 
 Mapping of vToken to its market configuration
 
@@ -79,7 +80,7 @@ mapping(address => struct PrimeV2StorageV1.Market) markets
 
 - - -
 
-### interests
+#### interests
 
 Mapping of vToken -> user -> interest info
 
@@ -89,7 +90,7 @@ mapping(address => mapping(address => struct PrimeV2StorageV1.Interest)) interes
 
 - - -
 
-### _allMarkets
+#### _allMarkets
 
 Internal array of all Prime-participating markets. This field is stored between `interests` and `vTokenForAsset`.
 
@@ -99,7 +100,7 @@ address[] _allMarkets
 
 - - -
 
-### vTokenForAsset
+#### vTokenForAsset
 
 Mapping of underlying token to vToken address (used to check if an asset is part of Prime markets)
 
@@ -109,7 +110,7 @@ mapping(address => address) vTokenForAsset
 
 - - -
 
-### alphaNumerator
+#### alphaNumerator
 
 numerator of alpha. Ex: if alpha is 0.5 then this will be 1
 
@@ -119,7 +120,7 @@ uint128 alphaNumerator
 
 - - -
 
-### alphaDenominator
+#### alphaDenominator
 
 denominator of alpha. Ex: if alpha is 0.5 then this will be 2
 
@@ -129,7 +130,7 @@ uint128 alphaDenominator
 
 - - -
 
-### primeLiquidityProvider
+#### primeLiquidityProvider
 
 The address of the PrimeLiquidityProvider contract
 
@@ -139,7 +140,7 @@ address primeLiquidityProvider
 
 - - -
 
-### oracle
+#### oracle
 
 The address of the ResilientOracle contract
 
@@ -149,7 +150,7 @@ contract ResilientOracleInterface oracle
 
 - - -
 
-### corePoolComptroller
+#### corePoolComptroller
 
 Address of the core pool comptroller contract
 
@@ -159,7 +160,7 @@ address corePoolComptroller
 
 - - -
 
-### unreleasedPLPIncome
+#### unreleasedPLPIncome
 
 Unreleased income from the PLP per token that has already been accounted for — either indexed into `rewardIndex` for Prime holders, or recorded in `undistributedReward` while the market had no scored members
 
@@ -169,7 +170,7 @@ mapping(address => uint256) unreleasedPLPIncome
 
 - - -
 
-### undistributedReward
+#### undistributedReward
 
 Income accrued while no scored members existed in the market. Tracked per underlying so governance can reclaim the slice via `sweepUndistributed` without touching user-owed funds.
 
@@ -179,7 +180,7 @@ mapping(address => uint256) undistributedReward
 
 - - -
 
-### isScoreUpdated
+#### isScoreUpdated
 
 Mapping to check if an account's score was updated in a round
 
@@ -189,7 +190,7 @@ mapping(uint256 => mapping(address => bool)) isScoreUpdated
 
 - - -
 
-### nextScoreUpdateRoundId
+#### nextScoreUpdateRoundId
 
 Current score update round ID
 
@@ -199,7 +200,7 @@ uint256 nextScoreUpdateRoundId
 
 - - -
 
-### pendingScoreUpdates
+#### pendingScoreUpdates
 
 Number of pending score updates in the current round
 
@@ -209,7 +210,7 @@ uint256 pendingScoreUpdates
 
 - - -
 
-### primeLeaderboard
+#### primeLeaderboard
 
 Address of the PrimeLeaderboard contract for permissionless eligibility checks
 
@@ -219,7 +220,7 @@ address primeLeaderboard
 
 - - -
 
-### mintThreshold
+#### mintThreshold
 
 Minimum Prime Score required for permissionless Prime minting
 
@@ -229,7 +230,7 @@ uint256 mintThreshold
 
 - - -
 
-### mintDeadline
+#### mintDeadline
 
 Unix timestamp after which permissionless minting is closed (0 = no deadline)
 
@@ -239,7 +240,7 @@ uint256 mintDeadline
 
 - - -
 
-### __gap
+#### __gap
 
 Reserved storage for future upgrades.
 

@@ -1,5 +1,5 @@
 ---
-title: "Shortfall and auctions"
+title: "Shortfall and auctions (historical; BNB mainnet paused)"
 ---
 
 :::caution

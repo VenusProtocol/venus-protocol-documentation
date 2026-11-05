@@ -1,8 +1,9 @@
 ---
 title: "BinanceOracle"
 ---
+## BinanceOracle
 
-## Mainnet versions
+### Mainnet versions
 
 The following transparent-proxy implementations were read on August 27, 2026 and match the [`BinanceOracle` v2.16.0 source](https://github.com/VenusProtocol/oracle/blob/v2.16.0/contracts/oracles/BinanceOracle.sol):
 
@@ -17,9 +18,9 @@ The proxy API inherits `owner`, `pendingOwner`, `transferOwnership`, `acceptOwne
 
 This oracle fetches price of assets from Binance.
 
-# Solidity API
+## Solidity API
 
-### sidRegistryAddress
+#### sidRegistryAddress
 
 Used to fetch feed registry address.
 
@@ -29,7 +30,7 @@ address sidRegistryAddress
 
 - - -
 
-### BNB_ADDR
+#### BNB_ADDR
 
 Set this as asset address for BNB. This is the underlying address for vBNB
 
@@ -39,7 +40,7 @@ address BNB_ADDR
 
 - - -
 
-### maxStalePeriod
+#### maxStalePeriod
 
 Max stale period configuration for assets
 
@@ -49,7 +50,7 @@ mapping(string => uint256) maxStalePeriod
 
 - - -
 
-### symbols
+#### symbols
 
 Override symbols to be compatible with Binance feed registry
 
@@ -59,7 +60,7 @@ mapping(string => string) symbols
 
 - - -
 
-### feedRegistryAddress
+#### feedRegistryAddress
 
 Used to fetch price of assets used directly when space ID is not supported by current chain.
 
@@ -69,7 +70,7 @@ address feedRegistryAddress
 
 - - -
 
-### constructor
+#### constructor
 
 Constructor for the implementation contract.
 
@@ -79,7 +80,7 @@ constructor() public
 
 - - -
 
-### initialize
+#### initialize
 
 Sets the contracts required to fetch prices
 
@@ -87,7 +88,7 @@ Sets the contracts required to fetch prices
 function initialize(address _sidRegistryAddress, address _accessControlManager) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | _sidRegistryAddress | address | Address of SID registry |
@@ -95,7 +96,7 @@ function initialize(address _sidRegistryAddress, address _accessControlManager) 
 
 - - -
 
-### setMaxStalePeriod
+#### setMaxStalePeriod
 
 Used to set the max stale period of an asset
 
@@ -103,7 +104,7 @@ Used to set the max stale period of an asset
 function setMaxStalePeriod(string symbol, uint256 _maxStalePeriod) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | symbol | string | The symbol of the asset |
@@ -111,7 +112,7 @@ function setMaxStalePeriod(string symbol, uint256 _maxStalePeriod) external
 
 - - -
 
-### setSymbolOverride
+#### setSymbolOverride
 
 Used to override a symbol when fetching price
 
@@ -119,7 +120,7 @@ Used to override a symbol when fetching price
 function setSymbolOverride(string symbol, string overrideSymbol) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | symbol | string | The symbol to override |
@@ -127,7 +128,7 @@ function setSymbolOverride(string symbol, string overrideSymbol) external
 
 - - -
 
-### setFeedRegistryAddress
+#### setFeedRegistryAddress
 
 Used to set feed registry address when current chain does not support space ID.
 
@@ -135,14 +136,14 @@ Used to set feed registry address when current chain does not support space ID.
 function setFeedRegistryAddress(address newfeedRegistryAddress) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | newfeedRegistryAddress | address | Address of new feed registry. |
 
 - - -
 
-### getFeedRegistryAddress
+#### getFeedRegistryAddress
 
 Uses Space ID to fetch the feed registry address
 
@@ -150,14 +151,14 @@ Uses Space ID to fetch the feed registry address
 function getFeedRegistryAddress() public view returns (address)
 ```
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | address | feedRegistryAddress Address of binance oracle feed registry. |
 
 - - -
 
-### getPrice
+#### getPrice
 
 Gets the price of a asset from the binance oracle
 
@@ -165,12 +166,12 @@ Gets the price of a asset from the binance oracle
 function getPrice(address asset) public view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | Address of the asset |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | uint256 | Price in USD |

@@ -1,5 +1,5 @@
 ---
-title: "Venus Prime"
+title: "Prime tokens"
 ---
 
 :::note

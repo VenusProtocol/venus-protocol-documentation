@@ -1,12 +1,13 @@
 ---
-title: "VAI Comptroller"
+title: "VAIController"
 ---
+## VAI Comptroller
 
 This is the implementation contract for the VAIUnitroller proxy
 
-# Solidity API
+## Solidity API
 
-### INITIAL\_VAI\_MINT\_INDEX
+#### INITIAL\_VAI\_MINT\_INDEX
 
 Initial index used in interest computations
 
@@ -16,7 +17,7 @@ uint256 INITIAL_VAI_MINT_INDEX
 
 ---
 
-### CORE\_POOL\_ID
+#### CORE\_POOL\_ID
 
 poolId for core Pool
 
@@ -26,7 +27,7 @@ uint96 CORE_POOL_ID
 
 ---
 
-### mintVAI
+#### mintVAI
 
 The mintVAI function mints and transfers VAI from the protocol to the user, and adds a borrow balance.
 The amount minted must be less than the user's Account Liquidity and the mint vai limit.
@@ -35,13 +36,13 @@ The amount minted must be less than the user's Account Liquidity and the mint va
 function mintVAI(uint256 mintVAIAmount) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | mintVAIAmount | uint256 | The amount of the VAI to be minted. |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -49,7 +50,7 @@ function mintVAI(uint256 mintVAIAmount) external returns (uint256)
 
 ---
 
-### repayVAI
+#### repayVAI
 
 The repay function transfers VAI interest into the protocol and burns the rest,
 reducing the borrower's borrow balance. Before repaying VAI, users must first approve
@@ -59,13 +60,13 @@ VAIController to access their VAI balance.
 function repayVAI(uint256 amount) external returns (uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | amount | uint256 | The amount of VAI to be repaid. |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -74,7 +75,7 @@ function repayVAI(uint256 amount) external returns (uint256, uint256)
 
 ---
 
-### repayVAIBehalf
+#### repayVAIBehalf
 
 The repay on behalf function transfers VAI interest into the protocol and burns the rest,
 reducing the borrower's borrow balance. Borrowed VAIs are repaid by another user (possibly the borrower).
@@ -84,14 +85,14 @@ Before repaying VAI, the payer must first approve VAIController to access their 
 function repayVAIBehalf(address borrower, uint256 amount) external returns (uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | borrower | address | The account to repay the debt for. |
 | amount | uint256 | The amount of VAI to be repaid. |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -100,7 +101,7 @@ function repayVAIBehalf(address borrower, uint256 amount) external returns (uint
 
 ---
 
-### liquidateVAI
+#### liquidateVAI
 
 The sender liquidates the vai minters collateral. The collateral seized is transferred to the liquidator.
 
@@ -108,7 +109,7 @@ The sender liquidates the vai minters collateral. The collateral seized is trans
 function liquidateVAI(address borrower, uint256 repayAmount, contract VTokenInterface vTokenCollateral) external returns (uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -116,7 +117,7 @@ function liquidateVAI(address borrower, uint256 repayAmount, contract VTokenInte
 | repayAmount | uint256 | The amount of the underlying borrowed asset to repay |
 | vTokenCollateral | contract VTokenInterface | The market in which to seize collateral from the borrower |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -125,7 +126,7 @@ function liquidateVAI(address borrower, uint256 repayAmount, contract VTokenInte
 
 ---
 
-### \_setComptroller
+#### \_setComptroller
 
 Sets a new comptroller
 
@@ -133,7 +134,7 @@ Sets a new comptroller
 function _setComptroller(contract ComptrollerInterface comptroller_) external returns (uint256)
 ```
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -141,7 +142,7 @@ function _setComptroller(contract ComptrollerInterface comptroller_) external re
 
 ---
 
-### setPrimeToken
+#### setPrimeToken
 
 Set the prime token contract address
 
@@ -149,7 +150,7 @@ Set the prime token contract address
 function setPrimeToken(address prime_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -157,7 +158,7 @@ function setPrimeToken(address prime_) external
 
 ---
 
-### setVAIToken
+#### setVAIToken
 
 Set the VAI token contract address
 
@@ -165,7 +166,7 @@ Set the VAI token contract address
 function setVAIToken(address vai_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -173,7 +174,7 @@ function setVAIToken(address vai_) external
 
 ---
 
-### toggleOnlyPrimeHolderMint
+#### toggleOnlyPrimeHolderMint
 
 Toggle mint only for prime holder
 
@@ -181,7 +182,7 @@ Toggle mint only for prime holder
 function toggleOnlyPrimeHolderMint() external returns (uint256)
 ```
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -206,7 +207,7 @@ struct AccountAmountLocalVars {
 }
 ```
 
-### getMintableVAI
+#### getMintableVAI
 
 Function that returns the amount of VAI a user can mint based on their account liquidy and the VAI mint rate
 If mintEnabledOnlyForPrimeHolder is true, only Prime holders are able to mint VAI
@@ -215,13 +216,13 @@ If mintEnabledOnlyForPrimeHolder is true, only Prime holders are able to mint VA
 function getMintableVAI(address minter) public view returns (uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | minter | address | The account to check mintable VAI |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -230,7 +231,7 @@ function getMintableVAI(address minter) public view returns (uint256, uint256)
 
 ---
 
-### \_setTreasuryData
+#### \_setTreasuryData
 
 Update treasury data
 
@@ -238,7 +239,7 @@ Update treasury data
 function _setTreasuryData(address newTreasuryGuardian, address newTreasuryAddress, uint256 newTreasuryPercent) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -248,7 +249,7 @@ function _setTreasuryData(address newTreasuryGuardian, address newTreasuryAddres
 
 ---
 
-### getVAIRepayRate
+#### getVAIRepayRate
 
 Gets yearly VAI interest rate based on the VAI price
 
@@ -256,7 +257,7 @@ Gets yearly VAI interest rate based on the VAI price
 function getVAIRepayRate() public view returns (uint256)
 ```
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -264,7 +265,7 @@ function getVAIRepayRate() public view returns (uint256)
 
 ---
 
-### getVAIRepayRatePerBlock
+#### getVAIRepayRatePerBlock
 
 Get interest rate per block
 
@@ -272,7 +273,7 @@ Get interest rate per block
 function getVAIRepayRatePerBlock() public view returns (uint256)
 ```
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -280,7 +281,7 @@ function getVAIRepayRatePerBlock() public view returns (uint256)
 
 ---
 
-### getVAIMinterInterestIndex
+#### getVAIMinterInterestIndex
 
 Get the last updated interest index for a VAI Minter
 
@@ -288,13 +289,13 @@ Get the last updated interest index for a VAI Minter
 function getVAIMinterInterestIndex(address minter) public view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | minter | address | Address of VAI minter |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -302,7 +303,7 @@ function getVAIMinterInterestIndex(address minter) public view returns (uint256)
 
 ---
 
-### getVAIRepayAmount
+#### getVAIRepayAmount
 
 Get the current total VAI a user needs to repay
 
@@ -310,13 +311,13 @@ Get the current total VAI a user needs to repay
 function getVAIRepayAmount(address account) public view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | account | address | The address of the VAI borrower |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -324,7 +325,7 @@ function getVAIRepayAmount(address account) public view returns (uint256)
 
 ---
 
-### getVAICalculateRepayAmount
+#### getVAICalculateRepayAmount
 
 Calculate how much VAI the user needs to repay
 
@@ -332,14 +333,14 @@ Calculate how much VAI the user needs to repay
 function getVAICalculateRepayAmount(address borrower, uint256 repayAmount) public view returns (uint256, uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | borrower | address | The address of the VAI borrower |
 | repayAmount | uint256 | The amount of VAI being returned |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -349,7 +350,7 @@ function getVAICalculateRepayAmount(address borrower, uint256 repayAmount) publi
 
 ---
 
-### accrueVAIInterest
+#### accrueVAIInterest
 
 Accrue interest on outstanding minted VAI
 
@@ -359,7 +360,7 @@ function accrueVAIInterest() public
 
 ---
 
-### setAccessControl
+#### setAccessControl
 
 Sets the address of the access control of this contract
 
@@ -367,7 +368,7 @@ Sets the address of the access control of this contract
 function setAccessControl(address newAccessControlAddress) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -375,7 +376,7 @@ function setAccessControl(address newAccessControlAddress) external
 
 ---
 
-### setBaseRate
+#### setBaseRate
 
 Set VAI borrow base rate
 
@@ -383,7 +384,7 @@ Set VAI borrow base rate
 function setBaseRate(uint256 newBaseRateMantissa) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -391,7 +392,7 @@ function setBaseRate(uint256 newBaseRateMantissa) external
 
 ---
 
-### setFloatRate
+#### setFloatRate
 
 Set VAI borrow float rate
 
@@ -399,7 +400,7 @@ Set VAI borrow float rate
 function setFloatRate(uint256 newFloatRateMantissa) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -407,7 +408,7 @@ function setFloatRate(uint256 newFloatRateMantissa) external
 
 ---
 
-### setReceiver
+#### setReceiver
 
 Set VAI stability fee receiver address
 
@@ -415,7 +416,7 @@ Set VAI stability fee receiver address
 function setReceiver(address newReceiver) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -423,7 +424,7 @@ function setReceiver(address newReceiver) external
 
 ---
 
-### setMintCap
+#### setMintCap
 
 Set VAI mint cap
 
@@ -431,7 +432,7 @@ Set VAI mint cap
 function setMintCap(uint256 _mintCap) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -439,7 +440,7 @@ function setMintCap(uint256 _mintCap) external
 
 ---
 
-### getVAIAddress
+#### getVAIAddress
 
 Return the address of the VAI token
 
@@ -447,7 +448,7 @@ Return the address of the VAI token
 function getVAIAddress() public view virtual returns (address)
 ```
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |

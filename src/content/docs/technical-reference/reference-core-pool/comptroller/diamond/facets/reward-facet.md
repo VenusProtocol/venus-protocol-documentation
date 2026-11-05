@@ -1,6 +1,7 @@
 ---
 title: "RewardFacet"
 ---
+## RewardFacet
 
 This facet contract provides the external functions related to all claims and rewards of the protocol
 
@@ -8,9 +9,9 @@ This facet contract provides the external functions related to all claims and re
 BNB Core Pool only. At block `118,363,255`, this facet was routed to `0x9e0CCD70b5E0030472D5013bbBd37B6E868d416f`. Call its selectors through the Unitroller and check the live route. The [v10.3.0 source](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Comptroller/Diamond/facets/RewardFacet.sol) also exposes market-filtered `claimVenusAsCollateral` and `seizeVenus` overloads that this generated page may omit; the latter is permissioned through the Access Control Manager.
 :::
 
-# Solidity API
+## Solidity API
 
-### claimVenus
+#### claimVenus
 
 Claim all the xvs accrued by holder in all markets and VAI
 
@@ -18,7 +19,7 @@ Claim all the xvs accrued by holder in all markets and VAI
 function claimVenus(address holder) public
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -26,7 +27,7 @@ function claimVenus(address holder) public
 
 ---
 
-### claimVenus
+#### claimVenus
 
 Claim all the xvs accrued by holder in the specified markets
 
@@ -34,7 +35,7 @@ Claim all the xvs accrued by holder in the specified markets
 function claimVenus(address holder, contract VToken[] vTokens) public
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -43,7 +44,7 @@ function claimVenus(address holder, contract VToken[] vTokens) public
 
 ---
 
-### claimVenus
+#### claimVenus
 
 Claim all xvs accrued by the holders
 
@@ -51,7 +52,7 @@ Claim all xvs accrued by the holders
 function claimVenus(address[] holders, contract VToken[] vTokens, bool borrowers, bool suppliers) public
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -62,7 +63,7 @@ function claimVenus(address[] holders, contract VToken[] vTokens, bool borrowers
 
 ---
 
-### claimVenusAsCollateral
+#### claimVenusAsCollateral
 
 Claim all the xvs accrued by holder in all markets, a shorthand for `claimVenus` with collateral set to `true`
 
@@ -70,7 +71,7 @@ Claim all the xvs accrued by holder in all markets, a shorthand for `claimVenus`
 function claimVenusAsCollateral(address holder) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -78,7 +79,7 @@ function claimVenusAsCollateral(address holder) external
 
 ---
 
-### \_grantXVS
+#### \_grantXVS
 
 Transfer XVS to the recipient
 
@@ -86,7 +87,7 @@ Transfer XVS to the recipient
 function _grantXVS(address recipient, uint256 amount) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -95,7 +96,7 @@ function _grantXVS(address recipient, uint256 amount) external
 
 ---
 
-### seizeVenus
+#### seizeVenus
 
 Seize XVS rewards allocated to holders
 
@@ -103,14 +104,14 @@ Seize XVS rewards allocated to holders
 function seizeVenus(address[] holders, address recipient) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | holders | address\[] | Addresses of the XVS holders |
 | recipient | address | Address of the XVS token recipient |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -118,7 +119,7 @@ function seizeVenus(address[] holders, address recipient) external returns (uint
 
 ---
 
-### claimVenus
+#### claimVenus
 
 Claim all xvs accrued by the holders
 
@@ -126,7 +127,7 @@ Claim all xvs accrued by the holders
 function claimVenus(address[] holders, contract VToken[] vTokens, bool borrowers, bool suppliers, bool collateral) public
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -138,7 +139,7 @@ function claimVenus(address[] holders, contract VToken[] vTokens, bool borrowers
 
 ---
 
-### getXVSVTokenAddress
+#### getXVSVTokenAddress
 
 Returns the XVS vToken address
 
@@ -146,7 +147,7 @@ Returns the XVS vToken address
 function getXVSVTokenAddress() external view returns (address)
 ```
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |

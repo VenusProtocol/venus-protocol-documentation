@@ -1,5 +1,5 @@
 ---
-title: "Isolated E-mode"
+title: "Isolated E-Mode"
 ---
 
 ## Overview

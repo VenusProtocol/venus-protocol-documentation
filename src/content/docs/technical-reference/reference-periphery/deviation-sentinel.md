@@ -1,12 +1,13 @@
 ---
 title: "DeviationSentinel"
 ---
+## DeviationSentinel
 
 The DeviationSentinel is a Venus periphery contract that monitors price deviations between the ResilientOracle and a DEX-based SentinelOracle. When deviations exceed configured thresholds, it routes emergency actions through the [EBrake](/technical-reference/reference-periphery/ebrake) contract to pause market actions and zero collateral factors, protecting the protocol from price manipulation or oracle failures.
 
 > **Version scope:** This API reference follows [`venus-periphery` v1.2.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/contracts/DeviationSentinel). DeviationSentinel, EBrake, SentinelOracle, and the DEX oracle contracts are upgradeable. Resolve the current proxy implementation, configured backend, pools, direct-price overrides, keepers, token thresholds, and ACM grants before treating this page as live configuration.
 
-## Overview
+### Overview
 
 Price oracle reliability is critical for lending protocols. A compromised or malfunctioning oracle can lead to undercollateralized borrows or improper liquidations. The DeviationSentinel mitigates this risk by continuously comparing prices from two independent sources and taking protective action when they diverge beyond acceptable limits.
 
@@ -22,7 +23,7 @@ The system consists of seven contract types:
 | `CurveOracle`               | Fetches prices from Curve StableSwap-NG pools via `get_dy`                      |
 | `AerodromeSlipstreamOracle` | Fetches prices from Aerodrome Slipstream (CL) pools — Uniswap V3 fork           |
 
-### Economic Rationale
+#### Economic Rationale
 
 The deviation response logic is designed to counter specific attack vectors that arise when oracle prices diverge from real market prices.
 
@@ -46,7 +47,7 @@ The deviation response logic is designed to counter specific attack vectors that
 
 Thresholds are configured per token to balance incident sensitivity against normal pool volatility. Whether a particular deviation is economically exploitable depends on the configured threshold, available liquidity, pool depth, execution costs, and the rest of the transaction path; the contract does not prove that a smaller deviation is harmless.
 
-### Deviation Response Logic
+#### Deviation Response Logic
 
 When a deviation is detected, the response depends on the direction:
 
@@ -57,29 +58,29 @@ When a deviation is detected, the response depends on the direction:
 
 DeviationSentinel can only tighten restrictions. Recovery (unpausing, restoring collateral factors) is handled exclusively via a governance VIP, which calls the corresponding EBrake snapshot reset functions after restoring Comptroller parameters.
 
-### Off-Chain Monitoring
+#### Off-Chain Monitoring
 
 An off-chain monitoring service continuously compares the ResilientOracle price with the on-chain price reported by the SentinelOracle for each monitored token (sourced from its configured DEX backend). When the deviation exceeds a configured threshold, the monitor calls `handleDeviation` via a trusted keeper address, which routes the emergency action through EBrake to pause the affected market.
 
 `handleDeviation` re-runs the configured check against current on-chain inputs before acting. This prevents a keeper from substituting an arbitrary off-chain price, but it does not make the result independent of the selected DEX pool, spot-price manipulation, token configuration, or a governance-set direct-price override. Once the incident is resolved, a governance VIP restores all parameters on the Comptroller and calls the EBrake snapshot reset functions to prepare for future incidents.
 
-## Architecture
+### Architecture
 
 <figure><img src="/assets/emergency_brake.png" alt="DeviationSentinel Architecture"></figure>
 
 One of four DEX-oracle backends (`UniswapOracle`, `PancakeSwapOracle`, `CurveOracle`, or `AerodromeSlipstreamOracle`) can sit behind `SentinelOracle` for a token. The live choice is mutable configuration and can differ by token and network.
 
-## Inheritance
+### Inheritance
 
 All `DeviationSentinel`-system contracts (`DeviationSentinel`, `SentinelOracle`, `UniswapOracle`, `PancakeSwapOracle`, `CurveOracle`, `AerodromeSlipstreamOracle`) inherit from `AccessControlledV8` — every privileged setter is gated through the Venus Access Control Manager.
 
 They all use the upgradeable initializer pattern: each constructor sets immutables and calls `_disableInitializers()`; `initialize(address accessControlManager_)` wires the ACM on the proxy after deployment.
 
-## State Variables
+### State Variables
 
-### DeviationSentinel
+#### DeviationSentinel
 
-#### Immutable
+##### Immutable
 
 | Variable           | Type                       | Description                                                         |
 | ------------------ | -------------------------- | ------------------------------------------------------------------- |
@@ -87,56 +88,56 @@ They all use the upgradeable initializer pattern: each constructor sets immutabl
 | `RESILIENT_ORACLE` | `ResilientOracleInterface` | Primary oracle for reference prices                                 |
 | `SENTINEL_ORACLE`  | `OracleInterface`          | DEX-based oracle for comparison prices                              |
 
-#### Mutable
+##### Mutable
 
 | Variable         | Type                                  | Description                                      |
 | ---------------- | ------------------------------------- | ------------------------------------------------ |
 | `tokenConfigs`   | `mapping(address => DeviationConfig)` | Deviation threshold and enabled status per token |
 | `trustedKeepers` | `mapping(address => bool)`            | Addresses authorized to call `handleDeviation`   |
 
-#### Constants
+##### Constants
 
 | Constant         | Value | Description                          |
 | ---------------- | ----- | ------------------------------------ |
 | `MAX_DEVIATION`  | 100   | Maximum configurable deviation (100%)|
 
-#### Storage Reservation
+##### Storage Reservation
 
 | Variable | Type           | Description                                         |
 | -------- | -------------- | --------------------------------------------------- |
 | `__gap`  | `uint256[48]`  | Reserved storage slots for future upgrades (private)|
 
-### SentinelOracle
+#### SentinelOracle
 
 | Variable       | Type                                  | Description                                   |
 | -------------- | ------------------------------------- | --------------------------------------------- |
 | `tokenConfigs` | `mapping(address => TokenConfig)`     | Maps tokens to their DEX oracle address       |
 | `directPrices` | `mapping(address => uint256)`         | Direct price overrides (0 means use DEX oracle)|
 
-### UniswapOracle / PancakeSwapOracle
+#### UniswapOracle / PancakeSwapOracle
 
 | Variable          | Type                          | Description                              |
 | ----------------- | ----------------------------- | ---------------------------------------- |
 | `RESILIENT_ORACLE` | `ResilientOracleInterface`   | Immutable reference for pair token prices|
 | `tokenPools`      | `mapping(address => address)` | Maps tokens to their DEX pool address    |
 
-### CurveOracle
+#### CurveOracle
 
 | Variable           | Type                                | Description                                  |
 | ------------------ | ----------------------------------- | -------------------------------------------- |
 | `RESILIENT_ORACLE` | `ResilientOracleInterface`          | Immutable reference for the reference token's USD price |
 | `poolConfigs`      | `mapping(address => PoolConfig)`    | Maps each priced token to its Curve pool routing config |
 
-### AerodromeSlipstreamOracle
+#### AerodromeSlipstreamOracle
 
 | Variable           | Type                          | Description                              |
 | ------------------ | ----------------------------- | ---------------------------------------- |
 | `RESILIENT_ORACLE` | `ResilientOracleInterface`    | Immutable reference for pair token prices|
 | `tokenPools`       | `mapping(address => address)` | Maps tokens to their Aerodrome Slipstream pool address |
 
-## Structs
+### Structs
 
-### DeviationConfig
+#### DeviationConfig
 
 ```solidity
 struct DeviationConfig {
@@ -145,7 +146,7 @@ struct DeviationConfig {
 }
 ```
 
-### DeviationAction
+#### DeviationAction
 
 ```solidity
 enum DeviationAction {
@@ -154,7 +155,7 @@ enum DeviationAction {
 }
 ```
 
-### TokenConfig (SentinelOracle)
+#### TokenConfig (SentinelOracle)
 
 ```solidity
 struct TokenConfig {
@@ -162,7 +163,7 @@ struct TokenConfig {
 }
 ```
 
-### PoolConfig (CurveOracle)
+#### PoolConfig (CurveOracle)
 
 ```solidity
 struct PoolConfig {
@@ -174,11 +175,11 @@ struct PoolConfig {
 }
 ```
 
-# Solidity API
+## Solidity API
 
-## DeviationSentinel
+### DeviationSentinel
 
-### constructor
+#### constructor
 
 ```solidity
 constructor(IEBrake eBrake_, ResilientOracleInterface resilientOracle_, OracleInterface sentinelOracle_)
@@ -186,7 +187,7 @@ constructor(IEBrake eBrake_, ResilientOracleInterface resilientOracle_, OracleIn
 
 Sets the three immutables (`EBRAKE`, `RESILIENT_ORACLE`, `SENTINEL_ORACLE`) and disables initializers on the implementation. Reverts with `ZeroAddress` if any argument is the zero address.
 
-### initialize
+#### initialize
 
 ```solidity
 function initialize(address accessControlManager_) external initializer
@@ -196,7 +197,7 @@ Wires the Access Control Manager. Called once on the proxy after deployment.
 
 ---
 
-### handleDeviation
+#### handleDeviation
 
 Checks for price deviation on a market and takes protective action. This is the core function called by trusted keepers.
 
@@ -204,13 +205,13 @@ Checks for price deviation on a market and takes protective action. This is the 
 function handleDeviation(IVToken market) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name   | Type    | Description                          |
 | ------ | ------- | ------------------------------------ |
 | market | IVToken | The vToken market to check and act on|
 
-#### Behavior
+##### Behavior
 
 1. Retrieves the underlying token and its deviation config
 2. Calls `checkPriceDeviation` to compare oracle prices
@@ -222,11 +223,11 @@ function handleDeviation(IVToken market) external
 
 Idempotency is handled by EBrake — duplicate calls for an already-paused market are no-ops on the EBrake side.
 
-#### Access Requirements
+##### Access Requirements
 
 - Caller must be a trusted keeper
 
-#### Errors
+##### Errors
 
 - `UnauthorizedKeeper` if caller is not a trusted keeper
 - `MarketNotConfigured` if token has no deviation config
@@ -234,7 +235,7 @@ Idempotency is handled by EBrake — duplicate calls for an already-paused marke
 
 ---
 
-### checkPriceDeviation
+#### checkPriceDeviation
 
 View function that checks whether a market's underlying token has a price deviation exceeding its configured threshold.
 
@@ -249,13 +250,13 @@ function checkPriceDeviation(
 )
 ```
 
-#### Parameters
+##### Parameters
 
 | Name   | Type    | Description               |
 | ------ | ------- | ------------------------- |
 | market | IVToken | The vToken market to check|
 
-#### Return Values
+##### Return Values
 
 | Name             | Type    | Description                                      |
 | ---------------- | ------- | ------------------------------------------------ |
@@ -264,7 +265,7 @@ function checkPriceDeviation(
 | sentinelPrice    | uint256 | Price from the SentinelOracle                    |
 | deviationPercent | uint256 | Calculated deviation as a percentage             |
 
-#### Deviation Calculation
+##### Deviation Calculation
 
 ```
 deviationPercent = (|oraclePrice - sentinelPrice| / oraclePrice) * 100
@@ -274,7 +275,7 @@ If either price is 0, the function sets `hasDeviation` to true and `deviationPer
 
 ---
 
-### setTokenConfig
+#### setTokenConfig
 
 Configures deviation monitoring parameters for a token.
 
@@ -282,30 +283,30 @@ Configures deviation monitoring parameters for a token.
 function setTokenConfig(address token, DeviationConfig calldata config) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name   | Type            | Description                    |
 | ------ | --------------- | ------------------------------ |
 | token  | address         | The underlying token address   |
 | config | DeviationConfig | Deviation threshold and status |
 
-#### Access Requirements
+##### Access Requirements
 
 - Governance only (via AccessControlManager)
 
-#### Errors
+##### Errors
 
 - `ZeroAddress` if `token` is the zero address
 - `ZeroDeviation` if `config.deviation` is 0
 - `ExceedsMaxDeviation` if `config.deviation` exceeds 100
 
-#### Events
+##### Events
 
 - `TokenConfigUpdated` emitted on success
 
 ---
 
-### setTokenMonitoringEnabled
+#### setTokenMonitoringEnabled
 
 Enables or disables deviation monitoring for a previously configured token.
 
@@ -313,29 +314,29 @@ Enables or disables deviation monitoring for a previously configured token.
 function setTokenMonitoringEnabled(address token, bool enabled) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name    | Type    | Description                      |
 | ------- | ------- | -------------------------------- |
 | token   | address | The underlying token address     |
 | enabled | bool    | Whether monitoring should be active |
 
-#### Access Requirements
+##### Access Requirements
 
 - Governance only
 
-#### Errors
+##### Errors
 
 - `ZeroAddress` if `token` is the zero address
 - `MarketNotConfigured` if token has no existing config
 
-#### Events
+##### Events
 
 - `TokenMonitoringStatusChanged` emitted on success
 
 ---
 
-### setTrustedKeeper
+#### setTrustedKeeper
 
 Adds or removes an address from the trusted keepers list.
 
@@ -343,30 +344,30 @@ Adds or removes an address from the trusted keepers list.
 function setTrustedKeeper(address keeper, bool isTrusted) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name      | Type    | Description                       |
 | --------- | ------- | --------------------------------- |
 | keeper    | address | The keeper address                |
 | isTrusted | bool    | Whether the address should be trusted |
 
-#### Access Requirements
+##### Access Requirements
 
 - Governance only
 
-#### Errors
+##### Errors
 
 - `ZeroAddress` if keeper is the zero address
 
-#### Events
+##### Events
 
 - `TrustedKeeperUpdated` emitted on success
 
 ---
 
-## SentinelOracle
+### SentinelOracle
 
-### constructor
+#### constructor
 
 ```solidity
 constructor()
@@ -374,7 +375,7 @@ constructor()
 
 Disables initializers on the implementation. SentinelOracle has no immutables.
 
-### initialize
+#### initialize
 
 ```solidity
 function initialize(address accessControlManager_) external initializer
@@ -384,7 +385,7 @@ Wires the Access Control Manager. Called once on the proxy after deployment.
 
 ---
 
-### getPrice
+#### getPrice
 
 Returns the price of an asset from the configured DEX oracle or a direct price override.
 
@@ -392,30 +393,30 @@ Returns the price of an asset from the configured DEX oracle or a direct price o
 function getPrice(address asset) external view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name  | Type    | Description              |
 | ----- | ------- | ------------------------ |
 | asset | address | The token address        |
 
-#### Return Values
+##### Return Values
 
 | Type    | Description                                       |
 | ------- | ------------------------------------------------- |
 | uint256 | Asset price in (36 - asset decimals) format       |
 
-#### Price Resolution Order
+##### Price Resolution Order
 
 1. If `directPrices[asset]` is non-zero, return it
 2. Otherwise, fetch from the configured DEX oracle
 
-#### Errors
+##### Errors
 
 - `TokenNotConfigured` if no oracle is configured and no direct price is set
 
 ---
 
-### setTokenOracleConfig
+#### setTokenOracleConfig
 
 Associates a token with a DEX oracle for price fetching.
 
@@ -423,28 +424,28 @@ Associates a token with a DEX oracle for price fetching.
 function setTokenOracleConfig(address token, address oracle) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name   | Type    | Description                  |
 | ------ | ------- | ---------------------------- |
 | token  | address | The underlying token address |
 | oracle | address | The DEX oracle address       |
 
-#### Access Requirements
+##### Access Requirements
 
 - Governance only
 
-#### Errors
+##### Errors
 
 - `ZeroAddress` if either address is zero
 
-#### Events
+##### Events
 
 - `TokenOracleConfigUpdated` emitted on success
 
 ---
 
-### setDirectPrice
+#### setDirectPrice
 
 Sets a direct price override for a token. Set to 0 to revert to DEX oracle pricing.
 
@@ -452,26 +453,26 @@ Sets a direct price override for a token. Set to 0 to revert to DEX oracle prici
 function setDirectPrice(address token, uint256 price) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name  | Type    | Description                                  |
 | ----- | ------- | -------------------------------------------- |
 | token | address | The underlying token address                 |
 | price | uint256 | The price override (0 to use DEX oracle)     |
 
-#### Access Requirements
+##### Access Requirements
 
 - Governance only
 
-#### Events
+##### Events
 
 - `DirectPriceUpdated` emitted on success
 
 ---
 
-## UniswapOracle
+### UniswapOracle
 
-### constructor
+#### constructor
 
 ```solidity
 constructor(ResilientOracleInterface resilientOracle_)
@@ -479,7 +480,7 @@ constructor(ResilientOracleInterface resilientOracle_)
 
 Sets the immutable `RESILIENT_ORACLE` and disables initializers on the implementation.
 
-### initialize
+#### initialize
 
 ```solidity
 function initialize(address accessControlManager_) external initializer
@@ -489,7 +490,7 @@ Wires the Access Control Manager. Called once on the proxy after deployment.
 
 ---
 
-### getPrice
+#### getPrice
 
 Returns the price of a token derived from its Uniswap V3 pool.
 
@@ -497,19 +498,19 @@ Returns the price of a token derived from its Uniswap V3 pool.
 function getPrice(address asset) external view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name  | Type    | Description       |
 | ----- | ------- | ----------------- |
 | asset | address | The token address |
 
-#### Return Values
+##### Return Values
 
 | Type    | Description                                 |
 | ------- | ------------------------------------------- |
 | uint256 | Asset price in (36 - asset decimals) format |
 
-#### Price Calculation
+##### Price Calculation
 
 1. Reads `sqrtPriceX96` from the Uniswap V3 pool's `slot0`
 2. Computes `priceX96 = (sqrtPriceX96)² / Q96`
@@ -517,14 +518,14 @@ function getPrice(address asset) external view returns (uint256)
 4. Fetches the reference token price from ResilientOracle
 5. Converts the pool ratio to a USD price using the reference price
 
-#### Errors
+##### Errors
 
 - `TokenNotConfigured` if no pool is configured for the token
 - `InvalidPool` if the configured pool does not contain the token
 
 ---
 
-### setPoolConfig
+#### setPoolConfig
 
 Associates a token with a Uniswap V3 pool.
 
@@ -532,30 +533,30 @@ Associates a token with a Uniswap V3 pool.
 function setPoolConfig(address token, address pool) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name  | Type    | Description                   |
 | ----- | ------- | ----------------------------- |
 | token | address | The underlying token address  |
 | pool  | address | The Uniswap V3 pool address  |
 
-#### Access Requirements
+##### Access Requirements
 
 - Governance only
 
-#### Errors
+##### Errors
 
 - `ZeroAddress` if either address is zero
 
-#### Events
+##### Events
 
 - `PoolConfigUpdated` emitted on success
 
 ---
 
-## PancakeSwapOracle
+### PancakeSwapOracle
 
-### constructor
+#### constructor
 
 ```solidity
 constructor(ResilientOracleInterface resilientOracle_)
@@ -563,7 +564,7 @@ constructor(ResilientOracleInterface resilientOracle_)
 
 Sets the immutable `RESILIENT_ORACLE` and disables initializers on the implementation.
 
-### initialize
+#### initialize
 
 ```solidity
 function initialize(address accessControlManager_) external initializer
@@ -573,7 +574,7 @@ Wires the Access Control Manager. Called once on the proxy after deployment.
 
 ---
 
-### getPrice
+#### getPrice
 
 Returns the price of a token derived from its PancakeSwap V3 pool. Identical behavior to `UniswapOracle.getPrice`.
 
@@ -583,7 +584,7 @@ function getPrice(address asset) external view returns (uint256)
 
 ---
 
-### setPoolConfig
+#### setPoolConfig
 
 Associates a token with a PancakeSwap V3 pool. Identical behavior to `UniswapOracle.setPoolConfig`.
 
@@ -593,9 +594,9 @@ function setPoolConfig(address token, address pool) external
 
 ---
 
-## CurveOracle
+### CurveOracle
 
-### constructor
+#### constructor
 
 ```solidity
 constructor(ResilientOracleInterface resilientOracle_)
@@ -603,7 +604,7 @@ constructor(ResilientOracleInterface resilientOracle_)
 
 Sets the immutable `RESILIENT_ORACLE` and disables initializers. Reverts with `ZeroAddress` if `resilientOracle_` is the zero address.
 
-### initialize
+#### initialize
 
 ```solidity
 function initialize(address accessControlManager_) external initializer
@@ -613,7 +614,7 @@ Wires the Access Control Manager. Called once on the proxy after deployment.
 
 ---
 
-### getPrice
+#### getPrice
 
 Returns the price of a token derived from its configured Curve StableSwap-NG pool.
 
@@ -621,19 +622,19 @@ Returns the price of a token derived from its configured Curve StableSwap-NG poo
 function getPrice(address asset) external view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name  | Type    | Description       |
 | ----- | ------- | ----------------- |
 | asset | address | The token address |
 
-#### Return Values
+##### Return Values
 
 | Type    | Description                                 |
 | ------- | ------------------------------------------- |
 | uint256 | Asset price in (36 - asset decimals) format |
 
-#### Price Calculation
+##### Price Calculation
 
 1. Reads `dy = pool.get_dy(coinIndex, refCoinIndex, 10**assetDecimals)` — instantaneous swap output for one unit of the asset, reflecting the current pool state (including any active manipulation).
 2. Fetches the reference token's USD price `refPriceUsd` from ResilientOracle.
@@ -641,14 +642,14 @@ function getPrice(address asset) external view returns (uint256)
 
 `refDecimals` cancels out of the formula, so only `assetDecimals` is needed at call time. It is cached in the `PoolConfig` at setup time to avoid an extra STATICCALL per `getPrice`.
 
-#### Errors
+##### Errors
 
 - `TokenNotConfigured` if no pool is configured for the asset
 - `ZeroPrice` if `get_dy` returns 0
 
 ---
 
-### setPoolConfig
+#### setPoolConfig
 
 Associates a token with a Curve StableSwap-NG pool and its reference-token routing.
 
@@ -663,7 +664,7 @@ function setPoolConfig(
 ) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name           | Type    | Description                                                    |
 | -------------- | ------- | -------------------------------------------------------------- |
@@ -674,25 +675,25 @@ function setPoolConfig(
 | referenceToken | address | The pool's other coin, whose USD price is fetched from ResilientOracle |
 | assetDecimals  | uint8   | Decimals of `token` (cached to avoid a per-call STATICCALL)    |
 
-#### Access Requirements
+##### Access Requirements
 
 - Governance only
 
-#### Errors
+##### Errors
 
 - `ZeroAddress` if `token`, `pool`, or `referenceToken` is the zero address
 - `AssetMismatch` if `pool.coins(coinIndex) != token`
 - `ReferenceMismatch` if `pool.coins(refCoinIndex) != referenceToken`
 
-#### Events
+##### Events
 
 - `PoolConfigUpdated(token, pool, coinIndex, refCoinIndex, referenceToken, assetDecimals)` emitted on success
 
 ---
 
-## AerodromeSlipstreamOracle
+### AerodromeSlipstreamOracle
 
-### constructor
+#### constructor
 
 ```solidity
 constructor(ResilientOracleInterface resilientOracle_)
@@ -700,7 +701,7 @@ constructor(ResilientOracleInterface resilientOracle_)
 
 Sets the immutable `RESILIENT_ORACLE` and disables initializers on the implementation.
 
-### initialize
+#### initialize
 
 ```solidity
 function initialize(address accessControlManager_) external initializer
@@ -710,7 +711,7 @@ Wires the Access Control Manager. Called once on the proxy after deployment.
 
 ---
 
-### getPrice
+#### getPrice
 
 Returns the price of a token derived from its configured Aerodrome Slipstream pool.
 
@@ -718,7 +719,7 @@ Returns the price of a token derived from its configured Aerodrome Slipstream po
 function getPrice(address asset) external view returns (uint256)
 ```
 
-#### Price Calculation
+##### Price Calculation
 
 Aerodrome Slipstream is a concentrated-liquidity AMM (Uniswap V3 fork). Its `slot0()` returns six values (no `feeProtocol` field), so the pool ABI is incompatible with `IUniswapV3Pool`, but the price-derivation math is otherwise identical:
 
@@ -730,14 +731,14 @@ Aerodrome Slipstream is a concentrated-liquidity AMM (Uniswap V3 fork). Its `slo
 
 Uses the current `slot0` price (no TWAP). Suitable for sentinel deviation detection where some manipulation tolerance is acceptable.
 
-#### Errors
+##### Errors
 
 - `TokenNotConfigured` if no pool is configured for the token
 - `InvalidPool` if the configured pool does not contain the token
 
 ---
 
-### setPoolConfig
+#### setPoolConfig
 
 Associates a token with an Aerodrome Slipstream pool. Identical behavior to `UniswapOracle.setPoolConfig`.
 
@@ -745,19 +746,19 @@ Associates a token with an Aerodrome Slipstream pool. Identical behavior to `Uni
 function setPoolConfig(address token, address pool) external
 ```
 
-#### Errors
+##### Errors
 
 - `ZeroAddress` if either address is zero
 
-#### Events
+##### Events
 
 - `PoolConfigUpdated` emitted on success
 
 ---
 
-## Events
+### Events
 
-### DeviationSentinel Events
+#### DeviationSentinel Events
 
 | Event                          | Parameters                                        | Description                                               |
 | ------------------------------ | ------------------------------------------------- | --------------------------------------------------------- |
@@ -768,34 +769,34 @@ function setPoolConfig(address token, address pool) external
 
 Pause and collateral factor events are now emitted by EBrake (`ActionPaused`, `CollateralFactorDecreased`) rather than by DeviationSentinel directly.
 
-### SentinelOracle Events
+#### SentinelOracle Events
 
 | Event                      | Parameters     | Description                       |
 | -------------------------- | -------------- | --------------------------------- |
 | `TokenOracleConfigUpdated` | token, oracle  | Token associated with DEX oracle  |
 | `DirectPriceUpdated`       | token, price   | Direct price override set         |
 
-### UniswapOracle / PancakeSwapOracle / AerodromeSlipstreamOracle Events
+#### UniswapOracle / PancakeSwapOracle / AerodromeSlipstreamOracle Events
 
 | Event              | Parameters   | Description                                |
 | ------------------ | ------------ | ------------------------------------------ |
 | `PoolConfigUpdated`| token, pool  | Token associated with a DEX pool (V3 / Slipstream) |
 
-### CurveOracle Events
+#### CurveOracle Events
 
 | Event              | Parameters                                                            | Description                              |
 | ------------------ | --------------------------------------------------------------------- | ---------------------------------------- |
 | `PoolConfigUpdated`| token, pool, coinIndex, refCoinIndex, referenceToken, assetDecimals   | Token associated with a Curve pool route |
 
-## Security Considerations
+### Security Considerations
 
-### Access Control
+#### Access Control
 
 - **Governance Functions**: All configuration functions (`setTokenConfig`, `setTrustedKeeper`, `setTokenMonitoringEnabled`) are restricted via `AccessControlManager`
 - **Keeper Functions**: `handleDeviation` is restricted to trusted keepers via the `onlyKeeper` modifier
 - **Direct Price Overrides**: `setDirectPrice` on `SentinelOracle` is governance-controlled. A nonzero override replaces the configured DEX-backend value, so its live value is part of the system's trust and configuration surface.
 
-### Separation of Detection and Execution
+#### Separation of Detection and Execution
 
 DeviationSentinel contains only detection logic. All Comptroller interactions (pausing, CF changes) are executed by EBrake. This means:
 
@@ -803,13 +804,13 @@ DeviationSentinel contains only detection logic. All Comptroller interactions (p
 - EBrake enforces its own "tighten only" invariant independently — the sentinel cannot unpause or restore CF even if its logic were modified
 - Pre-incident state snapshots (original CF, borrow caps, supply caps) are tracked by EBrake, not DeviationSentinel
 
-### Recovery
+#### Recovery
 
 Recovery from a sentinel-triggered freeze requires a governance VIP that:
 1. Restores Comptroller parameters (unpause actions, restore CF)
 2. Calls the appropriate EBrake snapshot reset functions (`resetCFSnapshot`, `resetBorrowCapSnapshot`, `resetSupplyCapSnapshot`) to clear the stored snapshots
 
-### Custom Errors
+#### Custom Errors
 
 Per-contract reference of revert reasons:
 
@@ -822,10 +823,10 @@ Per-contract reference of revert reasons:
 | `CurveOracle`               | `ZeroAddress`, `TokenNotConfigured`, `AssetMismatch`, `ReferenceMismatch`, `ZeroPrice`              |
 | `AerodromeSlipstreamOracle` | `ZeroAddress`, `InvalidPool`, `TokenNotConfigured`                                                  |
 
-## Deployment
+### Deployment
 
 See [Deployed Contracts](/deployed-contracts/periphery) for current addresses.
 
-## Audits
+### Audits
 
 Published DeviationSentinel and EBrake audit reports are indexed in the [`venus-periphery` v1.2.0 release](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/audits). Check each report's scope and reviewed commit against every current proxy implementation and configured oracle backend.

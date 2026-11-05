@@ -1,5 +1,5 @@
 ---
-title: "Peg Stability Module"
+title: "PSM"
 ---
 
 The BNB Chain Peg Stability Module (PSM) swaps USDT and VAI. It is a transparent proxy at [`0xC138aa4E424D1A8539e8F38Af5a754a2B7c3Cc36`](https://bscscan.com/address/0xC138aa4E424D1A8539e8F38Af5a754a2B7c3Cc36).

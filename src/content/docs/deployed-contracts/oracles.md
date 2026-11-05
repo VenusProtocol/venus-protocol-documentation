@@ -1,5 +1,5 @@
 ---
-title: "Oracles - Deployed Contracts"
+title: "Oracles"
 ---
 
 This page is a deployment registry, not a list of oracle instances currently consumed by every market. An address can remain deployed after a token configuration changes. Before using a row, read the live `ResilientOracle.getTokenConfig(asset)`, proxy implementation, pause/cache state, feed state, bounds, and the associated market configuration.

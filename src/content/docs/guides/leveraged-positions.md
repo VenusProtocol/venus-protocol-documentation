@@ -1,5 +1,5 @@
 ---
-title: "Leveraged Positions: Boost and Repay with Collateral"
+title: "Boost and Repay with Collateral"
 ---
 
 Boost and Repay with Collateral let users open or reduce leveraged Core Pool positions in a single transaction where the feature is available. Both operations use a flash loan internally, but the resulting position is an ordinary supplied-and-borrowed Venus position. It accrues interest and can be liquidated.

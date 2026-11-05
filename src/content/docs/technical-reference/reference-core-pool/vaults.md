@@ -1,5 +1,5 @@
 ---
-title: "Vault Technical Reference"
+title: "Vaults"
 ---
 
 Venus has two distinct vault families:

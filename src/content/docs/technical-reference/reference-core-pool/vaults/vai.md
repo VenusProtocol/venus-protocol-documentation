@@ -1,5 +1,5 @@
 ---
-title: "VAI Vault"
+title: "VAI"
 ---
 
 The VAI Vault exists only on BNB Chain. Its public entry point is the custom proxy at [`0x0667Eed0a0aAb930af74a3dfeDD263A73994f216`](https://bscscan.com/address/0x0667Eed0a0aAb930af74a3dfeDD263A73994f216).

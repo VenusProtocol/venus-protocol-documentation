@@ -1,5 +1,5 @@
 ---
-title: "Protocol reserves, RiskFundV2, and legacy Shortfall"
+title: "Protocol reserves and legacy Shortfall"
 ---
 
 The contracts in this section do not share one lifecycle. The standalone Isolated Pools product and its new-auction flow are deprecated, but the protocol-reserve contracts remain part of the current income architecture.

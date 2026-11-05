@@ -1,5 +1,5 @@
 ---
-title: "VAI Vault API"
+title: "VAIVault"
 ---
 
 This reference applies to the BNB Chain VAI Vault proxy `0x0667Eed0a0aAb930af74a3dfeDD263A73994f216`, which used implementation `0xA52f2a56aBb7cbDD378bC36c6088fAfEaf9AC423` at block `118,364,540`.

@@ -1,5 +1,5 @@
 ---
-title: "Governance contract families"
+title: "Governance"
 ---
 
 These references cover several deployed generations. They are not one interchangeable ABI. The source baseline for this section is the stable [`governance-contracts` v2.15.0 tag](https://github.com/VenusProtocol/governance-contracts/tree/v2.15.0).

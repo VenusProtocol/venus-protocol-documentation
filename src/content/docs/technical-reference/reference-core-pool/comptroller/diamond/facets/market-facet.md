@@ -1,6 +1,7 @@
 ---
 title: "MarketFacet"
 ---
+## MarketFacet
 
 This facet contract contains functions regarding markets
 
@@ -8,9 +9,9 @@ This facet contract contains functions regarding markets
 BNB Core Pool only. At block `118,363,255`, this facet was routed to `0x21f8E1471b153f49BE1d645A008E4a57434eEd23`. Call its selectors through the Unitroller and query the live selector map before use. The [v10.3.0 source](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Comptroller/Diamond/facets/MarketFacet.sol) includes newer pool, delegation, and protection-mode behavior that may not be fully represented in this generated page.
 :::
 
-# Solidity API
+## Solidity API
 
-### isComptroller
+#### isComptroller
 
 Indicator that this is a Comptroller contract (for inspection)
 
@@ -20,7 +21,7 @@ function isComptroller() public pure returns (bool)
 
 ---
 
-### getAssetsIn
+#### getAssetsIn
 
 Returns the vToken markets an account has entered in the Core Pool
 
@@ -28,13 +29,13 @@ Returns the vToken markets an account has entered in the Core Pool
 function getAssetsIn(address account) external view returns (contract VToken[])
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | account | address | The address of the account to query |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -42,7 +43,7 @@ function getAssetsIn(address account) external view returns (contract VToken[])
 
 ---
 
-### getAllMarkets
+#### getAllMarkets
 
 Return all of the markets
 
@@ -50,7 +51,7 @@ Return all of the markets
 function getAllMarkets() external view returns (contract VToken[])
 ```
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -58,7 +59,7 @@ function getAllMarkets() external view returns (contract VToken[])
 
 ---
 
-### liquidateCalculateSeizeTokens
+#### liquidateCalculateSeizeTokens
 
 Calculate number of tokens of collateral asset to seize given an underlying amount
 
@@ -66,7 +67,7 @@ Calculate number of tokens of collateral asset to seize given an underlying amou
 function liquidateCalculateSeizeTokens(address vTokenBorrowed, address vTokenCollateral, uint256 actualRepayAmount) external view returns (uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -74,7 +75,7 @@ function liquidateCalculateSeizeTokens(address vTokenBorrowed, address vTokenCol
 | vTokenCollateral | address | The address of the collateral vToken |
 | actualRepayAmount | uint256 | The amount of vTokenBorrowed underlying to convert into vTokenCollateral tokens |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -83,7 +84,7 @@ function liquidateCalculateSeizeTokens(address vTokenBorrowed, address vTokenCol
 
 ---
 
-### liquidateCalculateSeizeTokens
+#### liquidateCalculateSeizeTokens
 
 Calculate number of tokens of collateral asset to seize given an underlying amount
 
@@ -91,7 +92,7 @@ Calculate number of tokens of collateral asset to seize given an underlying amou
 function liquidateCalculateSeizeTokens(address borrower, address vTokenBorrowed, address vTokenCollateral, uint256 actualRepayAmount) external view returns (uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -100,7 +101,7 @@ function liquidateCalculateSeizeTokens(address borrower, address vTokenBorrowed,
 | vTokenCollateral | address | The address of the collateral vToken |
 | actualRepayAmount | uint256 | The amount of vTokenBorrowed underlying to convert into vTokenCollateral tokens |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -109,7 +110,7 @@ function liquidateCalculateSeizeTokens(address borrower, address vTokenBorrowed,
 
 ---
 
-### liquidateVAICalculateSeizeTokens
+#### liquidateVAICalculateSeizeTokens
 
 Calculate number of tokens of collateral asset to seize given an underlying amount
 
@@ -117,14 +118,14 @@ Calculate number of tokens of collateral asset to seize given an underlying amou
 function liquidateVAICalculateSeizeTokens(address vTokenCollateral, uint256 actualRepayAmount) external view returns (uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vTokenCollateral | address | The address of the collateral vToken |
 | actualRepayAmount | uint256 | The amount of vTokenBorrowed underlying to convert into vTokenCollateral tokens |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -133,7 +134,7 @@ function liquidateVAICalculateSeizeTokens(address vTokenCollateral, uint256 actu
 
 ---
 
-### checkMembership
+#### checkMembership
 
 Returns whether the given account has entered the specified vToken market in the Core Pool
 
@@ -141,14 +142,14 @@ Returns whether the given account has entered the specified vToken market in the
 function checkMembership(address account, contract VToken vToken) external view returns (bool)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | account | address | The address of the account to check |
 | vToken | contract VToken | The vToken to check |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -156,7 +157,7 @@ function checkMembership(address account, contract VToken vToken) external view 
 
 ---
 
-### isMarketListed
+#### isMarketListed
 
 Checks whether the given vToken market is listed in the Core Pool (`poolId = 0`)
 
@@ -164,13 +165,13 @@ Checks whether the given vToken market is listed in the Core Pool (`poolId = 0`)
 function isMarketListed(contract VToken vToken) external view returns (bool)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | contract VToken | The vToken Address of the market to check |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -178,7 +179,7 @@ function isMarketListed(contract VToken vToken) external view returns (bool)
 
 ---
 
-### enterMarkets
+#### enterMarkets
 
 Add assets to be included in account liquidity calculation
 
@@ -186,13 +187,13 @@ Add assets to be included in account liquidity calculation
 function enterMarkets(address[] vTokens) external returns (uint256[])
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vTokens | address\[] | The list of addresses of the vToken markets to be enabled |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -200,7 +201,7 @@ function enterMarkets(address[] vTokens) external returns (uint256[])
 
 ---
 
-### enterMarketBehalf
+#### enterMarketBehalf
 
 Add assets to be included in account liquidity calculation
 
@@ -208,26 +209,26 @@ Add assets to be included in account liquidity calculation
 function enterMarketBehalf(address onBehalf, address vToken) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | onBehalf | address | The address of the account entering the market |
 | vToken | address | The address of the vToken market to enable for the account |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | uint256 | uint256 indicating the result (0 = success, non-zero = failure) |
 
-#### ❌ Errors
+##### ❌ Errors
 
 * NotAnApprovedDelegate thrown if `msg.sender` is not the account itself or an approved delegate
 
 ---
 
-### unlistMarket
+#### unlistMarket
 
 Unlists the given vToken market from the Core Pool (`poolId = 0`) by setting `isListed` to false
 
@@ -235,13 +236,13 @@ Unlists the given vToken market from the Core Pool (`poolId = 0`) by setting `is
 function unlistMarket(address market) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | market | address | The address of the market (vToken) to unlist |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -249,7 +250,7 @@ function unlistMarket(address market) external returns (uint256)
 
 ---
 
-### exitMarket
+#### exitMarket
 
 Removes asset from sender's account liquidity calculation
 
@@ -257,13 +258,13 @@ Removes asset from sender's account liquidity calculation
 function exitMarket(address vTokenAddress) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vTokenAddress | address | The address of the asset to be removed |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -271,7 +272,7 @@ function exitMarket(address vTokenAddress) external returns (uint256)
 
 ---
 
-### supportMarket
+#### supportMarket
 
 Alias to \_supportMarket to support the Isolated Lending Comptroller Interface
 
@@ -279,13 +280,13 @@ Alias to \_supportMarket to support the Isolated Lending Comptroller Interface
 function supportMarket(contract VToken vToken) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | contract VToken | The address of the market (token) to list |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -293,7 +294,7 @@ function supportMarket(contract VToken vToken) external returns (uint256)
 
 ---
 
-### \_supportMarket
+#### \_supportMarket
 
 Adds the given vToken market to the Core Pool (`poolId = 0`) and marks it as listed
 
@@ -301,13 +302,13 @@ Adds the given vToken market to the Core Pool (`poolId = 0`) and marks it as lis
 function _supportMarket(contract VToken vToken) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | contract VToken | The address of the vToken market to list in the Core Pool |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -315,7 +316,7 @@ function _supportMarket(contract VToken vToken) external returns (uint256)
 
 ---
 
-### updateDelegate
+#### updateDelegate
 
 Grants or revokes the borrowing or redeeming delegate rights to / from an account
 If allowed, the delegate will be able to borrow funds on behalf of the sender
@@ -328,7 +329,7 @@ will see a deduction in his vToken balance
 function updateDelegate(address delegate, bool approved) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -337,7 +338,7 @@ function updateDelegate(address delegate, bool approved) external
 
 ---
 
-### enterPool
+#### enterPool
 
 Allows a user to switch to a new pool (e.g., e-mode).
 
@@ -345,17 +346,17 @@ Allows a user to switch to a new pool (e.g., e-mode).
 function enterPool(uint96 poolId) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | poolId | uint96 | The ID of the pool the user wants to enter. |
 
-#### 📅 Events
+##### 📅 Events
 
 * PoolSelected Emitted after a successful pool switch.
 
-#### ❌ Errors
+##### ❌ Errors
 
 * PoolDoesNotExist The specified pool ID does not exist.
 * AlreadyInSelectedPool The user is already in the target pool.
@@ -365,7 +366,7 @@ function enterPool(uint96 poolId) external
 
 ---
 
-### createPool
+#### createPool
 
 Creates a new pool with the given label.
 
@@ -373,29 +374,29 @@ Creates a new pool with the given label.
 function createPool(string label) external returns (uint96)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | label | string | name for the pool (must be non-empty). |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | uint96 | poolId The incremental unique identifier of the newly created pool. |
 
-#### 📅 Events
+##### 📅 Events
 
 * PoolCreated Emitted after successfully creating a new pool.
 
-#### ❌ Errors
+##### ❌ Errors
 
 * EmptyPoolLabel Reverts if the provided label is an empty string.
 
 ---
 
-### addPoolMarkets
+#### addPoolMarkets
 
 Batch initializes market entries with basic config.
 
@@ -403,18 +404,18 @@ Batch initializes market entries with basic config.
 function addPoolMarkets(uint96[] poolIds, address[] vTokens) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | poolIds | uint96\[] | Array of pool IDs. |
 | vTokens | address\[] | Array of market (vToken) addresses. |
 
-#### 📅 Events
+##### 📅 Events
 
 * PoolMarketInitialized Emitted after successfully initializing a market in a pool.
 
-#### ❌ Errors
+##### ❌ Errors
 
 * ArrayLengthMismatch Reverts if `poolIds` and `vTokens` arrays have different lengths or if the length is zero.
 * InvalidOperationForCorePool Reverts when attempting to call pool-specific methods on the Core Pool.
@@ -425,7 +426,7 @@ function addPoolMarkets(uint96[] poolIds, address[] vTokens) external
 
 ---
 
-### removePoolMarket
+#### removePoolMarket
 
 Removes a market (vToken) from the specified pool.
 
@@ -433,25 +434,25 @@ Removes a market (vToken) from the specified pool.
 function removePoolMarket(uint96 poolId, address vToken) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | poolId | uint96 | The ID of the pool from which the market should be removed. |
 | vToken | address | The address of the market token to remove. |
 
-#### 📅 Events
+##### 📅 Events
 
 * PoolMarketRemoved Emitted after a market is successfully removed from a pool.
 
-#### ❌ Errors
+##### ❌ Errors
 
 * InvalidOperationForCorePool Reverts if called on the Core Pool.
 * PoolMarketNotFound Reverts if the market is not listed in the pool.
 
 ---
 
-### getCollateralFactor
+#### getCollateralFactor
 
 Get the core pool collateral factor for a vToken
 
@@ -459,13 +460,13 @@ Get the core pool collateral factor for a vToken
 function getCollateralFactor(address vToken) external view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | The address of the vToken to get the collateral factor for |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -473,7 +474,7 @@ function getCollateralFactor(address vToken) external view returns (uint256)
 
 ---
 
-### getLiquidationThreshold
+#### getLiquidationThreshold
 
 Get the core pool liquidation threshold for a vToken
 
@@ -481,13 +482,13 @@ Get the core pool liquidation threshold for a vToken
 function getLiquidationThreshold(address vToken) external view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | The address of the vToken to get the liquidation threshold for |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -495,7 +496,7 @@ function getLiquidationThreshold(address vToken) external view returns (uint256)
 
 ---
 
-### getLiquidationIncentive
+#### getLiquidationIncentive
 
 Get the core pool liquidation Incentive for a vToken
 
@@ -503,13 +504,13 @@ Get the core pool liquidation Incentive for a vToken
 function getLiquidationIncentive(address vToken) external view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | The address of the vToken to get the liquidation Incentive for |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -517,7 +518,7 @@ function getLiquidationIncentive(address vToken) external view returns (uint256)
 
 ---
 
-### getEffectiveLtvFactor
+#### getEffectiveLtvFactor
 
 Get the effective loan-to-value factor (collateral factor or liquidation threshold) for a given account and market.
 
@@ -525,7 +526,7 @@ Get the effective loan-to-value factor (collateral factor or liquidation thresho
 function getEffectiveLtvFactor(address account, address vToken, enum WeightFunction weightingStrategy) external view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -533,7 +534,7 @@ function getEffectiveLtvFactor(address account, address vToken, enum WeightFunct
 | vToken | address | The address of the vToken market. |
 | weightingStrategy | enum WeightFunction | The weighting strategy to use:                          - `WeightFunction.USE_COLLATERAL_FACTOR` to use collateral factor                          - `WeightFunction.USE_LIQUIDATION_THRESHOLD` to use liquidation threshold |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -541,7 +542,7 @@ function getEffectiveLtvFactor(address account, address vToken, enum WeightFunct
 
 ---
 
-### getEffectiveLiquidationIncentive
+#### getEffectiveLiquidationIncentive
 
 Get the Effective Liquidation Incentive for a given account and market
 
@@ -549,14 +550,14 @@ Get the Effective Liquidation Incentive for a given account and market
 function getEffectiveLiquidationIncentive(address account, address vToken) external view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | account | address | The account whose pool is used to determine the market's risk parameters |
 | vToken | address | The address of the vToken market |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -564,7 +565,7 @@ function getEffectiveLiquidationIncentive(address account, address vToken) exter
 
 ---
 
-### getPoolVTokens
+#### getPoolVTokens
 
 Returns the full list of vTokens for a given pool ID.
 
@@ -572,26 +573,26 @@ Returns the full list of vTokens for a given pool ID.
 function getPoolVTokens(uint96 poolId) external view returns (address[])
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | poolId | uint96 | The ID of the pool whose vTokens are being queried. |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | address\[] | An array of vToken addresses associated with the pool. |
 
-#### ❌ Errors
+##### ❌ Errors
 
 * PoolDoesNotExist Reverts if the given pool ID do not exist.
 * InvalidOperationForCorePool Reverts if called on the Core Pool.
 
 ---
 
-### markets
+#### markets
 
 Returns the market configuration for a vToken in the core pool (poolId = 0).
 
@@ -599,13 +600,13 @@ Returns the market configuration for a vToken in the core pool (poolId = 0).
 function markets(address vToken) external view returns (bool isListed, uint256 collateralFactorMantissa, bool isVenus, uint256 liquidationThresholdMantissa, uint256 liquidationIncentiveMantissa, uint96 marketPoolId, bool isBorrowAllowed)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | The address of the vToken whose market configuration is to be fetched. |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -619,7 +620,7 @@ function markets(address vToken) external view returns (bool isListed, uint256 c
 
 ---
 
-### poolMarkets
+#### poolMarkets
 
 Returns the market configuration for a vToken from \_poolMarkets.
 
@@ -627,14 +628,14 @@ Returns the market configuration for a vToken from \_poolMarkets.
 function poolMarkets(uint96 poolId, address vToken) public view returns (bool isListed, uint256 collateralFactorMantissa, bool isVenus, uint256 liquidationThresholdMantissa, uint256 liquidationIncentiveMantissa, uint96 marketPoolId, bool isBorrowAllowed)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | poolId | uint96 | The ID of the pool whose market configuration is being queried. |
 | vToken | address | The address of the vToken whose market configuration is to be fetched. |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -646,13 +647,13 @@ function poolMarkets(uint96 poolId, address vToken) public view returns (bool is
 | marketPoolId | uint96 | The pool ID this market belongs to. |
 | isBorrowAllowed | bool | Whether borrowing is allowed in this market. |
 
-#### ❌ Errors
+##### ❌ Errors
 
 * PoolDoesNotExist Reverts if the given pool ID do not exist.
 
 ---
 
-### hasValidPoolBorrows
+#### hasValidPoolBorrows
 
 Returns true if the user can switch to the given target pool, i.e.,
 all markets they have borrowed from are also borrowable in the target pool.
@@ -661,14 +662,14 @@ all markets they have borrowed from are also borrowable in the target pool.
 function hasValidPoolBorrows(address account, uint96 targetPoolId) public view returns (bool)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | account | address | The address of the user attempting to switch pools. |
 | targetPoolId | uint96 | The pool ID the user wants to switch into. |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |

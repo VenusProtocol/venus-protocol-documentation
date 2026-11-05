@@ -1,5 +1,5 @@
 ---
-title: "RiskFundV2"
+title: "RiskFundV2 (current BNB mainnet custody)"
 ---
 
 `RiskFundV2` is the BNB Chain mainnet protocol-fund custody contract. It holds raw ERC-20 balances and receives USDT from `RiskFundBuyback`. It does not maintain a current per-Comptroller or per-pool reserve ledger, and it does not support native BNB.

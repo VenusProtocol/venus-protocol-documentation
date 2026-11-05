@@ -1,12 +1,13 @@
 ---
-title: "GovernorBravoEvents"
+title: "GovernorBravoInterfaces"
 ---
+## GovernorBravoEvents
 
 Storage structures and events used by the stable [`GovernorBravoInterfaces.sol` v2.15.0 source](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Governance/GovernorBravoInterfaces.sol).
 
 The V1 scalar `votingDelay`, `votingPeriod`, `proposalThreshold`, and `timelock` storage slots are explicitly deprecated in the source but retained for upgrade-safe layout. Current logic uses the V2 `proposalConfigs` and `proposalTimelocks` mappings, plus the V3 `validationParams` structure.
 
-# Solidity API
+## Solidity API
 
 ```solidity
 struct Proposal {
@@ -75,7 +76,7 @@ struct ValidationParams {
 }
 ```
 
-### proposalCount
+#### proposalCount
 
 The total number of proposals
 

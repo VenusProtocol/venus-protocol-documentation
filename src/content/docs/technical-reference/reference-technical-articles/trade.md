@@ -1,5 +1,5 @@
 ---
-title: "Venus Trade: Technical Reference"
+title: "Trade"
 ---
 
 :::note

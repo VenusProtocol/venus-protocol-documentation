@@ -1,5 +1,5 @@
 ---
-title: "BNB Core Interest Rate Models"
+title: "InterestRateModels"
 ---
 
 Each BNB Core market stores its own interest-rate-model address. Model families and annualization constants have changed over time, so the market address and block determine the applicable implementation.

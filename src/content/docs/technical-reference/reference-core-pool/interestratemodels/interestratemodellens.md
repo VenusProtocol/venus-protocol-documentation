@@ -1,5 +1,5 @@
 ---
-title: "InterestRateModelLens — Unverified Legacy Reference"
+title: "InterestRateModelLens"
 ---
 
 The former page described this function:

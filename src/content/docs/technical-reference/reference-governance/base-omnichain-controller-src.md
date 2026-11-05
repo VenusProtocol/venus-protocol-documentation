@@ -1,12 +1,13 @@
 ---
 title: "BaseOmnichainControllerSrc"
 ---
+## BaseOmnichainControllerSrc
 
 [`BaseOmnichainControllerSrc` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Cross-chain/BaseOmnichainControllerSrc.sol) is the abstract BNB-side base for the current OmnichainProposalSender. It uses LayerZero V1 `uint16` endpoint IDs, named chain IDs in the ABI, applies per-destination 24-hour command limits, and disables ownership renunciation. It is not a standalone deployment.
 
-# Solidity API
+## Solidity API
 
-### accessControlManager
+#### accessControlManager
 
 ACM (Access Control Manager) contract address
 
@@ -16,7 +17,7 @@ address accessControlManager
 
 ---
 
-### chainIdToMaxDailyLimit
+#### chainIdToMaxDailyLimit
 
 Maximum daily limit for commands from the local chain
 
@@ -26,7 +27,7 @@ mapping(uint16 => uint256) chainIdToMaxDailyLimit
 
 ---
 
-### chainIdToLast24HourCommandsSent
+#### chainIdToLast24HourCommandsSent
 
 Total commands transferred within the last 24-hour window from the local chain
 
@@ -36,7 +37,7 @@ mapping(uint16 => uint256) chainIdToLast24HourCommandsSent
 
 ---
 
-### chainIdToLast24HourWindowStart
+#### chainIdToLast24HourWindowStart
 
 Timestamp when the last 24-hour window started from the local chain
 
@@ -46,7 +47,7 @@ mapping(uint16 => uint256) chainIdToLast24HourWindowStart
 
 ---
 
-### chainIdToLastProposalSentTimestamp
+#### chainIdToLastProposalSentTimestamp
 
 Timestamp when the last proposal sent from the local chain to dest chain
 
@@ -56,7 +57,7 @@ mapping(uint16 => uint256) chainIdToLastProposalSentTimestamp
 
 ---
 
-### setMaxDailyLimit
+#### setMaxDailyLimit
 
 Sets the limit of daily (24 Hour) command amount
 
@@ -64,24 +65,24 @@ Sets the limit of daily (24 Hour) command amount
 function setMaxDailyLimit(uint16 chainId_, uint256 limit_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name      | Type    | Description          |
 | --------- | ------- | -------------------- |
 | chainId\_ | uint16  | Destination chain id |
 | limit\_   | uint256 | Number of commands   |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits SetMaxDailyLimit with old and new limit and its corresponding chain id
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Controlled by AccessControlManager
 
 ---
 
-### pause
+#### pause
 
 Triggers the paused state of the controller
 
@@ -89,13 +90,13 @@ Triggers the paused state of the controller
 function pause() external
 ```
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Controlled by AccessControlManager
 
 ---
 
-### unpause
+#### unpause
 
 Triggers the resume state of the controller
 
@@ -103,13 +104,13 @@ Triggers the resume state of the controller
 function unpause() external
 ```
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Controlled by AccessControlManager
 
 ---
 
-### setAccessControlManager
+#### setAccessControlManager
 
 Sets the address of Access Control Manager (ACM)
 
@@ -117,23 +118,23 @@ Sets the address of Access Control Manager (ACM)
 function setAccessControlManager(address accessControlManager_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                   | Type    | Description                                   |
 | ---------------------- | ------- | --------------------------------------------- |
 | accessControlManager\_ | address | The new address of the Access Control Manager |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits NewAccessControlManager with old and new access control manager addresses
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Only owner
 
 ---
 
-### renounceOwnership
+#### renounceOwnership
 
 Empty implementation of renounce ownership to avoid any mishap
 

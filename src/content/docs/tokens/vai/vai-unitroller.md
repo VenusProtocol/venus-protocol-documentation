@@ -1,12 +1,13 @@
 ---
-title: "VAI Unitroller"
+title: "VAIUnitroller"
 ---
+## VAI Unitroller
 
 This is the proxy contract for the VAIComptroller
 
-# Solidity API
+## Solidity API
 
-### \_setPendingImplementation
+#### \_setPendingImplementation
 
 * Admin Functions \*\*
 
@@ -16,7 +17,7 @@ function _setPendingImplementation(address newPendingImplementation) public retu
 
 ---
 
-### \_acceptImplementation
+#### \_acceptImplementation
 
 Accepts new implementation of comptroller. msg.sender must be pendingImplementation
 
@@ -24,7 +25,7 @@ Accepts new implementation of comptroller. msg.sender must be pendingImplementat
 function _acceptImplementation() public returns (uint256)
 ```
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -32,7 +33,7 @@ function _acceptImplementation() public returns (uint256)
 
 ---
 
-### \_setPendingAdmin
+#### \_setPendingAdmin
 
 Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to finalize the transfer.
 
@@ -40,13 +41,13 @@ Begins transfer of admin rights. The newPendingAdmin must call `_acceptAdmin` to
 function _setPendingAdmin(address newPendingAdmin) public returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | newPendingAdmin | address | New pending admin. |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -54,7 +55,7 @@ function _setPendingAdmin(address newPendingAdmin) public returns (uint256)
 
 ---
 
-### \_acceptAdmin
+#### \_acceptAdmin
 
 Accepts transfer of admin rights. msg.sender must be pendingAdmin
 
@@ -62,7 +63,7 @@ Accepts transfer of admin rights. msg.sender must be pendingAdmin
 function _acceptAdmin() public returns (uint256)
 ```
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |

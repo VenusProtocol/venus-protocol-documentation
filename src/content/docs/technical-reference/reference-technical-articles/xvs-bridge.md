@@ -1,5 +1,5 @@
 ---
-title: "XVS Cross-Chain Bridge Documentation"
+title: "XVS Bridge"
 ---
 
 This article describes the stable [`token-bridge` v2.7.0 architecture](https://github.com/VenusProtocol/token-bridge/tree/v2.7.0). It uses LayerZero OFT V2 contracts on the LayerZero V1 messaging stack (`uint16` endpoint IDs, named chain IDs in the ABI); it is not the LayerZero V2 OApp API.

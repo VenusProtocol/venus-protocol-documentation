@@ -1,5 +1,5 @@
 ---
-title: "VToken State and Interface"
+title: "VTokenInterfaces"
 ---
 
 This page follows [`VTokenInterfaces.sol` in v4.4.0](https://github.com/VenusProtocol/isolated-pools/blob/v4.4.0/contracts/VTokenInterfaces.sol). The public fields and selectors are useful for integrations, but they are not a complete storage layout. For upgrades, resolve the live VToken beacon implementation and inspect the compiler layout for that exact build.

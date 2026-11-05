@@ -1,6 +1,7 @@
 ---
 title: "BaseXVSProxyOFT"
 ---
+## BaseXVSProxyOFT
 
 [`BaseXVSProxyOFT` at token-bridge v2.7.0](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/BaseXVSProxyOFT.sol) is the shared abstract LayerZero OFT V2 base. It is not an upgradeable proxy or a standalone deployment. The concrete source and destination contracts fix the token, shared decimals, LayerZero V1 endpoint, and ResilientOracle in their constructors.
 
@@ -12,9 +13,9 @@ It holds state variables for the inner token and maps for tracking transaction l
 The contract owner can configure bridge state directly at the Solidity level, but production ownership is assigned to XVSBridgeAdmin, which applies its own registry and AccessControlManager checks.
 Internal functions conduct eligibility check of transactions, making the contract a fundamental component for cross-chain token management.
 
-# Solidity API
+## Solidity API
 
-### oracle
+#### oracle
 
 The address of `ResilientOracle` contract wrapped in its interface.
 
@@ -24,7 +25,7 @@ contract ResilientOracleInterface oracle
 
 - - -
 
-### chainIdToMaxSingleTransactionLimit
+#### chainIdToMaxSingleTransactionLimit
 
 Maximum limit for a single transaction in USD(scaled with 18 decimals) from local chain.
 
@@ -34,7 +35,7 @@ mapping(uint16 => uint256) chainIdToMaxSingleTransactionLimit
 
 - - -
 
-### chainIdToMaxDailyLimit
+#### chainIdToMaxDailyLimit
 
 Maximum daily limit for transactions in USD(scaled with 18 decimals) from local chain.
 
@@ -44,7 +45,7 @@ mapping(uint16 => uint256) chainIdToMaxDailyLimit
 
 - - -
 
-### chainIdToLast24HourTransferred
+#### chainIdToLast24HourTransferred
 
 Total sent amount in USD(scaled with 18 decimals) within the last 24-hour window from local chain.
 
@@ -54,7 +55,7 @@ mapping(uint16 => uint256) chainIdToLast24HourTransferred
 
 - - -
 
-### chainIdToLast24HourWindowStart
+#### chainIdToLast24HourWindowStart
 
 Timestamp when the last 24-hour window started from local chain.
 
@@ -64,7 +65,7 @@ mapping(uint16 => uint256) chainIdToLast24HourWindowStart
 
 - - -
 
-### chainIdToMaxSingleReceiveTransactionLimit
+#### chainIdToMaxSingleReceiveTransactionLimit
 
 Maximum limit for a single receive transaction in USD(scaled with 18 decimals) from remote chain.
 
@@ -74,7 +75,7 @@ mapping(uint16 => uint256) chainIdToMaxSingleReceiveTransactionLimit
 
 - - -
 
-### chainIdToMaxDailyReceiveLimit
+#### chainIdToMaxDailyReceiveLimit
 
 Maximum daily limit for receiving transactions in USD(scaled with 18 decimals) from remote chain.
 
@@ -84,7 +85,7 @@ mapping(uint16 => uint256) chainIdToMaxDailyReceiveLimit
 
 - - -
 
-### chainIdToLast24HourReceived
+#### chainIdToLast24HourReceived
 
 Total received amount in USD(scaled with 18 decimals) within the last 24-hour window from remote chain.
 
@@ -94,7 +95,7 @@ mapping(uint16 => uint256) chainIdToLast24HourReceived
 
 - - -
 
-### chainIdToLast24HourReceiveWindowStart
+#### chainIdToLast24HourReceiveWindowStart
 
 Timestamp when the last 24-hour window started from remote chain.
 
@@ -104,7 +105,7 @@ mapping(uint16 => uint256) chainIdToLast24HourReceiveWindowStart
 
 - - -
 
-### whitelist
+#### whitelist
 
 Address on which cap check and bound limit is not applicable.
 
@@ -114,7 +115,7 @@ mapping(address => bool) whitelist
 
 - - -
 
-### setOracle
+#### setOracle
 
 Set the address of the ResilientOracle contract.
 
@@ -122,20 +123,20 @@ Set the address of the ResilientOracle contract.
 function setOracle(address oracleAddress_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | oracleAddress_ | address | The new address of the ResilientOracle contract. |
 
-#### 📅 Events
+##### 📅 Events
 * Emits OracleChanged with old and new oracle address.
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only owner.
 
 - - -
 
-### setMaxSingleTransactionLimit
+#### setMaxSingleTransactionLimit
 
 Sets the limit of single transaction amount.
 
@@ -143,21 +144,21 @@ Sets the limit of single transaction amount.
 function setMaxSingleTransactionLimit(uint16 chainId_, uint256 limit_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | chainId_ | uint16 | Destination chain id. |
 | limit_ | uint256 | Amount in USD(scaled with 18 decimals). |
 
-#### 📅 Events
+##### 📅 Events
 * Emits SetMaxSingleTransactionLimit with old and new limit associated with chain id.
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only owner.
 
 - - -
 
-### setMaxDailyLimit
+#### setMaxDailyLimit
 
 Sets the limit of daily (24 Hour) transactions amount.
 
@@ -165,21 +166,21 @@ Sets the limit of daily (24 Hour) transactions amount.
 function setMaxDailyLimit(uint16 chainId_, uint256 limit_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | chainId_ | uint16 | Destination chain id. |
 | limit_ | uint256 | Amount in USD(scaled with 18 decimals). |
 
-#### 📅 Events
+##### 📅 Events
 * Emits setMaxDailyLimit with old and new limit associated with chain id.
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only owner.
 
 - - -
 
-### setMaxSingleReceiveTransactionLimit
+#### setMaxSingleReceiveTransactionLimit
 
 Sets the maximum limit for a single receive transaction.
 
@@ -187,21 +188,21 @@ Sets the maximum limit for a single receive transaction.
 function setMaxSingleReceiveTransactionLimit(uint16 chainId_, uint256 limit_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | chainId_ | uint16 | The destination chain ID. |
 | limit_ | uint256 | The new maximum limit in USD(scaled with 18 decimals). |
 
-#### 📅 Events
+##### 📅 Events
 * Emits setMaxSingleReceiveTransactionLimit with old and new limit associated with chain id.
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only owner.
 
 - - -
 
-### setMaxDailyReceiveLimit
+#### setMaxDailyReceiveLimit
 
 Sets the maximum daily limit for receiving transactions.
 
@@ -209,21 +210,21 @@ Sets the maximum daily limit for receiving transactions.
 function setMaxDailyReceiveLimit(uint16 chainId_, uint256 limit_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | chainId_ | uint16 | The destination chain ID. |
 | limit_ | uint256 | The new maximum daily limit in USD(scaled with 18 decimals). |
 
-#### 📅 Events
+##### 📅 Events
 * Emits setMaxDailyReceiveLimit with old and new limit associated with chain id.
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only owner.
 
 - - -
 
-### setWhitelist
+#### setWhitelist
 
 Sets the whitelist address to skip checks on transaction limit.
 
@@ -231,21 +232,21 @@ Sets the whitelist address to skip checks on transaction limit.
 function setWhitelist(address user_, bool val_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | user_ | address | Address to be add in whitelist. |
 | val_ | bool | Boolean to be set (true for user_ address is whitelisted). |
 
-#### 📅 Events
+##### 📅 Events
 * Emits setWhitelist.
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only owner.
 
 - - -
 
-### pause
+#### pause
 
 Triggers stopped state of the bridge.
 
@@ -253,12 +254,12 @@ Triggers stopped state of the bridge.
 function pause() external
 ```
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only owner.
 
 - - -
 
-### unpause
+#### unpause
 
 Triggers resume state of the bridge.
 
@@ -266,12 +267,12 @@ Triggers resume state of the bridge.
 function unpause() external
 ```
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only owner.
 
 - - -
 
-### sweepToken
+#### sweepToken
 
 A public function to sweep accidental ERC-20 transfers to this contract. Tokens are sent to user
 
@@ -279,25 +280,25 @@ A public function to sweep accidental ERC-20 transfers to this contract. Tokens 
 function sweepToken(contract IERC20 token_, address to_, uint256 amount_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | token_ | contract IERC20 | The address of the ERC-20 token to sweep |
 | to_ | address | The address of the recipient |
 | amount_ | uint256 | The amount of tokens needs to transfer |
 
-#### 📅 Events
+##### 📅 Events
 * Emits SweepToken event
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Owner
 
-#### ❌ Errors
+##### ❌ Errors
 * Throw InsufficientBalance if amount_ is greater than the available balance of the token in the contract
 
 - - -
 
-### removeTrustedRemote
+#### removeTrustedRemote
 
 Remove trusted remote from storage.
 
@@ -305,20 +306,20 @@ Remove trusted remote from storage.
 function removeTrustedRemote(uint16 remoteChainId_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | remoteChainId_ | uint16 | The chain's id corresponds to setting the trusted remote to empty. |
 
-#### 📅 Events
+##### 📅 Events
 * Emits TrustedRemoteRemoved once chain id is removed from trusted remote.
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only owner.
 
 - - -
 
-### updateSendAndCallEnabled
+#### updateSendAndCallEnabled
 
 It enables or disables sendAndCall functionality for the bridge.
 
@@ -326,14 +327,14 @@ It enables or disables sendAndCall functionality for the bridge.
 function updateSendAndCallEnabled(bool enabled_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | enabled_ | bool | Boolean indicating whether the sendAndCall function should be enabled or disabled. |
 
 - - -
 
-### isEligibleToSend
+#### isEligibleToSend
 
 Checks the eligibility of a sender to initiate a cross-chain token transfer.
 
@@ -341,14 +342,14 @@ Checks the eligibility of a sender to initiate a cross-chain token transfer.
 function isEligibleToSend(address from_, uint16 dstChainId_, uint256 amount_) external view returns (bool eligibleToSend, uint256 maxSingleTransactionLimit, uint256 maxDailyLimit, uint256 amountInUsd, uint256 transferredInWindow, uint256 last24HourWindowStart, bool isWhiteListedUser)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | from_ | address | The sender's address initiating the transfer. |
 | dstChainId_ | uint16 | Indicates destination chain. |
 | amount_ | uint256 | The quantity of tokens to be transferred. |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | eligibleToSend | bool | A boolean indicating whether the sender is eligible to transfer the tokens. |
@@ -361,7 +362,7 @@ function isEligibleToSend(address from_, uint16 dstChainId_, uint256 amount_) ex
 
 - - -
 
-### sendAndCall
+#### sendAndCall
 
 Initiates a cross-chain token transfer and triggers a call on the destination chain.
 
@@ -369,7 +370,7 @@ Initiates a cross-chain token transfer and triggers a call on the destination ch
 function sendAndCall(address from_, uint16 dstChainId_, bytes32 toAddress_, uint256 amount_, bytes payload_, uint64 dstGasForCall_, struct ICommonOFT.LzCallParams callparams_) public payable
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | from_ | address | Address from which tokens will be debited. |
@@ -382,7 +383,7 @@ function sendAndCall(address from_, uint16 dstChainId_, bytes32 toAddress_, uint
 
 - - -
 
-### retryMessage
+#### retryMessage
 
 Retries a stored failed LayerZero V1 message after requiring the supplied source path to equal the contract's current nonempty trusted remote. Anyone can submit the retry transaction, but the payload must match the stored failed-message hash.
 
@@ -392,7 +393,7 @@ function retryMessage(uint16 srcChainId_, bytes srcAddress_, uint64 nonce_, byte
 
 - - -
 
-### renounceOwnership
+#### renounceOwnership
 
 Empty implementation of renounce ownership to avoid any mishappening.
 
@@ -402,7 +403,7 @@ function renounceOwnership() public
 
 - - -
 
-### token
+#### token
 
 Return's the address of the inner token of this bridge.
 
@@ -410,7 +411,7 @@ Return's the address of the inner token of this bridge.
 function token() public view returns (address)
 ```
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | address | Address of the inner token of this bridge. |

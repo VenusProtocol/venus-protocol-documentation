@@ -1,5 +1,5 @@
 ---
-title: "BaseJumpRateModelV2 (legacy page)"
+title: "BaseJumpRateModelV2"
 ---
 
 `BaseJumpRateModelV2` is not a separate contract in the current `isolated-pools` source. Its old documentation split the live `JumpRateModelV2` ABI across two pages and used block-only language that is wrong on time-based networks.

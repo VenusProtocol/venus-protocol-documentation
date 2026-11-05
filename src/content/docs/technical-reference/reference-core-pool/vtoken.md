@@ -1,5 +1,5 @@
 ---
-title: "BNB Core Pool vTokens"
+title: "VToken"
 ---
 
 This page applies only to markets in the BNB Chain Core Pool. It replaces the previous unscoped reference to the abstract `VToken` base, which is not a complete deployable market API.

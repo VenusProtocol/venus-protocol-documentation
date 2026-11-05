@@ -1,5 +1,5 @@
 ---
-title: "Contribution guidelines"
+title: "Contributing"
 ---
 
 We have a strict policy on how we should commit our work. Following these guidelines will help us to:

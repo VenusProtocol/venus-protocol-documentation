@@ -1,5 +1,5 @@
 ---
-title: "RiskFundV2 storage layout"
+title: "RiskFundV2 storage (compatibility)"
 ---
 
 This page records the linearized storage layout compiled for the BNB Chain mainnet RiskFundV2 implementation [`0x01BE9c56A0844040b2c1a684B1a72cE88489486a`](https://bscscan.com/address/0x01BE9c56A0844040b2c1a684B1a72cE88489486a). It includes inherited OpenZeppelin and AccessControlled storage, active RiskFundV2 fields, deprecated legacy positions, and reserved gaps.

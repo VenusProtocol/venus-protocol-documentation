@@ -1,5 +1,5 @@
 ---
-title: "XVS Bridge contract families"
+title: "XVS Bridge"
 ---
 
 The XVS bridge remains an active LayerZero OFT V2 deployment. This section is pinned to the stable [`token-bridge` v2.7.0 tag](https://github.com/VenusProtocol/token-bridge/tree/v2.7.0), rather than the moving `develop` branch.

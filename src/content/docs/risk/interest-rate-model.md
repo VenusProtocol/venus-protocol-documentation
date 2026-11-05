@@ -1,5 +1,5 @@
 ---
-title: "Interest-rate models"
+title: "Interest Rate Model"
 ---
 
 :::note

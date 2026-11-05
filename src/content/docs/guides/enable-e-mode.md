@@ -1,5 +1,5 @@
 ---
-title: "Try E-Mode on Venus"
+title: "Enable E-mode"
 ---
 
 ### Want to try out e-mode?

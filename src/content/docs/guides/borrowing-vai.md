@@ -1,5 +1,5 @@
 ---
-title: "Borrowing and repaying VAI"
+title: "Borrowing VAI"
 ---
 
 :::caution

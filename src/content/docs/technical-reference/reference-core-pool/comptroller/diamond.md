@@ -1,5 +1,5 @@
 ---
-title: "BNB Core Pool Diamond"
+title: "Diamond"
 ---
 
 The Diamond is the BNB Core Pool Unitroller's implementation. It routes application selectors to independently upgradeable facets while preserving state in the Unitroller.

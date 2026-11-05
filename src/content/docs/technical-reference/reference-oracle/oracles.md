@@ -1,5 +1,5 @@
 ---
-title: "Price Source Adapters"
+title: "Sources"
 ---
 
 `ResilientOracle` roles are assigned per underlying asset. An adapter type does not have a universal role: a Chainlink-compatible, RedStone, Binance, reference, or correlated-token adapter can be main, pivot, fallback, disabled, or absent depending on the live configuration.

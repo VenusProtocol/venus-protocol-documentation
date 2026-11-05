@@ -1,5 +1,5 @@
 ---
-title: "VenusERC4626 - Deployed Contracts"
+title: "VenusERC4626"
 ---
 
 Each factory owns an `UpgradeableBeacon` and creates a `BeaconProxy` vault for a vToken. The factory address, beacon address, and current beacon implementation are distinct; a historical implementation address is not enough to determine the code used by created vaults. Enumerate actual wrappers with `createdVaults(vToken)` or `CreateERC4626` events.

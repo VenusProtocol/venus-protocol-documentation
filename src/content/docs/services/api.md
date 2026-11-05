@@ -2,6 +2,7 @@
 title: "API"
 description: "The Venus Protocol API providing access to indexed protocol data."
 ---
+
 The Venus Protocol API exposes indexed lending-market, pool, and governance data. The OpenAPI specification embedded below currently documents two endpoint families:
 
 * **Market and pool data** — listed markets, pool configuration, historical market snapshots, and aggregate TVL
@@ -13,8 +14,7 @@ API responses are derived from indexed data and can lag the chain, omit a recent
 
 The live [Swagger playground](https://api.venus.io/docs/playground) and [OpenAPI JSON](https://api.venus.io/docs/swagger.json) are the source of truth for the currently published request parameters and response schemas. The checked-in specification rendered on this page is a snapshot and should be resynchronized when the live JSON changes.
 
-Base URL
----
+## Base URL
 
 The documented read endpoints are available without authentication at these origins. Endpoint paths are appended directly to the origin; there is no `/api` prefix.
 
@@ -30,8 +30,7 @@ curl --get 'https://api.venus.io/pools' \
   --data-urlencode 'chainId=56'
 ```
 
-Versioning
----
+## Versioning
 
 Routes that declare the `accept-version` request header support `stable` and `next`. Omitting the header selects `stable`; an unsupported value is rejected. Do not assume every API route is versioned—check the OpenAPI entry for the specific path.
 
@@ -62,7 +61,7 @@ Returns pool data for all listed pools, optionally filterable by the pool's comp
 
 | Parameter | In | Type | Required | Description |
 | --- | --- | --- | --- | --- |
-| `accept-version` | header | `stable` \\| `next` | no | Selects the API version. `stable` (default) requires `chainId` and returns a paginated list with embedded markets and a top-level `tokens` array. `next` supports multi-chain queries and returns pools grouped by chainId with markets in a separate paginated block. |
+| `accept-version` | header | `stable` \| `next` | no | Selects the API version. `stable` (default) requires `chainId` and returns a paginated list with embedded markets and a top-level `tokens` array. `next` supports multi-chain queries and returns pools grouped by chainId with markets in a separate paginated block. |
 | `address` | query | string | no | [both] Filter by pool comptroller address. |
 | `name` | query | string | no | [both] Filter by pool name. |
 | `priceOracleAddress` | query | string | no | [both] Filter by price oracle address. |
@@ -90,7 +89,7 @@ Returns market data for listed markets, optionally filterable by asset address, 
 
 | Parameter | In | Type | Required | Description |
 | --- | --- | --- | --- | --- |
-| `accept-version` | header | `stable` \\| `next` | no | Selects the API version. `stable` (default) requires `chainId` and returns a top-level `tokens` array. `next` supports cross-chain queries and embeds token data inside each market as `underlyingTokenMetadata`. |
+| `accept-version` | header | `stable` \| `next` | no | Selects the API version. `stable` (default) requires `chainId` and returns a top-level `tokens` array. `next` supports cross-chain queries and embeds token data inside each market as `underlyingTokenMetadata`. |
 | `chainId` | query | string | no | [stable] **Required.** [next] Optional. Blockchain chain ID to filter results. |
 | `address` | query | string | no | [both] Filter by vToken address. |
 | `symbol` | query | string | no | [both] Filter by asset symbol. |
@@ -114,7 +113,7 @@ Fetch an array of daily snapshots of supply and borrow totals and supply and bor
 | --- | --- | --- | --- | --- |
 | `asset` | query | string | yes | vToken address to fetch history for. |
 | `chainId` | query | string | yes | Chain ID of the network to query history for. |
-| `period` | query | `year` \\| `month` \\| `halfyear` | no |  |
+| `period` | query | `year` \| `month` \| `halfyear` | no |  |
 
 **Responses:** `200` Returns historical data for the requested asset. · `400` Unexpected error
 
@@ -186,7 +185,7 @@ Returns paginated array of proposals.
 | Parameter | In | Type | Required | Description |
 | --- | --- | --- | --- | --- |
 | `proposalId` | query | integer | no | Filter by proposal ID |
-| `state` | query | `0` \\| `1` \\| `2` \\| `3` \\| `4` \\| `5` \\| `6` \\| `7` | no | Filter by proposal state |
+| `state` | query | `0` \| `1` \| `2` \| `3` \| `4` \| `5` \| `6` \| `7` | no | Filter by proposal state |
 | `order` | query | string | no | Array of columns to order results. Default sort is descending. If '+' is prepended to a column it will be sorted ascending. |
 | `limit` | query | integer | no | Limit used for pagination |
 | `page` | query | integer | no | Page number to fetch |

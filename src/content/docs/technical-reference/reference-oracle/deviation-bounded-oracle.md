@@ -1,8 +1,9 @@
 ---
 title: "DeviationBoundedOracle"
 ---
+## DeviationBoundedOracle
 
-## Deployment scope
+### Deployment scope
 
 This API matches the current [`DeviationBoundedOracle` v2.16.0 source](https://github.com/VenusProtocol/oracle/blob/v2.16.0/contracts/DeviationBoundedOracle.sol). At BNB Chain block `118367342`, transparent proxy `0xc79Cb7efEBd121DC4B39eA141C214606595D665A` pointed to implementation `0x16691f500541ca35bd63DD878B6D78728C9518AE`.
 
@@ -31,7 +32,7 @@ updateProtectionState is called before the view price reads.
 For a feature-level description of how protection mode behaves end-to-end (problem statement,
 trigger logic, keeper role, exit conditions), see [Protection Mode](/risk/protection-mode).
 
-# Solidity API
+## Solidity API
 
 ```solidity
 enum PriceBoundType {
@@ -48,7 +49,7 @@ enum KeeperAction {
 }
 ```
 
-### MarketProtectionState
+#### MarketProtectionState
 
 Per-asset protection state tracking the min/max price window
 
@@ -69,7 +70,7 @@ struct MarketProtectionState {
 }
 ```
 
-### KeeperActionItem
+#### KeeperActionItem
 
 One item in a syncPriceBoundsAndProtections payload
 
@@ -83,7 +84,7 @@ struct KeeperActionItem {
 }
 ```
 
-### TokenConfigInput
+#### TokenConfigInput
 
 One item in a setTokenConfigs payload
 
@@ -100,7 +101,7 @@ struct TokenConfigInput {
 }
 ```
 
-### MIN_THRESHOLD
+#### MIN_THRESHOLD
 
 Minimum allowed threshold value (5%) to account for keeper deadband
 
@@ -110,7 +111,7 @@ uint256 MIN_THRESHOLD
 
 - - -
 
-### MAX_THRESHOLD
+#### MAX_THRESHOLD
 
 Maximum allowed threshold value (50%)
 
@@ -120,7 +121,7 @@ uint256 MAX_THRESHOLD
 
 - - -
 
-### KEEPER_DEADBAND
+#### KEEPER_DEADBAND
 
 Keeper deadband threshold (5%). Used by `checkAndGetWindowDrift` (a view) so the off-chain keeper can skip pushes whose delta is below the deadband. Not enforced on-chain inside `updateMinPrice` / `updateMaxPrice` — those only validate the spot bound and the cross bound.
 
@@ -130,7 +131,7 @@ uint256 KEEPER_DEADBAND
 
 - - -
 
-### RESILIENT_ORACLE
+#### RESILIENT_ORACLE
 
 Resilient Oracle used to fetch spot prices
 
@@ -140,7 +141,7 @@ contract ResilientOracleInterface RESILIENT_ORACLE
 
 - - -
 
-### nativeMarket
+#### nativeMarket
 
 Native market address
 
@@ -150,7 +151,7 @@ address nativeMarket
 
 - - -
 
-### vai
+#### vai
 
 VAI address
 
@@ -160,7 +161,7 @@ address vai
 
 - - -
 
-### COLLATERAL_PRICE_CACHE_SLOT
+#### COLLATERAL_PRICE_CACHE_SLOT
 
 Transient storage slot for caching final collateral prices within a transaction
 
@@ -170,7 +171,7 @@ bytes32 COLLATERAL_PRICE_CACHE_SLOT
 
 - - -
 
-### DEBT_PRICE_CACHE_SLOT
+#### DEBT_PRICE_CACHE_SLOT
 
 Transient storage slot for caching final debt prices within a transaction
 
@@ -180,7 +181,7 @@ bytes32 DEBT_PRICE_CACHE_SLOT
 
 - - -
 
-### NATIVE_TOKEN_ADDR
+#### NATIVE_TOKEN_ADDR
 
 Set this as asset address for Native token on each chain.This is the underlying for vBNB (on bsc)
 and can serve as any underlying asset of a market that supports native tokens
@@ -191,7 +192,7 @@ address NATIVE_TOKEN_ADDR
 
 - - -
 
-### assetProtectionConfig
+#### assetProtectionConfig
 
 Per-asset protection state
 
@@ -201,7 +202,7 @@ mapping(address => struct IDeviationBoundedOracle.MarketProtectionState) assetPr
 
 - - -
 
-### allAssets
+#### allAssets
 
 Append-only array of all assets ever initialized, used for enumeration
 
@@ -211,7 +212,7 @@ address[] allAssets
 
 - - -
 
-### constructor
+#### constructor
 
 Constructor for the implementation contract. Sets immutable variables.
 
@@ -219,7 +220,7 @@ Constructor for the implementation contract. Sets immutable variables.
 constructor(contract ResilientOracleInterface _resilientOracle, address nativeMarketAddress, address vaiAddress) public
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | _resilientOracle | contract ResilientOracleInterface | Address of the ResilientOracle contract |
@@ -228,7 +229,7 @@ constructor(contract ResilientOracleInterface _resilientOracle, address nativeMa
 
 - - -
 
-### initialize
+#### initialize
 
 Initializes the contract admin
 
@@ -236,14 +237,14 @@ Initializes the contract admin
 function initialize(address accessControlManager_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | accessControlManager_ | address | Address of the access control manager contract |
 
 - - -
 
-### getBoundedCollateralPrice
+#### getBoundedCollateralPrice
 
 Gets the bounded collateral price for a given vToken, updating protection state
 
@@ -251,24 +252,24 @@ Gets the bounded collateral price for a given vToken, updating protection state
 function getBoundedCollateralPrice(address vToken) external returns (uint256 collateralPrice)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | vToken address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | collateralPrice | uint256 | The bounded collateral price |
 
-#### 📅 Events
+##### 📅 Events
 * MinPriceUpdated if a new window minimum is recorded
 * MaxPriceUpdated if a new window maximum is recorded
 * ProtectionTriggered if the spot price deviates beyond the threshold
 
 - - -
 
-### getBoundedDebtPrice
+#### getBoundedDebtPrice
 
 Gets the bounded debt price for a given vToken, updating protection state
 
@@ -276,24 +277,24 @@ Gets the bounded debt price for a given vToken, updating protection state
 function getBoundedDebtPrice(address vToken) external returns (uint256 debtPrice)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | vToken address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | debtPrice | uint256 | The bounded debt price |
 
-#### 📅 Events
+##### 📅 Events
 * MinPriceUpdated if a new window minimum is recorded
 * MaxPriceUpdated if a new window maximum is recorded
 * ProtectionTriggered if the spot price deviates beyond the threshold
 
 - - -
 
-### getBoundedPrices
+#### getBoundedPrices
 
 Gets both the bounded collateral and debt prices for a given vToken, updating protection state
 
@@ -301,25 +302,25 @@ Gets both the bounded collateral and debt prices for a given vToken, updating pr
 function getBoundedPrices(address vToken) external returns (uint256 collateralPrice, uint256 debtPrice)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | vToken address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | collateralPrice | uint256 | The bounded collateral price |
 | debtPrice | uint256 | The bounded debt price |
 
-#### 📅 Events
+##### 📅 Events
 * MinPriceUpdated if a new window minimum is recorded
 * MaxPriceUpdated if a new window maximum is recorded
 * ProtectionTriggered if the spot price deviates beyond the threshold
 
 - - -
 
-### updateProtectionState
+#### updateProtectionState
 
 Fetches the spot price, updates the protection window, and (when the asset's `cachingEnabled` flag is `true`) caches the resolved collateral and debt prices in transient storage for the duration of the transaction. When `cachingEnabled` is `false`, the window/trigger update still happens but no cache write occurs and subsequent view reads recompute live from spot.
 
@@ -327,19 +328,19 @@ Fetches the spot price, updates the protection window, and (when the asset's `ca
 function updateProtectionState(address vToken) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | vToken address |
 
-#### 📅 Events
+##### 📅 Events
 * MinPriceUpdated if a new window minimum is recorded
 * MaxPriceUpdated if a new window maximum is recorded
 * ProtectionTriggered if the spot price deviates beyond the threshold
 
 - - -
 
-### getBoundedCollateralPriceView
+#### getBoundedCollateralPriceView
 
 Gets the bounded collateral price for a given vToken (view variant)
 
@@ -347,19 +348,19 @@ Gets the bounded collateral price for a given vToken (view variant)
 function getBoundedCollateralPriceView(address vToken) external view returns (uint256 collateralPrice)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | vToken address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | collateralPrice | uint256 | The bounded collateral price |
 
 - - -
 
-### getBoundedDebtPriceView
+#### getBoundedDebtPriceView
 
 Gets the bounded debt price for a given vToken (view variant)
 
@@ -367,19 +368,19 @@ Gets the bounded debt price for a given vToken (view variant)
 function getBoundedDebtPriceView(address vToken) external view returns (uint256 debtPrice)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | vToken address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | debtPrice | uint256 | The bounded debt price |
 
 - - -
 
-### getBoundedPricesView
+#### getBoundedPricesView
 
 Gets both the bounded collateral and debt prices for a given vToken (view variant)
 
@@ -387,12 +388,12 @@ Gets both the bounded collateral and debt prices for a given vToken (view varian
 function getBoundedPricesView(address vToken) external view returns (uint256 collateralPrice, uint256 debtPrice)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | vToken address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | collateralPrice | uint256 | The bounded collateral price |
@@ -400,7 +401,7 @@ function getBoundedPricesView(address vToken) external view returns (uint256 col
 
 - - -
 
-### updateMinPrice
+#### updateMinPrice
 
 Updates the minimum price in the rolling window for a given asset. On-chain validation requires `newMin <= maxPrice` and `newMin <= currentSpot`; the 5% `KEEPER_DEADBAND` is *not* enforced here — the keeper consults `checkAndGetWindowDrift` off-chain to decide whether the push is worth it.
 
@@ -408,26 +409,26 @@ Updates the minimum price in the rolling window for a given asset. On-chain vali
 function updateMinPrice(address asset, uint128 newMin) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | The underlying asset address |
 | newMin | uint128 | The new minimum price |
 
-#### 📅 Events
+##### 📅 Events
 * MinPriceUpdated
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only authorized keeper addresses
 
-#### ❌ Errors
+##### ❌ Errors
 * ZeroPriceNotAllowed if newMin is zero
 * MarketNotInitialized if the asset has not been initialized
 * InvalidMinPrice if newMin exceeds the current spot or is strictly above maxPrice
 
 - - -
 
-### updateMaxPrice
+#### updateMaxPrice
 
 Updates the maximum price in the rolling window for a given asset. On-chain validation requires `newMax >= minPrice` and `newMax >= currentSpot`; the 5% `KEEPER_DEADBAND` is *not* enforced here — the keeper consults `checkAndGetWindowDrift` off-chain to decide whether the push is worth it.
 
@@ -435,26 +436,26 @@ Updates the maximum price in the rolling window for a given asset. On-chain vali
 function updateMaxPrice(address asset, uint128 newMax) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | The underlying asset address |
 | newMax | uint128 | The new maximum price |
 
-#### 📅 Events
+##### 📅 Events
 * MaxPriceUpdated
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only authorized keeper addresses
 
-#### ❌ Errors
+##### ❌ Errors
 * ZeroPriceNotAllowed if newMax is zero
 * MarketNotInitialized if the asset has not been initialized
 * InvalidMaxPrice if newMax is below the current spot or is strictly below minPrice
 
 - - -
 
-### exitProtectionMode
+#### exitProtectionMode
 
 Exits protection mode for a given asset
 
@@ -462,25 +463,25 @@ Exits protection mode for a given asset
 function exitProtectionMode(address asset) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | The underlying asset address |
 
-#### 📅 Events
+##### 📅 Events
 * ProtectionModeExited
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only authorized monitor/keeper addresses
 
-#### ❌ Errors
+##### ❌ Errors
 * ProtectedPriceInactive if protection is not currently active
 * CooldownNotElapsed if cooldown period has not elapsed
 * PriceRangeNotConverged if window range is still above exit threshold
 
 - - -
 
-### syncPriceBoundsAndProtections
+#### syncPriceBoundsAndProtections
 
 Dispatches a batch of keeper-only actions (set min, set max, or exit protection) under a single ACM check
 
@@ -488,23 +489,23 @@ Dispatches a batch of keeper-only actions (set min, set max, or exit protection)
 function syncPriceBoundsAndProtections(struct IDeviationBoundedOracle.KeeperActionItem[] actions) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | actions | struct IDeviationBoundedOracle.KeeperActionItem[] | The list of keeper actions to apply |
 
-#### 📅 Events
+##### 📅 Events
 * MinPriceUpdated, MaxPriceUpdated, ProtectionModeExited
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only authorized keeper addresses
 
-#### ❌ Errors
+##### ❌ Errors
 * InvalidKeeperAction if an item carries an unsupported action enum value
 
 - - -
 
-### setTokenConfig
+#### setTokenConfig
 
 Initializes protection for a new asset. The window is seeded with the current spot from the ResilientOracle (so the oracle must be live for the asset). Whitelist participation is independent of initialization — `enableBoundedPricing` may be `false`, in which case the asset is configured but the DBO short-circuits to spot until governance flips the flag with `setAssetBoundedPricingEnabled`.
 
@@ -512,19 +513,19 @@ Initializes protection for a new asset. The window is seeded with the current sp
 function setTokenConfig(struct IDeviationBoundedOracle.TokenConfigInput tokenConfig_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | tokenConfig_ | struct IDeviationBoundedOracle.TokenConfigInput | Token config input for the asset |
 
-#### 📅 Events
+##### 📅 Events
 * ProtectionInitialized
 * BoundedPricingWhitelistUpdated
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Governance
 
-#### ❌ Errors
+##### ❌ Errors
 * ZeroAddressNotAllowed if asset is the zero address
 * ZeroValueNotAllowed if cooldownPeriod, triggerThreshold, or resetThreshold is zero
 * MarketAlreadyInitialized if the asset has already been initialized
@@ -536,7 +537,7 @@ function setTokenConfig(struct IDeviationBoundedOracle.TokenConfigInput tokenCon
 
 - - -
 
-### setTokenConfigs
+#### setTokenConfigs
 
 Batch-initializes protection for multiple assets in a single transaction. Per-item validation matches `setTokenConfig`; any item revert rolls back the whole batch.
 
@@ -544,25 +545,25 @@ Batch-initializes protection for multiple assets in a single transaction. Per-it
 function setTokenConfigs(struct IDeviationBoundedOracle.TokenConfigInput[] tokenConfigs_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | tokenConfigs_ | struct IDeviationBoundedOracle.TokenConfigInput[] | Array of token config inputs, one per asset |
 
-#### 📅 Events
+##### 📅 Events
 * ProtectionInitialized for each asset
 * BoundedPricingWhitelistUpdated for each asset
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Governance
 
-#### ❌ Errors
+##### ❌ Errors
 * InvalidArrayLength if the input array is empty
 * Any error raised by per-item validation (see `setTokenConfig`)
 
 - - -
 
-### setCooldownPeriod
+#### setCooldownPeriod
 
 Sets the cooldown period for an asset
 
@@ -570,21 +571,21 @@ Sets the cooldown period for an asset
 function setCooldownPeriod(address asset, uint64 newCooldown) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | The underlying asset address |
 | newCooldown | uint64 | The new cooldown period in seconds |
 
-#### 📅 Events
+##### 📅 Events
 * CooldownPeriodSet
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Governance
 
 - - -
 
-### setThresholds
+#### setThresholds
 
 Sets the trigger and reset thresholds for an asset
 
@@ -592,28 +593,28 @@ Sets the trigger and reset thresholds for an asset
 function setThresholds(address asset, uint256 newTriggerThreshold, uint256 newResetThreshold) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | The underlying asset address |
 | newTriggerThreshold | uint256 | The new trigger threshold (mantissa). Must be between 5% and 50% and above the reset threshold. |
 | newResetThreshold | uint256 | The new reset threshold (mantissa). Must be non-zero and below the trigger threshold. |
 
-#### 📅 Events
+##### 📅 Events
 * TriggerThresholdSet if the trigger threshold changed
 * ResetThresholdSet if the reset threshold changed
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Governance
 
-#### ❌ Errors
+##### ❌ Errors
 * ThresholdBelowMinimum if newTriggerThreshold is below 5%
 * ThresholdAboveMaximum if newTriggerThreshold is above 50%
 * InvalidResetThreshold if newResetThreshold is at or above newTriggerThreshold
 
 - - -
 
-### setAssetBoundedPricingEnabled
+#### setAssetBoundedPricingEnabled
 
 Sets whether an asset is enabled for bounded pricing
 
@@ -621,24 +622,24 @@ Sets whether an asset is enabled for bounded pricing
 function setAssetBoundedPricingEnabled(address asset, bool enabled) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | The underlying asset address |
 | enabled | bool | Whether bounded pricing should be enabled for the asset |
 
-#### 📅 Events
+##### 📅 Events
 * BoundedPricingWhitelistUpdated
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Governance
 
-#### ❌ Errors
+##### ❌ Errors
 * ProtectedPriceActive if trying to disable an asset while protection is active
 
 - - -
 
-### setCachingEnabled
+#### setCachingEnabled
 
 Toggles transient caching of the bounded (collateral, debt) pair for an asset
 
@@ -646,24 +647,24 @@ Toggles transient caching of the bounded (collateral, debt) pair for an asset
 function setCachingEnabled(address asset, bool enabled) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | The underlying asset address |
 | enabled | bool | Whether transient caching is enabled for this asset |
 
-#### 📅 Events
+##### 📅 Events
 * CachingEnabledUpdated
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only Governance
 
-#### ❌ Errors
+##### ❌ Errors
 * MarketNotInitialized if the asset has not been initialized
 
 - - -
 
-### getInitializedAssets
+#### getInitializedAssets
 
 Returns all asset addresses that have ever been initialized
 
@@ -671,14 +672,14 @@ Returns all asset addresses that have ever been initialized
 function getInitializedAssets() external view returns (address[])
 ```
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | address[] | Array of all initialized asset addresses |
 
 - - -
 
-### isBoundedPricingEnabled
+#### isBoundedPricingEnabled
 
 Checks if an asset is whitelisted for bounded pricing
 
@@ -686,19 +687,19 @@ Checks if an asset is whitelisted for bounded pricing
 function isBoundedPricingEnabled(address asset) external view returns (bool)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | The underlying asset address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | bool | True if the asset is whitelisted |
 
 - - -
 
-### currentlyUsingProtectedPrice
+#### currentlyUsingProtectedPrice
 
 Checks if the asset is currently using the protected (bounded) price
 
@@ -706,19 +707,19 @@ Checks if the asset is currently using the protected (bounded) price
 function currentlyUsingProtectedPrice(address asset) external view returns (bool)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | The underlying asset address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | bool | True if the asset is currently using the protected price instead of spot |
 
 - - -
 
-### getAllBoundedPricingEnabledAssets
+#### getAllBoundedPricingEnabledAssets
 
 Returns all currently whitelisted asset addresses
 
@@ -726,14 +727,14 @@ Returns all currently whitelisted asset addresses
 function getAllBoundedPricingEnabledAssets() external view returns (address[])
 ```
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | address[] | result Array of whitelisted asset addresses |
 
 - - -
 
-### canExitProtection
+#### canExitProtection
 
 Checks if protection can be exited for an asset
 
@@ -741,19 +742,19 @@ Checks if protection can be exited for an asset
 function canExitProtection(address asset) external view returns (bool)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | asset | address | The underlying asset address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | bool | True if protection can be disabled |
 
 - - -
 
-### checkAndGetWindowDrift
+#### checkAndGetWindowDrift
 
 Batch-checks which assets' on-chain min/max have drifted beyond the deadband
         from the keeper's proposed window values
@@ -762,20 +763,20 @@ Batch-checks which assets' on-chain min/max have drifted beyond the deadband
 function checkAndGetWindowDrift(address[] assets, uint128[] proposedMins, uint128[] proposedMaxs) external view returns (bool[] needsMinUpdate, bool[] needsMaxUpdate)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | assets | address[] | Array of asset addresses to check |
 | proposedMins | uint128[] | Keeper's off-chain window minimum prices |
 | proposedMaxs | uint128[] | Keeper's off-chain window maximum prices |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | needsMinUpdate | bool[] | Whether minPrice drift exceeds deadband for each asset |
 | needsMaxUpdate | bool[] | Whether maxPrice drift exceeds deadband for each asset |
 
-#### ❌ Errors
+##### ❌ Errors
 * InvalidArrayLength if the input array lengths do not match
 
 - - -

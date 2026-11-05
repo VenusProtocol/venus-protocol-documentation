@@ -1,5 +1,5 @@
 ---
-title: "Correlated Token Oracles"
+title: "Correlated token oracles"
 ---
 
 Correlated-token oracles price a receipt, staking, or yield-bearing token from an exchange rate and the USD price of a related underlying asset. The directory contains more than one deployed generation; constructor and permission models must be selected per address.

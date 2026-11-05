@@ -1,14 +1,15 @@
 ---
 title: "VenusERC4626"
 ---
+## VenusERC4626
 
-### Overview
+#### Overview
 
 `VenusERC4626` is an upgradeable, ERC4626-compliant vault that wraps a Venus vToken, enabling standard ERC4626 vault interactions with the Venus Protocol. It manages deposits, withdrawals, minting, redeeming, and reward distribution, with additional access control and loop limit protections.
 
-# Solidity API
+## Solidity API
 
-### State Variables
+#### State Variables
 
 - **`NO_ERROR`** (`uint256`, internal constant):  
    Error code representing no errors in Venus operations.
@@ -24,7 +25,7 @@ title: "VenusERC4626"
 
 ---
 
-### Events
+#### Events
 
 - **`ClaimRewards(uint256 amount, address indexed rewardToken)`**  
    Emitted when rewards are claimed.
@@ -46,7 +47,7 @@ title: "VenusERC4626"
 
 ---
 
-### Errors
+#### Errors
 
 - **`VenusERC4626__VenusError(uint256 errorCode)`**  
    Thrown when a Venus protocol call returns an error.
@@ -69,16 +70,16 @@ title: "VenusERC4626"
    Thrown when attempting an operation with a zero amount.
   - `operation`: The name of the operation (e.g., "deposit", "withdraw", "mint", "redeem").
 
-### Constructor
+#### Constructor
 
 - **@custom:oz-upgrades-unsafe-allow constructor**  
   Disables initializers for the upgradeable contract pattern.
 
 ---
 
-### Functions
+#### Functions
 
-### initialize
+#### initialize
 
 Initializes the VenusERC4626 vault with the associated vToken address.
 
@@ -86,20 +87,20 @@ Initializes the VenusERC4626 vault with the associated vToken address.
 function initialize(address vToken_) public initializer
 ```
 
-#### Parameters
+##### Parameters
 
 | Name     | Type    | Description                                                                 |
 | -------- | ------- | --------------------------------------------------------------------------- |
 | vToken\_ | address | The vToken associated with the vault, representing the yield-bearing asset. |
 
-#### Notes
+##### Notes
 
 - Only the vToken address is set in this function.
 - `initialize2` must be called to complete the configuration.
 
 ---
 
-### initialize2
+#### initialize2
 
 Completes the configuration of the VenusERC4626 vault by setting additional attributes.
 
@@ -107,7 +108,7 @@ Completes the configuration of the VenusERC4626 vault by setting additional attr
 function initialize2(address accessControlManager_, address rewardRecipient_, uint256 loopsLimit_, address vaultOwner_) public
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                   | Type    | Description                                                             |
 | ---------------------- | ------- | ----------------------------------------------------------------------- |
@@ -116,14 +117,14 @@ function initialize2(address accessControlManager_, address rewardRecipient_, ui
 | loopsLimit\_           | uint256 | The maximum number of loops for certain operations to enhance security. |
 | vaultOwner\_           | address | The address of the vault owner.              |
 
-#### Notes
+##### Notes
 
 - Can only be called once.
 - Use with caution to avoid misconfiguration.
 
 ---
 
-### setMaxLoopsLimit
+#### setMaxLoopsLimit
 
 Sets the maximum number of loops for certain operations.
 
@@ -131,23 +132,23 @@ Sets the maximum number of loops for certain operations.
 function setMaxLoopsLimit(uint256 loopsLimit) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name       | Type    | Description                            |
 | ---------- | ------- | -------------------------------------- |
 | loopsLimit | uint256 | The new maximum loops limit to be set. |
 
-#### Events
+##### Events
 
 - Emits `MaxLoopsLimitUpdated` on success.
 
-#### Access
+##### Access
 
 - Controlled by the Access Control Manager (ACM).
 
 ---
 
-### setRewardRecipient
+#### setRewardRecipient
 
 Sets a new recipient for rewards distributed by the Venus Protocol.
 
@@ -155,23 +156,23 @@ Sets a new recipient for rewards distributed by the Venus Protocol.
 function setRewardRecipient(address newRecipient) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type    | Description                              |
 | ------------ | ------- | ---------------------------------------- |
 | newRecipient | address | The address of the new reward recipient. |
 
-#### Events
+##### Events
 
 - Emits `RewardRecipientUpdated` on success.
 
-#### Access
+##### Access
 
 - Controlled by the ACM.
 
 ---
 
-### sweepToken
+#### sweepToken
 
 Sweeps the specified token from the contract and sends it to the contract owner.
 
@@ -179,23 +180,23 @@ Sweeps the specified token from the contract and sends it to the contract owner.
 function sweepToken(IERC20Upgradeable token) external onlyOwner
 ```
 
-#### Parameters
+##### Parameters
 
 | Name  | Type              | Description           |
 | ----- | ----------------- | --------------------- |
 | token | IERC20Upgradeable | Address of the token. |
 
-#### Events
+##### Events
 
 - Emits `SweepToken` on success.
 
-#### Access
+##### Access
 
 - Only the owner.
 
 ---
 
-### claimRewards
+#### claimRewards
 
 Claims rewards from all reward distributors associated with the vToken and transfers them to the reward recipient.
 
@@ -203,13 +204,13 @@ Claims rewards from all reward distributors associated with the vToken and trans
 function claimRewards() external
 ```
 
-#### Notes
+##### Notes
 
 - Iterates through all reward distributors fetched from the comptroller, claims rewards, and transfers them if available.
 
 ---
 
-### deposit
+#### deposit
 
 Deposits assets into the vault, minting corresponding shares to the receiver.
 
@@ -217,27 +218,27 @@ Deposits assets into the vault, minting corresponding shares to the receiver.
 function deposit(uint256 assets, address receiver) public override nonReentrant returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name     | Type    | Description                      |
 | -------- | ------- | -------------------------------- |
 | assets   | uint256 | The amount of assets to deposit. |
 | receiver | address | The address to receive shares.   |
 
-#### Returns
+##### Returns
 
 | Name   | Type    | Description              |
 | ------ | ------- | ------------------------ |
 | shares | uint256 | Amount of shares minted. |
 
-#### Notes
+##### Notes
 
 - Overrides ERC4626Upgradeable deposit.
 - Includes non-reentrant protection and custom Venus logic.
 
 ---
 
-### mint
+#### mint
 
 Mints new shares of the vault, allocating the corresponding amount of assets to the receiver.
 
@@ -245,27 +246,27 @@ Mints new shares of the vault, allocating the corresponding amount of assets to 
 function mint(uint256 shares, address receiver) public override nonReentrant returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name     | Type    | Description                    |
 | -------- | ------- | ------------------------------ |
 | shares   | uint256 | The amount of shares to mint.  |
 | receiver | address | The address to receive shares. |
 
-#### Returns
+##### Returns
 
 | Name   | Type    | Description                 |
 | ------ | ------- | --------------------------- |
 | assets | uint256 | Amount of assets deposited. |
 
-#### Notes
+##### Notes
 
 - Overrides ERC4626Upgradeable mint.
 - Includes non-reentrant protection and custom Venus logic.
 
 ---
 
-### withdraw
+#### withdraw
 
 Withdraws assets from the vault, burning the corresponding amount of shares from the owner's balance.
 
@@ -273,7 +274,7 @@ Withdraws assets from the vault, burning the corresponding amount of shares from
 function withdraw(uint256 assets, address receiver, address owner) public override nonReentrant returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name     | Type    | Description                          |
 | -------- | ------- | ------------------------------------ |
@@ -281,20 +282,20 @@ function withdraw(uint256 assets, address receiver, address owner) public overri
 | receiver | address | The address to receive assets.       |
 | owner    | address | The address whose shares are burned. |
 
-#### Returns
+##### Returns
 
 | Name   | Type    | Description              |
 | ------ | ------- | ------------------------ |
 | shares | uint256 | Amount of shares burned. |
 
-#### Notes
+##### Notes
 
 - Overrides ERC4626Upgradeable withdraw.
 - Includes non-reentrant protection and custom Venus logic.
 
 ---
 
-### redeem
+#### redeem
 
 Redeems shares of the vault, returning the corresponding amount of assets to the receiver.
 
@@ -302,7 +303,7 @@ Redeems shares of the vault, returning the corresponding amount of assets to the
 function redeem(uint256 shares, address receiver, address owner) public override nonReentrant returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name     | Type    | Description                            |
 | -------- | ------- | -------------------------------------- |
@@ -310,20 +311,20 @@ function redeem(uint256 shares, address receiver, address owner) public override
 | receiver | address | The address to receive assets.         |
 | owner    | address | The address whose shares are redeemed. |
 
-#### Returns
+##### Returns
 
 | Name   | Type    | Description                |
 | ------ | ------- | -------------------------- |
 | assets | uint256 | Amount of assets returned. |
 
-#### Notes
+##### Notes
 
 - Overrides ERC4626Upgradeable redeem.
 - Includes non-reentrant protection and custom Venus logic.
 
 ---
 
-### totalAssets
+#### totalAssets
 
 Returns the total amount of assets managed by the vault, including both deposited assets and accrued rewards.
 
@@ -331,19 +332,19 @@ Returns the total amount of assets managed by the vault, including both deposite
 function totalAssets() public view virtual override returns (uint256)
 ```
 
-#### Returns
+##### Returns
 
 | Name   | Type    | Description                        |
 | ------ | ------- | ---------------------------------- |
 | assets | uint256 | Total assets managed by the vault. |
 
-#### Notes
+##### Notes
 
 - Overrides ERC4626Upgradeable totalAssets.
 
 ---
 
-### maxDeposit
+#### maxDeposit
 
 Returns the maximum deposit allowed, based on Venus supply caps.
 
@@ -351,25 +352,25 @@ Returns the maximum deposit allowed, based on Venus supply caps.
 function maxDeposit(address account) public view virtual override returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name    | Type    | Description                 |
 | ------- | ------- | --------------------------- |
 | account | address | The address of the account. |
 
-#### Returns
+##### Returns
 
 | Name   | Type    | Description                           |
 | ------ | ------- | ------------------------------------- |
 | amount | uint256 | Maximum assets that can be deposited. |
 
-#### Notes
+##### Notes
 
 - Returns 0 if minting is paused or the supply cap has been reached.
 
 ---
 
-### maxMint
+#### maxMint
 
 Returns the maximum amount of shares that can be minted.
 
@@ -377,25 +378,25 @@ Returns the maximum amount of shares that can be minted.
 function maxMint(address account) public view virtual override returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name    | Type    | Description                 |
 | ------- | ------- | --------------------------- |
 | account | address | The address of the account. |
 
-#### Returns
+##### Returns
 
 | Name   | Type    | Description                        |
 | ------ | ------- | ---------------------------------- |
 | shares | uint256 | Maximum shares that can be minted. |
 
-#### Notes
+##### Notes
 
 - Derived from the maximum deposit amount converted to shares.
 
 ---
 
-### maxWithdraw
+#### maxWithdraw
 
 Returns the maximum amount of assets that can be withdrawn.
 
@@ -403,25 +404,25 @@ Returns the maximum amount of assets that can be withdrawn.
 function maxWithdraw(address receiver) public view virtual override returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name     | Type    | Description                             |
 | -------- | ------- | --------------------------------------- |
 | receiver | address | The address of the account withdrawing. |
 
-#### Returns
+##### Returns
 
 | Name   | Type    | Description                           |
 | ------ | ------- | ------------------------------------- |
 | amount | uint256 | Maximum assets that can be withdrawn. |
 
-#### Notes
+##### Notes
 
 - This value is limited by the available cash in the vault.
 
 ---
 
-### maxRedeem
+#### maxRedeem
 
 Returns the maximum amount of shares that can be redeemed.
 
@@ -429,18 +430,18 @@ Returns the maximum amount of shares that can be redeemed.
 function maxRedeem(address receiver) public view virtual override returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name     | Type    | Description                           |
 | -------- | ------- | ------------------------------------- |
 | receiver | address | The address of the account redeeming. |
 
-#### Returns
+##### Returns
 
 | Name   | Type    | Description                          |
 | ------ | ------- | ------------------------------------ |
 | shares | uint256 | Maximum shares that can be redeemed. |
 
-#### Notes
+##### Notes
 
 - Limited by the available cash in the vault.

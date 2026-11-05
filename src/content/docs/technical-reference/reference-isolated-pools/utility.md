@@ -1,5 +1,5 @@
 ---
-title: "Utility modules"
+title: "Utility"
 ---
 
 These shared modules support the isolated-pool contract family; they are not independently deployed protocol products.

@@ -1,11 +1,11 @@
 ---
 title: "SwapRouter"
 ---
-## Overview
+### Overview
 
 The `SwapRouter` is a Venus periphery contract that enables users to swap tokens and interact with Venus markets in a single transaction. It supports both ERC-20 and native tokens (e.g., BNB), allowing users to supply or repay Venus markets seamlessly after a swap. This contract is designed for composability, security, and gas efficiency.
 
-## Prerequisites
+### Prerequisites
 
 Before using the SwapRouter, users should:
 
@@ -13,12 +13,12 @@ Before using the SwapRouter, users should:
 2. Ensure the target vToken market is listed in the Venus Comptroller.
 3. For native token operations, send the appropriate value with the transaction.
 
-## Inheritance
+### Inheritance
 
 - `Ownable2StepUpgradeable` — Two-step ownership transfer pattern
 - `ReentrancyGuardUpgradeable` — Reentrancy protection
 
-## Immutable State Variables
+### Immutable State Variables
 
 - `NATIVE_TOKEN_ADDR`: Address representing the native token (e.g., BNB)
 - `COMPTROLLER`: Venus Comptroller contract for market validation
@@ -26,7 +26,7 @@ Before using the SwapRouter, users should:
 - `WRAPPED_NATIVE`: Wrapped native token contract (e.g., WBNB)
 - `NATIVE_VTOKEN`: vToken contract for the native token (e.g., vBNB)
 
-## Architecture
+### Architecture
 
 ```
 ┌───────────────────────────────────────────────┐
@@ -52,9 +52,9 @@ Before using the SwapRouter, users should:
 └───────────────────────────────────────────────┘
 ```
 
-## Solidity API
+### Solidity API
 
-### swapAndSupply
+#### swapAndSupply
 
 Swaps an input token for the underlying asset of a Venus market and supplies it on behalf of the user.
 
@@ -99,7 +99,7 @@ User wants to supply 1,000 USDC to a Venus market using DAI:
 - `NoTokensReceived`: Thrown if no tokens are received from swap.
 - `SupplyFailed`: Thrown if supply to Venus market fails (returns error code).
 
-### swapNativeAndSupply
+#### swapNativeAndSupply
 
 Swaps native tokens (e.g., BNB) for the underlying asset and supplies it to a Venus market.
 
@@ -141,7 +141,7 @@ User wants to supply 2 BNB to a Venus market using native BNB:
 - `NoTokensReceived`: Thrown if no tokens are received from swap.
 - `SupplyFailed`: Thrown if supply to Venus market fails.
 
-### swapAndRepay
+#### swapAndRepay
 
 Swaps an input token and repays the user's debt in a Venus market.
 
@@ -186,7 +186,7 @@ User has 500 USDT debt in a Venus market and wants to repay using USDC:
 - `NoTokensReceived`: Thrown if no tokens are received from swap.
 - `RepayFailed`: Thrown if repay to Venus market fails (returns error code).
 
-### swapNativeAndRepay
+#### swapNativeAndRepay
 
 Swaps native tokens and repays the user's debt in a Venus market.
 
@@ -227,7 +227,7 @@ User has 1,000 DAI debt in `vDAI` and wants to repay it using up to 0.5 BNB:
 - `NoTokensReceived`: Thrown if no tokens are received from swap.
 - `RepayFailed`: Thrown if repay to Venus market fails.
 
-### swapAndRepayFull
+#### swapAndRepayFull
 
 Swaps tokens to repay the user's full debt in a Venus market.
 
@@ -272,7 +272,7 @@ User has approximately 1,200 USDC debt in a Venus market and wants to repay the 
 - `NoTokensReceived`: Thrown if no tokens are received from swap.
 - `RepayFailed`: Thrown if repay to Venus market fails.
 
-### swapNativeAndRepayFull
+#### swapNativeAndRepayFull
 
 Swaps native tokens to repay the user's full debt in a Venus market.
 
@@ -313,7 +313,7 @@ User has approximately 250 USDT debt in `vUSDT` and is willing to spend at most 
 - `NoTokensReceived`: Thrown if no tokens are received from swap.
 - `RepayFailed`: Thrown if repay to Venus market fails.
 
-### sweepToken
+#### sweepToken
 
 Allows the contract owner to recover leftover ERC-20 tokens from the contract.
 
@@ -327,7 +327,7 @@ function sweepToken(IERC20Upgradeable token) external onlyOwner
 swapRouter.sweepToken(tokenAddress);
 ```
 
-### sweepNative
+#### sweepNative
 
 Allows the contract owner to recover leftover native tokens from the contract.
 
@@ -341,7 +341,7 @@ function sweepNative() external onlyOwner
 swapRouter.sweepNative();
 ```
 
-## Error Definitions
+### Error Definitions
 
 - `ZeroAddress()`: Thrown when a zero address is provided for required parameters.
 - `ZeroAmount()`: Thrown when a zero amount is provided for required parameters or user debt is zero.
@@ -355,36 +355,36 @@ swapRouter.sweepNative();
 - `InsufficientAmountOut(uint256 amountOut, uint256 minAmountOut)`: Thrown when the swap output is less than the minimum required amount (slippage protection).
 - `UnauthorizedNativeSender(address sender)`: Thrown when an unauthorized sender tries to send native tokens to the contract.
 
-## Security Considerations
+### Security Considerations
 
-### Access Control
+#### Access Control
 
 - Only the contract owner can sweep tokens or native currency.
 - All swap/supply/repay functions are open to users, but require proper approvals and market listing.
 
-### Reentrancy Protection
+#### Reentrancy Protection
 
 - All user swap, supply, and repay entry points are protected by the `nonReentrant` modifier. The initializer and owner-only sweep functions are not marked `nonReentrant`.
 
-### Price and Slippage Protection
+#### Price and Slippage Protection
 
 - `swapAndSupply`, `swapNativeAndSupply`, `swapAndRepay`, and `swapNativeAndRepay` accept a caller-selected `minAmountOut` and revert when the received output is below it.
 - `swapAndRepayFull` and `swapNativeAndRepayFull` do **not** accept a caller-selected `minAmountOut`. They read the caller's current debt and require the swap output to be at least that debt amount.
 - For full-repay calls, choose `maxAmountIn` or `msg.value` as the maximum input you are willing to expose and verify the DEX price and amount limits encoded in the backend-signed `swapCallData`. A quote can consume the full maximum at a poor price while still producing enough output to repay the debt.
 
-### Market Validation
+#### Market Validation
 
 - The contract checks that the vToken market is listed in the Comptroller before proceeding.
 
-### Excess and Unused Tokens
+#### Excess and Unused Tokens
 
 - `_repay` returns underlying tokens received above the current debt amount. On a cross-asset route, this is an excess-`tokenOut` refund; unused `tokenIn` remains dependent on the backend-signed SwapHelper/DEX call sequence, including its recipients and sweep steps.
 - If `tokenIn` already equals the market underlying, SwapHelper is skipped. The full input is treated as output, and `_repay` returns the amount above the debt in that same underlying token.
 - For native input used to repay `vBNB`, the Router first wraps BNB to WBNB. Because the market underlying is also WBNB, `_repay` returns any excess as WBNB, not BNB.
 
-## Integration
+### Integration
 
-### For Users
+#### For Users
 
 1. Approve only the verified, chain-specific SwapRouter **proxy** to spend your tokens (for ERC-20 operations). Do not approve the implementation or SwapHelper. Approve no more than the intended input cap and reduce or revoke any unused allowance after the transaction. Find the proxy on the [Deployed Contracts](/deployed-contracts/periphery) page:
    ```solidity
@@ -394,9 +394,9 @@ swapRouter.sweepNative();
 3. For native token operations, send the required value with your transaction.
 4. Monitor events (`SwapAndSupply`, `SwapAndRepay`) for transaction status.
 
-### For Developers
+#### For Developers
 
-### Swap API Integration
+#### Swap API Integration
 
 Cross-asset operations require signed swap data from the Venus Swap API:
 
@@ -405,10 +405,10 @@ Cross-asset operations require signed swap data from the Venus Swap API:
 3. Verify the quote's input cap, DEX price or amount limits, deadline, output and unused-input recipients, and sweep steps.
 4. Pass the signed `swapCallData` to the entry function. For full-repay calls, remember that SwapRouter enforces only the current debt as its output floor.
 
-## Audits
+### Audits
 
 Published SwapRouter audit reports are available in the [venus-periphery repository](https://github.com/VenusProtocol/venus-periphery/tree/main/audits). An audit report covers the code and version reviewed; verify that the live proxy implementation bytecode matches the audited version before treating the report as coverage for a deployment.
 
-## Deployment
+### Deployment
 
 See [Deployed Contracts](/deployed-contracts/periphery) for current addresses.

@@ -1,5 +1,5 @@
 ---
-title: "Comptroller API"
+title: "Comptroller"
 ---
 
 The [`Comptroller` v4.4.0 source](https://github.com/VenusProtocol/isolated-pools/blob/v4.4.0/contracts/Comptroller.sol) applies pool policy and risk checks. Each pool is a beacon proxy; resolve its current beacon implementation from the [engine version map](/technical-reference/reference-isolated-pools#mainnet-implementation-map) before relying on this ABI.

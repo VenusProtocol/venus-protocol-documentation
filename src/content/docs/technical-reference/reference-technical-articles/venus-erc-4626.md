@@ -1,5 +1,5 @@
 ---
-title: "Venus Protocol's ERC-4626 Implementation"
+title: "VenusERC4626 Vaults"
 ---
 
 ## Overview

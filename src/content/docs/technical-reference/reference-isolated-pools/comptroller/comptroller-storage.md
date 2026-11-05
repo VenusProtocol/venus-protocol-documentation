@@ -1,5 +1,5 @@
 ---
-title: "Comptroller State and Storage"
+title: "ComptrollerStorage"
 ---
 
 This page describes the state exposed by the [`ComptrollerStorage` v4.4.0 source](https://github.com/VenusProtocol/isolated-pools/blob/v4.4.0/contracts/ComptrollerStorage.sol). It is **not** a slot-by-slot storage layout.

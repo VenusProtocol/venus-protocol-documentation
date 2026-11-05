@@ -1,5 +1,5 @@
 ---
-title: "Delegating and Voting"
+title: "Delegating & Voting"
 ---
 
 XVS deposited in the XVS Vault can participate in Venus governance after its voting power has been delegated. You can delegate to your own address or to another address without transferring ownership of the staked XVS.

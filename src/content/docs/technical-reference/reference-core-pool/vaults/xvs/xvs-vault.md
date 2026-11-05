@@ -1,5 +1,5 @@
 ---
-title: "XVS Vault API"
+title: "XVSVault"
 ---
 
 The XVS Vault lets users stake configured tokens, accrue rewards, request and execute withdrawals, and delegate voting power. Deployments can be block-based or time-based; use the [mainnet version map](/technical-reference/reference-core-pool/vaults/xvs) to select the correct units and implementation.

@@ -1,5 +1,5 @@
 ---
-title: "Periphery - Deployed Contracts"
+title: "Periphery"
 ---
 
 The stable source/deployment baseline for these address families is [`venus-periphery` v1.2.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0). This registry does not certify the current proxy implementation, clone instance, owner, signer, router/DEX configuration, pause level, EBrake control, or oracle consumer. Verify those values on-chain before a trade or emergency action.

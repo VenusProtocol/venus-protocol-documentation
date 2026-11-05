@@ -1,5 +1,5 @@
 ---
-title: "Hub-Funded Spoke Pools - Deployed Contracts"
+title: "Hub-Funded Spoke Pools"
 ---
 
 Contracts for [hub-funded spoke pools](/technical-reference/reference-isolated-pools/spoke). Spoke pools have their own registry, so they are not listed in the Isolated Pools `PoolRegistry`. Query `getAllPools()` on the `SpokePoolRegistry` below for the current list.

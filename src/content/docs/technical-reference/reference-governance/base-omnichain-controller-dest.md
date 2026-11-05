@@ -1,12 +1,13 @@
 ---
 title: "BaseOmnichainControllerDest"
 ---
+## BaseOmnichainControllerDest
 
 [`BaseOmnichainControllerDest` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Cross-chain/BaseOmnichainControllerDest.sol) is the abstract destination-side base for OmnichainGovernanceExecutor. It uses the LayerZero V1 `NonblockingLzApp` API, applies one 24-hour receive-command limit to the BNB source, and disables ownership renunciation. It is not a standalone deployment.
 
-# Solidity API
+## Solidity API
 
-### maxDailyReceiveLimit
+#### maxDailyReceiveLimit
 
 Maximum daily limit for receiving commands from BNB Chain
 
@@ -16,7 +17,7 @@ uint256 maxDailyReceiveLimit
 
 ---
 
-### last24HourCommandsReceived
+#### last24HourCommandsReceived
 
 Total received commands within the last 24-hour window from Binance chain
 
@@ -26,7 +27,7 @@ uint256 last24HourCommandsReceived
 
 ---
 
-### last24HourReceiveWindowStart
+#### last24HourReceiveWindowStart
 
 Timestamp when the last 24-hour window started from Binance chain
 
@@ -36,7 +37,7 @@ uint256 last24HourReceiveWindowStart
 
 ---
 
-### setMaxDailyReceiveLimit
+#### setMaxDailyReceiveLimit
 
 Sets the maximum daily limit for receiving commands
 
@@ -44,23 +45,23 @@ Sets the maximum daily limit for receiving commands
 function setMaxDailyReceiveLimit(uint256 limit_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name    | Type    | Description        |
 | ------- | ------- | ------------------ |
 | limit\_ | uint256 | Number of commands |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits SetMaxDailyReceiveLimit with old and new limit
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Only Owner
 
 ---
 
-### pause
+#### pause
 
 Triggers the paused state of the controller
 
@@ -68,13 +69,13 @@ Triggers the paused state of the controller
 function pause() external
 ```
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Only owner
 
 ---
 
-### unpause
+#### unpause
 
 Triggers the resume state of the controller
 
@@ -82,13 +83,13 @@ Triggers the resume state of the controller
 function unpause() external
 ```
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Only owner
 
 ---
 
-### renounceOwnership
+#### renounceOwnership
 
 Empty implementation of renounce ownership to avoid any mishappening
 

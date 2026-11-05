@@ -1,6 +1,7 @@
 ---
-title: "Trade"
+title: "RelativePositionManager"
 ---
+## Trade
 
 [Venus Trade](/technical-reference/reference-technical-articles/trade) is a relative performance trading product built on Venus Protocol's lending infrastructure. It allows users to express a view that one asset will outperform another, packaged into a single managed position with automated execution, proportional closing, and built-in yield generation.
 
@@ -12,9 +13,9 @@ For architecture details and implementation walkthrough, see the [Trade Technica
 PositionAccount is an accounting boundary, not an exclusive-custody guarantee. Standard Venus liquidations can seize vTokens held by a PositionAccount. In addition, an account granted the RelativePositionManager ACM permission for `executePositionAccountCall(address,address[],bytes[])` can cause arbitrary external calls from a PositionAccount through `genericCalls`; this emergency/administrative path does not require a contemporaneous transaction from the position owner.
 :::
 
-# Solidity API
+## Solidity API
 
-### COMPTROLLER
+#### COMPTROLLER
 
 The Venus comptroller contract
 
@@ -24,7 +25,7 @@ contract IComptroller COMPTROLLER
 
 ---
 
-### LEVERAGE_MANAGER
+#### LEVERAGE_MANAGER
 
 The leverage strategies manager contract
 
@@ -34,7 +35,7 @@ contract LeverageStrategiesManager LEVERAGE_MANAGER
 
 ---
 
-### proportionalCloseTolerance
+#### proportionalCloseTolerance
 
 Tolerance for proportional close (in basis points): 100 = 1% margin of error (governance-controlled)
 
@@ -44,7 +45,7 @@ uint256 proportionalCloseTolerance
 
 ---
 
-### POSITION_ACCOUNT_IMPLEMENTATION
+#### POSITION_ACCOUNT_IMPLEMENTATION
 
 Implementation contract for PositionAccount clones (settable via governance, can only be set once)
 
@@ -54,7 +55,7 @@ address POSITION_ACCOUNT_IMPLEMENTATION
 
 ---
 
-### isPositionAccountImplementationLocked
+#### isPositionAccountImplementationLocked
 
 Lock flag to prevent changing POSITION_ACCOUNT_IMPLEMENTATION after it's set
 
@@ -64,7 +65,7 @@ bool isPositionAccountImplementationLocked
 
 ---
 
-### dsaVTokenIndexCounter
+#### dsaVTokenIndexCounter
 
 Counter / next index for newly added DSA vTokens (also equals current count)
 
@@ -74,7 +75,7 @@ uint8 dsaVTokenIndexCounter
 
 ---
 
-### isPartiallyPaused
+#### isPartiallyPaused
 
 Whether the contract is partially paused (blocks open, scale, withdraw, deactivate but allows close and supply)
 
@@ -84,7 +85,7 @@ bool isPartiallyPaused
 
 ---
 
-### isCompletelyPaused
+#### isCompletelyPaused
 
 Whether the contract is completely paused (blocks all state-changing user operations)
 
@@ -94,7 +95,7 @@ bool isCompletelyPaused
 
 ---
 
-### dsaVTokens
+#### dsaVTokens
 
 Mapping from DSA index to supported DSA (Default Settlement Asset) vToken markets
 
@@ -104,7 +105,7 @@ mapping(uint8 => address) dsaVTokens
 
 ---
 
-### isDsaVTokenActive
+#### isDsaVTokenActive
 
 Tracks whether a given DSA vToken is currently active for new activations
 
@@ -114,7 +115,7 @@ mapping(address => bool) isDsaVTokenActive
 
 ---
 
-### positions
+#### positions
 
 Mapping from user => longAsset => shortAsset => Position data
 
@@ -124,7 +125,7 @@ mapping(address => mapping(address => mapping(address => struct IRelativePositio
 
 ---
 
-### constructor
+#### constructor
 
 Contract constructor
 
@@ -132,7 +133,7 @@ Contract constructor
 constructor(address comptroller, address leverageManager) public
 ```
 
-#### Parameters
+##### Parameters
 
 | Name            | Type    | Description                                                                                   |
 | --------------- | ------- | --------------------------------------------------------------------------------------------- |
@@ -141,7 +142,7 @@ constructor(address comptroller, address leverageManager) public
 
 ---
 
-### initialize
+#### initialize
 
 Initializes the upgradeable contract
 
@@ -149,7 +150,7 @@ Initializes the upgradeable contract
 function initialize(address accessControlManager_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                   | Type    | Description                                    |
 | ---------------------- | ------- | ---------------------------------------------- |
@@ -157,7 +158,7 @@ function initialize(address accessControlManager_) external
 
 ---
 
-### partialPause
+#### partialPause
 
 Partially pauses the manager — blocks risk-increasing operations (open, scale, withdraw, deactivate)
 while allowing defensive operations (close, supply principal).
@@ -166,13 +167,13 @@ while allowing defensive operations (close, supply principal).
 function partialPause() external
 ```
 
-#### Access Requirements
+##### Access Requirements
 
 - ACM permission required: `partialPause()`
 
 ---
 
-### partialUnpause
+#### partialUnpause
 
 Removes partial pause, re-enabling risk operations (unless completely paused).
 
@@ -180,13 +181,13 @@ Removes partial pause, re-enabling risk operations (unless completely paused).
 function partialUnpause() external
 ```
 
-#### Access Requirements
+##### Access Requirements
 
 - ACM permission required: `partialUnpause()`
 
 ---
 
-### completePause
+#### completePause
 
 Completely pauses all state-changing user operations on the manager
 
@@ -194,13 +195,13 @@ Completely pauses all state-changing user operations on the manager
 function completePause() external
 ```
 
-#### Access Requirements
+##### Access Requirements
 
 - ACM permission required: `completePause()`
 
 ---
 
-### completeUnpause
+#### completeUnpause
 
 Removes complete pause, re-enabling all operations (unless partially paused).
 
@@ -208,13 +209,13 @@ Removes complete pause, re-enabling all operations (unless partially paused).
 function completeUnpause() external
 ```
 
-#### Access Requirements
+##### Access Requirements
 
 - ACM permission required: `completeUnpause()`
 
 ---
 
-### setPositionAccountImplementation
+#### setPositionAccountImplementation
 
 Sets the implementation contract used for PositionAccount clones (can be set only once)
 
@@ -222,29 +223,29 @@ Sets the implementation contract used for PositionAccount clones (can be set onl
 function setPositionAccountImplementation(address positionAccountImpl) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                | Type    | Description                                                 |
 | ------------------- | ------- | ----------------------------------------------------------- |
 | positionAccountImpl | address | Implementation contract for PositionAccount EIP-1167 clones |
 
-#### Access Requirements
+##### Access Requirements
 
 - ACM permission required: `setPositionAccountImplementation(address)`
 - The implementation can be set only once; existing and future clones then use that locked address
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits PositionAccountImplementationSet event.
 
-#### ❌ Errors
+##### ❌ Errors
 
 - Throw ZeroAddress if positionAccountImpl is zero.
 - Throw PositionAccountImplementationLocked if already set.
 
 ---
 
-### setProportionalCloseTolerance
+#### setProportionalCloseTolerance
 
 Sets the proportional close tolerance (in basis points)
 
@@ -252,28 +253,28 @@ Sets the proportional close tolerance (in basis points)
 function setProportionalCloseTolerance(uint256 newTolerance) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type    | Description                         |
 | ------------ | ------- | ----------------------------------- |
 | newTolerance | uint256 | New tolerance value in basis points |
 
-#### Access Requirements
+##### Access Requirements
 
 - ACM permission required: `setProportionalCloseTolerance(uint256)`
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits ProportionalCloseToleranceUpdated event.
 
-#### ❌ Errors
+##### ❌ Errors
 
 - Throw InvalidProportionalCloseTolerance if tolerance is outside `[1, 10000]`.
 - Throw SameProportionalCloseTolerance if tolerance is unchanged.
 
 ---
 
-### addDSAVToken
+#### addDSAVToken
 
 Adds a new DSA vToken to the supported list
 
@@ -281,21 +282,21 @@ Adds a new DSA vToken to the supported list
 function addDSAVToken(address dsaVToken) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name      | Type    | Description                                         |
 | --------- | ------- | --------------------------------------------------- |
 | dsaVToken | address | The vToken market address to add as a supported DSA |
 
-#### Access Requirements
+##### Access Requirements
 
 - ACM permission required: `addDSAVToken(address)`
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits DSAVTokenAdded event.
 
-#### ❌ Errors
+##### ❌ Errors
 
 - Throw ZeroAddress if dsaVToken is zero.
 - Throw AssetNotListed if the market is not listed in the Comptroller.
@@ -303,7 +304,7 @@ function addDSAVToken(address dsaVToken) external
 
 ---
 
-### setDSAVTokenActive
+#### setDSAVTokenActive
 
 Updates the active flag for a configured DSA vToken, controlling whether it can be used for new activations
 
@@ -311,29 +312,29 @@ Updates the active flag for a configured DSA vToken, controlling whether it can 
 function setDSAVTokenActive(uint8 dsaIndex, bool active) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name     | Type  | Description                                                          |
 | -------- | ----- | -------------------------------------------------------------------- |
 | dsaIndex | uint8 | Index of the DSA vToken in the internal mapping                      |
 | active   | bool  | New active flag (true to allow new activations, false to block them) |
 
-#### Access Requirements
+##### Access Requirements
 
 - ACM permission required: `setDSAVTokenActive(uint8,bool)`
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits DSAVTokenActiveUpdated when the active flag is changed.
 
-#### ❌ Errors
+##### ❌ Errors
 
 - Throw InvalidDSA if the index or stored address is invalid.
 - Throw SameDSAActiveStatus when called with the current active flag.
 
 ---
 
-### executePositionAccountCall
+#### executePositionAccountCall
 
 Executes multiple generic calls from a position account for emergency or administrative actions.
 
@@ -341,7 +342,7 @@ Executes multiple generic calls from a position account for emergency or adminis
 function executePositionAccountCall(address positionAccount, address[] targets, bytes[] data) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name            | Type      | Description                         |
 | --------------- | --------- | ----------------------------------- |
@@ -349,14 +350,14 @@ function executePositionAccountCall(address positionAccount, address[] targets, 
 | targets         | address[] | Array of target contract addresses  |
 | data            | bytes[]   | Array of encoded function call data |
 
-#### Access Requirements
+##### Access Requirements
 
 - ACM permission required: `executePositionAccountCall(address,address[],bytes[])`
 - The granted caller selects every target and calldata item. RelativePositionManager forwards them to the PositionAccount's `genericCalls` function without restricting the called contracts or selectors.
 
 ---
 
-### activateAndOpenPosition
+#### activateAndOpenPosition
 
 Opens a leveraged position for the first time (combines activation + opening in one call)
 
@@ -364,7 +365,7 @@ Opens a leveraged position for the first time (combines activation + opening in 
 function activateAndOpenPosition(address longVToken, address shortVToken, uint8 dsaIndex, uint256 initialPrincipal, uint256 effectiveLeverage, uint256 shortAmount, uint256 minLongAmount, bytes swapData) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name              | Type    | Description                                                                         |
 | ----------------- | ------- | ----------------------------------------------------------------------------------- |
@@ -377,11 +378,11 @@ function activateAndOpenPosition(address longVToken, address shortVToken, uint8 
 | minLongAmount     | uint256 | Minimum amount of long asset expected from swap                                     |
 | swapData          | bytes   | Swap instructions for converting shortAsset to longAsset                            |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits PositionAccountDeployed (if new account), PositionActivated, PrincipalSupplied, and PositionOpened.
 
-#### ❌ Errors
+##### ❌ Errors
 
 - Throw InsufficientPrincipal if initialPrincipal is zero.
 - Throw ZeroAddress if longVToken or shortVToken is zero.
@@ -399,7 +400,7 @@ function activateAndOpenPosition(address longVToken, address shortVToken, uint8 
 
 ---
 
-### scalePosition
+#### scalePosition
 
 Scales an existing position by adding additional leverage (borrow + swap to long)
 
@@ -407,7 +408,7 @@ Scales an existing position by adding additional leverage (borrow + swap to long
 function scalePosition(contract IVToken longVToken, contract IVToken shortVToken, uint256 additionalPrincipal, uint256 shortAmount, uint256 minLongAmount, bytes swapData) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                | Type             | Description                                                                  |
 | ------------------- | ---------------- | ---------------------------------------------------------------------------- |
@@ -418,11 +419,11 @@ function scalePosition(contract IVToken longVToken, contract IVToken shortVToken
 | minLongAmount       | uint256          | Minimum amount of long asset expected from swap (protects against slippage)  |
 | swapData            | bytes            | Swap instructions for converting shortAsset to longAsset                     |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits PositionScaled event (and PrincipalSupplied if additionalPrincipal > 0).
 
-#### ❌ Errors
+##### ❌ Errors
 
 - Throw ZeroShortAmount if shortAmount is zero.
 - Throw PositionNotActive if the position is not active.
@@ -433,7 +434,7 @@ function scalePosition(contract IVToken longVToken, contract IVToken shortVToken
 
 ---
 
-### supplyPrincipal
+#### supplyPrincipal
 
 Supplies additional principal to an active position
 
@@ -441,7 +442,7 @@ Supplies additional principal to an active position
 function supplyPrincipal(address longVToken, address shortVToken, uint256 amount) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name        | Type    | Description                                                                         |
 | ----------- | ------- | ----------------------------------------------------------------------------------- |
@@ -449,11 +450,11 @@ function supplyPrincipal(address longVToken, address shortVToken, uint256 amount
 | shortVToken | address | The vToken market address for the short asset                                       |
 | amount      | uint256 | Amount of DSA underlying to supply (must be large enough to mint at least 1 vToken) |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits PrincipalSupplied event.
 
-#### ❌ Errors
+##### ❌ Errors
 
 - Throw ZeroAmount if amount is zero.
 - Throw PositionNotActive if the position is not active.
@@ -462,7 +463,7 @@ function supplyPrincipal(address longVToken, address shortVToken, uint256 amount
 
 ---
 
-### closeWithProfit
+#### closeWithProfit
 
 Closes a position proportionally; can realize profit on the closed slice (partial or full).
 If treasuryPercent is enabled, the LM redeems more than the requested long amount on behalf
@@ -473,7 +474,7 @@ to avoid exceeding the available collateral bucket and causing a revert.
 function closeWithProfit(contract IVToken longVToken, contract IVToken shortVToken, uint256 closeFractionBps, uint256 longAmountToRedeemForRepay, uint256 minAmountOutRepay, bytes swapDataRepay, uint256 longAmountToRedeemForProfit, uint256 minAmountOutProfit, bytes swapDataProfit) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                        | Type             | Description                                                                                                                                                                               |
 | --------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -487,13 +488,13 @@ function closeWithProfit(contract IVToken longVToken, contract IVToken shortVTok
 | minAmountOutProfit          | uint256          | Minimum DSA out from the profit swap used for slippage protection                                                                                                                         |
 | swapDataProfit              | bytes            | Swap #2: long → DSA for profit realization                                                                                                                                                |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits ProfitConverted event.
 - Emits PositionClosed event. When DSA == Long, PositionClosed.longDustRedeemed is reclassified back
   as principal vTokens rather than transferred.
 
-#### ❌ Errors
+##### ❌ Errors
 
 - Throw PositionNotActive if the position is not active.
 - Throw InvalidCloseFractionBps if closeFractionBps is not between 1 and 10000.
@@ -509,7 +510,7 @@ function closeWithProfit(contract IVToken longVToken, contract IVToken shortVTok
 
 ---
 
-### closeWithLoss
+#### closeWithLoss
 
 Closes a position with loss proportionally (BPS-based, same pattern as closeWithProfit).
 If treasuryPercent is enabled, the LM redeems more than the requested DSA amount on behalf
@@ -531,7 +532,7 @@ of the position account to cover the fee.
 function closeWithLoss(contract IVToken longVToken, contract IVToken shortVToken, uint256 closeFractionBps, uint256 longAmountToRedeemForFirstSwap, uint256 shortAmountToRepayForFirstSwap, uint256 minAmountOutFirst, bytes swapDataFirst, uint256 dsaAmountToRedeemForSecondSwap, uint256 minAmountOutSecond, bytes swapDataSecond) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                           | Type             | Description                                                                                                                                                                              |
 | ------------------------------ | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -546,12 +547,12 @@ function closeWithLoss(contract IVToken longVToken, contract IVToken shortVToken
 | minAmountOutSecond             | uint256          | Minimum short Amount expected from second swap; must be >= internally calculated second repay amount. Should Include flash-loan fees and (for 100% close) internal tolerance buffer.     |
 | swapDataSecond                 | bytes            | Swap #2 calldata: DSA → short for the second repay leg                                                                                                                                   |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits PositionClosed event. When DSA == Long, PositionClosed.longDustRedeemed is reclassified
   back as principal vTokens rather than transferred.
 
-#### ❌ Errors
+##### ❌ Errors
 
 - Throw PositionNotActive if the position is not active.
 - Throw ZeroDebt if there is no short debt to close.
@@ -566,7 +567,7 @@ function closeWithLoss(contract IVToken longVToken, contract IVToken shortVToken
 
 ---
 
-### closeWithProfitAndDeactivate
+#### closeWithProfitAndDeactivate
 
 Fully closes a profitable position and deactivates it in a single atomic transaction.
 
@@ -574,7 +575,7 @@ Fully closes a profitable position and deactivates it in a single atomic transac
 function closeWithProfitAndDeactivate(contract IVToken longVToken, contract IVToken shortVToken, struct IRelativePositionManager.CloseWithProfitParams profitSwapParams) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name             | Type                                                  | Description                                             |
 | ---------------- | ----------------------------------------------------- | ------------------------------------------------------- |
@@ -584,7 +585,7 @@ function closeWithProfitAndDeactivate(contract IVToken longVToken, contract IVTo
 
 ---
 
-### closeWithLossAndDeactivate
+#### closeWithLossAndDeactivate
 
 Fully closes a position at a loss and deactivates it in a single atomic transaction.
 
@@ -592,7 +593,7 @@ Fully closes a position at a loss and deactivates it in a single atomic transact
 function closeWithLossAndDeactivate(contract IVToken longVToken, contract IVToken shortVToken, struct IRelativePositionManager.CloseWithLossParams lossSwapParams) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name           | Type                                                | Description                                           |
 | -------------- | --------------------------------------------------- | ----------------------------------------------------- |
@@ -602,7 +603,7 @@ function closeWithLossAndDeactivate(contract IVToken longVToken, contract IVToke
 
 ---
 
-### deactivatePosition
+#### deactivatePosition
 
 Deactivates a position account
 
@@ -610,25 +611,25 @@ Deactivates a position account
 function deactivatePosition(contract IVToken longVToken, contract IVToken shortVToken) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name        | Type             | Description                           |
 | ----------- | ---------------- | ------------------------------------- |
 | longVToken  | contract IVToken | The vToken market for the long asset  |
 | shortVToken | contract IVToken | The vToken market for the short asset |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits PositionDeactivated event.
 
-#### ❌ Errors
+##### ❌ Errors
 
 - Throw PositionNotActive if the position is not active.
 - Throw PositionNotFullyClosed if short debt remains.
 
 ---
 
-### withdrawPrincipal
+#### withdrawPrincipal
 
 Withdraws principal from an active position, subject to utilization constraints
 
@@ -636,7 +637,7 @@ Withdraws principal from an active position, subject to utilization constraints
 function withdrawPrincipal(contract IVToken longVToken, contract IVToken shortVToken, uint256 amount) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name        | Type             | Description                           |
 | ----------- | ---------------- | ------------------------------------- |
@@ -644,11 +645,11 @@ function withdrawPrincipal(contract IVToken longVToken, contract IVToken shortVT
 | shortVToken | contract IVToken | The vToken market for the short asset |
 | amount      | uint256          | Amount to withdraw                    |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits PrincipalWithdrawn event when principal is withdrawn.
 
-#### ❌ Errors
+##### ❌ Errors
 
 - Throw PositionNotActive if the position is not active.
 - Throw ZeroAmount if amount is zero.
@@ -657,7 +658,7 @@ function withdrawPrincipal(contract IVToken longVToken, contract IVToken shortVT
 
 ---
 
-### getPositionAccountAddress
+#### getPositionAccountAddress
 
 Returns the address at which the PositionAccount would be deployed for the given user and markets
 
@@ -665,7 +666,7 @@ Returns the address at which the PositionAccount would be deployed for the given
 function getPositionAccountAddress(address user, contract IVToken longVToken, contract IVToken shortVToken) external view returns (address predicted)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name        | Type             | Description                           |
 | ----------- | ---------------- | ------------------------------------- |
@@ -673,19 +674,19 @@ function getPositionAccountAddress(address user, contract IVToken longVToken, co
 | longVToken  | contract IVToken | The vToken market for the long asset  |
 | shortVToken | contract IVToken | The vToken market for the short asset |
 
-#### Return Values
+##### Return Values
 
 | Name      | Type    | Description                                                                                                  |
 | --------- | ------- | ------------------------------------------------------------------------------------------------------------ |
 | predicted | address | The predicted PositionAccount address (same as deployed by activateAndOpenPosition for that user/long/short) |
 
-#### ❌ Errors
+##### ❌ Errors
 
 - Throw PositionAccountImplementationNotSet if implementation is not configured.
 
 ---
 
-### getDsaVTokens
+#### getDsaVTokens
 
 Returns the full list of configured DSA vToken markets
 
@@ -693,7 +694,7 @@ Returns the full list of configured DSA vToken markets
 function getDsaVTokens() external view returns (address[] dsaVTokensList)
 ```
 
-#### Return Values
+##### Return Values
 
 | Name           | Type      | Description                   |
 | -------------- | --------- | ----------------------------- |
@@ -701,7 +702,7 @@ function getDsaVTokens() external view returns (address[] dsaVTokensList)
 
 ---
 
-### getPosition
+#### getPosition
 
 Returns the position data for a user and asset pair
 
@@ -709,7 +710,7 @@ Returns the position data for a user and asset pair
 function getPosition(address user, contract IVToken longVToken, contract IVToken shortVToken) external view returns (struct IRelativePositionManager.Position position)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name        | Type             | Description                           |
 | ----------- | ---------------- | ------------------------------------- |
@@ -717,7 +718,7 @@ function getPosition(address user, contract IVToken longVToken, contract IVToken
 | longVToken  | contract IVToken | The vToken market for the long asset  |
 | shortVToken | contract IVToken | The vToken market for the short asset |
 
-#### Return Values
+##### Return Values
 
 | Name     | Type                                     | Description         |
 | -------- | ---------------------------------------- | ------------------- |
@@ -725,7 +726,7 @@ function getPosition(address user, contract IVToken longVToken, contract IVToken
 
 ---
 
-### getUtilizationInfo
+#### getUtilizationInfo
 
 Calculates capital utilization for a position
 
@@ -733,7 +734,7 @@ Calculates capital utilization for a position
 function getUtilizationInfo(address user, contract IVToken longVToken, contract IVToken shortVToken) external returns (struct IRelativePositionManager.UtilizationInfo utilization)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name        | Type             | Description                           |
 | ----------- | ---------------- | ------------------------------------- |
@@ -741,7 +742,7 @@ function getUtilizationInfo(address user, contract IVToken longVToken, contract 
 | longVToken  | contract IVToken | The vToken market for the long asset  |
 | shortVToken | contract IVToken | The vToken market for the short asset |
 
-#### Return Values
+##### Return Values
 
 | Name        | Type                                            | Description                                                                 |
 | ----------- | ----------------------------------------------- | --------------------------------------------------------------------------- |
@@ -749,7 +750,7 @@ function getUtilizationInfo(address user, contract IVToken longVToken, contract 
 
 ---
 
-### getAvailableShortCapacity
+#### getAvailableShortCapacity
 
 Returns the remaining short borrow capacity for a position under current market conditions
 
@@ -757,7 +758,7 @@ Returns the remaining short borrow capacity for a position under current market 
 function getAvailableShortCapacity(address user, contract IVToken longVToken, contract IVToken shortVToken) external returns (uint256 availableCapacity)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name        | Type             | Description                           |
 | ----------- | ---------------- | ------------------------------------- |
@@ -765,7 +766,7 @@ function getAvailableShortCapacity(address user, contract IVToken longVToken, co
 | longVToken  | contract IVToken | The vToken market for the long asset  |
 | shortVToken | contract IVToken | The vToken market for the short asset |
 
-#### Return Values
+##### Return Values
 
 | Name              | Type    | Description                                    |
 | ----------------- | ------- | ---------------------------------------------- |
@@ -773,7 +774,7 @@ function getAvailableShortCapacity(address user, contract IVToken longVToken, co
 
 ---
 
-### getMaxLeverageAllowed
+#### getMaxLeverageAllowed
 
 Returns the maximum allowed leverage for a given DSA/long market pair based on current collateral factors
 
@@ -781,14 +782,14 @@ Returns the maximum allowed leverage for a given DSA/long market pair based on c
 function getMaxLeverageAllowed(contract IVToken dsaVToken, address longVToken) external view returns (uint256 maxLeverage)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name       | Type             | Description                                                   |
 | ---------- | ---------------- | ------------------------------------------------------------- |
 | dsaVToken  | contract IVToken | The DSA vToken market (CF_dsa used as collateral)             |
 | longVToken | address          | The long asset vToken market (CF_long used as hedge coverage) |
 
-#### Return Values
+##### Return Values
 
 | Name        | Type    | Description                                |
 | ----------- | ------- | ------------------------------------------ |
@@ -796,7 +797,7 @@ function getMaxLeverageAllowed(contract IVToken dsaVToken, address longVToken) e
 
 ---
 
-### getLongCollateralBalance
+#### getLongCollateralBalance
 
 Returns the actual long collateral balance in underlying for a given user/position,
 excluding DSA principal when the DSA and long assets share the same vToken market.
@@ -805,7 +806,7 @@ excluding DSA principal when the DSA and long assets share the same vToken marke
 function getLongCollateralBalance(address user, contract IVToken longVToken, contract IVToken shortVToken) external returns (uint256 longBalance)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name        | Type             | Description                           |
 | ----------- | ---------------- | ------------------------------------- |
@@ -813,7 +814,7 @@ function getLongCollateralBalance(address user, contract IVToken longVToken, con
 | longVToken  | contract IVToken | The vToken market for the long asset  |
 | shortVToken | contract IVToken | The vToken market for the short asset |
 
-#### Return Values
+##### Return Values
 
 | Name        | Type    | Description                                                                             |
 | ----------- | ------- | --------------------------------------------------------------------------------------- |
@@ -821,7 +822,7 @@ function getLongCollateralBalance(address user, contract IVToken longVToken, con
 
 ---
 
-### getSuppliedPrincipalBalance
+#### getSuppliedPrincipalBalance
 
 Returns the supplied principal balance in underlying units for a given user/position
 
@@ -829,7 +830,7 @@ Returns the supplied principal balance in underlying units for a given user/posi
 function getSuppliedPrincipalBalance(address user, contract IVToken longVToken, contract IVToken shortVToken) external returns (uint256 balance)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name        | Type             | Description                           |
 | ----------- | ---------------- | ------------------------------------- |
@@ -837,7 +838,7 @@ function getSuppliedPrincipalBalance(address user, contract IVToken longVToken, 
 | longVToken  | contract IVToken | The vToken market for the long asset  |
 | shortVToken | contract IVToken | The vToken market for the short asset |
 
-#### Return Values
+##### Return Values
 
 | Name    | Type    | Description                                |
 | ------- | ------- | ------------------------------------------ |
@@ -845,13 +846,13 @@ function getSuppliedPrincipalBalance(address user, contract IVToken longVToken, 
 
 ---
 
-# PositionAccount
+## PositionAccount
 
 Minimal proxy contract that holds user funds for isolated Relative Trading positions
 
-# Solidity API
+## Solidity API
 
-### COMPTROLLER
+#### COMPTROLLER
 
 Address of the Venus Comptroller (same for all clones)
 
@@ -861,7 +862,7 @@ contract IComptroller COMPTROLLER
 
 ---
 
-### RELATIVE_POSITION_MANAGER
+#### RELATIVE_POSITION_MANAGER
 
 Address of the authorized RelativePositionManager contract (same for all clones)
 
@@ -871,7 +872,7 @@ address RELATIVE_POSITION_MANAGER
 
 ---
 
-### LEVERAGE_MANAGER
+#### LEVERAGE_MANAGER
 
 Address of the LeverageStrategiesManager contract (same for all clones)
 
@@ -881,7 +882,7 @@ address LEVERAGE_MANAGER
 
 ---
 
-### owner
+#### owner
 
 Address of the position account owner (different for each clone)
 
@@ -891,7 +892,7 @@ address owner
 
 ---
 
-### longVToken
+#### longVToken
 
 Address of the long vToken for this position
 
@@ -901,7 +902,7 @@ address longVToken
 
 ---
 
-### shortVToken
+#### shortVToken
 
 Address of the short vToken for this position
 
@@ -911,7 +912,7 @@ address shortVToken
 
 ---
 
-### constructor
+#### constructor
 
 Constructor for the PositionAccount implementation contract
 
@@ -919,7 +920,7 @@ Constructor for the PositionAccount implementation contract
 constructor(contract IComptroller comptroller_, address relativePositionManager_, address leverageManager_) public
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                      | Type                  | Description                                       |
 | ------------------------- | --------------------- | ------------------------------------------------- |
@@ -927,13 +928,13 @@ constructor(contract IComptroller comptroller_, address relativePositionManager_
 | relativePositionManager\_ | address               | Address of the RelativePositionManager contract   |
 | leverageManager\_         | address               | Address of the LeverageStrategiesManager contract |
 
-#### ❌ Errors
+##### ❌ Errors
 
 - ZeroAddress if any of the addresses is zero.
 
 ---
 
-### initialize
+#### initialize
 
 Initializes a new position account clone
 
@@ -941,7 +942,7 @@ Initializes a new position account clone
 function initialize(address owner_, address longVToken_, address shortVToken_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name          | Type    | Description                           |
 | ------------- | ------- | ------------------------------------- |
@@ -949,13 +950,13 @@ function initialize(address owner_, address longVToken_, address shortVToken_) e
 | longVToken\_  | address | Address of the long market vToken     |
 | shortVToken\_ | address | Address of the short market vToken    |
 
-#### ❌ Errors
+##### ❌ Errors
 
 - ZeroAddress if any of the addresses is zero.
 
 ---
 
-### enterLeverage
+#### enterLeverage
 
 Forwards enterLeverage to the LeverageStrategiesManager on behalf of this position account
 
@@ -963,7 +964,7 @@ Forwards enterLeverage to the LeverageStrategiesManager on behalf of this positi
 function enterLeverage(contract IVToken collateralMarket, uint256 collateralAmountSeed, contract IVToken borrowedMarket, uint256 borrowedAmountToFlashLoan, uint256 minAmountOutAfterSwap, bytes swapData) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                      | Type             | Description                                             |
 | ------------------------- | ---------------- | ------------------------------------------------------- |
@@ -974,13 +975,13 @@ function enterLeverage(contract IVToken collateralMarket, uint256 collateralAmou
 | minAmountOutAfterSwap     | uint256          | Minimum collateral out after swap (slippage protection) |
 | swapData                  | bytes            | Swap calldata (e.g. borrowed → collateral)              |
 
-#### ❌ Errors
+##### ❌ Errors
 
 - UnauthorizedCaller if caller is not the RelativePositionManager.
 
 ---
 
-### exitLeverage
+#### exitLeverage
 
 Forwards exitLeverage to the LeverageStrategiesManager on behalf of this position account
 
@@ -988,7 +989,7 @@ Forwards exitLeverage to the LeverageStrategiesManager on behalf of this positio
 function exitLeverage(contract IVToken collateralMarket, uint256 collateralAmountToRedeemForSwap, contract IVToken borrowedMarket, uint256 borrowedAmountToFlashLoan, uint256 minAmountOutAfterSwap, bytes swapData) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                            | Type             | Description                                         |
 | ------------------------------- | ---------------- | --------------------------------------------------- |
@@ -999,13 +1000,13 @@ function exitLeverage(contract IVToken collateralMarket, uint256 collateralAmoun
 | minAmountOutAfterSwap           | uint256          | Minimum amount out after swap (slippage protection) |
 | swapData                        | bytes            | Swap calldata (e.g. collateral → borrowed)          |
 
-#### ❌ Errors
+##### ❌ Errors
 
 - UnauthorizedCaller if caller is not the RelativePositionManager.
 
 ---
 
-### exitSingleAssetLeverage
+#### exitSingleAssetLeverage
 
 Forwards exitSingleAssetLeverage to the LeverageStrategiesManager on behalf of this position account
 
@@ -1013,20 +1014,20 @@ Forwards exitSingleAssetLeverage to the LeverageStrategiesManager on behalf of t
 function exitSingleAssetLeverage(contract IVToken collateralMarket, uint256 collateralAmountToFlashLoan) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                        | Type             | Description                                        |
 | --------------------------- | ---------------- | -------------------------------------------------- |
 | collateralMarket            | contract IVToken | vToken market for both collateral and debt         |
 | collateralAmountToFlashLoan | uint256          | Amount to borrow via flash loan for debt repayment |
 
-#### ❌ Errors
+##### ❌ Errors
 
 - UnauthorizedCaller if caller is not the RelativePositionManager.
 
 ---
 
-### exitMarket
+#### exitMarket
 
 Exits a market by calling comptroller.exitMarket with this position account as the sender
 
@@ -1034,20 +1035,20 @@ Exits a market by calling comptroller.exitMarket with this position account as t
 function exitMarket(address vTokenToExit) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type    | Description                          |
 | ------------ | ------- | ------------------------------------ |
 | vTokenToExit | address | Address of the vToken market to exit |
 
-#### ❌ Errors
+##### ❌ Errors
 
 - UnauthorizedCaller if caller is not the RelativePositionManager.
 - ExitMarketFailed if the exit market operation fails.
 
 ---
 
-### transferDustToOwner
+#### transferDustToOwner
 
 Transfers full balance of an ERC20 token from this position account to its owner (dust recovery)
 
@@ -1055,19 +1056,19 @@ Transfers full balance of an ERC20 token from this position account to its owner
 function transferDustToOwner(address token) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name  | Type    | Description                            |
 | ----- | ------- | -------------------------------------- |
 | token | address | Address of the ERC20 token to transfer |
 
-#### ❌ Errors
+##### ❌ Errors
 
 - UnauthorizedCaller if caller is not the RelativePositionManager.
 
 ---
 
-### genericCalls
+#### genericCalls
 
 Executes multiple generic calls to external contracts. Direct callers are restricted to RelativePositionManager, but the manager exposes the ACM-gated `executePositionAccountCall` administrative path described above.
 
@@ -1075,18 +1076,18 @@ Executes multiple generic calls to external contracts. Direct callers are restri
 function genericCalls(address[] targets, bytes[] data) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name    | Type      | Description                         |
 | ------- | --------- | ----------------------------------- |
 | targets | address[] | Array of target contract addresses  |
 | data    | bytes[]   | Array of encoded function call data |
 
-#### Trust Boundary
+##### Trust Boundary
 
 Each target call executes from the PositionAccount and can therefore act on its token balances, approvals, and protocol permissions. Review the live ACM grantee for `executePositionAccountCall(address,address[],bytes[])`; `onlyRelativePositionManager` does not make this path owner-only.
 
-#### ❌ Errors
+##### ❌ Errors
 
 - UnauthorizedCaller if caller is not the RelativePositionManager.
 - InvalidCallsLength if arrays are empty or lengths mismatch.

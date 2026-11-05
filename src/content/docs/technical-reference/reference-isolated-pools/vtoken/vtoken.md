@@ -1,5 +1,5 @@
 ---
-title: "VToken API"
+title: "VToken"
 ---
 
 The [`VToken` v4.4.0 source](https://github.com/VenusProtocol/isolated-pools/blob/v4.4.0/contracts/VToken.sol) is the current source family for modern markets outside BNB Chain. The BNB Chain beacon uses the earlier implementation recorded in the [engine version map](/technical-reference/reference-isolated-pools#mainnet-implementation-map); verify its ABI before using v4.4.0-only functions such as `internalCash` or `syncCash`.

@@ -1,14 +1,15 @@
 ---
 title: "OmnichainProposalSender"
 ---
+## OmnichainProposalSender
 
 [`OmnichainProposalSender` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Cross-chain/OmnichainProposalSender.sol) is the BNB-side LayerZero V1 sender. It sends proposal data to configured destination executors after the BNB proposal passes. In the production governance flow its owner is the Normal Timelock, while the exact caller permissions for `execute` and administrative functions are resolved by AccessControlManager.
 
 The current API includes inherited `setMaxDailyLimit`, `pause`, `unpause`, `setAccessControlManager`, `owner`, and `transferOwnership` selectors. Ownership renunciation is deliberately disabled. `retryExecute` is for sends that failed before LayerZero accepted them; `fallbackWithdraw` clears a matching stored execution and recovers its original native-token value.
 
-# Solidity API
+## Solidity API
 
-### proposalCount
+#### proposalCount
 
 Stores the total number of remote proposals
 
@@ -18,7 +19,7 @@ uint256 proposalCount
 
 ---
 
-### storedExecutionHashes
+#### storedExecutionHashes
 
 Execution hashes of failed messages
 
@@ -28,7 +29,7 @@ mapping(uint256 => bytes32) storedExecutionHashes
 
 ---
 
-### LZ_ENDPOINT
+#### LZ_ENDPOINT
 
 LayerZero endpoint for sending messages to remote chains
 
@@ -38,7 +39,7 @@ contract ILayerZeroEndpoint LZ_ENDPOINT
 
 ---
 
-### trustedRemoteLookup
+#### trustedRemoteLookup
 
 Specifies the allowed path for sending messages (remote chainId => remote app address + local app address)
 
@@ -48,7 +49,7 @@ mapping(uint16 => bytes) trustedRemoteLookup
 
 ---
 
-### estimateFees
+#### estimateFees
 
 Estimates LayerZero fees for cross-chain message delivery to the remote chain
 
@@ -56,7 +57,7 @@ Estimates LayerZero fees for cross-chain message delivery to the remote chain
 function estimateFees(uint16 remoteChainId_, bytes payload_, bool useZro_, bytes adapterParams_) external view returns (uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name            | Type   | Description                                                                                                                                                       |
 | --------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -65,7 +66,7 @@ function estimateFees(uint16 remoteChainId_, bytes payload_, bool useZro_, bytes
 | useZro\_        | bool   | Bool that indicates whether to pay in ZRO tokens or not                                                                                                           |
 | adapterParams\_ | bytes  | The params used to specify the custom amount of gas required for the execution on the destination                                                                 |
 
-#### Return Values
+##### Return Values
 
 | Name | Type    | Description                                                    |
 | ---- | ------- | -------------------------------------------------------------- |
@@ -74,7 +75,7 @@ function estimateFees(uint16 remoteChainId_, bytes payload_, bool useZro_, bytes
 
 ---
 
-### removeTrustedRemote
+#### removeTrustedRemote
 
 Remove trusted remote from storage
 
@@ -82,23 +83,23 @@ Remove trusted remote from storage
 function removeTrustedRemote(uint16 remoteChainId_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name            | Type   | Description                                                       |
 | --------------- | ------ | ----------------------------------------------------------------- |
 | remoteChainId\_ | uint16 | The chain's id corresponds to setting the trusted remote to empty |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emit TrustedRemoteRemoved with remote chain id
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Controlled by Access Control Manager
 
 ---
 
-### execute
+#### execute
 
 Sends a message to execute a remote proposal
 
@@ -106,7 +107,7 @@ Sends a message to execute a remote proposal
 function execute(uint16 remoteChainId_, bytes payload_, bytes adapterParams_, address zroPaymentAddress_) external payable
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                | Type    | Description                                                                                                                                     |
 | ------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -115,18 +116,18 @@ function execute(uint16 remoteChainId_, bytes payload_, bytes adapterParams_, ad
 | adapterParams\_     | bytes   | The params used to specify the custom amount of gas required for the execution on the destination                                               |
 | zroPaymentAddress\_ | address | The address of the ZRO token holder who would pay for the transaction. This must be either address(this) or tx.origin                           |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits ExecuteRemoteProposal with remote chain id, proposal ID and payload on success
 - Emits StorePayload with last stored payload proposal ID, remote chain id, payload, adapter params, values and reason for failure
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Controlled by Access Control Manager
 
 ---
 
-### retryExecute
+#### retryExecute
 
 Resends a previously failed message
 
@@ -134,7 +135,7 @@ Resends a previously failed message
 function retryExecute(uint256 pId_, uint16 remoteChainId_, bytes payload_, bytes adapterParams_, address zroPaymentAddress_, uint256 originalValue_) external payable
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                | Type    | Description                                                                                                                                                      |
 | ------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -145,17 +146,17 @@ function retryExecute(uint256 pId_, uint16 remoteChainId_, bytes payload_, bytes
 | zroPaymentAddress\_ | address | The address of the ZRO token holder who would pay for the transaction.                                                                                           |
 | originalValue\_     | uint256 | The msg.value passed when execute() function was called                                                                                                          |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits ClearPayload with proposal ID and hash
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Controlled by Access Control Manager
 
 ---
 
-### fallbackWithdraw
+#### fallbackWithdraw
 
 Clear previously failed message
 
@@ -163,7 +164,7 @@ Clear previously failed message
 function fallbackWithdraw(address to_, uint256 pId_, uint16 remoteChainId_, bytes payload_, bytes adapterParams_, uint256 originalValue_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name            | Type    | Description                                                                                                                                                      |
 | --------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -174,18 +175,18 @@ function fallbackWithdraw(address to_, uint256 pId_, uint16 remoteChainId_, byte
 | adapterParams\_ | bytes   | The params used to specify the custom amount of gas required for the execution on the destination                                                                |
 | originalValue\_ | uint256 | The msg.value passed when execute() function was called                                                                                                          |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits ClearPayload with proposal ID and hash
 - Emits FallbackWithdraw with receiver and amount
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Only owner
 
 ---
 
-### setTrustedRemoteAddress
+#### setTrustedRemoteAddress
 
 Sets the remote message receiver address
 
@@ -193,24 +194,24 @@ Sets the remote message receiver address
 function setTrustedRemoteAddress(uint16 remoteChainId_, bytes newRemoteAddress_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name               | Type   | Description                                                                               |
 | ------------------ | ------ | ----------------------------------------------------------------------------------------- |
 | remoteChainId\_    | uint16 | The LayerZero id of a remote chain                                                        |
 | newRemoteAddress\_ | bytes  | The address of the contract on the remote chain to receive messages sent by this contract |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits SetTrustedRemoteAddress with remote chain Id and remote address
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Controlled by AccessControlManager
 
 ---
 
-### setConfig
+#### setConfig
 
 Sets the configuration of the LayerZero messaging library of the specified version
 
@@ -218,7 +219,7 @@ Sets the configuration of the LayerZero messaging library of the specified versi
 function setConfig(uint16 version_, uint16 chainId_, uint256 configType_, bytes config_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type    | Description                                                               |
 | ------------ | ------- | ------------------------------------------------------------------------- |
@@ -227,13 +228,13 @@ function setConfig(uint16 version_, uint16 chainId_, uint256 configType_, bytes 
 | configType\_ | uint256 | The type of configuration. Every messaging library has its own convention |
 | config\_     | bytes   | The configuration in bytes. It can encode arbitrary content               |
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Controlled by AccessControlManager
 
 ---
 
-### setSendVersion
+#### setSendVersion
 
 Sets the configuration of the LayerZero messaging library of the specified version
 
@@ -241,19 +242,19 @@ Sets the configuration of the LayerZero messaging library of the specified versi
 function setSendVersion(uint16 version_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name      | Type   | Description                   |
 | --------- | ------ | ----------------------------- |
 | version\_ | uint16 | New messaging library version |
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Controlled by AccessControlManager
 
 ---
 
-### getConfig
+#### getConfig
 
 Gets the configuration of the LayerZero messaging library of the specified version
 
@@ -261,7 +262,7 @@ Gets the configuration of the LayerZero messaging library of the specified versi
 function getConfig(uint16 version_, uint16 chainId_, uint256 configType_) external view returns (bytes)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type    | Description                                                           |
 | ------------ | ------- | --------------------------------------------------------------------- |

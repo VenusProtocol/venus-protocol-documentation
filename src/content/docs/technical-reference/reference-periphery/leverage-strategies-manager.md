@@ -1,12 +1,13 @@
 ---
 title: "LeverageStrategiesManager"
 ---
+## LeverageStrategiesManager
 
 The LeverageStrategiesManager is a Venus periphery contract that enables users to enter and exit leveraged positions atomically using flash loans. It integrates with the Venus Comptroller's flash loan functionality and the SwapHelper contract to execute complex leverage operations in a single transaction.
 
 > **Version scope:** This API reference follows [`venus-periphery` v1.2.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/contracts/LeverageManager). The deployed manager is an upgradeable proxy whose implementation fixes the Comptroller, SwapHelper, and unsupported vBNB address. Verify the current proxy implementation and dependencies before approving tokens or delegation.
 
-## Overview
+### Overview
 
 Leverage operations in DeFi typically require multiple transactions: borrowing, swapping, and supplying assets. The LeverageStrategiesManager consolidates these into atomic operations using flash loans, eliminating intermediate exposure and reducing gas costs.
 
@@ -20,7 +21,7 @@ The contract supports five distinct leverage strategies:
 | `exitSingleAssetLeverage`  | Close single-asset leveraged position                       | No            |
 | `exitLeverage`             | Close cross-asset leveraged position                        | Yes           |
 
-## Prerequisites
+### Prerequisites
 
 Before using the LeverageStrategiesManager, users must delegate account actions to the exact manager **proxy** for their network:
 
@@ -38,14 +39,14 @@ This delegation allows the contract to:
 
 Obtain `leverageStrategiesManagerAddress` from [Deployed Contracts](/deployed-contracts/periphery), not from an implementation address or the SwapHelper address. The delegation remains enabled until the user revokes it with `updateDelegate(leverageStrategiesManagerAddress, false)`.
 
-## Inheritance
+### Inheritance
 
 - `Ownable2StepUpgradeable` - Two-step ownership transfer pattern
 - `ReentrancyGuardUpgradeable` - Reentrancy protection
 - `IFlashLoanReceiver` - Flash loan callback interface
 - `ILeverageStrategiesManager` - Contract interface
 
-## Immutable State Variables
+### Immutable State Variables
 
 | Variable      | Type           | Description                                                        |
 | ------------- | -------------- | ------------------------------------------------------------------ |
@@ -53,11 +54,11 @@ Obtain `leverageStrategiesManagerAddress` from [Deployed Contracts](/deployed-co
 | `swapHelper`  | `SwapHelper`   | Token swap executor for cross-asset operations                     |
 | `vBNB`        | `IVToken`      | vBNB market address (not supported for leverage operations)        |
 
-## Architecture
+### Architecture
 
 <figure><img src="/assets/leverage_position.png" alt="LeverageStrategiesManager Architecture"></figure>
 
-## Transient Storage (EIP-1153)
+### Transient Storage (EIP-1153)
 
 The contract uses EIP-1153 transient storage to pass state between entry functions and flash loan callbacks. These values are automatically cleared at transaction end:
 
@@ -70,9 +71,9 @@ The contract uses EIP-1153 transient storage to pass state between entry functio
 | `borrowedAmountSeed`    | `uint256`       | User-provided borrowed asset seed           |
 | `minAmountOutAfterSwap` | `uint256`       | Slippage protection threshold               |
 
-# Solidity API
+## Solidity API
 
-### initialize
+#### initialize
 
 Initializes two-step ownership and reentrancy protection on the manager proxy.
 
@@ -84,7 +85,7 @@ The implementation constructor fixes the Comptroller, SwapHelper, and vBNB addre
 
 ---
 
-### enterSingleAssetLeverage
+#### enterSingleAssetLeverage
 
 Enters a leveraged position using the same asset for collateral and borrowing. No swap is required.
 
@@ -96,7 +97,7 @@ function enterSingleAssetLeverage(
 ) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                          | Type    | Description                                                      |
 | ----------------------------- | ------- | ---------------------------------------------------------------- |
@@ -104,7 +105,7 @@ function enterSingleAssetLeverage(
 | \_collateralAmountSeed        | uint256 | Amount of underlying tokens the user provides as initial capital |
 | \_collateralAmountToFlashLoan | uint256 | Amount to flash loan for leverage amplification                  |
 
-#### Example
+##### Example
 
 User has 10 ETH and wants 2x exposure:
 
@@ -113,16 +114,16 @@ User has 10 ETH and wants 2x exposure:
 - Supply 20 ETH as collateral
 - Final: 20 ETH collateral, 10 ETH debt (plus fees)
 
-#### Events
+##### Events
 
 - `SingleAssetLeverageEntered` emitted on success
 - `DustTransferred` emitted if residual tokens remain
 
-#### Access Requirements
+##### Access Requirements
 
 - User must have delegated to this contract via `Comptroller.updateDelegate`
 
-#### Errors
+##### Errors
 
 - `ZeroFlashLoanAmount` if `_collateralAmountToFlashLoan` is zero
 - `MarketNotListed` if market is not listed in Comptroller
@@ -134,7 +135,7 @@ User has 10 ETH and wants 2x exposure:
 
 ---
 
-### enterLeverage
+#### enterLeverage
 
 Enters a leveraged position by providing collateral seed and borrowing a different asset. The borrowed asset is swapped to collateral.
 
@@ -149,7 +150,7 @@ function enterLeverage(
 ) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                        | Type    | Description                                                        |
 | --------------------------- | ------- | ------------------------------------------------------------------ |
@@ -160,7 +161,7 @@ function enterLeverage(
 | \_minAmountOutAfterSwap     | uint256 | Minimum collateral tokens expected from swap (slippage protection) |
 | \_swapData                  | bytes   | Encoded swap data from Venus Swap API                              |
 
-#### Example
+##### Example
 
 User has 1,000 USDC and wants 3x USDC exposure:
 
@@ -170,16 +171,16 @@ User has 1,000 USDC and wants 3x USDC exposure:
 - Supply 3,000 USDC as collateral
 - Final: 3,000 USDC collateral, 2,000 USDT debt (plus fees)
 
-#### Events
+##### Events
 
 - `LeverageEntered` emitted on success
 - `DustTransferred` emitted for residual collateral and borrowed tokens
 
-#### Access Requirements
+##### Access Requirements
 
 - User must have delegated to this contract via `Comptroller.updateDelegate`
 
-#### Errors
+##### Errors
 
 - `ZeroFlashLoanAmount` if `_borrowedAmountToFlashLoan` is zero
 - `IdenticalMarkets` if collateral and borrowed markets are the same
@@ -194,7 +195,7 @@ User has 1,000 USDC and wants 3x USDC exposure:
 
 ---
 
-### enterLeverageFromBorrow
+#### enterLeverageFromBorrow
 
 Enters a leveraged position by providing the borrowed asset as seed. Both seed and flash loan are swapped to collateral.
 
@@ -209,7 +210,7 @@ function enterLeverageFromBorrow(
 ) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                        | Type    | Description                                                   |
 | --------------------------- | ------- | ------------------------------------------------------------- |
@@ -220,7 +221,7 @@ function enterLeverageFromBorrow(
 | \_minAmountOutAfterSwap     | uint256 | Minimum collateral tokens expected from swap                  |
 | \_swapData                  | bytes   | Encoded swap data (must account for seed + flash loan amount) |
 
-#### Example
+##### Example
 
 User has 1 ETH and wants leveraged USDC exposure:
 
@@ -230,16 +231,16 @@ User has 1 ETH and wants leveraged USDC exposure:
 - Supply 6,000 USDC as collateral
 - Final: 6,000 USDC collateral, 2 ETH debt (plus fees)
 
-#### Events
+##### Events
 
 - `LeverageEnteredFromBorrow` emitted on success
 - `DustTransferred` emitted for residual tokens
 
-#### Access Requirements
+##### Access Requirements
 
 - User must have delegated to this contract
 
-#### Errors
+##### Errors
 
 - `ZeroFlashLoanAmount` if `_borrowedAmountToFlashLoan` is zero
 - `MarketNotListed` if either market is not listed in Comptroller
@@ -253,7 +254,7 @@ User has 1 ETH and wants leveraged USDC exposure:
 
 ---
 
-### exitSingleAssetLeverage
+#### exitSingleAssetLeverage
 
 Closes or reduces a single-asset leveraged position. Flash loans the asset to repay debt, then redeems collateral to cover the flash loan.
 
@@ -264,14 +265,14 @@ function exitSingleAssetLeverage(
 ) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                          | Type    | Description                                    |
 | ----------------------------- | ------- | ---------------------------------------------- |
 | \_collateralMarket            | IVToken | The vToken market for both collateral and debt |
 | \_collateralAmountToFlashLoan | uint256 | Amount to flash loan for debt repayment        |
 
-#### Example
+##### Example
 
 User has 20 ETH collateral and 10 ETH debt:
 
@@ -280,16 +281,16 @@ User has 20 ETH collateral and 10 ETH debt:
 - Redeem ~10 ETH (plus fees) from collateral
 - Final: ~10 ETH collateral, 0 debt
 
-#### Events
+##### Events
 
 - `SingleAssetLeverageExited` emitted on success
 - `DustTransferred` emitted for residual tokens
 
-#### Access Requirements
+##### Access Requirements
 
 - User must have delegated to this contract
 
-#### Errors
+##### Errors
 
 - `ZeroFlashLoanAmount` if flash loan amount is zero
 - `MarketNotListed` if market is not listed in Comptroller
@@ -301,7 +302,7 @@ User has 20 ETH collateral and 10 ETH debt:
 
 ---
 
-### exitLeverage
+#### exitLeverage
 
 Closes or reduces a cross-asset leveraged position. Flash loans borrowed asset to repay debt, redeems collateral, and swaps to cover the flash loan.
 
@@ -316,7 +317,7 @@ function exitLeverage(
 ) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                              | Type    | Description                                 |
 | --------------------------------- | ------- | ------------------------------------------- |
@@ -327,7 +328,7 @@ function exitLeverage(
 | \_minAmountOutAfterSwap           | uint256 | Minimum borrowed tokens expected from swap  |
 | \_swapData                        | bytes   | Encoded swap data                           |
 
-#### Example
+##### Example
 
 User has 3,000 USDC collateral and 1 ETH debt:
 
@@ -337,16 +338,16 @@ User has 3,000 USDC collateral and 1 ETH debt:
 - Swap 2,000 USDC → ~1 ETH (plus fees)
 - Final: ~1,000 USDC collateral, 0 ETH debt
 
-#### Events
+##### Events
 
 - `LeverageExited` emitted on success
 - `DustTransferred` emitted for residual tokens
 
-#### Access Requirements
+##### Access Requirements
 
 - User must have delegated to this contract
 
-#### Errors
+##### Errors
 
 - `ZeroFlashLoanAmount` if flash loan amount is zero
 - `IdenticalMarkets` if collateral and borrowed markets are the same
@@ -360,7 +361,7 @@ User has 3,000 USDC collateral and 1 ETH debt:
 
 ---
 
-### executeOperation
+#### executeOperation
 
 Flash loan callback invoked by the Comptroller. Routes execution to the appropriate handler based on `operationType`.
 
@@ -375,7 +376,7 @@ function executeOperation(
 ) external override nonReentrant returns (bool success, uint256[] memory repayAmounts)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name      | Type      | Description                                                   |
 | --------- | --------- | ------------------------------------------------------------- |
@@ -386,11 +387,11 @@ function executeOperation(
 | onBehalf  | address   | User for whom debt will be opened                             |
 | param     | bytes     | Encoded auxiliary data for the operation                      |
 
-#### Access Requirements
+##### Access Requirements
 
 - Only callable by the Comptroller
 
-#### Errors
+##### Errors
 
 - `UnauthorizedExecutor` if caller is not Comptroller
 - `InitiatorMismatch` if initiator is not this contract
@@ -400,7 +401,7 @@ function executeOperation(
 
 ---
 
-### sweepToken
+#### sweepToken
 
 Transfers the manager's full balance of an ERC-20 token to its current owner. This is a recovery function, not a user refund path.
 
@@ -408,15 +409,15 @@ Transfers the manager's full balance of an ERC-20 token to its current owner. Th
 function sweepToken(address token) external onlyOwner nonReentrant
 ```
 
-#### Access Requirements
+##### Access Requirements
 
 - Current contract owner only
 
-#### Security Considerations
+##### Security Considerations
 
 - The call transfers the entire token balance and has no protected-token list or lifecycle condition. Integrations should avoid leaving balances on the manager and should verify the live proxy owner before relying on recovery.
 
-## Events
+### Events
 
 | Event                        | Parameters                                                                                         | Description                                               |
 | ---------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
@@ -428,50 +429,50 @@ function sweepToken(address token) external onlyOwner nonReentrant
 | `DustTransferred`            | recipient, token, amount                                                                           | Residual tokens transferred after operation               |
 | `TokensSwept`                | token, recipient, amount                                                                            | Owner recovered the manager's full token balance           |
 
-## Security Considerations
+### Security Considerations
 
-### Access Control
+#### Access Control
 
 - **Delegate Requirement**: All operations verify the user has delegated to this contract via `Comptroller.updateDelegate()`
 - **Flash Loan Callback**: `executeOperation` validates `msg.sender` is the Comptroller
 - **Initiator Validation**: Callback verifies `initiator == address(this)` to prevent unauthorized triggers
 - **OnBehalf Validation**: Callback verifies `onBehalf == operationInitiator` for user consistency
 
-### Reentrancy Protection
+#### Reentrancy Protection
 
 The `executeOperation` function is protected by OpenZeppelin's `nonReentrant` modifier, preventing reentrant calls during flash loan callback execution.
 
-### Slippage Protection
+#### Slippage Protection
 
 All swap operations accept a `minAmountOutAfterSwap` parameter. The transaction reverts with `SlippageExceeded` if the swap output falls below this threshold.
 
-### Account Safety
+#### Account Safety
 
 - Enter operations perform pre-checks to ensure the user is not already at liquidation risk
 - All operations perform post-checks to verify the final position is healthy
 - Exit operations skip the initial liquidity pre-check because they begin by reducing debt, but they also redeem collateral to settle the flash loan. The contract therefore still performs a final account-liquidity check; an exit is not assumed safe solely because debt decreased.
 
-### Dust Handling
+#### Dust Handling
 
 After every operation, any residual token balances are transferred back to the user:
 
 - Collateral dust → User
 - Borrowed dust (all operations) → User
 
-## Deployment
+### Deployment
 
 See [Deployed Contracts](/deployed-contracts/periphery) for current addresses.
 
-## Integration
+### Integration
 
-### For Users
+#### For Users
 
 1. **Enable Delegation**: Resolve the network's manager proxy from [Deployed Contracts](/deployed-contracts/periphery), then call `Comptroller.updateDelegate(leverageStrategiesManagerAddress, true)`
 2. **Approve Tokens**: Grant token spending approval to LeverageStrategiesManager for collateral tokens
 3. **Execute Operations**: Call the appropriate entry function with parameters
 4. **Revoke When Finished**: Call `Comptroller.updateDelegate(leverageStrategiesManagerAddress, false)` when the manager no longer needs to act for the account
 
-### For Developers
+#### For Developers
 
 LeverageStrategiesManager exposes a clear interface for integration:
 
@@ -508,7 +509,7 @@ interface ILeverageStrategiesManager {
 }
 ```
 
-### Swap API Integration
+#### Swap API Integration
 
 Cross-asset operations (enterLeverage, enterLeverageFromBorrow, exitLeverage) require signed swap data from the Venus Swap API:
 
@@ -516,6 +517,6 @@ Cross-asset operations (enterLeverage, enterLeverageFromBorrow, exitLeverage) re
 2. Receive encoded `multicall` parameters with backend signature
 3. Pass the signed `_swapData` to the entry function
 
-## Audits
+### Audits
 
 Published LeverageStrategiesManager audit reports are indexed in the [`venus-periphery` v1.2.0 release](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0/audits). Check each report's scope and reviewed commit against the current proxy implementation.

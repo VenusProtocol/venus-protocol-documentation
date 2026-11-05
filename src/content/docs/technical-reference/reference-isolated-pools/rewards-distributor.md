@@ -1,6 +1,7 @@
 ---
-title: "&#x60;RewardsDistributor&#x60;"
+title: "RewardsDistributor"
 ---
+## &#x60;RewardsDistributor&#x60;
 
 Contract used to configure, track and distribute rewards to users based on their actions (borrows and supplies) in the protocol.
 Users can receive additional rewards through a `RewardsDistributor`. Each `RewardsDistributor` proxy is initialized with a specific reward
@@ -14,7 +15,7 @@ The owner has the ability to transfer any amount of reward tokens held by the co
 automatically and must be claimed by a user calling `claimRewardToken()`. Users should be aware that it is up to the owner and other centralized
 entities to ensure that the `RewardsDistributor` holds enough tokens to distribute the accumulated rewards of users and contributors.
 
-# Solidity API
+## Solidity API
 
 ```solidity
 struct RewardToken {
@@ -24,7 +25,7 @@ struct RewardToken {
 }
 ```
 
-### INITIAL_INDEX
+#### INITIAL_INDEX
 
 The initial REWARD TOKEN index for a market
 
@@ -34,7 +35,7 @@ uint224 INITIAL_INDEX
 
 ---
 
-### rewardTokenSupplyState
+#### rewardTokenSupplyState
 
 The REWARD TOKEN market supply state for each market
 
@@ -44,7 +45,7 @@ mapping(address => struct RewardsDistributor.RewardToken) rewardTokenSupplyState
 
 ---
 
-### rewardTokenSupplierIndex
+#### rewardTokenSupplierIndex
 
 The REWARD TOKEN borrow index for each market for each supplier as of the last time they accrued REWARD TOKEN
 
@@ -54,7 +55,7 @@ mapping(address => mapping(address => uint256)) rewardTokenSupplierIndex
 
 ---
 
-### rewardTokenAccrued
+#### rewardTokenAccrued
 
 The REWARD TOKEN accrued but not yet transferred to each user
 
@@ -64,7 +65,7 @@ mapping(address => uint256) rewardTokenAccrued
 
 ---
 
-### rewardTokenBorrowSpeeds
+#### rewardTokenBorrowSpeeds
 
 The rate at which rewardToken is distributed to the corresponding borrow market (per block)
 
@@ -74,7 +75,7 @@ mapping(address => uint256) rewardTokenBorrowSpeeds
 
 ---
 
-### rewardTokenSupplySpeeds
+#### rewardTokenSupplySpeeds
 
 The rate at which rewardToken is distributed to the corresponding supply market (per block)
 
@@ -84,7 +85,7 @@ mapping(address => uint256) rewardTokenSupplySpeeds
 
 ---
 
-### rewardTokenBorrowState
+#### rewardTokenBorrowState
 
 The REWARD TOKEN market borrow state for each market
 
@@ -94,7 +95,7 @@ mapping(address => struct RewardsDistributor.RewardToken) rewardTokenBorrowState
 
 ---
 
-### rewardTokenContributorSpeeds
+#### rewardTokenContributorSpeeds
 
 The portion of REWARD TOKEN that each contributor receives per block
 
@@ -104,7 +105,7 @@ mapping(address => uint256) rewardTokenContributorSpeeds
 
 ---
 
-### lastContributorBlock
+#### lastContributorBlock
 
 Last block at which a contributor's REWARD TOKEN rewards have been allocated
 
@@ -114,7 +115,7 @@ mapping(address => uint256) lastContributorBlock
 
 ---
 
-### rewardTokenBorrowerIndex
+#### rewardTokenBorrowerIndex
 
 The REWARD TOKEN borrow index for each market for each borrower as of the last time they accrued REWARD TOKEN
 
@@ -124,7 +125,7 @@ mapping(address => mapping(address => uint256)) rewardTokenBorrowerIndex
 
 ---
 
-### initialize
+#### initialize
 
 RewardsDistributor initializer
 
@@ -132,7 +133,7 @@ RewardsDistributor initializer
 function initialize(contract Comptroller comptroller_, contract IERC20Upgradeable rewardToken_, uint256 loopsLimit_, address accessControlManager_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                   | Type                       | Description                                                 |
 | ---------------------- | -------------------------- | ----------------------------------------------------------- |
@@ -143,7 +144,7 @@ function initialize(contract Comptroller comptroller_, contract IERC20Upgradeabl
 
 ---
 
-### distributeBorrowerRewardToken
+#### distributeBorrowerRewardToken
 
 Calculate reward token accrued by a borrower and possibly transfer it to them
 Borrowers will begin to accrue after the first interaction with the protocol.
@@ -152,7 +153,7 @@ Borrowers will begin to accrue after the first interaction with the protocol.
 function distributeBorrowerRewardToken(address vToken, address borrower, struct ExponentialNoError.Exp marketBorrowIndex) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name              | Type                          | Description                                               |
 | ----------------- | ----------------------------- | --------------------------------------------------------- |
@@ -162,7 +163,7 @@ function distributeBorrowerRewardToken(address vToken, address borrower, struct 
 
 ---
 
-### grantRewardToken
+#### grantRewardToken
 
 Transfer REWARD TOKEN to the recipient
 
@@ -170,7 +171,7 @@ Transfer REWARD TOKEN to the recipient
 function grantRewardToken(address recipient, uint256 amount) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name      | Type    | Description                                              |
 | --------- | ------- | -------------------------------------------------------- |
@@ -179,7 +180,7 @@ function grantRewardToken(address recipient, uint256 amount) external
 
 ---
 
-### setRewardTokenSpeeds
+#### setRewardTokenSpeeds
 
 Set REWARD TOKEN borrow and supply speeds for the specified markets
 
@@ -187,7 +188,7 @@ Set REWARD TOKEN borrow and supply speeds for the specified markets
 function setRewardTokenSpeeds(contract VToken[] vTokens, uint256[] supplySpeeds, uint256[] borrowSpeeds) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type              | Description                                                     |
 | ------------ | ----------------- | --------------------------------------------------------------- |
@@ -197,7 +198,7 @@ function setRewardTokenSpeeds(contract VToken[] vTokens, uint256[] supplySpeeds,
 
 ---
 
-### setLastRewardingBlocks
+#### setLastRewardingBlocks
 
 Set REWARD TOKEN last rewarding block for the specified markets
 
@@ -205,7 +206,7 @@ Set REWARD TOKEN last rewarding block for the specified markets
 function setLastRewardingBlocks(contract VToken[] vTokens, uint32[] supplyLastRewardingBlocks, uint32[] borrowLastRewardingBlocks) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                      | Type              | Description                                                                    |
 | ------------------------- | ----------------- | ------------------------------------------------------------------------------ |
@@ -215,7 +216,7 @@ function setLastRewardingBlocks(contract VToken[] vTokens, uint32[] supplyLastRe
 
 ---
 
-### setContributorRewardTokenSpeed
+#### setContributorRewardTokenSpeed
 
 Set REWARD TOKEN speed for a single contributor
 
@@ -223,7 +224,7 @@ Set REWARD TOKEN speed for a single contributor
 function setContributorRewardTokenSpeed(address contributor, uint256 rewardTokenSpeed) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name             | Type    | Description                                        |
 | ---------------- | ------- | -------------------------------------------------- |
@@ -232,7 +233,7 @@ function setContributorRewardTokenSpeed(address contributor, uint256 rewardToken
 
 ---
 
-### claimRewardToken
+#### claimRewardToken
 
 Claim all the rewardToken accrued by holder in all markets
 
@@ -240,7 +241,7 @@ Claim all the rewardToken accrued by holder in all markets
 function claimRewardToken(address holder) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name   | Type    | Description                           |
 | ------ | ------- | ------------------------------------- |
@@ -248,7 +249,7 @@ function claimRewardToken(address holder) external
 
 ---
 
-### setMaxLoopsLimit
+#### setMaxLoopsLimit
 
 Set the limit for the loops can iterate to avoid the DOS
 
@@ -256,7 +257,7 @@ Set the limit for the loops can iterate to avoid the DOS
 function setMaxLoopsLimit(uint256 limit) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name  | Type    | Description                                   |
 | ----- | ------- | --------------------------------------------- |
@@ -264,7 +265,7 @@ function setMaxLoopsLimit(uint256 limit) external
 
 ---
 
-### updateContributorRewards
+#### updateContributorRewards
 
 Calculate additional accrued REWARD TOKEN for a contributor since last accrual
 
@@ -272,7 +273,7 @@ Calculate additional accrued REWARD TOKEN for a contributor since last accrual
 function updateContributorRewards(address contributor) public
 ```
 
-#### Parameters
+##### Parameters
 
 | Name        | Type    | Description                                      |
 | ----------- | ------- | ------------------------------------------------ |
@@ -280,7 +281,7 @@ function updateContributorRewards(address contributor) public
 
 ---
 
-### claimRewardToken
+#### claimRewardToken
 
 Claim all the rewardToken accrued by holder in the specified markets
 
@@ -288,7 +289,7 @@ Claim all the rewardToken accrued by holder in the specified markets
 function claimRewardToken(address holder, contract VToken[] vTokens) public
 ```
 
-#### Parameters
+##### Parameters
 
 | Name    | Type              | Description                                  |
 | ------- | ----------------- | -------------------------------------------- |

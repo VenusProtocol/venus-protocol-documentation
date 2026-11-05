@@ -1,14 +1,15 @@
 ---
 title: "VenusERC4626Factory"
 ---
+## VenusERC4626Factory
 
-### Overview
+#### Overview
 
 `VenusERC4626Factory` is a factory contract for deploying upgradeable VenusERC4626 vaults as BeaconProxy instances. It manages the deployment, registry, and configuration of vaults, and controls access to sensitive operations via the AccessControlManager (ACM).
 
-# Solidity API
+## Solidity API
 
-### State Variables
+#### State Variables
 
 - **`SALT`** (`bytes32`, public constant):  
    A constant salt value used for deterministic contract deployment.
@@ -27,7 +28,7 @@ title: "VenusERC4626Factory"
 
 ---
 
-### Events
+#### Events
 
 - **`CreateERC4626(VTokenInterface indexed vToken, ERC4626Upgradeable indexed vault)`**  
    Emitted when a new ERC4626 vault is created.
@@ -42,7 +43,7 @@ title: "VenusERC4626Factory"
 
 ---
 
-### Errors
+#### Errors
 
 - **`VenusERC4626Factory__InvalidVToken()`**  
    Thrown when the provided vToken is not registered in the PoolRegistry.
@@ -52,16 +53,16 @@ title: "VenusERC4626Factory"
 
 ---
 
-#### Constructor
+##### Constructor
 
 **@custom:oz-upgrades-unsafe-allow constructor**  
 Disables initializers for the upgradeable contract pattern.
 
 ---
 
-### Functions
+#### Functions
 
-### initialize
+#### initialize
 
 Initializes the VenusERC4626Factory contract with the required configuration parameters.
 
@@ -75,7 +76,7 @@ function initialize(
 ) external initializer
 ```
 
-#### Parameters
+##### Parameters
 
 | Name                       | Type    | Description                                               |
 | -------------------------- | ------- | --------------------------------------------------------- |
@@ -85,14 +86,14 @@ function initialize(
 | venusERC4626Implementation | address | Address of the VenusERC4626 implementation contract.      |
 | loopsLimitNumber           | uint256 | The maximum number of loops for the MaxLoopsLimit helper. |
 
-#### Notes
+##### Notes
 
 - Can only be called once.
 - Disables initializers for the upgradeable contract pattern.
 
 ---
 
-### setRewardRecipient
+#### setRewardRecipient
 
 Sets the reward recipient address.
 
@@ -100,13 +101,13 @@ Sets the reward recipient address.
 function setRewardRecipient(address newRecipient) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type    | Description                              |
 | ------------ | ------- | ---------------------------------------- |
 | newRecipient | address | The address of the new reward recipient. |
 
-#### Notes
+##### Notes
 
 - Controlled by the ACM.
 - Reverts with `ZeroAddressNotAllowed` if the new recipient address is zero.
@@ -114,7 +115,7 @@ function setRewardRecipient(address newRecipient) external
 
 ---
 
-### setMaxLoopsLimit
+#### setMaxLoopsLimit
 
 Sets the maximum loops limit for internal operations.
 
@@ -122,20 +123,20 @@ Sets the maximum loops limit for internal operations.
 function setMaxLoopsLimit(uint256 loopsLimit) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name       | Type    | Description                              |
 | ---------- | ------- | ---------------------------------------- |
 | loopsLimit | uint256 | The new maximum number of loops allowed. |
 
-#### Notes
+##### Notes
 
 - Controlled by the ACM.
 - Emits the `MaxLoopsLimitUpdated` event on success.
 
 ---
 
-### createERC4626
+#### createERC4626
 
 Creates a new ERC4626 vault for the specified vToken.
 
@@ -143,19 +144,19 @@ Creates a new ERC4626 vault for the specified vToken.
 function createERC4626(address vToken) external returns (ERC4626Upgradeable vault)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name   | Type    | Description                                |
 | ------ | ------- | ------------------------------------------ |
 | vToken | address | The vToken for which the vault is created. |
 
-#### Returns
+##### Returns
 
 | Name  | Type               | Description                      |
 | ----- | ------------------ | -------------------------------- |
 | vault | ERC4626Upgradeable | The deployed VenusERC4626 vault. |
 
-#### Notes
+##### Notes
 
 - Reverts with `ZeroAddressNotAllowed` if the vToken address is zero.
 - Reverts with `VenusERC4626Factory__InvalidVToken` if the vToken is not valid.
@@ -164,7 +165,7 @@ function createERC4626(address vToken) external returns (ERC4626Upgradeable vaul
 
 ---
 
-### computeVaultAddress
+#### computeVaultAddress
 
 Computes the deterministic address of the vault for a specified vToken.
 
@@ -172,13 +173,13 @@ Computes the deterministic address of the vault for a specified vToken.
 function computeVaultAddress(address vToken) public view returns (address)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name   | Type    | Description                                  |
 | ------ | ------- | -------------------------------------------- |
 | vToken | address | The vToken for which to compute the address. |
 
-#### Returns
+##### Returns
 
 | Name    | Type    | Description                 |
 | ------- | ------- | --------------------------- |

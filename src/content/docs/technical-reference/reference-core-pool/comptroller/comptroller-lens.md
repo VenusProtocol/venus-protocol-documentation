@@ -1,10 +1,11 @@
 ---
-title: "ComptrollerLens Contract"
+title: "ComptrollerLens"
 ---
+## ComptrollerLens Contract
 The ComptrollerLens contract has functions to get the number of tokens that
 can be seized through liquidation, hypothetical account liquidity and shortfall of an account.
 
-# Solidity API
+## Solidity API
 
 ```solidity
 struct AccountLiquidityLocalVars {
@@ -21,7 +22,7 @@ struct AccountLiquidityLocalVars {
 }
 ```
 
-### liquidateCalculateSeizeTokens
+#### liquidateCalculateSeizeTokens
 
 Computes the number of collateral tokens to be seized in a liquidation event
 
@@ -29,7 +30,7 @@ Computes the number of collateral tokens to be seized in a liquidation event
 function liquidateCalculateSeizeTokens(address comptroller, address vTokenBorrowed, address vTokenCollateral, uint256 actualRepayAmount) external view returns (uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | comptroller | address | Address of comptroller |
@@ -37,7 +38,7 @@ function liquidateCalculateSeizeTokens(address comptroller, address vTokenBorrow
 | vTokenCollateral | address | Address of collateral for the borrow |
 | actualRepayAmount | uint256 | Repayment amount i.e amount to be repaid of total borrowed amount |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | [0] | uint256 | A tuple of error code, and tokens to seize |
@@ -45,7 +46,7 @@ function liquidateCalculateSeizeTokens(address comptroller, address vTokenBorrow
 
 - - -
 
-### liquidateCalculateSeizeTokens
+#### liquidateCalculateSeizeTokens
 
 Computes the number of collateral tokens to be seized in a liquidation event
 
@@ -53,7 +54,7 @@ Computes the number of collateral tokens to be seized in a liquidation event
 function liquidateCalculateSeizeTokens(address borrower, address comptroller, address vTokenBorrowed, address vTokenCollateral, uint256 actualRepayAmount) external view returns (uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | borrower | address | Address of borrower whose collateral is being seized |
@@ -62,7 +63,7 @@ function liquidateCalculateSeizeTokens(address borrower, address comptroller, ad
 | vTokenCollateral | address | Address of collateral for the borrow |
 | actualRepayAmount | uint256 | Repayment amount i.e amount to be repaid of total borrowed amount |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | [0] | uint256 | A tuple of error code, and tokens to seize |
@@ -70,7 +71,7 @@ function liquidateCalculateSeizeTokens(address borrower, address comptroller, ad
 
 - - -
 
-### liquidateVAICalculateSeizeTokens
+#### liquidateVAICalculateSeizeTokens
 
 Computes the number of VAI tokens to be seized in a liquidation event
 
@@ -78,14 +79,14 @@ Computes the number of VAI tokens to be seized in a liquidation event
 function liquidateVAICalculateSeizeTokens(address comptroller, address vTokenCollateral, uint256 actualRepayAmount) external view returns (uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | comptroller | address | Address of comptroller |
 | vTokenCollateral | address | Address of collateral for vToken |
 | actualRepayAmount | uint256 | Repayment amount i.e amount to be repaid of the total borrowed amount |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | [0] | uint256 | A tuple of error code, and tokens to seize |
@@ -93,7 +94,7 @@ function liquidateVAICalculateSeizeTokens(address comptroller, address vTokenCol
 
 - - -
 
-### getHypotheticalAccountLiquidity
+#### getHypotheticalAccountLiquidity
 
 Computes the hypothetical liquidity and shortfall of an account given a hypothetical borrow
      A snapshot of the account is taken and the total borrow amount of the account is calculated
@@ -102,7 +103,7 @@ Computes the hypothetical liquidity and shortfall of an account given a hypothet
 function getHypotheticalAccountLiquidity(address comptroller, address account, contract VToken vTokenModify, uint256 redeemTokens, uint256 borrowAmount, enum WeightFunction weightingStrategy) external view returns (uint256, uint256, uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | comptroller | address | Address of comptroller |
@@ -112,7 +113,7 @@ function getHypotheticalAccountLiquidity(address comptroller, address account, c
 | borrowAmount | uint256 | Amount borrowed |
 | weightingStrategy | enum WeightFunction | The weighting strategy to use:                          - `WeightFunction.USE_COLLATERAL_FACTOR` to use collateral factor                          - `WeightFunction.USE_LIQUIDATION_THRESHOLD` to use liquidation threshold |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | [0] | uint256 | Returns a tuple of error code, liquidity, and shortfall |

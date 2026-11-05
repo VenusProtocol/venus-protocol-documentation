@@ -1,6 +1,7 @@
 ---
 title: "XVSBridgeAdmin"
 ---
+## XVSBridgeAdmin
 
 [`XVSBridgeAdmin` at token-bridge v2.7.0](https://github.com/VenusProtocol/token-bridge/blob/v2.7.0/contracts/Bridge/XVSBridgeAdmin.sol) is the transparent proxy that owns and administers the local source or destination bridge. Its implementation constructor fixes an immutable `XVSBridge`, so each network has a different implementation address even though all eight implementations match the same tagged source.
 
@@ -21,9 +22,9 @@ The XVSBridgeAdmin contract extends a parent contract AccessControlledV8 for acc
 It maintains a registry of function signatures and names,
 allowing for dynamic function handling i.e checking of access control of interaction with only owner functions.
 
-# Solidity API
+## Solidity API
 
-### XVSBridge
+#### XVSBridge
 
 Returns the immutable bridge controlled by this implementation.
 
@@ -33,7 +34,7 @@ function XVSBridge() external view returns (contract IXVSProxyOFT)
 
 ---
 
-### initialize
+#### initialize
 
 Initializes proxy ownership and the AccessControlManager. The implementation disables initializers in its constructor.
 
@@ -43,7 +44,7 @@ function initialize(address accessControlManager_) external
 
 ---
 
-### functionRegistry
+#### functionRegistry
 
 A mapping keeps track of function signature associated with function name string.
 
@@ -53,7 +54,7 @@ mapping(bytes4 => string) functionRegistry
 
 ---
 
-### fallback
+#### fallback
 
 Invoked when called function does not exist in the contract.
 
@@ -61,17 +62,17 @@ Invoked when called function does not exist in the contract.
 fallback(bytes data) external returns (bytes)
 ```
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | bytes | Response of low level call. |
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by AccessControlManager.
 
 ---
 
-### setTrustedRemoteAddress
+#### setTrustedRemoteAddress
 
 Sets trusted remote on particular chain.
 
@@ -79,21 +80,21 @@ Sets trusted remote on particular chain.
 function setTrustedRemoteAddress(uint16 remoteChainId_, bytes remoteAddress_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | remoteChainId_ | uint16 | Chain Id of the destination chain. |
 | remoteAddress_ | bytes | Address of the destination bridge. |
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by AccessControlManager.
 
-#### ❌ Errors
+##### ❌ Errors
 * ZeroAddressNotAllowed is thrown when remoteAddress_ contract address is zero.
 
 ---
 
-### upsertSignature
+#### upsertSignature
 
 A setter for the registry of functions that are allowed to be executed from proposals.
 
@@ -101,21 +102,21 @@ A setter for the registry of functions that are allowed to be executed from prop
 function upsertSignature(string[] signatures_, bool[] active_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | signatures_ | string[] | Function signature to be added or removed. |
 | active_ | bool[] | bool value, should be true to add function. |
 
-#### 📅 Events
+##### 📅 Events
 * Emits FunctionRegistryChanged if bool value of function changes.
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only owner.
 
 ---
 
-### transferBridgeOwnership
+#### transferBridgeOwnership
 
 This function transfers the ownership of the bridge from this contract to new owner.
 
@@ -123,17 +124,17 @@ This function transfers the ownership of the bridge from this contract to new ow
 function transferBridgeOwnership(address newOwner_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | newOwner_ | address | New owner of the XVS Bridge. |
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by AccessControlManager.
 
 ---
 
-### isTrustedRemote
+#### isTrustedRemote
 
 Returns true if remote address is trustedRemote corresponds to chainId_.
 
@@ -141,23 +142,23 @@ Returns true if remote address is trustedRemote corresponds to chainId_.
 function isTrustedRemote(uint16 remoteChainId_, bytes remoteAddress_) external returns (bool)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | remoteChainId_ | uint16 | Chain Id of the destination chain. |
 | remoteAddress_ | bytes | Address of the destination bridge. |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | bool | Bool indicating whether the remote chain is trusted or not. |
 
-#### ❌ Errors
+##### ❌ Errors
 * ZeroAddressNotAllowed is thrown when remoteAddress_ contract address is zero.
 
 ---
 
-### renounceOwnership
+#### renounceOwnership
 
 Empty implementation of renounce ownership to avoid any mishappening.
 

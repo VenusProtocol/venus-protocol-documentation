@@ -1,5 +1,5 @@
 ---
-title: "ProtocolShareReserve"
+title: "ProtocolShareReserve (current)"
 ---
 
 `ProtocolShareReserve` (PSR) records and distributes protocol income received from Venus markets and supported products. It is a current, cross-pool component deployed on multiple networks; its location in the Isolated Pools reference tree does not mean it was deprecated with the standalone Isolated Pools interface.

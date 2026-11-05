@@ -1,15 +1,16 @@
 ---
-title: "PrimeLeaderboard"
+title: "Prime leaderboard"
 ---
+## PrimeLeaderboard
 PrimeLeaderboard manages Prime V2 eligibility with time-weighted scoring. It tracks per-deposit timestamps for LIFO withdrawals and computes each user's Prime Score. It is called by the `XVSVault` via the existing `xvsUpdated()` callback. Governance reads `getEffectiveStakeBatch()` off-chain, ranks users by Prime Score, and either sets a mint threshold on PrimeV2 (for permissionless minting) or calls `PrimeV2.issue()` / `burn()` directly.
 
 :::caution
 BNB PrimeV2 only. At block `118,364,540`, proxy `0x55e2ccF68B7A276dc28AfA107997b8B1Be932c0b` used implementation `0xd80de9ecb6596df95dd67af73b67122054c2d1a1`. Resolve the live proxy and Access Control Manager before using an administrative function.
 :::
 
-# Solidity API
+## Solidity API
 
-### constructor
+#### constructor
 
 Sets immutable XVS Vault references and disables initialization on the implementation.
 
@@ -19,7 +20,7 @@ constructor(address xvsVault_, address xvsVaultRewardToken_, uint256 xvsVaultPoo
 
 ---
 
-### xvsVault
+#### xvsVault
 
 Address of XVSVault contract
 
@@ -29,7 +30,7 @@ address xvsVault
 
 ---
 
-### xvsVaultRewardToken
+#### xvsVaultRewardToken
 
 Reward token address in XVSVault
 
@@ -39,7 +40,7 @@ address xvsVaultRewardToken
 
 ---
 
-### xvsVaultPoolId
+#### xvsVaultPoolId
 
 Pool ID in XVSVault
 
@@ -49,7 +50,7 @@ uint256 xvsVaultPoolId
 
 ---
 
-### initialize
+#### initialize
 
 PrimeLeaderboard initializer. Initializes the default multiplier tiers: 30 days → 1.3x, 60 days → 1.6x, 90 days → 2.0x (cap).
 
@@ -57,7 +58,7 @@ PrimeLeaderboard initializer. Initializes the default multiplier tiers: 30 days 
 function initialize(address accessControlManager_, uint256 loopsLimit_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | accessControlManager_ | address | Address of AccessControlManager |
@@ -65,7 +66,7 @@ function initialize(address accessControlManager_, uint256 loopsLimit_) external
 
 ---
 
-### initializeStakers
+#### initializeStakers
 
 Batch-seed existing stakers' deposit data during migration. Idempotent: skips users with `totalStaked[user] != 0` (already seeded). Caller must batch appropriately to avoid exceeding block gas limits.
 
@@ -73,27 +74,27 @@ Batch-seed existing stakers' deposit data during migration. Idempotent: skips us
 function initializeStakers(address[] users, uint256[] amounts, uint64[] timestamps) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | users | address[] | Array of user addresses to initialize |
 | amounts | uint256[] | Array of staked amounts (in XVS wei) |
 | timestamps | uint64[] | Array of deposit timestamps |
 
-#### 📅 Events
+##### 📅 Events
 * Emits StakerInitialized for each user successfully seeded
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by ACM
 
-#### ❌ Errors
+##### ❌ Errors
 * Throw StakersAlreadyInitialized if finalizeInitialization was already called
 * Throw LengthMismatch if array lengths don't match
 * Throw InvalidTimestamp if a seeded timestamp is zero or in the future
 
 ---
 
-### finalizeInitialization
+#### finalizeInitialization
 
 Finalize staker initialization, preventing further seeding. Must be called after all `initializeStakers` batches are complete.
 
@@ -101,18 +102,18 @@ Finalize staker initialization, preventing further seeding. Must be called after
 function finalizeInitialization() external
 ```
 
-#### 📅 Events
+##### 📅 Events
 * Emits StakersInitializationFinalized
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by ACM
 
-#### ❌ Errors
+##### ❌ Errors
 * Throw StakersAlreadyInitialized if already finalized
 
 ---
 
-### xvsUpdated
+#### xvsUpdated
 
 Called by the XVSVault (via `primeToken.xvsUpdated`) when a user's stake changes. Reads the user's current vault balance, diffs it against `totalStaked`, and records the appropriate deposit or LIFO withdrawal internally. Then forwards `accrueInterestAndUpdateScore(user)` to PrimeV2 if set.
 
@@ -120,26 +121,26 @@ Called by the XVSVault (via `primeToken.xvsUpdated`) when a user's stake changes
 function xvsUpdated(address user) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | user | address | The user whose stake changed |
 
-#### 📅 Events
+##### 📅 Events
 * Emits DepositRecorded event on deposit
 * Emits WithdrawalRecorded event on withdrawal
 * Emits DepositsCompacted event if deposits are compacted
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only callable by XVSVault
 
-#### ❌ Errors
+##### ❌ Errors
 * Throw OnlyXVSVaultAllowed if caller is not XVSVault
 * Throw ZeroAddress if user address is zero
 
 ---
 
-### getEffectiveStake
+#### getEffectiveStake
 
 Get a user's current Prime Score (time-weighted score)
 
@@ -147,19 +148,19 @@ Get a user's current Prime Score (time-weighted score)
 function getEffectiveStake(address user) public view returns (uint256 effectiveStake)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | user | address | The user's address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | effectiveStake | uint256 | The user's Prime Score (time-weighted) |
 
 ---
 
-### getEffectiveStakeBatch
+#### getEffectiveStakeBatch
 
 Batch view to get Prime Scores for multiple users
 
@@ -167,19 +168,19 @@ Batch view to get Prime Scores for multiple users
 function getEffectiveStakeBatch(address[] users) external view returns (uint256[] scores)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | users | address[] | Array of user addresses |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | scores | uint256[] | Array of Prime Scores |
 
 ---
 
-### getTotalStaked
+#### getTotalStaked
 
 Get a user's total staked amount
 
@@ -187,19 +188,19 @@ Get a user's total staked amount
 function getTotalStaked(address user) external view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | user | address | The user's address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0\] | uint256 | The total XVS staked |
 
 ---
 
-### getDeposits
+#### getDeposits
 
 Get a user's deposit stack
 
@@ -207,19 +208,19 @@ Get a user's deposit stack
 function getDeposits(address user) external view returns (struct IPrimeLeaderboard.Deposit[] deposits)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | user | address | The user's address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | deposits | struct IPrimeLeaderboard.Deposit[] | Array of deposits (index 0 = oldest) |
 
 ---
 
-### getDepositCount
+#### getDepositCount
 
 Get the number of deposit tranches for a user
 
@@ -227,19 +228,19 @@ Get the number of deposit tranches for a user
 function getDepositCount(address user) external view returns (uint256 count)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | user | address | The user's address |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | count | uint256 | Number of deposit tranches |
 
 ---
 
-### getMultiplier
+#### getMultiplier
 
 Calculate the multiplier for a given holding duration
 
@@ -247,19 +248,19 @@ Calculate the multiplier for a given holding duration
 function getMultiplier(uint256 holdingDuration) external view returns (uint256 multiplier)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | holdingDuration | uint256 | Duration in seconds |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | multiplier | uint256 | The multiplier (scaled by 1e18) |
 
 ---
 
-### getMultiplierTiers
+#### getMultiplierTiers
 
 Get the multiplier tier configuration
 
@@ -267,7 +268,7 @@ Get the multiplier tier configuration
 function getMultiplierTiers() external view returns (uint256[] durations, uint256[] multipliers)
 ```
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | durations | uint256[] | Array of duration thresholds |
@@ -275,7 +276,7 @@ function getMultiplierTiers() external view returns (uint256[] durations, uint25
 
 ---
 
-### setMultiplierTiers
+#### setMultiplierTiers
 
 Set the multiplier tiers. Durations and multipliers must be strictly ascending, and each multiplier must be ≥ the base multiplier (1e18).
 
@@ -283,26 +284,26 @@ Set the multiplier tiers. Durations and multipliers must be strictly ascending, 
 function setMultiplierTiers(uint256[] durations, uint256[] multipliers) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | durations | uint256[] | Array of duration thresholds in seconds |
 | multipliers | uint256[] | Array of multiplier values (scaled by 1e18) |
 
-#### 📅 Events
+##### 📅 Events
 * Emits MultiplierTiersUpdated event
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by ACM
 
-#### ❌ Errors
+##### ❌ Errors
 * Throw LengthMismatch if durations and multipliers arrays have different lengths
 * Throw InvalidValue if durations array is empty
 * Throw InvalidMultiplierTiers if tiers are not in ascending order or multipliers below base
 
 ---
 
-### setPrimeV2
+#### setPrimeV2
 
 Set the PrimeV2 contract address
 
@@ -310,23 +311,23 @@ Set the PrimeV2 contract address
 function setPrimeV2(address primeV2_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | primeV2_ | address | Address of PrimeV2 contract |
 
-#### 📅 Events
+##### 📅 Events
 * Emits PrimeV2Set event
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by ACM
 
-#### ❌ Errors
+##### ❌ Errors
 * Throw ZeroAddress if address is zero
 
 ---
 
-### setMaxLoopsLimit
+#### setMaxLoopsLimit
 
 Set the limit for the loops that can iterate to avoid DOS
 
@@ -334,15 +335,15 @@ Set the limit for the loops that can iterate to avoid DOS
 function setMaxLoopsLimit(uint256 loopsLimit) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | loopsLimit | uint256 | Limit for the max loops that can execute at a time |
 
-#### 📅 Events
+##### 📅 Events
 * Emits MaxLoopsLimitUpdated event
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by ACM
 
 ---

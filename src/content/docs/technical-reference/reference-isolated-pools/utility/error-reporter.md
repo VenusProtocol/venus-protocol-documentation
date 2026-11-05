@@ -1,5 +1,5 @@
 ---
-title: "TokenErrorReporter"
+title: "ErrorReporter"
 ---
 
 This reference matches [`TokenErrorReporter` in `isolated-pools` v4.4.0](https://github.com/VenusProtocol/isolated-pools/blob/v4.4.0/contracts/ErrorReporter.sol). It defines the legacy success code and custom errors inherited by that source generation's `VToken` implementation.

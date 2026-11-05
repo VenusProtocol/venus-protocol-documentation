@@ -1,5 +1,5 @@
 ---
-title: "Venus Trade"
+title: "Trade"
 ---
 
 :::note

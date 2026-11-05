@@ -1,5 +1,5 @@
 ---
-title: "Lending Market Engine"
+title: "Isolated Pools"
 ---
 
 This section documents the `PoolRegistry` → `Comptroller` → `VToken` architecture from the [`isolated-pools`](https://github.com/VenusProtocol/isolated-pools) repository. Despite the historical directory name, this architecture is not deprecated: it powers the Core Pool on every supported mainnet except the legacy BNB Chain Core Pool.

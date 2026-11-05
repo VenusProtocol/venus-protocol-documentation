@@ -1,5 +1,5 @@
 ---
-title: "PoolRegistry"
+title: "Pool Registry"
 ---
 
 `PoolRegistry` is the discovery and administration directory for pools built with the modern lending market engine. It is an upgradeable transparent proxy; its entries point to pool Comptroller proxy addresses.

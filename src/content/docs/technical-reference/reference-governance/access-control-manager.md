@@ -1,6 +1,7 @@
 ---
 title: "AccessControlManager"
 ---
+## AccessControlManager
 
 This page follows [`AccessControlManager.sol` at governance-contracts v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Governance/AccessControlManager.sol). The BNB mainnet instance uses an older deployed ABI without `hasPermission`; the destination-mainnet v2.15.0 artifacts include that selector. `isAllowedToCall` remains the permission hook on both generations.
 
@@ -11,7 +12,7 @@ The [`AccessControlManager` implementation](https://github.com/VenusProtocol/gov
 inherits the [Open Zeppelin AccessControl](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/AccessControl.sol)
 contract as a base for role management logic. There are two role types: admin and granular permissions.
 
-## Granular Roles
+### Granular Roles
 
 Granular roles are built by hashing the contract address and its function signature. For example, given contract `Foo` with function `Foo.bar()` which
 is guarded by ACM, calling `giveCallPermission` for account B does the following:
@@ -20,7 +21,7 @@ is guarded by ACM, calling `giveCallPermission` for account B does the following
 2. Add the computed role to the roles of account B
 3. Account B now can call `ContractFoo.bar()`
 
-## Admin Roles
+### Admin Roles
 
 Admin roles allow for an address to call a function signature on any contract guarded by the `AccessControlManager`. This is particularly useful for
 contracts created by factories.
@@ -30,7 +31,7 @@ For Admin roles a null address is hashed in place of the contract address (`kecc
 In the previous example, giving account B the admin role, account B will have permissions to call the `bar()` function on any contract that is guarded by
 ACM, not only contract A.
 
-## Protocol Integration
+### Protocol Integration
 
 All restricted functions in Venus Protocol use a hook to ACM in order to check if the caller has the right permission to call the guarded function.
 `AccessControlledV5` and `AccessControlledV8` abstract contract makes this integration easier. They call ACM's external method
@@ -46,9 +47,9 @@ All restricted functions in Venus Protocol use a hook to ACM in order to check i
     }
 ```
 
-# Solidity API
+## Solidity API
 
-### giveCallPermission
+#### giveCallPermission
 
 Gives a function call permission to one single account
 
@@ -56,7 +57,7 @@ Gives a function call permission to one single account
 function giveCallPermission(address contractAddress, string functionSig, address accountToPermit) public
 ```
 
-#### Parameters
+##### Parameters
 
 | Name            | Type    | Description                                                    |
 | --------------- | ------- | -------------------------------------------------------------- |
@@ -64,13 +65,13 @@ function giveCallPermission(address contractAddress, string functionSig, address
 | functionSig     | string  | signature e.g. "functionName(uint256,bool)"                    |
 | accountToPermit | address | account that will be given access to the contract function     |
 
-#### 📅 Events
+##### 📅 Events
 
 * Emits a {RoleGranted} and {PermissionGranted} events.
 
 ---
 
-### revokeCallPermission
+#### revokeCallPermission
 
 Revokes an account's permission to a particular function call
 
@@ -78,7 +79,7 @@ Revokes an account's permission to a particular function call
 function revokeCallPermission(address contractAddress, string functionSig, address accountToRevoke) public
 ```
 
-#### Parameters
+##### Parameters
 
 | Name            | Type    | Description                                                    |
 | --------------- | ------- | -------------------------------------------------------------- |
@@ -86,13 +87,13 @@ function revokeCallPermission(address contractAddress, string functionSig, addre
 | functionSig     | string  | signature e.g. "functionName(uint256,bool)"                    |
 | accountToRevoke | address |                                                                |
 
-#### 📅 Events
+##### 📅 Events
 
 * Emits {RoleRevoked} and {PermissionRevoked} events.
 
 ---
 
-### isAllowedToCall
+#### isAllowedToCall
 
 Verifies if the given account can call a contract's guarded function
 
@@ -100,14 +101,14 @@ Verifies if the given account can call a contract's guarded function
 function isAllowedToCall(address account, string functionSig) public view returns (bool)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name        | Type    | Description                                                     |
 | ----------- | ------- | --------------------------------------------------------------- |
 | account     | address | for which call permissions will be checked                      |
 | functionSig | string  | restricted function signature e.g. "functionName(uint256,bool)" |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description                                                            |
 | ---- | ---- | ---------------------------------------------------------------------- |
@@ -115,7 +116,7 @@ function isAllowedToCall(address account, string functionSig) public view return
 
 ---
 
-### hasPermission
+#### hasPermission
 
 Verifies if the given account can call a contract's guarded function
 
@@ -125,7 +126,7 @@ This convenience view exists in the current source and destination-mainnet deplo
 function hasPermission(address account, address contractAddress, string functionSig) public view returns (bool)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name            | Type    | Description                                                            |
 | --------------- | ------- | ---------------------------------------------------------------------- |
@@ -133,7 +134,7 @@ function hasPermission(address account, address contractAddress, string function
 | contractAddress | address | address of the restricted contract                                     |
 | functionSig     | string  | signature of the restricted function e.g. "functionName(uint256,bool)" |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description                                                            |
 | ---- | ---- | ---------------------------------------------------------------------- |

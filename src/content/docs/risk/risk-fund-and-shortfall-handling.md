@@ -1,5 +1,5 @@
 ---
-title: "Protocol income, RiskFundV2, and bad-debt handling"
+title: "Risk Fund and Shortfall Handling"
 ---
 
 Protocol income, risk-fund custody, and bad-debt recovery are separate processes. Risk-fund assets are protocol-controlled funds allocated by governance; they are not a per-user insurance policy, and their existence does not guarantee that every loss or bad-debt balance will be repaid.

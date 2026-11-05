@@ -1,5 +1,5 @@
 ---
-title: "Governance - Deployed Contracts"
+title: "Governance"
 ---
 
 This registry is a deployment inventory, not a current authority map. The source and deployment baseline is [`governance-contracts` v2.15.0](https://github.com/VenusProtocol/governance-contracts/tree/v2.15.0). Proxy implementations and owners, AccessControlManager permissions, timelock roles, executor routes, and guardian scopes can change after deployment; verify current on-chain state before relying on an address or role label.

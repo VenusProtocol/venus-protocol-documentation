@@ -1,6 +1,7 @@
 ---
 title: "DestinationStewardReceiver"
 ---
+## DestinationStewardReceiver
 Destination‑chain contract that receives bridged updates from `RiskStewardReceiver` via LayerZero,
         enforces a fixed remote delay, and then executes the updates on the configured `IRiskSteward` contracts.
 
@@ -8,9 +9,9 @@ This page follows [`DestinationStewardReceiver.sol` at v2.15.0](https://github.c
 
 The receiver uses LayerZero V2 OApp endpoint IDs (`uint32`) and peers, not the LayerZero V1 `uint16` trusted-remote model used by Omnichain Governance.
 
-# Solidity API
+## Solidity API
 
-### REMOTE_UPDATE_EXPIRATION_TIME
+#### REMOTE_UPDATE_EXPIRATION_TIME
 
 Time before a bridged update is considered stale on the destination chain
 
@@ -20,7 +21,7 @@ uint256 REMOTE_UPDATE_EXPIRATION_TIME
 
 - - -
 
-### LAYER_ZERO_EID
+#### LAYER_ZERO_EID
 
 Destination chain LayerZero endpoint ID
 
@@ -30,7 +31,7 @@ uint32 LAYER_ZERO_EID
 
 - - -
 
-### remoteDelay
+#### remoteDelay
 
 Delay before a bridged update can be executed on the destination chain
 
@@ -40,7 +41,7 @@ uint256 remoteDelay
 
 - - -
 
-### riskParameterConfigs
+#### riskParameterConfigs
 
 Mapping of supported risk configurations per update type (hashed updateType string)
 
@@ -50,7 +51,7 @@ mapping(bytes32 => struct IDestinationStewardReceiver.RiskParamConfig) riskParam
 
 - - -
 
-### updates
+#### updates
 
 Master storage of all bridged updates by update ID
 
@@ -60,7 +61,7 @@ mapping(uint256 => struct IDestinationStewardReceiver.DestinationUpdate) updates
 
 - - -
 
-### lastRegisteredUpdateId
+#### lastRegisteredUpdateId
 
 Mapping from (updateType, market) to currently registered remote update ID
 
@@ -70,7 +71,7 @@ mapping(bytes32 => mapping(address => uint256)) lastRegisteredUpdateId
 
 - - -
 
-### lastExecutedAt
+#### lastExecutedAt
 
 Track last executed update timestamp per (updateType, market)
 
@@ -80,7 +81,7 @@ mapping(bytes32 => mapping(address => uint256)) lastExecutedAt
 
 - - -
 
-### whitelistedExecutors
+#### whitelistedExecutors
 
 Mapping from executor address to whitelist status
 
@@ -90,7 +91,7 @@ mapping(address => bool) whitelistedExecutors
 
 - - -
 
-### constructor
+#### constructor
 
 Disables initializers and sets immutable values.
 
@@ -98,7 +99,7 @@ Disables initializers and sets immutable values.
 constructor(address endpoint_, uint32 layerZeroEid_) public
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | endpoint_ | address | Local LayerZero endpoint on this chain |
@@ -106,7 +107,7 @@ constructor(address endpoint_, uint32 layerZeroEid_) public
 
 - - -
 
-### initialize
+#### initialize
 
 Initializes the contract with the Access Control Manager and owner.
 
@@ -114,7 +115,7 @@ Initializes the contract with the Access Control Manager and owner.
 function initialize(address accessControlManager_, address delegate_) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | accessControlManager_ | address | The address of the access control manager |
@@ -122,7 +123,7 @@ function initialize(address accessControlManager_, address delegate_) external
 
 - - -
 
-### setRiskParameterConfig
+#### setRiskParameterConfig
 
 Sets the risk parameter config for a given update type on the destination chain.
 
@@ -130,26 +131,26 @@ Sets the risk parameter config for a given update type on the destination chain.
 function setRiskParameterConfig(string updateType, address riskSteward, uint256 debounce) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | updateType | string | The type of update to configure (e.g., "supplyCap", "borrowCap") |
 | riskSteward | address | The address for the risk steward contract responsible for processing the update |
 | debounce | uint256 | The debounce period for updates of this type on the destination (anti‑DoS) |
 
-#### 📅 Events
+##### 📅 Events
 * Emits RiskParameterConfigUpdated
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by AccessControlManager
 
-#### ❌ Errors
+##### ❌ Errors
 * InvalidUpdateType if the update type string is empty
 * InvalidDebounce if the debounce is 0
 
 - - -
 
-### setConfigActive
+#### setConfigActive
 
 Sets the active status of a risk parameter config
 
@@ -157,25 +158,25 @@ Sets the active status of a risk parameter config
 function setConfigActive(string updateType, bool active) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | updateType | string | The type of update to configure |
 | active | bool | The active status to set |
 
-#### 📅 Events
+##### 📅 Events
 * Emits ConfigActiveUpdated with the update type hash, update type, previous active status, and the active status
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by AccessControlManager
 
-#### ❌ Errors
+##### ❌ Errors
 * Throws UnsupportedUpdateType if the update type is not supported
 * Throws ConfigStatusUnchanged if the active status is already set to the desired value
 
 - - -
 
-### setRemoteDelay
+#### setRemoteDelay
 
 Sets the remote delay before bridged updates can be executed on the destination chain.
 
@@ -183,24 +184,24 @@ Sets the remote delay before bridged updates can be executed on the destination 
 function setRemoteDelay(uint256 newRemoteDelay) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | newRemoteDelay | uint256 | The new remote delay in seconds |
 
-#### 📅 Events
+##### 📅 Events
 * Emits RemoteDelaySet with the new remote delay value
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by AccessControlManager
 
-#### ❌ Errors
+##### ❌ Errors
 * InvalidRemoteDelay if the delay is 0 or greater than or equal to the remote update expiration time
 * RemoteDelayUnchanged if the new delay is equal to the current delay
 
 - - -
 
-### setWhitelistedExecutor
+#### setWhitelistedExecutor
 
 Sets the whitelist status of an executor on the destination chain.
 
@@ -208,25 +209,25 @@ Sets the whitelist status of an executor on the destination chain.
 function setWhitelistedExecutor(address executor, bool approved) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | executor | address | The address of the executor |
 | approved | bool | The whitelist status to set (true to whitelist, false to remove) |
 
-#### 📅 Events
+##### 📅 Events
 * Emits ExecutorStatusUpdated with the executor address, previous approval status, and new approval status
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Controlled by AccessControlManager
 
-#### ❌ Errors
+##### ❌ Errors
 * Throws ZeroAddressNotAllowed if the executor address is zero
 * Throws ExecutorStatusUnchanged if the executor whitelist status is already set to the desired value
 
 - - -
 
-### executeUpdate
+#### executeUpdate
 
 Executes a bridged update after its remote delay has passed.
 
@@ -234,18 +235,18 @@ Executes a bridged update after its remote delay has passed.
 function executeUpdate(uint256 updateId) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | updateId | uint256 | The bridged update ID to execute |
 
-#### 📅 Events
+##### 📅 Events
 * Emits RemoteUpdateExecuted with the executed update ID
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only whitelisted executors can execute updates
 
-#### ❌ Errors
+##### ❌ Errors
 * NotAnExecutor if the caller is not a whitelisted executor
 * ConfigNotActive if the configuration for the update type is not active
 * UpdateNotFound if the update is not pending for the given (updateType, market)
@@ -255,7 +256,7 @@ function executeUpdate(uint256 updateId) external
 
 - - -
 
-### rejectUpdate
+#### rejectUpdate
 
 Rejects a registered remote update on the destination chain.
 
@@ -263,24 +264,24 @@ Rejects a registered remote update on the destination chain.
 function rejectUpdate(uint256 updateId) external
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | updateId | uint256 | The oracle update ID of the update to reject |
 
-#### 📅 Events
+##### 📅 Events
 * Emits UpdateRejected with the rejected update ID
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 * Only whitelisted executors can reject updates
 
-#### ❌ Errors
+##### ❌ Errors
 * NotAnExecutor if the caller is not a whitelisted executor
 * UpdateNotFound if there is no pending update with the given ID
 
 - - -
 
-### getExecutableUpdates
+#### getExecutableUpdates
 
 Returns executable updates for a given update type and comptroller.
 
@@ -288,20 +289,20 @@ Returns executable updates for a given update type and comptroller.
 function getExecutableUpdates(string updateType, address comptroller) external view returns (uint256[] executableUpdates)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | updateType | string | The human‑readable identifier of the update type to filter by |
 | comptroller | address | The address of the Isolated Pools Comptroller that manages the markets |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | executableUpdates | uint256[] | Array of update IDs that are ready to be executed |
 
 - - -
 
-### getRiskParameterConfig
+#### getRiskParameterConfig
 
 Returns the risk parameter configuration for a given update type
 
@@ -309,19 +310,19 @@ Returns the risk parameter configuration for a given update type
 function getRiskParameterConfig(string updateType) external view returns (struct IDestinationStewardReceiver.RiskParamConfig)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | updateType | string | The human-readable identifier of the update type |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | struct IDestinationStewardReceiver.RiskParamConfig | The risk parameter configuration |
 
 - - -
 
-### getRegisteredUpdate
+#### getRegisteredUpdate
 
 Returns the registered update for a given update type and market
 
@@ -329,20 +330,20 @@ Returns the registered update for a given update type and market
 function getRegisteredUpdate(string updateType, address market) external view returns (struct IDestinationStewardReceiver.DestinationUpdate)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | updateType | string | The human-readable identifier of the update type |
 | market | address | The address of the market |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | struct IDestinationStewardReceiver.DestinationUpdate | The registered update |
 
 - - -
 
-### getLastExecutedAt
+#### getLastExecutedAt
 
 Returns the last executed timestamp for a given update type and market
 
@@ -350,20 +351,20 @@ Returns the last executed timestamp for a given update type and market
 function getLastExecutedAt(string updateType, address market) external view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | updateType | string | The human-readable identifier of the update type |
 | market | address | The address of the market |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \[0] | uint256 | The last executed timestamp |
 
 - - -
 
-### transferOwnership
+#### transferOwnership
 
 Starts the two-step ownership transfer used jointly by AccessControlledV8 and the LayerZero OApp base. The pending owner must call `acceptOwnership`.
 
@@ -373,7 +374,7 @@ function transferOwnership(address newOwner) public
 
 - - -
 
-### renounceOwnership
+#### renounceOwnership
 
 Disables renounceOwnership function
 
@@ -381,7 +382,7 @@ Disables renounceOwnership function
 function renounceOwnership() public pure
 ```
 
-#### ❌ Errors
+##### ❌ Errors
 * Throws RenounceOwnershipNotAllowed
 
 - - -

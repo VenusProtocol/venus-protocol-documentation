@@ -1,6 +1,7 @@
 ---
-title: "WhitePaperInterestRateModel"
+title: "WhitePaperModel"
 ---
+## WhitePaperInterestRateModel
 
 The parameterized model described in section 2.4 of the original Venus Protocol whitepaper
 
@@ -8,9 +9,9 @@ The parameterized model described in section 2.4 of the original Venus Protocol 
 Legacy BNB Core model reference. Some unlisted markets still retain supply or debt, so the ABI remains operationally relevant. Resolve the market's exact model and `blocksPerYear` at the historical block; do not use this page to infer that a market is active or deprecated.
 :::
 
-# Solidity API
+## Solidity API
 
-### blocksPerYear
+#### blocksPerYear
 
 Approximate blocks per year used to convert annual constructor parameters to per-block rates.
 
@@ -20,7 +21,7 @@ uint256 blocksPerYear
 
 ---
 
-### constructor
+#### constructor
 
 Construct an interest rate model
 
@@ -28,7 +29,7 @@ Construct an interest rate model
 constructor(uint256 baseRatePerYear, uint256 multiplierPerYear, uint256 blocksPerYear_) public
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -38,7 +39,7 @@ constructor(uint256 baseRatePerYear, uint256 multiplierPerYear, uint256 blocksPe
 
 ---
 
-### utilizationRate
+#### utilizationRate
 
 Calculates the utilization rate of the market: `borrows / (cash + borrows - reserves)`
 
@@ -46,7 +47,7 @@ Calculates the utilization rate of the market: `borrows / (cash + borrows - rese
 function utilizationRate(uint256 cash, uint256 borrows, uint256 reserves) public pure returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -54,7 +55,7 @@ function utilizationRate(uint256 cash, uint256 borrows, uint256 reserves) public
 | borrows | uint256 | The amount of borrows in the market |
 | reserves | uint256 | The amount of reserves in the market (currently unused) |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -62,7 +63,7 @@ function utilizationRate(uint256 cash, uint256 borrows, uint256 reserves) public
 
 ---
 
-### getBorrowRate
+#### getBorrowRate
 
 Calculates the current borrow rate per block, with the error code expected by the market
 
@@ -70,7 +71,7 @@ Calculates the current borrow rate per block, with the error code expected by th
 function getBorrowRate(uint256 cash, uint256 borrows, uint256 reserves) public view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -78,7 +79,7 @@ function getBorrowRate(uint256 cash, uint256 borrows, uint256 reserves) public v
 | borrows | uint256 | The amount of borrows in the market |
 | reserves | uint256 | The amount of reserves in the market |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -86,7 +87,7 @@ function getBorrowRate(uint256 cash, uint256 borrows, uint256 reserves) public v
 
 ---
 
-### getSupplyRate
+#### getSupplyRate
 
 Calculates the current supply rate per block
 
@@ -94,7 +95,7 @@ Calculates the current supply rate per block
 function getSupplyRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 reserveFactorMantissa) public view returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -103,7 +104,7 @@ function getSupplyRate(uint256 cash, uint256 borrows, uint256 reserves, uint256 
 | reserves | uint256 | The amount of reserves in the market |
 | reserveFactorMantissa | uint256 | The current reserve factor for the market |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |

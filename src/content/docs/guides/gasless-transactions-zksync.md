@@ -1,5 +1,5 @@
 ---
-title: "Gasless transactions on ZKsync"
+title: "Gasless Transactions on ZKsync"
 ---
 
 The Venus app can offer transactions that use a [Zyfi Paymaster](https://docs.zyfi.org/integration-guide/paymasters-integration/sponsored-paymaster) on ZKsync. Paymaster availability, supported actions, sponsorship percentage, fee token, quota, and quote expiry are dynamic; a displayed option is not a promise that every transaction will be fully sponsored.

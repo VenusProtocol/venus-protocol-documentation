@@ -1,5 +1,5 @@
 ---
-title: "Core Pool Flash Loans"
+title: "FlashLoan"
 ---
 
 :::caution

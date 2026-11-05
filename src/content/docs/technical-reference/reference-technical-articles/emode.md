@@ -1,5 +1,5 @@
 ---
-title: "E-Mode Implementation in Venus BNB Core Pool"
+title: "E-Mode"
 ---
 
 :::note

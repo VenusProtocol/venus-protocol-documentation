@@ -1,5 +1,5 @@
 ---
-title: "Markets - Deployed Contracts"
+title: "Markets"
 ---
 
 This page is an address registry, not a guarantee that every listed market currently accepts supply, borrow, redeem, repay, liquidation, or collateral use. Market listing, pause flags, caps, collateral factors, oracle state, and beacon/proxy implementations can change through governance. Verify live state at the address before interacting; testnet rows are never evidence of mainnet support.

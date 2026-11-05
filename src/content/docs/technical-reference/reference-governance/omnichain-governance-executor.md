@@ -1,12 +1,13 @@
 ---
 title: "OmnichainGovernanceExecutor"
 ---
+## OmnichainGovernanceExecutor
 
 [`OmnichainGovernanceExecutor` at v2.15.0](https://github.com/VenusProtocol/governance-contracts/blob/v2.15.0/contracts/Cross-chain/OmnichainGovernanceExecutor.sol) receives LayerZero V1 messages from the trusted BNB sender, queues each route through its destination TimelockV8, and permits permissionless execution after the timelock ETA. Only the configured guardian can cancel a queued remote proposal.
 
 The deployed surface also inherits LayerZero configuration, trusted-remote, failed-message, pause, ownership, and receive-limit selectors from `NonblockingLzApp` and [BaseOmnichainControllerDest](/technical-reference/reference-governance/base-omnichain-controller-dest). Administrative calls normally pass through OmnichainExecutorOwner; do not infer direct caller authority from public ABI presence.
 
-# Solidity API
+## Solidity API
 
 ```solidity
 enum ProposalType {
@@ -38,7 +39,7 @@ enum ProposalState {
 }
 ```
 
-### guardian
+#### guardian
 
 A privileged role that can cancel any proposal
 
@@ -48,7 +49,7 @@ address guardian
 
 ---
 
-### srcChainId
+#### srcChainId
 
 Stores BNB chain layerzero endpoint id
 
@@ -58,7 +59,7 @@ uint16 srcChainId
 
 ---
 
-### lastProposalReceived
+#### lastProposalReceived
 
 Last proposal count received
 
@@ -68,7 +69,7 @@ uint256 lastProposalReceived
 
 ---
 
-### proposals
+#### proposals
 
 The official record of all proposals ever proposed
 
@@ -78,7 +79,7 @@ mapping(uint256 => struct OmnichainGovernanceExecutor.Proposal) proposals
 
 ---
 
-### proposalTimelocks
+#### proposalTimelocks
 
 Mapping containing Timelock addresses for each proposal type
 
@@ -88,7 +89,7 @@ mapping(uint256 => contract ITimelock) proposalTimelocks
 
 ---
 
-### queued
+#### queued
 
 Represents queue state of proposal
 
@@ -98,7 +99,7 @@ mapping(uint256 => bool) queued
 
 ---
 
-### setSrcChainId
+#### setSrcChainId
 
 Update source layerzero endpoint id
 
@@ -106,23 +107,23 @@ Update source layerzero endpoint id
 function setSrcChainId(uint16 srcChainId_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type   | Description                       |
 | ------------ | ------ | --------------------------------- |
 | srcChainId\_ | uint16 | The new source chain id to be set |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emit SetSrcChainId with old and new source id
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Only owner
 
 ---
 
-### setGuardian
+#### setGuardian
 
 Sets the new executor guardian
 
@@ -130,23 +131,23 @@ Sets the new executor guardian
 function setGuardian(address newGuardian) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name        | Type    | Description                     |
 | ----------- | ------- | ------------------------------- |
 | newGuardian | address | The address of the new guardian |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emit NewGuardian with old and new guardian address
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Must be call by guardian or owner
 
 ---
 
-### addTimelocks
+#### addTimelocks
 
 Add timelocks to the ProposalTimelocks mapping
 
@@ -154,23 +155,23 @@ Add timelocks to the ProposalTimelocks mapping
 function addTimelocks(contract ITimelock[] timelocks_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name        | Type                 | Description                           |
 | ----------- | -------------------- | ------------------------------------- |
 | timelocks\_ | contract ITimelock[] | Array of addresses of all 3 timelocks |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits TimelockAdded with old and new timelock and route type
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Only owner
 
 ---
 
-### execute
+#### execute
 
 Executes a queued proposal if eta has passed
 
@@ -178,19 +179,19 @@ Executes a queued proposal if eta has passed
 function execute(uint256 proposalId_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type    | Description                           |
 | ------------ | ------- | ------------------------------------- |
 | proposalId\_ | uint256 | Id of proposal that is to be executed |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits ProposalExecuted with proposal id of executed proposal
 
 ---
 
-### cancel
+#### cancel
 
 Cancels a proposal only if sender is the guardian and proposal is not executed
 
@@ -198,23 +199,23 @@ Cancels a proposal only if sender is the guardian and proposal is not executed
 function cancel(uint256 proposalId_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type    | Description                           |
 | ------------ | ------- | ------------------------------------- |
 | proposalId\_ | uint256 | Id of proposal that is to be canceled |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits ProposalCanceled with proposal id of the canceled proposal
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Sender must be the guardian
 
 ---
 
-### setTimelockPendingAdmin
+#### setTimelockPendingAdmin
 
 Sets the new pending admin of the Timelock
 
@@ -222,24 +223,24 @@ Sets the new pending admin of the Timelock
 function setTimelockPendingAdmin(address pendingAdmin_, uint8 proposalType_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name           | Type    | Description                  |
 | -------------- | ------- | ---------------------------- |
 | pendingAdmin\_ | address | Address of new pending admin |
 | proposalType\_ | uint8   | Type of proposal             |
 
-#### 📅 Events
+##### 📅 Events
 
 - Emits SetTimelockPendingAdmin with new pending admin and proposal type
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Only owner
 
 ---
 
-### retryMessage
+#### retryMessage
 
 Resends a previously failed message
 
@@ -247,7 +248,7 @@ Resends a previously failed message
 function retryMessage(uint16 srcChainId_, bytes srcAddress_, uint64 nonce_, bytes payload_) public payable
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type   | Description                                              |
 | ------------ | ------ | -------------------------------------------------------- |
@@ -256,13 +257,13 @@ function retryMessage(uint16 srcChainId_, bytes srcAddress_, uint64 nonce_, byte
 | nonce\_      | uint64 | Nonce to identify failed message                         |
 | payload\_    | bytes  | The payload of the message to be retried                 |
 
-#### ⛔️ Access Requirements
+##### ⛔️ Access Requirements
 
 - Only owner
 
 ---
 
-### state
+#### state
 
 Gets the state of a proposal
 
@@ -270,13 +271,13 @@ Gets the state of a proposal
 function state(uint256 proposalId_) public view returns (enum OmnichainGovernanceExecutor.ProposalState)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name         | Type    | Description            |
 | ------------ | ------- | ---------------------- |
 | proposalId\_ | uint256 | The id of the proposal |
 
-#### Return Values
+##### Return Values
 
 | Name | Type                                           | Description    |
 | ---- | ---------------------------------------------- | -------------- |

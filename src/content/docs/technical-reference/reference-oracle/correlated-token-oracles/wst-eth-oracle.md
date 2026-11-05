@@ -1,5 +1,5 @@
 ---
-title: "WstETHOracle and WstETHOracleV2"
+title: "WstETHOracle"
 ---
 
 The repository contains two incompatible wstETH oracle families. Current Ethereum deployment artifacts use `WstETHOracleV2`; the older `WstETHOracle` API is retained below only for exact legacy deployments.

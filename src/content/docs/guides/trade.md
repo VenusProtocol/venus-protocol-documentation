@@ -1,5 +1,5 @@
 ---
-title: "Venus Trade Guide"
+title: "Trade"
 ---
 
 Venus Trade lets you express a view that one asset will outperform another, without needing to predict absolute price direction. This guide walks through the full lifecycle of a Trade position — from opening to closing — and explains all available management actions along the way.

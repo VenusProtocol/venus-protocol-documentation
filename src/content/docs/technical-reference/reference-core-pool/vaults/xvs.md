@@ -1,5 +1,5 @@
 ---
-title: "XVS Vault Version Map"
+title: "XVS"
 ---
 
 The XVS Vault is a multi-chain custom delegate-proxy family. Each deployment has a separate implementation, time basis, pause state, pool configuration, XVSStore, and permission set.

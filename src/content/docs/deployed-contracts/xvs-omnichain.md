@@ -1,5 +1,5 @@
 ---
-title: "XVS Omnichain - Deployed Contracts"
+title: "XVS Omnichain"
 ---
 
 These addresses implement the stable [`token-bridge` v2.7.0](https://github.com/VenusProtocol/token-bridge/tree/v2.7.0) LayerZero V1 bridge family. They are an address inventory, not a live route matrix. Before bridging, verify both local and remote bridges, `paused()`, trusted remotes, endpoint/library configuration, send/receive limits, destination mint cap, owner/ACM permissions, and any failed-message recovery state.

@@ -1,6 +1,7 @@
 ---
 title: "SetterFacet"
 ---
+## SetterFacet
 
 This facet contract contains all the configurational setter functions
 
@@ -8,9 +9,9 @@ This facet contract contains all the configurational setter functions
 BNB Core Pool only. At block `118,363,255`, this facet was routed to `0xbc4885e5A27050E321d094503597aC6734AB1871`. Call its selectors through the Unitroller. Access is function-specific and can use admin-only, admin-or-guardian, or Access Control Manager checks; do not infer permission from this generated page. Verify the live selector and permission, then use the [v10.3.0 source](https://github.com/VenusProtocol/venus-protocol/blob/v10.3.0/contracts/Comptroller/Diamond/facets/SetterFacet.sol) for the exact ABI.
 :::
 
-# Solidity API
+## Solidity API
 
-### setPriceOracle
+#### setPriceOracle
 
 Alias to \_setPriceOracle to support the Isolated Lending Comptroller Interface
 
@@ -18,13 +19,13 @@ Alias to \_setPriceOracle to support the Isolated Lending Comptroller Interface
 function setPriceOracle(contract ResilientOracleInterface newOracle) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | newOracle | contract ResilientOracleInterface | The new price oracle to set |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -32,7 +33,7 @@ function setPriceOracle(contract ResilientOracleInterface newOracle) external re
 
 ---
 
-### \_setPriceOracle
+#### \_setPriceOracle
 
 Sets a new price oracle for the comptroller
 
@@ -40,13 +41,13 @@ Sets a new price oracle for the comptroller
 function _setPriceOracle(contract ResilientOracleInterface newOracle) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | newOracle | contract ResilientOracleInterface | The new price oracle to set |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -54,7 +55,7 @@ function _setPriceOracle(contract ResilientOracleInterface newOracle) external r
 
 ---
 
-### setCloseFactor
+#### setCloseFactor
 
 Alias to \_setCloseFactor to support the Isolated Lending Comptroller Interface
 
@@ -62,13 +63,13 @@ Alias to \_setCloseFactor to support the Isolated Lending Comptroller Interface
 function setCloseFactor(uint256 newCloseFactorMantissa) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | newCloseFactorMantissa | uint256 | New close factor, scaled by 1e18 |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -76,7 +77,7 @@ function setCloseFactor(uint256 newCloseFactorMantissa) external returns (uint25
 
 ---
 
-### \_setCloseFactor
+#### \_setCloseFactor
 
 Sets the closeFactor used when liquidating borrows
 
@@ -84,13 +85,13 @@ Sets the closeFactor used when liquidating borrows
 function _setCloseFactor(uint256 newCloseFactorMantissa) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | newCloseFactorMantissa | uint256 | New close factor, scaled by 1e18 |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -98,7 +99,7 @@ function _setCloseFactor(uint256 newCloseFactorMantissa) external returns (uint2
 
 ---
 
-### \_setAccessControl
+#### \_setAccessControl
 
 Sets the address of the access control of this contract
 
@@ -106,13 +107,13 @@ Sets the address of the access control of this contract
 function _setAccessControl(address newAccessControlAddress) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | newAccessControlAddress | address | New address for the access control |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -120,7 +121,7 @@ function _setAccessControl(address newAccessControlAddress) external returns (ui
 
 ---
 
-### setCollateralFactor
+#### setCollateralFactor
 
 Sets the collateral factor and liquidation threshold for a market in the Core Pool only.
 
@@ -128,7 +129,7 @@ Sets the collateral factor and liquidation threshold for a market in the Core Po
 function setCollateralFactor(contract VToken vToken, uint256 newCollateralFactorMantissa, uint256 newLiquidationThresholdMantissa) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -136,7 +137,7 @@ function setCollateralFactor(contract VToken vToken, uint256 newCollateralFactor
 | newCollateralFactorMantissa | uint256 | The new collateral factor, scaled by 1e18 |
 | newLiquidationThresholdMantissa | uint256 | The new liquidation threshold, scaled by 1e18 |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -144,7 +145,7 @@ function setCollateralFactor(contract VToken vToken, uint256 newCollateralFactor
 
 ---
 
-### setLiquidationIncentive
+#### setLiquidationIncentive
 
 Sets the liquidation incentive for a market in the Core Pool only.
 
@@ -152,14 +153,14 @@ Sets the liquidation incentive for a market in the Core Pool only.
 function setLiquidationIncentive(address vToken, uint256 newLiquidationIncentiveMantissa) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | vToken | address | The market to set the liquidationIncentive for |
 | newLiquidationIncentiveMantissa | uint256 | New liquidationIncentive scaled by 1e18 |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -167,7 +168,7 @@ function setLiquidationIncentive(address vToken, uint256 newLiquidationIncentive
 
 ---
 
-### setCollateralFactor
+#### setCollateralFactor
 
 Sets the collateral factor and liquidation threshold for a market in the specified pool.
 
@@ -175,7 +176,7 @@ Sets the collateral factor and liquidation threshold for a market in the specifi
 function setCollateralFactor(uint96 poolId, contract VToken vToken, uint256 newCollateralFactorMantissa, uint256 newLiquidationThresholdMantissa) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -184,7 +185,7 @@ function setCollateralFactor(uint96 poolId, contract VToken vToken, uint256 newC
 | newCollateralFactorMantissa | uint256 | The new collateral factor, scaled by 1e18 |
 | newLiquidationThresholdMantissa | uint256 | The new liquidation threshold, scaled by 1e18 |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -192,7 +193,7 @@ function setCollateralFactor(uint96 poolId, contract VToken vToken, uint256 newC
 
 ---
 
-### setLiquidationIncentive
+#### setLiquidationIncentive
 
 Sets the liquidation incentive for a market in the specified pool.
 
@@ -200,7 +201,7 @@ Sets the liquidation incentive for a market in the specified pool.
 function setLiquidationIncentive(uint96 poolId, address vToken, uint256 newLiquidationIncentiveMantissa) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -208,7 +209,7 @@ function setLiquidationIncentive(uint96 poolId, address vToken, uint256 newLiqui
 | vToken | address | The market to set the liquidationIncentive for |
 | newLiquidationIncentiveMantissa | uint256 | New liquidationIncentive scaled by 1e18 |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -216,7 +217,7 @@ function setLiquidationIncentive(uint96 poolId, address vToken, uint256 newLiqui
 
 ---
 
-### \_setLiquidatorContract
+#### \_setLiquidatorContract
 
 Update the address of the liquidator contract
 
@@ -224,7 +225,7 @@ Update the address of the liquidator contract
 function _setLiquidatorContract(address newLiquidatorContract_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -232,7 +233,7 @@ function _setLiquidatorContract(address newLiquidatorContract_) external
 
 ---
 
-### \_setPauseGuardian
+#### \_setPauseGuardian
 
 Admin function to change the Pause Guardian
 
@@ -240,13 +241,13 @@ Admin function to change the Pause Guardian
 function _setPauseGuardian(address newPauseGuardian) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | newPauseGuardian | address | The address of the new Pause Guardian |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -254,7 +255,7 @@ function _setPauseGuardian(address newPauseGuardian) external returns (uint256)
 
 ---
 
-### setMarketBorrowCaps
+#### setMarketBorrowCaps
 
 Alias to \_setMarketBorrowCaps to support the Isolated Lending Comptroller Interface
 
@@ -262,7 +263,7 @@ Alias to \_setMarketBorrowCaps to support the Isolated Lending Comptroller Inter
 function setMarketBorrowCaps(contract VToken[] vTokens, uint256[] newBorrowCaps) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -271,7 +272,7 @@ function setMarketBorrowCaps(contract VToken[] vTokens, uint256[] newBorrowCaps)
 
 ---
 
-### \_setMarketBorrowCaps
+#### \_setMarketBorrowCaps
 
 Set the given borrow caps for the given vToken market Borrowing that brings total borrows to or above borrow cap will revert
 
@@ -279,7 +280,7 @@ Set the given borrow caps for the given vToken market Borrowing that brings tota
 function _setMarketBorrowCaps(contract VToken[] vTokens, uint256[] newBorrowCaps) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -288,7 +289,7 @@ function _setMarketBorrowCaps(contract VToken[] vTokens, uint256[] newBorrowCaps
 
 ---
 
-### setMarketSupplyCaps
+#### setMarketSupplyCaps
 
 Alias to \_setMarketSupplyCaps to support the Isolated Lending Comptroller Interface
 
@@ -296,7 +297,7 @@ Alias to \_setMarketSupplyCaps to support the Isolated Lending Comptroller Inter
 function setMarketSupplyCaps(contract VToken[] vTokens, uint256[] newSupplyCaps) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -305,7 +306,7 @@ function setMarketSupplyCaps(contract VToken[] vTokens, uint256[] newSupplyCaps)
 
 ---
 
-### \_setMarketSupplyCaps
+#### \_setMarketSupplyCaps
 
 Set the given supply caps for the given vToken market Supply that brings total Supply to or above supply cap will revert
 
@@ -313,7 +314,7 @@ Set the given supply caps for the given vToken market Supply that brings total S
 function _setMarketSupplyCaps(contract VToken[] vTokens, uint256[] newSupplyCaps) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -322,7 +323,7 @@ function _setMarketSupplyCaps(contract VToken[] vTokens, uint256[] newSupplyCaps
 
 ---
 
-### \_setProtocolPaused
+#### \_setProtocolPaused
 
 Set whole protocol pause/unpause state
 
@@ -330,13 +331,13 @@ Set whole protocol pause/unpause state
 function _setProtocolPaused(bool state) external returns (bool)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | state | bool | The new state (true=paused, false=unpaused) |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -344,7 +345,7 @@ function _setProtocolPaused(bool state) external returns (bool)
 
 ---
 
-### setActionsPaused
+#### setActionsPaused
 
 Alias to \_setActionsPaused to support the Isolated Lending Comptroller Interface
 
@@ -352,7 +353,7 @@ Alias to \_setActionsPaused to support the Isolated Lending Comptroller Interfac
 function setActionsPaused(address[] markets_, enum Action[] actions_, bool paused_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -362,7 +363,7 @@ function setActionsPaused(address[] markets_, enum Action[] actions_, bool pause
 
 ---
 
-### \_setActionsPaused
+#### \_setActionsPaused
 
 Pause/unpause certain actions
 
@@ -370,7 +371,7 @@ Pause/unpause certain actions
 function _setActionsPaused(address[] markets_, enum Action[] actions_, bool paused_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -380,7 +381,7 @@ function _setActionsPaused(address[] markets_, enum Action[] actions_, bool paus
 
 ---
 
-### \_setVAIController
+#### \_setVAIController
 
 Sets a new VAI controller
 
@@ -388,7 +389,7 @@ Sets a new VAI controller
 function _setVAIController(contract VAIControllerInterface vaiController_) external returns (uint256)
 ```
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -396,7 +397,7 @@ function _setVAIController(contract VAIControllerInterface vaiController_) exter
 
 ---
 
-### \_setVAIMintRate
+#### \_setVAIMintRate
 
 Set the VAI mint rate
 
@@ -404,13 +405,13 @@ Set the VAI mint rate
 function _setVAIMintRate(uint256 newVAIMintRate) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | newVAIMintRate | uint256 | The new VAI mint rate to be set |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -418,7 +419,7 @@ function _setVAIMintRate(uint256 newVAIMintRate) external returns (uint256)
 
 ---
 
-### setMintedVAIOf
+#### setMintedVAIOf
 
 Set the minted VAI amount of the `owner`
 
@@ -426,14 +427,14 @@ Set the minted VAI amount of the `owner`
 function setMintedVAIOf(address owner, uint256 amount) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | owner | address | The address of the account to set |
 | amount | uint256 | The amount of VAI to set to the account |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -441,7 +442,7 @@ function setMintedVAIOf(address owner, uint256 amount) external returns (uint256
 
 ---
 
-### \_setTreasuryData
+#### \_setTreasuryData
 
 Set the treasury data.
 
@@ -449,7 +450,7 @@ Set the treasury data.
 function _setTreasuryData(address newTreasuryGuardian, address newTreasuryAddress, uint256 newTreasuryPercent) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -457,7 +458,7 @@ function _setTreasuryData(address newTreasuryGuardian, address newTreasuryAddres
 | newTreasuryAddress | address | The new address of the treasury to be set |
 | newTreasuryPercent | uint256 | The new treasury percent to be set |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -465,7 +466,7 @@ function _setTreasuryData(address newTreasuryGuardian, address newTreasuryAddres
 
 ---
 
-### \_setVenusVAIVaultRate
+#### \_setVenusVAIVaultRate
 
 Set the amount of XVS distributed per block to VAI Vault
 
@@ -473,7 +474,7 @@ Set the amount of XVS distributed per block to VAI Vault
 function _setVenusVAIVaultRate(uint256 venusVAIVaultRate_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -481,7 +482,7 @@ function _setVenusVAIVaultRate(uint256 venusVAIVaultRate_) external
 
 ---
 
-### \_setVAIVaultInfo
+#### \_setVAIVaultInfo
 
 Set the VAI Vault infos
 
@@ -489,7 +490,7 @@ Set the VAI Vault infos
 function _setVAIVaultInfo(address vault_, uint256 releaseStartBlock_, uint256 minReleaseAmount_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -499,7 +500,7 @@ function _setVAIVaultInfo(address vault_, uint256 releaseStartBlock_, uint256 mi
 
 ---
 
-### setPrimeToken
+#### setPrimeToken
 
 Alias to \_setPrimeToken to support the Isolated Lending Comptroller Interface
 
@@ -507,13 +508,13 @@ Alias to \_setPrimeToken to support the Isolated Lending Comptroller Interface
 function setPrimeToken(contract IPrime _prime) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \_prime | contract IPrime | The new prime token contract to be set |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -521,7 +522,7 @@ function setPrimeToken(contract IPrime _prime) external returns (uint256)
 
 ---
 
-### \_setPrimeToken
+#### \_setPrimeToken
 
 Sets the prime token contract for the comptroller
 
@@ -529,13 +530,13 @@ Sets the prime token contract for the comptroller
 function _setPrimeToken(contract IPrime _prime) external returns (uint256)
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | \_prime | contract IPrime | The new prime token contract to be set |
 
-#### Return Values
+##### Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -543,7 +544,7 @@ function _setPrimeToken(contract IPrime _prime) external returns (uint256)
 
 ---
 
-### setForcedLiquidation
+#### setForcedLiquidation
 
 Alias to \_setForcedLiquidation to support the Isolated Lending Comptroller Interface
 
@@ -551,7 +552,7 @@ Alias to \_setForcedLiquidation to support the Isolated Lending Comptroller Inte
 function setForcedLiquidation(address vTokenBorrowed, bool enable) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -560,7 +561,7 @@ function setForcedLiquidation(address vTokenBorrowed, bool enable) external
 
 ---
 
-### \_setForcedLiquidation
+#### \_setForcedLiquidation
 
 Enables forced liquidations for a market. If forced liquidation is enabled,
 borrows in the market may be liquidated regardless of the account liquidity
@@ -569,7 +570,7 @@ borrows in the market may be liquidated regardless of the account liquidity
 function _setForcedLiquidation(address vTokenBorrowed, bool enable) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -578,7 +579,7 @@ function _setForcedLiquidation(address vTokenBorrowed, bool enable) external
 
 ---
 
-### \_setForcedLiquidationForUser
+#### \_setForcedLiquidationForUser
 
 Enables forced liquidations for user's borrows in a certain market. If forced
 liquidation is enabled, user's borrows in the market may be liquidated regardless of
@@ -589,7 +590,7 @@ enabled for the entire market.
 function _setForcedLiquidationForUser(address borrower, address vTokenBorrowed, bool enable) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -599,7 +600,7 @@ function _setForcedLiquidationForUser(address borrower, address vTokenBorrowed, 
 
 ---
 
-### setWhiteListFlashLoanAccount
+#### setWhiteListFlashLoanAccount
 
 ```solidity
 function setWhiteListFlashLoanAccount(address account, bool _isWhiteListed) external 
@@ -607,13 +608,13 @@ function setWhiteListFlashLoanAccount(address account, bool _isWhiteListed) exte
 **Explanation:**  
 This function grants or revokes an account's permission to use the protocol's flash loan feature, enforcing access control and address validation.
 
-#### Parameters
+##### Parameters
 | Name        | Type    | Description                                 |
 |-------------|---------|---------------------------------------------|
 | account     | address | The account to whitelist or remove          |
 | _isWhiteListed | bool | True to whitelist, false to remove          |
 
-#### Return Values
+##### Return Values
 | Name | Type | Description |
 |------|------|-------------|
 | None |      |             |
@@ -621,7 +622,7 @@ This function grants or revokes an account's permission to use the protocol's fl
 ---
 
 
-### \_setXVSToken
+#### \_setXVSToken
 
 Set the address of the XVS token
 
@@ -629,7 +630,7 @@ Set the address of the XVS token
 function _setXVSToken(address xvs_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -637,7 +638,7 @@ function _setXVSToken(address xvs_) external
 
 ---
 
-### \_setXVSVToken
+#### \_setXVSVToken
 
 Set the address of the XVS vToken
 
@@ -645,7 +646,7 @@ Set the address of the XVS vToken
 function _setXVSVToken(address xvsVToken_) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -653,7 +654,7 @@ function _setXVSVToken(address xvsVToken_) external
 
 ---
 
-### setPoolActive
+#### setPoolActive
 
 updates active status for a specific pool (excluding the Core Pool)
 
@@ -661,25 +662,25 @@ updates active status for a specific pool (excluding the Core Pool)
 function setPoolActive(uint96 poolId, bool active) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | poolId | uint96 | id of the pool to update |
 | active | bool | true to enable, false to disable |
 
-#### 📅 Events
+##### 📅 Events
 
 * PoolActiveStatusUpdated Emitted after the pool active status is updated.
 
-#### ❌ Errors
+##### ❌ Errors
 
 * InvalidOperationForCorePool Reverts when attempting to call pool-specific methods on the Core Pool.
 * PoolDoesNotExist Reverts if the target pool ID does not exist.
 
 ---
 
-### setIsBorrowAllowed
+#### setIsBorrowAllowed
 
 Updates the `isBorrowAllowed` flag for a market in a pool.
 
@@ -687,7 +688,7 @@ Updates the `isBorrowAllowed` flag for a market in a pool.
 function setIsBorrowAllowed(uint96 poolId, address vToken, bool borrowAllowed) external
 ```
 
-#### Parameters
+##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -695,11 +696,11 @@ function setIsBorrowAllowed(uint96 poolId, address vToken, bool borrowAllowed) e
 | vToken | address | The address of the market (vToken). |
 | borrowAllowed | bool | The new borrow allowed status. |
 
-#### 📅 Events
+##### 📅 Events
 
 * BorrowAllowedUpdated Emitted after the borrow permission for a market is updated.
 
-#### ❌ Errors
+##### ❌ Errors
 
 * PoolDoesNotExist Reverts if the pool ID is invalid.
 * MarketConfigNotFound Reverts if the market is not listed in the pool.
