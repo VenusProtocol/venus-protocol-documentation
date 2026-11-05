@@ -29,11 +29,9 @@ figcaption { text-align: center; font-size: var(--sl-text-sm); color: var(--sl-c
 @media (min-width: 50rem) {
   .sidebar-content ul ul .group-label .large { font-size: var(--sl-text-sm); }
 }
-/* Right-hand nav: section headings a step brighter than their sub-headings. Lives in Starlight's
-   layer so hover and the active-heading colour still win. */
-@layer starlight.core {
-  .right-sidebar-panel nav > ul > li > a { color: var(--sl-color-gray-2); }
-}
+/* Right-hand nav: section headings a step brighter than their sub-headings. Hover and the active
+   heading keep Starlight's colours. (Never declare @layer here: it reorders Starlight's layers.) */
+.right-sidebar-panel nav > ul > li > a:not(:hover, [aria-current='true']) { color: var(--sl-color-gray-2); }
 /* Right-hand nav: same sizes and row rhythm as the left sidebar, and room under the list. */
 .right-sidebar-panel { padding-bottom: 3rem; }
 .right-sidebar-panel h2 { font-size: var(--sl-text-base); margin-bottom: 0.75rem; }
