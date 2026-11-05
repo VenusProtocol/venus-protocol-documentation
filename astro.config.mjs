@@ -23,8 +23,8 @@ export default defineConfig({
       logo: { light: './src/assets/logo-light.svg', dark: './src/assets/logo-dark.svg', replacesTitle: true },
       favicon: '/favicon.svg',
       customCss: ['./src/styles/venus.css'],
-      // Dark for first-time visitors; the Dark/Light/Auto toggle still works and is remembered.
-      head: [{ tag: 'script', content: "try{if(localStorage.getItem('starlight-theme')===null)localStorage.setItem('starlight-theme','dark')}catch(e){}" }],
+      // Dark mode only: no theme script, no theme toggle.
+      components: { ThemeProvider: './src/components/Empty.astro', ThemeSelect: './src/components/Empty.astro' },
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/VenusProtocol' },
         { icon: 'x.com', label: 'X', href: 'https://x.com/VenusProtocol' },
