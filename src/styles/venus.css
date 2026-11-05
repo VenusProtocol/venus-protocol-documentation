@@ -25,3 +25,8 @@ figcaption { text-align: center; font-size: var(--sl-text-sm); color: var(--sl-c
 @media (min-width: 50rem) {
   .sidebar-content ul ul .group-label .large { font-size: var(--sl-text-sm); }
 }
+/* Right-hand nav: section headings a step brighter than their sub-headings. Lives in Starlight's
+   layer so hover and the active-heading colour still win. */
+@layer starlight.core {
+  .right-sidebar-panel nav > ul > li > a { color: var(--sl-color-gray-2); }
+}
