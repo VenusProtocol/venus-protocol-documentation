@@ -38,3 +38,5 @@ figcaption { text-align: center; font-size: var(--sl-text-sm); color: var(--sl-c
 .right-sidebar-panel { padding-bottom: 3rem; }
 .right-sidebar-panel h2 { font-size: var(--sl-text-base); margin-bottom: 0.75rem; }
 .right-sidebar-panel nav a { font-size: var(--sl-text-sm); padding-block: 0.3em; line-height: 1.4; }
+/* Left sidebar: more air between top-level groups. */
+.sidebar-content .top-level > li + li { margin-top: 1.25rem; }
