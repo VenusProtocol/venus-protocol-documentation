@@ -75,12 +75,12 @@ One `UpgradeableBeacon` per family; upgrading a beacon upgrades every vault of t
 
 ### Adapters
 
-Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach them by `delegatecall`, so receipt tokens land on the calling YieldGroup. [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) replaced the Core, Flux, FRV and Centrifuge adapters and repointed every resource live at the time with `updateResourceAdapter`; the Spoke resources were registered on `AdapterSpokeV1` by [VIP-670](https://app.venus.io/#/governance/proposal/670?chainId=56). An adapter address read from an older proposal or an older revision of this page may be a pre-replacement one; read a resource's adapter with `resourceConfig(resource)` on its YieldGroup.
+Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach them by `delegatecall`, so receipt tokens land on the calling YieldGroup. [VIP-681](https://app.venus.io/#/governance/proposal/681?chainId=56) replaced the Core, Flux, FRV and Spoke adapters with ones that add `receiptValue`, which a YieldGroup uses to price only the receipt tokens its own deposits minted, and repointed every one of their resources with `updateResourceAdapter`. `AdapterCentrifuge` is still the one [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) installed: the Centrifuge family does not track receipts, so VIP-681 leaves it alone. An adapter address read from an older proposal or an older revision of this page may be a pre-replacement one; read a resource's adapter with `resourceConfig(resource)` on its YieldGroup.
 
-* AdapterCoreV1: [`0xa061cC2F62BDa2D6bA53Fb98847aD9822DA085dd`](https://bscscan.com/address/0xa061cC2F62BDa2D6bA53Fb98847aD9822DA085dd)
-* AdapterFlux: [`0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404`](https://bscscan.com/address/0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404)
-* AdapterFRV: [`0x1824caA965Ac05ae5C9C2819e045337e2cF5657c`](https://bscscan.com/address/0x1824caA965Ac05ae5C9C2819e045337e2cF5657c): the adapter behind every live FRV resource (Solv on the USDT Hub, Asseto CASH+ and Hash Global hBNB on the U Hub)
-* AdapterSpokeV1: [`0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69`](https://bscscan.com/address/0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69)
+* AdapterCoreV1: [`0x0f62927d18Fd35712622C2c6C3F730EB8a18b71B`](https://bscscan.com/address/0x0f62927d18Fd35712622C2c6C3F730EB8a18b71B)
+* AdapterFlux: [`0x4Afb747ce8dDef689d5484FFdfB69Ac8bC7cAc8B`](https://bscscan.com/address/0x4Afb747ce8dDef689d5484FFdfB69Ac8bC7cAc8B)
+* AdapterFRV: [`0x40fDc0fef94D607EE4341230afb09bcDB0B949E2`](https://bscscan.com/address/0x40fDc0fef94D607EE4341230afb09bcDB0B949E2): the adapter behind every live FRV resource (Solv on the USDT Hub, Asseto CASH+ and Hash Global hBNB on the U Hub)
+* AdapterSpokeV1: [`0xD08596E58325724C824100bA87f2470493Fe342d`](https://bscscan.com/address/0xD08596E58325724C824100bA87f2470493Fe342d)
 * AdapterCentrifuge: [`0xaa9D52758890997D91950E595886FF9CDEca81ae`](https://bscscan.com/address/0xaa9D52758890997D91950E595886FF9CDEca81ae): the adapter behind all four Centrifuge resources (JTRSY and JAAA on the USDT and USDC Hubs)
 
 ### Periphery
@@ -157,13 +157,14 @@ Unlike mainnet, **FRV is fully wired on testnet**: the FRV YieldGroup has eight 
 
 ### Adapters
 
-* AdapterCoreV1: [`0x07c80ed1F928913ab68E1fABB2fe0439CdC99F88`](https://testnet.bscscan.com/address/0x07c80ed1F928913ab68E1fABB2fe0439CdC99F88)
-* AdapterFlux: [`0x51d8cAdc16Df3F8Cd0D1B536e943FbDcE77AC523`](https://testnet.bscscan.com/address/0x51d8cAdc16Df3F8Cd0D1B536e943FbDcE77AC523)
-* AdapterFRV: [`0xcdd9cf27C388dAc9e89De257505aff9290183537`](https://testnet.bscscan.com/address/0xcdd9cf27C388dAc9e89De257505aff9290183537)
-* AdapterSpokeV1: [`0x439034668f201B9f2D45286b4518e6DB122B5e17`](https://testnet.bscscan.com/address/0x439034668f201B9f2D45286b4518e6DB122B5e17)
+* AdapterCoreV1: [`0x32DfFD70B8E91C20B708d03C8051ad59F2C6391D`](https://testnet.bscscan.com/address/0x32DfFD70B8E91C20B708d03C8051ad59F2C6391D)
+* AdapterFlux: [`0xC17f2F74057a6beeeb32F3D1F6c8C6A7067e86f0`](https://testnet.bscscan.com/address/0xC17f2F74057a6beeeb32F3D1F6c8C6A7067e86f0)
+* AdapterFRV: [`0x790960cBC0B5A88765cFE89C5bD604163f4E2D9C`](https://testnet.bscscan.com/address/0x790960cBC0B5A88765cFE89C5bD604163f4E2D9C)
+* AdapterSpokeV1: [`0xbeAE38F78944F62c00943Fc7e335E0D59c359E98`](https://testnet.bscscan.com/address/0xbeAE38F78944F62c00943Fc7e335E0D59c359E98)
 * AdapterCentrifuge: [`0x63Ce07c3F1500B283B6d3451BdC3E3C6211a6c7F`](https://testnet.bscscan.com/address/0x63Ce07c3F1500B283B6d3451BdC3E3C6211a6c7F)
 
 ### Periphery
 
 * Migrator: [`0x343D518d8C89f9B5D770000F1ed80f45bF1419f5`](https://testnet.bscscan.com/address/0x343D518d8C89f9B5D770000F1ed80f45bF1419f5)
 * HubLens: [`0x0D0C640AA4da71cE610EFD6a04acCE6e3Ae419C2`](https://testnet.bscscan.com/address/0x0D0C640AA4da71cE610EFD6a04acCE6e3Ae419C2)
+* HubNavDeviationSentinel: [`0x347fBbC71C07496fbBb2fEc5D2a036605F14089D`](https://testnet.bscscan.com/address/0x347fBbC71C07496fbBb2fEc5D2a036605F14089D)

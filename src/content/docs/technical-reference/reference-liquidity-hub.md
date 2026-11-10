@@ -102,10 +102,10 @@ Supporting contracts:
 | `FRVBeacon` | `0x8A5EceDD726246682402430b9B24c19bF61B7f1d` | FRV-family YieldGroups |
 | `SpokeBeacon` | `0x652AAa1CD21f47a92D04680C1d9Bf99cC1Fb8975` | Spoke-family YieldGroups |
 | `CentrifugeBeacon` | `0xAe90Cfb3E2Bc97508F58E7e076Acf38f3bfC820f` | Centrifuge-family YieldGroups |
-| `AdapterCoreV1` | `0xa061cC2F62BDa2D6bA53Fb98847aD9822DA085dd` | Shared singleton; replaced its predecessor in VIP-669 |
-| `AdapterFlux` | `0x9a1a7F6aebA4a1A3e85Ae1Dba90a7A2A52803404` | Shared singleton; replaced its predecessor in VIP-669 |
-| `AdapterFRV` | `0x1824caA965Ac05ae5C9C2819e045337e2cF5657c` | Shared singleton; replaced its predecessor in VIP-669 |
-| `AdapterSpokeV1` | `0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69` | Shared singleton |
+| `AdapterCoreV1` | `0x0f62927d18Fd35712622C2c6C3F730EB8a18b71B` | Shared singleton; replaced its predecessor in VIP-681 |
+| `AdapterFlux` | `0x4Afb747ce8dDef689d5484FFdfB69Ac8bC7cAc8B` | Shared singleton; replaced its predecessor in VIP-681 |
+| `AdapterFRV` | `0x40fDc0fef94D607EE4341230afb09bcDB0B949E2` | Shared singleton; replaced its predecessor in VIP-681 |
+| `AdapterSpokeV1` | `0xD08596E58325724C824100bA87f2470493Fe342d` | Shared singleton; replaced its predecessor in VIP-681 |
 | `AdapterCentrifuge` | `0xaa9D52758890997D91950E595886FF9CDEca81ae` | Shared singleton; replaced its predecessor in VIP-669 |
 | `DefaultProxyAdmin` | `0x6beb6D2695B67FEb73ad4f172E8E2975497187e4` | Venus's shared `ProxyAdmin`, administering the registry's `TransparentUpgradeableProxy`; governance-owned |
 
@@ -153,12 +153,17 @@ A parallel deployment exists for integration testing. The USDT Hub below is the 
 | `FRVSource_USDT` | `0xA0Fb0fFeBdcB7F45A3Ec841cCE7F78B7CeBD0f82` |
 | `SpokeSource_USDT` | `0xb9Bf8232474aF0A18BbA0CbCc3bA10efD51542e2` |
 | `CentrifugeSource_USDT` | `0x8DFF12277C44E73cbF551ceB6E5Ae1eD4CC85542` |
-| `AdapterCoreV1` | `0x07c80ed1F928913ab68E1fABB2fe0439CdC99F88` |
-| `AdapterFlux` | `0x51d8cAdc16Df3F8Cd0D1B536e943FbDcE77AC523` |
-| `AdapterFRV` | `0xcdd9cf27C388dAc9e89De257505aff9290183537` |
-| `AdapterSpokeV1` | `0x439034668f201B9f2D45286b4518e6DB122B5e17` |
+| `AdapterCoreV1` | `0x32DfFD70B8E91C20B708d03C8051ad59F2C6391D` |
+| `AdapterFlux` | `0xC17f2F74057a6beeeb32F3D1F6c8C6A7067e86f0` |
+| `AdapterFRV` | `0x790960cBC0B5A88765cFE89C5bD604163f4E2D9C` |
+| `AdapterSpokeV1` | `0xbeAE38F78944F62c00943Fc7e335E0D59c359E98` |
 | `AdapterCentrifuge` | `0x63Ce07c3F1500B283B6d3451BdC3E3C6211a6c7F` |
+| `HubBeacon` | `0x7cbaC6991aC33DaFDD347e84CFbE2F372b936d92` |
+| `CoreBeacon` | `0xbBEe25aE7d2Db035Afc327fb0096fC88FDfF3170` |
+| `FluxBeacon` | `0x6b9CA74F82848668EA04D56E0A8396A816ba5330` |
+| `FRVBeacon` | `0x6196Ec22133610132563B03b6Fad5aa766A9C037` |
 | `SpokeBeacon` | `0x58099BEaa6A00F493eF67fF953866DDA4a502389` |
+| `CentrifugeBeacon` | `0x1dcAAB89344eA7F4c2271598e4ED4Fd6a66A451C` |
 | `HubRegistryProxyAdmin` | `0x9f8413eEE33D434F6D4f40C83181f32A831c9ef7` |
 
 **Testnet is not a faithful mirror of mainnet.** Four differences will break assumptions carried over from a testnet harness:

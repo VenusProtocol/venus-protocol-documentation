@@ -90,10 +90,6 @@ Wraps Venus Fixed-Rate Vault shares (ERC-4626).
 
 ## AdapterSpokeV1
 
-:::note
-**Source branch.** `AdapterSpokeV1` and the `resourceName` member are not on venus-liquidity-hub `develop` yet. They are on `fix/hub-maxDeposit`, in [venus-liquidity-hub#20](https://github.com/VenusProtocol/venus-liquidity-hub/pull/20) (open against `develop`). The live adapter `0x231915FfE3e3A6Be09B0E5c73EFA2F1a4FF8Aa69` was built from that branch.
-:::
-
 Wraps the **liquidity side of a hub-funded spoke pool**: an isolated-pools `VToken` whose Comptroller is a [`SpokeComptroller`](/technical-reference/reference-isolated-pools/spoke/spoke-comptroller). One deployment serves every YieldGroup that registers a spoke market.
 
 Its selectors are nearly the same as `AdapterCoreV1`'s, but four things differ: error handling, how liquidity is measured, the exit fee, and the supply cap sentinel.
