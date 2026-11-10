@@ -26,14 +26,14 @@ The child PrimeV2 and PrimeLeaderboard pages apply only to BNB Chain. Do not use
 
 ## BNB PrimeV2 components
 
-At BNB Chain block `118,364,540`, PrimeV2 was unpaused and resolved to:
+At BNB Chain block `132,749,058`, PrimeV2 was unpaused and resolved to:
 
 | Component | Proxy or address | Implementation |
 | --- | --- | --- |
-| [PrimeV2](/technical-reference/reference-core-pool/prime/prime) | `0x059EabA8676b03e4e8f009eFb7F587C28450F50f` | `0x18cb7198cbb6d6e94001458cf3cf47c106d83a1b` |
+| [PrimeV2](/technical-reference/reference-core-pool/prime/prime) | `0x059EabA8676b03e4e8f009eFb7F587C28450F50f` | `0xb61137934C9D52cF3ebe9BCe92586DcA048b5F88` |
 | [PrimeLeaderboard](/technical-reference/reference-core-pool/prime/prime-leaderboard) | `0x55e2ccF68B7A276dc28AfA107997b8B1Be932c0b` | `0xd80de9ecb6596df95dd67af73b67122054c2d1a1` |
 | [PrimeLiquidityProvider](/technical-reference/reference-core-pool/prime/prime-liquidity-provider) | `0x23c4F844ffDdC6161174eB32c770D4D8C07833F2` | `0x46bed43b29d73835ff075bba1a0002a1ed1e4de8` |
-| [PrimeLens](/technical-reference/reference-core-pool/prime/prime-lens) | `0x2f8c5e4562E22DB7908C56Bf99961C053436473c` | Non-proxy lens |
+| [PrimeLens](/technical-reference/reference-core-pool/prime/prime-lens) | `0x645B99bDBD9e9125740907B17F19a3ca8544Bc83` | Non-proxy lens |
 
 Storage references: [PrimeV2Storage](/technical-reference/reference-core-pool/prime/prime-storage) and [PrimeLeaderboardStorage](/technical-reference/reference-core-pool/prime/prime-leaderboard-storage). See the [Venus Prime technical article](/technical-reference/reference-technical-articles/prime) for the BNB V2 flow.
 

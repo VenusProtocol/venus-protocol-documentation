@@ -4,7 +4,7 @@ title: "Markets"
 
 This page is an address registry, not a guarantee that every listed market currently accepts supply, borrow, redeem, repay, liquidation, or collateral use. Market listing, pause flags, caps, collateral factors, oracle state, and beacon/proxy implementations can change through governance. Verify live state at the address before interacting; testnet rows are never evidence of mainnet support.
 
-Stable implementation baselines are available in [`venus-protocol` v10.3.0](https://github.com/VenusProtocol/venus-protocol/tree/v10.3.0) for the BNB Core family and [`isolated-pools` v4.4.0](https://github.com/VenusProtocol/isolated-pools/tree/v4.4.0) for the beacon-based Core and historical Isolated Pools families. The on-chain proxy or beacon implementation remains authoritative.
+Stable implementation baselines are available in [`venus-protocol` v10.4.0](https://github.com/VenusProtocol/venus-protocol/tree/v10.4.0) for the BNB Core family and [`isolated-pools` v4.4.0](https://github.com/VenusProtocol/isolated-pools/tree/v4.4.0) for the beacon-based Core and historical Isolated Pools families. The on-chain proxy or beacon implementation remains authoritative.
 
 :::caution
 **Lifecycle legend:** Core Pool sections contain current production address families, but individual markets can still be staged, paused, non-collateral, or unlisted. Every non-Core mainnet pool on BNB Chain, Ethereum, and Arbitrum is marked **Legacy / exit-only** because the Isolated Pools product on those networks has been retired from the app. Those addresses are retained for direct repayment, redemption, reward claims, and recovery; see [Withdrawing from deprecated isolated pools](/guides/isolated-pools-deprecation). Every testnet section is **Test-only**.
@@ -25,7 +25,7 @@ Stable implementation baselines are available in [`venus-protocol` v10.3.0](http
 :::
 
 * Comptroller: [`0xfD36E2c2a6789Db23113685031d7F16329158384`](https://bscscan.com/address/0xfD36E2c2a6789Db23113685031d7F16329158384)
-* Comptroller Lens: [`0xd5DEb631cB6c6a667e926a482aadc95a471b120c`](https://bscscan.com/address/0xd5DEb631cB6c6a667e926a482aadc95a471b120c)
+* Comptroller Lens: [`0x989DaAa33b9557EacB2AF9885d7f3cd28eD52749`](https://bscscan.com/address/0x989DaAa33b9557EacB2AF9885d7f3cd28eD52749)
 * Venus Lens: [`0xe797804c5d4410777c70EF8769c4eB9C39BEF662`](https://bscscan.com/address/0xe797804c5d4410777c70EF8769c4eB9C39BEF662)
 * SwapRouter: [`0xde7E4f67Af577F29e5F3B995f9e67FD425F73621`](https://bscscan.com/address/0xde7E4f67Af577F29e5F3B995f9e67FD425F73621)
 * Underlying tokens:
@@ -550,7 +550,7 @@ Stable implementation baselines are available in [`venus-protocol` v10.3.0](http
 ### Core Pool
 
 * Comptroller: [`0x94d1820b2D1c7c7452A163983Dc888CEC546b77D`](https://testnet.bscscan.com/address/0x94d1820b2D1c7c7452A163983Dc888CEC546b77D)
-* Comptroller Lens: [`0xACbc75C2D0438722c75D9BD20844b5aFda4155ea`](https://testnet.bscscan.com/address/0xACbc75C2D0438722c75D9BD20844b5aFda4155ea)
+* Comptroller Lens: [`0x671c262a4FA3A408C303279600D664f91bf57Fd2`](https://testnet.bscscan.com/address/0x671c262a4FA3A408C303279600D664f91bf57Fd2)
 * Venus Lens: [`0x01c4Ef2dD3327eee5F8dd29D825aDe730f225680`](https://testnet.bscscan.com/address/0x01c4Ef2dD3327eee5F8dd29D825aDe730f225680)
 * SwapRouter: [`0xd3F226acA3210990DBA3f410b74E36b08F31FCf2`](https://testnet.bscscan.com/address/0xd3F226acA3210990DBA3f410b74E36b08F31FCf2)
 * Underlying tokens:
