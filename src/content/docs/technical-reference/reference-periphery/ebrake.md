@@ -350,7 +350,7 @@ Calls `setWhiteListFlashLoanAccount(account, false)` on the Diamond comptroller.
 
 Pause an entire Liquidity Hub.
 
-**Not in the BNB Chain mainnet implementation yet.** This function and the two below shipped in v1.3.0. The BNB Chain testnet implementation already has them. The live mainnet implementation [`0x2D36677EcA318c9536011D53aa752F042dd01DE8`](https://bscscan.com/address/0x2D36677EcA318c9536011D53aa752F042dd01DE8) predates them and carries none of their selectors, so no Hub can be paused through EBrake until the proxy is upgraded.
+This function and the two below shipped in v1.3.0. On BNB Chain mainnet they arrived with [VIP-673](https://app.venus.io/#/governance/proposal/673?chainId=56), which upgraded the proxy to [`0xeB18c8B6d0ddc13D3d7A8cD5FF684F11E5bcBCfb`](https://bscscan.com/address/0xeB18c8B6d0ddc13D3d7A8cD5FF684F11E5bcBCfb) and granted EBrake the Hub's `pauseHub()`, `pauseYieldGroup(address)` and `pauseResource(address)` for every Hub and YieldGroup. The BNB Chain testnet implementation has them too.
 
 ```solidity
 function pauseHub(address hub) external
@@ -766,7 +766,7 @@ EBrake is deployed behind a `TransparentUpgradeableProxy`. The implementation co
 | Contract            | Address                                                                                                                        |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | EBrake (Proxy)      | [`0x35eBaBB99c7Fb7ba0C90bCc26e5d55Cdf89C23Ec`](https://bscscan.com/address/0x35eBaBB99c7Fb7ba0C90bCc26e5d55Cdf89C23Ec)       |
-| EBrake (Implementation) | [`0x2D36677EcA318c9536011D53aa752F042dd01DE8`](https://bscscan.com/address/0x2D36677EcA318c9536011D53aa752F042dd01DE8)   |
+| EBrake (Implementation) | [`0xeB18c8B6d0ddc13D3d7A8cD5FF684F11E5bcBCfb`](https://bscscan.com/address/0xeB18c8B6d0ddc13D3d7A8cD5FF684F11E5bcBCfb)   |
 
 #### BNB Chain Testnet
 
