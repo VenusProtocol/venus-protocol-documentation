@@ -83,6 +83,26 @@ The one Medium finding, that a borrower with VAI debt above the threshold could 
 
 </details>
 
+### Liquidity Hub: receipt tracking
+
+**Scope**: [receipt tracking](/technical-reference/reference-liquidity-hub/yield-groups#receipt-tracking), which makes the Core, Flux, FRV and Spoke yield groups value only the receipt tokens they minted themselves, and the Core adapter's withdrawable cash net of reserves. Enabled by [VIP-681](https://app.venus.io/#/governance/proposal/681?chainId=56).
+
+* [HashDit audit report (2026/11/06)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/de02ec60e35ed652924159877c1afe5d6ecf348c/audits/213_ReceiptTracking_Hashdit_20261106.pdf)
+
+<details>
+<summary>Detailed scope</summary>
+
+- Pull request [#40](https://github.com/VenusProtocol/venus-liquidity-hub/pull/40) in the `venus-liquidity-hub` repository, at commit `c7ee4e183fae02c3c98f4cc2a695661d1b0d54d1`, with the fixes in pull request [#43](https://github.com/VenusProtocol/venus-liquidity-hub/pull/43):
+  - contracts/Hub/Hub.sol
+  - contracts/YieldGroup/base/YieldGroupBase.sol
+  - contracts/YieldGroup/base/YieldGroupBaseStorage.sol
+  - contracts/adapters/AdapterCoreV1.sol
+  - contracts/adapters/AdapterSpokeV1.sol
+
+The report has two Low and two Informational findings. Two were fixed: donated dust could block the removal of a Spoke resource, and `syncReceipt` could admit receipt tokens sent in after the VIP was proposed, which the `maxAdded` cap now bounds. The other two were acknowledged: the Core adapter's `maxWithdraw` ignores reserves accrued since the last `accrueInterest`, and the upgrade must run in a single VIP or NAV reads low until every count is synced.
+
+</details>
+
 ### Liquidity Hub: NAV deviation pause
 
 **Scope**: `HubNavDeviationSentinel`, the keeper check that pauses a whole Hub when a counterparty-published value leaves its [NAV band](/technical-reference/reference-liquidity-hub/yield-groups#nav-band), and the `EBrake` extension the pause routes through. See [Automatic pause on a NAV break](/technical-reference/reference-liquidity-hub/hub#automatic-pause-on-a-nav-break). The contract is deployed on BNB Chain; [VIP-673](https://app.venus.io/#/governance/proposal/673?chainId=56), queued with an ETA of 2026-10-30, arms it.

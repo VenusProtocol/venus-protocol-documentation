@@ -57,7 +57,7 @@ function spotAPYBps() external view returns (uint64 apyBps);
 ```
 
 * **`asset`** — the ERC-20 the Source accepts; must equal `Hub.asset()`.
-* **`totalAssets`** — sum of `asset` held across all of the Source's resources; the Hub sums this over its registry.
+* **`totalAssets`** — value of the receipt tokens the Source counts across its resources, plus its idle `asset`; the Hub sums this over its registry. Core, Flux, FRV and Spoke count only the receipts they minted themselves ([receipt tracking](/technical-reference/reference-liquidity-hub/yield-groups#receipt-tracking)); Centrifuge counts everything it holds.
 * **`maxDeposit`** — aggregate remaining deposit capacity. The honesty contract requires that `deposit(maxDeposit())` does not revert.
 * **`maxWithdraw`** — aggregate currently-withdrawable amount. `withdraw(maxWithdraw(), to)` must not revert (subject to upstream liquidity).
 * **`spotAPYBps`** — TVL-weighted spot supply-side APY across the Source's resources, in BPS. This is an instantaneous reading; the Source layer has no notion of historical realization, and the Hub does not currently aggregate or smooth it.
@@ -100,6 +100,7 @@ function accrue(address resource) external;
 ```solidity
 function asset(address resource) external view returns (address underlying);
 function totalAssets(address resource, address holder) external view returns (uint256 value);
+function receiptValue(address resource, uint256 shares) external view returns (uint256 value);
 function maxDeposit(address resource) external view returns (uint256 capacity);
 function maxWithdraw(address resource, address holder) external view returns (uint256 liquid);
 function spotAPYBps(address resource, uint256 blocksPerYear) external view returns (uint64 apyBps);
@@ -109,11 +110,12 @@ function validateRegistration(address resource) external view;
 ```
 
 * **`asset`** — the underlying accepted by `resource`; the YieldGroup uses it to validate a resource matches its own asset at registration.
-* **`totalAssets`** — the adapter's accounting value of `holder`'s position in `resource`, in underlying units; this is not a guarantee of recoverable or immediately withdrawable assets. The basis is per-adapter: `AdapterCoreV1` uses the stale (non-accruing) `exchangeRateStored`, net of any Comptroller `treasuryPercent`; `AdapterFlux` uses the fToken's live `previewRedeem`; `AdapterFRV` uses a time-based linear accrual (principal plus the coupon accrued so far over the lock); `AdapterSpokeV1` uses `balance × exchangeRateStored`, including the market's `badDebt` in the exchange rate; `AdapterCentrifuge` adds held shares and every pending or claimable request, assets at face and shares at the vault's share price. The Hub aggregates these marks into NAV; use `maxWithdraw` for current liquidity.
+* **`totalAssets`** — the adapter's accounting value of `holder`'s position in `resource`, in underlying units; this is not a guarantee of recoverable or immediately withdrawable assets. The basis is per-adapter: `AdapterCoreV1` uses the stale (non-accruing) `exchangeRateStored`, net of any Comptroller `treasuryPercent`; `AdapterFlux` uses the fToken's live `previewRedeem`; `AdapterFRV` uses a time-based linear accrual (principal plus the coupon accrued so far over the lock); `AdapterSpokeV1` uses `balance × exchangeRateStored`, including the market's `badDebt` in the exchange rate; `AdapterCentrifuge` adds held shares and every pending or claimable request, assets at face and shares at the vault's share price. It prices everything `holder` holds, so only Centrifuge feeds it into NAV; the other families price their tracked count with `receiptValue` on the same basis. Use `maxWithdraw` for current liquidity.
+* **`receiptValue`** — underlying value of `shares` receipt tokens of `resource`, priced exactly as `totalAssets` prices a holder's balance. A YieldGroup calls it with its [tracked count](/technical-reference/reference-liquidity-hub/yield-groups#receipt-tracking), so receipt tokens sent to it directly do not move NAV. `AdapterCentrifuge` reverts `ShareCountNotPriceable`, because its YieldGroup does not track.
 * **`maxDeposit`** — spare deposit headroom on `resource` right now (before its own caps or pause reject a mint).
 * **`maxWithdraw`** — underlying `holder` can withdraw right now, net of any redeem-time protocol fee, bounded by the lesser of the position value and the resource's available cash.
 * **`spotAPYBps`** — spot supply-side APY in BPS; annualization uses the `blocksPerYear` the YieldGroup passes (chain-dependent).
-* **`receiptBalance`** — raw receipt-token balance (vToken / fToken / FRV shares), NOT underlying value. Used by `removeResource` as a share-based emptiness gate so a value-based check can't round a small balance to zero and orphan tokens. `AdapterCentrifuge` returns held shares plus its six request counters, which mix share and asset units, so it is read only as zero or non-zero.
+* **`receiptBalance`** — raw receipt-token balance (vToken / fToken / FRV shares), NOT underlying value. A tracking YieldGroup reads it around each deposit and withdrawal to measure the receipts minted or burned, and `syncReceipt` reads it as the wallet balance. On Centrifuge, `removeResource` uses it as a share-based emptiness gate so a value-based check can't round a small balance to zero and orphan tokens. `AdapterCentrifuge` returns held shares plus its six request counters, which mix share and asset units, so it is read only as zero or non-zero.
 * **`resourceName`**: display name of `resource`, for off-chain consumers. Each adapter reads it from wherever its protocol exposes it, since not every resource is an ERC-20 with its own `name()`.
 * **`validateRegistration`** — reverts if `resource` fails a protocol-specific precondition. `AdapterCoreV1` rejects a vToken whose Comptroller charges a non-zero `treasuryPercent`; `AdapterSpokeV1` rejects a market not listed by its Comptroller or one whose supply allowlist excludes the calling YieldGroup; `AdapterCentrifuge` rejects a vault that does not expose the share token, request manager, investment state and price reads it needs; `AdapterFlux` and `AdapterFRV` implement it as a no-op.
 

@@ -47,6 +47,20 @@ The public accessor **`resourceConfig(address resource)`** returns the three fie
 
 The optional per-resource deposit cap (Core, Flux and Spoke only) lives in a separate `resourceCap` mapping so it does not disturb the struct's single-slot packing.
 
+## Receipt tracking
+
+Core, Flux, FRV and Spoke count only the receipt tokens (vTokens, fTokens or vault shares) they minted themselves. [VIP-681](https://app.venus.io/#/governance/proposal/681?chainId=56) added this. Before it, a YieldGroup valued every receipt token in its wallet, so anyone could move a Hub's share price by sending receipt tokens in directly, including vTokens of a market carrying bad debt, which are worth less than their exchange rate says.
+
+Each YieldGroup keeps the count per resource, readable with `trackedReceipt(resource)`:
+
+* A deposit adds the receipt tokens it minted, measured as the change in the wallet balance around the adapter call.
+* A withdrawal subtracts the receipt tokens it burned. The count floors at zero instead of reverting, and a remainder worth 0 is dropped: a Spoke withdrawal decides whether to burn a worthless remainder by looking at the whole wallet, so donated dust could otherwise leave a count that no withdrawal reaches and that blocks `removeResource`.
+* `totalAssets()` prices the count with the adapter's `receiptValue`. The liquidity a resource contributes to `maxWithdraw()` and to the withdraw path is capped at that value, so uncounted receipts never back a withdrawal. The spot APY weighting and the [per-resource cap](#resource-caps-core-flux-and-spoke-only) use the same value.
+
+Receipt tokens sent in directly stay on the YieldGroup uncounted. Governance can admit them with `syncReceipt(resource, maxAdded)`, which sets the count to the wallet balance but adds at most `maxAdded`, and emits `ReceiptSynced`. The cap is the amount governance reviewed: a VIP executes days after it is proposed, and anything sent in meanwhile stays out above it. Syncing a vToken of a market carrying bad debt hands that loss to the Hub's lenders, so the Guardian does not hold `syncReceipt`. VIP-681 synced every resource with no cap (`type(uint256).max`) because every count started at zero after the upgrade; the previous code already valued the whole wallet, so the sync admitted nothing new. Receipt tokens nobody syncs can be [swept](#other-governance-functions) once their resource is removed.
+
+`YieldGroupCentrifuge` does not track. Centrifuge mints the shares when it settles a request, after the deposit call has returned, so a balance change measured around the call would miss them. It still values everything it holds, bounded by the [NAV band](#nav-band), and its `syncReceipt` reverts `ReceiptTrackingOff`.
+
 ## Initialization
 
 Called once via the proxy:
@@ -63,22 +77,22 @@ Each validates `asset_ == Hub.asset()` (`HubAssetMismatch` otherwise).
 ## Registry (governance)
 
 * **`addResource(address resource, address adapter)`**: register a resource alongside the stateless adapter that handles its ABI. Validates that both are contracts (`ResourceNotContract` / `AdapterNotContract`) and that `adapter.asset(resource)` matches the YieldGroup's underlying (`ResourceAssetMismatch`). It then calls `adapter.validateRegistration(resource)`, which is where family-specific preconditions live: `AdapterCoreV1` rejects a vToken whose Comptroller charges a non-zero `treasuryPercent`, and `AdapterSpokeV1` rejects a market its own Comptroller does not list (`MarketNotListed`) or a market whose supply allowlist is enabled without this YieldGroup on it (`SupplyNotAllowed`), while `AdapterFlux` and `AdapterFRV` implement it as a no-op. Does not auto-append to either inner queue. Reverts `ResourceAlreadyRegistered` if present. Emits `ResourceAdded`.
-* **`removeResource(address resource)`** — remove a resource. Requires a zero *raw receipt-token* balance (`ResourceHasBalance` otherwise) — the share-based check prevents a sub-unit residual from being rounded to zero and orphaning tokens. Also removes it from both inner queues via swap-and-pop, **and clears its per-resource cap**: `addResource` never writes that mapping and the cap setters are registered-only, so leaving it set would let a later re-add of the same address silently inherit a stale value. A remove / re-add cycle therefore starts from *unbounded*, and the cap must be set again. Emits `ResourceRemoved`.
+* **`removeResource(address resource)`** — remove a resource. Requires a zero [tracked receipt count](#receipt-tracking), or on Centrifuge a zero raw receipt balance (`ResourceHasBalance` otherwise). Both count shares rather than value, so a sub-unit residual cannot round to zero and be orphaned, and receipt tokens sent in directly do not block removal. Also removes it from both inner queues via swap-and-pop, clears its tracked count, **and clears its per-resource cap**: `addResource` never writes that mapping and the cap setters are registered-only, so leaving it set would let a later re-add of the same address silently inherit a stale value. A remove / re-add cycle therefore starts from *unbounded*, and the cap must be set again. Emits `ResourceRemoved`.
 
 * **`updateResourceAdapter(address resource, address adapter)`** — repoint a registered resource at a different adapter, without unwinding the position. Revalidates the new adapter the same way `addResource` does. Emits `ResourceAdapterUpdated`.
-* **`forceRemoveResource(address resource)`** — FRV and Centrifuge only. On FRV, evict a resource whose vault has become unusable, abandoning any shares still held rather than blocking on the balance gate. Reverts `ResourceHasValue` if the position is still worth recovering. Emits `ResourceForceRemoved`.
+* **`forceRemoveResource(address resource)`** — FRV and Centrifuge only. On FRV, evict a resource whose vault has become unusable, abandoning any shares still held rather than blocking on the balance gate, and clear its tracked count. Reverts `ResourceHasValue` if the position is still worth recovering. Emits `ResourceForceRemoved`.
 
 The same stateless adapter address may be reused across any number of resources in the same protocol family.
 
 ## Other governance functions
 
 * **`setBlocksPerYear(uint256 blocksPerYear)`**: Core, Flux and Spoke only. Retune the annualisation factor if the chain's block cadence changes. Emits `BlocksPerYearSet`.
-* **`sweep(address token, address to)`** — forward the full balance of an allowed ERC-20 out of the YieldGroup. Cannot take the underlying (`SweepProtectedAsset`) or a token whose own address is registered as a resource (`SweepProtectedResource`). For Core, Flux, FRV and Spoke, the resource address is also the receipt token. Centrifuge is the exception: its registered vault and its `share()` token have different addresses, so the share token can be swept by an account holding the sweep permission. See [Centrifuge lifecycle](#centrifuge-lifecycle).
+* **`sweep(address token, address to)`** — forward the full balance of an allowed ERC-20 out of the YieldGroup. Cannot take the underlying (`SweepProtectedAsset`) or a token whose own address is registered as a resource (`SweepProtectedResource`). For Core, Flux, FRV and Spoke, the resource address is also the receipt token, so receipt tokens sent in directly can only be swept after the resource is removed. Centrifuge is the exception: its registered vault and its `share()` token have different addresses, so the share token can be swept by an account holding the sweep permission. See [Centrifuge lifecycle](#centrifuge-lifecycle).
 
 ## Inner queues (Operator)
 
 * **`setInnerDepositQueue(address[] queue)`** — replace the inner deposit-routing order. Every entry must be a registered resource; duplicates revert `InvalidQueue`. Emits `InnerDepositQueueSet`.
-* **`setInnerWithdrawQueue(address[] queue)`** — replace the inner withdraw-routing order, independent of the deposit queue, under the same registration / duplicate validation; additionally, dropping a resource that still holds a receipt-token balance reverts `WithdrawQueueOmitsFundedResource`. The deposit queue carries no such guard — only the withdraw side must stay able to reach funded resources. Emits `InnerWithdrawQueueSet`.
+* **`setInnerWithdrawQueue(address[] queue)`** — replace the inner withdraw-routing order, independent of the deposit queue, under the same registration / duplicate validation; additionally, dropping a resource with a non-zero tracked count (a non-zero raw receipt balance on Centrifuge) reverts `WithdrawQueueOmitsFundedResource`. The deposit queue carries no such guard — only the withdraw side must stay able to reach funded resources. Emits `InnerWithdrawQueueSet`.
 
 ## Pause (asymmetric)
 
@@ -89,7 +103,7 @@ There is no global YieldGroup pause — the only granularity inside a YieldGroup
 
 ## Resource caps (Core, Flux and Spoke only)
 
-An optional per-resource deposit cap limits how much underlying *this YieldGroup* holds in one market, independent of the market's own protocol supply cap. Effective room is `min(protocolHeadroom, resourceCap − ourBalance)`.
+An optional per-resource deposit cap limits how much underlying *this YieldGroup* holds in one market, independent of the market's own protocol supply cap. Effective room is `min(protocolHeadroom, resourceCap − trackedValue)`, where `trackedValue` is what the [tracked receipts](#receipt-tracking) are worth.
 
 * **`raiseResourceCap(address resource, uint256 newCap)`** — loosen (Operator-accessible, like `lowerResourceCap`, so the Operator can open headroom ahead of a rebalance without a governance round). `newCap == 0` means unbounded, so raising to `0` removes the cap; the new value must be strictly looser (`NotIncreasing` otherwise). Emits `ResourceCapRaised`.
 * **`lowerResourceCap(address resource, uint256 newCap)`** — tighten (Operator-accessible). Must be strictly tighter and non-zero (`NotDecreasing` otherwise). Lowering below the current balance simply stops new deposits; it never forces a withdrawal. Emits `ResourceCapLowered`.
@@ -182,6 +196,7 @@ The table below covers the YieldGroup events. Centrifuge does not emit `Resource
 | `BlocksPerYearSet`      | `oldBlocksPerYear`, `newBlocksPerYear`   | Annualisation factor retuned (Core / Flux / Spoke) |
 | `ResourceForceRemoved`  | `resource`, `orphanedShares`             | Bricked resource evicted, abandoning its shares (FRV; Centrifuge emits its own payload, see above) |
 | `Swept`                 | `token`, `to`, `amount`                  | Token balance transferred by an authorized sweep                      |
+| `ReceiptSynced`         | `resource`, `oldShares`, `newShares`     | Governance synced a resource's tracked receipt count (all but Centrifuge) |
 
 ## Errors
 
@@ -194,7 +209,7 @@ The table below covers the YieldGroup events. Centrifuge does not emit `Resource
 | `ResourceAssetMismatch`        | A resource's underlying does not match this YieldGroup's asset        |
 | `ResourceAlreadyRegistered`    | `addResource` on an already-registered resource                       |
 | `ResourceNotRegistered`        | Operation targeted a resource not in the registry                     |
-| `ResourceHasBalance`           | `removeResource` while the resource still holds a balance             |
+| `ResourceHasBalance`           | `removeResource` while the resource's tracked count (raw receipt balance on Centrifuge) is non-zero |
 | `ResourceIsPaused`             | A deposit was routed to a paused resource                             |
 | `ResourceCapacityExceeded`     | A **targeted** `depositResource` exceeded that one resource's spare capacity. The inner-queue `deposit` path never reverts on capacity — it partial-fills and refunds the remainder |
 | `ResourceLiquidityInsufficient`| Withdraw exceeded aggregate liquid funds across the inner queue       |
@@ -215,26 +230,27 @@ The table below covers the YieldGroup events. Centrifuge does not emit `Resource
 | `SweepProtectedAsset`          | `sweep` called with the YieldGroup's own underlying                   |
 | `SweepProtectedResource`       | `sweep` called with a token address that is itself a registered resource             |
 | `WithdrawQueueOmitsFundedResource` | An inner withdraw-queue replacement drops a funded resource       |
+| `ReceiptTrackingOff`           | `syncReceipt` called on Centrifuge, which does not track receipts     |
 | `OnlySelf`                     | An internal dispatch entry point was called externally                |
 
 ## ACM role strings
 
 Per YieldGroup, the role is `keccak256(yieldGroupAddress, roleString)`.
 
-Shared by every family (8):
+Shared by every family (9):
 
-`addResource(address,address)`, `removeResource(address)`, `updateResourceAdapter(address,address)`, `setInnerDepositQueue(address[])`, `setInnerWithdrawQueue(address[])`, `pauseResource(address)`, `unpauseResource(address)`, `sweep(address,address)`.
+`addResource(address,address)`, `removeResource(address)`, `updateResourceAdapter(address,address)`, `setInnerDepositQueue(address[])`, `setInnerWithdrawQueue(address[])`, `pauseResource(address)`, `unpauseResource(address)`, `sweep(address,address)`, `syncReceipt(address,uint256)`.
 
-Core, Flux and Spoke add three, for **11** in total:
+Core, Flux and Spoke add three, for **12** in total:
 
 `raiseResourceCap(address,uint256)`, `lowerResourceCap(address,uint256)`, `setBlocksPerYear(uint256)`.
 
-FRV adds one instead, for **9** in total:
+FRV adds one instead, for **10** in total:
 
 `forceRemoveResource(address)`.
 
-Centrifuge adds twelve, for **20** in total:
+Centrifuge adds twelve, for **21** in total:
 
 `requestRedeem(address,uint256)`, `cancelDepositRequest(address)`, `cancelRedeemRequest(address)`, `claimDeposit(address)`, `claimRedeem(address)`, `claimCancelDeposit(address)`, `claimCancelRedeem(address)`, `forceRemoveResource(address)`, `setSpotAPYBps(address,uint64)`, `setNavGuardRate(address,uint16,uint16,uint16,uint32,bool,bool)`, `setNavGuardSnapshot(address,uint128,uint64)`, `setNavGuardEnabled(address,bool,bool)`.
 
-On the live Sources the Normal Timelock holds all twenty, the Operator holds the queues, the async lifecycle, the four claims, the pause pair, the band and `setSpotAPYBps`, a Keeper holds only the four claims, and the Guardian holds the pause pair, `forceRemoveResource`, the band and `setSpotAPYBps`. VIP-666 additionally took `updateResourceAdapter(address,address)` off the Operator on every BNB Chain YieldGroup, leaving it with the Guardian and the Normal Timelock.
+On the live Sources the Normal Timelock holds all twenty-one, the Operator holds the queues, the async lifecycle, the four claims, the pause pair, the band and `setSpotAPYBps`, a Keeper holds only the four claims, and the Guardian holds the pause pair, `forceRemoveResource`, the band and `setSpotAPYBps`. VIP-666 additionally took `updateResourceAdapter(address,address)` off the Operator on every BNB Chain YieldGroup.

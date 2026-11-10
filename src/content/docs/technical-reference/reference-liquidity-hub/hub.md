@@ -72,11 +72,12 @@ Hub.totalAssets()
   = Σ Source.totalAssets()  +  Hub idle balance
         │
         └─ Source.totalAssets()
-             = Σ adapter.totalAssets(resource, yieldGroup)  +  Source idle balance
+             = Σ adapter.receiptValue(resource, trackedReceipt(resource))  +  Source idle balance
+               (Centrifuge, which does not track: Σ adapter.totalAssets(resource, yieldGroup))
 ```
 
 * `totalAssets()` **fails closed**. It sums every registered Source with no error isolation, so a Source whose `totalAssets()` view reverts makes the whole NAV read revert — and with it every `convertTo*` / `preview*` view and every deposit / mint / withdraw / redeem / `accrueFees` / `reallocate` — until the Source is fixed or evicted. This is deliberate: NAV is the share-price denominator, so silently counting a live Source as 0 would under-pay redeemers and over-credit depositors. Fault isolation covers the other failures: `maxWithdraw` and the withdraw routing skip a Source whose own `maxWithdraw()` reverts, the withdraw routing also skips one whose `withdraw` reverts (emitting `YieldGroupSkipped`), and the deposit routing skips a Source whose `maxDeposit()` view or `deposit` reverts. The deposit-side view lives on `HubLens` rather than the Hub, see [Sizing a deposit](#sizing-a-deposit). Recovery is the emergency path of `removeYieldGroup`, which permits removal precisely when the view reverts.
-* Hub idle is normally zero (deposits route out atomically, withdrawals pull exact amounts, reallocate is balanced). A direct token donation persists and is intentionally counted into NAV — it accrues to LPs and is consumed first on withdraw; the underlying cannot be swept.
+* Hub idle is normally zero (deposits route out atomically, withdrawals pull exact amounts, reallocate is balanced). A direct token donation persists and is intentionally counted into NAV — it accrues to LPs and is consumed first on withdraw; the underlying cannot be swept. Receipt tokens sent to a Source directly are the exception: Core, Flux, FRV and Spoke count only the receipts they minted, so those tokens stay out of NAV unless governance admits them with `syncReceipt` (see [Receipt tracking](/technical-reference/reference-liquidity-hub/yield-groups#receipt-tracking)).
 * View paths use the **stored** exchange rate (`exchangeRateStored`, stale up to one accrual cycle, no state mutation). Mutating paths trigger interest accrual on the resource during mint / redeem, so the rate is current by the time the operation completes.
 
 ## Cap enforcement
@@ -167,7 +168,7 @@ Every ACM-gated call is authorised through `AccessControlManagerV8` — the role
 The main role holders are governance (a VIP, behind the Normal Timelock), the **Operator** (a Venus
 operations multisig acting as the routine keeper, distinct from the Guardian), and the **Guardian**
 (a multisig that acts with no timelock delay, so it can contain an incident immediately). The
-Guardian can pause, perform emergency reallocation and replace resource adapters. It can also
+Guardian can pause and perform emergency reallocation. It can also
 unpause resources, but cannot unpause a Hub or YieldGroup. The Centrifuge Sources add a fourth holder, a Keeper limited to the four claim functions. All role holders are addresses granted by
 proposal, not roles baked into the bytecode; the granted addresses are listed under
 [Deployment](/technical-reference/reference-liquidity-hub#deployment).
@@ -175,8 +176,8 @@ proposal, not roles baked into the bytecode; the granted addresses are listed un
 | Action class                                                                        | Governance (VIP) | Operator | Guardian |
 | ------------------------------------------------------------------------------------ | :--------------: | :------: | :------: |
 | Add / remove YieldGroup, add / remove a resource                                       | ✅               | ❌       | ❌       |
-| Re-adapter a resource (`updateResourceAdapter`)                                        | ✅               | ❌       | ✅       |
-| Set fees and fee recipient, `sweep`, `setBlocksPerYear`                                | ✅               | ❌       | ❌       |
+| Re-adapter a resource (`updateResourceAdapter`)                                        | ✅               | ❌       | ❌       |
+| Set fees and fee recipient, `sweep`, `syncReceipt`, `setBlocksPerYear`                 | ✅               | ❌       | ❌       |
 | **Raise** the per-transaction withdrawal cap                                           | ✅               | ❌       | ❌       |
 | **Unpause** a Hub or YieldGroup                                                      | ✅               | ❌       | ❌       |
 | **Unpause** a resource                                                               | ✅               | ✅       | ✅       |
@@ -194,7 +195,7 @@ Two rows are worth reading carefully, because both depart from a naive loosening
 * **`raiseYieldGroupCap` and `raiseResourceCap` are Operator-accessible.** They let the Operator open headroom immediately before a `reallocate` without waiting for a governance round. The Operator can also unpause individual resources. Raising the *per-transaction withdrawal cap* and unpausing a Hub or YieldGroup remain governance-only.
 * **Governance does not hold `reallocate`.** It is Operator-only. Governance's equivalent lever is `emergencyReallocate`, which has the same net-zero semantics and additionally works while the Hub is paused.
 
-The Guardian holds pause at all three levels, `emergencyReallocate`, `forceRemoveResource`, `unpauseResource` and `updateResourceAdapter`. [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) granted resource unpause and adapter replacement to both the Operator and Guardian on the existing Sources; [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) revoked adapter replacement from the Operator. [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) granted the same resource-unpause and adapter-replacement split on the new Spoke Sources. Resource unpause does not clear a Hub-level or YieldGroup-level pause.
+The Guardian holds pause at all three levels, `emergencyReallocate`, `forceRemoveResource` and `unpauseResource`. [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) granted resource unpause and adapter replacement to both the Operator and Guardian on the existing Sources; [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) revoked adapter replacement from the Operator. [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) granted the same resource-unpause and adapter-replacement split on the new Spoke Sources. [VIP-681](https://app.venus.io/#/governance/proposal/681?chainId=56) then revoked adapter replacement from the Guardian, so only governance can repoint a resource. Resource unpause does not clear a Hub-level or YieldGroup-level pause.
 
 Nothing in the contracts hard-codes these role holders. The split is entirely a matter of which addresses
 governance grants each role to — the asymmetry is a deployment decision, not a code branch.
