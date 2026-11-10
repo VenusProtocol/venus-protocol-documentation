@@ -1,0 +1,1164 @@
+[
+  {
+    "label": "Getting Started",
+    "items": [
+      {
+        "label": "Overview",
+        "link": "/"
+      },
+      {
+        "label": "Whitepaper V4",
+        "link": "https://github.com/VenusProtocol/venus-protocol-documentation/blob/main/whitepapers/Venus-whitepaper-v4.pdf",
+        "attrs": {
+          "target": "_blank",
+          "rel": "noopener noreferrer"
+        }
+      },
+      {
+        "label": "FAQ",
+        "link": "/getting-started/faq"
+      }
+    ]
+  },
+  {
+    "label": "What's New?",
+    "items": [
+      {
+        "label": "Fixed Term Vaults",
+        "link": "/whats-new/fixed-rate-vaults"
+      },
+      {
+        "label": "Trade",
+        "link": "/whats-new/trade"
+      },
+      {
+        "label": "Leveraged Positions",
+        "link": "/whats-new/leveraged-positions"
+      },
+      {
+        "label": "E-Mode",
+        "link": "/whats-new/e-mode"
+      },
+      {
+        "label": "Isolated E-Mode",
+        "link": "/whats-new/isolated-e-mode"
+      },
+      {
+        "label": "Reward Distributor",
+        "link": "/whats-new/reward-distributor"
+      },
+      {
+        "label": "Peg Stability Module",
+        "link": "/whats-new/psm"
+      },
+      {
+        "label": "Automatic Income Allocation",
+        "link": "/whats-new/automatic-income-allocation"
+      },
+      {
+        "label": "TokenBuyback Contract",
+        "link": "/whats-new/token-converter"
+      },
+      {
+        "label": "Venus Prime",
+        "link": "/whats-new/prime-yield"
+      },
+      {
+        "label": "Liquidity Hub",
+        "link": "/whats-new/liquidity-hub"
+      },
+      {
+        "label": "Hub-Funded Spoke Pools",
+        "link": "/whats-new/hub-funded-spoke-pools"
+      }
+    ]
+  },
+  {
+    "label": "Governance",
+    "items": [
+      {
+        "label": "VIPs",
+        "link": "/governance/decentralization"
+      },
+      {
+        "label": "Tokenomics",
+        "link": "/governance/tokenomics"
+      },
+      {
+        "label": "Community Forum",
+        "link": "https://community.venus.io/top?period=quarterly",
+        "attrs": {
+          "target": "_blank",
+          "rel": "noopener noreferrer"
+        }
+      }
+    ]
+  },
+  {
+    "label": "Risk",
+    "items": [
+      {
+        "label": "Resilient Price Oracle",
+        "link": "/risk/resilient-price-oracle"
+      },
+      {
+        "label": "Protection Mode",
+        "link": "/risk/protection-mode"
+      },
+      {
+        "label": "Interest Rate Model",
+        "link": "/risk/interest-rate-model"
+      },
+      {
+        "label": "Risk Fund and Shortfall Handling",
+        "link": "/risk/risk-fund-and-shortfall-handling"
+      },
+      {
+        "label": "Risk Management",
+        "link": "/risk/risk-management"
+      },
+      {
+        "label": "Risk Oracle & Risk Stewards",
+        "link": "/risk/risk-oracle-and-risk-stewards"
+      }
+    ]
+  },
+  {
+    "label": "Tokens",
+    "items": [
+      {
+        "label": "XVS",
+        "link": "/tokens/xvs"
+      },
+      {
+        "label": "VAI",
+        "collapsed": true,
+        "items": [
+          {
+            "label": "Overview",
+            "link": "/tokens/vai"
+          },
+          {
+            "label": "VAIController",
+            "link": "/tokens/vai/vai-controller"
+          },
+          {
+            "label": "VAIUnitroller",
+            "link": "/tokens/vai/vai-unitroller"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "Guides",
+    "items": [
+      {
+        "label": "Venus interface",
+        "link": "/guides/interface"
+      },
+      {
+        "label": "Supplying and borrowing",
+        "link": "/guides/supply-borrow"
+      },
+      {
+        "label": "Liquidations",
+        "link": "/guides/liquidation"
+      },
+      {
+        "label": "Governance",
+        "collapsed": true,
+        "items": [
+          {
+            "label": "Overview",
+            "link": "/guides/governance"
+          },
+          {
+            "label": "Submitting a VIP",
+            "link": "/guides/governance/vip"
+          },
+          {
+            "label": "Delegating & Voting",
+            "link": "/guides/governance/delegating"
+          }
+        ]
+      },
+      {
+        "label": "Vaults",
+        "link": "/guides/vaults"
+      },
+      {
+        "label": "Protocol Math",
+        "link": "/guides/protocol-math"
+      },
+      {
+        "label": "XVS Bridge",
+        "link": "/guides/xvs-bridge"
+      },
+      {
+        "label": "Borrowing VAI",
+        "link": "/guides/borrowing-vai"
+      },
+      {
+        "label": "Gasless Transactions on ZKsync",
+        "link": "/guides/gasless-transactions-zksync"
+      },
+      {
+        "label": "Import Positions",
+        "link": "/guides/import-positions"
+      },
+      {
+        "label": "Enable E-mode",
+        "link": "/guides/enable-e-mode"
+      },
+      {
+        "label": "Isolated E-mode",
+        "link": "/guides/isolated-e-mode"
+      },
+      {
+        "label": "Withdrawing from deprecated isolated pools",
+        "link": "/guides/isolated-pools-deprecation"
+      },
+      {
+        "label": "Withdrawing from opBNB, Optimism and Unichain",
+        "link": "/guides/sunset-networks"
+      },
+      {
+        "label": "Boost and Repay with Collateral",
+        "link": "/guides/leveraged-positions"
+      },
+      {
+        "label": "Trade",
+        "link": "/guides/trade"
+      },
+      {
+        "label": "Fixed Term Vaults",
+        "collapsed": true,
+        "items": [
+          {
+            "label": "Overview",
+            "link": "/guides/fixed-rate-vaults"
+          },
+          {
+            "label": "Institution Guide",
+            "link": "/guides/fixed-rate-vaults/institution-guide"
+          },
+          {
+            "label": "Supplier Guide",
+            "link": "/guides/fixed-rate-vaults/supplier-guide"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "Technical reference",
+    "items": [
+      {
+        "label": "Contracts Overview",
+        "link": "/technical-reference/contracts-overview"
+      },
+      {
+        "label": "Technical articles",
+        "collapsed": true,
+        "items": [
+          {
+            "label": "Overview",
+            "link": "/technical-reference/reference-technical-articles"
+          },
+          {
+            "label": "Automatic income allocation",
+            "link": "/technical-reference/reference-technical-articles/automatic-income-allocation"
+          },
+          {
+            "label": "Capped Oracles",
+            "link": "/technical-reference/reference-technical-articles/capped-oracles"
+          },
+          {
+            "label": "Collateral Gateway",
+            "link": "/technical-reference/reference-technical-articles/collateral-gateway"
+          },
+          {
+            "label": "Contributing",
+            "link": "/technical-reference/reference-technical-articles/contributing"
+          },
+          {
+            "label": "Diamond Comptroller in the Core pool",
+            "link": "/technical-reference/reference-technical-articles/diamond-comptroller"
+          },
+          {
+            "label": "E-Mode",
+            "link": "/technical-reference/reference-technical-articles/emode"
+          },
+          {
+            "label": "Trade",
+            "link": "/technical-reference/reference-technical-articles/trade"
+          },
+          {
+            "label": "Fixed Term Vaults",
+            "link": "/technical-reference/reference-technical-articles/fixed-rate-vaults"
+          },
+          {
+            "label": "Native Token Gateway",
+            "link": "/technical-reference/reference-technical-articles/native-token-gateway"
+          },
+          {
+            "label": "Omnichain Governance",
+            "link": "/technical-reference/reference-technical-articles/omnichain-governance"
+          },
+          {
+            "label": "Prime tokens",
+            "link": "/technical-reference/reference-technical-articles/prime"
+          },
+          {
+            "label": "DeviationBoundedOracle",
+            "link": "/technical-reference/reference-technical-articles/deviation-bounded-oracle"
+          },
+          {
+            "label": "FlashLoan",
+            "link": "/technical-reference/reference-technical-articles/flashloan-core-pool"
+          },
+          {
+            "label": "Risk Stewards",
+            "link": "/technical-reference/reference-technical-articles/risk-stewards"
+          },
+          {
+            "label": "Shortfall and auctions (historical; BNB mainnet paused)",
+            "link": "/technical-reference/reference-technical-articles/shortfall-and-auctions"
+          },
+          {
+            "label": "TokenBuyback Contract",
+            "link": "/technical-reference/reference-technical-articles/token-converters"
+          },
+          {
+            "label": "Two Kinks Interest Rate Curve",
+            "link": "/technical-reference/reference-technical-articles/two-kinks-interest-rate-curve"
+          },
+          {
+            "label": "VenusERC4626 Vaults",
+            "link": "/technical-reference/reference-technical-articles/venus-erc-4626"
+          },
+          {
+            "label": "XVS Bridge",
+            "link": "/technical-reference/reference-technical-articles/xvs-bridge"
+          }
+        ]
+      },
+      {
+        "label": "Core Pool",
+        "collapsed": true,
+        "items": [
+          {
+            "label": "Overview",
+            "link": "/technical-reference/reference-core-pool"
+          },
+          {
+            "label": "Comptroller",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-core-pool/comptroller"
+              },
+              {
+                "label": "ComptrollerLens",
+                "link": "/technical-reference/reference-core-pool/comptroller/comptroller-lens"
+              },
+              {
+                "label": "Diamond",
+                "collapsed": true,
+                "items": [
+                  {
+                    "label": "Overview",
+                    "link": "/technical-reference/reference-core-pool/comptroller/diamond"
+                  },
+                  {
+                    "label": "Diamond",
+                    "link": "/technical-reference/reference-core-pool/comptroller/diamond/diamond"
+                  },
+                  {
+                    "label": "DiamondConsolidated",
+                    "link": "/technical-reference/reference-core-pool/comptroller/diamond/diamond-consolidated"
+                  },
+                  {
+                    "label": "Facets",
+                    "collapsed": true,
+                    "items": [
+                      {
+                        "label": "Overview",
+                        "link": "/technical-reference/reference-core-pool/comptroller/diamond/facets"
+                      },
+                      {
+                        "label": "FacetBase (inherited API)",
+                        "link": "/technical-reference/reference-core-pool/comptroller/diamond/facets/facet-base"
+                      },
+                      {
+                        "label": "MarketFacet",
+                        "link": "/technical-reference/reference-core-pool/comptroller/diamond/facets/market-facet"
+                      },
+                      {
+                        "label": "PolicyFacet",
+                        "link": "/technical-reference/reference-core-pool/comptroller/diamond/facets/policy-facet"
+                      },
+                      {
+                        "label": "RewardFacet",
+                        "link": "/technical-reference/reference-core-pool/comptroller/diamond/facets/reward-facet"
+                      },
+                      {
+                        "label": "SetterFacet",
+                        "link": "/technical-reference/reference-core-pool/comptroller/diamond/facets/setter-facet"
+                      },
+                      {
+                        "label": "FlashLoanFacet",
+                        "link": "/technical-reference/reference-core-pool/comptroller/diamond/facets/flashloan-facet"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "VToken",
+            "link": "/technical-reference/reference-core-pool/vtoken"
+          },
+          {
+            "label": "Prime",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-core-pool/prime"
+              },
+              {
+                "label": "Prime token",
+                "link": "/technical-reference/reference-core-pool/prime/prime"
+              },
+              {
+                "label": "Prime leaderboard",
+                "link": "/technical-reference/reference-core-pool/prime/prime-leaderboard"
+              },
+              {
+                "label": "Prime leaderboard storage",
+                "link": "/technical-reference/reference-core-pool/prime/prime-leaderboard-storage"
+              },
+              {
+                "label": "Prime lens",
+                "link": "/technical-reference/reference-core-pool/prime/prime-lens"
+              },
+              {
+                "label": "Prime liquidity provider",
+                "link": "/technical-reference/reference-core-pool/prime/prime-liquidity-provider"
+              },
+              {
+                "label": "Prime storage",
+                "link": "/technical-reference/reference-core-pool/prime/prime-storage"
+              }
+            ]
+          },
+          {
+            "label": "Vaults",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-core-pool/vaults"
+              },
+              {
+                "label": "XVS",
+                "collapsed": true,
+                "items": [
+                  {
+                    "label": "Overview",
+                    "link": "/technical-reference/reference-core-pool/vaults/xvs"
+                  },
+                  {
+                    "label": "XVSVault",
+                    "link": "/technical-reference/reference-core-pool/vaults/xvs/xvs-vault"
+                  },
+                  {
+                    "label": "XVSVaultProxy",
+                    "link": "/technical-reference/reference-core-pool/vaults/xvs/xvs-vault-proxy"
+                  },
+                  {
+                    "label": "XVSStore",
+                    "link": "/technical-reference/reference-core-pool/vaults/xvs/xvs-store"
+                  },
+                  {
+                    "label": "XVSVaultTreasury",
+                    "link": "/technical-reference/reference-core-pool/vaults/xvs/xvs-vault-treasury"
+                  }
+                ]
+              },
+              {
+                "label": "VAI",
+                "collapsed": true,
+                "items": [
+                  {
+                    "label": "Overview",
+                    "link": "/technical-reference/reference-core-pool/vaults/vai"
+                  },
+                  {
+                    "label": "VAIVault",
+                    "link": "/technical-reference/reference-core-pool/vaults/vai/vai-vault"
+                  },
+                  {
+                    "label": "VAIVaultProxy",
+                    "link": "/technical-reference/reference-core-pool/vaults/vai/vai-vault-proxy"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "InterestRateModels",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-core-pool/interestratemodels"
+              },
+              {
+                "label": "JumpModel",
+                "link": "/technical-reference/reference-core-pool/interestratemodels/jumpmodel"
+              },
+              {
+                "label": "TwoKinksInterestRateModel",
+                "link": "/technical-reference/reference-core-pool/interestratemodels/twokinksinterestratemodel"
+              },
+              {
+                "label": "WhitePaperModel",
+                "link": "/technical-reference/reference-core-pool/interestratemodels/whitepapermodel"
+              },
+              {
+                "label": "InterestRateModelLens",
+                "link": "/technical-reference/reference-core-pool/interestratemodels/interestratemodellens"
+              }
+            ]
+          },
+          {
+            "label": "Liquidator",
+            "link": "/technical-reference/reference-core-pool/liquidator"
+          },
+          {
+            "label": "BStockLiquidator",
+            "link": "/technical-reference/reference-core-pool/bstock-liquidator"
+          },
+          {
+            "label": "VTreasury",
+            "link": "/technical-reference/reference-core-pool/vtreasury"
+          },
+          {
+            "label": "VenusLens",
+            "link": "/technical-reference/reference-core-pool/venus-lens"
+          },
+          {
+            "label": "PSM",
+            "link": "/technical-reference/reference-core-pool/peg-stability"
+          },
+          {
+            "label": "VBNBAdmin",
+            "link": "/technical-reference/reference-core-pool/vbnbadmin"
+          }
+        ]
+      },
+      {
+        "label": "Isolated Pools",
+        "collapsed": true,
+        "items": [
+          {
+            "label": "Overview",
+            "link": "/technical-reference/reference-isolated-pools"
+          },
+          {
+            "label": "Comptroller",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-isolated-pools/comptroller"
+              },
+              {
+                "label": "Comptroller",
+                "link": "/technical-reference/reference-isolated-pools/comptroller/comptroller"
+              },
+              {
+                "label": "ComptrollerStorage",
+                "link": "/technical-reference/reference-isolated-pools/comptroller/comptroller-storage"
+              }
+            ]
+          },
+          {
+            "label": "Hub-Funded Spoke Pools",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-isolated-pools/spoke"
+              },
+              {
+                "label": "SpokeComptroller",
+                "link": "/technical-reference/reference-isolated-pools/spoke/spoke-comptroller"
+              },
+              {
+                "label": "SpokeComptrollerStorage",
+                "link": "/technical-reference/reference-isolated-pools/spoke/spoke-comptroller-storage"
+              }
+            ]
+          },
+          {
+            "label": "VenusERC4626",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-isolated-pools/venus-erc4626"
+              },
+              {
+                "label": "VenusERC4626Factory",
+                "link": "/technical-reference/reference-isolated-pools/venus-erc4626/venus-erc4626-factory"
+              }
+            ]
+          },
+          {
+            "label": "VToken",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-isolated-pools/vtoken"
+              },
+              {
+                "label": "VToken",
+                "link": "/technical-reference/reference-isolated-pools/vtoken/vtoken"
+              },
+              {
+                "label": "VTokenInterfaces",
+                "link": "/technical-reference/reference-isolated-pools/vtoken/vtoken-interfaces"
+              }
+            ]
+          },
+          {
+            "label": "NativeTokenGateway",
+            "link": "/technical-reference/reference-isolated-pools/native-token-gateway"
+          },
+          {
+            "label": "Pool Registry",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-isolated-pools/pool-registry"
+              },
+              {
+                "label": "PoolRegistry",
+                "link": "/technical-reference/reference-isolated-pools/pool-registry/pool-registry"
+              },
+              {
+                "label": "PoolRegistryInterface",
+                "link": "/technical-reference/reference-isolated-pools/pool-registry/pool-registry-interface"
+              }
+            ]
+          },
+          {
+            "label": "RewardsDistributor",
+            "link": "/technical-reference/reference-isolated-pools/rewards-distributor"
+          },
+          {
+            "label": "PoolLens",
+            "link": "/technical-reference/reference-isolated-pools/pool-lens"
+          },
+          {
+            "label": "SpokePoolLens",
+            "link": "/technical-reference/reference-isolated-pools/spoke-pool-lens"
+          },
+          {
+            "label": "Interest Rate Models",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-isolated-pools/interest-rate-models"
+              },
+              {
+                "label": "InterestRateModel",
+                "link": "/technical-reference/reference-isolated-pools/interest-rate-models/interest-rate-model"
+              },
+              {
+                "label": "BaseJumpRateModelV2",
+                "link": "/technical-reference/reference-isolated-pools/interest-rate-models/base-jump-rate-model-v2"
+              },
+              {
+                "label": "JumpRateModelV2",
+                "link": "/technical-reference/reference-isolated-pools/interest-rate-models/jump-rate-model-v2"
+              },
+              {
+                "label": "TwoKinksInterestRateModel",
+                "link": "/technical-reference/reference-isolated-pools/interest-rate-models/two-kinks-interest-rate-model"
+              },
+              {
+                "label": "WhitePaperInterestRateModel",
+                "link": "/technical-reference/reference-isolated-pools/interest-rate-models/white-paper-interest-rate-model"
+              }
+            ]
+          },
+          {
+            "label": "Protocol reserves and legacy Shortfall",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-isolated-pools/risk-fund-and-shortfall"
+              },
+              {
+                "label": "Shortfall (legacy/recovery; BNB mainnet paused)",
+                "link": "/technical-reference/reference-isolated-pools/risk-fund-and-shortfall/shortfall"
+              },
+              {
+                "label": "ProtocolShareReserve (current)",
+                "link": "/technical-reference/reference-isolated-pools/risk-fund-and-shortfall/protocol-share-reserve"
+              },
+              {
+                "label": "RiskFundV2 (current BNB mainnet custody)",
+                "link": "/technical-reference/reference-isolated-pools/risk-fund-and-shortfall/risk-fund-v2"
+              },
+              {
+                "label": "RiskFundV2 storage (compatibility)",
+                "link": "/technical-reference/reference-isolated-pools/risk-fund-and-shortfall/risk-fund-storage"
+              }
+            ]
+          },
+          {
+            "label": "Utility",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-isolated-pools/utility"
+              },
+              {
+                "label": "MaxLoopsLimitHelper",
+                "link": "/technical-reference/reference-isolated-pools/utility/max-loops-limit-helper"
+              },
+              {
+                "label": "ErrorReporter",
+                "link": "/technical-reference/reference-isolated-pools/utility/error-reporter"
+              },
+              {
+                "label": "ExponentialNoError",
+                "link": "/technical-reference/reference-isolated-pools/utility/exponential-no-error"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Fixed Term Vaults",
+        "collapsed": true,
+        "items": [
+          {
+            "label": "Overview",
+            "link": "/technical-reference/reference-fixed-rate-vaults"
+          },
+          {
+            "label": "InstitutionalVaultController",
+            "link": "/technical-reference/reference-fixed-rate-vaults/institutional-vault-controller"
+          },
+          {
+            "label": "InstitutionalLoanVault",
+            "link": "/technical-reference/reference-fixed-rate-vaults/institutional-loan-vault"
+          },
+          {
+            "label": "LiquidationAdapter",
+            "link": "/technical-reference/reference-fixed-rate-vaults/liquidation-adapter"
+          },
+          {
+            "label": "InstitutionPositionToken",
+            "link": "/technical-reference/reference-fixed-rate-vaults/institution-position-token"
+          },
+          {
+            "label": "BaseVault",
+            "link": "/technical-reference/reference-fixed-rate-vaults/base-vault"
+          }
+        ]
+      },
+      {
+        "label": "Oracle",
+        "collapsed": true,
+        "items": [
+          {
+            "label": "Overview",
+            "link": "/technical-reference/reference-oracle"
+          },
+          {
+            "label": "ResilientOracle",
+            "link": "/technical-reference/reference-oracle/resilient-oracle"
+          },
+          {
+            "label": "DeviationBoundedOracle",
+            "link": "/technical-reference/reference-oracle/deviation-bounded-oracle"
+          },
+          {
+            "label": "BoundValidator",
+            "link": "/technical-reference/reference-oracle/bound-validator"
+          },
+          {
+            "label": "Sources",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-oracle/oracles"
+              },
+              {
+                "label": "ChainlinkOracle",
+                "link": "/technical-reference/reference-oracle/oracles/chainlink-oracle"
+              },
+              {
+                "label": "SequencerChainlinkOracle",
+                "link": "/technical-reference/reference-oracle/oracles/sequencer-chainlink-oracle"
+              },
+              {
+                "label": "BinanceOracle",
+                "link": "/technical-reference/reference-oracle/oracles/binance-oracle"
+              }
+            ]
+          },
+          {
+            "label": "Correlated token oracles",
+            "collapsed": true,
+            "items": [
+              {
+                "label": "Overview",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles"
+              },
+              {
+                "label": "AnkrBNBOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/ankr-bnb-oracle"
+              },
+              {
+                "label": "AsBNBOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/as-bnb-oracle"
+              },
+              {
+                "label": "CorrelatedTokenOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/correlated-token-oracle"
+              },
+              {
+                "label": "BNBxOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/bnbx-oracle"
+              },
+              {
+                "label": "OneJumpOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/one-jump-oracle"
+              },
+              {
+                "label": "PendleOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/pendle-oracle"
+              },
+              {
+                "label": "SFraxOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/sfrax-oracle"
+              },
+              {
+                "label": "SFrxETHOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/sfrx-ethoracle"
+              },
+              {
+                "label": "SlisBNBOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/slis-bnb-oracle"
+              },
+              {
+                "label": "StkBNBOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/stk-bnb-oracle"
+              },
+              {
+                "label": "WBETHOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/wbeth-oracle"
+              },
+              {
+                "label": "WeETHAccountantOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/we-eth-accountant-oracle"
+              },
+              {
+                "label": "WeETHOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/we-eth-oracle"
+              },
+              {
+                "label": "WstETHOracle",
+                "link": "/technical-reference/reference-oracle/correlated-token-oracles/wst-eth-oracle"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "label": "Governance",
+        "collapsed": true,
+        "items": [
+          {
+            "label": "Overview",
+            "link": "/technical-reference/reference-governance"
+          },
+          {
+            "label": "AccessControlManager",
+            "link": "/technical-reference/reference-governance/access-control-manager"
+          },
+          {
+            "label": "GovernorBravoDelegate",
+            "link": "/technical-reference/reference-governance/governor-bravo-delegate"
+          },
+          {
+            "label": "AccessControlledV5",
+            "link": "/technical-reference/reference-governance/access-controlled-v5"
+          },
+          {
+            "label": "GovernorBravoDelegator",
+            "link": "/technical-reference/reference-governance/governor-bravo-delegator"
+          },
+          {
+            "label": "Timelock",
+            "link": "/technical-reference/reference-governance/timelock"
+          },
+          {
+            "label": "GovernorBravoInterfaces",
+            "link": "/technical-reference/reference-governance/governor-bravo-interfaces"
+          },
+          {
+            "label": "AccessControlledV8",
+            "link": "/technical-reference/reference-governance/access-controlled-v8"
+          },
+          {
+            "label": "BaseOmnichainControllerSrc",
+            "link": "/technical-reference/reference-governance/base-omnichain-controller-src"
+          },
+          {
+            "label": "BaseOmnichainControllerDest",
+            "link": "/technical-reference/reference-governance/base-omnichain-controller-dest"
+          },
+          {
+            "label": "OmnichainProposalSender",
+            "link": "/technical-reference/reference-governance/omnichain-proposal-sender"
+          },
+          {
+            "label": "OmnichainGovernanceExecutor",
+            "link": "/technical-reference/reference-governance/omnichain-governance-executor"
+          },
+          {
+            "label": "OmnichainExecutorOwner",
+            "link": "/technical-reference/reference-governance/omnichain-executor-owner"
+          },
+          {
+            "label": "RiskOracle",
+            "link": "/technical-reference/reference-governance/risk-oracle"
+          },
+          {
+            "label": "RiskStewardReceiver",
+            "link": "/technical-reference/reference-governance/risk-steward-receiver"
+          },
+          {
+            "label": "DestinationStewardReceiver",
+            "link": "/technical-reference/reference-governance/destination-steward-receiver"
+          },
+          {
+            "label": "BaseRiskSteward",
+            "link": "/technical-reference/reference-governance/base-risk-steward"
+          },
+          {
+            "label": "MarketCapsRiskSteward",
+            "link": "/technical-reference/reference-governance/market-caps-risk-steward"
+          },
+          {
+            "label": "CollateralFactorsRiskSteward",
+            "link": "/technical-reference/reference-governance/collateral-factors-risk-steward"
+          },
+          {
+            "label": "IRMRiskSteward",
+            "link": "/technical-reference/reference-governance/irm-risk-steward"
+          }
+        ]
+      },
+      {
+        "label": "XVS Bridge",
+        "collapsed": true,
+        "items": [
+          {
+            "label": "Overview",
+            "link": "/technical-reference/reference-xvs-bridge"
+          },
+          {
+            "label": "BaseXVSProxyOFT",
+            "link": "/technical-reference/reference-xvs-bridge/basexvsproxyoft"
+          },
+          {
+            "label": "XVSProxyOFTSrc",
+            "link": "/technical-reference/reference-xvs-bridge/xvsproxyoftsrc"
+          },
+          {
+            "label": "XVSProxyOFTDest",
+            "link": "/technical-reference/reference-xvs-bridge/xvsproxyoftdest"
+          },
+          {
+            "label": "XVSBridgeAdmin",
+            "link": "/technical-reference/reference-xvs-bridge/xvsbridgeadmin"
+          },
+          {
+            "label": "XVS",
+            "link": "/technical-reference/reference-xvs-bridge/xvs"
+          },
+          {
+            "label": "TokenController",
+            "link": "/technical-reference/reference-xvs-bridge/tokencontroller"
+          }
+        ]
+      },
+      {
+        "label": "Periphery",
+        "collapsed": true,
+        "items": [
+          {
+            "label": "Overview",
+            "link": "/technical-reference/reference-periphery"
+          },
+          {
+            "label": "RelativePositionManager",
+            "link": "/technical-reference/reference-periphery/relative-position-manager"
+          },
+          {
+            "label": "LeverageStrategiesManager",
+            "link": "/technical-reference/reference-periphery/leverage-strategies-manager"
+          },
+          {
+            "label": "SwapHelper",
+            "link": "/technical-reference/reference-periphery/swap-helper"
+          },
+          {
+            "label": "SwapRouter",
+            "link": "/technical-reference/reference-periphery/swap-router"
+          },
+          {
+            "label": "DeviationSentinel",
+            "link": "/technical-reference/reference-periphery/deviation-sentinel"
+          },
+          {
+            "label": "EBrake",
+            "link": "/technical-reference/reference-periphery/ebrake"
+          }
+        ]
+      },
+      {
+        "label": "Liquidity Hub",
+        "collapsed": true,
+        "items": [
+          {
+            "label": "Overview",
+            "link": "/technical-reference/reference-liquidity-hub"
+          },
+          {
+            "label": "Hub",
+            "link": "/technical-reference/reference-liquidity-hub/hub"
+          },
+          {
+            "label": "vhToken",
+            "link": "/technical-reference/reference-liquidity-hub/vhtoken"
+          },
+          {
+            "label": "Yield Groups",
+            "link": "/technical-reference/reference-liquidity-hub/yield-groups"
+          },
+          {
+            "label": "Adapters",
+            "link": "/technical-reference/reference-liquidity-hub/adapters"
+          },
+          {
+            "label": "Interfaces",
+            "link": "/technical-reference/reference-liquidity-hub/interfaces"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "Deployed Contracts",
+    "items": [
+      {
+        "label": "Markets",
+        "link": "/deployed-contracts/markets"
+      },
+      {
+        "label": "Funds",
+        "link": "/deployed-contracts/funds"
+      },
+      {
+        "label": "Oracles",
+        "link": "/deployed-contracts/oracles"
+      },
+      {
+        "label": "Governance",
+        "link": "/deployed-contracts/governance"
+      },
+      {
+        "label": "XVS Omnichain",
+        "link": "/deployed-contracts/xvs-omnichain"
+      },
+      {
+        "label": "Token Converters",
+        "link": "/deployed-contracts/token-converters"
+      },
+      {
+        "label": "VenusERC4626",
+        "link": "/deployed-contracts/venus-erc4626"
+      },
+      {
+        "label": "Periphery",
+        "link": "/deployed-contracts/periphery"
+      },
+      {
+        "label": "Fixed Term Vaults",
+        "link": "/deployed-contracts/fixed-rate-vaults"
+      },
+      {
+        "label": "Liquidity Hub",
+        "link": "/deployed-contracts/liquidity-hub"
+      },
+      {
+        "label": "Hub-Funded Spoke Pools",
+        "link": "/deployed-contracts/spoke-pools"
+      }
+    ]
+  },
+  {
+    "label": "Services",
+    "items": [
+      {
+        "label": "API",
+        "link": "/services/api"
+      },
+      {
+        "label": "Subgraphs",
+        "link": "/services/subgraphs"
+      }
+    ]
+  },
+  {
+    "label": "Links",
+    "items": [
+      {
+        "label": "Security & Audits",
+        "link": "/links/security-and-audits"
+      },
+      {
+        "label": "Resources",
+        "link": "/links/resources"
+      },
+      {
+        "label": "Community Resources",
+        "link": "/links/community-resources"
+      },
+      {
+        "label": "Brand kit",
+        "link": "/links/brand-kit"
+      }
+    ]
+  }
+]

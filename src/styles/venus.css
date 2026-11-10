@@ -1,0 +1,35 @@
+/* Venus brand accent (app.venus.io blue) */
+:root {
+  --sl-color-accent-low: #0d1d3d;
+  --sl-color-accent: #3a78ff;
+  --sl-color-accent-high: #b8cdff;
+  /* Wider text column: Starlight gives all leftover width to the right-hand nav. */
+  --sl-content-width: 54rem;
+  /* Headings: keep the mobile scale on desktop so sections sit clearly below the title. */
+  --sl-text-h2: var(--sl-text-3xl);
+  --sl-text-h3: var(--sl-text-2xl);
+  --sl-text-h4: var(--sl-text-xl);
+}
+figure img { margin-inline: auto; }
+figcaption { text-align: center; font-size: var(--sl-text-sm); color: var(--sl-color-gray-3); }
+/* Starlight spaces adjacent content blocks; that rule must not reach inside MathML. */
+.sl-markdown-content math * { margin-top: 0 !important; }
+.sl-markdown-content math[display='block'] { margin-block: 1rem; overflow-x: auto; }
+/* Nested sidebar groups read like the links beside them; only top-level groups are headings. */
+.sidebar-content ul ul .group-label .large {
+  font-size: inherit;
+  font-weight: inherit;
+  color: var(--sl-color-gray-2);
+}
+@media (min-width: 50rem) {
+  .sidebar-content ul ul .group-label .large { font-size: var(--sl-text-sm); }
+}
+/* Right-hand nav: section headings a step brighter than their sub-headings. Hover and the active
+   heading keep Starlight's colours. (Never declare @layer here: it reorders Starlight's layers.) */
+.right-sidebar-panel nav > ul > li > a:not(:hover, [aria-current='true']) { color: var(--sl-color-gray-2); }
+/* Right-hand nav: same sizes and row rhythm as the left sidebar, and room under the list. */
+.right-sidebar-panel { padding-bottom: 3rem; }
+.right-sidebar-panel h2 { font-size: var(--sl-text-base); margin-bottom: 0.75rem; }
+.right-sidebar-panel nav a { font-size: var(--sl-text-sm); padding-block: 0.3em; line-height: 1.4; }
+/* Left sidebar: more air between top-level groups. */
+.sidebar-content .top-level > li + li { margin-top: 1.25rem; }

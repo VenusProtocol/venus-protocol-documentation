@@ -1,0 +1,109 @@
+---
+title: "XVS Omnichain"
+---
+
+These addresses implement the stable [`token-bridge` v2.7.0](https://github.com/VenusProtocol/token-bridge/tree/v2.7.0) LayerZero V1 bridge family. They are an address inventory, not a live route matrix. Before bridging, verify both local and remote bridges, `paused()`, trusted remotes, endpoint/library configuration, send/receive limits, destination mint cap, owner/ACM permissions, and any failed-message recovery state.
+
+:::caution
+BNB uses the source OFT that locks canonical XVS; destination networks use destination OFTs that burn and mint their local XVS. A pair of deployed endpoints does not by itself prove that the route between them is configured or currently usable. All networks under the testnet heading are **Test-only**.
+:::
+
+## Mainnet chains
+
+### BNB Chain
+
+* XVSBridgeAdmin: [`0x70d644877b7b73800E9073BCFCE981eAaB6Dbc21`](https://bscscan.com/address/0x70d644877b7b73800E9073BCFCE981eAaB6Dbc21)
+* XVSProxyOFTSrc: [`0xf8F46791E3dB29a029Ec6c9d946226f3c613e854`](https://bscscan.com/address/0xf8F46791E3dB29a029Ec6c9d946226f3c613e854)
+* XVS: [`0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63`](https://bscscan.com/address/0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63)
+
+### Ethereum
+
+* XVSBridgeAdmin: [`0x9C6C95632A8FB3A74f2fB4B7FfC50B003c992b96`](https://etherscan.io/address/0x9C6C95632A8FB3A74f2fB4B7FfC50B003c992b96)
+* XVSProxyOFTDest: [`0x888E317606b4c590BBAD88653863e8B345702633`](https://etherscan.io/address/0x888E317606b4c590BBAD88653863e8B345702633)
+* XVS: [`0xd3CC9d8f3689B83c91b7B59cAB4946B063EB894A`](https://etherscan.io/address/0xd3CC9d8f3689B83c91b7B59cAB4946B063EB894A)
+
+### opBNB
+
+* XVSBridgeAdmin: [`0x52fcE05aDbf6103d71ed2BA8Be7A317282731831`](https://opbnbscan.com/address/0x52fcE05aDbf6103d71ed2BA8Be7A317282731831)
+* XVSProxyOFTDest: [`0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2`](https://opbnbscan.com/address/0x100D331C1B5Dcd41eACB1eCeD0e83DCEbf3498B2)
+* XVS: [`0x3E2e61F1c075881F3fB8dd568043d8c221fd5c61`](https://opbnbscan.com/address/0x3E2e61F1c075881F3fB8dd568043d8c221fd5c61)
+
+### Arbitrum One
+
+* XVSBridgeAdmin: [`0xf5d81C6F7DAA3F97A6265C8441f92eFda22Ad784`](https://arbiscan.io/address/0xf5d81C6F7DAA3F97A6265C8441f92eFda22Ad784)
+* XVSProxyOFTDest: [`0x20cEa49B5F7a6DBD78cAE772CA5973eF360AA1e6`](https://arbiscan.io/address/0x20cEa49B5F7a6DBD78cAE772CA5973eF360AA1e6)
+* XVS: [`0xc1Eb7689147C81aC840d4FF0D298489fc7986d52`](https://arbiscan.io/address/0xc1Eb7689147C81aC840d4FF0D298489fc7986d52)
+
+### ZKsync Mainnet
+
+* XVSBridgeAdmin: [`0x2471043F05Cc41A6051dd6714DC967C7BfC8F902`](https://explorer.zksync.io/address/0x2471043F05Cc41A6051dd6714DC967C7BfC8F902)
+* XVSProxyOFTDest: [`0x16a62B534e09A7534CD5847CFE5Bf6a4b0c1B116`](https://explorer.zksync.io/address/0x16a62B534e09A7534CD5847CFE5Bf6a4b0c1B116)
+* XVS: [`0xD78ABD81a3D57712a3af080dc4185b698Fe9ac5A`](https://explorer.zksync.io/address/0xD78ABD81a3D57712a3af080dc4185b698Fe9ac5A)
+
+### Optimism Mainnet
+
+* XVSBridgeAdmin: [`0x3c307DF1Bf3198a2417d9CA86806B307D147Ddf7`](https://optimistic.etherscan.io/address/0x3c307DF1Bf3198a2417d9CA86806B307D147Ddf7)
+* XVSProxyOFTDest: [`0xbBe46bAec851355c3FC4856914c47eB6Cea0B8B4`](https://optimistic.etherscan.io/address/0xbBe46bAec851355c3FC4856914c47eB6Cea0B8B4)
+* XVS: [`0x4a971e87ad1F61f7f3081645f52a99277AE917cF`](https://optimistic.etherscan.io/address/0x4a971e87ad1F61f7f3081645f52a99277AE917cF)
+
+### Base Mainnet
+
+* XVSBridgeAdmin: [`0x6303FEcee7161bF959d65df4Afb9e1ba5701f78e`](https://basescan.org/address/0x6303FEcee7161bF959d65df4Afb9e1ba5701f78e)
+* XVSProxyOFTDest: [`0x3dD92fB51a5d381Ae78E023dfB5DD1D45D2426Cd`](https://basescan.org/address/0x3dD92fB51a5d381Ae78E023dfB5DD1D45D2426Cd)
+* XVS: [`0xebB7873213c8d1d9913D8eA39Aa12d74cB107995`](https://basescan.org/address/0xebB7873213c8d1d9913D8eA39Aa12d74cB107995)
+
+### Unichain Mainnet
+
+* XVSBridgeAdmin: [`0x2EAaa880f97C9B63d37b39b0b316022d93d43604`](https://uniscan.xyz/address/0x2EAaa880f97C9B63d37b39b0b316022d93d43604)
+* XVSProxyOFTDest: [`0x9c95f8aa28fFEB7ECdC0c407B9F632419c5daAF8`](https://uniscan.xyz/address/0x9c95f8aa28fFEB7ECdC0c407B9F632419c5daAF8)
+* XVS: [`0x81908BBaad3f6fC74093540Ab2E9B749BB62aA0d`](https://uniscan.xyz/address/0x81908BBaad3f6fC74093540Ab2E9B749BB62aA0d)
+
+## Testnet chains (Test-only)
+
+### BNB Chain
+
+* XVSBridgeAdmin: [`0xB164Cb262328Ca44a806bA9e3d4094931E658513`](https://testnet.bscscan.com/address/0xB164Cb262328Ca44a806bA9e3d4094931E658513)
+* XVSProxyOFTSrc: [`0x0E132cd94fd70298b747d2b4D977db8d086e5fD0`](https://testnet.bscscan.com/address/0x0E132cd94fd70298b747d2b4D977db8d086e5fD0)
+* XVS: [`0xB9e0E753630434d7863528cc73CB7AC638a7c8ff`](https://testnet.bscscan.com/address/0xB9e0E753630434d7863528cc73CB7AC638a7c8ff)
+
+### Sepolia
+
+* XVSBridgeAdmin: [`0xd3c6bdeeadB2359F726aD4cF42EAa8B7102DAd9B`](https://sepolia.etherscan.io/address/0xd3c6bdeeadB2359F726aD4cF42EAa8B7102DAd9B)
+* XVSProxyOFTDest: [`0xc340b7d3406502F43dC11a988E4EC5bbE536E642`](https://sepolia.etherscan.io/address/0xc340b7d3406502F43dC11a988E4EC5bbE536E642)
+* XVS: [`0x66ebd019E86e0af5f228a0439EBB33f045CBe63E`](https://sepolia.etherscan.io/address/0x66ebd019E86e0af5f228a0439EBB33f045CBe63E)
+
+### opBNB
+
+* XVSBridgeAdmin: [`0x19252AFD0B2F539C400aEab7d460CBFbf74c17ff`](https://testnet.opbnbscan.com/address/0x19252AFD0B2F539C400aEab7d460CBFbf74c17ff)
+* XVSProxyOFTDest: [`0xA03205bC635A772E533E7BE36b5701E331a70ea3`](https://testnet.opbnbscan.com/address/0xA03205bC635A772E533E7BE36b5701E331a70ea3)
+* XVS: [`0xc2931B1fEa69b6D6dA65a50363A8D75d285e4da9`](https://testnet.opbnbscan.com/address/0xc2931B1fEa69b6D6dA65a50363A8D75d285e4da9)
+
+### Arbitrum Sepolia
+
+* XVSBridgeAdmin: [`0xc94578caCC89a29B044a0a1D54d20d48A645E5C8`](https://sepolia.arbiscan.io/address/0xc94578caCC89a29B044a0a1D54d20d48A645E5C8)
+* XVSProxyOFTDest: [`0xFdC5cEC63FD167DA46cF006585b30D03B104eFD4`](https://sepolia.arbiscan.io/address/0xFdC5cEC63FD167DA46cF006585b30D03B104eFD4)
+* XVS: [`0x877Dc896e7b13096D3827872e396927BbE704407`](https://sepolia.arbiscan.io/address/0x877Dc896e7b13096D3827872e396927BbE704407)
+
+### ZKsync Sepolia
+
+* XVSBridgeAdmin: [`0x28cfE3f2D7D8944FAd162a058260ec922C19065E`](https://sepolia.explorer.zksync.io/address/0x28cfE3f2D7D8944FAd162a058260ec922C19065E)
+* XVSProxyOFTDest: [`0x760461ccB2508CAAa2ECe0c28af3a4707b853043`](https://sepolia.explorer.zksync.io/address/0x760461ccB2508CAAa2ECe0c28af3a4707b853043)
+* XVS: [`0x3AeCac43A2ebe5D8184e650403bf9F656F9D1cfA`](https://sepolia.explorer.zksync.io/address/0x3AeCac43A2ebe5D8184e650403bf9F656F9D1cfA)
+
+### Optimism Sepolia
+
+* XVSBridgeAdmin: [`0x6bBcB95eCF9BEc9AE91d5Ad227783e3913145321`](https://sepolia-optimism.etherscan.io/address/0x6bBcB95eCF9BEc9AE91d5Ad227783e3913145321)
+* XVSProxyOFTDest: [`0x79a36dc9a43D05Db4747c59c02F48ed500e47dF1`](https://sepolia-optimism.etherscan.io/address/0x79a36dc9a43D05Db4747c59c02F48ed500e47dF1)
+* XVS: [`0x789482e37218f9b26d8D9115E356462fA9A37116`](https://sepolia-optimism.etherscan.io/address/0x789482e37218f9b26d8D9115E356462fA9A37116)
+
+### Base Sepolia
+
+* XVSBridgeAdmin: [`0xE431E82d8fFfd81E7c082BeC7Fe2C306f5c988aD`](https://sepolia.basescan.org/address/0xE431E82d8fFfd81E7c082BeC7Fe2C306f5c988aD)
+* XVSProxyOFTDest: [`0xD5Cd1fD17B724a391C1bce55Eb9d88E3205eED60`](https://sepolia.basescan.org/address/0xD5Cd1fD17B724a391C1bce55Eb9d88E3205eED60)
+* XVS: [`0xE657EDb5579B82135a274E85187927C42E38C021`](https://sepolia.basescan.org/address/0xE657EDb5579B82135a274E85187927C42E38C021)
+
+### Unichain Sepolia
+
+* XVSBridgeAdmin: [`0xc570c62bbECCd0a63408de95d9418ad7b89Ff63F`](https://sepolia.uniscan.xyz/address/0xc570c62bbECCd0a63408de95d9418ad7b89Ff63F)
+* XVSProxyOFTDest: [`0xCAF833318a6663bb23aa7f218e597c2F7970b4D2`](https://sepolia.uniscan.xyz/address/0xCAF833318a6663bb23aa7f218e597c2F7970b4D2)
+* XVS: [`0xC0e51E865bc9Fed0a32Cc0B2A65449567Bc5c741`](https://sepolia.uniscan.xyz/address/0xC0e51E865bc9Fed0a32Cc0B2A65449567Bc5c741)
