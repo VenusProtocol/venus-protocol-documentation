@@ -134,19 +134,13 @@ $$
 displayAPR = dailyRate \times 365
 $$
 
-The official frontend rate utility assumes 365 daily compounding periods:
+The official frontend rate utility and the official API both assume 365 daily compounding periods:
 
 $$
-frontendAPY = \left(1 + dailyRate\right)^{365} - 1
+APY = \left(1 + dailyRate\right)^{365} - 1
 $$
 
-At the pinned source snapshots used for this page, the official API base-market supply/borrow calculator instead raises the same daily factor to 364 (`DAYS_PER_YEAR - 1`):
-
-$$
-apiAPY = \left(1 + dailyRate\right)^{364} - 1
-$$
-
-A client that consumes those API-provided base-market values can therefore differ from a direct use of the frontend utility. Other API calculations can use different conventions. Neither convention changes on-chain accrual. Choose and label the `slotsPerDay` input and daily exponent required by the consuming system; do not claim one derived value is universal across Venus components.
+The compounding convention does not change on-chain accrual. Choose and label the `slotsPerDay` input and daily exponent required by the consuming system.
 
 `modelNormalizedAPR` and `displayAPR` are equal only when `configuredSlotsPerYear = slotsPerDay × 365`. Check that equality explicitly for a block-based deployment rather than treating it as an invariant.
 
