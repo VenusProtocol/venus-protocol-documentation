@@ -28,9 +28,9 @@ The rate is `totalAssets() / totalSupply()`, and `totalAssets()` is the sum of e
 
 `convertToAssets` and `convertToShares` are pure share math. They reflect no caps, no liquidity, no pause state and no fees, so a value they return is not a promise that the corresponding deposit or withdrawal will succeed.
 
-Each Hub launched with a `decimalsOffset` of 6, the standard ERC-4626 inflation defence. The three mainnet assets are 18-decimal, so their vhTokens carry **24 decimals**, and the raw share-to-asset ratio is not 1:1. Always convert through the views instead of assuming a ratio. Each Hub was also seeded with a bootstrap deposit whose shares were minted to the burn address, so `totalSupply` is never zero.
+Each Hub has a `decimalsOffset` of 6, the standard ERC-4626 inflation defence. The three mainnet assets are 18-decimal, so their vhTokens carry **24 decimals**, and the raw share-to-asset ratio is not 1:1. Always convert through the views instead of assuming a ratio. Each Hub was also seeded with a bootstrap deposit whose shares were minted to the burn address, so `totalSupply` is never zero.
 
-Every deposit, withdrawal and reallocation accrues fees before pricing, so the rate a caller transacts at is current. All three fees (management, performance and redeem) launched at `0`.
+Every deposit, withdrawal and reallocation accrues fees before pricing, so the rate a caller transacts at is current. All three fees (management, performance and redeem) are `0`.
 
 ## What you can do with a vhToken
 
@@ -38,7 +38,7 @@ Every deposit, withdrawal and reallocation accrues fees before pricing, so the r
 
 `redeem(shares, receiver, owner)` burns an exact share amount and returns the underlying. `withdraw(assets, receiver, owner)` does the reverse: it names the asset amount and burns whatever shares that costs. Both are permissionless and atomic — they complete in full or revert.
 
-Size the call against `maxRedeem(owner)` or `maxWithdraw(owner)`. Those views are overridden to account for the owner's balance, the Hub's aggregate liquidity, the per-transaction withdrawal cap (10,000,000 asset units at launch) and the redeem fee.
+Size the call against `maxRedeem(owner)` or `maxWithdraw(owner)`. Those views are overridden to account for the owner's balance, the Hub's aggregate liquidity, the per-transaction withdrawal cap (10,000,000 asset units on each mainnet Hub) and the redeem fee.
 
 An oversized request does not fail with a Hub error. Because `maxWithdraw` is already clamped, it trips the inherited OpenZeppelin guard first and reverts with the string `"ERC4626: withdraw more than max"`, not `HubWithdrawCapExceeded` or `HubInsufficientLiquidity`. Those two named errors stay reachable on the routing path, so do not key error handling on them alone. All four `max*` views return `0` while the Hub is paused.
 
@@ -48,7 +48,7 @@ A vhToken is a plain ERC-20: `transfer`, `transferFrom` and `approve` behave nor
 
 ### Supply it to the Core pool as collateral
 
-Each mainnet vhToken has a deployed Venus Core pool market. After the listing VIP executes, a holder can supply it, use it as collateral, and borrow other assets against it while the shares keep earning Hub yield underneath.
+Each mainnet vhToken has a Venus Core pool market. A holder can supply it, use it as collateral, and borrow other assets against it while the shares keep earning Hub yield underneath.
 
 | vhToken | Core market | Collateral factor | Liquidation threshold |
 | ------- | ----------- | ----------------- | --------------------- |
@@ -60,9 +60,9 @@ The collateral factor equals the liquidation threshold on all three markets. A p
 
 vhToken Core markets do not currently support [E-Mode](/technical-reference/reference-technical-articles/emode) or Isolation Mode. Borrowers migrating a position from a market that uses either mode should note that the effective LTV and liquidation parameters may differ — the collateral factors listed above apply as-is, without any mode-specific boost or restriction.
 
-All three launch with a liquidation incentive of 10%, a reserve factor of 10%, a supply cap of 10,000,000 and a **borrow cap of `0`** — the vhToken itself is never borrowable. The market exists to let the shares back a loan, not to create a market in the shares.
+All three have a liquidation incentive of 10%, a reserve factor of 10%, a supply cap of 10,000,000 and a **borrow cap of `0`** — the vhToken itself is never borrowable. The market exists to let the shares back a loan, not to create a market in the shares.
 
-The Core pool does not value this collateral at the Hub's uncapped redemption rate. Its price source is a [capped oracle](/technical-reference/reference-technical-articles/capped-oracles) that multiplies the underlying asset's Resilient Oracle price by a capped `convertToAssets(1 share)` rate. At launch the maximum rate grows at 5% per year, with a 30-day snapshot interval and a 41-basis-point snapshot gap. If the Hub's raw exchange rate outruns that allowance, the collateral price can temporarily trail the value redeemable from the Hub.
+The Core pool does not value this collateral at the Hub's uncapped redemption rate. Its price source is a [capped oracle](/technical-reference/reference-technical-articles/capped-oracles) that multiplies the underlying asset's Resilient Oracle price by a capped `convertToAssets(1 share)` rate. The maximum rate grows at 5% per year, with a 30-day snapshot interval and a 41-basis-point snapshot gap. If the Hub's raw exchange rate outruns that allowance, the collateral price can temporarily trail the value redeemable from the Hub.
 
 Each market also opts into [Protection Mode](/risk/protection-mode), configured with a 5% deviation trigger, a 2% reset threshold and a one-hour cooldown. When protection is active it can reduce the price used for new borrow-capacity checks; liquidation eligibility and seize amounts continue to use the Resilient Oracle spot price.
 

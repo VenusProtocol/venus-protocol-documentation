@@ -10,13 +10,13 @@ One YieldGroup contract can back more than one family, so there are fewer contra
 * **Flux** — the *same* `YieldGroup` contract behind the Flux beacon, registering Fluid Lending fTokens (ERC-4626 shares) via `AdapterFlux`, initialised with `blocksPerYear = 0`.
 * **Spoke**: the *same* `YieldGroup` contract behind the Spoke beacon, registering the liquidity side of [hub-funded spoke pools](/technical-reference/reference-isolated-pools/spoke) via `AdapterSpokeV1`, also initialized with `blocksPerYear = 0` (each market carries its own annualizer).
 * **`YieldGroupFRV`** — a separate contract, for Venus Fixed-Rate Vaults (ERC-4626 with an 11-state lifecycle).
-* **`YieldGroupCentrifuge`**: a separate contract, for Centrifuge ERC-7540 fund vaults, where deposits and redemptions are requests settled later. Added by [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) on the USDT Hub and by [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) on the USDC Hub. The U Hub has none.
+* **`YieldGroupCentrifuge`**: a separate contract, for Centrifuge ERC-7540 fund vaults, where deposits and redemptions are requests settled later. It runs on the USDT and USDC Hubs; the U Hub has none.
 
 "Core", "Flux" and "Spoke" are **deployment identities, not contract names**: which adapter, resources, caps and `blocksPerYear` governance wires into the proxy is the only difference. There is no `YieldGroupCore`, `YieldGroupFlux` or `YieldGroupSpoke` type to import.
 
 All of them share the same Hub-facing surface and the same registry / queue / pause admin surface; they differ only in the protocol-specific behavior delegated to their [adapter](/technical-reference/reference-liquidity-hub/adapters) and in a few family-specific rules noted below.
 
-> **Terminology.** The PRD calls this layer a *Source*; the code names the contract a *YieldGroup* and the Hub-facing interface `IYieldGroupBase`. There is no `ISource` type: "Source" survives in the Solidity only as deployment-artifact aliases (`CoreSource_USDT`, `FluxSource_USDC`, `FRVSource_U`, `SpokeSource_USDT`). A registered resource is the PRD's *Product / Vault*.
+> **Terminology.** These docs call this layer a *Source*; the code names the contract a *YieldGroup* and the Hub-facing interface `IYieldGroupBase`. There is no `ISource` type: "Source" survives in the Solidity only as deployment-artifact aliases (`CoreSource_USDT`, `FluxSource_USDC`, `FRVSource_U`, `SpokeSource_USDT`). A registered market or vault is a *resource*.
 
 ## Hub-facing surface (`IYieldGroupBase`)
 
@@ -49,7 +49,7 @@ The optional per-resource deposit cap (Core, Flux and Spoke only) lives in a sep
 
 ## Receipt tracking
 
-Core, Flux, FRV and Spoke count only the receipt tokens (vTokens, fTokens or vault shares) they minted themselves. [VIP-681](https://app.venus.io/#/governance/proposal/681?chainId=56) added this. Before it, a YieldGroup valued every receipt token in its wallet, so anyone could move a Hub's share price by sending receipt tokens in directly, including vTokens of a market carrying bad debt, which are worth less than their exchange rate says.
+Core, Flux, FRV and Spoke count only the receipt tokens (vTokens, fTokens or vault shares) they minted themselves. Valuing the whole wallet instead would let anyone move a Hub's share price by sending receipt tokens in directly, including vTokens of a market carrying bad debt, which are worth less than their exchange rate says.
 
 Each YieldGroup keeps the count per resource, readable with `trackedReceipt(resource)`:
 
@@ -57,7 +57,7 @@ Each YieldGroup keeps the count per resource, readable with `trackedReceipt(reso
 * A withdrawal subtracts the receipt tokens it burned. The count floors at zero instead of reverting, and a remainder worth 0 is dropped: a Spoke withdrawal decides whether to burn a worthless remainder by looking at the whole wallet, so donated dust could otherwise leave a count that no withdrawal reaches and that blocks `removeResource`.
 * `totalAssets()` prices the count with the adapter's `receiptValue`. The liquidity a resource contributes to `maxWithdraw()` and to the withdraw path is capped at that value, so uncounted receipts never back a withdrawal. The spot APY weighting and the [per-resource cap](#resource-caps-core-flux-and-spoke-only) use the same value.
 
-Receipt tokens sent in directly stay on the YieldGroup uncounted. Governance can admit them with `syncReceipt(resource, maxAdded)`, which sets the count to the wallet balance but adds at most `maxAdded`, and emits `ReceiptSynced`. The cap is the amount governance reviewed: a VIP executes days after it is proposed, and anything sent in meanwhile stays out above it. Syncing a vToken of a market carrying bad debt hands that loss to the Hub's lenders, so the Guardian does not hold `syncReceipt`. VIP-681 synced every resource with no cap (`type(uint256).max`) because every count started at zero after the upgrade; the previous code already valued the whole wallet, so the sync admitted nothing new. Receipt tokens nobody syncs can be [swept](#other-governance-functions) once their resource is removed.
+Receipt tokens sent in directly stay on the YieldGroup uncounted. Governance can admit them with `syncReceipt(resource, maxAdded)`, which sets the count to the wallet balance but adds at most `maxAdded`, and emits `ReceiptSynced`. The cap is the amount governance reviewed: a VIP executes days after it is proposed, and anything sent in meanwhile stays out above it. Syncing a vToken of a market carrying bad debt hands that loss to the Hub's lenders, so the Guardian does not hold `syncReceipt`. `type(uint256).max` syncs the whole wallet. Receipt tokens nobody syncs can be [swept](#other-governance-functions) once their resource is removed.
 
 `YieldGroupCentrifuge` does not track. Centrifuge mints the shares when it settles a request, after the deposit call has returned, so a balance change measured around the call would miss them. It still values everything it holds, bounded by the [NAV band](#nav-band), and its `syncReceipt` reverts `ReceiptTrackingOff`.
 
@@ -162,9 +162,9 @@ Every term of a Centrifuge position's value is computed off chain and published 
 
 Governance, the Operator and the Guardian configure it with `setNavGuardRate(resource, driftBps, upGapBps, downGapBps, interval, capEnabled, floorEnabled)`, switches either side on or off with `setNavGuardEnabled(resource, capEnabled, floorEnabled)`, and forces a new centre with `setNavGuardSnapshot(resource, snapshot, timestamp)`, for example to accept a real markdown. Read the band with `navGuard(resource)` and its live state with `navGuardStatus(resource)`.
 
-The band only limits how fast a wrong value moves the share price. A separate keeper check pauses the whole Hub when the value moves past a set threshold. [VIP-673](https://app.venus.io/#/governance/proposal/673?chainId=56) armed it on BNB Chain: see [Automatic pause on a NAV break](/technical-reference/reference-liquidity-hub/hub#automatic-pause-on-a-nav-break).
+The band only limits how fast a wrong value moves the share price. A separate keeper check pauses the whole Hub when the value moves past a set threshold. It is live on BNB Chain: see [Automatic pause on a NAV break](/technical-reference/reference-liquidity-hub/hub#automatic-pause-on-a-nav-break).
 
-Live values, identical on the USDT and USDC Sources. VIP-661 set the bands and a first pair of APYs on USDT; VIP-666 set the USDC bands and APYs, and moved the USDT Source down to the same APYs from 3.37% and 5.29%.
+Live values, identical on the USDT and USDC Sources:
 
 | Vault | Drift | Band up | Band down | Re-anchor | Published APY |
 | --- | --- | --- | --- | --- | --- |
@@ -253,4 +253,4 @@ Centrifuge adds twelve, for **21** in total:
 
 `requestRedeem(address,uint256)`, `cancelDepositRequest(address)`, `cancelRedeemRequest(address)`, `claimDeposit(address)`, `claimRedeem(address)`, `claimCancelDeposit(address)`, `claimCancelRedeem(address)`, `forceRemoveResource(address)`, `setSpotAPYBps(address,uint64)`, `setNavGuardRate(address,uint16,uint16,uint16,uint32,bool,bool)`, `setNavGuardSnapshot(address,uint128,uint64)`, `setNavGuardEnabled(address,bool,bool)`.
 
-On the live Sources the Normal Timelock holds all twenty-one, the Operator holds the queues, the async lifecycle, the four claims, `pauseResource` (but not `unpauseResource`), the band and `setSpotAPYBps`, a Keeper holds only the four claims, and the Guardian holds the pause pair, `forceRemoveResource`, the band and `setSpotAPYBps`. VIP-666 additionally took `updateResourceAdapter(address,address)` off the Operator on every BNB Chain YieldGroup.
+On the live Sources the Normal Timelock holds all twenty-one, the Operator holds the queues, the async lifecycle, the four claims, `pauseResource` (but not `unpauseResource`), the band and `setSpotAPYBps`, a Keeper holds only the four claims, and the Guardian holds the pause pair, `forceRemoveResource`, the band and `setSpotAPYBps`. Only the Normal Timelock holds `updateResourceAdapter(address,address)` and `syncReceipt(address,uint256)`.

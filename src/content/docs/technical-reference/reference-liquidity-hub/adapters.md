@@ -12,7 +12,7 @@ One adapter per protocol family:
 * **`AdapterSpokeV1`**: the liquidity side of a [hub-funded spoke pool](/technical-reference/reference-isolated-pools/spoke): an isolated-pools `VToken` governed by a `SpokeComptroller`.
 * **`AdapterCentrifuge`**: Centrifuge ERC-7540 fund vaults, where a deposit or a redemption is a request settled later.
 
-Each one implements [`IResourceAdapter`](/technical-reference/reference-liquidity-hub/interfaces). Addresses are on the [Deployed Contracts](/deployed-contracts/liquidity-hub#adapters) page; the Core, Flux, FRV and Centrifuge resources were repointed to redeployed adapters in VIP-669 and the Spoke resources registered on `AdapterSpokeV1` in VIP-670, so read `resourceConfig(resource)` on a YieldGroup rather than an older proposal.
+Each one implements [`IResourceAdapter`](/technical-reference/reference-liquidity-hub/interfaces). Addresses are on the [Deployed Contracts](/deployed-contracts/liquidity-hub#adapters) page; adapters are replaced by repointing each resource with `updateResourceAdapter`, so read `resourceConfig(resource)` on a YieldGroup rather than an older proposal.
 
 ## Dispatch model
 

@@ -94,7 +94,7 @@ One `UpgradeableBeacon` per family; upgrading a beacon upgrades every vault of t
 
 ### Adapters
 
-Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach them by `delegatecall`, so receipt tokens land on the calling YieldGroup. [VIP-681](https://app.venus.io/#/governance/proposal/681?chainId=56) replaced the Core, Flux, FRV and Spoke adapters with ones that add `receiptValue`, which a YieldGroup uses to price only the receipt tokens its own deposits minted, and repointed every one of their resources with `updateResourceAdapter`. `AdapterCentrifuge` is still the one [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) installed: the Centrifuge family does not track receipts, so VIP-681 leaves it alone. An adapter address read from an older proposal or an older revision of this page may be a pre-replacement one; read a resource's adapter with `resourceConfig(resource)` on its YieldGroup.
+Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach them by `delegatecall`, so receipt tokens land on the calling YieldGroup. An adapter is replaced by deploying a new one and repointing each resource with `updateResourceAdapter`, so an address from an older proposal may be out of date; read a resource's adapter with `resourceConfig(resource)` on its YieldGroup.
 
 * AdapterCoreV1: [`0x0f62927d18Fd35712622C2c6C3F730EB8a18b71B`](https://bscscan.com/address/0x0f62927d18Fd35712622C2c6C3F730EB8a18b71B)
 * AdapterFlux: [`0x4Afb747ce8dDef689d5484FFdfB69Ac8bC7cAc8B`](https://bscscan.com/address/0x4Afb747ce8dDef689d5484FFdfB69Ac8bC7cAc8B)
@@ -114,7 +114,7 @@ Stateless, unowned and non-upgradeable; read-only. The Hub itself computes no de
 
 * HubNavDeviationSentinel: [`0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB`](https://bscscan.com/address/0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB)
 
-A [venus-periphery](https://github.com/VenusProtocol/venus-periphery) contract that pauses a whole Hub through `EBrake` when a Centrifuge position's value breaks far out of its NAV band. See [Automatic pause on a NAV break](/technical-reference/reference-liquidity-hub/hub#automatic-pause-on-a-nav-break) for its status.
+A [venus-periphery](https://github.com/VenusProtocol/venus-periphery) contract that pauses a whole Hub through `EBrake` when a Centrifuge position's value breaks far out of its NAV band. See [Automatic pause on a NAV break](/technical-reference/reference-liquidity-hub/hub#automatic-pause-on-a-nav-break).
 
 ### Access control
 
@@ -129,7 +129,7 @@ A parallel deployment exists for integration testing. It is **not a faithful mir
 * HubRegistry (proxy): [`0x5346f648029d1D1d1034e09e8AD7a115f5D7A159`](https://testnet.bscscan.com/address/0x5346f648029d1D1d1034e09e8AD7a115f5D7A159)
 * HubRegistryProxyAdmin: [`0x9f8413eEE33D434F6D4f40C83181f32A831c9ef7`](https://testnet.bscscan.com/address/0x9f8413eEE33D434F6D4f40C83181f32A831c9ef7)
 
-The testnet registry predates the decision to use the shared `DefaultProxyAdmin`, so it still carries a registry-specific `ProxyAdmin`.
+The testnet registry has a `ProxyAdmin` of its own rather than the shared `DefaultProxyAdmin`.
 
 ### Hubs
 
@@ -153,7 +153,7 @@ The testnet registry lists seventeen Hubs, all over mock assets or, in one case,
 * Hub TRX (`vhTRX`): [`0x69d4BE625A930Ac86D860E69c022830dfC20ab00`](https://testnet.bscscan.com/address/0x69d4BE625A930Ac86D860E69c022830dfC20ab00)
 * Hub over vhTUSD (`vhH24`): [`0x466a383e2dc824FBD249b1a5F5aeD27C0Cf08D45`](https://testnet.bscscan.com/address/0x466a383e2dc824FBD249b1a5F5aeD27C0Cf08D45)
 
-The USDT Hub's share token is named `Vault Share` / `vSHARE`, a placeholder predating the `Venus Hub <asset>` / `vh<asset>` convention the later Hubs and all of mainnet use.
+The USDT Hub's share token is named `Vault Share` / `vSHARE`, a placeholder; the other Hubs and all of mainnet use `Venus Hub <asset>` / `vh<asset>`.
 
 ### Yield Groups (USDT Hub)
 
