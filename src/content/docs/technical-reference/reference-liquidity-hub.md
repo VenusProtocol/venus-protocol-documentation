@@ -55,7 +55,7 @@ On BNB Chain the Spoke Source of every Hub is second in the outer deposit queue,
 * [**Yield Groups**](/technical-reference/reference-liquidity-hub/yield-groups): `YieldGroup` (the generic router, deployed three times: as the Core, Flux and Spoke families), `YieldGroupFRV` and `YieldGroupCentrifuge`: the `IYieldGroupBase` implementations, per-resource registry / queues / caps, the FRV lifecycle, and the Centrifuge lifecycle and NAV band.
 * [**Adapters**](/technical-reference/reference-liquidity-hub/adapters): `AdapterCoreV1`, `AdapterFlux`, `AdapterFRV`, `AdapterSpokeV1`, `AdapterCentrifuge`: the stateless, delegatecall-dispatched protocol translators.
 * [**Interfaces**](/technical-reference/reference-liquidity-hub/interfaces) — `IYieldGroupBase` (with its family extensions `IYieldGroup`, `IYieldGroupFRV` and `IYieldGroupCentrifuge`) and `IResourceAdapter`, the boundary contracts, plus where `INavGuard` and `IHubLens` are documented.
-* **`Migrator`** — a stateless, permissionless, non-upgradeable helper for one-click migration of a Venus Core position into a Hub (`migrateFromCore` / `migrateFromCoreBNB`).
+* **`Migrator`** — a stateless, permissionless, non-upgradeable helper for one-click migration of a Venus Core position into a Hub registered in the `HubRegistry` (`migrateFromCore` / `migrateFromCoreBNB`).
 * **`HubLens`** — a stateless, unowned, non-upgradeable read-only helper. The Hub does not compute a deposit ceiling, so `HubLens` is where a frontend or an integrator reads one: `maxDeposit(hub)`, `maxMint(hub)`, `depositCapacityBreakdown(hub)` and the blended `spotAPYBps(hub)`. Every function takes the Hub as a parameter, so one deployment serves every Hub — see [Sizing a deposit](/technical-reference/reference-liquidity-hub/hub#sizing-a-deposit).
 
 **`HubRegistry`** — one per chain, the canonical directory of deployed Hubs. Governance calls `addHub(address)` / `removeHub(address)` (both ACM-gated); everyone else reads `hubForAsset(address)`, `assetForHub(address)`, `isHub(address)`, `getHubs()` and `getHubsCount()`. It emits `HubAdded` / `HubRemoved`, and an indexer should seed from state on `HubAdded` rather than relying on log ordering. Each asset may have at most one Hub (`AssetAlreadyHasHub`).
@@ -93,7 +93,7 @@ Supporting contracts:
 | Contract | Address | Notes |
 | -------- | ------- | ----- |
 | `HubLens` | `0xE5d8A002A794CcDba248ba774a359eF2B9E4Ba8B` | Stateless, unowned, non-upgradeable. Deposit sizing and blended APY for every Hub, see [Sizing a deposit](/technical-reference/reference-liquidity-hub/hub#sizing-a-deposit) |
-| `Migrator` | `0xfe6b8BEf1215C19Cd247FbF495ef560932F1Eb9B` | Stateless, permissionless, non-upgradeable. One-click migration of a Venus Core position into a Hub via `migrateFromCore` / `migrateFromCoreBNB` (plus `*WithConsent` variants) |
+| `Migrator` | `0xb0D77DC86d4E6a8282eECF3d4d456B3b94F2a7aD` | Stateless, permissionless, non-upgradeable. One-click migration of a Venus Core position into a registered Hub via `migrateFromCore` / `migrateFromCoreBNB` (plus `*WithConsent` variants) |
 | `HubBeacon` | `0x0f20e1004962e2DF16c16FC15460Dc6480626321` | Upgrades every Hub atomically |
 | `CoreBeacon` | `0x195a0F1BCF73C3Beb609a1271E8E08b8E4c098C6` | Core-family YieldGroups |
 | `FluxBeacon` | `0x9bb6a3Ac5955fA8dc236560CA9D51483d1d79f15` | Flux-family YieldGroups |
@@ -144,7 +144,7 @@ A parallel deployment exists for integration testing. The USDT Hub below is the 
 | -------- | ------- |
 | `Hub_USDT` | `0x7cE6ADF754D0eC81A6CF8ACd9C7454F45077dc61` |
 | `HubRegistry` | `0x5346f648029d1D1d1034e09e8AD7a115f5D7A159` |
-| `Migrator` | `0x343D518d8C89f9B5D770000F1ed80f45bF1419f5` |
+| `Migrator` | `0x907d344E53A6e51Cb3E01cb76495D6C5325d72e8` |
 | `HubLens` | `0x0D0C640AA4da71cE610EFD6a04acCE6e3Ae419C2` |
 | `CoreSource_USDT` | `0x11e39DC7b8b16BBDA8D9C2903dF741Ae9341Ec88` |
 | `FluxSource_USDT` | `0x044E572144bc08ed2D90E081EeEd7b5b6Cb01016` |
