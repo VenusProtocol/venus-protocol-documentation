@@ -5,7 +5,7 @@ title: "EBrake"
 
 EBrake (Emergency Brake) is a Venus periphery contract that acts as an emergency action router for the protocol. It exposes a curated set of Comptroller emergency functions, and from v1.3.0 three Liquidity Hub pause forwarders, behind Access Control Manager (ACM) permissions, allowing the multisig, automated monitoring contracts, and trusted third-party services to rapidly tighten protocol parameters during an incident — without waiting for a governance VIP.
 
-> **Version scope:** This API reference follows [`venus-periphery` v1.3.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.3.0/contracts/EmergencyBrake). EBrake is deployed behind upgradeable proxies. Its effective behavior depends on the current implementation, immutable Comptroller/type pair, ACM grants, and the Comptroller version on each network; verify those values from the [deployment registry](/deployed-contracts/periphery) and explorer before incident use.
+> **Version scope:** This API reference follows [`venus-periphery` v1.4.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.4.0/contracts/EmergencyBrake), including the Spoke-market routing deployed on BNB Chain by [VIP-680](https://app.venus.io/#/governance/proposal/680?chainId=56). EBrake is deployed behind upgradeable proxies. Its effective behavior depends on the current implementation, immutable Core Comptroller/chain flag, ACM grants, and the Comptroller version on each network; verify those values from the [deployment registry](/deployed-contracts/periphery) and explorer before incident use.
 
 ### Overview
 
@@ -57,17 +57,23 @@ Whenever EBrake tightens a parameter for the first time, it snapshots the origin
 
 EBrake supports two Comptroller families. The currently published registry lists deployments on only a subset of Venus networks, and behavior differs by the configured Comptroller:
 
-| Feature                              | BSC — Diamond Comptroller (`IS_ISOLATED_POOL=false`) | Non-BSC — IL Comptroller (`IS_ISOLATED_POOL=true`) |
+| Feature                              | BSC instance (`IS_REMOTE_CHAIN=false`) | Remote instance (`IS_REMOTE_CHAIN=true`) |
 | ------------------------------------ | ---------------------------------------------------- | -------------------------------------------------- |
-| `decreaseCF(market, newCF)`          | Iterates all pools (`corePoolId` to `lastPoolId`), silently skips pools already at or below `newCF` | Applies to the single market; reverts if `newCF > currentCF` |
-| `decreaseCF(market, poolId, newCF)`  | Supported — targets a single pool (core or e-mode)  | Reverts with `NotSupportedOnIsolatedPool`          |
+| `decreaseCF(market, newCF)`          | Core: iterates all listed pools and skips CF at or below `newCF`; Spoke: applies to the market through its own Comptroller | Applies to the single market; reverts if `newCF > currentCF` |
+| `decreaseCF(market, poolId, newCF)`  | Supported — targets a single pool (core or e-mode)  | Reverts with `NotSupportedOnRemoteChain` |
 | `pauseFlashLoan()`                   | Supported — flash loans only exist on Diamond       | Not ACM-granted                                    |
 | `disablePoolBorrow(poolId, market)`  | Supported — per-pool granular borrow disable        | Not ACM-granted                                    |
 | `revokeFlashLoanAccess(account)`     | Supported — removes account from flash loan whitelist | Not ACM-granted                                  |
 | `pauseHub`, `pauseHubYieldGroup`, `pauseHubResource` | Supported, where the deployed implementation has them | Not ACM-granted |
 | E-mode pool support                  | Yes — via `poolId > 0`                              | No — no pool concept                               |
 
-All other functions (`pauseActions`, `pauseSupply`, `pauseBorrow`, `pauseRedeem`, `pauseTransfer`, `setMarketBorrowCaps`, `setMarketSupplyCaps`) are ABI-compatible across both comptroller types and work identically on all chains.
+Market-level pause and cap functions resolve `market.comptroller()` and act on that Comptroller, including a Spoke Comptroller. `decreaseCF(market, newCF)` and `resetCFSnapshot` use the Diamond path only for markets of `COMPTROLLER` when `IS_REMOTE_CHAIN` is false; all other markets use the IL path with pool ID `0`. `pauseActions`, `setMarketBorrowCaps` and `setMarketSupplyCaps` require every market in a batch to share one Comptroller, reverting `MarketsOnDifferentComptrollers` otherwise. Split calls by pool when targeting multiple Spoke pools. Diamond-only functions still target the immutable `COMPTROLLER`.
+
+### bStock pause monitoring
+
+[BStockPauseSentinel](https://github.com/VenusProtocol/venus-periphery/blob/v1.4.0/contracts/Sentinels/BStockPauseSentinel.sol) is a separate keeper-driven monitor, enabled on BNB Chain by [VIP-680](https://app.venus.io/#/governance/proposal/680?chainId=56). Its `handleBStockPause(market)` checks a monitored bStock's issuer pause manager and compliance module. If the token is paused or the compliance check rejects the market, it calls EBrake's existing `decreaseCF(market, 0)`. This reduces collateral factor without changing the liquidation threshold; it does not call a market-pause function or restore CF automatically. Core markets are handled across their listed e-mode pools; Spoke markets use their own Comptroller.
+
+VIP-680 granted the sentinel `decreaseCF(address,uint256)` on EBrake, and granted the Guardian and the Normal and Fast-track Timelocks `setTrustedKeeper(address,bool)` and `setMarketMonitored(address,bool)` on the sentinel. These configuration functions belong to the sentinel, not EBrake. `handleBStockPause` is restricted to its trusted keepers. Read the current monitored set with `getMonitoredMarkets()`; new listings must be explicitly added.
 
 ### Inheritance
 
@@ -79,8 +85,8 @@ All other functions (`pauseActions`, `pauseSupply`, `pauseBorrow`, `pauseRedeem`
 
 | Variable          | Type                    | Description                                                                                    |
 | ----------------- | ----------------------- | ---------------------------------------------------------------------------------------------- |
-| `COMPTROLLER`     | `ICorePoolComptroller`  | The Venus Comptroller this EBrake instance operates on. On BSC this is a Diamond proxy; on other chains it is an IL comptroller. |
-| `IS_ISOLATED_POOL`| `bool`                  | Set at deployment. `true` for IL comptroller (isolated-pools); `false` for Diamond (BSC).     |
+| `COMPTROLLER`     | `ICorePoolComptroller`  | The Core Comptroller used by Diamond-only functions and for recognizing BSC Core markets. Per-market functions resolve the market's own Comptroller. |
+| `IS_REMOTE_CHAIN`| `bool`                  | Set at deployment: `false` on BSC, `true` on remote chains. A BSC Spoke market still takes the IL path because its Comptroller differs from `COMPTROLLER`.     |
 
 #### Mutable
 
@@ -120,7 +126,7 @@ Holds the pre-incident state captured by EBrake before any tightening action. Ne
 
 #### initialize
 
-Initializes the proxy with its Access Control Manager. The implementation constructor fixes `COMPTROLLER` and `IS_ISOLATED_POOL` and disables direct initialization of the implementation.
+Initializes the proxy with its Access Control Manager. The implementation constructor fixes `COMPTROLLER` and `IS_REMOTE_CHAIN` and disables direct initialization of the implementation.
 
 ```solidity
 function initialize(address accessControlManager_) external initializer
@@ -147,7 +153,7 @@ function pauseActions(address[] calldata markets, IComptroller.Action[] calldata
 
 ##### Behavior
 
-Calls `setActionsPaused(markets, actions, true)` on the comptroller for the provided markets and actions. Only `MINT`, `REDEEM`, `BORROW`, and `TRANSFER` are allowed. Passing `REPAY`, `SEIZE`, `LIQUIDATE`, `ENTER_MARKET`, or `EXIT_MARKET` reverts.
+Calls `setActionsPaused(markets, actions, true)` on the markets' shared Comptroller, resolved from the vTokens. Markets from different Comptrollers cannot be combined in one call. Only `MINT`, `REDEEM`, `BORROW`, and `TRANSFER` are allowed. Passing `REPAY`, `SEIZE`, `LIQUIDATE`, `ENTER_MARKET`, or `EXIT_MARKET` reverts.
 
 ##### Access Requirements
 
@@ -157,6 +163,7 @@ Calls `setActionsPaused(markets, actions, true)` on the comptroller for the prov
 
 - `EmptyArray` if `markets` or `actions` is empty
 - `ForbiddenAction` if any action is not one of the four permitted actions
+- `MarketsOnDifferentComptrollers` if the markets do not share one Comptroller
 
 ##### Events
 
@@ -350,7 +357,7 @@ Calls `setWhiteListFlashLoanAccount(account, false)` on the Diamond comptroller.
 
 Pause an entire Liquidity Hub.
 
-This function and the two below shipped in v1.3.0. On BNB Chain mainnet they arrived with [VIP-673](https://app.venus.io/#/governance/proposal/673?chainId=56), which upgraded the proxy to [`0xeB18c8B6d0ddc13D3d7A8cD5FF684F11E5bcBCfb`](https://bscscan.com/address/0xeB18c8B6d0ddc13D3d7A8cD5FF684F11E5bcBCfb) and granted EBrake the Hub's `pauseHub()`, `pauseYieldGroup(address)` and `pauseResource(address)` for every Hub and YieldGroup. The BNB Chain testnet implementation has them too.
+This function and the two below shipped in v1.3.0. On BNB Chain mainnet they arrived with [VIP-673](https://app.venus.io/#/governance/proposal/673?chainId=56), which upgraded the proxy and granted EBrake the Hub's `pauseHub()`, `pauseYieldGroup(address)` and `pauseResource(address)` for every Hub and YieldGroup. VIP-680 subsequently upgraded the implementation while retaining all three forwarders. The BNB Chain testnet implementation has them too.
 
 ```solidity
 function pauseHub(address hub) external
@@ -456,7 +463,7 @@ function decreaseCF(address market, uint256 newCF) external
 ##### Behavior
 
 - **Diamond (BSC):** Iterates all pools from `corePoolId` to `lastPoolId`. Applies `newCF` only to pools where `currentCF > newCF`; silently skips pools already at or below `newCF` and unlisted pools. Does not revert due to CF comparison — use the per-pool overload for strict enforcement on a specific pool.
-- **IL (non-BSC):** Applies to the single market entry. Reverts with `CFExceedsCurrent` if `newCF > currentCF`. No-ops (returns without event) if `newCF == currentCF`.
+- **IL (including BSC Spoke):** Applies to the single market entry. Reverts with `CFExceedsCurrent` if `newCF > currentCF`. No-ops (returns without event) if `newCF == currentCF`.
 
 Decreasing CF blocks or limits new borrows against the asset. It does **not** make existing positions liquidatable — that would require lowering LT, which EBrake cannot do.
 
@@ -499,11 +506,11 @@ Targets a single pool. No-ops (returns without event) if `newCF == currentCF`. U
 ##### Access Requirements
 
 - ACM permission required: `decreaseCF(address,uint96,uint256)`
-- **BSC (Diamond) only** — reverts with `NotSupportedOnIsolatedPool` on IL chains
+- **BSC (Diamond) only** — reverts with `NotSupportedOnRemoteChain` on remote chains
 
 ##### Errors
 
-- `NotSupportedOnIsolatedPool` if called on an IL comptroller deployment
+- `NotSupportedOnRemoteChain` if called on a remote-chain deployment; on BSC this overload only targets Core/e-mode pools, not Spoke pools
 - `MarketNotListed` if the market is not listed in the given pool
 - `CFExceedsCurrent` if `newCF > currentCF`
 - `SetCollateralFactorFailed` if the comptroller returns a non-zero error code
@@ -531,7 +538,7 @@ function setMarketBorrowCaps(address[] calldata markets, uint256[] calldata newB
 
 ##### Behavior
 
-Iterates the markets array. Elements equal to the current cap are silently skipped (no snapshot pollution). Elements strictly lower than the current cap trigger a cap decrease and record a first-write-wins snapshot. Only calls the comptroller if at least one element actually decreased.
+Requires all markets to share one Comptroller, then reads and updates caps on that Comptroller. Iterates the markets array. Elements equal to the current cap are silently skipped (no snapshot pollution). Elements strictly lower than the current cap trigger a cap decrease and record a first-write-wins snapshot. Only calls the comptroller if at least one element actually decreased.
 
 ##### Access Requirements
 
@@ -542,6 +549,7 @@ Iterates the markets array. Elements equal to the current cap are silently skipp
 - `EmptyArray` if `markets` is empty
 - `ArrayLengthMismatch` if `markets` and `newBorrowCaps` have different lengths
 - `CapExceedsCurrent` if any new cap is strictly greater than the current cap
+- `MarketsOnDifferentComptrollers` if the markets do not share one Comptroller
 
 ##### Events
 
@@ -577,6 +585,7 @@ Identical to `setMarketBorrowCaps` but operates on supply caps.
 - `EmptyArray` if `markets` is empty
 - `ArrayLengthMismatch` if `markets` and `newSupplyCaps` have different lengths
 - `CapExceedsCurrent` if any new cap is strictly greater than the current cap
+- `MarketsOnDifferentComptrollers` if the markets do not share one Comptroller
 
 ##### Events
 
@@ -722,7 +731,8 @@ function getMarketCFSnapshot(address market, uint96 poolId) external view return
 | `EmptyArray`                | —                                                   | An empty array was passed where at least one element is required.                    |
 | `ArrayLengthMismatch`       | `expected`, `actual`                                | Array lengths do not match.                                                          |
 | `CapExceedsCurrent`         | `market`, `currentCap`, `requestedCap`              | Attempted to set a cap higher than the current value.                                |
-| `NotSupportedOnIsolatedPool`| —                                                   | A Diamond-only function was called on an IL comptroller deployment.                  |
+| `NotSupportedOnRemoteChain`| —                                                   | The pool-specific `decreaseCF` overload was called on a remote-chain deployment.                  |
+| `MarketsOnDifferentComptrollers` | `expected`, `actual` | A pause or cap batch contains markets belonging to different Comptrollers. |
 | `CFExceedsCurrent`          | `market`, `poolId`, `currentCF`, `requestedCF`      | Attempted to set a collateral factor higher than the current value.                  |
 
 ### Security Considerations
@@ -730,6 +740,8 @@ function getMarketCFSnapshot(address market, uint96 poolId) external view return
 #### Access Control
 
 Privileged EBrake mutators require an explicit Venus ACM grant for their exact signature. Public view functions such as `getMarketCFSnapshot` are ungated, and `initialize` is protected by one-time initialization rather than ACM. The set of mutator grants differs between BSC and non-BSC chains: Diamond-only functions (`pauseFlashLoan`, `disablePoolBorrow`, `revokeFlashLoanAccess`, `decreaseCF(address,uint96,uint256)`) are not intended for IL chains. The three Hub forwarders need two grants, not one: the caller's grant on EBrake, and EBrake's own grant on the target, which is `pauseHub()` or `pauseYieldGroup(address)` on the Hub and `pauseResource(address)` on the Source. Liquidity Hubs exist only on BNB Chain.
+
+For Spoke markets, VIP-680 granted EBrake four wildcard Comptroller permissions: `setActionsPaused(address[],uint256[],bool)`, `setCollateralFactor(address,uint256,uint256)`, `setMarketBorrowCaps(address[],uint256[])` and `setMarketSupplyCaps(address[],uint256[])`. These cover newly added Spoke pools as well. The redundant Core-specific `setCollateralFactor(address,uint256,uint256)` grant was revoked; EBrake's other Core-specific grants were retained. A caller still needs its own permission on EBrake before EBrake can use those downstream grants.
 
 #### Snapshot Integrity
 
@@ -759,14 +771,14 @@ Both flags must allow borrowing for borrows to actually proceed. A recovery VIP 
 
 ### Deployment
 
-EBrake is deployed behind a `TransparentUpgradeableProxy`. The implementation constructor fixes `COMPTROLLER` and `IS_ISOLATED_POOL`, so every proxy-to-implementation mapping must use an implementation built for that network and Comptroller family. On the documented BSC deployment `IS_ISOLATED_POOL = false`; the documented IL Comptroller deployments use `true`.
+EBrake is deployed behind a `TransparentUpgradeableProxy`. The implementation constructor fixes `COMPTROLLER` and `IS_REMOTE_CHAIN`, so every proxy-to-implementation mapping must use an implementation built for that network and Comptroller family. On the documented BSC deployment `IS_REMOTE_CHAIN = false`; remote-chain deployments use `true`. This flag does not prevent the BSC instance from routing market-level actions to Spoke Comptrollers.
 
 #### BNB Chain Mainnet
 
 | Contract            | Address                                                                                                                        |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | EBrake (Proxy)      | [`0x35eBaBB99c7Fb7ba0C90bCc26e5d55Cdf89C23Ec`](https://bscscan.com/address/0x35eBaBB99c7Fb7ba0C90bCc26e5d55Cdf89C23Ec)       |
-| EBrake (Implementation) | [`0xeB18c8B6d0ddc13D3d7A8cD5FF684F11E5bcBCfb`](https://bscscan.com/address/0xeB18c8B6d0ddc13D3d7A8cD5FF684F11E5bcBCfb)   |
+| EBrake (Implementation) | [`0x918794Bb15BAc47C8Bbba553e7EE8BB1bD4A0959`](https://bscscan.com/address/0x918794Bb15BAc47C8Bbba553e7EE8BB1bD4A0959)   |
 
 #### BNB Chain Testnet
 
@@ -777,4 +789,4 @@ EBrake is deployed behind a `TransparentUpgradeableProxy`. The implementation co
 
 ### Audits
 
-Published EBrake and DeviationSentinel audit reports are indexed in the [`venus-periphery` v1.3.0 release](https://github.com/VenusProtocol/venus-periphery/tree/v1.3.0/audits), including the HashDit report on the Hub pause forwarders and `HubNavDeviationSentinel`. A report's scope and reviewed commit should be checked against the current proxy implementation.
+Published EBrake and DeviationSentinel audit reports are indexed in the [`venus-periphery` v1.4.0 release](https://github.com/VenusProtocol/venus-periphery/tree/v1.4.0/audits), including the HashDit reports on the Hub pause forwarders and `HubNavDeviationSentinel`, and on the Spoke EBrake changes and `BStockPauseSentinel`. A report's scope and reviewed commit should be checked against the current proxy implementation.
