@@ -88,7 +88,7 @@ The [DeviationBoundedOracle](https://github.com/VenusProtocol/oracle/blob/main/c
 
 [**RedStoneOracle**](https://redstone.finance/)
 
-[RedstoneOracle](https://docs.redstone.finance/docs/smart-contract-devs/get-started/redstone-classic) is used in the Classic model (Chainlink-compatible interface) as a pivot oracle to validate prices returned by main and fallback oracles.
+[RedstoneOracle](https://docs.redstone.finance/docs/stage1-market-data/price-feeds/push-model/) is used in the Push model (formerly Classic; Chainlink-compatible interface) as a pivot oracle to validate prices returned by main and fallback oracles.
 
 [**BinanceOracle**](/technical-reference/reference-oracle/oracles/binance-oracle)
 
@@ -147,7 +147,7 @@ XVS can be locked in the [XVSVault](https://github.com/VenusProtocol/venus-proto
 
 **VAI Vault**
 
-VAI staked in the [VAIVault](https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Vault/VAIVault.sol) earned XVS until [VIP-662](https://app.venus.io/#/governance/proposal/662?chainId=56) set the Comptroller's VAI Vault XVS rate to 0 on September 21, 2026. No new XVS accrues to stakers; XVS accrued before that remains claimable.
+VAI staked in the [VAIVault](https://github.com/VenusProtocol/venus-protocol/blob/develop/contracts/VAIVault/VAIVault.sol) earned XVS until [VIP-662](https://app.venus.io/#/governance/proposal/662?chainId=56) set the Comptroller's VAI Vault XVS rate to 0 on September 21, 2026. No new XVS accrues to stakers; XVS accrued before that remains claimable.
 
 #### Misc Contracts
 
