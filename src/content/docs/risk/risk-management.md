@@ -14,12 +14,11 @@ Venus Protocol is deeply committed to ensuring the highest level of security and
 ### Continuous On-Chain Monitoring
 
 * Venus Protocol has partnered with Chaos Labs, a leader in blockchain security and monitoring. This partnership equips us with sophisticated tools for continuous on-chain monitoring, significantly enhancing our risk control and mitigation strategies.
-* Explore our monitoring dashboard for real-time insights: [Chaos Labs Risk Overview](https://community.chaoslabs.xyz/venus/risk/overview).
+* Explore our monitoring dashboard for real-time insights: [Allez Labs Venus risk dashboard](https://allez.xyz/dashboards/venus/risk).
 
 ### Real-Time Alert System
 
 * To further enhance our risk management, we have implemented a real-time alert system via Telegram. This system provides immediate notifications for critical events such as market high utilization, significant whale movements, and borrow/supply cap utilization.
-* Join our alert channel to stay updated: [Chaos Labs Telegram Alerts](https://community.chaoslabs.xyz/venus/risk/alerts).
 
 ### Dynamic Risk Management
 
