@@ -25,5 +25,10 @@
   },
   "devDependencies": {
     "starlight-links-validator": "0.27.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "katex": "^0.18.2"
+    }
   }
 }
