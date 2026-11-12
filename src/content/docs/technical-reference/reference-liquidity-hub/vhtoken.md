@@ -68,7 +68,7 @@ Each market also opts into [Protection Mode](/risk/protection-mode), configured 
 
 **Mainnet status:** the market and capped-oracle contracts are deployed. On BSC testnet, the equivalent `vSHARE` / `vvSHARE` market is already live following [proposal 713](https://venus-testnet.vercel.app/#/governance/proposal/713?chainId=97).
 
-The Migrator runs the other direction: `migrateFromCore` / `migrateFromCoreBNB` convert an existing Venus Core supply position into Hub shares in one transaction. It is stateless, permissionless and non-upgradeable, deployed at `0xfe6b8BEf1215C19Cd247FbF495ef560932F1Eb9B`.
+The Migrator runs the other direction: `migrateFromCore` / `migrateFromCoreBNB` convert an existing Venus Core supply position into Hub shares in one transaction. It is stateless, permissionless and non-upgradeable, deployed at `0xb0D77DC86d4E6a8282eECF3d4d456B3b94F2a7aD`, and only migrates into Hubs registered in the `HubRegistry`.
 
 ### Mint it directly
 
