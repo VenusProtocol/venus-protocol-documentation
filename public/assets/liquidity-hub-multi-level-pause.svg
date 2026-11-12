@@ -52,5 +52,6 @@
   <text class="tago la" x="734" y="257">operating</text>
 
   <text class="note la" x="610" y="284">Broader scope blocks everything beneath it.</text>
-  <text class="note la" x="610" y="302">Pause = Operator or Guardian · unpause = governance.</text>
+  <text class="note la" x="610" y="300">Pause = governance, Operator or Guardian.</text>
+  <text class="note la" x="610" y="316">Unpause = governance or Guardian.</text>
 </svg>

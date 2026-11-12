@@ -14,7 +14,9 @@ figure img { margin-inline: auto; }
 figcaption { text-align: center; font-size: var(--sl-text-sm); color: var(--sl-color-gray-3); }
 /* Starlight spaces adjacent content blocks; that rule must not reach inside MathML. */
 .sl-markdown-content math * { margin-top: 0 !important; }
-.sl-markdown-content math[display='block'] { margin-block: 1rem; overflow-x: auto; }
+/* Wide formulas scroll sideways. Glyphs poke a few px past MathML's box: the padding makes room
+   for them, and overflow-y: hidden stops the sideways scroll box from also growing a vertical bar. */
+.sl-markdown-content math[display='block'] { margin-block: 1rem; padding-block: 0.4em; overflow-x: auto; overflow-y: hidden; }
 /* Nested sidebar groups read like the links beside them; only top-level groups are headings. */
 .sidebar-content ul ul .group-label .large {
   font-size: inherit;

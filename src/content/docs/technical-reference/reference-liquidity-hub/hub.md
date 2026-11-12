@@ -72,11 +72,12 @@ Hub.totalAssets()
   = Σ Source.totalAssets()  +  Hub idle balance
         │
         └─ Source.totalAssets()
-             = Σ adapter.totalAssets(resource, yieldGroup)  +  Source idle balance
+             = Σ adapter.receiptValue(resource, trackedReceipt(resource))  +  Source idle balance
+               (Centrifuge, which does not track: Σ adapter.totalAssets(resource, yieldGroup))
 ```
 
 * `totalAssets()` **fails closed**. It sums every registered Source with no error isolation, so a Source whose `totalAssets()` view reverts makes the whole NAV read revert — and with it every `convertTo*` / `preview*` view and every deposit / mint / withdraw / redeem / `accrueFees` / `reallocate` — until the Source is fixed or evicted. This is deliberate: NAV is the share-price denominator, so silently counting a live Source as 0 would under-pay redeemers and over-credit depositors. Fault isolation covers the other failures: `maxWithdraw` and the withdraw routing skip a Source whose own `maxWithdraw()` reverts, the withdraw routing also skips one whose `withdraw` reverts (emitting `YieldGroupSkipped`), and the deposit routing skips a Source whose `maxDeposit()` view or `deposit` reverts. The deposit-side view lives on `HubLens` rather than the Hub, see [Sizing a deposit](#sizing-a-deposit). Recovery is the emergency path of `removeYieldGroup`, which permits removal precisely when the view reverts.
-* Hub idle is normally zero (deposits route out atomically, withdrawals pull exact amounts, reallocate is balanced). A direct token donation persists and is intentionally counted into NAV — it accrues to LPs and is consumed first on withdraw; the underlying cannot be swept.
+* Hub idle is normally zero (deposits route out atomically, withdrawals pull exact amounts, reallocate is balanced). A direct token donation persists and is intentionally counted into NAV — it accrues to LPs and is consumed first on withdraw; the underlying cannot be swept. Receipt tokens sent to a Source directly are the exception: Core, Flux, FRV and Spoke count only the receipts they minted, so those tokens stay out of NAV unless governance admits them with `syncReceipt` (see [Receipt tracking](/technical-reference/reference-liquidity-hub/yield-groups#receipt-tracking)).
 * View paths use the **stored** exchange rate (`exchangeRateStored`, stale up to one accrual cycle, no state mutation). Mutating paths trigger interest accrual on the resource during mint / redeem, so the rate is current by the time the operation completes.
 
 ## Cap enforcement
@@ -134,11 +135,11 @@ Three fee types. Management and performance fees are minted as **dilution shares
 
 * **Redeem fee** — an exit fee in BPS applied to `withdraw` / `redeem`, charged directly to the withdrawing lender rather than diluting the pool. Capped at `MAX_REDEEM_FEE_BPS` (`500` = 5%).
 
-v1 launches with all three set to `0`; the machinery exists for governance to enable them later.
+All three are set to `0`; governance can enable them.
 
 ## Multi-level pause
 
-Three independent scopes — a broader scope blocks everything beneath it; siblings keep operating. The Operator and Guardian can pause at every scope and unpause individual resources. Only governance can unpause a Hub or YieldGroup; unpausing a resource does not clear either broader pause.
+Three independent scopes — a broader scope blocks everything beneath it; siblings keep operating. The Operator and Guardian can pause at every scope. Governance and the Guardian can unpause at every scope; unpausing a resource does not clear either broader pause.
 
 <figure><img src="/assets/liquidity-hub-multi-level-pause.svg" alt="Multi-level pause: a Hub pause blocks all user operations; a paused Source is skipped in routing while sibling Sources keep operating; a paused resource is skipped in its YieldGroup's inner queue"></figure>
 
@@ -149,7 +150,7 @@ Three independent scopes — a broader scope blocks everything beneath it; sibli
 ### Automatic pause on a NAV break
 
 :::note
-**Deployed; armed by VIP-673.** `HubNavDeviationSentinel` is deployed on BNB Chain at [`0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB`](https://bscscan.com/address/0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB) ([venus-periphery#75](https://github.com/VenusProtocol/venus-periphery/pull/75)) and on BNB Chain testnet at [`0x347fBbC71C07496fbBb2fEc5D2a036605F14089D`](https://testnet.bscscan.com/address/0x347fBbC71C07496fbBb2fEc5D2a036605F14089D), where it points at the testnet `EBrake` `0x957c09e3Ac3d9e689244DC74307c94111FBa8B42` and `HubRegistry` `0x5346f648029d1D1d1034e09e8AD7a115f5D7A159`. [VIP-673](https://app.venus.io/#/governance/proposal/673?chainId=56), queued with an ETA of 2026-10-30, arms the mainnet one: it upgrades `EBrake` to an implementation with the `pauseHub(address)` forwarder, accepts ownership of the sentinel, trusts its keeper, grants it `EBrake.pauseHub` and configures the Centrifuge resources. Until it executes, nothing is watched on mainnet: no resource is configured, no keeper is trusted, no ACM role has been granted on it, it is `Ownable2Step` with the Normal Timelock nominated but not yet accepted, and the pause itself cannot land yet: the live `EBrake` implementation [`0x2D36677EcA318c9536011D53aa752F042dd01DE8`](https://bscscan.com/address/0x2D36677EcA318c9536011D53aa752F042dd01DE8) predates the `pauseHub(address)` forwarder the sentinel calls, which shipped in `venus-periphery` v1.3.0. Every step below therefore describes the contract, not a live guard.
+`HubNavDeviationSentinel` is deployed on BNB Chain at [`0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB`](https://bscscan.com/address/0x26E9497384bC4d123b9e1C530E2bC3A0dF49d2AB) ([venus-periphery#75](https://github.com/VenusProtocol/venus-periphery/pull/75)) and on BNB Chain testnet at [`0x347fBbC71C07496fbBb2fEc5D2a036605F14089D`](https://testnet.bscscan.com/address/0x347fBbC71C07496fbBb2fEc5D2a036605F14089D), where it points at the testnet `EBrake` `0x957c09e3Ac3d9e689244DC74307c94111FBa8B42` and `HubRegistry` `0x5346f648029d1D1d1034e09e8AD7a115f5D7A159`. The mainnet one is owned by the Normal Timelock and watches the JTRSY and JAAA positions on the USDT and USDC Hubs: a pause is due when a position's value is more than 4% above or 8% below its band centre, and only when that gap exceeds 10,000 of the Hub's asset.
 :::
 
 For a resource whose value is published by a counterparty, such as a Centrifuge vault, a trusted keeper (set with `setTrustedKeeper`, and separate from the Centrifuge Keeper role) can pause the **whole Hub** when that value moves too far from the centre of the resource's [NAV band](/technical-reference/reference-liquidity-hub/yield-groups#nav-band). The check lives in `HubNavDeviationSentinel`, a contract of its own rather than part of [`DeviationSentinel`](/technical-reference/reference-periphery/deviation-sentinel), and the pause goes through [`EBrake`](/technical-reference/reference-periphery/ebrake), the same path as the existing price-deviation check.
@@ -168,7 +169,7 @@ The main role holders are governance (a VIP, behind the Normal Timelock), the **
 operations multisig acting as the routine keeper, distinct from the Guardian), and the **Guardian**
 (a multisig that acts with no timelock delay, so it can contain an incident immediately). The
 Guardian can pause, perform emergency reallocation and replace resource adapters. It can also
-unpause resources, but cannot unpause a Hub or YieldGroup. The Centrifuge Sources add a fourth holder, a Keeper limited to the four claim functions. All role holders are addresses granted by
+unpause at every level. The Centrifuge Sources add a fourth holder, a Keeper limited to the four claim functions. All role holders are addresses granted by
 proposal, not roles baked into the bytecode; the granted addresses are listed under
 [Deployment](/technical-reference/reference-liquidity-hub#deployment).
 
@@ -176,10 +177,10 @@ proposal, not roles baked into the bytecode; the granted addresses are listed un
 | ------------------------------------------------------------------------------------ | :--------------: | :------: | :------: |
 | Add / remove YieldGroup, add / remove a resource                                       | ✅               | ❌       | ❌       |
 | Re-adapter a resource (`updateResourceAdapter`)                                        | ✅               | ❌       | ✅       |
-| Set fees and fee recipient, `sweep`, `setBlocksPerYear`                                | ✅               | ❌       | ❌       |
+| Set fees and fee recipient, `sweep`, `syncReceipt`, `setBlocksPerYear`                 | ✅               | ❌       | ❌       |
 | **Raise** the per-transaction withdrawal cap                                           | ✅               | ❌       | ❌       |
-| **Unpause** a Hub or YieldGroup                                                      | ✅               | ❌       | ❌       |
-| **Unpause** a resource                                                               | ✅               | ✅       | ✅       |
+| **Unpause** a Hub or YieldGroup                                                      | ✅               | ❌       | ✅       |
+| **Unpause** a resource                                                               | ✅               | ❌       | ✅       |
 | **Raise or lower** YieldGroup caps and per-resource caps                               | ✅               | ✅       | ❌       |
 | **Lower** the per-transaction withdrawal cap, reorder outer / inner queues             | ✅               | ✅       | ❌       |
 | **Pause** — Hub, YieldGroup, or resource                                               | ✅               | ✅       | ✅       |
@@ -191,10 +192,10 @@ proposal, not roles baked into the bytecode; the granted addresses are listed un
 
 Two rows are worth reading carefully, because both depart from a naive loosening-vs-tightening split:
 
-* **`raiseYieldGroupCap` and `raiseResourceCap` are Operator-accessible.** They let the Operator open headroom immediately before a `reallocate` without waiting for a governance round. The Operator can also unpause individual resources. Raising the *per-transaction withdrawal cap* and unpausing a Hub or YieldGroup remain governance-only.
+* **`raiseYieldGroupCap` and `raiseResourceCap` are Operator-accessible.** They let the Operator open headroom immediately before a `reallocate` without waiting for a governance round. Raising the *per-transaction withdrawal cap* remains governance-only, and the Operator cannot unpause anything.
 * **Governance does not hold `reallocate`.** It is Operator-only. Governance's equivalent lever is `emergencyReallocate`, which has the same net-zero semantics and additionally works while the Hub is paused.
 
-The Guardian holds pause at all three levels, `emergencyReallocate`, `forceRemoveResource`, `unpauseResource` and `updateResourceAdapter`. [VIP-661](https://app.venus.io/#/governance/proposal/661?chainId=56) granted resource unpause and adapter replacement to both the Operator and Guardian on the existing Sources; [VIP-666](https://app.venus.io/#/governance/proposal/666?chainId=56) revoked adapter replacement from the Operator. [VIP-669](https://app.venus.io/#/governance/proposal/669?chainId=56) granted the same resource-unpause and adapter-replacement split on the new Spoke Sources. Resource unpause does not clear a Hub-level or YieldGroup-level pause.
+The Guardian holds pause and unpause at all three levels, `emergencyReallocate`, `forceRemoveResource` and `updateResourceAdapter`. Governance also holds adapter replacement; the Operator does not. Resource unpause does not clear a Hub-level or YieldGroup-level pause.
 
 Nothing in the contracts hard-codes these role holders. The split is entirely a matter of which addresses
 governance grants each role to — the asymmetry is a deployment decision, not a code branch.
@@ -311,12 +312,12 @@ Not all the standard ERC-4626 views behave identically to the OpenZeppelin base:
 ### Reallocate (Operator)
 
 * **`reallocate(ReallocateLeg[] withdraws, ReallocateLeg[] deposits)`** — atomic net-zero rebalance; `ReallocateImbalanced` if sums differ. Emits `WithdrawRouted` / `DepositRouted`.
-* **`emergencyReallocate(ReallocateLeg[] withdraws, ReallocateLeg[] deposits)`** — same semantics, callable while paused, governance-only role.
+* **`emergencyReallocate(ReallocateLeg[] withdraws, ReallocateLeg[] deposits)`** — same semantics, callable while paused, held by governance and the Guardian.
 
 ### Pause (asymmetric)
 
-* **`pauseHub()`** / **`unpauseHub()`** — pause is Operator-accessible (also Guardian); unpause is governance-only. Emits `HubPauseToggled`.
-* **`pauseYieldGroup(address source)`** / **`unpauseYieldGroup(address source)`** — pause is Operator-accessible; unpause is governance-only. Emits `YieldGroupPauseToggled`.
+* **`pauseHub()`** / **`unpauseHub()`** — pause is Operator-accessible (also Guardian); unpause is held by governance and the Guardian. Emits `HubPauseToggled`.
+* **`pauseYieldGroup(address source)`** / **`unpauseYieldGroup(address source)`** — pause is Operator-accessible (also Guardian); unpause is held by governance and the Guardian. Emits `YieldGroupPauseToggled`.
 
 ### Per-transaction withdrawal cap
 
