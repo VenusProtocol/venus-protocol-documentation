@@ -106,7 +106,7 @@ Stateless, non-upgradeable singletons shared by every Hub; mutating calls reach 
 
 * Migrator: [`0xb0D77DC86d4E6a8282eECF3d4d456B3b94F2a7aD`](https://bscscan.com/address/0xb0D77DC86d4E6a8282eECF3d4d456B3b94F2a7aD)
 
-Stateless, permissionless and non-upgradeable; one-click migration of a Venus Core position into a Hub via `migrateFromCore` / `migrateFromCoreBNB` (plus the `*WithConsent` variants). The target Hub must be registered in the HubRegistry, or the call reverts with `HubNotRegistered`. It replaces the earlier Migrator [`0xfe6b8BEf1215C19Cd247FbF495ef560932F1Eb9B`](https://bscscan.com/address/0xfe6b8BEf1215C19Cd247FbF495ef560932F1Eb9B), which did not check the registry.
+Stateless, permissionless and non-upgradeable; one-click migration of a Venus Core position into a Hub via `migrateFromCore` / `migrateFromCoreBNB` (plus the `*WithConsent` variants). The target Hub must be registered in the HubRegistry, or the call reverts with `HubNotRegistered`.
 
 * HubLens: [`0xE5d8A002A794CcDba248ba774a359eF2B9E4Ba8B`](https://bscscan.com/address/0xE5d8A002A794CcDba248ba774a359eF2B9E4Ba8B)
 
