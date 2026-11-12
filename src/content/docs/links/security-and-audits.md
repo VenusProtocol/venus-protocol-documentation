@@ -55,7 +55,7 @@ Sherlock found no High and one Medium issue.
 **Scope**: [`CollateralGateway`](/technical-reference/reference-technical-articles/collateral-gateway), which turns an underlying balance into collateral in one call on the Core pool, through a Liquidity Hub, and on hub-funded spoke pools, and the Core pool changes it needs.
 
 * [HashDit audit report (2026/09/29)](https://github.com/VenusProtocol/venus-periphery/blob/2bd06b458dacd11434d333232a200662f5f4f0b9/audits/HashDit_CollateralGateway_Hub_Precision_20260929.pdf)
-* [Cantina audit report (2026/10/27)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/ded3d7c4d4fece45900606fe94440b124994a3d8/audits/Cantina_Venus_PRs_20261027.pdf), which also covers the [Liquidity Hub capacity lens](#liquidity-hub-capacity-lens)
+* [Cantina audit report (2026/10/27)](/audits/Cantina_Venus_PRs_20261027.pdf), which also covers the [Liquidity Hub capacity lens](#liquidity-hub-capacity-lens)
 
 <details>
 <summary>Detailed scope</summary>
@@ -88,7 +88,7 @@ The one Medium finding, that a borrower with VAI debt above the threshold could 
 
 **Scope**: [receipt tracking](/technical-reference/reference-liquidity-hub/yield-groups#receipt-tracking), which makes the Core, Flux, FRV and Spoke yield groups value only the receipt tokens they minted themselves, and the Core adapter's withdrawable cash net of reserves. Enabled by [VIP-681](https://app.venus.io/#/governance/proposal/681?chainId=56).
 
-* [HashDit audit report (2026/11/06)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/de02ec60e35ed652924159877c1afe5d6ecf348c/audits/213_ReceiptTracking_Hashdit_20261106.pdf)
+* [HashDit audit report (2026/11/06)](/audits/213_ReceiptTracking_Hashdit_20261106.pdf)
 
 <details>
 <summary>Detailed scope</summary>
@@ -128,7 +128,7 @@ The one Medium finding concerned the pause materiality gate being a share of a l
 **Scope**: `HubLens` and the capacity math behind it, plus the removal of the Hub's own `maxDeposit` / `maxMint` overrides, merged into `develop` with pull request #20. See [Sizing a deposit](/technical-reference/reference-liquidity-hub/hub#sizing-a-deposit).
 
 * [HashDit audit report (2026/09/24)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/01fac4af437da36efcb7d80fb261e2e9437f5d57/audits/HashDit_LiquidityHub_Capacity_Lens_20260924.pdf)
-* [Cantina audit report (2026/10/27)](https://github.com/VenusProtocol/venus-liquidity-hub/blob/ded3d7c4d4fece45900606fe94440b124994a3d8/audits/Cantina_Venus_PRs_20261027.pdf), which also covers the [CollateralGateway](#collateralgateway) pull requests
+* [Cantina audit report (2026/10/27)](/audits/Cantina_Venus_PRs_20261027.pdf), which also covers the [CollateralGateway](#collateralgateway) pull requests
 
 <details>
 <summary>Detailed scope</summary>
