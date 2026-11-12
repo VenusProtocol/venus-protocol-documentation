@@ -59,7 +59,7 @@ Each YieldGroup keeps the count per resource, readable with `trackedReceipt(reso
 
 Receipt tokens sent in directly stay on the YieldGroup uncounted. Governance can admit them with `syncReceipt(resource, maxAdded)`, which sets the count to the wallet balance but adds at most `maxAdded`, and emits `ReceiptSynced`. The cap is the amount governance reviewed: a VIP executes days after it is proposed, and anything sent in meanwhile stays out above it. Syncing a vToken of a market carrying bad debt hands that loss to the Hub's lenders, so the Guardian does not hold `syncReceipt`. `type(uint256).max` syncs the whole wallet. Receipt tokens nobody syncs can be [swept](#other-governance-functions) once their resource is removed.
 
-`YieldGroupCentrifuge` does not track. Centrifuge mints the shares when it settles a request, after the deposit call has returned, so a balance change measured around the call would miss them. It still values everything it holds, bounded by the [NAV band](#nav-band), and its `syncReceipt` reverts `ReceiptTrackingOff`.
+`YieldGroupCentrifuge` does not track. Centrifuge mints the shares when it settles a request, after the deposit call has returned, so a balance change measured around the call would miss them. It still values everything it holds, bounded by the [NAV band](#nav-band). The deployed Centrifuge YieldGroups have no `syncReceipt` selector, and VIP-681 does not upgrade them. The implementation on `develop` adds the selector but reverts `ReceiptTrackingOff`.
 
 ## Initialization
 
@@ -230,27 +230,29 @@ The table below covers the YieldGroup events. Centrifuge does not emit `Resource
 | `SweepProtectedAsset`          | `sweep` called with the YieldGroup's own underlying                   |
 | `SweepProtectedResource`       | `sweep` called with a token address that is itself a registered resource             |
 | `WithdrawQueueOmitsFundedResource` | An inner withdraw-queue replacement drops a funded resource       |
-| `ReceiptTrackingOff`           | `syncReceipt` called on Centrifuge, which does not track receipts     |
+| `ReceiptTrackingOff`           | `syncReceipt` called on the Centrifuge implementation on `develop`; the deployed version has no such selector |
 | `OnlySelf`                     | An internal dispatch entry point was called externally                |
 
 ## ACM role strings
 
 Per YieldGroup, the role is `keccak256(yieldGroupAddress, roleString)`.
 
-Shared by every family (9):
+Shared by every deployed family (8):
 
-`addResource(address,address)`, `removeResource(address)`, `updateResourceAdapter(address,address)`, `setInnerDepositQueue(address[])`, `setInnerWithdrawQueue(address[])`, `pauseResource(address)`, `unpauseResource(address)`, `sweep(address,address)`, `syncReceipt(address,uint256)`.
+`addResource(address,address)`, `removeResource(address)`, `updateResourceAdapter(address,address)`, `setInnerDepositQueue(address[])`, `setInnerWithdrawQueue(address[])`, `pauseResource(address)`, `unpauseResource(address)`, `sweep(address,address)`.
 
-Core, Flux and Spoke add three, for **12** in total:
+Core, Flux, FRV and Spoke also expose `syncReceipt(address,uint256)` after the receipt-tracking upgrade. The deployed Centrifuge YieldGroups do not.
+
+Core, Flux and Spoke add three more, for **12** in total:
 
 `raiseResourceCap(address,uint256)`, `lowerResourceCap(address,uint256)`, `setBlocksPerYear(uint256)`.
 
-FRV adds one instead, for **10** in total:
+FRV adds one to its nine instead, for **10** in total:
 
 `forceRemoveResource(address)`.
 
-Centrifuge adds twelve, for **21** in total:
+Centrifuge adds twelve to the shared eight, for **20** in total in the deployed version:
 
 `requestRedeem(address,uint256)`, `cancelDepositRequest(address)`, `cancelRedeemRequest(address)`, `claimDeposit(address)`, `claimRedeem(address)`, `claimCancelDeposit(address)`, `claimCancelRedeem(address)`, `forceRemoveResource(address)`, `setSpotAPYBps(address,uint64)`, `setNavGuardRate(address,uint16,uint16,uint16,uint32,bool,bool)`, `setNavGuardSnapshot(address,uint128,uint64)`, `setNavGuardEnabled(address,bool,bool)`.
 
-On the live Sources the Normal Timelock holds all twenty-one, the Operator holds the queues, the async lifecycle, the four claims, `pauseResource` (but not `unpauseResource`), the band and `setSpotAPYBps`, a Keeper holds only the four claims, and the Guardian holds the pause pair, `forceRemoveResource`, the band and `setSpotAPYBps`. Only the Normal Timelock holds `updateResourceAdapter(address,address)` and `syncReceipt(address,uint256)`.
+On the live Centrifuge Sources the Normal Timelock holds all twenty callable permissions, the Operator holds the queues, the async lifecycle, the four claims, `pauseResource` (but not `unpauseResource`), the band and `setSpotAPYBps`, a Keeper holds only the four claims, and the Guardian holds the pause pair, `forceRemoveResource`, `updateResourceAdapter`, the band and `setSpotAPYBps`. Across the families, adapter replacement is held by both the Normal Timelock and the Guardian. Only the Normal Timelock holds `syncReceipt(address,uint256)`, granted as a wildcard role by VIP-681; that grant does not add the selector to the deployed Centrifuge contracts.

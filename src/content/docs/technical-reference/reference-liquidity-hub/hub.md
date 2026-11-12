@@ -168,7 +168,7 @@ Every ACM-gated call is authorised through `AccessControlManagerV8` — the role
 The main role holders are governance (a VIP, behind the Normal Timelock), the **Operator** (a Venus
 operations multisig acting as the routine keeper, distinct from the Guardian), and the **Guardian**
 (a multisig that acts with no timelock delay, so it can contain an incident immediately). The
-Guardian can pause and perform emergency reallocation. It can also
+Guardian can pause, perform emergency reallocation and replace resource adapters. It can also
 unpause at every level. The Centrifuge Sources add a fourth holder, a Keeper limited to the four claim functions. All role holders are addresses granted by
 proposal, not roles baked into the bytecode; the granted addresses are listed under
 [Deployment](/technical-reference/reference-liquidity-hub#deployment).
@@ -176,7 +176,7 @@ proposal, not roles baked into the bytecode; the granted addresses are listed un
 | Action class                                                                        | Governance (VIP) | Operator | Guardian |
 | ------------------------------------------------------------------------------------ | :--------------: | :------: | :------: |
 | Add / remove YieldGroup, add / remove a resource                                       | ✅               | ❌       | ❌       |
-| Re-adapter a resource (`updateResourceAdapter`)                                        | ✅               | ❌       | ❌       |
+| Re-adapter a resource (`updateResourceAdapter`)                                        | ✅               | ❌       | ✅       |
 | Set fees and fee recipient, `sweep`, `syncReceipt`, `setBlocksPerYear`                 | ✅               | ❌       | ❌       |
 | **Raise** the per-transaction withdrawal cap                                           | ✅               | ❌       | ❌       |
 | **Unpause** a Hub or YieldGroup                                                      | ✅               | ❌       | ✅       |
@@ -195,7 +195,7 @@ Two rows are worth reading carefully, because both depart from a naive loosening
 * **`raiseYieldGroupCap` and `raiseResourceCap` are Operator-accessible.** They let the Operator open headroom immediately before a `reallocate` without waiting for a governance round. Raising the *per-transaction withdrawal cap* remains governance-only, and the Operator cannot unpause anything.
 * **Governance does not hold `reallocate`.** It is Operator-only. Governance's equivalent lever is `emergencyReallocate`, which has the same net-zero semantics and additionally works while the Hub is paused.
 
-The Guardian holds pause and unpause at all three levels, `emergencyReallocate` and `forceRemoveResource`. Only governance can repoint a resource with `updateResourceAdapter`. Resource unpause does not clear a Hub-level or YieldGroup-level pause.
+The Guardian holds pause and unpause at all three levels, `emergencyReallocate`, `forceRemoveResource` and `updateResourceAdapter`. Governance also holds adapter replacement; the Operator does not. Resource unpause does not clear a Hub-level or YieldGroup-level pause.
 
 Nothing in the contracts hard-codes these role holders. The split is entirely a matter of which addresses
 governance grants each role to — the asymmetry is a deployment decision, not a code branch.

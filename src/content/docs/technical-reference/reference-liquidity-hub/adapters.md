@@ -40,7 +40,7 @@ The adapters follow these implementation constraints. Audit coverage depends on 
 * **`withdraw(address resource, uint256 amount, address to)`** — redeem exactly `amount` of underlying from `resource` and deliver it to `to`.
 * **`asset(address resource)` → `address`** — the underlying ERC-20 accepted by `resource`.
 * **`totalAssets(address resource, address holder)` → `uint256`** — underlying value `holder` holds via `resource`. The basis is per-adapter: `AdapterCoreV1` uses the stale (non-accruing) `exchangeRateStored` net of any Comptroller `treasuryPercent`; `AdapterFlux` uses the fToken's live `previewRedeem`; `AdapterFRV` uses a time-based linear coupon accrual; `AdapterSpokeV1` uses the market's own `exchangeRateStored`, which keeps `badDebt` in its numerator; `AdapterCentrifuge` adds the held shares and every pending or claimable request, assets at face and shares at the vault's share price. It prices everything `holder` holds, so only the Centrifuge family feeds it into NAV.
-* **`receiptValue(address resource, uint256 shares)` → `uint256`** — underlying value of `shares` receipt tokens of `resource`, on the same basis as `totalAssets`. Core, Flux, FRV and Spoke YieldGroups call it with their [tracked count](/technical-reference/reference-liquidity-hub/yield-groups#receipt-tracking), so receipt tokens sent to them directly do not move NAV. `AdapterCentrifuge` reverts `ShareCountNotPriceable`, because its YieldGroup does not track.
+* **`receiptValue(address resource, uint256 shares)` → `uint256`** — underlying value of `shares` receipt tokens of `resource`, on the same basis as `totalAssets`. Core, Flux, FRV and Spoke YieldGroups call it with their [tracked count](/technical-reference/reference-liquidity-hub/yield-groups#receipt-tracking), so receipt tokens sent to them directly do not move NAV. The deployed `AdapterCentrifuge` has no `receiptValue` selector. The implementation on `develop` adds it but reverts `ShareCountNotPriceable`; VIP-681 does not replace the Centrifuge adapter.
 * **`maxDeposit(address resource)` → `uint256`** — spare deposit headroom on `resource` right now.
 * **`maxWithdraw(address resource, address holder)` → `uint256`** — underlying `holder` can withdraw right now, net of any redeem-time protocol fee.
 * **`spotAPYBps(address resource, uint256 blocksPerYear)` → `uint64`** — spot supply-side APY in BPS.
@@ -146,7 +146,7 @@ Wraps Centrifuge ERC-7540 fund vaults, such as JTRSY and JAAA. Under delegatecal
 * **`maxDeposit`**: not used for Centrifuge. The group sizes deposits itself, because it has to see whether its own deposit cancel is pending.
 * **`validateRegistration`**: checks the vault exposes the share token, request manager, investment state and price reads the adapter needs, reverting `NoShareToken` or `NoManager`.
 
-**Errors:** `NotDelegateCall`, `ZeroSharePrice`, `NoShareToken`, `NoManager`, `ShareCountNotPriceable`.
+**Errors in the deployed adapter:** `NotDelegateCall`, `ZeroSharePrice`, `NoShareToken`, `NoManager`. The implementation on `develop` additionally defines `ShareCountNotPriceable` for `receiptValue`.
 
 ## Adding a new protocol family
 
