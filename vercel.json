@@ -3,6 +3,11 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/deployed-contracts/xvs-multichain",
+      "destination": "/deployed-contracts/xvs-omnichain",
+      "permanent": true
+    },
+    {
       "source": "/getting-started/contracts-overview",
       "destination": "/technical-reference/contracts-overview",
       "permanent": true
@@ -208,6 +213,11 @@
       "permanent": true
     },
     {
+      "source": "/technical-reference/reference-oracle/boundvalidator",
+      "destination": "/technical-reference/reference-oracle/bound-validator",
+      "permanent": true
+    },
+    {
       "source": "/technical-reference/reference-oracle/oracles/wstethoracle",
       "destination": "/technical-reference/reference-oracle/correlated-token-oracles/wst-eth-oracle",
       "permanent": true
@@ -218,8 +228,28 @@
       "permanent": true
     },
     {
+      "source": "/technical-reference/reference-technical-articles/multichain-governance",
+      "destination": "/technical-reference/reference-technical-articles/omnichain-governance",
+      "permanent": true
+    },
+    {
+      "source": "/technical-reference/reference-technical-articles/technical-doc-xvs-bridge",
+      "destination": "/technical-reference/reference-technical-articles/xvs-bridge",
+      "permanent": true
+    },
+    {
+      "source": "/whats-new/emode",
+      "destination": "/whats-new/e-mode",
+      "permanent": true
+    },
+    {
       "source": "/whats-new/governance",
       "destination": "/governance/decentralization",
+      "permanent": true
+    },
+    {
+      "source": "/whats-new/isolated-pools",
+      "destination": "/guides/isolated-pools-deprecation",
       "permanent": true
     },
     {

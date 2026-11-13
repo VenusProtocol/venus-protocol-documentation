@@ -68,7 +68,9 @@ The hook can catch up the time- and debt-dependent `Fundraising → Lock/Failed 
 
 Before suppliers can interact, the institution must post a security deposit — the required margin — in a single `depositCollateral` call. It acts as a credible commitment: the institution either tops up collateral to `idealCollateralAmount` before fundraising closes or forfeits the margin to suppliers. The vault stays in `WaitingForMargin` until this condition is met:
 
-$$\text{requiredMargin} = \left\lfloor\text{idealCollateralAmount} \times \frac{\text{marginRate}}{10^{18}}\right\rfloor$$
+$$
+\text{requiredMargin} = \left\lfloor\text{idealCollateralAmount} \times \frac{\text{marginRate}}{10^{18}}\right\rfloor
+$$
 
 Once `totalCollateralDeposited ≥ requiredMargin` the vault advances to `MarginDeposited`, where it waits for governance to inspect the configuration and call `openVault()` to open the fundraising window.
 
@@ -84,7 +86,9 @@ If either condition is not met, the vault transitions to `Failed`. Two distinct 
 
 **Collateral underdelivery** (`totalRaised ≥ minBorrowCap` but `totalCollateralDeposited < idealCollateralAmount` at window close). `institutionDefaulted = true`. Only the pre-determined margin is confiscated, not the institution's full collateral position. `confiscatedMargin` is set to exactly `requiredMargin`:
 
-$$\text{requiredMargin} = \left\lfloor\text{idealCollateralAmount} \times \frac{\text{marginRate}}{10^{18}}\right\rfloor$$
+$$
+\text{requiredMargin} = \left\lfloor\text{idealCollateralAmount} \times \frac{\text{marginRate}}{10^{18}}\right\rfloor
+$$
 
 Suppliers recover principal plus a pro-rata share of `confiscatedMargin` (see [Margin confiscation](#margin-confiscation-collateral-underdelivery) for the per-redemption distribution). The institution recovers `totalCollateralDeposited - confiscatedMargin`.
 
@@ -92,7 +96,9 @@ Suppliers recover principal plus a pro-rata share of `confiscatedMargin` (see [M
 
 When the vault fails via collateral underdelivery, `confiscatedMargin = requiredMargin`. Each `withdraw` / `redeem` triggers `_afterWithdrawHook`, which distributes a pro-rata slice of the remaining confiscated margin:
 
-$$\text{compensation} = \text{confiscatedMarginRemaining} \times \frac{\text{shares}}{\text{totalSupplyBeforeBurn}}$$
+$$
+\text{compensation} = \text{confiscatedMarginRemaining} \times \frac{\text{shares}}{\text{totalSupplyBeforeBurn}}
+$$
 
 Compensation is denominated in the **collateral asset** (e.g. BTC or ETH), not the supply stablecoin. Each calculation uses integer division and rounds down to collateral-token units. `confiscatedMarginRemaining` and the share supply both decrease after each redemption, so the formula allocates the remaining pool pro rata, but smallest-unit rounding can leave residual collateral for later redeemers; exact per-share equality across redemption order is not guaranteed.
 
@@ -102,13 +108,17 @@ When the vault transitions to `Lock`, two values are fixed for the lifetime of t
 
 **Total interest** is stored immediately as `totalDebt` and is owed in full regardless of when the institution repays — there is no early-repayment discount:
 
-$$\text{totalInterest} = \frac{\text{totalRaised} \times \text{fixedAPY} \times \text{lockDuration}}{\text{BPS} \times \text{YEAR}}$$
+$$
+\text{totalInterest} = \frac{\text{totalRaised} \times \text{fixedAPY} \times \text{lockDuration}}{\text{BPS} \times \text{YEAR}}
+$$
 
 `BPS = 10000`, `YEAR = 365 days`. Solidity integer division rounds `totalInterest` down to supply-asset units. `totalDebt = totalInterest` at lock entry; after `claimRaisedFunds` it becomes `totalInterest + totalRaised`.
 
 **Minimum collateral floor** is recalculated proportionally to the actual raise. When the raise underfills `maxBorrowCap`, the floor scales down, freeing excess collateral above it for withdrawal during `Lock`:
 
-$$\text{minimumCollateralRequired} = \left\lfloor\text{idealCollateralAmount} \times \frac{\text{totalRaised}}{\text{maxBorrowCap}}\right\rfloor$$
+$$
+\text{minimumCollateralRequired} = \left\lfloor\text{idealCollateralAmount} \times \frac{\text{totalRaised}}{\text{maxBorrowCap}}\right\rfloor
+$$
 
 #### Claiming raised funds
 
@@ -149,7 +159,9 @@ Surplus above `totalRaised + totalInterest` is forwarded to PSR. Protocol-fee mu
 
 `totalAssets()` returns `totalRaised` throughout `Lock` and `PendingSettlement`, then uses `settlementAmount` while the stored state is `Matured`, `Failed`, or `Liquidated` — the conversion anchor for ERC-4626 redemption in those states. Each supplier's payout on redemption is:
 
-$$\text{payout} = \left\lfloor\text{shares} \times \frac{\text{settlementAmount}}{\text{totalSupply}}\right\rfloor$$
+$$
+\text{payout} = \left\lfloor\text{shares} \times \frac{\text{settlementAmount}}{\text{totalSupply}}\right\rfloor
+$$
 
 This is the `previewRedeem` rounding direction. Both `settlementAmount` and `totalSupply` decrease after each completed withdrawal, so integrations should use the live preview immediately before submission rather than a stale aggregate ratio.
 
@@ -159,9 +171,13 @@ This is the `previewRedeem` rounding direction. Both `settlementAmount` and `tot
 
 The vault's health is computed by `_getHypotheticalVaultLiquidity`, which follows the same accounting approach as Compound V2 (the protocol Venus is built on) — collateral is weighted by a liquidation threshold and compared against outstanding debt, both expressed in USD:
 
-$$\text{LT-cap} = \left\lfloor\frac{\text{collateralUSD} \times \text{liquidationThreshold}}{10^{18}}\right\rfloor$$
+$$
+\text{LT-cap} = \left\lfloor\frac{\text{collateralUSD} \times \text{liquidationThreshold}}{10^{18}}\right\rfloor
+$$
 
-$$\begin{cases} \text{liquidity} = \text{LT-cap} - \text{debtUSD} & \text{if } \text{debtUSD} \leq \text{LT-cap} \\ \text{shortfall} = \text{debtUSD} - \text{LT-cap} & \text{otherwise} \end{cases}$$
+$$
+\begin{cases} \text{liquidity} = \text{LT-cap} - \text{debtUSD} & \text{if } \text{debtUSD} \leq \text{LT-cap} \\ \text{shortfall} = \text{debtUSD} - \text{LT-cap} & \text{otherwise} \end{cases}
+$$
 
 `liquidationThreshold` is a mantissa (e.g. `0.85e18` = 85%). Asset-to-USD conversion and the LT multiplication each use integer division and round down. A shortfall greater than zero means the vault is liquidatable. The same function is used with non-zero `withdrawAmount` or `additionalDebt` arguments to simulate hypothetical state changes — called by `claimRaisedFunds` and `withdrawCollateral` before executing the action, so those calls revert if the calculated post-operation state has a shortfall.
 
@@ -169,9 +185,13 @@ $$\begin{cases} \text{liquidity} = \text{LT-cap} - \text{debtUSD} & \text{if } \
 
 The collateral seize calculation follows the same accounting principle as Compound V2: the repaid value is converted to USD, multiplied by the incentive multiplier, then divided by the collateral price to arrive at collateral units. The implementation performs two integer divisions, so the exact sequence is:
 
-$$\text{repayValueUSD} = \left\lfloor\frac{\text{repayAmount} \times \text{supplyPrice}}{10^{18}}\right\rfloor$$
+$$
+\text{repayValueUSD} = \left\lfloor\frac{\text{repayAmount} \times \text{supplyPrice}}{10^{18}}\right\rfloor
+$$
 
-$$\text{seizeAmount} = \left\lfloor\frac{\text{repayValueUSD} \times \text{incentive}}{\text{collateralPrice}}\right\rfloor$$
+$$
+\text{seizeAmount} = \left\lfloor\frac{\text{repayValueUSD} \times \text{incentive}}{\text{collateralPrice}}\right\rfloor
+$$
 
 `incentive` is `liquidationIncentive` for health-based liquidations and `latePenaltyRate` for overdue liquidations. Both are mantissa-encoded multipliers greater than `1e18` — an incentive of `1.1e18` targets 10% more collateral value than the repaid debt before token-unit rounding. `supplyPrice` and `collateralPrice` use their respective `36 − asset.decimals()` oracle scales; the differing scales are what convert supply-asset base units into collateral-asset base units.
 
