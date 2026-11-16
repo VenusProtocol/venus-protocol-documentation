@@ -100,7 +100,7 @@ The one Medium finding, that a borrower with VAI debt above the threshold could 
   - contracts/adapters/AdapterCoreV1.sol
   - contracts/adapters/AdapterSpokeV1.sol
 
-The report has two Low and two Informational findings. Two were fixed: donated dust could block the removal of a Spoke resource, and `syncReceipt` could admit receipt tokens sent in after the VIP was proposed, which the `maxAdded` cap now bounds. The other two were acknowledged: the Core adapter's `maxWithdraw` ignores reserves accrued since the last `accrueInterest`, and the upgrade must run in a single VIP or NAV reads low until every count is synced.
+The report has two Low and two Informational findings. Two were fixed: donated dust could block the removal of a Spoke resource, and `syncReceipt` could admit receipt tokens sent in after the VIP was proposed, which the `maxAdded` cap now bounds. The other two were acknowledged: the Core adapter's `maxWithdraw` deducts all stored reserves even when no reserve sweep is due (understating the cash the vToken can pay), yet omits newly accrued reserves (so a cash-bound MAX withdrawal can still revert), and the upgrade must run in a single VIP or NAV reads low until every count is synced.
 
 </details>
 
@@ -125,7 +125,7 @@ The one Medium finding concerned the pause materiality gate being a share of a l
 
 ### Liquidity Hub: capacity lens
 
-**Scope**: `HubLens` and the capacity math behind it, plus the removal of the Hub's own `maxDeposit` / `maxMint` overrides, merged into `develop` with pull request #20. See [Sizing a deposit](/technical-reference/reference-liquidity-hub/hub#sizing-a-deposit).
+**Scope**: `HubLens` and the capacity math behind it, plus the removal of the Hub's own `maxDeposit` / `maxMint` overrides, included in the `v2.1.0` release after pull request #20. See [Sizing a deposit](/technical-reference/reference-liquidity-hub/hub#sizing-a-deposit).
 
 * [HashDit audit report (2026/09/24)](/audits/HashDit_LiquidityHub_Capacity_Lens_20260924.pdf)
 * [Cantina audit report (2026/10/27)](/audits/Cantina_Venus_PRs_20261027.pdf), which also covers the [CollateralGateway](#collateralgateway) pull requests

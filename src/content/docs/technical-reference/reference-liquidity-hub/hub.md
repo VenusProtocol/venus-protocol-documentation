@@ -73,7 +73,8 @@ Hub.totalAssets()
         │
         └─ Source.totalAssets()
              = Σ adapter.receiptValue(resource, trackedReceipt(resource))  +  Source idle balance
-               (Centrifuge, which does not track: Σ adapter.totalAssets(resource, yieldGroup))
+               (Centrifuge instead sums _guardedNav(resource, adapter.totalAssets(resource, yieldGroup))
+                and adds the Source idle balance; it does not track receipts.)
 ```
 
 * `totalAssets()` **fails closed**. It sums every registered Source with no error isolation, so a Source whose `totalAssets()` view reverts makes the whole NAV read revert — and with it every `convertTo*` / `preview*` view and every deposit / mint / withdraw / redeem / `accrueFees` / `reallocate` — until the Source is fixed or evicted. This is deliberate: NAV is the share-price denominator, so silently counting a live Source as 0 would under-pay redeemers and over-credit depositors. Fault isolation covers the other failures: `maxWithdraw` and the withdraw routing skip a Source whose own `maxWithdraw()` reverts, the withdraw routing also skips one whose `withdraw` reverts (emitting `YieldGroupSkipped`), and the deposit routing skips a Source whose `maxDeposit()` view or `deposit` reverts. The deposit-side view lives on `HubLens` rather than the Hub, see [Sizing a deposit](#sizing-a-deposit). Recovery is the emergency path of `removeYieldGroup`, which permits removal precisely when the view reverts.

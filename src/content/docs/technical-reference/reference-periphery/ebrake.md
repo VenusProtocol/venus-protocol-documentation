@@ -779,6 +779,7 @@ EBrake is deployed behind a `TransparentUpgradeableProxy`. The implementation co
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | EBrake (Proxy)      | [`0x35eBaBB99c7Fb7ba0C90bCc26e5d55Cdf89C23Ec`](https://bscscan.com/address/0x35eBaBB99c7Fb7ba0C90bCc26e5d55Cdf89C23Ec)       |
 | EBrake (Implementation) | [`0x918794Bb15BAc47C8Bbba553e7EE8BB1bD4A0959`](https://bscscan.com/address/0x918794Bb15BAc47C8Bbba553e7EE8BB1bD4A0959)   |
+| BStockPauseSentinel (Proxy) | [`0x0beAb536E620D094E1DddFe7f01D310F38390082`](https://bscscan.com/address/0x0beAb536E620D094E1DddFe7f01D310F38390082) |
 
 #### BNB Chain Testnet
 

@@ -4,7 +4,7 @@ title: "Periphery"
 
 Venus Protocol periphery contracts extend the lending markets with product workflows, swap execution, price-deviation monitoring, and emergency controls. They are separate contracts with their own upgrade, ownership, signer, or Access Control Manager (ACM) trust boundaries.
 
-> **Version scope:** These references follow the stable [`venus-periphery` v1.2.0 release](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0), except [EBrake](/technical-reference/reference-periphery/ebrake), which follows v1.3.0. Most deployed components are upgradeable proxies, while `SwapHelper` and PositionAccount implementations use different deployment patterns. Use the [deployed-contract registry](/deployed-contracts/periphery) to find an address, then verify its current implementation and configuration on the relevant explorer before integrating or granting approvals.
+> **Version scope:** These references follow the stable [`venus-periphery` v1.2.0 release](https://github.com/VenusProtocol/venus-periphery/tree/v1.2.0), except [EBrake](/technical-reference/reference-periphery/ebrake), which follows [v1.4.0](https://github.com/VenusProtocol/venus-periphery/tree/v1.4.0). Most deployed components are upgradeable proxies, while `SwapHelper` and PositionAccount implementations use different deployment patterns. Use the [deployed-contract registry](/deployed-contracts/periphery) to find an address, then verify its current implementation and configuration on the relevant explorer before integrating or granting approvals.
 
 ## Overview
 

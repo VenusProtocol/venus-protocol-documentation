@@ -7,7 +7,7 @@ The **Venus Liquidity Hub** is a per-asset ERC-4626 allocator vault. A lender de
 For the user-facing introduction, see [Liquidity Hub](/whats-new/liquidity-hub) under *What's New*.
 
 :::note
-**Which source this documents.** The source for these contracts, including the Centrifuge and Spoke families, `HubLens` and [receipt tracking](/technical-reference/reference-liquidity-hub/yield-groups#receipt-tracking), is on `develop` of [venus-liquidity-hub](https://github.com/VenusProtocol/venus-liquidity-hub). `main` does not have the Centrifuge or Spoke families or `HubLens` yet. Deployment versions differ: VIP-681 upgrades Core, Flux, FRV and Spoke, but does not upgrade the Centrifuge YieldGroups or replace their adapter. The deployed Centrifuge contracts have neither `syncReceipt` nor `receiptValue`; the implementations on `develop` add those selectors with explicit reverts. The audit reports below are pinned to commits. Match the deployed bytecode or the verified source before decoding anything.
+**Which source this documents.** The source for these contracts, including the Centrifuge and Spoke families, `HubLens` and [receipt tracking](/technical-reference/reference-liquidity-hub/yield-groups#receipt-tracking), is pinned to [venus-liquidity-hub v2.1.0](https://github.com/VenusProtocol/venus-liquidity-hub/tree/v2.1.0). Deployment versions differ: VIP-681 upgrades Core, Flux, FRV and Spoke, but does not upgrade the Centrifuge YieldGroups or replace their adapter. The deployed Centrifuge contracts have neither `syncReceipt` nor `receiptValue`; the implementations in `v2.1.0` add those selectors with explicit reverts. The audit reports below are pinned to commits. Match the deployed bytecode or the verified source before decoding anything.
 :::
 
 ## Architecture
@@ -173,4 +173,4 @@ A parallel deployment exists for integration testing. The USDT Hub below is the 
 
 ## Audits
 
-The Liquidity Hub was audited by HashDit (2026/07/07) and Cantina (2026/08/11), the Centrifuge yield group by HashDit (2026/09/04), `HubLens` and the capacity math behind it by HashDit (2026/09/24) and again by Cantina (2026/10/27), and receipt tracking by HashDit (2026/11/06). The reports are in the [venus-liquidity-hub repository](https://github.com/VenusProtocol/venus-liquidity-hub/tree/develop/audits). All are indexed, with their scope, on the [Security & Audits](/links/security-and-audits#liquidity-hub) page.
+The Liquidity Hub was audited by HashDit (2026/07/07) and Cantina (2026/08/11), the Centrifuge yield group by HashDit (2026/09/04), `HubLens` and the capacity math behind it by HashDit (2026/09/24) and again by Cantina (2026/10/27), and receipt tracking by HashDit (2026/11/06). The reports are in the [venus-liquidity-hub repository](https://github.com/VenusProtocol/venus-liquidity-hub/tree/v2.1.0/audits). All are indexed, with their scope, on the [Security & Audits](/links/security-and-audits#liquidity-hub) page.
