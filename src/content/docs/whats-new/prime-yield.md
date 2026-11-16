@@ -4,7 +4,7 @@ title: "Venus Prime"
 
 ### Overview
 
-Venus Prime is the protocol's flagship incentive program, designed to reward long-term, committed users by boosting their yield across selected markets. It focuses on the core markets USDT, USDC, BTC, ETH and BNB, and promotes sustained $XVS staking.
+Venus Prime is the protocol's flagship incentive program, designed to reward long-term, committed users by boosting their yield across selected markets. It began with the core markets USDT, USDC, BTC, ETH and BNB, and promotes sustained $XVS staking. The reward markets change with governance: on BNB Chain, [VIP-679](https://app.venus.io/#/governance/proposal/679?chainId=56) moved new rewards to suppliers of the vvhUSDT and vvhU Core pool markets, paid in the [Liquidity Hub](/whats-new/liquidity-hub) shares vhUSDT and vhU.
 
 Venus Prime is powered by two contracts:
 
