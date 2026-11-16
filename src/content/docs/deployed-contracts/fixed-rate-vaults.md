@@ -7,7 +7,7 @@ Core contracts for the Fixed Term Vaults system. Each institution's vault is dep
 The stable implementation and deployment baseline is [`fixed-rate-vaults` v1.0.0](https://github.com/VenusProtocol/fixed-rate-vaults/tree/v1.0.0). Proxy implementations, vault state, terms, balances, pause levels, owners, permissions, and liquidation whitelists can change. Verify the live controller, vault, and adapter before interacting.
 
 :::caution
-The mainnet vault list and states below are a checkpoint at BNB block `132776350` (November 10, 2026), not an offer. `allVaultsLength()` returned five. State `Matured` means the original term has ended; state `Lock` means the term is running, and it changes as time and governance actions advance the state machine. The testnet section is **Test-only**.
+The mainnet vault list and states below are a checkpoint at BNB block `133652444` (November 15, 2026), not an offer. `allVaultsLength()` returned five. State `Matured` means the original term has ended; state `Lock` means the term is running, and it changes as time and governance actions advance the state machine. The testnet section is **Test-only**.
 :::
 
 ## BNB Chain Mainnet
