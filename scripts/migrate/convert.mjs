@@ -69,7 +69,7 @@ const spec = (() => {
   const f = path.join(ASSETS_SRC, 'swagger.json');
   return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : null;
 })();
-const cell = (s) => String(s ?? '').replace(/\|/g, '\\|').replace(/\n+/g, '<br>');
+const cell = (s) => String(s ?? '').replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/\n+/g, '<br>');
 
 // GitBook rendered {% swagger %} blocks live from the spec; render the same operation statically.
 function swagger(file, attrs) {
