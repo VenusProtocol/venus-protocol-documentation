@@ -23,7 +23,7 @@ Verify the network, market, token, contract address, and transaction details bef
 * [Contracts overview](/technical-reference/contracts-overview)
 * [Deployed markets](/deployed-contracts/markets)
 * [API](/services/api)
-* [Subgraphs](/services/subgraphs)
+* [Subgraphs (deprecated)](/services/subgraphs)
 * [Security and audits](/links/security-and-audits)
 
 ## Support and project links
