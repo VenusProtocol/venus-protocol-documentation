@@ -2,6 +2,10 @@
 title: "Subgraphs"
 ---
 
+:::danger
+**Deprecated.** Venus stopped using and maintaining these subgraphs in November 2026 and will remove them. Use the [Venus API](/services/api) for market, pool, and governance data; it does not expose account positions, Protocol Share Reserve, or cross-chain governance data, so index those contract events directly or read state through an RPC endpoint. Until the subgraphs are removed, the deployments below may lag or stop indexing.
+:::
+
 Venus publishes GraphQL subgraphs that index selected protocol events into queryable entities. Most deployments listed here are on **The Graph Network**, not the retired Hosted Service. The `chain=arbitrum-one` parameter in an Explorer URL identifies the network on which The Graph operates; the Explorer page's **Network** field identifies the blockchain whose Venus events are indexed.
 
 :::caution

@@ -1135,7 +1135,7 @@
         "link": "/services/api"
       },
       {
-        "label": "Subgraphs",
+        "label": "Subgraphs (deprecated)",
         "link": "/services/subgraphs"
       }
     ]
