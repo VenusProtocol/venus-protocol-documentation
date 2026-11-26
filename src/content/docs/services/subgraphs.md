@@ -3,10 +3,10 @@ title: "Subgraphs"
 ---
 
 :::danger
-**Deprecated.** Venus stopped using and maintaining these subgraphs in November 2026 and will remove them. Use the [Venus API](/services/api) instead. Until they are removed, the deployments below may lag or stop indexing.
+**Deprecated.** Venus stopped using and maintaining these subgraphs in November 2026 and will remove them. Use the [Venus API](/services/api) for market, pool, and governance data; it does not expose account positions, Protocol Share Reserve, or cross-chain governance data, so index those contract events directly or read state through an RPC endpoint. Until the subgraphs are removed, the deployments below may lag or stop indexing.
 :::
 
-Venus published GraphQL subgraphs that index selected protocol events into queryable entities. Most deployments listed here are on **The Graph Network**, not the retired Hosted Service. The `chain=arbitrum-one` parameter in an Explorer URL identifies the network on which The Graph operates; the Explorer page's **Network** field identifies the blockchain whose Venus events are indexed.
+Venus publishes GraphQL subgraphs that index selected protocol events into queryable entities. Most deployments listed here are on **The Graph Network**, not the retired Hosted Service. The `chain=arbitrum-one` parameter in an Explorer URL identifies the network on which The Graph operates; the Explorer page's **Network** field identifies the blockchain whose Venus events are indexed.
 
 :::caution
 A subgraph is a derived, eventually consistent view. It can lag the chain, stop indexing, encounter a deterministic error, or reflect a different deployment version than a client expects. Do not use subgraph output alone for transaction safety, balances, permissions, prices, pause state, or liquidation decisions. Check the index status and latest indexed block, then confirm critical state through an RPC endpoint.

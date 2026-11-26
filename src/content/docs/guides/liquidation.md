@@ -40,7 +40,7 @@ The first step to performing a liquidation is to identify under-collateralized a
    * `Borrow`: Event emitted when underlying is borrowed.
    * `RepayBorrow`: Event emitted when a borrow is repaid. By listening to these events, liquidators can track changes in positions and update the balances of users accordingly.
 
-Consider using a subgraph to index these events.
+Index these events with your own indexer. The Venus subgraphs are deprecated, and the Venus API does not expose account positions.
 
 2. Get account balances: Use the `vTokenBalancesAll` function provided by PoolLens (VenusLens on the Core Pool) to retrieve supply and borrow balances for multiple vTokens associated with an account. This function takes an array of vTokens and the account address as parameters.
 3. Get underlying asset prices: Use the `vTokenUnderlyingPriceAll` function provided by the PoolLens (VenusLens on the Core Pool) to retrieve the underlying asset prices for multiple vTokens. This function takes an array of vTokens as a parameter.
